@@ -48,6 +48,6 @@ class WrestlersController extends Controller
 
         $wrestler->update($request->except(['feet', 'inches']));
 
-        return redirect('wrestlers/'.$wrestler->getKey());
+        return redirect(route('wrestler.index'));
     }
 }

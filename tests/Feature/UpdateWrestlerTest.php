@@ -70,7 +70,7 @@ class UpdateWrestlerTest extends TestCase
 
         $response = $this->patch(route('wrestler.update', $wrestler), $this->validParams());
 
-        $response->assertRedirect('/wrestlers/'. $wrestler->getKey());
+        $response->assertRedirect(route('wrestler.index'));
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
             $this->assertEquals(76, $wrestler->height);
