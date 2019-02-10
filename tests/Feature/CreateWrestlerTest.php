@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Wrestler;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateWrestlerTest extends TestCase
