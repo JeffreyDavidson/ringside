@@ -24,7 +24,6 @@ class StoreWrestlerRequest extends FormRequest
      */
     public function rules()
     {
-        // dd($this->all());
         return [
             'name' => 'required',
             'feet' => 'required|integer',
