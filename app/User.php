@@ -29,6 +29,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Check to see if the user is an administrator.
+     *
+     * @return bool
+     */
     public function isAdministrator()
     {
         return $this->role_id == Role::ADMINISTRATOR;
