@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\User;
-use App\Wrestler;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WrestlerPolicy
