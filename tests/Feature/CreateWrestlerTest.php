@@ -64,7 +64,6 @@ class CreateWrestlerTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_wrestler()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
         $response = $this->post('/wrestlers', $this->validParams());
