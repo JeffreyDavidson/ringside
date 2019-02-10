@@ -14,6 +14,8 @@
 Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::post('/wrestlers', 'WrestlersController@store');
     Route::get('/wrestlers/new', 'WrestlersController@create');
+    Route::get('/wrestlers/{wrestler}/edit', 'WrestlersController@edit');
+    Route::patch('/wrestlers/{wrestler}', 'WrestlersController@update');
 });
 
 Auth::routes();
