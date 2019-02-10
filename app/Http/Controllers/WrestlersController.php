@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Wrestler;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreWrestlerRequest;
 
 class WrestlersController extends Controller
