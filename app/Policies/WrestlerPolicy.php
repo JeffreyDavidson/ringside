@@ -13,7 +13,7 @@ class WrestlerPolicy
      * Determine whether the user can create wrestlers.
      *
      * @param  \App\User  $user
-     * @return mixed
+     * @return bool
      */
     public function create(User $user)
     {
