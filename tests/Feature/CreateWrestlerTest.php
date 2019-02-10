@@ -37,7 +37,6 @@ class CreateWrestlerTest extends TestCase
 
         $response = $this->get('/wrestlers/new');
 
-        $response->assertOk();
         $response->assertViewIs('wrestlers.create');
     }
 
@@ -56,7 +55,6 @@ class CreateWrestlerTest extends TestCase
     {
         $response = $this->get('/wrestlers/new');
 
-        $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
@@ -93,7 +91,6 @@ class CreateWrestlerTest extends TestCase
     {
         $response = $this->post('/wrestlers', $this->validParams());
 
-        $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
