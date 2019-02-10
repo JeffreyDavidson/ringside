@@ -29,7 +29,7 @@ class WrestlersController extends Controller
     {
         $request->merge(['height' => ($request->input('feet') * 12) + $request->input('inches')]);
 
-        $wrestler = Wrestler::create($request->only(['name', 'height', 'hometown', 'weight', 'signature_move', 'hired_at']));
+        $wrestler = Wrestler::create($request->except(['feet', 'inches']));
 
         return redirect('/wrestlers');
     }
