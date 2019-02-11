@@ -12,7 +12,7 @@ class CreateWrestlerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Valid Parameters for reqeust.
+     * Valid Parameters for request.
      *
      * @param  array $overrides
      * @return array
