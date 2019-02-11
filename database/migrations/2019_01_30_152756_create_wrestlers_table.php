@@ -22,6 +22,7 @@ class CreateWrestlersTable extends Migration
             $table->string('signature_move')->nullable();
             $table->datetime('hired_at');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

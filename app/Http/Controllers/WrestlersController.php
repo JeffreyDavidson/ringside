@@ -63,4 +63,19 @@ class WrestlersController extends Controller
 
         return redirect(route('wrestler.index'));
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param  App\Wrestler  $wrestler
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Wrestler $wrestler)
+    {
+        $this->authorize('delete', $wrestler);
+
+        $wrestler->delete();
+
+        return redirect(route('wrestler.index'));
+    }
 }

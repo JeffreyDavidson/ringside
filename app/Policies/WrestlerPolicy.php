@@ -32,4 +32,16 @@ class WrestlerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can delete a wrestler.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function delete(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator();
+    }
 }
