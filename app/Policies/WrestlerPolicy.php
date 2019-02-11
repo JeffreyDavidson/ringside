@@ -25,6 +25,7 @@ class WrestlerPolicy
      * Determine whether the user can update a wrestler.
      *
      * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
     public function update(User $user, Wrestler $wrestler)
