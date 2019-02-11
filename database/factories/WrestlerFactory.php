@@ -11,3 +11,7 @@ $factory->define(\App\Wrestler::class, function (Faker $faker) {
         'hired_at' => $faker->dateTime(),
     ];
 });
+
+$factory->afterCreatingState(\App\Wrestler::class, 'retired', function ($wrestler) {
+    $wrestler->retire();
+});

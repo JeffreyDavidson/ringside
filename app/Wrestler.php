@@ -22,4 +22,34 @@ class Wrestler extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     * Get the retirements of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function retirements()
+    {
+        return $this->morphMany(Retirement::class, 'retirable');
+    }
+
+    /**
+     * Retire a wrestler.
+     *
+     * @return void
+     */
+    public function retire()
+    {
+        $this->retirements()->create(['retired_at' => today()]);
+    }
+
+    /**
+     * Check to see if the wrestler is retired.
+     *
+     * @return bool
+     */
+    public function isRetired()
+    {
+        return $this->retirements()->whereNull('ended_at')->exists();
+    }
 }
