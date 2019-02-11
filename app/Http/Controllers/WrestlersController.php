@@ -11,7 +11,7 @@ class WrestlersController extends Controller
     /**
      * Show the form for creating a new wrestler.
      *
-     * @return Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -35,6 +35,12 @@ class WrestlersController extends Controller
         return redirect(route('wrestler.index'));
     }
 
+    /**
+     * Edit a wrestler.
+     *
+     * @param  \App\Wrestler  $wrestler
+     * @return \lluminate\Http\Response
+     */
     public function edit(Wrestler $wrestler)
     {
         $this->authorize('update', $wrestler);
@@ -42,6 +48,13 @@ class WrestlersController extends Controller
         return response()->view('wrestlers.edit', compact('wrestler'));
     }
 
+    /**
+     * Update a given wrestler.
+     *
+     * @param  \App\Http\Requests\UpdateWrestlerRequest  $request
+     * @param  \App\Wrestler  $wrestler
+     * @return \lluminate\Http\RedirectResponse
+     */
     public function update(UpdateWrestlerRequest $request, Wrestler $wrestler)
     {
         $request->merge(['height' => ($request->input('feet') * 12) + $request->input('inches')]);
