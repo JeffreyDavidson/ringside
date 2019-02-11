@@ -32,7 +32,7 @@ class WrestlersController extends Controller
 
         $wrestler = Wrestler::create($request->except(['feet', 'inches']));
 
-        return redirect('/wrestlers');
+        return redirect(route('wrestler.index'));
     }
 
     public function edit(Wrestler $wrestler)
