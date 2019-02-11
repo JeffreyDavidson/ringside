@@ -65,7 +65,7 @@ class WrestlersController extends Controller
     }
 
     /**
-     * Undocumented function
+     * Delete a wrestler.
      *
      * @param  App\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
