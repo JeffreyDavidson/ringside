@@ -63,4 +63,13 @@ class WrestlersController extends Controller
 
         return redirect(route('wrestler.index'));
     }
+
+    public function destroy(Wrestler $wrestler)
+    {
+        $this->authorize('delete', $wrestler);
+
+        $wrestler->delete();
+
+        return redirect(route('wrestler.index'));
+    }
 }
