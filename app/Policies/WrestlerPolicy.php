@@ -44,4 +44,16 @@ class WrestlerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can restore a deleted wrestler.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function restore(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator();
+    }
 }

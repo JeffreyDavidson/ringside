@@ -13,6 +13,7 @@
 
 Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::resource('wrestler', 'WrestlersController');
+    Route::patch('/wrestlers/{wrestler}/restore', 'WrestlersController@restore')->name('wrestler.restore');
 });
 
 Auth::routes();
