@@ -21,4 +21,19 @@ class InjuredWrestlersController extends Controller
 
         return redirect(route('injured-wrestlers.index'));
     }
+
+    /**
+     * Recover an injured wrestler.
+     *
+     * @param  \App\Wrestler  $wrestler
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Wrestler $wrestler)
+    {
+        $this->authorize('recover', $wrestler);
+
+        $wrestler->recover();
+
+        return redirect(route('wrestler.index'));
+    }
 }

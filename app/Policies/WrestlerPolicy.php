@@ -116,4 +116,16 @@ class WrestlerPolicy
     {
         return $user->isAdministrator() && !$wrestler->isInjured();
     }
+
+    /**
+     * Determine whether the user can recover an injured wrestler.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function recover(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator() && $wrestler->isInjured();
+    }
 }
