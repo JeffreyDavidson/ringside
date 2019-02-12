@@ -58,7 +58,7 @@ class WrestlerPolicy
     }
 
     /**
-     * Determine whether the user can create a retirement for wrestlers.
+     * Determine whether the user can retire a wrestler.
      *
      * @param  \App\User  $user
      * @param  \App\Wrestler  $wrestler
@@ -70,7 +70,7 @@ class WrestlerPolicy
     }
 
     /**
-     * Determine whether the user can unretire a wrestler.
+     * Determine whether the user can unretire a retired wrestler.
      *
      * @param  \App\User  $user
      * @param  \App\Wrestler  $wrestler
@@ -94,7 +94,7 @@ class WrestlerPolicy
     }
 
     /**
-     * Determine whether the user can unretire a wrestler.
+     * Determine whether the user can reinstate a suspended wrestler.
      *
      * @param  \App\User  $user
      * @param  \App\Wrestler  $wrestler
