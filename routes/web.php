@@ -20,6 +20,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::post('/wrestlers/{wrestler}/suspend', 'SuspendedWrestlersController@store')->name('wrestler.suspend');
     Route::post('/suspended-wrestlers', 'SuspendedWrestlersController@index')->name('suspended-wrestlers.index');
     Route::delete('/wrestlers/{wrestler}/reinstate', 'SuspendedWrestlersController@destroy')->name('wrestler.reinstate');
+    Route::post('/wrestlers/{wrestler}/injure', 'InjuredWrestlersController@store')->name('wrestler.injure');
+    Route::post('/injured-wrestlers', 'InjuredWrestlersController@index')->name('injured-wrestlers.index');
 });
 
 Auth::routes();

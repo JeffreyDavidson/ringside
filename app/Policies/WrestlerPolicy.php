@@ -104,4 +104,16 @@ class WrestlerPolicy
     {
         return $user->isAdministrator() && $wrestler->isSuspended();
     }
+
+    /**
+     * Determine whether the user can injure a wrestler.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function injure(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator() && !$wrestler->isInjured();
+    }
 }

@@ -19,3 +19,7 @@ $factory->afterCreatingState(\App\Wrestler::class, 'retired', function ($wrestle
 $factory->afterCreatingState(\App\Wrestler::class, 'suspended', function ($wrestler) {
     $wrestler->suspend();
 });
+
+$factory->afterCreatingState(\App\Wrestler::class, 'injured', function ($wrestler) {
+    $wrestler->injure();
+});
