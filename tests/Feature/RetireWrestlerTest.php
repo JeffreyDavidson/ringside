@@ -19,7 +19,7 @@ class RetireWrestlerTest extends TestCase
         $response = $this->post(route('wrestler.retire', $wrestler));
 
         $response->assertRedirect(route('retired-wrestlers.index'));
-        $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->retirements->first()->retired_at);
+        $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->retirement->retired_at);
     }
 
     /** @test */
