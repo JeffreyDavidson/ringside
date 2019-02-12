@@ -18,7 +18,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Wrestler::class => WrestlerPolicy::class,
-        Retirement::class => RetirementPolicy::class,
     ];
 
     /**
