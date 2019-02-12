@@ -20,7 +20,7 @@ class SuspendWrestlerTest extends TestCase
         $response = $this->post(route('wrestler.suspend', $wrestler));
 
         $response->assertRedirect(route('suspended-wrestlers.index'));
-        $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->suspension->suspended_at);
+        $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->suspension->started_at);
     }
 
     /** @test */

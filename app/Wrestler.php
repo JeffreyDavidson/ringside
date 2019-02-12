@@ -110,7 +110,7 @@ class Wrestler extends Model
      */
     public function suspend()
     {
-        $this->suspensions()->create(['suspended_at' => today()]);
+        $this->suspensions()->create(['started_at' => today()]);
     }
 
     /**
