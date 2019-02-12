@@ -13,7 +13,6 @@ class ReinstateSuspendedWrestlerTest extends TestCase
     /** @test */
     public function an_administrator_can_reinstate_a_suspended_wrestler()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 

@@ -13,7 +13,6 @@ class SuspendWrestlerTest extends TestCase
     /** @test */
     public function an_administrator_can_suspend_a_wrestler()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
