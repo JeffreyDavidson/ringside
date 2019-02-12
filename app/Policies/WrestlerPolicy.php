@@ -80,4 +80,16 @@ class WrestlerPolicy
     {
         return $user->isAdministrator() && $wrestler->isRetired();
     }
+
+    /**
+     * Determine whether the user can create a suspend for wrestlers.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function suspend(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator() && !$wrestler->isSuspended();
+    }
 }

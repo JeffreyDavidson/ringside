@@ -82,4 +82,44 @@ class Wrestler extends Model
     {
         $this->retirements()->whereNull('ended_at')->first()->update(['ended_at' => today()]);
     }
+
+    /**
+     * Get the suspensions of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function suspensions()
+    {
+        return $this->morphMany(Suspension::class, 'suspendable');
+    }
+
+    /**
+     * Get the current suspension of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function suspension()
+    {
+        return $this->morphOne(Suspension::class, 'suspendable')->whereNull('ended_at');
+    }
+
+    /**
+     * Suspend a wrestler.
+     *
+     * @return void
+     */
+    public function suspend()
+    {
+        $this->suspensions()->create(['suspended_at' => today()]);
+    }
+
+    /**
+     * Check to see if the wrestler is suspended.
+     *
+     * @return bool
+     */
+    public function isSuspended()
+    {
+        return $this->suspensions()->whereNull('ended_at')->exists();
+    }
 }

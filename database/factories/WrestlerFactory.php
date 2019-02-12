@@ -15,3 +15,7 @@ $factory->define(\App\Wrestler::class, function (Faker $faker) {
 $factory->afterCreatingState(\App\Wrestler::class, 'retired', function ($wrestler) {
     $wrestler->retire();
 });
+
+$factory->afterCreatingState(\App\Wrestler::class, 'suspended', function ($wrestler) {
+    $wrestler->suspend();
+});
