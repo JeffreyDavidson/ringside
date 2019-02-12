@@ -80,7 +80,7 @@ class Wrestler extends Model
      */
     public function unretire()
     {
-        $this->retirements()->whereNull('ended_at')->first()->update(['ended_at' => today()]);
+        $this->retirement()->update(['ended_at' => today()]);
     }
 
     /**
