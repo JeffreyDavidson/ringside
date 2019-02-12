@@ -14,7 +14,7 @@
 Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::resource('wrestler', 'WrestlersController');
     Route::patch('/wrestlers/{wrestler}/restore', 'WrestlersController@restore')->name('wrestler.restore');
-    Route::post('/wrestlers/{wrestler}/retore', 'RetiredWrestlersController@store')->name('wrestler.retire');
+    Route::post('/wrestlers/{wrestler}/retire', 'RetiredWrestlersController@store')->name('wrestler.retire');
     Route::delete('/wrestlers/{wrestler}/unretire', 'RetiredWrestlersController@destroy')->name('wrestler.unretire');
     Route::post('/retired-wrestlers', 'RetiredWrestlersController@index')->name('retired-wrestlers.index');
 });

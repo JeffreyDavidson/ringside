@@ -16,7 +16,7 @@ class StoreRetirementRequest extends FormRequest
     {
         $wrestler = $this->route('wrestler');
 
-        return $this->user()->can('create', Retirement::class) && !$wrestler->isRetired();
+        return $this->user()->can('retire', $wrestler);
     }
 
     /**
