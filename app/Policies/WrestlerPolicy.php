@@ -82,7 +82,7 @@ class WrestlerPolicy
     }
 
     /**
-     * Determine whether the user can create a suspend for wrestlers.
+     * Determine whether the user can suspend a wrestler.
      *
      * @param  \App\User  $user
      * @param  \App\Wrestler  $wrestler
