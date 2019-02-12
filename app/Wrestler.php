@@ -44,7 +44,7 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the current retirement of the wrestler.
+     * Get the previous retirement of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
@@ -74,9 +74,9 @@ class Wrestler extends Model
     }
 
     /**
-     * Check to see if the wrestler is retired.
+     * Unretire the retired wrestler.
      *
-     * @return bool
+     * @return void
      */
     public function unretire()
     {
