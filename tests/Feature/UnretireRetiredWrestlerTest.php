@@ -26,7 +26,7 @@ class UnretireRetiredWrestlerTest extends TestCase
     public function a_basic_user_cannot_unretire_a_retired_wrestler()
     {
         $this->actAs('basic-user');
-        $wrestler = factory(Wrestler::class)->create();
+        $wrestler = factory(Wrestler::class)->states('retired')->create();
 
         $response = $this->delete(route('wrestler.unretire', $wrestler));
 
@@ -36,7 +36,7 @@ class UnretireRetiredWrestlerTest extends TestCase
     /** @test */
     public function a_guest_cannot_unretire_a_retired_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->create();
+        $wrestler = factory(Wrestler::class)->states('retired')->create();
 
         $response = $this->delete(route('wrestler.unretire', $wrestler));
 
