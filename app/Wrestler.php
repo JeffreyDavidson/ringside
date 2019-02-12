@@ -60,7 +60,7 @@ class Wrestler extends Model
      */
     public function retire()
     {
-        $this->retirements()->create(['retired_at' => today()]);
+        $this->retirements()->create(['started_at' => today()]);
     }
 
     /**
