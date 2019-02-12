@@ -13,7 +13,7 @@ class RetiredWrestlersController extends Controller
      *
      * @param  \App\Http\Requests\StoreRetirementRequest  $request
      * @param  \App\Wrestler  $wrestler
-     * @return void
+     * @return \lluminate\Http\RedirectResponse
      */
     public function store(StoreRetirementRequest $request, Wrestler $wrestler)
     {

@@ -13,7 +13,7 @@ class SuspendedWrestlersController extends Controller
      *
      * @param  \App\Http\Requests\StoreSuspensionRequest  $request
      * @param  \App\Wrestler  $wrestler
-     * @return void
+     * @return \lluminate\Http\RedirectResponse
      */
     public function store(StoreSuspensionRequest $request, Wrestler $wrestler)
     {
