@@ -34,6 +34,26 @@ class Wrestler extends Model
     }
 
     /**
+     * Get the current retirement of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function retirement()
+    {
+        return $this->morphOne(Retirement::class, 'retirable')->whereNull('ended_at');
+    }
+
+    /**
+     * Get the current retirement of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function previousRetirement()
+    {
+        return $this->morphOne(Retirement::class, 'retirable')->whereNotNull('ended_at')->latest('started_at');
+    }
+
+    /**
      * Retire a wrestler.
      *
      * @return void
@@ -51,5 +71,15 @@ class Wrestler extends Model
     public function isRetired()
     {
         return $this->retirements()->whereNull('ended_at')->exists();
+    }
+
+    /**
+     * Check to see if the wrestler is retired.
+     *
+     * @return bool
+     */
+    public function unretire()
+    {
+        $this->retirements()->whereNull('ended_at')->first()->update(['ended_at' => today()]);
     }
 }

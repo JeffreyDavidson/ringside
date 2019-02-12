@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Wrestler;
+use App\Retirement;
 use App\Http\Requests\StoreRetirementRequest;
 
 class RetiredWrestlersController extends Controller
@@ -19,5 +20,20 @@ class RetiredWrestlersController extends Controller
         $wrestler->retire();
 
         return redirect(route('retired-wrestlers.index'));
+    }
+
+    /**
+     * Unretire a retired wrestler.
+     *
+     * @param  \App\Wrestler  $wrestler
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Wrestler $wrestler)
+    {
+        $this->authorize('unretire', $wrestler);
+
+        $wrestler->unretire();
+
+        return redirect(route('wrestler.index'));
     }
 }

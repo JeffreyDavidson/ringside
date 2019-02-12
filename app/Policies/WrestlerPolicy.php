@@ -56,4 +56,15 @@ class WrestlerPolicy
     {
         return $user->isAdministrator();
     }
+    /**
+     * Determine whether the user can unretire a wrestler.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function unretire(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator() && $wrestler->isRetired();
+    }
 }
