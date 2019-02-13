@@ -6,7 +6,7 @@ use App\Wrestler;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreInjuryRequest;
 
-class InjuredWrestlersController extends Controller
+class InjuriesController extends Controller
 {
     /**
      * Create an injury for the wrestler.

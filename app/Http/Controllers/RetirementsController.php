@@ -6,7 +6,7 @@ use App\Wrestler;
 use App\Retirement;
 use App\Http\Requests\StoreRetirementRequest;
 
-class RetiredWrestlersController extends Controller
+class RetirementsController extends Controller
 {
     /**
      * Create a retirement for the wrestler.

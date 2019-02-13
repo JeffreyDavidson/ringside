@@ -6,7 +6,7 @@ use App\Wrestler;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSuspensionRequest;
 
-class SuspendedWrestlersController extends Controller
+class SuspensionsController extends Controller
 {
     /**
      * Create a suspension for the wrestler.
