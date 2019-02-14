@@ -23,6 +23,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::post('/wrestlers/{wrestler}/injure', 'InjuriesController@store')->name('wrestler.injure');
     Route::get('/injured-wrestlers', 'InjuriesController@index')->name('injured-wrestlers.index');
     Route::delete('/wrestlers/{wrestler}/recover', 'InjuriesController@destroy')->name('wrestler.recover');
+    Route::post('/wrestlers/{wrestler}/deactivate', 'InactiveWrestlersController@store')->name('wrestler.deactivate');
+    Route::get('/inactive-wrestlers', 'InactiveWrestlersController@index')->name('inactive-wrestlers.index');
 });
 
 Auth::routes();
