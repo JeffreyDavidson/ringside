@@ -120,7 +120,7 @@ class WrestlerPolicy
     }
 
     /**
-     * Determine whether the user can recover an injured wrestler.
+     * Determine whether the user can deactivate an active wrestler.
      *
      * @param  \App\User  $user
      * @return bool

@@ -25,7 +25,7 @@ class DeactivateActiveWrestlerTest extends TestCase
     }
 
     /** @test */
-    public function a_basic_user_cannot_deactive_an_active_wrestler()
+    public function a_basic_user_cannot_deactivate_an_active_wrestler()
     {
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->states('active')->create();
@@ -36,7 +36,7 @@ class DeactivateActiveWrestlerTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_cannot_injure_a_wrestler()
+    public function a_guest_cannot_deactivate_an_active_wrestler()
     {
         $wrestler = factory(Wrestler::class)->states('active')->create();
 

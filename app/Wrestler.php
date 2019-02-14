@@ -237,7 +237,7 @@ class Wrestler extends Model
     }
 
     /**
-     * Deactivate an inactive wrestler.
+     * Deactivate an active wrestler.
      *
      * @return $this
      */
