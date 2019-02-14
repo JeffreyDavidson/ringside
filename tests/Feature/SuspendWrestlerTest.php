@@ -51,6 +51,6 @@ class SuspendWrestlerTest extends TestCase
 
         $response = $this->post(route('wrestler.suspend', $wrestler));
 
-        $this->assertCount(1, $wrestler->fresh()->suspensions);
+        $response->assertStatus(403);
     }
 }

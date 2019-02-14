@@ -51,6 +51,6 @@ class RetireWrestlerTest extends TestCase
 
         $response = $this->post(route('wrestler.retire', $wrestler));
 
-        $this->assertCount(1, $wrestler->fresh()->retirements);
+        $response->assertStatus(403);
     }
 }

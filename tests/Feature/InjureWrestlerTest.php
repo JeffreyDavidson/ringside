@@ -51,6 +51,6 @@ class InjureWrestlerTest extends TestCase
 
         $response = $this->post(route('wrestler.injure', $wrestler));
 
-        $this->assertCount(1, $wrestler->fresh()->injuries);
+        $response->assertStatus(403);
     }
 }
