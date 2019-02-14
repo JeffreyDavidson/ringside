@@ -31,7 +31,7 @@ class InjuriesController extends Controller
      */
     public function destroy(Wrestler $wrestler)
     {
-        $this->authorize('recover', $wrestler);
+        $this->authorize('recover', Wrestler::class);
 
         abort_unless($wrestler->isInjured(), 403);
 

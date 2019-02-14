@@ -31,7 +31,7 @@ class SuspensionsController extends Controller
      */
     public function destroy(Wrestler $wrestler)
     {
-        $this->authorize('reinstate', $wrestler);
+        $this->authorize('reinstate', Wrestler::class);
 
         abort_unless($wrestler->isSuspended(), 403);
 

@@ -43,7 +43,7 @@ class WrestlersController extends Controller
      */
     public function edit(Wrestler $wrestler)
     {
-        $this->authorize('update', $wrestler);
+        $this->authorize('update', Wrestler::class);
 
         return response()->view('wrestlers.edit', compact('wrestler'));
     }
@@ -72,7 +72,7 @@ class WrestlersController extends Controller
      */
     public function destroy(Wrestler $wrestler)
     {
-        $this->authorize('delete', $wrestler);
+        $this->authorize('delete', Wrestler::class);
 
         $wrestler->delete();
 
@@ -89,7 +89,7 @@ class WrestlersController extends Controller
     {
         $wrestler = Wrestler::onlyTrashed()->find($wrestlerId);
 
-        $this->authorize('restore', $wrestler);
+        $this->authorize('restore', Wrestler::class);
 
         $wrestler->restore();
 

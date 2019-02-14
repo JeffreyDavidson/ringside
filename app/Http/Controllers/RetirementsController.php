@@ -31,7 +31,7 @@ class RetirementsController extends Controller
      */
     public function destroy(Wrestler $wrestler)
     {
-        $this->authorize('unretire', $wrestler);
+        $this->authorize('unretire', Wrestler::class);
 
         abort_unless($wrestler->isRetired(), 403);
 

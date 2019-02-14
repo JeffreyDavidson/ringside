@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\User;
-use App\Wrestler;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WrestlerPolicy
@@ -25,10 +24,9 @@ class WrestlerPolicy
      * Determine whether the user can update a wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function update(User $user, Wrestler $wrestler)
+    public function update(User $user)
     {
         return $user->isAdministrator();
     }
@@ -37,10 +35,9 @@ class WrestlerPolicy
      * Determine whether the user can delete a wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function delete(User $user, Wrestler $wrestler)
+    public function delete(User $user)
     {
         return $user->isAdministrator();
     }
@@ -49,10 +46,9 @@ class WrestlerPolicy
      * Determine whether the user can restore a deleted wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function restore(User $user, Wrestler $wrestler)
+    public function restore(User $user)
     {
         return $user->isAdministrator();
     }
@@ -96,7 +92,7 @@ class WrestlerPolicy
      * @param  \App\User  $user
      * @return bool
      */
-    public function reinstate(User $user, Wrestler $wrestler)
+    public function reinstate(User $user)
     {
         return $user->isAdministrator();
     }
