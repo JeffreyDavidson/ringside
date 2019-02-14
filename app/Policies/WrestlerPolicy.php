@@ -129,4 +129,15 @@ class WrestlerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can activate an inactive wrestler.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function activate(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

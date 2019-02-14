@@ -245,4 +245,14 @@ class Wrestler extends Model
     {
         return $this->update(['is_active' => false]);
     }
+
+    /**
+     * Activate an inactive wrestler.
+     *
+     * @return $this
+     */
+    public function activate()
+    {
+        return $this->update(['is_active' => true]);
+    }
 }
