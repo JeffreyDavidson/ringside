@@ -61,72 +61,66 @@ class WrestlerPolicy
      * Determine whether the user can retire a wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function retire(User $user, Wrestler $wrestler)
+    public function retire(User $user)
     {
-        return $user->isAdministrator() && !$wrestler->isRetired();
+        return $user->isAdministrator();
     }
 
     /**
      * Determine whether the user can unretire a retired wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function unretire(User $user, Wrestler $wrestler)
+    public function unretire(User $user)
     {
-        return $user->isAdministrator() && $wrestler->isRetired();
+        return $user->isAdministrator();
     }
 
     /**
      * Determine whether the user can suspend a wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function suspend(User $user, Wrestler $wrestler)
+    public function suspend(User $user)
     {
-        return $user->isAdministrator() && !$wrestler->isSuspended();
+        return $user->isAdministrator();
     }
 
     /**
      * Determine whether the user can reinstate a suspended wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
     public function reinstate(User $user, Wrestler $wrestler)
     {
-        return $user->isAdministrator() && $wrestler->isSuspended();
+        return $user->isAdministrator();
     }
 
     /**
      * Determine whether the user can injure a wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function injure(User $user, Wrestler $wrestler)
+    public function injure(User $user)
     {
-        return $user->isAdministrator() && !$wrestler->isInjured();
+        return $user->isAdministrator();
     }
 
     /**
      * Determine whether the user can recover an injured wrestler.
      *
      * @param  \App\User  $user
-     * @param  \App\Wrestler  $wrestler
      * @return bool
      */
-    public function recover(User $user, Wrestler $wrestler)
+    public function recover(User $user)
     {
-        return $user->isAdministrator() && $wrestler->isInjured();
+        return $user->isAdministrator();
     }
 
     /**
