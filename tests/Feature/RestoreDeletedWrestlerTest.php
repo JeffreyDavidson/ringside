@@ -42,4 +42,15 @@ class RestoreDeletedWrestlerTest extends TestCase
 
         $response->assertRedirect('/login');
     }
+
+    /** @test */
+    public function a_non_deleted_wrestler_cannot_be_restored()
+    {
+        $this->actAs('administrator');
+        $wrestler = factory(Wrestler::class)->create();
+
+        $response = $this->patch(route('wrestler.restore', $wrestler));
+
+        $response->assertStatus(404);
+    }
 }

@@ -87,7 +87,7 @@ class WrestlersController extends Controller
      */
     public function restore($wrestlerId)
     {
-        $wrestler = Wrestler::onlyTrashed()->find($wrestlerId);
+        $wrestler = Wrestler::onlyTrashed()->findOrFail($wrestlerId);
 
         $this->authorize('restore', Wrestler::class);
 
