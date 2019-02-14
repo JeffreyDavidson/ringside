@@ -3,20 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Wrestler;
-use App\Retirement;
-use App\Http\Requests\StoreRetirementRequest;
 
 class RetirementsController extends Controller
 {
     /**
-     * Create a retirement for the wrestler.
+     * Retire a wrestler.
      *
-     * @param  \App\Http\Requests\StoreRetirementRequest  $request
      * @param  \App\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
-    public function store(StoreRetirementRequest $request, Wrestler $wrestler)
+    public function store(Wrestler $wrestler)
     {
+        $this->authorize('retire', Wrestler::class);
+
+        abort_if($wrestler->isRetired(), 403);
+
         $wrestler->retire();
 
         return redirect(route('retired-wrestlers.index'));
@@ -31,6 +32,8 @@ class RetirementsController extends Controller
     public function destroy(Wrestler $wrestler)
     {
         $this->authorize('unretire', $wrestler);
+
+        abort_unless($wrestler->isRetired(), 403);
 
         $wrestler->unretire();
 

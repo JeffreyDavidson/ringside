@@ -3,20 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Wrestler;
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreSuspensionRequest;
 
 class SuspensionsController extends Controller
 {
     /**
-     * Create a suspension for the wrestler.
+     * Suspend a wrestler.
      *
-     * @param  \App\Http\Requests\StoreSuspensionRequest  $request
      * @param  \App\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
-    public function store(StoreSuspensionRequest $request, Wrestler $wrestler)
+    public function store(Wrestler $wrestler)
     {
+        $this->authorize('suspend', Wrestler::class);
+
+        abort_if($wrestler->isSuspended(), 403);
+
         $wrestler->suspend();
 
         return redirect(route('suspended-wrestlers.index'));
@@ -31,6 +32,8 @@ class SuspensionsController extends Controller
     public function destroy(Wrestler $wrestler)
     {
         $this->authorize('reinstate', $wrestler);
+
+        abort_unless($wrestler->isSuspended(), 403);
 
         $wrestler->reinstate();
 
