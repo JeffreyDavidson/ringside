@@ -20,7 +20,7 @@ class RetirementsController extends Controller
 
         $wrestler->retire();
 
-        return redirect(route('retired-wrestlers.index'));
+        return redirect()->route('retired-wrestlers.index');
     }
 
     /**
@@ -37,6 +37,6 @@ class RetirementsController extends Controller
 
         $wrestler->unretire();
 
-        return redirect(route('wrestler.index'));
+        return redirect()->route('wrestler.index');
     }
 }
