@@ -16,12 +16,12 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::patch('/wrestlers/{wrestler}/restore', 'WrestlersController@restore')->name('wrestler.restore');
     Route::post('/wrestlers/{wrestler}/retire', 'RetirementsController@store')->name('wrestler.retire');
     Route::delete('/wrestlers/{wrestler}/unretire', 'RetirementsController@destroy')->name('wrestler.unretire');
-    Route::post('/retired-wrestlers', 'RetirementsController@index')->name('retired-wrestlers.index');
+    Route::get('/retired-wrestlers', 'RetirementsController@index')->name('retired-wrestlers.index');
     Route::post('/wrestlers/{wrestler}/suspend', 'SuspensionsController@store')->name('wrestler.suspend');
-    Route::post('/suspended-wrestlers', 'SuspensionsController@index')->name('suspended-wrestlers.index');
+    Route::get('/suspended-wrestlers', 'SuspensionsController@index')->name('suspended-wrestlers.index');
     Route::delete('/wrestlers/{wrestler}/reinstate', 'SuspensionsController@destroy')->name('wrestler.reinstate');
     Route::post('/wrestlers/{wrestler}/injure', 'InjuriesController@store')->name('wrestler.injure');
-    Route::post('/injured-wrestlers', 'InjuriesController@index')->name('injured-wrestlers.index');
+    Route::get('/injured-wrestlers', 'InjuriesController@index')->name('injured-wrestlers.index');
     Route::delete('/wrestlers/{wrestler}/recover', 'InjuriesController@destroy')->name('wrestler.recover');
 });
 
