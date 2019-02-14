@@ -21,7 +21,30 @@ class Wrestler extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['hired_at', 'deleted_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+     protected static function boot()
+     {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->is_active = $model->hired_at->lte(today());
+        });
+     }
 
     /**
      * Get the retirements of the wrestler.
@@ -201,5 +224,15 @@ class Wrestler extends Model
     public function recover()
     {
         $this->injury()->update(['ended_at' => today()]);
+    }
+
+    /**
+     * Check to see if the wrestler is currently active.
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->is_active === true;
     }
 }

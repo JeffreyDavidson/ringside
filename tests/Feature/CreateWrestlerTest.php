@@ -76,6 +76,30 @@ class CreateWrestlerTest extends TestCase
     }
 
     /** @test */
+    public function a_wrestler_hired_today_or_before_is_active()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('wrestler.store'), $this->validParams(['hired_at' => today()->toDateTimeString()]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertTrue($wrestler->is_active);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_hired_after_today_is_inactive()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('wrestler.store'), $this->validParams(['hired_at' => Carbon::tomorrow()->toDateTimeString()]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertFalse($wrestler->is_active);
+        });
+    }
+
+    /** @test */
     public function a_basic_user_cannot_create_a_wrestler()
     {
         $this->actAs('basic-user');

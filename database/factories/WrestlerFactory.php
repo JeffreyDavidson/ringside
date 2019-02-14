@@ -9,8 +9,13 @@ $factory->define(\App\Wrestler::class, function (Faker $faker) {
         'weight' => $faker->randomNumber(),
         'hometown' => $faker->city .', '.$faker->state,
         'hired_at' => $faker->dateTime(),
+        'is_active' => true,
     ];
 });
+
+$factory->state(App\Wrestler::class, 'active', [
+    'is_active' => true,
+]);
 
 $factory->afterCreatingState(\App\Wrestler::class, 'retired', function ($wrestler) {
     $wrestler->retire();
@@ -22,4 +27,8 @@ $factory->afterCreatingState(\App\Wrestler::class, 'suspended', function ($wrest
 
 $factory->afterCreatingState(\App\Wrestler::class, 'injured', function ($wrestler) {
     $wrestler->injure();
+});
+
+$factory->afterCreatingState(\App\Wrestler::class, 'inactive', function ($wrestler) {
+    $wrestler->deactivate();
 });
