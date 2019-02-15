@@ -8,6 +8,15 @@ use App\Http\Requests\UpdateWrestlerRequest;
 
 class WrestlersController extends Controller
 {
+    public function index($state = 'active')
+    {
+        $this->authorize('viewList', Wrestler::class);
+
+        $wrestlers = Wrestler::hasState($state)->get();
+
+        return response()->view('wrestlers.index', compact('wrestlers'));
+    }
+
     /**
      * Show the form for creating a new wrestler.
      *

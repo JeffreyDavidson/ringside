@@ -20,7 +20,7 @@ class InjuriesController extends Controller
 
         $wrestler->injure();
 
-        return redirect()->route('injured-wrestlers.index');
+        return redirect()->route('wrestlers.index', ['state' => 'injured']);
     }
 
     /**

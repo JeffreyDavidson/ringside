@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -107,6 +108,19 @@ class Wrestler extends Model
     }
 
     /**
+     * Scope a query to only include retired wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRetired($query)
+    {
+        return $query->whereHas('retirements', function ($query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
      * Get the suspensions of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -157,6 +171,19 @@ class Wrestler extends Model
     }
 
     /**
+     * Scope a query to only include suspended wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSuspended($query)
+    {
+        return $query->whereHas('suspensions', function ($query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
      * Reinstate the suspended wrestler.
      *
      * @return void
@@ -167,7 +194,7 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the suspensions of the wrestler.
+     * Get the injuries of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
@@ -177,7 +204,7 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the current suspension of the wrestler.
+     * Get the current injury of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
@@ -187,7 +214,7 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the previous suspension of the wrestler.
+     * Get the previous injuries of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
@@ -227,6 +254,19 @@ class Wrestler extends Model
     }
 
     /**
+     * Scope a query to only include injured wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInjured($query)
+    {
+        return $query->whereHas('injuries', function ($query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
      * Check to see if the wrestler is currently active.
      *
      * @return boolean
@@ -262,8 +302,34 @@ class Wrestler extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-     public function scopeActive($query)
-     {
+    public function scopeActive($query)
+    {
         return $query->where('is_active', true);
-     }
+    }
+
+    /**
+     * Scope a query to only include inactive wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInactive($query)
+    {
+        return $query->where('is_active', false);
+    }
+
+    /**
+     * Scope a query to only include wrestlers of a given state.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHasState($query, $state)
+    {
+        $scope = 'scope' . Str::studly($state);
+
+        if (method_exists($this, $scope)) {
+            return $this->{$scope}($query);
+        }
+    }
 }

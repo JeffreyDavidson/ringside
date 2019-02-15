@@ -20,7 +20,7 @@ class RetirementsController extends Controller
 
         $wrestler->retire();
 
-        return redirect()->route('retired-wrestlers.index');
+        return redirect()->route('wrestlers.index', ['state' => 'retired']);
     }
 
     /**
