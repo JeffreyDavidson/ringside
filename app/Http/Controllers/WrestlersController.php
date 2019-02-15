@@ -8,6 +8,12 @@ use App\Http\Requests\UpdateWrestlerRequest;
 
 class WrestlersController extends Controller
 {
+    /**
+     * Retrieve wrestles of a specific state.
+     *
+     * @param  string  $state
+     * @return \Illuminate\Http\Response
+     */
     public function index($state = 'active')
     {
         $this->authorize('viewList', Wrestler::class);
