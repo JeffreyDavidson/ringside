@@ -37,6 +37,6 @@ class InjuriesController extends Controller
 
         $wrestler->recover();
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 }

@@ -37,6 +37,6 @@ class RetirementsController extends Controller
 
         $wrestler->unretire();
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 }

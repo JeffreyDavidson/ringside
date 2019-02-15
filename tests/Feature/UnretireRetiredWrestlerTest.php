@@ -16,9 +16,9 @@ class UnretireRetiredWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->delete(route('wrestler.unretire', $wrestler));
+        $response = $this->delete(route('wrestlers.unretire', $wrestler));
 
-        $response->assertRedirect(route('wrestler.index'));
+        $response->assertRedirect(route('wrestlers.index'));
         $this->assertNotNull($wrestler->fresh()->previousRetirement->ended_at);
     }
 
@@ -28,7 +28,7 @@ class UnretireRetiredWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->delete(route('wrestler.unretire', $wrestler));
+        $response = $this->delete(route('wrestlers.unretire', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -38,7 +38,7 @@ class UnretireRetiredWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->delete(route('wrestler.unretire', $wrestler));
+        $response = $this->delete(route('wrestlers.unretire', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -49,7 +49,7 @@ class UnretireRetiredWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestler.unretire', $wrestler));
+        $response = $this->delete(route('wrestlers.unretire', $wrestler));
 
         $response->assertStatus(403);
     }

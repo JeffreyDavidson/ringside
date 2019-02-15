@@ -16,7 +16,7 @@ class DeleteWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestler.destroy', $wrestler));
+        $response = $this->delete(route('wrestlers.destroy', $wrestler));
 
         $this->assertSoftDeleted('wrestlers', ['name' => $wrestler->name]);
     }
@@ -27,7 +27,7 @@ class DeleteWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestler.destroy', $wrestler));
+        $response = $this->delete(route('wrestlers.destroy', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -37,7 +37,7 @@ class DeleteWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestler.destroy', $wrestler));
+        $response = $this->delete(route('wrestlers.destroy', $wrestler));
 
         $response->assertRedirect('/login');
     }

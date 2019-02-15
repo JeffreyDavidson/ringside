@@ -20,7 +20,7 @@ class SuspensionsController extends Controller
 
         $wrestler->suspend();
 
-        return redirect()->route('suspended-wrestlers.index');
+        return redirect()->route('wrestlers.index', ['state' => 'suspended']);
     }
 
     /**
@@ -37,6 +37,6 @@ class SuspensionsController extends Controller
 
         $wrestler->reinstate();
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 }

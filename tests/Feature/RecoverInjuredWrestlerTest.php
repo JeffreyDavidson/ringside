@@ -13,13 +13,12 @@ class RecoverInjuredWrestlerTest extends TestCase
     /** @test */
     public function an_administrator_can_recover_an_injured_wrestler()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->delete(route('wrestler.recover', $wrestler));
+        $response = $this->delete(route('wrestlers.recover', $wrestler));
 
-        $response->assertRedirect(route('wrestler.index'));
+        $response->assertRedirect(route('wrestlers.index'));
         $this->assertNotNull($wrestler->fresh()->previousInjury->ended_at);
     }
 
@@ -29,7 +28,7 @@ class RecoverInjuredWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->delete(route('wrestler.recover', $wrestler));
+        $response = $this->delete(route('wrestlers.recover', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -39,7 +38,7 @@ class RecoverInjuredWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->delete(route('wrestler.recover', $wrestler));
+        $response = $this->delete(route('wrestlers.recover', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -50,7 +49,7 @@ class RecoverInjuredWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestler.recover', $wrestler));
+        $response = $this->delete(route('wrestlers.recover', $wrestler));
 
         $response->assertStatus(403);
     }

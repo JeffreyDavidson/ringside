@@ -32,7 +32,7 @@ class WrestlersController extends Controller
 
         $wrestler = Wrestler::create($request->except(['feet', 'inches']));
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 
     /**
@@ -61,7 +61,7 @@ class WrestlersController extends Controller
 
         $wrestler->update($request->except(['feet', 'inches']));
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 
     /**
@@ -76,7 +76,7 @@ class WrestlersController extends Controller
 
         $wrestler->delete();
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 
     /**
@@ -93,6 +93,6 @@ class WrestlersController extends Controller
 
         $wrestler->restore();
 
-        return redirect()->route('wrestler.index');
+        return redirect()->route('wrestlers.index');
     }
 }

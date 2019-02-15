@@ -16,10 +16,10 @@ class RestoreDeletedWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
 
-        $response = $this->patch(route('wrestler.restore', $wrestler));
+        $response = $this->patch(route('wrestlers.restore', $wrestler));
 
+        $response->assertRedirect(route('wrestlers.index'));
         $this->assertNull($wrestler->fresh()->deleted_at);
-        $response->assertRedirect(route('wrestler.index'));
     }
 
     /** @test */
@@ -28,7 +28,7 @@ class RestoreDeletedWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
 
-        $response = $this->patch(route('wrestler.restore', $wrestler));
+        $response = $this->patch(route('wrestlers.restore', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -38,7 +38,7 @@ class RestoreDeletedWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
 
-        $response = $this->patch(route('wrestler.restore', $wrestler));
+        $response = $this->patch(route('wrestlers.restore', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -49,7 +49,7 @@ class RestoreDeletedWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->patch(route('wrestler.restore', $wrestler));
+        $response = $this->patch(route('wrestlers.restore', $wrestler));
 
         $response->assertStatus(404);
     }

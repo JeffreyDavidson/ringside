@@ -16,9 +16,9 @@ class SuspendWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.suspend', $wrestler));
+        $response = $this->post(route('wrestlers.suspend', $wrestler));
 
-        $response->assertRedirect(route('suspended-wrestlers.index'));
+        $response->assertRedirect(route('wrestlers.index', ['state' => 'suspended']));
         $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->suspension->started_at);
     }
 
@@ -28,7 +28,7 @@ class SuspendWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.suspend', $wrestler));
+        $response = $this->post(route('wrestlers.suspend', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -38,7 +38,7 @@ class SuspendWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.suspend', $wrestler));
+        $response = $this->post(route('wrestlers.suspend', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -49,7 +49,7 @@ class SuspendWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->post(route('wrestler.suspend', $wrestler));
+        $response = $this->post(route('wrestlers.suspend', $wrestler));
 
         $response->assertStatus(403);
     }

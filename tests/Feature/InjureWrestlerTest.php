@@ -16,9 +16,9 @@ class InjureWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.injure', $wrestler));
+        $response = $this->post(route('wrestlers.injure', $wrestler));
 
-        $response->assertRedirect(route('injured-wrestlers.index'));
+        $response->assertRedirect(route('wrestlers.index', ['state' => 'injured']));
         $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->injury->started_at);
     }
 
@@ -28,7 +28,7 @@ class InjureWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.injure', $wrestler));
+        $response = $this->post(route('wrestlers.injure', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -38,7 +38,7 @@ class InjureWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.injure', $wrestler));
+        $response = $this->post(route('wrestlers.injure', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -49,7 +49,7 @@ class InjureWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->post(route('wrestler.injure', $wrestler));
+        $response = $this->post(route('wrestlers.injure', $wrestler));
 
         $response->assertStatus(403);
     }

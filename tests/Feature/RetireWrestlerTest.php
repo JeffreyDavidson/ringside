@@ -16,9 +16,9 @@ class RetireWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.retire', $wrestler));
+        $response = $this->post(route('wrestlers.retire', $wrestler));
 
-        $response->assertRedirect(route('retired-wrestlers.index'));
+        $response->assertRedirect(route('wrestlers.index', ['state' => 'retired']));
         $this->assertEquals(today()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);
     }
 
@@ -28,7 +28,7 @@ class RetireWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.retire', $wrestler));
+        $response = $this->post(route('wrestlers.retire', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -38,7 +38,7 @@ class RetireWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->post(route('wrestler.retire', $wrestler));
+        $response = $this->post(route('wrestlers.retire', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -49,7 +49,7 @@ class RetireWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->post(route('wrestler.retire', $wrestler));
+        $response = $this->post(route('wrestlers.retire', $wrestler));
 
         $response->assertStatus(403);
     }
