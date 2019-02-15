@@ -13,12 +13,13 @@ class DeactivateActiveWrestlerTest extends TestCase
     /** @test */
     public function an_administrator_can_deactivate_an_active_wrestler()
     {
+        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('active')->create();
 
-        $response = $this->post(route('wrestler.deactivate', $wrestler));
+        $response = $this->post(route('wrestlers.deactivate', $wrestler));
 
-        $response->assertRedirect(route('inactive-wrestlers.index'));
+        $response->assertRedirect(route('wrestlers.index', ['state' => 'inactive']));
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertFalse($wrestler->is_active);
         });
@@ -30,7 +31,7 @@ class DeactivateActiveWrestlerTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->states('active')->create();
 
-        $response = $this->post(route('wrestler.deactivate', $wrestler));
+        $response = $this->post(route('wrestlers.deactivate', $wrestler));
 
         $response->assertStatus(403);
     }
@@ -40,7 +41,7 @@ class DeactivateActiveWrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('active')->create();
 
-        $response = $this->post(route('wrestler.deactivate', $wrestler));
+        $response = $this->post(route('wrestlers.deactivate', $wrestler));
 
         $response->assertRedirect('/login');
     }
@@ -51,7 +52,7 @@ class DeactivateActiveWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('inactive')->create();
 
-        $response = $this->post(route('wrestler.deactivate', $wrestler));
+        $response = $this->post(route('wrestlers.deactivate', $wrestler));
 
         $response->assertStatus(403);
     }

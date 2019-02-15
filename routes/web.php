@@ -28,6 +28,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/active-wrestlers', 'ActiveWrestlersController@index')->name('active-wrestlers.index');
     Route::post('/wrestlers/{wrestler}/activate', 'ActiveWrestlersController@store')->name('wrestler.activate');
 
+    Route::post('/wrestlers/{wrestler}/deactivate', 'ActivationsController@destroy')->name('wrestlers.deactivate');
+    Route::post('/wrestlers/{wrestler}/activate', 'ActivationsController@store')->name('wrestlers.activate');
 });
 
 Auth::routes();
