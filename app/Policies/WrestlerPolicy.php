@@ -140,4 +140,15 @@ class WrestlerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can view active wrestlers.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function viewActiveWrestlers(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

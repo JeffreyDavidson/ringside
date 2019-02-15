@@ -13,7 +13,11 @@ class ActiveWrestlersController extends Controller
      */
     public function index()
     {
+        $this->authorize('view-active-wrestlers', Wrestler::class);
 
+        $activeWrestlers = Wrestler::active()->get();
+
+        return response()->view('wrestlers.index', ['wrestlers' => $activeWrestlers]);
     }
 
     /**
