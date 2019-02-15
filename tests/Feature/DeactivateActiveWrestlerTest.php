@@ -13,7 +13,6 @@ class DeactivateActiveWrestlerTest extends TestCase
     /** @test */
     public function an_administrator_can_deactivate_an_active_wrestler()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('active')->create();
 
