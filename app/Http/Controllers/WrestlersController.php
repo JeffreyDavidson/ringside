@@ -51,6 +51,19 @@ class WrestlersController extends Controller
     }
 
     /**
+     * Show the profile of a wrestler.
+     *
+     * @param  \App\Wrestler  $wrestler
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Wrestler $wrestler)
+    {
+        $this->authorize('view', $wrestler);
+
+        return response()->view('wrestlers.show', compact('wrestler'));
+    }
+
+    /**
      * Edit a wrestler.
      *
      * @param  \App\Wrestler  $wrestler

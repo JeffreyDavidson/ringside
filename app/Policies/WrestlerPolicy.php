@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use App\Wrestler;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WrestlerPolicy
@@ -150,5 +151,17 @@ class WrestlerPolicy
     public function viewList(User $user)
     {
         return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can view a profile for a wrestler.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Wrestler  $wrestler
+     * @return bool
+     */
+    public function view(User $user, Wrestler $wrestler)
+    {
+        return $user->isAdministrator() || $wrestler->user->is($user);
     }
 }

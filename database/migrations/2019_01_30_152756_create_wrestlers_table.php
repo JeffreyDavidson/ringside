@@ -15,6 +15,7 @@ class CreateWrestlersTable extends Migration
     {
         Schema::create('wrestlers', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->string('name');
             $table->integer('height');
             $table->integer('weight');

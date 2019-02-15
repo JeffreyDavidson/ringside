@@ -332,4 +332,14 @@ class Wrestler extends Model
             return $this->{$scope}($query);
         }
     }
+
+    /**
+     * Get the user belonging to the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
