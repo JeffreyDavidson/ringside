@@ -38,14 +38,14 @@ class Wrestler extends Model
      *
      * @return void
      */
-     protected static function boot()
-     {
+    protected static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
             $model->is_active = $model->hired_at->lte(today());
         });
-     }
+    }
 
     /**
      * Get the retirements of the wrestler.
