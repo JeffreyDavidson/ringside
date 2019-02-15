@@ -147,7 +147,7 @@ class WrestlerPolicy
      * @param  \App\User  $user
      * @return bool
      */
-    public function viewActiveWrestlers(User $user)
+    public function viewList(User $user)
     {
         return $user->isAdministrator();
     }
