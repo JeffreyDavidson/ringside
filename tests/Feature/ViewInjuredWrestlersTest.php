@@ -20,10 +20,10 @@ class ViewInjuredWrestlersTest extends TestCase
         $response = $this->get(route('wrestlers.index', ['state' => 'injured']));
 
         $response->assertOk();
-        $response->assertSee($injuredWrestlers[0]->name);
-        $response->assertSee($injuredWrestlers[1]->name);
-        $response->assertSee($injuredWrestlers[2]->name);
-        $response->assertDontSee($activeWrestler->name);
+        $response->assertSee(e($injuredWrestlers[0]->name));
+        $response->assertSee(e($injuredWrestlers[1]->name));
+        $response->assertSee(e($injuredWrestlers[2]->name));
+        $response->assertDontSee(e($activeWrestler->name));
     }
 
     /** @test */

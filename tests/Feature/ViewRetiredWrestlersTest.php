@@ -20,10 +20,10 @@ class ViewRetiredWrestlersTest extends TestCase
         $response = $this->get(route('wrestlers.index', ['state' => 'retired']));
 
         $response->assertOk();
-        $response->assertSee($retiredWrestlers[0]->name);
-        $response->assertSee($retiredWrestlers[1]->name);
-        $response->assertSee($retiredWrestlers[2]->name);
-        $response->assertDontSee($activeWrestler->name);
+        $response->assertSee(e($retiredWrestlers[0]->name));
+        $response->assertSee(e($retiredWrestlers[1]->name));
+        $response->assertSee(e($retiredWrestlers[2]->name));
+        $response->assertDontSee(e($activeWrestler->name));
     }
 
     /** @test */
