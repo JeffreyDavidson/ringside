@@ -15,7 +15,7 @@ class CreateRetirementsTable extends Migration
     {
         Schema::create('retirements', function (Blueprint $table) {
             $table->increments('id');
-            $table->morphs('retirable');
+            $table->morphs('retiree');
             $table->datetime('started_at');
             $table->datetime('ended_at')->nullable();
             $table->timestamps();
