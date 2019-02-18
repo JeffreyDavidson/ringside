@@ -39,6 +39,20 @@ class Wrestler extends Model
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+     protected static function boot()
+     {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->slug = Str::slug($model->name);
+        });
+     }
+
+    /**
      * Get the user belonging to the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -76,6 +76,17 @@ class CreateWrestlerTest extends TestCase
     }
 
     /** @test */
+    public function a_wrestler_slug_is_generated_when_created()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('wrestlers.store'), $this->validParams());
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertEquals('example-wrestler-name', $wrestler->slug);
+        });
+    }
+
+    /** @test */
     public function a_wrestler_hired_today_or_before_is_active()
     {
         $this->actAs('administrator');

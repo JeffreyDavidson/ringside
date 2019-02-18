@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(\App\Wrestler::class, function (Faker $faker) {
+    $name = $faker->name;
+
     return [
-        'name' => $faker->name,
+        'name' => $name,
         'height' => $faker->randomNumber(),
         'weight' => $faker->randomNumber(),
         'hometown' => $faker->city .', '.$faker->state,
