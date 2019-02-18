@@ -36,6 +36,28 @@ class ViewWrestlerBioPageTest extends TestCase
     }
 
     /** @test */
+    public function a_wrestlers_data_can_be_seen_on_their_profile()
+    {
+        $signedInUser = $this->actAs('administrator');
+
+        $wrestler = factory(Wrestler::class)->create([
+            'name' => 'Wrestler 1',
+            'height' => 78,
+            'weight' => 220,
+            'hometown' => 'Laraville, FL',
+            'signature_move' => 'The Finisher',
+        ]);
+
+        $response = $this->get(route('wrestlers.show', ['wrestler' => $wrestler]));
+
+        $response->assertSee('Wrestler 1');
+        $response->assertSee(e('6\'6"'));
+        $response->assertSee('220 lbs');
+        $response->assertSee('Laraville, FL');
+        $response->assertSee('The Finisher');
+    }
+
+    /** @test */
     public function a_guest_cannot_view_a_wrestler_profile()
     {
         $wrestler = factory(Wrestler::class)->create();

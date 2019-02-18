@@ -64,12 +64,15 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the user belonging to the wrestler.
+     * Return the wrestler's height formatted.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return string
      */
-    public function user()
+    public function getFormattedHeightAttribute()
     {
-        return $this->belongsTo(User::class);
+        $feet = floor($this->height / 12);
+        $inches = ($this->height % 12);
+
+        return $feet . '\'' . $inches . '"';
     }
 }
