@@ -63,4 +63,19 @@ class TagTeamsController extends Controller
 
         return redirect()->route('tagteams.index');
     }
+
+    /**
+     * Delete a tag team.
+     *
+     * @param  App\TagTeam  $tagteam
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(TagTeam $tagteam)
+    {
+        $this->authorize('delete', TagTeam::class);
+
+        $tagteam->delete();
+
+        return redirect()->route('tagteams.index');
+    }
 }

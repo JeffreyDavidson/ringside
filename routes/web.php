@@ -33,6 +33,7 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/tag-teams', 'TagTeamsController@index')->name('tagteams.index');
     Route::get('/tag-teams/{tagteam}/edit', 'TagTeamsController@edit')->name('tagteams.edit');
     Route::patch('/tag-teams/{tagteam}', 'TagTeamsController@update')->name('tagteams.update');
+    Route::delete('/tag-teams/{tagteam}', 'TagTeamsController@destroy')->name('tagteams.destroy');
 });
 
 Auth::routes();
