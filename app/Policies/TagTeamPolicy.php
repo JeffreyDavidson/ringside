@@ -19,4 +19,15 @@ class TagTeamPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can update a tag team.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function update(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
