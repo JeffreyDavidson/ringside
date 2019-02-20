@@ -51,15 +51,24 @@ class Wrestler extends Model
             $model->slug = Str::slug($model->name);
         });
      }
+    /**
+     * Get the tag teams the wrestler has belonged to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tagteams()
+    {
+        return $this->belongsToMany(TagTeam::class);
+    }
 
     /**
-     * Get the user belonging to the wrestler.
+     * Get the current tag team of the wrestler.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function user()
+    public function tagteam()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(TagTeam::class)->where('is_active', true);
     }
 
     /**
