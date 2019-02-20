@@ -41,4 +41,15 @@ class TagTeamPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can restore a deleted tag team.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function restore(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

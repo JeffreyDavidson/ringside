@@ -78,4 +78,21 @@ class TagTeamsController extends Controller
 
         return redirect()->route('tagteams.index');
     }
+
+    /**
+     * Restore a deleted tag team.
+     *
+     * @param  int  $tagteamId
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function restore($tagteamId)
+    {
+        $tagteam = TagTeam::onlyTrashed()->findOrFail($tagteamId);
+
+        $this->authorize('restore', TagTeam::class);
+
+        $tagteam->restore();
+
+        return redirect()->route('tagteams.index');
+    }
 }
