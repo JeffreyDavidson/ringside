@@ -22,12 +22,12 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::patch('/wrestlers/{wrestler}/restore', 'WrestlersController@restore')->name('wrestlers.restore');
     Route::post('/wrestlers/{wrestler}/retire', 'RetirementsController@store')->name('wrestlers.retire');
     Route::delete('/wrestlers/{wrestler}/unretire', 'RetirementsController@destroy')->name('wrestlers.unretire');
-    Route::post('/wrestlers/{wrestler}/suspend', 'SuspensionsController@store')->name('wrestlers.suspend');
-    Route::delete('/wrestlers/{wrestler}/reinstate', 'SuspensionsController@destroy')->name('wrestlers.reinstate');
+    Route::delete('/wrestlers/{wrestler}/reinstate', 'WrestlerSuspensionsController@destroy')->name('wrestlers.reinstate');
     Route::post('/wrestlers/{wrestler}/injure', 'InjuriesController@store')->name('wrestlers.injure');
     Route::delete('/wrestlers/{wrestler}/recover', 'InjuriesController@destroy')->name('wrestlers.recover');
     Route::post('/wrestlers/{wrestler}/deactivate', 'ActivationsController@destroy')->name('wrestlers.deactivate');
     Route::post('/wrestlers/{wrestler}/activate', 'ActivationsController@store')->name('wrestlers.activate');
+    Route::post('/wrestlers/{wrestler}/suspend', 'WrestlerSuspensionsController@store')->name('wrestlers.suspend');
     Route::get('/tag-teams/create', 'TagTeamsController@create')->name('tagteams.create');
     Route::post('/tag-teams', 'TagTeamsController@store')->name('tagteams.store');
     Route::get('/tag-teams/{tagteam}/edit', 'TagTeamsController@edit')->name('tagteams.edit');
