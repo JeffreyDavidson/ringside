@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use App\TagTeam;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TagTeamPolicy
@@ -51,5 +52,29 @@ class TagTeamPolicy
     public function restore(User $user)
     {
         return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can suspend a tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function suspend(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() && !$tagteam->isSuspended();
+    }
+
+    /**
+     * Determine whether the user can suspend a tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function reinstate(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() && $tagteam->isSuspended();
     }
 }

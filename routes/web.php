@@ -30,11 +30,12 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::post('/wrestlers/{wrestler}/activate', 'ActivationsController@store')->name('wrestlers.activate');
     Route::get('/tag-teams/create', 'TagTeamsController@create')->name('tagteams.create');
     Route::post('/tag-teams', 'TagTeamsController@store')->name('tagteams.store');
-    Route::get('/tag-teams', 'TagTeamsController@index')->name('tagteams.index');
     Route::get('/tag-teams/{tagteam}/edit', 'TagTeamsController@edit')->name('tagteams.edit');
     Route::patch('/tag-teams/{tagteam}', 'TagTeamsController@update')->name('tagteams.update');
     Route::delete('/tag-teams/{tagteam}', 'TagTeamsController@destroy')->name('tagteams.destroy');
     Route::patch('/tag-teams/{tagteam}/restore', 'TagTeamsController@restore')->name('tagteams.restore');
+    Route::post('/tag-teams/{tagteam}/suspend', 'TagTeamSuspensionsController@store')->name('tagteams.suspend');
+    Route::get('/tag-teams/state/{state?}', 'TagTeamsController@index')->name('tagteams.index');
 });
 
 Auth::routes();

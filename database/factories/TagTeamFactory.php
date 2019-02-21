@@ -17,3 +17,7 @@ $factory->afterCreating(App\TagTeam::class, function ($tagteam, $faker) {
 $factory->state(App\TagTeam::class, 'active', [
     'is_active' => true,
 ]);
+
+$factory->afterCreatingState(\App\TagTeam::class, 'suspended', function ($tagteam) {
+    $tagteam->suspend();
+});
