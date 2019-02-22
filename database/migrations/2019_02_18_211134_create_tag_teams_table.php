@@ -15,6 +15,7 @@ class CreateTagTeamsTable extends Migration
     {
         Schema::create('tag_teams', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->string('name');
             $table->string('slug');
             $table->string('signature_move')->nullable();

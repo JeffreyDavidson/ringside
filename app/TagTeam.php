@@ -58,6 +58,16 @@ class TagTeam extends Model
     }
 
     /**
+     * Get the user belonging to the tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Add multiple wrestlers to a tag team.
      *
      * @param  array  $wrestlers
@@ -111,5 +121,15 @@ class TagTeam extends Model
         $this->wrestlers->filter->isRetired()->each->unretire();
 
         return $this;
+    }
+
+    /**
+     * Get the combined weight of both wrestlers in a tag team.
+     *
+     * @return integer
+     */
+    public function getCombinedWeightAttribute()
+    {
+        return $this->wrestlers->sum('weight');
     }
 }

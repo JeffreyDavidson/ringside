@@ -136,4 +136,16 @@ class TagTeamPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can view a profile for a tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function view(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() || $tagteam->user->is($user);
+    }
 }

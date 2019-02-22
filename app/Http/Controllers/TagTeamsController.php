@@ -51,6 +51,19 @@ class TagTeamsController extends Controller
     }
 
     /**
+     * Show the profile of a tag team.
+     *
+     * @param  \App\TagTeam  $tagteam
+     * @return \Illuminate\Http\Response
+     */
+    public function show(TagTeam $tagteam)
+    {
+        $this->authorize('view', $tagteam);
+
+        return response()->view('tagteams.show', compact('tagteam'));
+    }
+
+    /**
      * Show the form for editing a tag team.
      *
      * @param  \App\TagTeam  $tagteam
