@@ -9,6 +9,21 @@ use App\Http\Requests\UpdateTagTeamRequest;
 class TagTeamsController extends Controller
 {
     /**
+     * Retrieve tag teams of a specific state.
+     *
+     * @param  string  $state
+     * @return \Illuminate\Http\Response
+     */
+    public function index($state = 'active')
+    {
+        $this->authorize('viewList', TagTeam::class);
+
+        $tagteams = TagTeam::hasState($state)->get();
+
+        return response()->view('tagteams.index', compact('tagteams'));
+    }
+
+    /**
      * Show the form for creating a new tag team.
      *
      * @return \Illuminate\Http\Response

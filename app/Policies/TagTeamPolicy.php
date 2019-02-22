@@ -125,4 +125,15 @@ class TagTeamPolicy
     {
         return $user->isAdministrator() && $tagteam->isRetired();
     }
+
+    /**
+     * Determine whether the user can view active tag teams.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
