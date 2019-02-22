@@ -77,4 +77,28 @@ class TagTeamPolicy
     {
         return $user->isAdministrator() && $tagteam->isSuspended();
     }
+
+    /**
+     * Determine whether the user can deactivate an active tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function deactivate(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() && $tagteam->isActive();
+    }
+
+    /**
+     * Determine whether the user can activate an inactive tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function activate(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() && ! $tagteam->isActive();
+    }
 }
