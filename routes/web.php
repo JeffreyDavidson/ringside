@@ -38,6 +38,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::delete('/tag-teams/{tagteam}/reinstate', 'TagTeamSuspensionsController@destroy')->name('tagteams.reinstate');
     Route::post('/tag-teams/{tagteam}/deactivate', 'TagTeamActivationsController@destroy')->name('tagteams.deactivate');
     Route::post('/tag-teams/{tagteam}/activate', 'TagTeamActivationsController@store')->name('tagteams.activate');
+    Route::post('/tag-teams/{tagteam}/retire', 'TagTeamRetirementsController@store')->name('tagteams.retire');
+    Route::delete('/tag-teams/{tagteam}/unretire', 'TagTeamRetirementsController@destroy')->name('tagteams.unretire');
     Route::get('/tag-teams/state/{state?}', 'TagTeamsController@index')->name('tagteams.index');
 });
 

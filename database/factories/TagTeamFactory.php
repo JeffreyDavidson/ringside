@@ -22,6 +22,10 @@ $factory->afterCreatingState(\App\TagTeam::class, 'suspended', function ($tagtea
     $tagteam->suspend();
 });
 
-$factory->afterCreatingState(\App\TagTeam::class, 'inactive', function ($wrestler) {
-    $wrestler->deactivate();
+$factory->afterCreatingState(\App\TagTeam::class, 'inactive', function ($tagteam) {
+    $tagteam->deactivate();
+});
+
+$factory->afterCreatingState(\App\TagTeam::class, 'retired', function ($tagteam) {
+    $tagteam->retire();
 });

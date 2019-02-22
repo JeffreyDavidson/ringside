@@ -14,11 +14,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TagTeam extends Model
 {
     use SoftDeletes,
-        Retireable,
         Suspendable,
         Activatable,
         Hireable,
         Sluggable;
+
+    use Retireable {
+        Retireable::retire as private retireableRetire;
+        Retireable::unretire as private retireableUnRetire;
+    }
 
     /**
      * The attributes that aren't mass assignable.
@@ -79,5 +83,33 @@ class TagTeam extends Model
         if (method_exists($this, $scope)) {
             return $this->{$scope}($query);
         }
+    }
+
+    /**
+     * Retire a tag team.
+     *
+     * @return void
+     */
+    public function retire()
+    {
+        $this->retireableRetire();
+
+        $this->wrestlers->each->retire();
+
+        return $this;
+    }
+
+    /**
+     * Unretire a tag team.
+     *
+     * @return void
+     */
+    public function unretire()
+    {
+        $this->retireableUnRetire();
+
+        $this->wrestlers->filter->isRetired()->each->unretire();
+
+        return $this;
     }
 }

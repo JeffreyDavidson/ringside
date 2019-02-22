@@ -101,4 +101,28 @@ class TagTeamPolicy
     {
         return $user->isAdministrator() && ! $tagteam->isActive();
     }
+
+    /**
+     * Determine whether the user can retire a tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function retire(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() && ! $tagteam->isRetired();
+    }
+
+    /**
+     * Determine whether the user can unretire a retired tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\TagTeam  $tagteam
+     * @return bool
+     */
+    public function unretire(User $user, TagTeam $tagteam)
+    {
+        return $user->isAdministrator() && $tagteam->isRetired();
+    }
 }
