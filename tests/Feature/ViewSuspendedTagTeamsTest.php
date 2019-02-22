@@ -30,7 +30,7 @@ class ViewSuspendedTagTeamsTest extends TestCase
     public function a_basic_user_cannot_view_all_suspended_tag_teams()
     {
         $this->actAs('basic-user');
-        $wrestler = factory(TagTeam::class)->states('suspended')->create();
+        $tagteam = factory(TagTeam::class)->states('suspended')->create();
 
         $response = $this->get(route('tagteams.index', ['state' => 'suspended']));
 
@@ -40,7 +40,7 @@ class ViewSuspendedTagTeamsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_all_suspended_tag_teams()
     {
-        $wrestler = factory(TagTeam::class)->states('suspended')->create();
+        $tagteam = factory(TagTeam::class)->states('suspended')->create();
 
         $response = $this->get(route('tagteams.index', ['state' => 'suspended']));
 
