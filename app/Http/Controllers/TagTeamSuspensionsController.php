@@ -33,6 +33,6 @@ class TagTeamSuspensionsController extends Controller
 
         $tagteam->reinstate();
 
-        return redirect()->route('tag-teams.index');
+        return redirect()->route('tagteams.index');
     }
 }

@@ -35,6 +35,7 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::delete('/tag-teams/{tagteam}', 'TagTeamsController@destroy')->name('tagteams.destroy');
     Route::patch('/tag-teams/{tagteam}/restore', 'TagTeamsController@restore')->name('tagteams.restore');
     Route::post('/tag-teams/{tagteam}/suspend', 'TagTeamSuspensionsController@store')->name('tagteams.suspend');
+    Route::delete('/tag-teams/{tagteam}/reinstate', 'TagTeamSuspensionsController@destroy')->name('tagteams.reinstate');
     Route::post('/tag-teams/{tagteam}/deactivate', 'TagTeamActivationsController@destroy')->name('tagteams.deactivate');
     Route::post('/tag-teams/{tagteam}/activate', 'TagTeamActivationsController@store')->name('tagteams.activate');
     Route::get('/tag-teams/state/{state?}', 'TagTeamsController@index')->name('tagteams.index');
