@@ -49,6 +49,19 @@ class ManagersController extends Controller
     }
 
     /**
+     * Show the profile of a manager.
+     *
+     * @param  \App\Manager  $manager
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Manager $manager)
+    {
+        $this->authorize('view', $manager);
+
+        return response()->view('managers.show', compact('manager'));
+    }
+
+    /**
      * Show the form for editing a manager.
      *
      * @param  \App\Manager  $manager

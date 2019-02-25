@@ -57,6 +57,7 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::post('/managers/{manager}/suspend', 'ManagerSuspensionsController@store')->name('managers.suspend');
     Route::delete('/managers/{manager}/reinstate', 'ManagerSuspensionsController@destroy')->name('managers.reinstate');
     Route::get('/managers/state/{state?}', 'ManagersController@index')->name('managers.index');
+    Route::get('/managers/{manager}', 'ManagersController@show')->name('managers.show');
 });
 
 Auth::routes();

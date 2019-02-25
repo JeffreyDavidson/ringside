@@ -160,4 +160,16 @@ class ManagerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can view a profile for a manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function view(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() || $manager->user->is($user);
+    }
 }
