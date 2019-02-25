@@ -67,6 +67,11 @@ class Manager extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the full name of the manager.
+     *
+     * @return string
+     */
     public function getFullNameAttribute()
     {
         return $this->first_name . ' '. $this->last_name;
