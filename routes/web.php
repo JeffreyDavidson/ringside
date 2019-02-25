@@ -42,6 +42,9 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::delete('/tag-teams/{tagteam}/unretire', 'TagTeamRetirementsController@destroy')->name('tagteams.unretire');
     Route::get('/tag-teams/state/{state?}', 'TagTeamsController@index')->name('tagteams.index');
     Route::get('/tag-teams/{tagteam}', 'TagTeamsController@show')->name('tagteams.show');
+    Route::get('/managers/create', 'ManagersController@create')->name('managers.create');
+    Route::post('/managers', 'ManagersController@store')->name('managers.store');
+    Route::get('/managers', 'ManagersController@index')->name('managers.index');
 });
 
 Auth::routes();
