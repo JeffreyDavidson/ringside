@@ -73,7 +73,7 @@ class Manager extends Model
     }
 
     /**
-     * Scope a query to only include wrestlers of a given state.
+     * Scope a query to only include managers of a given state.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
