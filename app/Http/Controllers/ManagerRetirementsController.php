@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Manager;
-use Illuminate\Http\Request;
 
 class ManagerRetirementsController extends Controller
 {
