@@ -19,4 +19,15 @@ class ManagerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can update a manager.
+     *
+     * @param  App\User  $user
+     * @return bool
+     */
+    public function update(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

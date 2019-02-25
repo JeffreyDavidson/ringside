@@ -45,6 +45,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/managers/create', 'ManagersController@create')->name('managers.create');
     Route::post('/managers', 'ManagersController@store')->name('managers.store');
     Route::get('/managers', 'ManagersController@index')->name('managers.index');
+    Route::get('/managers/{manager}/edit', 'ManagersController@edit')->name('managers.edit');
+    Route::patch('/managers/{manager}', 'ManagersController@update')->name('managers.update');
 });
 
 Auth::routes();
