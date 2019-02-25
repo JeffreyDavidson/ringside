@@ -48,6 +48,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/managers/{manager}/edit', 'ManagersController@edit')->name('managers.edit');
     Route::patch('/managers/{manager}', 'ManagersController@update')->name('managers.update');
     Route::delete('/managers/{manager}', 'ManagersController@destroy')->name('managers.destroy');
+    Route::post('/managers/{manager}/retire', 'ManagerRetirementsController@store')->name('managers.retire');
+    Route::delete('/managers/{manager}/unretire', 'ManagerRetirementsController@destroy')->name('managers.unretire');
 });
 
 Auth::routes();

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use App\Manager;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ManagerPolicy
@@ -40,5 +41,29 @@ class ManagerPolicy
     public function delete(User $user)
     {
         return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can retire a manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function retire(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && ! $manager->isRetired();
+    }
+
+    /**
+     * Determine whether the user can unretire a retired manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function unretire(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && $manager->isRetired();
     }
 }
