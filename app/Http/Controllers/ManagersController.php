@@ -20,7 +20,7 @@ class ManagersController extends Controller
 
         $managers = Manager::hasState($state)->get();
 
-        return response()->view('managers.index', compact('managers'));
+        return view('managers.index', compact('managers'));
     }
 
     /**
@@ -58,7 +58,7 @@ class ManagersController extends Controller
     {
         $this->authorize('view', $manager);
 
-        return response()->view('managers.show', compact('manager'));
+        return view('managers.show', compact('manager'));
     }
 
     /**
