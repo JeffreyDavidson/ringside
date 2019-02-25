@@ -9,6 +9,21 @@ use App\Http\Requests\UpdateManagerRequest;
 class ManagersController extends Controller
 {
     /**
+     * Retrieve managers of a specific state.
+     *
+     * @param  string  $state
+     * @return \Illuminate\Http\Response
+     */
+    public function index($state = 'active')
+    {
+        $this->authorize('viewList', Manager::class);
+
+        $managers = Manager::hasState($state)->get();
+
+        return response()->view('managers.index', compact('managers'));
+    }
+
+    /**
      * Show the form for creating a manager.
      *
      * @return \Illuminate\Http\Response

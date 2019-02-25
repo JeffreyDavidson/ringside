@@ -44,7 +44,6 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/tag-teams/{tagteam}', 'TagTeamsController@show')->name('tagteams.show');
     Route::get('/managers/create', 'ManagersController@create')->name('managers.create');
     Route::post('/managers', 'ManagersController@store')->name('managers.store');
-    Route::get('/managers', 'ManagersController@index')->name('managers.index');
     Route::get('/managers/{manager}/edit', 'ManagersController@edit')->name('managers.edit');
     Route::patch('/managers/{manager}', 'ManagersController@update')->name('managers.update');
     Route::delete('/managers/{manager}', 'ManagersController@destroy')->name('managers.destroy');
@@ -57,6 +56,7 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::post('/managers/{manager}/activate', 'ManagerActivationsController@store')->name('managers.activate');
     Route::post('/managers/{manager}/suspend', 'ManagerSuspensionsController@store')->name('managers.suspend');
     Route::delete('/managers/{manager}/reinstate', 'ManagerSuspensionsController@destroy')->name('managers.reinstate');
+    Route::get('/managers/state/{state?}', 'ManagersController@index')->name('managers.index');
 });
 
 Auth::routes();

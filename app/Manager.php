@@ -7,6 +7,7 @@ use App\Traits\Injurable;
 use App\Traits\Retireable;
 use App\Traits\Activatable;
 use App\Traits\Suspendable;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,14 +25,14 @@ class Manager extends Model
      *
      * @return void
      */
-     protected static function boot()
-     {
+    protected static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
             $model->slug = strtolower(substr($model->first_name, 0, 1) . $model->last_name);
         });
-     }
+    }
 
     /**
      * The attributes that aren't mass assignable.
@@ -64,6 +65,11 @@ class Manager extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' '. $this->last_name;
     }
 
     /**

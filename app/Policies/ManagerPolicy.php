@@ -149,4 +149,15 @@ class ManagerPolicy
     {
         return $user->isAdministrator() && $manager->isInjured();
     }
+
+    /**
+     * Determine whether the user can view a list of managers.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
