@@ -66,4 +66,28 @@ class ManagerPolicy
     {
         return $user->isAdministrator() && $manager->isRetired();
     }
+
+    /**
+     * Determine whether the user can injure a manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function injure(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && ! $manager->isInjured();
+    }
+
+    /**
+     * Determine whether the user can recover an injured manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function recover(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && $manager->isInjured();
+    }
 }

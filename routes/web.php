@@ -50,6 +50,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::delete('/managers/{manager}', 'ManagersController@destroy')->name('managers.destroy');
     Route::post('/managers/{manager}/retire', 'ManagerRetirementsController@store')->name('managers.retire');
     Route::delete('/managers/{manager}/unretire', 'ManagerRetirementsController@destroy')->name('managers.unretire');
+    Route::post('/managers/{manager}/injure', 'ManagerInjuriesController@store')->name('managers.injure');
+    Route::delete('/managers/{manager}/recover', 'ManagerInjuriesController@destroy')->name('managers.recover');
 });
 
 Auth::routes();

@@ -13,3 +13,7 @@ $factory->define(\App\Manager::class, function (Faker $faker) {
 $factory->afterCreatingState(\App\Manager::class, 'retired', function ($manager) {
     $manager->retire();
 });
+
+$factory->afterCreatingState(\App\Manager::class, 'injured', function ($manager) {
+    $manager->injure();
+});
