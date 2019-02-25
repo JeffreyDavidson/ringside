@@ -13,7 +13,6 @@ class RetireManagerTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_manager()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $manager = factory(Manager::class)->create();
 
