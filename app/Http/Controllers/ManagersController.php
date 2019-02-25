@@ -59,4 +59,19 @@ class ManagersController extends Controller
 
         return redirect()->route('managers.index');
     }
+
+    /**
+     * Delete a manager.
+     *
+     * @param  App\Manager  $manager
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Manager $manager)
+    {
+        $this->authorize('delete', Manager::class);
+
+        $manager->delete();
+
+        return redirect()->route('managers.index');
+    }
 }

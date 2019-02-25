@@ -30,4 +30,15 @@ class ManagerPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can delete a manager.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function delete(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
