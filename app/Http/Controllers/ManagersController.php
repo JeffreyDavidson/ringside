@@ -74,4 +74,21 @@ class ManagersController extends Controller
 
         return redirect()->route('managers.index');
     }
+
+    /**
+     * Restore a deleted wrestler.
+     *
+     * @param  int  $wrestlerId
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function restore($managerId)
+    {
+        $manager = Manager::onlyTrashed()->findOrFail($managerId);
+
+        $this->authorize('restore', Manager::class);
+
+        $manager->restore();
+
+        return redirect()->route('managers.index');
+    }
 }
