@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateManagersTest extends TestCase
+class CreateManagerTest extends TestCase
 {
     use RefreshDatabase;
 
