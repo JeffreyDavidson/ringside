@@ -75,7 +75,7 @@ class ManagersController extends Controller
     }
 
     /**
-     * Update a given wrestler.
+     * Update a given manager.
      *
      * @param  \App\Http\Requests\UpdateManagerRequest  $request
      * @param  \App\Manager  $manager
@@ -91,7 +91,7 @@ class ManagersController extends Controller
     /**
      * Delete a manager.
      *
-     * @param  App\Manager  $manager
+     * @param  \App\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Manager $manager)
@@ -104,9 +104,9 @@ class ManagersController extends Controller
     }
 
     /**
-     * Restore a deleted wrestler.
+     * Restore a deleted manager.
      *
-     * @param  int  $wrestlerId
+     * @param  int  $managerId
      * @return \lluminate\Http\RedirectResponse
      */
     public function restore($managerId)
