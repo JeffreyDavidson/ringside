@@ -44,6 +44,30 @@ class ManagerPolicy
     }
 
     /**
+     * Determine whether the user can deactivate an active manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function deactivate(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && $manager->isActive();
+    }
+
+    /**
+     * Determine whether the user can activate an inactive manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function activate(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && ! $manager->isActive();
+    }
+
+    /**
      * Determine whether the user can retire a manager.
      *
      * @param  \App\User  $user
