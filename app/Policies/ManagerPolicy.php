@@ -55,6 +55,30 @@ class ManagerPolicy
     }
 
     /**
+     * Determine whether the user can retire a manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function retire(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && !$manager->isRetired();
+    }
+
+    /**
+     * Determine whether the user can unretire a retired manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function unretire(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && $manager->isRetired();
+    }
+
+    /**
      * Determine whether the user can suspend a tag team.
      *
      * @param  \App\User  $user
@@ -79,6 +103,30 @@ class ManagerPolicy
     }
 
     /**
+     * Determine whether the user can injure a manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function injure(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && !$manager->isInjured();
+    }
+
+    /**
+     * Determine whether the user can recover an injured manager.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function recover(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && $manager->isInjured();
+    }
+
+    /**
      * Determine whether the user can deactivate an active manager.
      *
      * @param  \App\User  $user
@@ -100,54 +148,6 @@ class ManagerPolicy
     public function activate(User $user, Manager $manager)
     {
         return $user->isAdministrator() && ! $manager->isActive();
-    }
-
-    /**
-     * Determine whether the user can retire a manager.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Manager  $manager
-     * @return bool
-     */
-    public function retire(User $user, Manager $manager)
-    {
-        return $user->isAdministrator() && ! $manager->isRetired();
-    }
-
-    /**
-     * Determine whether the user can unretire a retired manager.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Manager  $manager
-     * @return bool
-     */
-    public function unretire(User $user, Manager $manager)
-    {
-        return $user->isAdministrator() && $manager->isRetired();
-    }
-
-    /**
-     * Determine whether the user can injure a manager.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Manager  $manager
-     * @return bool
-     */
-    public function injure(User $user, Manager $manager)
-    {
-        return $user->isAdministrator() && ! $manager->isInjured();
-    }
-
-    /**
-     * Determine whether the user can recover an injured manager.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Manager  $manager
-     * @return bool
-     */
-    public function recover(User $user, Manager $manager)
-    {
-        return $user->isAdministrator() && $manager->isInjured();
     }
 
     /**
