@@ -19,6 +19,10 @@ $factory->afterCreatingState(\App\Manager::class, 'retired', function ($manager)
     $manager->retire();
 });
 
+$factory->afterCreatingState(\App\Manager::class, 'suspended', function ($manager) {
+    $manager->suspend();
+});
+
 $factory->afterCreatingState(\App\Manager::class, 'injured', function ($manager) {
     $manager->injure();
 });

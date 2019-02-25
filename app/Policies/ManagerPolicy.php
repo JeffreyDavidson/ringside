@@ -43,6 +43,31 @@ class ManagerPolicy
         return $user->isAdministrator();
     }
 
+
+    /**
+     * Determine whether the user can suspend a tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function suspend(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && ! $manager->isSuspended();
+    }
+
+    /**
+     * Determine whether the user can suspend a tag team.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Manager  $manager
+     * @return bool
+     */
+    public function reinstate(User $user, Manager $manager)
+    {
+        return $user->isAdministrator() && $manager->isSuspended();
+    }
+
     /**
      * Determine whether the user can deactivate an active manager.
      *
