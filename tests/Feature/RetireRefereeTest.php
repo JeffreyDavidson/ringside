@@ -13,7 +13,6 @@ class RetireRefereeTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_referee()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create();
 
