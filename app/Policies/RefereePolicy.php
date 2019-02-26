@@ -22,6 +22,17 @@ class RefereePolicy
     }
 
     /**
+     * Determine whether the user can update a referee.
+     *
+     * @param  App\User  $user
+     * @return bool
+     */
+    public function update(User $user)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
      * Determine whether the user can retire a referee.
      *
      * @param  \App\User  $user

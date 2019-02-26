@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Referee;
 use App\Http\Requests\StoreRefereeRequest;
+use App\Http\Requests\UpdateRefereeRequest;
 
 class RefereesController extends Controller
 {
@@ -28,6 +29,33 @@ class RefereesController extends Controller
     public function store(StoreRefereeRequest $request)
     {
         $referee = Referee::create($request->all());
+
+        return redirect()->route('referees.index');
+    }
+
+    /**
+     * Show the form for editing a referee.
+     *
+     * @param  \App\Referee  $referee
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Referee $referee)
+    {
+        $this->authorize('update', Referee::class);
+
+        return view('referees.edit', compact('referee'));
+    }
+
+    /**
+     * Update a given referee.
+     *
+     * @param  \App\Http\Requests\UpdateRefereeRequest  $request
+     * @param  \App\Referee  $referee
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function update(UpdateRefereeRequest $request, Referee $referee)
+    {
+        $referee->update($request->all());
 
         return redirect()->route('referees.index');
     }

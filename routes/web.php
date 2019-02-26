@@ -60,6 +60,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/managers/{manager}', 'ManagersController@show')->name('managers.show');
     Route::get('/referees/create', 'RefereesController@create')->name('referees.create');
     Route::post('/referees', 'RefereesController@store')->name('referees.store');
+    Route::get('/referees/{referee}/edit', 'RefereesController@edit')->name('referees.edit');
+    Route::patch('/referees/{referee}', 'RefereesController@update')->name('referees.update');
     Route::get('/referees', 'RefereesController@index')-> name('referees.index');
     Route::post('/referees/{referee}/retire', 'RefereeRetirementsController@store')->name('referees.retire');
     Route::delete('/referees/{referee}/unretire', 'RefereeRetirementsController@destroy')->name('referees.unretire');
