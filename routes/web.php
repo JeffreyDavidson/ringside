@@ -58,6 +58,9 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::delete('/managers/{manager}/reinstate', 'ManagerSuspensionsController@destroy')->name('managers.reinstate');
     Route::get('/managers/state/{state?}', 'ManagersController@index')->name('managers.index');
     Route::get('/managers/{manager}', 'ManagersController@show')->name('managers.show');
+    Route::get('/referees/create', 'RefereesController@create')->name('referees.create');
+    Route::post('/referees', 'RefereesController@store')->name('referees.store');
+    Route::get('/referees', 'RefereesController@index')-> name('referees.index');
 });
 
 Auth::routes();
