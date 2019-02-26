@@ -67,6 +67,8 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::get('/referees', 'RefereesController@index')-> name('referees.index');
     Route::post('/referees/{referee}/retire', 'RefereeRetirementsController@store')->name('referees.retire');
     Route::delete('/referees/{referee}/unretire', 'RefereeRetirementsController@destroy')->name('referees.unretire');
+    Route::post('/referees/{referee}/injure', 'RefereeInjuriesController@store')->name('referees.injure');
+    Route::delete('/referees/{referee}/recover', 'RefereeInjuriesController@destroy')->name('referees.recover');
 });
 
 Auth::routes();

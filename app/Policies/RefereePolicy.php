@@ -77,4 +77,28 @@ class RefereePolicy
     {
         return $user->isAdministrator() && $referee->isRetired();
     }
+
+    /**
+     * Determine whether the user can injure a referee.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Referee  $referee
+     * @return bool
+     */
+    public function injure(User $user, Referee $referee)
+    {
+        return $user->isAdministrator() && ! $referee->isInjured();
+    }
+
+    /**
+     * Determine whether the user can recover an injured referee.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Referee  $referee
+     * @return bool
+     */
+    public function recover(User $user, Referee $referee)
+    {
+        return $user->isAdministrator() && $referee->isInjured();
+    }
 }
