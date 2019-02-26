@@ -101,4 +101,28 @@ class RefereePolicy
     {
         return $user->isAdministrator() && $referee->isInjured();
     }
+
+    /**
+     * Determine whether the user can deactivate an active referee.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Referee  $referee
+     * @return bool
+     */
+    public function deactivate(User $user, Referee $referee)
+    {
+        return $user->isAdministrator() && $referee->isActive();
+    }
+
+    /**
+     * Determine whether the user can activate an inactive referee.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Referee  $referee
+     * @return bool
+     */
+    public function activate(User $user, Referee $referee)
+    {
+        return $user->isAdministrator() && ! $referee->isActive();
+    }
 }
