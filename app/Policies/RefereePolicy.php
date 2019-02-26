@@ -11,7 +11,7 @@ class RefereePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can create wrestlers.
+     * Determine whether the user can create referees.
      *
      * @param  \App\User  $user
      * @return bool
