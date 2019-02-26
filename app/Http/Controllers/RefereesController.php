@@ -59,4 +59,36 @@ class RefereesController extends Controller
 
         return redirect()->route('referees.index');
     }
+
+    /**
+     * Delete a referee.
+     *
+     * @param  App\Referee  $referee
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Referee $referee)
+    {
+        $this->authorize('delete', Referee::class);
+
+        $referee->delete();
+
+        return redirect()->route('referees.index');
+    }
+
+    /**
+     * Restore a deleted referee.
+     *
+     * @param  int  $refereeId
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function restore($refereeId)
+    {
+        $referee = Referee::onlyTrashed()->findOrFail($refereeId);
+
+        $this->authorize('restore', Referee::class);
+
+        $referee->restore();
+
+        return redirect()->route('referees.index');
+    }
 }
