@@ -71,6 +71,9 @@ Route::middleware(['middleware' => 'auth'])->group(function() {
     Route::delete('/referees/{referee}/recover', 'RefereeInjuriesController@destroy')->name('referees.recover');
     Route::post('/referees/{referee}/deactivate', 'RefereeActivationsController@destroy')->name('referees.deactivate');
     Route::post('/referees/{referee}/activate', 'RefereeActivationsController@store')->name('referees.activate');
+    Route::get('/stables/create', 'StablesController@create')->name('stables.create');
+    Route::post('/stables', 'StablesController@store')->name('stables.store');
+    Route::get('/stables', 'StablesController@index')->name('stables.index');
 });
 
 Auth::routes();
