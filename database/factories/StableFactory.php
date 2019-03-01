@@ -22,6 +22,10 @@ $factory->state(Stable::class, 'active', [
     'is_active' => true,
 ]);
 
+$factory->afterCreatingState(Stable::class, 'suspended', function ($stable) {
+    $stable->suspend();
+});
+
 $factory->afterCreatingState(Stable::class, 'inactive', function ($tagteam) {
     $tagteam->deactivate();
 });

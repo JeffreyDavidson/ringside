@@ -68,6 +68,8 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::delete('/stables/{stable}/unretire', 'StableRetirementsController@destroy')->name('stables.unretire');
         Route::post('/stables/{stable}/deactivate', 'StableActivationsController@destroy')->name('stables.deactivate');
         Route::post('/stables/{stable}/activate', 'StableActivationsController@store')->name('stables.activate');
+        Route::post('/stables/{stable}/suspend', 'StableSuspensionsController@store')->name('stables.suspend');
+        Route::delete('/stables/{stable}/reinstate', 'StableSuspensionsController@destroy')->name('stables.reinstate');
     });
 });
 

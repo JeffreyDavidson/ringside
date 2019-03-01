@@ -22,6 +22,30 @@ class StablePolicy
     }
 
     /**
+     * Determine whether the user can suspend a stable.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Stable  $stable
+     * @return bool
+     */
+    public function suspend(User $user, Stable $stable)
+    {
+        return $user->isAdministrator() && !$stable->isSuspended();
+    }
+
+    /**
+     * Determine whether the user can suspend a stable.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Stable  $stable
+     * @return bool
+     */
+    public function reinstate(User $user, Stable $stable)
+    {
+        return $user->isAdministrator() && $stable->isSuspended();
+    }
+
+    /**
      * Determine whether the user can deactivate an active stable.
      *
      * @param  \App\Models\User  $user
