@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Wrestler;
+use App\Models\Wrestler;
 use App\Http\Controllers\Controller;
 
 class WrestlerRetirementsController extends Controller
@@ -10,7 +10,7 @@ class WrestlerRetirementsController extends Controller
     /**
      * Retire a wrestler.
      *
-     * @param  \App\Wrestler  $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Wrestler $wrestler)
@@ -27,7 +27,7 @@ class WrestlerRetirementsController extends Controller
     /**
      * Unretire a retired wrestler.
      *
-     * @param  \App\Wrestler  $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Wrestler $wrestler)

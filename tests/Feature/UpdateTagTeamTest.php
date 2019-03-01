@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\TagTeam;
-use App\Wrestler;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Tests\TestCase;
 use SebastianBergmann\Comparator\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;

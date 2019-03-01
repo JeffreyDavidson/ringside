@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\TagTeam;
-use App\Wrestler;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateTagTeamTest extends TestCase
@@ -285,7 +285,8 @@ class CreateTagTeamTest extends TestCase
 
         $response = $this->post(route('tagteams.store'), $this->validParams(
             ['wrestlers' => [$tagteam->wrestlers->first()->id]
-        ]));
+        ]
+        ));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('wrestlers.*');

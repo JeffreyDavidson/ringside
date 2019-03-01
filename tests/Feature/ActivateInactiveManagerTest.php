@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ActivateInactiveManagerTest extends TestCase

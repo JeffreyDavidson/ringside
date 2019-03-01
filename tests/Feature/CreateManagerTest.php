@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Manager;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateManagerTest extends TestCase

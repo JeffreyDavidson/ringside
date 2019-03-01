@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Wrestler;
+use App\Models\Wrestler;
 use App\Http\Controllers\Controller;
 
 class WrestlerActivationsController extends Controller
@@ -10,7 +10,7 @@ class WrestlerActivationsController extends Controller
     /**
      * Activate and inactive wrestler.
      *
-     * @param  \App\Wrestler $wrestler
+     * @param  \App\Models\Wrestler $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Wrestler $wrestler)
@@ -27,7 +27,7 @@ class WrestlerActivationsController extends Controller
     /**
      * Deactivate an active wrestler.
      *
-     * @param  \App\Wrestler  $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Wrestler $wrestler)

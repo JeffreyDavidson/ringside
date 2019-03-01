@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Injury extends Model
+class Retirement extends Model
 {
     /**
      * The attributes that aren't mass assignable.

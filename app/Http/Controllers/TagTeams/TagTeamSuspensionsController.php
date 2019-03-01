@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\TagTeam;
+use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
 
 class TagTeamSuspensionsController extends Controller

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\TagTeam;
 use Tests\TestCase;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeactivateActiveTagTeamTest extends TestCase

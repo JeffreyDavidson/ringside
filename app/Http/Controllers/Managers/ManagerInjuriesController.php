@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Manager;
+use App\Models\Manager;
 use App\Http\Controllers\Controller;
 
 class ManagerInjuriesController extends Controller
@@ -10,7 +10,7 @@ class ManagerInjuriesController extends Controller
     /**
      * Create an injury for the manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Manager $manager)
@@ -25,7 +25,7 @@ class ManagerInjuriesController extends Controller
     /**
      * Recover an injured manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Manager $manager)

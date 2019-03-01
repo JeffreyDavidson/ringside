@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use App\TagTeam;
+use App\Models\User;
+use App\Models\TagTeam;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

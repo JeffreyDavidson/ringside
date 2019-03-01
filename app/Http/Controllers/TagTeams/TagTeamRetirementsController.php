@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\TagTeam;
+use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
 
 class TagTeamRetirementsController extends Controller
@@ -10,7 +10,7 @@ class TagTeamRetirementsController extends Controller
     /**
      * Retire a tag team.
      *
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(TagTeam $tagteam)
@@ -25,7 +25,7 @@ class TagTeamRetirementsController extends Controller
     /**
      * Unretire a retired tagteam.
      *
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(TagTeam $tagteam)

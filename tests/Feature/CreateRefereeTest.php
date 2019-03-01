@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Referee;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateRefereeTest extends TestCase

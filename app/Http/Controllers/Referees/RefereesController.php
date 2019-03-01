@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Referee;
+use App\Models\Referee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRefereeRequest;
 use App\Http\Requests\UpdateRefereeRequest;
@@ -37,7 +37,7 @@ class RefereesController extends Controller
     /**
      * Show the form for editing a referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \Illuminate\Http\Response
      */
     public function edit(Referee $referee)
@@ -51,7 +51,7 @@ class RefereesController extends Controller
      * Update a given referee.
      *
      * @param  \App\Http\Requests\UpdateRefereeRequest  $request
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function update(UpdateRefereeRequest $request, Referee $referee)
@@ -64,7 +64,7 @@ class RefereesController extends Controller
     /**
      * Delete a referee.
      *
-     * @param  App\Referee  $referee
+     * @param  App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Referee $referee)

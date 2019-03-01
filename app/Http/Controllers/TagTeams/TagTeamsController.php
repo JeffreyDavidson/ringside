@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\TagTeam;
+use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTagTeamRequest;
 use App\Http\Requests\UpdateTagTeamRequest;
@@ -54,7 +54,7 @@ class TagTeamsController extends Controller
     /**
      * Show the profile of a tag team.
      *
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \Illuminate\Http\Response
      */
     public function show(TagTeam $tagteam)
@@ -67,7 +67,7 @@ class TagTeamsController extends Controller
     /**
      * Show the form for editing a tag team.
      *
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\Response
      */
     public function edit(TagTeam $tagteam)
@@ -81,7 +81,7 @@ class TagTeamsController extends Controller
      * Update a given tag team.
      *
      * @param  \App\Http\Requests\UpdateTagTeamRequest  $request
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\RedirectResponse
      */
     public function update(UpdateTagTeamRequest $request, TagTeam $tagteam)
@@ -96,7 +96,7 @@ class TagTeamsController extends Controller
     /**
      * Delete a tag team.
      *
-     * @param  App\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(TagTeam $tagteam)

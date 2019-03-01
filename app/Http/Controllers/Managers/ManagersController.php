@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Manager;
+use App\Models\Manager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateManagerRequest;
@@ -52,7 +52,7 @@ class ManagersController extends Controller
     /**
      * Show the profile of a manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
     public function show(Manager $manager)
@@ -65,7 +65,7 @@ class ManagersController extends Controller
     /**
      * Show the form for editing a manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
     public function edit(Manager $manager)
@@ -79,7 +79,7 @@ class ManagersController extends Controller
      * Update a given manager.
      *
      * @param  \App\Http\Requests\UpdateManagerRequest  $request
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function update(UpdateManagerRequest $request, Manager $manager)
@@ -92,7 +92,7 @@ class ManagersController extends Controller
     /**
      * Delete a manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Manager $manager)

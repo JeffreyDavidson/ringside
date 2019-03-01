@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\TagTeam;
+use App\Models\TagTeam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,7 +11,7 @@ class TagTeamActivationsController extends Controller
     /**
      * Activate and inactive tag team.
      *
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(TagTeam $tagteam)
@@ -26,7 +26,7 @@ class TagTeamActivationsController extends Controller
     /**
      * Deactivate an active tag team.
      *
-     * @param  \App\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagteam
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(TagTeam $tagteam)

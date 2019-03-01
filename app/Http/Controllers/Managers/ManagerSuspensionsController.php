@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Manager;
+use App\Models\Manager;
 use App\Http\Controllers\Controller;
 
 class ManagerSuspensionsController extends Controller

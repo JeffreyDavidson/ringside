@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Manager;
+use App\Models\Manager;
 use App\Http\Controllers\Controller;
 
 class ManagerRetirementsController extends Controller
@@ -10,7 +10,7 @@ class ManagerRetirementsController extends Controller
     /**
      * Retire a manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Manager $manager)
@@ -25,7 +25,7 @@ class ManagerRetirementsController extends Controller
     /**
      * Unretire a retired manager.
      *
-     * @param  \App\Manager  $manager
+     * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Manager $manager)

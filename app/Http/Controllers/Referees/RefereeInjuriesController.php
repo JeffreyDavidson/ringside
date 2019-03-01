@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Referee;
+use App\Models\Referee;
 use App\Http\Controllers\Controller;
 
 class RefereeInjuriesController extends Controller
@@ -10,7 +10,7 @@ class RefereeInjuriesController extends Controller
     /**
      * Create an injury for the referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Referee $referee)
@@ -25,7 +25,7 @@ class RefereeInjuriesController extends Controller
     /**
      * Recover an injured referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Referee $referee)

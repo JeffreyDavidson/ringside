@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Referee;
+use App\Models\Referee;
 use App\Http\Controllers\Controller;
 
 class RefereeRetirementsController extends Controller
@@ -10,7 +10,7 @@ class RefereeRetirementsController extends Controller
     /**
      * Retire a referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Referee $referee)
@@ -25,7 +25,7 @@ class RefereeRetirementsController extends Controller
     /**
      * Unretire a retired referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Referee $referee)

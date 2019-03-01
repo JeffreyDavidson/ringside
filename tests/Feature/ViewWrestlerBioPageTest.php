@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use App\Wrestler;
+use App\Models\User;
+use App\Models\Wrestler;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

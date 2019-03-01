@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Referee;
+use App\Models\Referee;
 use App\Http\Controllers\Controller;
 
 class RefereeActivationsController extends Controller
@@ -10,7 +10,7 @@ class RefereeActivationsController extends Controller
     /**
      * Activate and inactive referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function store(Referee $referee)
@@ -25,7 +25,7 @@ class RefereeActivationsController extends Controller
     /**
      * Deactivate an active referee.
      *
-     * @param  \App\Referee  $referee
+     * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Referee $referee)

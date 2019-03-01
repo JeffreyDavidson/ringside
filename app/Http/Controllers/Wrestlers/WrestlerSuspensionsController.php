@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Wrestler;
+use App\Models\Wrestler;
 use App\Http\Controllers\Controller;
 
 class WrestlerSuspensionsController extends Controller

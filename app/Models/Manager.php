@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Traits\Hireable;
 use App\Traits\Injurable;
-use App\Traits\Sluggable;
 use App\Traits\Retireable;
 use App\Traits\Activatable;
 use App\Traits\Suspendable;
@@ -12,15 +11,28 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Wrestler extends Model
+class Manager extends Model
 {
     use SoftDeletes,
         Retireable,
         Suspendable,
         Injurable,
         Activatable,
-        Hireable,
-        Sluggable;
+        Hireable;
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->slug = strtolower(substr($model->first_name, 0, 1) . $model->last_name);
+        });
+    }
 
     /**
      * The attributes that aren't mass assignable.
@@ -56,27 +68,17 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the tag teams the wrestler has belonged to.
+     * Get the full name of the manager.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return string
      */
-    public function tagteams()
+    public function getFullNameAttribute()
     {
-        return $this->belongsToMany(TagTeam::class);
+        return $this->first_name . ' '. $this->last_name;
     }
 
     /**
-     * Get the current tag team of the wrestler.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tagteam()
-    {
-        return $this->belongsToMany(TagTeam::class)->where('is_active', true);
-    }
-
-    /**
-     * Scope a query to only include wrestlers of a given state.
+     * Scope a query to only include managers of a given state.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -88,18 +90,5 @@ class Wrestler extends Model
         if (method_exists($this, $scope)) {
             return $this->{$scope}($query);
         }
-    }
-
-    /**
-     * Return the wrestler's height formatted.
-     *
-     * @return string
-     */
-    public function getFormattedHeightAttribute()
-    {
-        $feet = floor($this->height / 12);
-        $inches = ($this->height % 12);
-
-        return $feet . '\'' . $inches . '"';
     }
 }

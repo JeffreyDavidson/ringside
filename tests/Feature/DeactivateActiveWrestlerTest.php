@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Wrestler;
 use Tests\TestCase;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeactivateActiveWrestlerTest extends TestCase

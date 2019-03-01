@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Wrestler;
+use App\Models\Wrestler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWrestlerRequest;
 use App\Http\Requests\UpdateWrestlerRequest;
@@ -54,7 +54,7 @@ class WrestlersController extends Controller
     /**
      * Show the profile of a wrestler.
      *
-     * @param  \App\Wrestler  $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\Http\Response
      */
     public function show(Wrestler $wrestler)
@@ -67,7 +67,7 @@ class WrestlersController extends Controller
     /**
      * Edit a wrestler.
      *
-     * @param  \App\Wrestler  $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\Response
      */
     public function edit(Wrestler $wrestler)
@@ -81,7 +81,7 @@ class WrestlersController extends Controller
      * Update a given wrestler.
      *
      * @param  \App\Http\Requests\UpdateWrestlerRequest  $request
-     * @param  \App\Wrestler  $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function update(UpdateWrestlerRequest $request, Wrestler $wrestler)
@@ -96,7 +96,7 @@ class WrestlersController extends Controller
     /**
      * Delete a wrestler.
      *
-     * @param  App\Wrestler  $wrestler
+     * @param  App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Wrestler $wrestler)
