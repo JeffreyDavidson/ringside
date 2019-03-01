@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Wrestlers;
 
 use App\Wrestler;
+use App\Http\Controllers\Controller;
 
-class ActivationsController extends Controller
+class WrestlerActivationsController extends Controller
 {
     /**
      * Activate and inactive wrestler.

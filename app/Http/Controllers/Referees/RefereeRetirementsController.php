@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Referees;
 
 use App\Referee;
+use App\Http\Controllers\Controller;
 
 class RefereeRetirementsController extends Controller
 {

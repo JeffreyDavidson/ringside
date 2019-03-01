@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Managers;
 
 use App\Manager;
+use App\Http\Controllers\Controller;
 
 class ManagerRetirementsController extends Controller
 {

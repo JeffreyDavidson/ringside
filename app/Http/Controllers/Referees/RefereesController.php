@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Referees;
 
 use App\Referee;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRefereeRequest;
 use App\Http\Requests\UpdateRefereeRequest;
 

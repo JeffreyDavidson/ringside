@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\TagTeams;
 
 use App\TagTeam;
+use App\Http\Controllers\Controller;
 
 class TagTeamRetirementsController extends Controller
 {

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\TagTeams;
 
 use App\TagTeam;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TagTeamActivationsController extends Controller
 {
