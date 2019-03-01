@@ -7,6 +7,7 @@ use App\Traits\Retireable;
 use App\Traits\Activatable;
 use App\Traits\Suspendable;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -60,6 +61,16 @@ class Stable extends Model
     ];
 
     /**
+     * Get the user belonging to the tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get all wrestlers that have been members of the stable.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
@@ -77,6 +88,22 @@ class Stable extends Model
     public function tagteams()
     {
         return $this->morphedByMany(TagTeam::class, 'member');
+    }
+
+    /**
+     * Get all the members of the stable.
+     *
+     * @return Collection
+     */
+    public function getMembersAttribute()
+    {
+        $members =  new Collection();
+
+        $mergedWrestlerCollection = $members->merge($this->wrestlers);
+
+        $mergedTagTeamsCollection = $mergedWrestlerCollection->merge($this->tagteams);
+
+        return $mergedTagTeamsCollection;
     }
 
     /**

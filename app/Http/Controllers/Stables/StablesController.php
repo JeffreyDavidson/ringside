@@ -49,4 +49,17 @@ class StablesController extends Controller
 
         return redirect()->route('stables.index');
     }
+
+    /**
+     * Show the profile of a tag team.
+     *
+     * @param  \App\Models\Stable  $stable
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Stable $stable)
+    {
+        $this->authorize('view', $stable);
+
+        return response()->view('stables.show', compact('stable'));
+    }
 }

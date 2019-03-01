@@ -103,4 +103,16 @@ class StablePolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can view a profile for a stable.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Stable  $stable
+     * @return bool
+     */
+    public function view(User $user, Stable $stable)
+    {
+        return $user->isAdministrator() || $stable->user->is($user);
+    }
 }
