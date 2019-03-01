@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Sluggable;
+use App\Traits\Retireable;
 use App\Traits\Activatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,11 @@ class Stable extends Model
     use SoftDeletes,
         Activatable,
         Sluggable;
+
+    use Retireable {
+        Retireable::retire as private retireableRetire;
+        Retireable::unretire as private retireableUnRetire;
+    }
 
     /**
      * The "booting" method of the model.
@@ -96,6 +102,36 @@ class Stable extends Model
         foreach ($tagteamIds as $tagteamId) {
             $this->tagteams()->attach($tagteamId);
         }
+
+        return $this;
+    }
+
+    /**
+     * Retire a stable.
+     *
+     * @return void
+     */
+    public function retire()
+    {
+        $this->retireableRetire();
+
+        $this->wrestlers->each->retire();
+        $this->tagteams->each->retire();
+
+        return $this;
+    }
+
+    /**
+     * Unretire a stable.
+     *
+     * @return void
+     */
+    public function unretire()
+    {
+        $this->retireableUnRetire();
+
+        $this->wrestlers->filter->isRetired()->each->unretire();
+        $this->tagteams->filter->isRetired()->each->unretire();
 
         return $this;
     }

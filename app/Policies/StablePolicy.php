@@ -44,4 +44,28 @@ class StablePolicy
     {
         return $user->isAdministrator() && !$stable->isActive();
     }
+
+    /**
+     * Determine whether the user can retire a stable.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Stable  $stable
+     * @return bool
+     */
+    public function retire(User $user, Stable $stable)
+    {
+        return $user->isAdministrator() && !$stable->isRetired();
+    }
+
+    /**
+     * Determine whether the user can unretire a retired stable.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Stable  $stable
+     * @return bool
+     */
+    public function unretire(User $user, Stable $stable)
+    {
+        return $user->isAdministrator() && $stable->isRetired();
+    }
 }

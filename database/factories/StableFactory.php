@@ -25,3 +25,7 @@ $factory->state(Stable::class, 'active', [
 $factory->afterCreatingState(Stable::class, 'inactive', function ($tagteam) {
     $tagteam->deactivate();
 });
+
+$factory->afterCreatingState(Stable::class, 'retired', function ($stable) {
+    $stable->retire();
+});
