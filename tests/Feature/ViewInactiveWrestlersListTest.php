@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Wrestler;
 use Tests\TestCase;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ViewInactiveWrestlersListTest extends TestCase
