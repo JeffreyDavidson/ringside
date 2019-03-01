@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Stable::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        'started_at' => today()->toDateTimeString(),
+        'started_at' => now()->subDays(2)->toDateTimeString(),
         'is_active' => true,
     ];
 });

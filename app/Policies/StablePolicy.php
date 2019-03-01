@@ -92,4 +92,15 @@ class StablePolicy
     {
         return $user->isAdministrator() && $stable->isRetired();
     }
+
+    /**
+     * Determine whether the user can view a list of stables.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

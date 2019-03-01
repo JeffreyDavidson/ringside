@@ -9,6 +9,21 @@ use App\Http\Requests\StoreStableRequest;
 class StablesController extends Controller
 {
     /**
+     * Retrieve stables of a specific state.
+     *
+     * @param  string  $state
+     * @return \Illuminate\Http\Response
+     */
+    public function index($state = 'active')
+    {
+        $this->authorize('viewList', Stable::class);
+
+        $stables = Stable::hasState($state)->get();
+
+        return response()->view('stables.index', compact('stables'));
+    }
+
+    /**
      * Show the form for creating a stable.
      *
      * @return \Illuminate\Http\Response
