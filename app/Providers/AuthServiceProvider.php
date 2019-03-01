@@ -2,18 +2,14 @@
 
 namespace App\Providers;
 
-use App\Stable;
-use App\Manager;
-use App\Referee;
-use App\TagTeam;
-use App\Wrestler;
-use App\Retirement;
-use App\Policies\StablePolicy;
+use App\Models\Manager;
+use App\Models\Referee;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use App\Policies\ManagerPolicy;
 use App\Policies\RefereePolicy;
 use App\Policies\TagTeamPolicy;
 use App\Policies\WrestlerPolicy;
-use App\Policies\RetirementPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
