@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Stable;
-use App\Rules\CanJoinStable;
+use App\Models\Stable;
+use Illuminate\Validation\Rule;
+use App\Rules\TagTeamCanJoinStable;
+use App\Rules\WrestlerCanJoinStable;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreStableRequest extends FormRequest
@@ -25,17 +27,6 @@ class StoreStableRequest extends FormRequest
      */
     public function rules()
     {
-        $wrestler_rules = '';
-        $tagteam_rules = '';
-
-        if (count($this->input('tagteams') <= 1) && count($this->input('wrestlers') < 3)) {
-            $wrestlersNeeded = 3 - ($this->input('tagteams') * 2);
-            $wrestler_rules = 'min:'.$wrestlersNeeded;
-        } elseif (count($this->input('wrestlers') < 3)) {
-            $tagteamsNeeded = ceil(3 - ($this->input('wrestlers') / 2));
-            $tagteam_rules = 'min:'.$tagteamsNeeded;
-        }
-
         return [
             'name' => ['required'],
             'started_at' => ['required', 'date_format:Y-m-d H:i:s'],
@@ -45,10 +36,26 @@ class StoreStableRequest extends FormRequest
             'tagteams' => Rule::requiredIf(function () {
                 return count($this->wrestlers) <= 2;
             }),
-            'wrestlers' => ['array', $wrestler_rules],
-            'wrestlers.*' => ['bail', 'integer', 'exists:wrestlers,id', new CanJoinStable],
-            'tagteams' => ['array', $tagteam_rules],
-            'tagteams.*' => ['bail', 'integer', 'exists:tagteams,id', new CanJoinStable],
+            'wrestlers' => ['array'],
+            'wrestlers.*' => ['bail', 'integer', 'exists:wrestlers,id', new WrestlerCanJoinStable],
+            'tagteams' => ['array'],
+            'tagteams.*' => ['bail', 'integer', 'exists:tag_teams,id', new TagTeamCanJoinStable],
         ];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param  Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     */
+    public function after($validator)
+    {
+        $totalStableMembers = count($this->wrestlers) + (count($this->tagteams) * 2);
+
+        if ($totalStableMembers < 3) {
+            $validator->errors()->add('wrestlers', 'Make sure you have at least 3 members in the stable!');
+            $validator->errors()->add('tagteams', 'Make sure you have at least 3 members in the stable!');
+        }
     }
 }

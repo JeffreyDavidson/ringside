@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Stable;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateStableTest extends TestCase
@@ -19,11 +21,14 @@ class CreateStableTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        return array_replace([
+        $wrestler = factory(Wrestler::class)->states('active')->create();
+        $tagteam = factory(TagTeam::class)->states('active')->create();
+
+        return array_replace_recursive([
             'name' => 'Example Stable Name',
             'started_at' => today()->toDateTimeString(),
-            'wrestlers' => [],
-            'tagteams' => []
+            'wrestlers' => [$wrestler->getKey()],
+            'tagteams' => [$tagteam->getKey()],
         ], $overrides);
     }
 
@@ -66,6 +71,38 @@ class CreateStableTest extends TestCase
         tap(Stable::first(), function ($stable) {
             $this->assertEquals('Example Stable Name', $stable->name);
             $this->assertEquals(today()->toDateTimeString(), $stable->started_at->toDateTimeString());
+        });
+    }
+
+    /** @test */
+    public function wrestlers_are_added_to_stable_if_present()
+    {
+        $this->actAs('administrator');
+        $createdWrestlers = factory(Wrestler::class, 3)->states('active')->create();
+
+        $response = $this->post(route('stables.store'), $this->validParams([
+            'wrestlers' => $createdWrestlers->modelKeys()
+        ]));
+
+        tap(Stable::first()->wrestlers, function ($wrestlers) use ($createdWrestlers) {
+            $this->assertCount(3, $wrestlers);
+            $this->assertEquals($wrestlers->modelKeys(), $createdWrestlers->modelKeys());
+        });
+    }
+
+    /** @test */
+    public function tag_teams_are_added_to_stable_if_present()
+    {
+        $this->actAs('administrator');
+        $createdTagTeams = factory(TagTeam::class, 3)->states('active')->create();
+
+        $response = $this->post(route('stables.store'), $this->validParams([
+            'tagteams' => $createdTagTeams->modelKeys()
+        ]));
+
+        tap(Stable::first()->tagteams, function ($tagteams) use ($createdTagTeams) {
+            $this->assertCount(3, $tagteams);
+            $this->assertEquals($tagteams->modelKeys(), $createdTagTeams->modelKeys());
         });
     }
 

@@ -68,6 +68,16 @@ class TagTeam extends Model
     }
 
     /**
+     * Get the stables the tag team are members of.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function stables()
+    {
+        return $this->morphToMany(Stable::class, 'member');
+    }
+
+    /**
      * Add multiple wrestlers to a tag team.
      *
      * @param  array  $wrestlers

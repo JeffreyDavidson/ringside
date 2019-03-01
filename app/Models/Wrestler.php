@@ -76,6 +76,16 @@ class Wrestler extends Model
     }
 
     /**
+     * Get the stables the wrestler is a member of.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function stables()
+    {
+        return $this->morphToMany(Stable::class, 'member');
+    }
+
+    /**
      * Scope a query to only include wrestlers of a given state.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

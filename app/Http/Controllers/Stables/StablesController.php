@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Stables;
 
-use App\Stable;
+use App\Models\Stable;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStableRequest;
 
 class StablesController extends Controller
@@ -27,7 +28,9 @@ class StablesController extends Controller
      */
     public function store(StoreStableRequest $request)
     {
-        Stable::create($request->except(['wrestlers', 'tagteams']));
+        $stable = Stable::create($request->except(['wrestlers', 'tagteams']));
+
+        $stable->addWrestlers($request->only('wrestlers'))->addTagTeams($request->only('tagteams'));
 
         return redirect()->route('stables.index');
     }

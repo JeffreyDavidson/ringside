@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Stable;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use App\Policies\StablePolicy;
 use App\Policies\ManagerPolicy;
 use App\Policies\RefereePolicy;
 use App\Policies\TagTeamPolicy;
