@@ -64,6 +64,8 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::get('/stables/create', 'StablesController@create')->name('stables.create');
         Route::post('/stables', 'StablesController@store')->name('stables.store');
         Route::get('/stables', 'StablesController@index')->name('stables.index');
+        Route::post('/stables/{stable}/deactivate', 'StableActivationsController@destroy')->name('stables.deactivate');
+        Route::post('/stables/{stable}/activate', 'StableActivationsController@store')->name('stables.activate');
     });
 });
 
