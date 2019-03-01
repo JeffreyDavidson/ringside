@@ -62,4 +62,36 @@ class StablesController extends Controller
 
         return response()->view('stables.show', compact('stable'));
     }
+
+    /**
+     * Delete a stable.
+     *
+     * @param  App\Models\Stable  $stable
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Stable $stable)
+    {
+        $this->authorize('delete', Stable::class);
+
+        $stable->delete();
+
+        return redirect()->route('stables.index');
+    }
+
+    /**
+     * Restore a deleted stable.
+     *
+     * @param  int  $stableId
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function restore($stableId)
+    {
+        $stable = Stable::onlyTrashed()->findOrFail($stableId);
+
+        $this->authorize('restore', Stable::class);
+
+        $stable->restore();
+
+        return redirect()->route('stables.index');
+    }
 }

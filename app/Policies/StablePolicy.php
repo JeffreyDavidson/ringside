@@ -22,6 +22,28 @@ class StablePolicy
     }
 
     /**
+     * Determine whether the user can delete a stable.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function delete(User $user)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can restore a deleted stable.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function restore(User $user)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
      * Determine whether the user can suspend a stable.
      *
      * @param  \App\Models\User  $user

@@ -62,9 +62,8 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
 
     Route::namespace('Stables')->group(function () {
         Route::get('/stables/state/{state?}', 'StablesController@index')->name('stables.index');
-        Route::get('/stables/create', 'StablesController@create')->name('stables.create');
-        Route::post('/stables', 'StablesController@store')->name('stables.store');
-        Route::get('/stables/{stable}', 'StablesController@show')->name('stables.show');
+        Route::resource('stables', 'StablesController')->except('index');
+        Route::patch('/stables/{stable}/restore', 'StablesController@restore')->name('stables.restore');
         Route::post('/stables/{stable}/retire', 'StableRetirementsController@store')->name('stables.retire');
         Route::delete('/stables/{stable}/unretire', 'StableRetirementsController@destroy')->name('stables.unretire');
         Route::post('/stables/{stable}/deactivate', 'StableActivationsController@destroy')->name('stables.deactivate');
