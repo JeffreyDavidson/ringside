@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stables;
 use App\Models\Stable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStableRequest;
+use App\Http\Requests\UpdateStableRequest;
 
 class StablesController extends Controller
 {
@@ -61,6 +62,36 @@ class StablesController extends Controller
         $this->authorize('view', $stable);
 
         return response()->view('stables.show', compact('stable'));
+    }
+
+    /**
+     * Show the form for editing a stable.
+     *
+     * @param  \App\Models\Stable  $stable
+     * @return \lluminate\Http\Response
+     */
+    public function edit(Stable $stable)
+    {
+        $this->authorize('update', Stable::class);
+
+        return response()->view('stables.edit', compact('stable'));
+    }
+
+    /**
+     * Update a given stable.
+     *
+     * @param  \App\Http\Requests\UpdateStableRequest  $request
+     * @param  \App\Models\Stable  $stable
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function update(UpdateStableRequest $request, Stable $stable)
+    {
+        $stable->update($request->except('wrestlers', 'tagteams'));
+
+        $stable->wrestlers()->sync($request->input('wrestlers'));
+        $stable->tagteams()->sync($request->input('tagteams'));
+
+        return redirect()->route('stables.index');
     }
 
     /**

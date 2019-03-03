@@ -22,6 +22,17 @@ class StablePolicy
     }
 
     /**
+     * Determine whether the user can update a stable.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function update(User $user)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
      * Determine whether the user can delete a stable.
      *
      * @param  \App\Models\User  $user

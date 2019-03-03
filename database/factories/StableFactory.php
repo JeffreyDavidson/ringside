@@ -14,8 +14,8 @@ $factory->define(Stable::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(Stable::class, function ($stable, $faker) {
-    $stable->wrestlers()->attach(factory(Wrestler::class)->create(['hired_at' => $stable->started_at]));
-    $stable->tagteams()->attach(factory(TagTeam::class)->create(['hired_at' => $stable->started_at]));
+    $stable->wrestlers()->attach(factory(Wrestler::class)->states('active')->create(['hired_at' => $stable->started_at]));
+    $stable->tagteams()->attach(factory(TagTeam::class)->states('active')->create(['hired_at' => $stable->started_at]));
 });
 
 $factory->state(Stable::class, 'active', [

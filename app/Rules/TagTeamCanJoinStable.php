@@ -2,11 +2,19 @@
 
 namespace App\Rules;
 
+use App\Models\Stable;
 use App\Models\TagTeam;
 use Illuminate\Contracts\Validation\Rule;
 
 class TagTeamCanJoinStable implements Rule
 {
+    protected $stable;
+
+    public function __construct(Stable $stable)
+    {
+        $this->stable = $stable;
+    }
+
     /**
      * Determine if the validation rule passes.
      *
@@ -26,7 +34,9 @@ class TagTeamCanJoinStable implements Rule
             return false;
         }
 
-        if ($tagteam->stables()->exists()) {
+        if ($tagteam->whereHas('stables', function ($query) {
+            $query->where('is_active', true)->whereNotIn('stables.id', [$this->stable->id]);
+        })->exists()) {
             return false;
         }
 
