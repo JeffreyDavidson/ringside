@@ -198,10 +198,8 @@ class UpdateStableTest extends TestCase
 
         $response = $this->patch(route('stables.update', $stable), $this->validParams([
             'tagteams' => [$tagteam->getKey()],
-            'wrestlers' => [],
+            'wrestlers' => null,
         ]));
-
-        dd($response);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('wrestlers');
@@ -302,6 +300,22 @@ class UpdateStableTest extends TestCase
 
         $response = $this->patch(route('stables.update', $stable), $this->validParams([
             'tagteams' => 'not-an-array',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('tagteams');
+    }
+
+    /** @test */
+    public function tag_teams_are_required_if_there_is_only_two_wrestlers_included()
+    {
+        $this->actAs('administrator');
+        $stable = factory(Stable::class)->create();
+        $wrestlers = factory(Wrestler::class, 2)->states('active')->create();
+
+        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+            'tagteams' => null,
+            'wrestlers' => $wrestlers->modelKeys(),
         ]));
 
         $response->assertStatus(302);

@@ -37,9 +37,9 @@ class StoreStableRequest extends FormRequest
                 return count($this->wrestlers) <= 2;
             }),
             'wrestlers' => ['array'],
-            'wrestlers.*' => ['bail', 'integer', 'exists:wrestlers,id', new WrestlerCanJoinStable],
+            'wrestlers.*' => ['bail', 'integer', 'exists:wrestlers,id', new WrestlerCanJoinStable(new Stable)],
             'tagteams' => ['array'],
-            'tagteams.*' => ['bail', 'integer', 'exists:tag_teams,id', new TagTeamCanJoinStable],
+            'tagteams.*' => ['bail', 'integer', 'exists:tag_teams,id', new TagTeamCanJoinStable(new Stable)],
         ];
     }
 
