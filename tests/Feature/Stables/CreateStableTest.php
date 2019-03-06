@@ -63,7 +63,6 @@ class CreateStableTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_stable()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
         $response = $this->post(route('stables.store'), $this->validParams());

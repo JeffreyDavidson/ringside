@@ -13,7 +13,6 @@ class RetireStableTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_stable()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 

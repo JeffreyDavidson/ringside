@@ -13,7 +13,6 @@ class ActivateInactiveStableTest extends TestCase
     /** @test */
     public function an_administrator_can_activate_an_inactive_stable()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $stable = factory(Stable::class)->states('inactive')->create();
 
