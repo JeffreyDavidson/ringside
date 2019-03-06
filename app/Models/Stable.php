@@ -19,8 +19,8 @@ class Stable extends Model
         Sluggable;
 
     use Retireable {
-        Retireable::retire as private retireableRetire;
-        Retireable::unretire as private retireableUnRetire;
+        Retireable::retire as private retireStable;
+        Retireable::unretire as private unretireStable;
     }
 
     /**
@@ -97,13 +97,7 @@ class Stable extends Model
      */
     public function getMembersAttribute()
     {
-        $members =  new Collection();
-
-        $mergedWrestlerCollection = $members->merge($this->wrestlers);
-
-        $mergedTagTeamsCollection = $mergedWrestlerCollection->merge($this->tagteams);
-
-        return $mergedTagTeamsCollection;
+        return $this->wrestlers->merge($this->tagteams);
     }
 
     /**
@@ -158,7 +152,7 @@ class Stable extends Model
      */
     public function retire()
     {
-        $this->retireableRetire();
+        $this->retireStable();
 
         $this->wrestlers->each->retire();
         $this->tagteams->each->retire();
@@ -173,7 +167,7 @@ class Stable extends Model
      */
     public function unretire()
     {
-        $this->retireableUnRetire();
+        $this->unretireStable();
 
         $this->wrestlers->filter->isRetired()->each->unretire();
         $this->tagteams->filter->isRetired()->each->unretire();

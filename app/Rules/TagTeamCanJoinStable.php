@@ -26,6 +26,8 @@ class TagTeamCanJoinStable implements Rule
     {
         $tagteam = TagTeam::find($value);
 
+        if (! $tagteam) return false;
+
         if ($tagteam->hired_at->isFuture()) {
             return false;
         }
@@ -35,7 +37,7 @@ class TagTeamCanJoinStable implements Rule
         }
 
         if ($tagteam->whereHas('stables', function ($query) {
-            $query->where('is_active', true)->whereNotIn('stables.id', [$this->stable->id]);
+            $query->where('is_active', true)->whereKeyNot($this->stable->id);
         })->exists()) {
             return false;
         }

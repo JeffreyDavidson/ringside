@@ -31,12 +31,6 @@ class UpdateStableRequest extends FormRequest
         return [
             'name' => ['required'],
             'started_at' => ['required', 'date_format:Y-m-d H:i:s'],
-            'wrestlers' =>  ['bail', Rule::requiredIf(function () {
-                return count($this->tagteams) <= 1;
-            })],
-            'tagteams' =>  ['bail', Rule::requiredIf(function () {
-                return count($this->wrestlers) <= 2;
-            })],
             'wrestlers' =>  ['array'],
             'wrestlers.*'  => ['bail ', 'integer', 'exists:wrestlers,id' , new WrestlerCanJoinStable($this->route('stable'))],
             'tagteams' =>  ['array'],
@@ -50,13 +44,15 @@ class UpdateStableRequest extends FormRequest
      * @param  Illuminate\Contracts\Validation\Validator  $validator
      * @return void
      */
-    public function after($validator)
+    public function withValidator($validator)
     {
-        $totalStableMembers = count($this->wrestlers) + (count($this->tagteams) * 2);
+        $validator->after(function ($validator) {
+            $totalStableMembers = count($this->wrestlers) + (count($this->tagteams) * 2);
 
-        if ($totalStableMembers < 3) {
-            $validator->errors()->add('wrestlers', 'Make sure you have at least 3 members in the stable!');
-            $validator->errors()->add('tagteams', 'Make sure you have at least 3 members in the stable!');
-        }
+            if ($totalStableMembers < 3) {
+                $validator->errors()->add('wrestlers', 'Make sure you have at least 3 members in the stable!');
+                $validator->errors()->add('tagteams', 'Make sure you have at least 3 members in the stable!');
+            }
+        });
     }
 }

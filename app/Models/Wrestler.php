@@ -86,6 +86,16 @@ class Wrestler extends Model
     }
 
     /**
+     * Get the current stable of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function stable()
+    {
+        return $this->morphToMany(Stable::class, 'member')->where('is_active', true);
+    }
+
+    /**
      * Scope a query to only include wrestlers of a given state.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
