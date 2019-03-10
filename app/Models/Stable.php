@@ -77,7 +77,7 @@ class Stable extends Model
      */
     public function wrestlers()
     {
-        return $this->morphedByMany(Wrestler::class, 'member');
+        return $this->morphedByMany(Wrestler::class, 'member')->withPivot('left_at');
     }
 
     /**
@@ -87,7 +87,7 @@ class Stable extends Model
      */
     public function tagteams()
     {
-        return $this->morphedByMany(TagTeam::class, 'member');
+        return $this->morphedByMany(TagTeam::class, 'member')->withPivot('left_at');
     }
 
     /**

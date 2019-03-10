@@ -83,15 +83,51 @@ class UpdateStableTest extends TestCase
     {
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
-        $wrestlers = Factory(Wrestler::class, 2)->create();
+        $newStableWrestlers = factory(Wrestler::class, 2)->create();
 
         $response = $this->patch(route('stables.update', $stable), $this->validParams([
-            'wrestlers' => $wrestlers->modelKeys(),
+            'wrestlers' => $newStableWrestlers->modelKeys(),
         ]));
 
-        tap($stable->fresh()->wrestlers, function ($stableWrestlers) use ($wrestlers) {
-            $this->assertCount(2, $stableWrestlers);
-            $this->assertEquals($stableWrestlers->modelKeys(), $wrestlers->modelKeys());
+        tap($stable->fresh()->wrestlers()->whereNull('left_at')->get(), function ($currentStableWrestlers) use ( $newStableWrestlers) {
+            $this->assertCount(2, $currentStableWrestlers);
+            $this->assertEquals($currentStableWrestlers->modelKeys(), $newStableWrestlers->modelKeys());
+        });
+    }
+
+    /** @test */
+    public function wrestlers_in_a_stable_that_are_not_included_request_are_marked_as_left()
+    {
+        $this->actAs('administrator');
+        $stable = factory(Stable::class)->create();
+        $formerWrestlers = $stable->wrestlers()->whereNull('left_at')->get();
+        $newStableWrestlers = factory(Wrestler::class, 2)->create();
+
+        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+            'wrestlers' => $newStableWrestlers->modelKeys(),
+        ]));
+
+        tap($stable->fresh()->wrestlers()->whereNotNull('left_at')->get(), function ($stableWrestlers) use ($formerWrestlers) {
+            $this->assertCount(1, $stableWrestlers);
+            $this->assertEquals($stableWrestlers->modelKeys(), $formerWrestlers->modelKeys());
+        });
+    }
+
+    /** @test */
+    public function tag_teams_in_a_stable_that_are_not_included_request_are_marked_as_left()
+    {
+        $this->actAs('administrator');
+        $stable = factory(Stable::class)->create();
+        $formerTagTeams = $stable->tagteams()->whereNull('left_at')->get();
+        $tagteams = factory(TagTeam::class, 2)->create();
+
+        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+            'tagteams' => $tagteams->modelKeys(),
+        ]));
+
+        tap($stable->fresh()->tagteams()->whereNotNull('left_at')->get(), function ($stableTagTeams) use ($formerTagTeams) {
+            $this->assertCount(1, $formerTagTeams);
+            $this->assertEquals($stableTagTeams->modelKeys(), $formerTagTeams->modelKeys());
         });
     }
 
@@ -100,13 +136,13 @@ class UpdateStableTest extends TestCase
     {
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
-        $tagteams = Factory(TagTeam::class, 2)->create();
+        $tagteams = factory(TagTeam::class, 2)->create();
 
         $response = $this->patch(route('stables.update', $stable), $this->validParams([
             'tagteams' => $tagteams->modelKeys(),
         ]));
 
-        tap($stable->fresh()->tagteams, function ($stableTagTeams) use ($tagteams) {
+        tap($stable->fresh()->tagteams()->whereNull('left_at')->get(), function ($stableTagTeams) use ($tagteams) {
             $this->assertCount(2, $stableTagTeams);
             $this->assertEquals($stableTagTeams->modelKeys(), $tagteams->modelKeys());
         });

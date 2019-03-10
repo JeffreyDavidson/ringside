@@ -88,8 +88,22 @@ class StablesController extends Controller
     {
         $stable->update($request->except('wrestlers', 'tagteams'));
 
-        $stable->wrestlers()->sync($request->input('wrestlers'));
-        $stable->tagteams()->sync($request->input('tagteams'));
+        $newStableWrestlers = $request->input('wrestlers');
+        $newStableTagTeams = $request->input('tagteams');
+
+        $currentStableWrestlers = $stable->wrestlers()->whereNull('left_at')->get()->pluck('id');
+        $currentStableTagTeams = $stable->tagteams()->whereNull('left_at')->get()->pluck('id');
+
+        $formerStableWrestlers = $currentStableWrestlers->diff(collect($newStableWrestlers));
+        $formerStableTagTeams = $currentStableTagTeams->diff(collect($newStableTagTeams));
+
+        $stable->wrestlers()->updateExistingPivot($formerStableWrestlers, ['left_at' => now()]);
+        $stable->tagteams()->updateExistingPivot($formerStableTagTeams, ['left_at' => now()]);
+
+        $stable->wrestlers()->syncWithoutDetaching($newStableWrestlers);
+        $stable->tagteams()->syncWithoutDetaching($newStableTagTeams);
+
+        // dd($stable->wrestlers);
 
         return redirect()->route('stables.index');
     }

@@ -17,6 +17,7 @@ class CreateMembersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('stable_id');
             $table->morphs('member');
+            $table->datetime('left_at')->nullable();
             $table->timestamps();
         });
     }
