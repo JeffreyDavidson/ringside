@@ -59,7 +59,6 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_venue()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
         $response = $this->post(route('venues.store'), $this->validParams());
