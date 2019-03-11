@@ -71,6 +71,12 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::post('/stables/{stable}/suspend', 'StableSuspensionsController@store')->name('stables.suspend');
         Route::delete('/stables/{stable}/reinstate', 'StableSuspensionsController@destroy')->name('stables.reinstate');
     });
+
+    Route::namespace('Venues')->group(function () {
+        Route::get('/venues', 'VenuesController@index')->name('venues.index');
+        Route::get('/venues/create', 'VenuesController@create')->name('venues.create');
+        Route::post('/venues', 'VenuesController@store')->name('venues.store');
+    });
 });
 
 Auth::routes();
