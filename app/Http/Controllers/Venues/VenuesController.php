@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Venues;
 use App\Models\Venue;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenueRequest;
+use App\Http\Requests\UpdateVenueRequest;
 
 class VenuesController extends Controller
 {
@@ -39,6 +40,33 @@ class VenuesController extends Controller
     public function store(StoreVenueRequest $request)
     {
         Venue::create($request->all());
+
+        return redirect()->route('venues.index');
+    }
+
+    /**
+     * Show the form for editing a venue.
+     *
+     * @param  \App\Models\Venue  $venue
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Venue $venue)
+    {
+        $this->authorize('update', Venue::class);
+
+        return view('venues.edit', compact('venue'));
+    }
+
+    /**
+     * Update a given Venue.
+     *
+     * @param  \App\Http\Requests\UpdateVenueRequest  $request
+     * @param  \App\Models\Venue  $venue
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function update(UpdateVenueRequest $request, Venue $venue)
+    {
+        $venue->update($request->all());
 
         return redirect()->route('venues.index');
     }
