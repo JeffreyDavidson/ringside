@@ -101,6 +101,17 @@ class TitlePolicy
     }
 
     /**
+     * Determine whether the user can view a list of titles.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
      * Determine whether the user can view a title.
      *
      * @param  \App\Models\User  $user

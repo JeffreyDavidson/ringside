@@ -10,11 +10,18 @@ use App\Http\Requests\UpdateTitleRequest;
 class TitlesController extends Controller
 {
     /**
+     * Retrieve titles of a specific state.
      *
-     *
+     * @param  string  $state
+     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($state = 'active')
     {
+        $this->authorize('viewList', Title::class);
+
+        $titles = Title::hasState($state)->get();
+
+        return view('titles.index', compact('titles'));
     }
 
     /**
