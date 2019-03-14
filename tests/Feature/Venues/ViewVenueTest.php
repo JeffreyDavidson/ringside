@@ -21,4 +21,25 @@ class ViewVenueTest extends TestCase
         $response->assertViewIs('venues.show');
         $this->assertTrue($response->data('venue')->is($venue));
     }
+
+    /** @test */
+    public function a_basic_user_cannot_view_a_venue()
+    {
+        $this->actAs('basic-user');
+        $venue = factory(Venue::class)->create();
+
+        $response = $this->get(route('venues.show', ['venue' => $venue]));
+
+        $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function a_guest_cannot_view_a_venue()
+    {
+        $venue = factory(Venue::class)->create();
+
+        $response = $this->get(route('venues.show', ['venue' => $venue]));
+
+        $response->assertRedirect('/login');
+    }
 }

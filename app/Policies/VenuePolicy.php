@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Venue;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class VenuePolicy
@@ -38,6 +39,18 @@ class VenuePolicy
      * @return bool
      */
     public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can view a venue.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Venue  $venue
+     * @return bool
+     */
+    public function view(User $user, Venue $venue)
     {
         return $user->isAdministrator();
     }

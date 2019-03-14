@@ -51,11 +51,12 @@ class VenuesController extends Controller
     /**
      * Show the venue.
      *
+     * @param  \App\Models\Venue  $venue
      * @return \Illuminate\Http\Response
      */
     public function show(Venue $venue)
     {
-        $this->authorize('create', $venue);
+        $this->authorize('view', $venue);
 
         return view('venues.show', compact('venue'));
     }
