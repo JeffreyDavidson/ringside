@@ -16,7 +16,11 @@ class VenuesController extends Controller
      */
     public function index()
     {
-        return view('venues.index');
+        $this->authorize('viewList', Venue::class);
+
+        $venues = Venue::all();
+
+        return view('venues.index', compact('venues'));
     }
 
     /**

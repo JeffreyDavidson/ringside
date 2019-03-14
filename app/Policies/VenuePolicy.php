@@ -30,4 +30,15 @@ class VenuePolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can view all venues.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
