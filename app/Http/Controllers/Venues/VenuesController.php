@@ -49,6 +49,18 @@ class VenuesController extends Controller
     }
 
     /**
+     * Show the venue.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Venue $venue)
+    {
+        $this->authorize('create', $venue);
+
+        return view('venues.show', compact('venue'));
+    }
+
+    /**
      * Show the form for editing a venue.
      *
      * @param  \App\Models\Venue  $venue

@@ -78,6 +78,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::post('/venues', 'VenuesController@store')->name('venues.store');
         Route::get('/venues/{venue}/edit', 'VenuesController@edit')->name('venues.edit');
         Route::patch('/venues/{venue}', 'VenuesController@update')->name('venues.update');
+        Route::get('/venues/{venue}', 'VenuesController@show')->name('venues.show');
     });
 });
 
