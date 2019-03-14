@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EditVenueTest extends TestCase
+class UpdateVenueTest extends TestCase
 {
     use RefreshDatabase;
 
