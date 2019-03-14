@@ -73,12 +73,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     });
 
     Route::namespace('Venues')->group(function () {
-        Route::get('/venues', 'VenuesController@index')->name('venues.index');
-        Route::get('/venues/create', 'VenuesController@create')->name('venues.create');
-        Route::post('/venues', 'VenuesController@store')->name('venues.store');
-        Route::get('/venues/{venue}/edit', 'VenuesController@edit')->name('venues.edit');
-        Route::patch('/venues/{venue}', 'VenuesController@update')->name('venues.update');
-        Route::get('/venues/{venue}', 'VenuesController@show')->name('venues.show');
+        Route::resource('venues', 'VenuesController')->except('destroy');
     });
 });
 
