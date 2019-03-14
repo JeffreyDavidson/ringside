@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Sluggable;
+use App\Traits\Retireable;
 use App\Traits\Activatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class Title extends Model
 {
     use Sluggable,
         Activatable,
+        Retireable,
         SoftDeletes;
 
     /**

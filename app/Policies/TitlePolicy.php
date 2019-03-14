@@ -55,6 +55,28 @@ class TitlePolicy
     }
 
     /**
+     * Determine whether the user can retire a title.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function retire(User $user, Title $title)
+    {
+        return $user->isAdministrator() && ! $title->isRetired();
+    }
+
+    /**
+     * Determine whether the user can unretire a retired title.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function unretire(User $user, Title $title)
+    {
+        return $user->isAdministrator() && $title->isRetired();
+    }
+
+    /**
      * Determine whether the user can deactivate an active title.
      *
      * @param  \App\Models\User  $user

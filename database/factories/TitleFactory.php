@@ -15,6 +15,10 @@ $factory->state(Title::class, 'active', [
     'is_active' => true,
 ]);
 
+$factory->afterCreatingState(Title::class, 'retired', function ($title) {
+    $title->retire();
+});
+
 $factory->afterCreatingState(Title::class, 'inactive', function ($title) {
     $title->deactivate();
 });
