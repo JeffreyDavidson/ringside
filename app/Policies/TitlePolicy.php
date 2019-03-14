@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Title;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TitlePolicy
@@ -51,5 +52,29 @@ class TitlePolicy
     public function restore(User $user)
     {
         return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can deactivate an active title.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Title  $title
+     * @return bool
+     */
+    public function deactivate(User $user, Title $title)
+    {
+        return $user->isAdministrator() && $title->isActive();
+    }
+
+    /**
+     * Determine whether the user can activate an inactive title.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Title  $title
+     * @return bool
+     */
+    public function activate(User $user, Title $title)
+    {
+        return $user->isAdministrator() && ! $title->isActive();
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Title extends Model
 {
     use Sluggable,
+        Activatable,
         SoftDeletes;
 
     /**

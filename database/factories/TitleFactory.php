@@ -10,3 +10,12 @@ $factory->define(Title::class, function (Faker $faker) {
         'is_active' => true,
     ];
 });
+
+$factory->state(Title::class, 'active', [
+    'is_active' => true,
+]);
+
+$factory->afterCreatingState(Title::class, 'inactive', function ($title) {
+    $title->deactivate();
+});
+
