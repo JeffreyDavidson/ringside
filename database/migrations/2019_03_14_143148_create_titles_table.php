@@ -20,6 +20,7 @@ class CreateTitlesTable extends Migration
             $table->datetime('introduced_at');
             $table->boolean('is_active');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

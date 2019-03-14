@@ -67,4 +67,19 @@ class TitlesController extends Controller
 
         return redirect()->route('titles.index');
     }
+
+    /**
+     * Delete a wrestler.
+     *
+     * @param  App\Models\Wrestler  $wrestler
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Title $title)
+    {
+        $this->authorize('delete', Title::class);
+
+        $title->delete();
+
+        return redirect()->route('titles.index');
+    }
 }
