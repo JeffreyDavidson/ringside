@@ -75,6 +75,12 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::namespace('Venues')->group(function () {
         Route::resource('venues', 'VenuesController')->except('destroy');
     });
+
+    Route::namespace('Titles')->group(function () {
+        Route::get('/titles/create', 'TitlesController@create')->name('titles.create');
+        Route::post('/titles', 'TitlesController@store')->name('titles.store');
+        Route::get('/titles', 'TitlesController@index')->name('titles.index');
+    });
 });
 
 Auth::routes();
