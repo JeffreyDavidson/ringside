@@ -99,4 +99,15 @@ class TitlePolicy
     {
         return $user->isAdministrator() && ! $title->isActive();
     }
+
+    /**
+     * Determine whether the user can view a title.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function view(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

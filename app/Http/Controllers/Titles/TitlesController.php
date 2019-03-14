@@ -43,6 +43,19 @@ class TitlesController extends Controller
     }
 
     /**
+     * Show the title.
+     *
+     * @param  \App\Models\Title  $title
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Title $title)
+    {
+        $this->authorize('view', Title::class);
+
+        return response()->view('titles.show', compact('title'));
+    }
+
+    /**
      * Show the form for editing a title.
      *
      * @return \Illuminate\Http\Response

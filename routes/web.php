@@ -80,6 +80,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::get('/titles/create', 'TitlesController@create')->name('titles.create');
         Route::post('/titles', 'TitlesController@store')->name('titles.store');
         Route::get('/titles', 'TitlesController@index')->name('titles.index');
+        Route::get('/titles/{title}', 'TitlesController@show')->name('titles.show');
         Route::get('/titles/{title}/edit', 'TitlesController@edit')->name('titles.edit');
         Route::patch('/titles/{title}', 'TitlesController@update')->name('titles.update');
         Route::delete('/titles/{title}', 'TitlesController@destroy')->name('titles.destroy');
