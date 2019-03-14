@@ -78,12 +78,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
 
     Route::namespace('Titles')->group(function () {
         Route::get('/titles/state/{state?}', 'TitlesController@index')->name('titles.index');
-        Route::get('/titles/create', 'TitlesController@create')->name('titles.create');
-        Route::post('/titles', 'TitlesController@store')->name('titles.store');
-        Route::get('/titles/{title}', 'TitlesController@show')->name('titles.show');
-        Route::get('/titles/{title}/edit', 'TitlesController@edit')->name('titles.edit');
-        Route::patch('/titles/{title}', 'TitlesController@update')->name('titles.update');
-        Route::delete('/titles/{title}', 'TitlesController@destroy')->name('titles.destroy');
+        Route::resource('titles', 'TitlesController')->except('index');
         Route::patch('/titles/{title}/restore', 'TitlesController@restore')->name('titles.restore');
         Route::post('/titles/{title}/retire', 'TitleRetirementsController@store')->name('titles.retire');
         Route::delete('/titles/{title}/unretire', 'TitleRetirementsController@destroy')->name('titles.unretire');
