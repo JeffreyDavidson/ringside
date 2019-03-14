@@ -19,4 +19,15 @@ class TitlePolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can update a title.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function update(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
