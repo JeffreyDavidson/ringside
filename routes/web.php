@@ -85,6 +85,13 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::post('/titles/{title}/deactivate', 'TitleActivationsController@destroy')->name('titles.deactivate');
         Route::post('/titles/{title}/activate', 'TitleActivationsController@store')->name('titles.activate');
     });
+
+    Route::namespace('Events')->group(function () {
+        Route::get('/events', 'EventsController@index')->name('events.index');
+        Route::get('/events/create', 'EventsController@create')->name('events.create');
+        Route::post('/events', 'EventsController@store')->name('events.store');
+    });
+
 });
 
 Auth::routes();
