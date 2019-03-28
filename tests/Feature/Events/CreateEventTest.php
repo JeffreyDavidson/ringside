@@ -65,6 +65,9 @@ class CreateEventTest extends TestCase
         $response->assertRedirect(route('events.index'));
         tap(Event::first(), function ($event) {
             $this->assertEquals('Example Event Name', $event->name);
+            $this->assertEquals(today()->toDateTimeString(), $event->date);
+            $this->assertEquals(1, $event->venue_id);
+            $this->assertEquals('This is an event preview.', $event->preview);
         });
     }
 
@@ -103,7 +106,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['name' => '']));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'name' => ''
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('name');
@@ -114,7 +119,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['date' => '']));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'date' => ''
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('date');
@@ -125,7 +132,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['date' => today()->toDateString()]));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'date' => today()->toDateString()
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('date');
@@ -136,7 +145,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['venue_id' => '']));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'venue_id' => ''
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('venue_id');
@@ -147,7 +158,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['venue_id' => 'not-an-integer']));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'venue_id' => 'not-an-integer'
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('venue_id');
@@ -158,7 +171,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['venue_id' => 999]));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'venue_id' => 999
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('venue_id');
@@ -169,7 +184,9 @@ class CreateEventTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('events.store'), $this->validParams(['preview' => '']));
+        $response = $this->post(route('events.store'), $this->validParams([
+            'preview' => ''
+        ]));
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('preview');
