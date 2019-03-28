@@ -44,14 +44,14 @@ class EventPolicy
     }
 
     /**
-     * Determine whether the user can delete an event.
+     * Determine whether the user can archive an event.
      *
      * @param  App\Models\User  $user
      * @param  App\Models\Event  $event
      * @return bool
      */
-    public function delete(User $user, Event $event)
+    public function archive(User $user, Event $event)
     {
-        return $user->isAdministrator() && $event->isScheduled();
+        return $user->isAdministrator() && $event->isPast() && ! $event->isArchived();
     }
 }

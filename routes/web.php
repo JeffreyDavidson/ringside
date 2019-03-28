@@ -93,6 +93,8 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::get('/events/{event}/edit', 'EventsController@edit')->name('events.edit');
         Route::patch('/events/{event}', 'EventsController@update')->name('events.update');
         Route::delete('/events/{event}', 'EventsController@destroy')->name('events.destroy');
+        Route::post('/events/{event}/archive', 'ArchivedEventsController@store')->name('events.archive');
+        Route::patch('/events/{event}/restore', 'EventsController@restore')->name('events.restore');
     });
 
 });

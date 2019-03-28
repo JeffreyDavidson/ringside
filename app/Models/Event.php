@@ -71,5 +71,25 @@ class Event extends Model
         if (method_exists($this, $scope)) {
             return $this->{$scope}($query);
         }
+    /**
+     * Checks to see if the event has been archived.
+     *
+     * @return boolean
+     */
+    public function isArchived()
+    {
+        return $this->archived_at !== null;
+    }
+
+    /**
+     * Archives a past event.
+     *
+     * @return $this
+     */
+    public function archive()
+    {
+        $this->update(['archived_at' => now()]);
+
+        return $this;
     }
 }
