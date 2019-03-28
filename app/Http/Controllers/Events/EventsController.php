@@ -50,6 +50,19 @@ class EventsController extends Controller
     }
 
     /**
+     * Show the event.
+     *
+     * @param  \App\Models\Event  $event
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Event $event)
+    {
+        $event->load('venue');
+
+        return response()->view('events.show', compact('event'));
+    }
+
+    /**
      * Show the form for creating an event.
      *
      * @return \Illuminate\Http\Response
