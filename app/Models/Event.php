@@ -27,6 +27,16 @@ class Event extends Model
     protected $dates = ['date'];
 
     /**
+     * Retrieve the venue of the event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function venue()
+    {
+        return $this->belongsTo(Venue::class);
+    }
+
+    /**
      * Scope a query to only include archived events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -46,6 +56,17 @@ class Event extends Model
     public function scopeScheduled($query)
     {
         return $query->where('date', '>', now());
+    }
+
+    /**
+     * Scope a query to only include past events that are not archived.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePast($query)
+    {
+        return $query->where('date', '<', now())->whereNull('archived_at');
     }
 
     /**
