@@ -14,7 +14,7 @@ class UpdateEventTest extends TestCase
     /**
      * Valid parameters for request.
      *
-     * @param  array $overrides
+     * @param  array  $overrides
      * @return array
      */
     private function validParams($overrides = [])
