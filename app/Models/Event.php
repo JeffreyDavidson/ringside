@@ -24,7 +24,7 @@ class Event extends Model
      *
      * @var array
      */
-    protected $dates = ['date', 'deleted_at'];
+    protected $dates = ['date'];
 
     /**
      * Scope a query to only include archived events.
