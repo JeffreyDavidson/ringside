@@ -49,6 +49,21 @@ class Event extends Model
     }
 
     /**
+     * Scope a query to only include events of a given state.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHasState($query, $state)
+    {
+        $scope = 'scope' . Str::studly($state);
+
+        if (method_exists($this, $scope)) {
+            return $this->{$scope}($query);
+        }
+    }
+
+    /**
      * Checks to see if the event is scheduled.
      *
      * @return boolean
