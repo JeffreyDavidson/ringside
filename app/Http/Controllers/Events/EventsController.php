@@ -89,4 +89,21 @@ class EventsController extends Controller
 
         return redirect()->route('events.index');
     }
+
+    /**
+     * Restore a deleted scheduled event.
+     *
+     * @param  int  $eventId
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function restore($eventId)
+    {
+        $event = Event::onlyTrashed()->findOrFail($eventId);
+
+        $this->authorize('restore', $event);
+
+        $event->restore();
+
+        return redirect()->route('events.index');
+    }
 }

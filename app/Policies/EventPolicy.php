@@ -33,6 +33,30 @@ class EventPolicy
     }
 
     /**
+     * Determine whether the user can delete an event.
+     *
+     * @param  App\Models\User  $user
+     * @param  App\Models\Event  $event
+     * @return bool
+     */
+    public function delete(User $user, Event $event)
+    {
+        return $user->isAdministrator() && $event->isScheduled();
+    }
+
+    /**
+     * Determine whether the user can restore a deleted event.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Event  $event
+     * @return bool
+     */
+    public function restore(User $user, Event $event)
+    {
+        return $user->isAdministrator() && $event->deleted_at !== null;
+    }
+
+    /**
      * Determine whether the user can view a list of events.
      *
      * @param  \App\Models\User  $user

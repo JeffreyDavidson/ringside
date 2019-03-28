@@ -59,18 +59,15 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include events of a given state.
+     * Checks to see if the event has past.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return boolean
      */
-    public function scopeHasState($query, $state)
+    public function isPast()
     {
-        $scope = 'scope' . Str::studly($state);
+        return $this->date->isPast();
+    }
 
-        if (method_exists($this, $scope)) {
-            return $this->{$scope}($query);
-        }
     /**
      * Checks to see if the event has been archived.
      *
