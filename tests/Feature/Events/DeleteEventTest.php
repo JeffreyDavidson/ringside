@@ -45,7 +45,7 @@ class DeleteEventTest extends TestCase
     /** @test */
     public function an_event_that_is_not_scheduled_cannot_be_deleted()
     {
-        $this->actAs('basic-user');
+        $this->actAs('administrator');
         $event = factory(Event::class)->states('archived')->create();
 
         $response = $this->delete(route('events.destroy', $event));
