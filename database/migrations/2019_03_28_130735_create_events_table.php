@@ -22,6 +22,7 @@ class CreateEventsTable extends Migration
             $table->text('preview');
             $table->datetime('archived_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

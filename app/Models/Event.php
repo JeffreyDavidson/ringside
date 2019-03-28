@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Traits\Sluggable;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use Sluggable;
+    use Sluggable,
+        SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -22,7 +24,7 @@ class Event extends Model
      *
      * @var array
      */
-    protected $dates = ['date'];
+    protected $dates = ['date', 'deleted_at'];
 
     /**
      * Scope a query to only include archived events.
@@ -44,6 +46,16 @@ class Event extends Model
     public function scopeScheduled($query)
     {
         return $query->where('date', '>', now());
+    }
+
+    /**
+     * Checks to see if the event is scheduled.
+     *
+     * @return boolean
+     */
+    public function isScheduled()
+    {
+        return $this->date->isFuture();
     }
 
     /**

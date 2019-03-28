@@ -74,4 +74,19 @@ class EventsController extends Controller
 
         return redirect()->route('events.index');
     }
+
+    /**
+     * Delete an event.
+     *
+     * @param  App\Models\Event  $event
+     * @return \lluminate\Http\RedirectResponse
+     */
+    public function destroy(Event $event)
+    {
+        $this->authorize('delete', $event);
+
+        $event->delete();
+
+        return redirect()->route('events.index');
+    }
 }
