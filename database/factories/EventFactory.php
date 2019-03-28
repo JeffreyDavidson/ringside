@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\Venue;
 use Faker\Generator as Faker;
@@ -14,3 +15,12 @@ $factory->define(Event::class, function (Faker $faker) {
         'preview' => $faker->paragraph(),
     ];
 });
+
+$factory->state(Event::class, 'scheduled', [
+    'date' => Carbon::tomorrow()->toDateTimeString(),
+]);
+
+$factory->state(Event::class, 'archived', [
+    'date' => Carbon::yesterday()->subMonths(2)->toDateTimeString(),
+    'archived_at' => Carbon::yesterday()->toDateTimeString(),
+]);

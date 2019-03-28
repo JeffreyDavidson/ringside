@@ -9,8 +9,19 @@ use App\Http\Requests\UpdateEventRequest;
 
 class EventsController extends Controller
 {
-    public function index()
+    /**
+     * Retrieve events of a specific state.
+     *
+     * @param  string  $state
+     * @return \Illuminate\Http\Response
+     */
+    public function index($state = 'scheduled')
     {
+        $this->authorize('viewList', Event::class);
+
+        $events = Event::hasState($state)->get();
+
+        return view('events.index', compact('events'));
     }
 
     /**

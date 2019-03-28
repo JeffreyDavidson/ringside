@@ -30,4 +30,15 @@ class EventPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can view a list of events.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function viewList(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }
