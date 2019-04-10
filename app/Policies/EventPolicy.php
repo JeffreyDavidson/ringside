@@ -78,4 +78,16 @@ class EventPolicy
     {
         return $user->isAdministrator() && $event->isPast() && ! $event->isArchived();
     }
+
+    /**
+     * Determine whether the user can archive an event.
+     *
+     * @param  App\Models\User  $user
+     * @param  App\Models\Event  $event
+     * @return bool
+     */
+    public function addMatches(User $user, Event $event)
+    {
+        return $user->isAdministrator() && $event->isScheduled();
+    }
 }

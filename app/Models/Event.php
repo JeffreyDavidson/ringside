@@ -37,6 +37,16 @@ class Event extends Model
     }
 
     /**
+     * Retrieve the matches for the event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function matches()
+    {
+        return $this->hasMany(Match::class);
+    }
+
+    /**
      * Scope a query to only include archived events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

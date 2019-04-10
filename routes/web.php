@@ -92,6 +92,10 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::post('/events/{event}/archive', 'ArchivedEventsController@store')->name('events.archive');
         Route::patch('/events/{event}/restore', 'EventsController@restore')->name('events.restore');
     });
+
+    Route::namespace('Matches')->group(function () {
+        Route::resource('events.matches', 'MatchesController');
+    });
 });
 
 Auth::routes();

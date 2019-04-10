@@ -96,6 +96,14 @@ class Wrestler extends Model
     }
 
     /**
+     * Get all of the wrestler's matches.
+     */
+    public function matches()
+    {
+        return $this->morphMany(Match::class, 'competitor', 'match_competitors');
+    }
+
+    /**
      * Scope a query to only include wrestlers of a given state.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
