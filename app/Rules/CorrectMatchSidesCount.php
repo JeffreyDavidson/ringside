@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\MatchType;
 use Illuminate\Contracts\Validation\Rule;
 
-class CorrectCompetitorCount implements Rule
+class CorrectMatchSidesCount implements Rule
 {
     /**
      * Determine if the validation rule passes.

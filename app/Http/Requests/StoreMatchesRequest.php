@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\MatchType;
-use Dotenv\Exception\ValidationException;
+use App\Rules\CorrectMatchSidesCount;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreMatchesRequest extends FormRequest
@@ -31,12 +31,16 @@ class StoreMatchesRequest extends FormRequest
         $date = $event->date->toDateTimeString();
 
         $rules = [
-            'matches' => ['required', 'array'],
-            'matches.*.match_type_id' => ['required', 'integer', 'exists:match_types,id'],
+            'matches' => ['required', 'array', 'min:1'],
             'matches.*' => ['required', 'array'],
+            'matches.*.match_type_id' => ['required', 'int', 'exists:match_types,id'],
             'matches.*.competitors' => ['required', 'array'],
-            'matches.*.competitors.*' => ['required', 'array'],
+            'matches.*.competitors.*.wrestlers' => ['required_without:matches.*.competitors.*.tagteams', 'array'],
+            'matches.*.competitors.*.wrestlers.*' => ['required_with:matches.*.competitors.*.wrestlers', 'int', 'exists:wrestlers,id'],
+            'matches.*.competitors.*.tagteams' => ['required_without:matches.*.competitors.*.wrestlers', 'array'],
+            'matches.*.competitors.*.tagteams.*' => ['required_with:matches.*.competitors.*.tagteams', 'int', 'exists:tagteams,id'],
             'matches.*.preview' => ['required', 'string'],
+            // 'matches.*' => [new CorrectMatchSidesCount],
         ];
 
         return $rules;
@@ -45,29 +49,25 @@ class StoreMatchesRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            foreach ($this->matches as $key => $match) {
-                $type = MatchType::find($match['match_type_id']);
+            if (is_array($this->matches)) {
+                foreach ($this->matches as $key => $match) {
+                    if (is_array($match)) {
+                        if (!$type = MatchType::find($match['match_type_id'])) {
+                            continue;
+                        }
 
-                if ($type === null) {
-                    continue;
-                }
+                        if (!is_array($match['competitors'])) {
+                            continue;
+                        }
 
-                if ($match['competitors'] === null || !is_array($match['competitors'])) {
-                    continue;
-                }
+                        if (!$this->matchHasCorrectSidesCount($match, $type)) {
+                            $validator->errors()->add("matches.{$key}.competitors", 'Something is wrong with this field!');
+                        }
 
-                // foreach ($match['competitors'] as $side => $competitorType) {
-                //     if (array_intersect(array_keys($competitorType), ['wrestlers']) !== array_keys($competitorType)) {
-                //         $validator->errors()->add("matches.{$key}.competitors.*", 'Something is wrong with this field!');
-                //     }
-                // }
-
-                if (!$this->matchHasCorrectSidesCount($match, $type)) {
-                    $validator->errors()->add("matches.{$key}.competitors", 'Something is wrong with this field!');
-                }
-
-                if (!$this->matchHasCorrectCompetitorCount) {
-                    $validator->errors()->add("matches.{$key}.competitors", 'Something is wrong with this field!');
+                        if (!$this->matchHasCorrectCompetitorCount($match)) {
+                            $validator->errors()->add("matches.{$key}.competitors", 'Something is wrong with this field!');
+                        }
+                    }
                 }
             }
         });

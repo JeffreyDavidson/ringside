@@ -9,7 +9,7 @@ use App\Models\Wrestler;
 use App\Models\MatchType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateSinglesMatchTest extends TestCase
+class CreateSinglesMatchTest2 extends TestCase
 {
     use RefreshDatabase;
 
@@ -130,92 +130,9 @@ class CreateSinglesMatchTest extends TestCase
     }
 
     /** @test */
-    public function matches_are_required()
-    {
-        // $this->withoutExceptionHandling();
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
-
-        $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches', null);
-
-        $response = $this->post(route('events.matches.store', $event), $data);
-        // dd($response);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('matches');
-    }
-
-    /** @test */
-    public function matches_must_be_an_array()
-    {
-        // $this->withoutExceptionHandling();
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
-
-        $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches', 'not-an-array');
-
-        $response = $this->post(route('events.matches.store', $event), $data);
-        // dd($response);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('matches');
-    }
-
-    /** @test */
     public function each_match_type_id_is_required()
     {
         // $this->withoutExceptionHandling();
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
-
-        $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*.match_type_id', null);
-
-        $response = $this->post(route('events.matches.store', $event), $data);
-        // dd($response);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('matches.*.match_type_id');
-    }
-
-    /** @test */
-    public function each_match_is_required()
-    {
-        // $this->withoutExceptionHandling();
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
-
-        $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*', null);
-
-        $response = $this->post(route('events.matches.store', $event), $data);
-        // dd($response);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('matches.*');
-    }
-
-    /** @test */
-    public function each_match_must_be_an_array()
-    {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
-
-        $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*', []);
-
-        $response = $this->post(route('events.matches.store', $event), $data);
-        dd($response);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('matches.*');
-    }
-
-    /** @test */
-    public function each_match_type_is_required()
-    {
         $this->actAs('administrator');
         $event = factory(Event::class)->states('scheduled')->create();
 
@@ -291,6 +208,23 @@ class CreateSinglesMatchTest extends TestCase
     }
 
     /** @test */
+    public function each_match_must_have_at_least_two_sides_of_competitors()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('scheduled')->create();
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors', [1]);
+        // dd($data);
+
+        $response = $this->post(route('events.matches.store', $event), $data);
+        // dd($response);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors');
+    }
+
+    /** @test */
     public function each_match_must_have_the_same_size_as_the_match_type_has_sides()
     {
         $this->actAs('administrator');
@@ -298,11 +232,9 @@ class CreateSinglesMatchTest extends TestCase
         $matchType = MatchType::where('slug', 'singles')->first();
 
         $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*.competitors', [0 => ['wrestlers' => [1]]]);
-        // dd($data);
+        $data = data_set($validParams, 'matches.*.competitors', [1]);
 
         $response = $this->post(route('events.matches.store', $event), $data);
-        // dd($response);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('matches.*');
@@ -315,7 +247,7 @@ class CreateSinglesMatchTest extends TestCase
         $event = factory(Event::class)->states('scheduled')->create();
 
         $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*.competitors.*', null);
+        $data = data_set($validParams, 'matches.*.competitors.0', null);
 
         $response = $this->post(route('events.matches.store', $event), $data);
 
@@ -330,13 +262,105 @@ class CreateSinglesMatchTest extends TestCase
         $event = factory(Event::class)->states('scheduled')->create();
 
         $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*.competitors.*', 'not-an-array');
+        $data = data_set($validParams, 'matches.*.competitors.0', 'not-an-array');
 
         $response = $this->post(route('events.matches.store', $event), $data);
         // dd($response);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('matches.*.competitors.*');
+    }
+
+    /** @test */
+    public function each_match_side_of_competitors_must_contain_a_valid_competitor_type()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('scheduled')->create();
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors.0.foobar', []);
+
+        $response = $this->post(route('events.matches.store', $event), $data);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors');
+    }
+
+    /** @test */
+    public function each_match_side_competitor_type_must_be_an_array()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('scheduled')->create();
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors.0.wrestlers', 'not-an-array');
+        // dd($data);
+        $response = $this->post(route('events.matches.store', $event), $data);
+        // dd($response);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors.*');
+    }
+
+    /** @test */
+    public function each_match_side_competitor_must_be_an_integer()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('scheduled')->create();
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors.0.wrestlers.0', 'not-an-integer');
+
+        $response = $this->post(route('events.matches.store', $event), $data);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors.*.wrestlers.*');
+    }
+
+    /** @test */
+    public function each_match_side_competitor_must_exist()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('scheduled')->create();
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors.0.wrestlers.0', 999);
+
+        $response = $this->post(route('events.matches.store', $event), $data);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors.*.wrestlers.*');
+    }
+
+    /** @test */
+    public function each_match_side_competitor_must_be_hired_before_the_event_date()
+    {
+        $this->actAs('administrator');
+        $wrestler = factory(Wrestler::class)->create(['hired_at' => Carbon::today()->addMonths(3)]);
+        $event = factory(Event::class)->create(['date' => Carbon::today()->addDays(3)]);
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors.0.wrestlers.0', $wrestler->getKey());
+
+        $response = $this->post(route('events.matches.store', $event), $data);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors.*.wrestlers.*');
+    }
+
+    /** @test */
+    public function each_match_side_competitor_must_be_hired_before_event_of_match()
+    {
+        $this->actAs('administrator');
+        $wrestler = factory(Wrestler::class)->create(['hired_at' => Carbon::tomorrow()->addDays(3)]);
+        $event = factory(Event::class)->create(['date' => Carbon::tomorrow()]);
+
+        $validParams = $this->validParams();
+        $data = data_set($validParams, 'matches.*.competitors.0.wrestlers.0', $wrestler->getKey());
+
+        $response = $this->post(route('events.matches.store', $event), $data);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('matches.*.competitors.*.wrestlers.*');
     }
 
     /** @test */
@@ -347,21 +371,6 @@ class CreateSinglesMatchTest extends TestCase
 
         $validParams = $this->validParams();
         $data = data_set($validParams, 'matches.*.preview', null);
-
-        $response = $this->post(route('events.matches.store', $event), $data);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('matches.*.preview');
-    }
-
-    /** @test */
-    public function each_match_preview_must_be_a_string()
-    {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
-
-        $validParams = $this->validParams();
-        $data = data_set($validParams, 'matches.*.preview', []);
 
         $response = $this->post(route('events.matches.store', $event), $data);
 
