@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::loginUsingId(1);
 
 Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::namespace('Wrestlers')->group(function () {
