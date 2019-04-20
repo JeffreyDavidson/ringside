@@ -13,6 +13,7 @@
 Auth::loginUsingId(1);
 
 Route::middleware(['middleware' => 'auth'])->group(function () {
+    Route::get('/dashboard', 'DashboardController@show')->name('dashboard');
     Route::namespace('Wrestlers')->group(function () {
         Route::get('/wrestlers/state/{state?}', 'WrestlersController@index')->name('wrestlers.index');
         Route::resource('wrestlers', 'WrestlersController')->except('index');
