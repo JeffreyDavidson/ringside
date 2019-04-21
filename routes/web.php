@@ -12,6 +12,7 @@
 */
 
 Route::middleware(['middleware' => 'auth'])->group(function () {
+    Route::get('/dashboard', 'DashboardController@show')->name('dashboard');
     Route::namespace('Wrestlers')->group(function () {
         Route::get('/wrestlers/state/{state?}', 'WrestlersController@index')->name('wrestlers.index');
         Route::resource('wrestlers', 'WrestlersController')->except('index');
@@ -74,6 +75,23 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
 
     Route::namespace('Venues')->group(function () {
         Route::resource('venues', 'VenuesController')->except('destroy');
+    });
+
+    Route::namespace('Titles')->group(function () {
+        Route::get('/titles/state/{state?}', 'TitlesController@index')->name('titles.index');
+        Route::resource('titles', 'TitlesController')->except('index');
+        Route::patch('/titles/{title}/restore', 'TitlesController@restore')->name('titles.restore');
+        Route::post('/titles/{title}/retire', 'TitleRetirementsController@store')->name('titles.retire');
+        Route::delete('/titles/{title}/unretire', 'TitleRetirementsController@destroy')->name('titles.unretire');
+        Route::post('/titles/{title}/deactivate', 'TitleActivationsController@destroy')->name('titles.deactivate');
+        Route::post('/titles/{title}/activate', 'TitleActivationsController@store')->name('titles.activate');
+    });
+
+    Route::namespace('Events')->group(function () {
+        Route::get('/events/state/{state?}', 'EventsController@index')->name('events.index');
+        Route::resource('events', 'EventsController')->except('index');
+        Route::post('/events/{event}/archive', 'ArchivedEventsController@store')->name('events.archive');
+        Route::patch('/events/{event}/restore', 'EventsController@restore')->name('events.restore');
     });
 });
 
