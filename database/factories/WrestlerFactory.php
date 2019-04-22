@@ -10,8 +10,8 @@ $factory->define(Wrestler::class, function (Faker $faker) {
 
     return [
         'name' => $name,
-        'height' => $faker->randomNumber(),
-        'weight' => $faker->randomNumber(),
+        'height' => $faker->numberBetween(60, 95),
+        'weight' => $faker->numberBetween(180, 500),
         'hometown' => $faker->city .', '.$faker->state,
         'hired_at' => $faker->dateTime(),
         'is_active' => true,

@@ -72,7 +72,7 @@ class WrestlersController extends Controller
      */
     public function edit(Wrestler $wrestler)
     {
-        $this->authorize('update', Wrestler::class);
+        $this->authorize('update', $wrestler);
 
         return response()->view('wrestlers.edit', compact('wrestler'));
     }
