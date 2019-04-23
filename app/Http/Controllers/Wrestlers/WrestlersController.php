@@ -101,7 +101,7 @@ class WrestlersController extends Controller
      */
     public function destroy(Wrestler $wrestler)
     {
-        $this->authorize('delete', Wrestler::class);
+        $this->authorize('delete', $wrestler);
 
         $wrestler->delete();
 
