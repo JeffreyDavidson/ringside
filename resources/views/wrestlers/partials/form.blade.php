@@ -56,7 +56,7 @@
     <div class="col-lg-3">
         <div class="form-group">
             <label>Date Hired:</label>
-            <input type="date" class="form-control {{ $errors->has('hired_at') ? 'is-invalid' : '' }}" name="hired_at" placeholder="Enter date hired" value="{{ $wrestler->hired_at->toDateString() ?? old('hired_at') }}">
+            <input type="date" class="form-control {{ $errors->has('hired_at') ? 'is-invalid' : '' }}" name="hired_at" placeholder="Enter date hired" value="{{ optional($wrestler->hired_at)->toDateString() ?? old('hired_at') }}">
             @error('hired_at')
                 <div id="hired-at-error" class="error invalid-feedback">{{ $errors->first('hired_at') }}</div>
             @enderror

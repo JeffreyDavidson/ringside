@@ -29,11 +29,11 @@ class WrestlersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Wrestler $wrestler)
     {
         $this->authorize('create', Wrestler::class);
 
-        return response()->view('wrestlers.create');
+        return response()->view('wrestlers.create', compact('wrestler'));
     }
 
     /**

@@ -40,6 +40,7 @@ class CreateWrestlerTest extends TestCase
                         ->get(route('wrestlers.create'));
 
         $response->assertViewIs('wrestlers.create');
+        $response->assertViewHas('wrestler', new Wrestler);
     }
 
     /** @test */
