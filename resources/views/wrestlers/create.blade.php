@@ -20,6 +20,13 @@
                 Create Wrestler Form
             </h3>
         </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-actions">
+                <a href="{{ route('wrestlers.index') }}" class="btn btn-brand btn-elevate btn-bold">
+                    Back to Wrestlers
+                </a>
+            </div>
+        </div>
     </div>
 
     <!--begin::Form-->
