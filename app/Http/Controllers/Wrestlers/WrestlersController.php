@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wrestlers;
 
 use App\Models\Wrestler;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexRosterRequest;
 use App\Http\Requests\StoreWrestlerRequest;
 use App\Http\Requests\UpdateWrestlerRequest;
 
@@ -12,16 +13,21 @@ class WrestlersController extends Controller
     /**
      * Retrieve wrestles of a specific state.
      *
-     * @param  string  $state
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index($state = 'active')
+    public function index(IndexRosterRequest $request)
     {
         $this->authorize('viewList', Wrestler::class);
 
+        $state = $request->input('state', 'active');
         $wrestlers = Wrestler::hasState($state)->get();
 
-        return response()->view('wrestlers.index', compact('wrestlers'));
+        if ($request->ajax()) {
+            return $wrestlers->toJson();
+        }
+
+        return response()->view('wrestlers.index', compact('wrestlers', 'state'));
     }
 
     /**
