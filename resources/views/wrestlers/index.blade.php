@@ -17,7 +17,7 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
-                    Active Wrestlers
+                    {{ \Illuminate\Support\Str::title($state) }} Wrestlers
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
@@ -34,6 +34,7 @@
         <div class="kt-portlet__body">
 
             <!--begin: Datatable -->
+
             @include('wrestlers.partials.table')
 
             <!--end: Datatable -->
