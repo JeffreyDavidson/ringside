@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('scripts-after')
+    <script src="{{ asset('js/wrestlers/index.js') }}"></script>
+@endpush
+
 @section('content-head')
 <!-- begin:: Content Head -->
 <div class="kt-subheader kt-grid__item" id="kt_subheader">
@@ -35,7 +39,8 @@
 
             <!--begin: Datatable -->
 
-            @include('wrestlers.partials.table')
+            {{-- @include('wrestlers.partials.table') --}}
+            <table data-table="wrestlers.index" class="table table-hover"></table>
 
             <!--end: Datatable -->
         </div>
