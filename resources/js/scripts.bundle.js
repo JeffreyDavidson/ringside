@@ -1,6 +1,8 @@
 "use strict";
 import jQuery from "jquery";
-window.$ = jQuery;
+import Sticky from "sticky-js";
+import PerfectScrollbar from "perfect-scrollbar";
+import Cookies from "js-cookie";
 /**
  * @class KApp
  */
@@ -400,7 +402,7 @@ $(document).ready(function() {
  */
 // Polyfill
 // matches polyfill
-this.Element &&
+window.Element &&
     (function(ElementPrototype) {
         ElementPrototype.matches =
             ElementPrototype.matches ||
@@ -419,7 +421,7 @@ this.Element &&
     })(Element.prototype);
 
 // closest polyfill
-this.Element &&
+window.Element &&
     (function(ElementPrototype) {
         ElementPrototype.closest =
             ElementPrototype.closest ||
@@ -440,7 +442,7 @@ if (!("remove" in Element.prototype)) {
 }
 
 // matches polyfill
-this.Element &&
+window.Element &&
     (function(ElementPrototype) {
         ElementPrototype.matches =
             ElementPrototype.matches ||

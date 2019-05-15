@@ -1,4 +1,7 @@
 const mix = require("laravel-mix");
+const endsWith = require("lodash.endswith");
+const glob = require("glob");
+const output = require("friendly-errors-webpack-plugin/src/output");
 
 /*
  |--------------------------------------------------------------------------
@@ -21,18 +24,7 @@ mix.styles(
     ],
     "public/css/theme.css"
 );
-mix.extract([
-    "jquery",
-    "popper.js",
-    "bootstrap",
-    "js-cookie",
-    "moment",
-    "tooltip.js",
-    "perfect-scrollbar",
-    "sticky-js",
-    "wnumb",
-    "datatables"
-]);
+
 mix.styles(
     [
         "resources/vendors/flaticon/flaticon.css",
@@ -55,7 +47,45 @@ mix.copyDirectory("resources/vendors/flaticon2/font", "public/css/font");
  * * We load in our webpack.config.js, which just contains aliases so
  *   PHPstorm reads them
  ************************************************************************/
+// mix.webpackConfig(require("./webpack.config"));
 mix.disableSuccessNotifications();
 mix.sourceMaps(false, "inline-source-map");
 
-mix.js(["resources/js/scripts.bundle.js"], "public/js/app.js");
+/************************************************************************
+ * Spit out all our entries as individual files
+ * * specifically it's anything in resources/js/entries/*
+ *   or any child directories, that get made into their own files
+ * * It could be simpler, but we also make it output a line in the console
+ *   for each entry.
+ ************************************************************************/
+/** @var {String[]} */
+const entries = glob.sync("resources/js/entries/**/*.js");
+const buildOutputPath = file =>
+    file.replace("resources/js/entries/", "public/js/");
+entries
+    .filter(entry => !endsWith(entry, "app.js"))
+    .forEach(file => {
+        output.title("info", "ENTRY", file);
+        mix.js(file, buildOutputPath(file));
+    });
+// We need to manually run this last as otherwise our output path breaks.
+mix.js("resources/js/entries/app.js", "public/js/app.js");
+
+// mix.js(["resources/js/scripts.bundle.js"], "public/js/app.js");
+
+/************************************************************************
+ * Extract all the vendor files, these are anything that appear in more
+ * than ~3 of our entries. These all end up in vendor.js
+ ************************************************************************/
+mix.extract([
+    "jquery",
+    "popper.js",
+    "bootstrap",
+    "js-cookie",
+    "moment",
+    "tooltip.js",
+    "perfect-scrollbar",
+    "sticky-js",
+    "wnumb",
+    "datatables"
+]);
