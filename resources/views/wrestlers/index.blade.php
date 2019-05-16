@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('scripts-after')
-    <script src="{{ asset('js/wrestlers/index.js') }}"></script>
+    <script src="{{ mix('js/wrestlers/index.js') }}"></script>
 @endpush
 
 @section('content-head')
