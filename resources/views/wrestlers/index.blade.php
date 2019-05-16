@@ -38,9 +38,7 @@
         <div class="kt-portlet__body">
 
             <!--begin: Datatable -->
-
-            {{-- @include('wrestlers.partials.table') --}}
-            <table data-table="wrestlers.index" class="table table-hover"></table>
+            <table data-table="wrestlers.index" class="table table-striped- table-bordered table-hover table-checkable"></table>
 
             <!--end: Datatable -->
         </div>
