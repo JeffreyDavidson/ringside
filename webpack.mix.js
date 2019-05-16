@@ -71,8 +71,6 @@ entries
 // We need to manually run this last as otherwise our output path breaks.
 mix.js("resources/js/entries/app.js", "public/js/app.js");
 
-// mix.js(["resources/js/scripts.bundle.js"], "public/js/app.js");
-
 /************************************************************************
  * Extract all the vendor files, these are anything that appear in more
  * than ~3 of our entries. These all end up in vendor.js

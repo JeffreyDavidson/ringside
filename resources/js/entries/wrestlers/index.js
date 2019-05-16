@@ -1,50 +1,28 @@
 "use strict";
 import jQuery from "jquery";
-var KTDatatablesBasicBasic = (function() {
+var KTDatatablesDataSourceAjaxServer = (function() {
     var initTable1 = function() {
         var table = $('[data-table="wrestlers.index"]');
 
         // begin first table
         table.DataTable({
             responsive: true,
-
-            // DOM Layout settings
-            dom: `<'row'<'col-sm-12'tr>>
-			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
-
-            lengthMenu: [5, 10, 25, 50],
-
-            pageLength: 10,
-
-            language: {
-                lengthMenu: "Display _MENU_"
-            },
-
-            // Order settings
-            order: [[1, "desc"]],
-
-            headerCallback: function(thead, data, start, end, display) {
-                thead.getElementsByTagName("th")[0].innerHTML = `
-                    <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid">
-                        <input type="checkbox" value="" class="m-group-checkable">
-                        <span></span>
-                    </label>`;
-            },
-
+            searchDelay: 500,
+            processing: true,
+            serverSide: true,
+            ajax:
+                "https://keenthemes.com/metronic/themes/themes/metronic/dist/preview/inc/api/datatables/demos/server.php",
+            columns: [
+                { data: "OrderID" },
+                { data: "Country" },
+                { data: "ShipCity" },
+                { data: "CompanyName" },
+                { data: "ShipDate" },
+                { data: "Status" },
+                { data: "Type" },
+                { data: "Actions", responsivePriority: -1 }
+            ],
             columnDefs: [
-                {
-                    targets: 0,
-                    width: "30px",
-                    className: "dt-right",
-                    orderable: false,
-                    render: function(data, type, full, meta) {
-                        return `
-                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid">
-                            <input type="checkbox" value="" class="m-checkable">
-                            <span></span>
-                        </label>`;
-                    }
-                },
                 {
                     targets: -1,
                     title: "Actions",
@@ -67,7 +45,7 @@ var KTDatatablesBasicBasic = (function() {
                     }
                 },
                 {
-                    targets: 8,
+                    targets: -3,
                     render: function(data, type, full, meta) {
                         var status = {
                             1: { title: "Pending", class: "kt-badge--brand" },
@@ -100,7 +78,7 @@ var KTDatatablesBasicBasic = (function() {
                     }
                 },
                 {
-                    targets: 9,
+                    targets: -2,
                     render: function(data, type, full, meta) {
                         var status = {
                             1: { title: "Online", state: "danger" },
@@ -124,33 +102,6 @@ var KTDatatablesBasicBasic = (function() {
                 }
             ]
         });
-
-        table.on("change", ".kt-group-checkable", function() {
-            var set = $(this)
-                .closest("table")
-                .find("td:first-child .kt-checkable");
-            var checked = $(this).is(":checked");
-
-            $(set).each(function() {
-                if (checked) {
-                    $(this).prop("checked", true);
-                    $(this)
-                        .closest("tr")
-                        .addClass("active");
-                } else {
-                    $(this).prop("checked", false);
-                    $(this)
-                        .closest("tr")
-                        .removeClass("active");
-                }
-            });
-        });
-
-        table.on("change", "tbody tr .kt-checkbox", function() {
-            $(this)
-                .parents("tr")
-                .toggleClass("active");
-        });
     };
 
     return {
@@ -162,5 +113,5 @@ var KTDatatablesBasicBasic = (function() {
 })();
 
 jQuery(document).ready(function() {
-    KTDatatablesBasicBasic.init();
+    KTDatatablesDataSourceAjaxServer.init();
 });
