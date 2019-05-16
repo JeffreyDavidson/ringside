@@ -2,10 +2,8 @@
     "/js/app.js": "/js/app.js",
     "/js/manifest.js": "/js/manifest.js",
     "/js/vendor.js": "/js/vendor.js",
-    "/js/wrestlers/basic.js": "/js/wrestlers/basic.js",
-    "/css/app.css": "/css/app.css",
     "/js/wrestlers/index.js": "/js/wrestlers/index.js",
-    "/js/wrestlers/index2.js": "/js/wrestlers/index2.js",
+    "/css/app.css": "/css/app.css",
     "/css/theme.css": "/css/theme.css",
     "/css/fonts.css": "/css/fonts.css"
 }
