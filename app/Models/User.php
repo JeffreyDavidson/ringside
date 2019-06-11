@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-// use App\Role;
+use App\Enums\Role;
+use MadWeb\Enum\EnumCastable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, EnumCastable;
 
     /**
      * The attributes that are mass assignable.
@@ -30,13 +32,22 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'role' => Role::class,
+    ];
+
+    /**
      * Check to see if the user is a super administrator.
      *
      * @return bool
      */
     public function isSuperAdministrator()
     {
-        return $this->role_id === Role::SUPER_ADMINISTRATOR;
+        return $this->role->is(Role::SUPER_ADMINISTRATOR);
     }
 
     /**
@@ -46,7 +57,7 @@ class User extends Authenticatable
      */
     public function isAdministrator()
     {
-        return $this->role_id === Role::ADMINISTRATOR;
+        return $this->role->is(Role::ADMINISTRATOR);
     }
 
     /**
@@ -57,5 +68,17 @@ class User extends Authenticatable
     public function wrestler()
     {
         return $this->hasOne(Wrestler::class);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param  string $password
+     * @return void
+     */
+    public function setPasswordAttribute($password)
+    {
+
+        $this->attributes['password'] = Hash::make($password);
     }
 }
