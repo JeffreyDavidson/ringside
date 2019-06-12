@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('scripts-after')
+    <script src="{{ mix('js/venues/index.js') }}"></script>
+@endpush
+
 @section('content-head')
 <!-- begin:: Content Head -->
 <div class="kt-subheader kt-grid__item" id="kt_subheader">
