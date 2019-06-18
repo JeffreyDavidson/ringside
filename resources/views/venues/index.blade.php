@@ -20,8 +20,7 @@
 
 @section('content')
 <div class="kt-portlet kt-portlet--mobile">
-    <div class="kt-portlet__head kt-portlet__head--lg"></div>
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-portlet__body--fit">
 
         <!--begin: Datatable -->
         <div class="kt-datatable" id="kt_apps_venue_list_datatable"></div>
