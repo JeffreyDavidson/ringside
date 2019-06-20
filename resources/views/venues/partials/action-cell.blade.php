@@ -4,24 +4,22 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
-            <li class="kt-nav__item">
-                <a href="{{ route('venues.show', $model) }}" class="kt-nav__link">
-                    <i class="kt-nav__link-icon flaticon2-expand"></i>
-                    <span class="kt-nav__link-text">View</span>
-                </a>
-            </li>
-            <li class="kt-nav__item">
-                <a href="{{ route('venues.edit', $model) }}" class="kt-nav__link">
-                    <i class="kt-nav__link-icon flaticon2-contract"></i>
-                    <span class="kt-nav__link-text">Edit</span>
-                </a>
-            </li>
-            <li class="kt-nav__item">
-                <a href="#" class="kt-nav__link">
-                    <i class="kt-nav__link-icon flaticon2-trash"></i>
-                    <span class="kt-nav__link-text">Delete</span>
-                </a>
-            </li>
+            @can('view', $model)
+                <li class="kt-nav__item">
+                    <a href="{{ route('venues.show', $model) }}" class="kt-nav__link">
+                        <i class="kt-nav__link-icon flaticon2-expand"></i>
+                        <span class="kt-nav__link-text">View</span>
+                    </a>
+                </li>
+            @endcan
+            @can('update', $model)
+                <li class="kt-nav__item">
+                    <a href="{{ route('venues.edit', $model) }}" class="kt-nav__link">
+                        <i class="kt-nav__link-icon flaticon2-contract"></i>
+                        <span class="kt-nav__link-text">Edit</span>
+                    </a>
+                </li>
+            @endcan
         </ul>
     </div>
 </div>
