@@ -47,7 +47,7 @@ var KTAppVenueListDatatable = (function() {
             // columns definition
             columns: [
                 {
-                    field: "RecordID",
+                    field: "id",
                     title: "#",
                     sortable: false,
                     width: 20,
@@ -81,7 +81,7 @@ var KTAppVenueListDatatable = (function() {
                     title: "Zip"
                 },
                 {
-                    field: "actions",
+                    field: "action",
                     width: 80,
                     title: "Actions",
                     sortable: false,
@@ -237,7 +237,7 @@ var KTAppVenueListDatatable = (function() {
 
     var updateTotal = function() {
         datatable.on("kt-datatable--on-layout-updated", function() {
-            //$('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
+            $("#kt_subheader_total").html(datatable.getTotalRows() + " Total");
         });
     };
 
