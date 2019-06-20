@@ -57,72 +57,36 @@ var KTAppVenueListDatatable = (function() {
                     textAlign: "center"
                 },
                 {
-                    field: "VenueName",
+                    field: "name",
                     title: "Venue",
-                    width: 200,
-                    template: function(row) {
-                        return row.name;
-                    }
+                    width: 200
                 },
                 {
-                    field: "Address",
+                    field: "address",
                     title: "Address",
                     template: function(row) {
                         return row.address1 + " " + row.address2;
                     }
                 },
                 {
-                    field: "City",
-                    title: "City",
-                    template: function(row) {
-                        return row.city;
-                    }
+                    field: "city",
+                    title: "City"
                 },
                 {
-                    field: "State",
-                    title: "State",
-                    template: function(row) {
-                        return row.state;
-                    }
+                    field: "state",
+                    title: "State"
                 },
                 {
-                    field: "Actions",
+                    field: "zip",
+                    title: "Zip"
+                },
+                {
+                    field: "actions",
                     width: 80,
                     title: "Actions",
                     sortable: false,
                     autoHide: false,
-                    overflow: "visible",
-                    template: function() {
-                        return '\
-							<div class="dropdown">\
-								<a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
-									<i class="flaticon-more-1"></i>\
-								</a>\
-								<div class="dropdown-menu dropdown-menu-right">\
-									<ul class="kt-nav">\
-										<li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-expand"></i>\
-												<span class="kt-nav__link-text">View</span>\
-											</a>\
-										</li>\
-										<li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-contract"></i>\
-												<span class="kt-nav__link-text">Edit</span>\
-											</a>\
-										</li>\
-										<li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-trash"></i>\
-												<span class="kt-nav__link-text">Delete</span>\
-											</a>\
-										</li>\
-									</ul>\
-								</div>\
-							</div>\
-						';
-                    }
+                    overflow: "visible"
                 }
             ]
         });
