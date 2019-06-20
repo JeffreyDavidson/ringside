@@ -23,7 +23,7 @@ class VenuesController extends Controller
         if ($request->ajax()) {
             $query = Venue::query();
 
-            return $table->eloquent($query)->toJson();
+            return $table->eloquent($query)->addColumn('action', 'venues.partials.action-cell')->toJson();
         }
 
         return view('venues.index');
