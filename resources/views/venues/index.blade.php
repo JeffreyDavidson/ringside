@@ -50,7 +50,6 @@
 
         <!--begin: Datatable -->
         <div class="kt-datatable" id="kt_apps_venue_list_datatable"></div>
-        {{-- @include('venues.partials.table') --}}
 
         <!--end: Datatable -->
     </div>
