@@ -32,14 +32,6 @@
                 </div>
             </form>
         </div>
-        <div class="kt-subheader__group kt-hidden" id="kt_subheader_group_actions">
-            <div class="kt-subheader__desc"><span id="kt_subheader_group_selected_rows"></span> Selected:</div>
-            <div class="btn-toolbar kt-margin-l-20">
-                <button class="btn btn-label-danger btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_delete_all">
-                    Delete All
-                </button>
-            </div>
-        </div>
     </div>
     <div class="kt-subheader__toolbar">
         <a href="{{ route('venues.create') }}"
