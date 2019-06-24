@@ -1,13 +1,21 @@
 ("use strict");
 
+const renderStatusCell = (data, type, full, meta) => {
+    const status = {
+        0: { title: "Inactive" },
+        1: { title: "Active" }
+    };
+    console.log(status);
+    if (typeof status[data] === "undefined") {
+        return data;
+    }
+    return status[data].title;
+};
+
 var table = $('[data-table="titles.index"]');
 
 // begin first table
 table.DataTable({
-    // DOM Layout settings
-    // dom: `<'row'<'col-sm-12'tr>>
-    // 		<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
-
     // language: {
     //     lengthMenu: "Display _MENU_"
     // },
@@ -20,9 +28,9 @@ table.DataTable({
         { data: "name", title: "Title" },
         { data: "slug", title: "Slug" },
         { data: "introduced_at", title: "Date Introduced" },
-        { data: "status", title: "Status" },
+        { data: "is_active", title: "Status", render: renderStatusCell },
         {
-            data: "Actions",
+            data: "action",
             title: "Actions",
             orderable: false,
             responsivePriority: -1
