@@ -49,9 +49,7 @@
     <div class="kt-portlet__body kt-portlet__body--fit">
 
         <!--begin: Datatable -->
-        <div class="kt-datatable">
-            <table id="titles_table" data-table="titles.index"></table>
-        </div>
+        <table id="titles_table" data-table="titles.index" class="table table-striped- table-bordered table-hover"></table>
 
         <!--end: Datatable -->
     </div>
