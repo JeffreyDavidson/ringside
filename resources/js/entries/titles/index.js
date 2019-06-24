@@ -1,6 +1,6 @@
 ("use strict");
 
-var table = $('[data-table="wrestlers.index"]');
+var table = $('[data-table="titles.index"]');
 
 // begin first table
 table.DataTable({
