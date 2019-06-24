@@ -5,7 +5,6 @@ const renderStatusCell = (data, type, full, meta) => {
         0: { title: "Inactive" },
         1: { title: "Active" }
     };
-    console.log(status);
     if (typeof status[data] === "undefined") {
         return data;
     }
@@ -31,5 +30,8 @@ table.DataTable({
             orderable: false,
             responsivePriority: -1
         }
-    ]
+    ],
+    initComplete: function(settings, json) {
+        $("#kt_subheader_total").html(settings.fnRecordsTotal() + " Total");
+    }
 });
