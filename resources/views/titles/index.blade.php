@@ -46,7 +46,7 @@
 
 @section('content')
 <div class="kt-portlet kt-portlet--mobile">
-    <div class="kt-portlet__body kt-portlet__body--fit">
+    <div class="kt-portlet__body">
 
         <!--begin: Datatable -->
         <table id="titles_table" data-table="titles.index" class="table table-striped- table-bordered table-hover"></table>
