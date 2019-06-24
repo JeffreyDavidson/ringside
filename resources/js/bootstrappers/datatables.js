@@ -9,9 +9,8 @@ $.extend(true, $.fn.dataTable.defaults, {
     searchDelay: 300,
     pageLength: 10,
     language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Search by any column value...",
-        lengthMenu: "_MENU_"
+        search: "Search:",
+        lengthMenu: "Show _MENU_ entries"
     },
     columnDefs: [
         {

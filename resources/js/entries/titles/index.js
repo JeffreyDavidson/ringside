@@ -16,10 +16,6 @@ var table = $('[data-table="titles.index"]');
 
 // begin first table
 table.DataTable({
-    // language: {
-    //     lengthMenu: "Display _MENU_"
-    // },
-
     // Order settings
     order: [[1, "desc"]],
     ajax: "/titles",
