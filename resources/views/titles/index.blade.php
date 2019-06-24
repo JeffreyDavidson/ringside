@@ -49,7 +49,9 @@
     <div class="kt-portlet__body kt-portlet__body--fit">
 
         <!--begin: Datatable -->
-        <div class="kt-datatable" id="titles_table"></div>
+        <div class="kt-datatable">
+            <table id="titles_table"></table>
+        </div>
 
         <!--end: Datatable -->
     </div>

@@ -5,3 +5,4 @@ import "./bootstrappers/datatables.js";
 require("block-ui");
 require("bootstrap-select");
 window.$ = jQuery;
+window.jQuery = jQuery;
