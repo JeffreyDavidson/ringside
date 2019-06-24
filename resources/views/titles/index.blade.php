@@ -50,7 +50,7 @@
 
         <!--begin: Datatable -->
         <div class="kt-datatable">
-            <table id="titles_table"></table>
+            <table id="titles_table" data-table="titles.index"></table>
         </div>
 
         <!--end: Datatable -->
