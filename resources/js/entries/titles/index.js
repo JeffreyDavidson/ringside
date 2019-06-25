@@ -1,16 +1,7 @@
 "use strict";
 
-const renderStatusCell = (data, type, full, meta) => {
-    const status = {
-        0: { title: "Inactive" },
-        1: { title: "Active" }
-    };
-    if (typeof status[data] === "undefined") {
-        return data;
-    }
-    console.log(status[data]);
-    return status[data].title;
-};
+const renderStatusCell = (data, type, full, meta) =>
+    data ? "Active" : "Inactive";
 
 const table = $('[data-table="titles.index"]');
 const rowCounter = $("#kt_subheader_total");
