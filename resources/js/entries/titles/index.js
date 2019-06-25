@@ -1,4 +1,4 @@
-("use strict");
+"use strict";
 
 const renderStatusCell = (data, type, full, meta) => {
     const status = {
@@ -11,7 +11,9 @@ const renderStatusCell = (data, type, full, meta) => {
     return status[data].title;
 };
 
-var table = $('[data-table="titles.index"]');
+const table = $('[data-table="titles.index"]');
+const rowCounter = $("#kt_subheader_total");
+const searchInput = $("#generalSearch");
 
 // begin first table
 table.DataTable({
@@ -31,7 +33,23 @@ table.DataTable({
             responsivePriority: -1
         }
     ],
-    initComplete: function(settings, json) {
-        $("#kt_subheader_total").html(settings.fnRecordsTotal() + " Total");
+    initComplete(settings) {
+        rowCounter.html(`${settings.fnRecordsTotal()} Total`);
+    }
+});
+
+searchInput.on("keyup", () =>
+    table
+        .DataTable()
+        .search(searchInput.val())
+        .draw()
+);
+
+table.on("search.dt", (e, settings) => {
+    const searchTerm = table.DataTable().search();
+    if (!searchTerm) {
+        rowCounter.html(`${settings.fnRecordsTotal()} Total`);
+    } else {
+        rowCounter.html(`${settings.fnRecordsDisplay()} Matching Rows`);
     }
 });

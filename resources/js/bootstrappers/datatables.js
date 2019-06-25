@@ -10,7 +10,7 @@ $.extend(true, $.fn.dataTable.defaults, {
     pageLength: 10,
     language: {
         search: "Search:",
-        lengthMenu: "Show _MENU_ entries"
+        lengthMenu: "_MENU_"
     },
     columnDefs: [
         {
@@ -23,5 +23,5 @@ $.extend(true, $.fn.dataTable.defaults, {
         ["10 per page", "25 per page", "50 per page", "100 per page"]
     ],
     dom:
-        "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+        "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-2'l><'col-sm-12 col-md-5'p>>"
 });
