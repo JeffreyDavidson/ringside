@@ -8,6 +8,7 @@ const renderStatusCell = (data, type, full, meta) => {
     if (typeof status[data] === "undefined") {
         return data;
     }
+    console.log(status[data]);
     return status[data].title;
 };
 
