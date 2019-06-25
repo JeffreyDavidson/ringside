@@ -37,7 +37,7 @@ searchInput.on("keyup", () =>
         .draw()
 );
 
-table.on("search.dt", (e, settings) => {
+table.on("draw.dt", (e, settings) => {
     const searchTerm = table.DataTable().search();
     if (!searchTerm) {
         rowCounter.html(`${settings.fnRecordsTotal()} Total`);

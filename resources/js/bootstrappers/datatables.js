@@ -6,7 +6,7 @@ $.extend(true, $.fn.dataTable.defaults, {
     orderable: true,
     searchable: true,
     responsive: true,
-    searchDelay: 300,
+    searchDelay: 100,
     pageLength: 10,
     language: {
         search: "Search:",
