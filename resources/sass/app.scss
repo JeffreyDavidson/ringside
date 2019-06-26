@@ -34,3 +34,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 .dataTable tbody td:first-child {
     padding-left: 25px;
 }
+
+.form-control.is-invalid ~ .kt-input-icon__icon {
+    display: none;
+}
