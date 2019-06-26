@@ -18,15 +18,15 @@
         </div>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group input-group flatpickr">
     <label>Date Introduced:</label>
-    <div class="input-group flatpickr">
-        <input type="text" class="form-control {{ $errors->has('introduced_at') ? 'is-invalid' : '' }}" data-datetimepicker data-input name="introduced_at" placeholder="Enter date introduced" value="{{ $venue->introduced_at ?? old('introduced_at') }}">
-        <div class="input-group-append">
-            <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
-        </div>
+    <div class="input-group flatpickr kt-input-icon kt-input-icon--right">
+        <input type="text" class="form-control {{ $errors->has('introduced_at') ? 'is-invalid' : '' }}" data-datetimepicker data-input name="introduced_at" placeholder="Enter date introduced" value="{{ $title->introduced_at ?? old('introduced_at') }}">
+        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+            <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
+        </span>
+        @if ($errors->has('introduced_at'))
+            <div id="introduced_at-error" class="error invalid-feedback">{{ $errors->first('introduced_at') }}</div>
+        @endif
     </div>
-    @if ($errors->has('introduced_at'))
-        <div id="introduced_at-error" class="error invalid-feedback">{{ $errors->first('introduced_at') }}</div>
-    @endif
 </div>
