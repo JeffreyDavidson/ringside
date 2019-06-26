@@ -39,7 +39,7 @@ class TitlesController extends Controller
     {
         $this->authorize('create', Title::class);
 
-        return response()->view('titles.create');
+        return view('titles.create');
     }
 
     /**
