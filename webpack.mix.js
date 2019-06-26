@@ -90,5 +90,5 @@ mix.extract([
     "datatables.net",
     "block-ui",
     "bootstrap-select",
-    "eonasdan-bootstrap-datetimepicker"
+    "flatpickr"
 ]);

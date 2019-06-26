@@ -18,10 +18,10 @@
         </div>
     </div>
 </div>
-<div class="form-group date">
+<div class="form-group">
     <label>Date Introduced:</label>
-    <div class="input-group date">
-        <input type="text" class="form-control {{ $errors->has('introduced_at') ? 'is-invalid' : '' }}" data-datetimepicker name="introduced_at" placeholder="Enter date introduced" readonly value="{{ $venue->introduced_at ?? old('introduced_at') }}">
+    <div class="input-group flatpickr">
+        <input type="text" class="form-control {{ $errors->has('introduced_at') ? 'is-invalid' : '' }}" data-datetimepicker data-input name="introduced_at" placeholder="Enter date introduced" value="{{ $venue->introduced_at ?? old('introduced_at') }}">
         <div class="input-group-append">
             <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
         </div>
