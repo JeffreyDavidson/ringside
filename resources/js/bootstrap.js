@@ -5,5 +5,6 @@ import "datatables.net/js/jquery.dataTables";
 import "./bootstrappers/datatables.js";
 require("block-ui");
 require("bootstrap-select");
+require("eonasdan-bootstrap-datetimepicker");
 window.$ = jQuery;
 window.jQuery = jQuery;

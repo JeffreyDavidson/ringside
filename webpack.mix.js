@@ -87,5 +87,6 @@ mix.extract([
     "wnumb",
     "datatables.net",
     "block-ui",
-    "bootstrap-select"
+    "bootstrap-select",
+    "eonasdan-bootstrap-datetimepicker"
 ]);
