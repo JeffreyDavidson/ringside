@@ -6,6 +6,39 @@ use App\Traits\Retireable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * \App\Models\Title
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon $introduced_at
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Retirement $previousRetirement
+ * @property-read \App\Models\Retirement $retirement
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Title onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title retired()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereIntroducedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Title whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Title withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Title withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Title extends Model
 {
     use Retireable,
