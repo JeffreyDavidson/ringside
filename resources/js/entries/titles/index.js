@@ -15,7 +15,6 @@ table.DataTable({
     columns: [
         { data: "id", title: "Title ID" },
         { data: "name", title: "Title" },
-        { data: "slug", title: "Slug" },
         { data: "introduced_at", title: "Date Introduced" },
         { data: "is_active", title: "Status", render: renderStatusCell },
         {

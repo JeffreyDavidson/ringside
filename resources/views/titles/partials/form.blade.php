@@ -1,22 +1,9 @@
-<div class="row">
-    <div class="col-lg-8">
-        <div class="form-group">
-            <label>Title Name:</label>
-            <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Enter title name" value="{{ $title->name ?? old('name') }}">
-            @if ($errors->has('name'))
-                <div id="name-error" class="error invalid-feedback">{{ $errors->first('name') }}</div>
-            @endif
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="form-group">
-            <label>Title Slug:</label>
-            <input type="text" class="form-control {{ $errors->has('slug') ? 'is-invalid' : '' }}" name="slug" placeholder="Enter venue slug" value="{{ $title->slug ?? old('slug') }}">
-            @if ($errors->has('slug'))
-                <div id="slug-error" class="error invalid-feedback">{{ $errors->first('slug') }}</div>
-            @endif
-        </div>
-    </div>
+<div class="form-group">
+    <label>Title Name:</label>
+    <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Enter title name" value="{{ $title->name ?? old('name') }}">
+    @if ($errors->has('name'))
+        <div id="name-error" class="error invalid-feedback">{{ $errors->first('name') }}</div>
+    @endif
 </div>
 <div class="form-group input-group flatpickr">
     <label>Date Introduced:</label>

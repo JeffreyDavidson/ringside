@@ -68,18 +68,6 @@ class CreateTitleTest extends TestCase
     }
 
     /** @test */
-    public function a_title_slug_is_generated_when_created()
-    {
-        $this->actAs('administrator');
-
-        $response = $this->post(route('titles.store'), $this->validParams());
-
-        tap(Title::first(), function ($title) {
-            $this->assertEquals('example-title-name', $title->slug);
-        });
-    }
-
-    /** @test */
     public function a_title_introduced_today_or_before_is_active()
     {
         $this->actAs('administrator');
