@@ -56,7 +56,6 @@ class CreateTitleTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_title()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
         $response = $this->post(route('titles.store'), $this->validParams());
