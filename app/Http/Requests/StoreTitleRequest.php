@@ -26,7 +26,7 @@ class StoreTitleRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'introduced_at' => ['required', 'date_format:Y-m-d H:i'],
+            'introduced_at' => ['required', 'date_format:Y-m-d H:i:s'],
         ];
     }
 }
