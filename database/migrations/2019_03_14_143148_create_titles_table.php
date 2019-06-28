@@ -18,7 +18,6 @@ class CreateTitlesTable extends Migration
             $table->string('name');
             $table->dateTime('introduced_at')->nullable();
             $table->dateTime('retired_at')->nullable();
-            $table->boolean('is_active')->virtualAs('retired_at is null and introduced_at is not null and introduced_at <= now()');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Retireable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -66,4 +68,45 @@ class Title extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_active'];
+
+    /**
+     *
+     */
+    public function getIsActiveAttribute()
+    {
+        return is_null($this->retired_at) && !is_null($this->introduced_at) && $this->introduced_at->isPast();
+    }
+
+    /**
+     * Scope a query to only include active titles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeActive($query)
+    {
+        $query->whereNull('retired_at');
+        $query->whereNotNull('introduced_at');
+        $query->where('introduced_at', '>=', DB::raw('now()'));
+    }
+
+    /**
+     * Scope a query to only include inactive titles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeInactive($query)
+    {
+        $query->where(function (Builder $query) {
+            $query->orWhereNotNull('retired_at');
+            $query->orWhereNull('introduced_at');
+            $query->orWhere('introduced_at', '<', DB::raw('now()'));
+        });
+    }
 }

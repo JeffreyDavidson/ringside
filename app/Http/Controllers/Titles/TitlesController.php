@@ -24,7 +24,21 @@ class TitlesController extends Controller
         if ($request->ajax()) {
             $query = Title::query();
 
-            return $table->eloquent($query)->addColumn('action', 'titles.partials.action-cell')->toJson();
+            switch ($request->input('status')) {
+                case 'only_active':
+                    $query->active();
+                    break;
+                case 'only_inactive':
+                    $query->inactive();
+                    break;
+            }
+
+            return $table->eloquent($query)
+                ->addColumn('action', 'titles.partials.action-cell')
+                ->editColumn('introduced_at', function (Title $title) {
+                    return $title->introduced_at->format('Y-m-d H:s');
+                })
+                ->toJson();
         }
 
         return view('titles.index');

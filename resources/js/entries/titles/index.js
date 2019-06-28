@@ -6,17 +6,28 @@ const renderStatusCell = (data, type, full, meta) =>
 const table = $('[data-table="titles.index"]');
 const rowCounter = $("#kt_subheader_total");
 const searchInput = $("#generalSearch");
+const statusDropdown = $("#statusDropdown");
 
 // begin first table
 table.DataTable({
     // Order settings
     order: [[0, "asc"]],
-    ajax: "/titles",
+    ajax: {
+        url: window.location.href,
+        data(params) {
+            params.status = statusDropdown.value;
+        }
+    },
     columns: [
         { data: "id", title: "Title ID" },
         { data: "name", title: "Title" },
         { data: "introduced_at", title: "Date Introduced" },
-        { data: "is_active", title: "Status", render: renderStatusCell },
+        {
+            data: "is_active",
+            title: "Status",
+            searchable: false,
+            render: renderStatusCell
+        },
         {
             data: "action",
             title: "Actions",
