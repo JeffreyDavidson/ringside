@@ -91,9 +91,11 @@ class Title extends Model
      */
     public function scopeActive($query)
     {
-        $query->whereNull('retired_at');
+        $query->whereDoesntHave('retirements', function (Builder $query) {
+            $query->whereNull('ended_at');
+        });
         $query->whereNotNull('introduced_at');
-        $query->where('introduced_at', '>=', DB::raw('now()'));
+        $query->where('introduced_at', '<=', now());
     }
 
     /**
@@ -103,10 +105,7 @@ class Title extends Model
      */
     public function scopeInactive($query)
     {
-        $query->where(function (Builder $query) {
-            $query->orWhereNotNull('retired_at');
-            $query->orWhereNull('introduced_at');
-            $query->orWhere('introduced_at', '<', DB::raw('now()'));
-        });
+        $query->where('introduced_at', '>', now());
+    }
     }
 }
