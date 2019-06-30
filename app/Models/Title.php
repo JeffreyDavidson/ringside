@@ -107,5 +107,14 @@ class Title extends Model
     {
         $query->where('introduced_at', '>', now());
     }
+
+    /**
+     * Activate an inactive title.
+     *
+     * @return boolean
+     */
+    public function activate()
+    {
+        return $this->update(['introduced_at' => now()]);
     }
 }

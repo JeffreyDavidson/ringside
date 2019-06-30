@@ -97,7 +97,7 @@ class TitlePolicy
      */
     public function activate(User $user, Title $title)
     {
-        return $user->isAdministrator() && ! $title->isActive();
+        return $user->isAdministrator() && !$title->is_active;
     }
 
     /**

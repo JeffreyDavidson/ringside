@@ -15,15 +15,19 @@ class ViewInactiveTitlesListTest extends TestCase
     {
         $this->actAs('administrator');
         $inactiveTitles = factory(Title::class, 3)->states('inactive')->create();
-        $activeTitle = factory(Title::class)->states('active')->create();
+        factory(Title::class)->states('active')->create();
 
-        $response = $this->get(route('titles.index', ['state' => 'inactive']));
+        $response = $this->get(route('titles.index'));
+        $responseAjax = $this->getJson(route('titles.index', ['status' => 'only_inactive']), ['X-Requested-With' => 'XMLHttpRequest']);
 
         $response->assertOk();
-        $response->assertSee(e($inactiveTitles[0]->name));
-        $response->assertSee(e($inactiveTitles[1]->name));
-        $response->assertSee(e($inactiveTitles[2]->name));
-        $response->assertDontSee(e($activeTitle->name));
+        $response->assertViewIs('titles.index');
+        $responseAjax->assertJson([
+            'recordsTotal' => $inactiveTitles->count(),
+            'data'         => $inactiveTitles->map(function (Title $title) {
+                return ['id' => $title->id, 'name' => e($title->name)];
+            })->toArray(),
+        ]);
     }
 
     /** @test */

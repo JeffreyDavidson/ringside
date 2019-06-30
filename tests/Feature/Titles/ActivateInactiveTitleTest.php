@@ -21,6 +21,7 @@ class ActivateInactiveTitleTest extends TestCase
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
             $this->assertTrue($title->is_active);
+            $this->assertEquals(now()->toDateTimeString(), $title->introduced_at->toDateTimeString());
         });
     }
 
@@ -42,7 +43,7 @@ class ActivateInactiveTitleTest extends TestCase
 
         $response = $this->post(route('titles.activate', $title));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */

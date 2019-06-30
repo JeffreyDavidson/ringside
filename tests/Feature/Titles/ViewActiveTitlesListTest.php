@@ -15,15 +15,19 @@ class ViewActiveTitlesListTest extends TestCase
     {
         $this->actAs('administrator');
         $activeTitles = factory(Title::class, 3)->states('active')->create();
-        $inactiveTitle = factory(Title::class)->states('inactive')->create();
+        $inactive = factory(Title::class)->states('inactive')->create();
 
         $response = $this->get(route('titles.index'));
+        $responseAjax = $this->getJson(route('titles.index', ['status' => 'only_active']), ['X-Requested-With' => 'XMLHttpRequest']);
 
         $response->assertOk();
-        $response->assertSee(e($activeTitles[0]->name));
-        $response->assertSee(e($activeTitles[1]->name));
-        $response->assertSee(e($activeTitles[2]->name));
-        $response->assertDontSee(e($inactiveTitle->name));
+        $response->assertViewIs('titles.index');
+        $responseAjax->assertJson([
+            'recordsTotal' => $activeTitles->count(),
+            'data'         => $activeTitles->map(function (Title $title) {
+                return ['id' => $title->id, 'name' => e($title->name)];
+            })->toArray(),
+        ]);
     }
 
     /** @test */
@@ -32,7 +36,7 @@ class ViewActiveTitlesListTest extends TestCase
         $this->actAs('basic-user');
         $title = factory(Title::class)->states('active')->create();
 
-        $response = $this->get(route('titles.index'));
+        $response = $this->get(route('titles.index', ['status' => 'only_active']));
 
         $response->assertStatus(403);
     }
@@ -42,8 +46,8 @@ class ViewActiveTitlesListTest extends TestCase
     {
         $title = factory(Title::class)->states('active')->create();
 
-        $response = $this->get(route('titles.index'));
+        $response = $this->get(route('titles.index', ['status' => 'only_active']));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 }

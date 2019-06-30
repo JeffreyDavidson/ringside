@@ -18,7 +18,7 @@ $factory->state(Title::class, 'active', function ($faker) {
 
 $factory->state(Title::class, 'inactive', function ($faker) {
     return [
-        'introduced_at' => $faker->dateTimeBetween('+1 week', '+1 month')
+        'introduced_at' => $faker->dateTimeBetween('+1 day', '+1 month')
     ];
 });
 
