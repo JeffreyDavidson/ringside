@@ -31,6 +31,9 @@ class TitlesController extends Controller
                 case 'only_inactive':
                     $query->inactive();
                     break;
+                case 'only_retired':
+                    $query->retired();
+                    break;
             }
 
             return $table->eloquent($query)

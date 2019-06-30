@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ViewRetiredTitlesTest extends TestCase
+class ViewRetiredTitlesListTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -15,15 +15,19 @@ class ViewRetiredTitlesTest extends TestCase
     {
         $this->actAs('administrator');
         $retiredTitles = factory(Title::class, 3)->states('retired')->create();
-        $activeTitle = factory(Title::class)->states('active')->create();
+        factory(Title::class)->states('active')->create();
 
-        $response = $this->get(route('titles.index', ['state' => 'retired']));
+        $response = $this->get(route('titles.index'));
+        $responseAjax = $this->getJson(route('titles.index', ['status' => 'only_retired']), ['X-Requested-With' => 'XMLHttpRequest']);
 
         $response->assertOk();
-        $response->assertSee(e($retiredTitles[0]->name));
-        $response->assertSee(e($retiredTitles[1]->name));
-        $response->assertSee(e($retiredTitles[2]->name));
-        $response->assertDontSee(e($activeTitle->name));
+        $response->assertViewIs('titles.index');
+        $responseAjax->assertJson([
+            'recordsTotal' => $retiredTitles->count(),
+            'data'         => $retiredTitles->map(function (Title $title) {
+                return ['id' => $title->id, 'name' => e($title->name)];
+            })->toArray(),
+        ]);
     }
 
     /** @test */
@@ -44,6 +48,6 @@ class ViewRetiredTitlesTest extends TestCase
 
         $response = $this->get(route('titles.index', ['state' => 'retired']));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 }

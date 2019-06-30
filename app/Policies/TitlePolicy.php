@@ -62,7 +62,7 @@ class TitlePolicy
      */
     public function retire(User $user, Title $title)
     {
-        return $user->isAdministrator() && ! $title->isRetired();
+        return $user->isAdministrator() && !$title->isRetired();
     }
 
     /**
