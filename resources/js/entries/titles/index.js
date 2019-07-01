@@ -6,7 +6,43 @@ const renderStatusCell = (data, type, full, meta) =>
 const table = $('[data-table="titles.index"]');
 const rowCounter = $("#kt_subheader_total");
 const searchInput = $("#generalSearch");
-const statusDropdown = $("#statusDropdown");
+const statusDropdown = $("#status-dropdown");
+const introducedAtStart = $("#introduced_at_start");
+const introducedAtEnd = $("#introduced_at_end");
+
+const filterData = {
+    status: null,
+    introduced_at: null
+};
+
+const updateFilters = () => {
+    filterData.status = statusDropdown.val();
+    if (introducedAtStart.val() && introducedAtEnd.val()) {
+        filterData.introduced_at = [
+            introducedAtStart.val(),
+            introducedAtEnd.val()
+        ];
+    } else {
+        filterData.introduced_at = null;
+    }
+
+    table
+        .dataTable()
+        .api()
+        .draw();
+};
+
+const clearFilters = () => {
+    filterData.status = null;
+    filterData.introduced_at = null;
+    statusDropdown.val("");
+    introducedAtStart.val("");
+    introducedAtEnd.val("");
+    table
+        .dataTable()
+        .api()
+        .draw();
+};
 
 // begin first table
 table.DataTable({
@@ -15,7 +51,8 @@ table.DataTable({
     ajax: {
         url: window.location.href,
         data(params) {
-            params.status = statusDropdown.value;
+            params.status = filterData.status;
+            params.introduced_at = filterData.introduced_at;
         }
     },
     columns: [
@@ -55,3 +92,6 @@ table.on("draw.dt", (e, settings) => {
         rowCounter.html(`${settings.fnRecordsDisplay()} Matching Rows`);
     }
 });
+
+$("#applyFilters").click(() => updateFilters());
+$("#clearFilters").click(() => clearFilters());

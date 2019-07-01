@@ -1,4 +1,4 @@
-<div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="" data-placement="left" data-original-title="Quick filters">
+<div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="" data-placement="right" data-original-title="Quick filters">
     <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="flaticon-interface-7"></i>
     </a>
@@ -12,7 +12,7 @@
             <li class="kt-nav__item">
                 <div class="form-group m-3">
                     <label>Status:</label>
-                    <select class="form-control" name="status">
+                    <select class="form-control" name="status" id="status-dropdown">
                         <option value="">Select</option>
                         <option value="only_active">Active</option>
                         <option value="only_inactive">Inactive</option>
@@ -21,16 +21,23 @@
                 </div>
             </li>
             <li class="kt-nav__item">
-                <div class="form-group m-3">
+                <div class="form-group m-3 flatpickr">
                     <label>Introduced At:</label>
-                    <input class="form-control">
-                    <p>to</p>
-                    <input class="form-control">
+                    <input class="form-control" placeholder="Start Date" id="introduced_at_start">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                        <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
+                    </span>
+                    <small class="text-center font-weight-bold text-muted d-block">to</small>
+                    <input class="form-control" placeholder="End Date" id="introduced_at_end">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                        <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
+                    </span>
                 </div>
             </li>
             <li class="kt-nav__separator"></li>
             <li class="kt-nav__foot">
-                <a class="btn btn-label-brand btn-bold btn-sm" href="#">Apply Filter</a>
+                <a class="btn btn-label-brand btn-bold btn-sm" href="#" id="applyFilters">Apply Filters</a>
+                <a class="btn btn-clean btn-bold btn-sm" href="#" id="clearFilters">Clear Filters</a>
             </li>
         </ul>
         <!--end::Nav-->
