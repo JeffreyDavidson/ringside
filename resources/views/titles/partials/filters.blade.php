@@ -21,17 +21,21 @@
                 </div>
             </li>
             <li class="kt-nav__item">
-                <div class="form-group m-3 flatpickr">
-                    <label>Introduced At:</label>
-                    <input class="form-control" placeholder="Start Date" id="introduced_at_start">
-                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                        <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
-                    </span>
+                <div class="form-group m-3">
+                    <label>Introduced Between:</label>
+                    <div class="input-group flatpickr kt-input-icon kt-input-icon--right">
+                        <input class="form-control flatpickr-input" placeholder="Start Date" id="introduced_at_start" data-datetimepicker>
+                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                            <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
+                        </span>
+                    </div>
                     <small class="text-center font-weight-bold text-muted d-block">to</small>
-                    <input class="form-control" placeholder="End Date" id="introduced_at_end">
-                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                        <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
-                    </span>
+                    <div class="input-group flatpickr kt-input-icon kt-input-icon--right">
+                        <input class="form-control flatpickr-input" placeholder="End Date" id="introduced_at_end" data-datetimepicker>
+                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                            <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
+                        </span>
+                    </div>
                 </div>
             </li>
             <li class="kt-nav__separator"></li>
