@@ -31,6 +31,7 @@
                 </div>
             </form>
         </div>
+        @include('titles.partials.filters')
     </div>
     <div class="kt-subheader__toolbar">
         <a href="{{ route('titles.create') }}"
