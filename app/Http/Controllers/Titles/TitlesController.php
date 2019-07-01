@@ -41,6 +41,9 @@ class TitlesController extends Controller
                 ->editColumn('introduced_at', function (Title $title) {
                     return $title->introduced_at->format('Y-m-d H:s');
                 })
+                ->filterColumn('id', function ($query, $keyword) {
+                    $query->where($query->qualifyColumn('id'), $keyword);
+                })
                 ->toJson();
         }
 
