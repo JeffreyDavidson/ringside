@@ -20,6 +20,17 @@
                     </a>
                 </li>
             @endcan
+            @can('retire', $model)
+                <li class="kt-nav__item">
+                    <form action="{{ route('titles.retire', $model) }}" method="post" class="kt-nav__link">
+                        @csrf
+                        <button class="btn w-100 text-left p-0">
+                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <span class="kt-nav__link-text">Retire</span>
+                        </button>
+                    </form>
+                </li>
+            @endcan
         </ul>
     </div>
 </div>
