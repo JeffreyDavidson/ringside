@@ -17,7 +17,6 @@ class CreateTitlesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->dateTime('introduced_at')->nullable();
-            $table->dateTime('retired_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
