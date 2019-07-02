@@ -81,7 +81,8 @@ class Title extends Model
      */
     public function getIsActiveAttribute()
     {
-        return is_null($this->retired_at) && !is_null($this->introduced_at) && $this->introduced_at->isPast();
+        return !$this->isRetired() && !is_null($this->introduced_at) && $this->introduced_at->isPast();
+    }
     }
 
     /**
