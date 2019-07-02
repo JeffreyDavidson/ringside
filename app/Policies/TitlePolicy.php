@@ -18,7 +18,7 @@ class TitlePolicy
      */
     public function create(User $user)
     {
-        return $user->isAdministrator();
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
@@ -29,7 +29,7 @@ class TitlePolicy
      */
     public function update(User $user)
     {
-        return $user->isAdministrator();
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
@@ -62,7 +62,11 @@ class TitlePolicy
      */
     public function retire(User $user, Title $title)
     {
-        return $user->isAdministrator() && !$title->isRetired();
+        if (!$title->is_active) {
+            return false;
+        }
+
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
@@ -108,7 +112,7 @@ class TitlePolicy
      */
     public function viewList(User $user)
     {
-        return $user->isAdministrator();
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
@@ -119,6 +123,6 @@ class TitlePolicy
      */
     public function view(User $user)
     {
-        return $user->isAdministrator();
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 }
