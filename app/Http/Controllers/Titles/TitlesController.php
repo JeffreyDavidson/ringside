@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Titles;
 
 use App\Models\Title;
 use Illuminate\Http\Request;
+use App\Filters\TitleFilters;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTitleRequest;
@@ -17,24 +18,13 @@ class TitlesController extends Controller
      * @param  string  $state
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, DataTables $table)
+    public function index(Request $request, DataTables $table, TitleFilters $requestFilter)
     {
         $this->authorize('viewList', Title::class);
 
         if ($request->ajax()) {
             $query = Title::query();
-
-            switch ($request->input('status')) {
-                case 'only_active':
-                    $query->active();
-                    break;
-                case 'only_inactive':
-                    $query->inactive();
-                    break;
-                case 'only_retired':
-                    $query->retired();
-                    break;
-            }
+            $requestFilter->apply($query);
 
             return $table->eloquent($query)
                 ->addColumn('action', 'titles.partials.action-cell')
