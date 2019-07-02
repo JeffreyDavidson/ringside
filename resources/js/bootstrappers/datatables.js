@@ -10,7 +10,9 @@ $.extend(true, $.fn.dataTable.defaults, {
     pageLength: 10,
     language: {
         search: "Search:",
-        lengthMenu: "_MENU_"
+        lengthMenu: "_MENU_",
+        sEmptyTable: "No matching records found",
+        infoEmpty: "Showing 0 to 0 of 0 entries"
     },
     columnDefs: [
         {
