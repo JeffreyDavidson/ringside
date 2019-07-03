@@ -1,8 +1,5 @@
 "use strict";
 
-const renderStatusCell = (data, type, full, meta) =>
-    data ? "Active" : "Inactive";
-
 const table = $('[data-table="titles.index"]');
 const rowCounter = $("#kt_subheader_total");
 const searchInput = $("#generalSearch");
@@ -22,6 +19,8 @@ const updateFilters = () => {
             introducedAtStart.val(),
             introducedAtEnd.val()
         ];
+    } else if (introducedAtStart.val()) {
+        filterData.introduced_at = [introducedAtStart.val()];
     } else {
         filterData.introduced_at = null;
     }
@@ -60,10 +59,9 @@ table.DataTable({
         { data: "name", title: "Title" },
         { data: "introduced_at", title: "Date Introduced", searchable: false },
         {
-            data: "is_active",
+            data: "status",
             title: "Status",
-            searchable: false,
-            render: renderStatusCell
+            searchable: false
         },
         {
             data: "action",
