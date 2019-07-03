@@ -77,7 +77,11 @@ class TitlePolicy
      */
     public function unretire(User $user, Title $title)
     {
-        return $user->isAdministrator() && $title->isRetired();
+        if (!$title->is_retired) {
+            return false;
+        }
+
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
