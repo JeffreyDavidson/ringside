@@ -131,6 +131,17 @@ class CreateTitleTest extends TestCase
     }
 
     /** @test */
+    public function a_title_name_must_end_with_title_or_titles()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('titles.store'), $this->validParams(['name' => 'Example Name']));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
     public function a_title_name_must_be_unique()
     {
         $this->actAs('administrator');
