@@ -24,6 +24,7 @@
                 <li class="kt-nav__item">
                     <form action="{{ route('titles.retire', $model) }}" method="post" class="kt-nav__link">
                         @csrf
+                        @method('PUT')
                         <button class="btn w-100 text-left p-0">
                             <i class="kt-nav__link-icon flaticon2-contract"></i>
                             <span class="kt-nav__link-text">Retire</span>
@@ -35,6 +36,7 @@
                 <li class="kt-nav__item">
                     <form action="{{ route('titles.unretire', $model) }}" method="post" class="kt-nav__link">
                         @csrf
+                        @method('PUT')
                         <button class="btn w-100 text-left p-0">
                             <i class="kt-nav__link-icon flaticon2-contract"></i>
                             <span class="kt-nav__link-text">Unretire</span>
@@ -46,6 +48,7 @@
                 <li class="kt-nav__item">
                     <form action="{{ route('titles.activate', $model) }}" method="post" class="kt-nav__link">
                         @csrf
+                        @method('PUT')
                         <button class="btn w-100 text-left p-0">
                             <i class="kt-nav__link-icon flaticon2-contract"></i>
                             <span class="kt-nav__link-text">Activate</span>
