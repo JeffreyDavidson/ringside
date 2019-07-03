@@ -120,6 +120,29 @@ class CreateTitleTest extends TestCase
     }
 
     /** @test */
+    public function a_title_name_must_contain_at_least_three_characters()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('titles.store'), $this->validParams(['name' => 'ab']));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_title_name_must_be_unique()
+    {
+        $this->actAs('administrator');
+        factory(Title::class)->create(['name' => 'Example Title']);
+
+        $response = $this->post(route('titles.store'), $this->validParams(['name' => 'Example Title']));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
     public function a_title_introduced_at_date_is_required()
     {
         $this->actAs('administrator');
