@@ -44,7 +44,7 @@ class TitlePolicy
     }
 
     /**
-     * Determine whether the user can restore a deleted title.
+     * Determine whether the user can restore a title.
      *
      * @param  \App\Models\User  $user
      * @return bool
@@ -70,7 +70,7 @@ class TitlePolicy
     }
 
     /**
-     * Determine whether the user can unretire a retired title.
+     * Determine whether the user can unretire a title.
      *
      * @param  \App\Models\User  $user
      * @return bool
@@ -81,7 +81,7 @@ class TitlePolicy
     }
 
     /**
-     * Determine whether the user can activate an inactive title.
+     * Determine whether the user can activate a title.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Title  $title
