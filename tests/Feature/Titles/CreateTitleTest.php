@@ -67,7 +67,7 @@ class CreateTitleTest extends TestCase
     }
 
     /** @test */
-    public function a_title_introduced_today_or_before_is_active()
+    public function a_title_introduced_today_or_before_is_usable()
     {
         $this->actAs('administrator');
 
@@ -79,7 +79,7 @@ class CreateTitleTest extends TestCase
     }
 
     /** @test */
-    public function a_title_introduced_after_today_is_inactive()
+    public function a_title_introduced_after_today_is_pending_introduced()
     {
         $this->actAs('administrator');
 
