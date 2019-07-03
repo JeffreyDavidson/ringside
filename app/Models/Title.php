@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\TitleStatus;
 use App\Traits\Retireable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,28 +61,59 @@ class Title extends Model
     protected $dates = ['introduced_at'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['is_active'];
+    protected $appends = ['is_usable'];
 
     /**
+     * Determine the status of the title.
+     *
+     * @return \App\Enum\TitleStatus
      *
      */
-    public function getIsActiveAttribute()
+    public function getStatusAttribute()
     {
-        return !$this->isRetired() && !is_null($this->introduced_at) && $this->introduced_at->isPast();
+        if ($this->is_usable) {
+            return TitleStatus::ACTIVE();
+        }
+
+        if ($this->isRetired()) {
+            return TitleStatus::RETIRED();
+        }
+
+        return TitleStatus::INACTIVE();
     }
+
+    /**
+     * Determine if a title is has been introduced.
+     *
+     * @return bool
+     */
+    public function getIsPendingIntroducedAttribute()
+    {
+        return is_null($this->introduced_at) || $this->introduced_at->isFuture();
+    }
+
+    /**
+     * Determine if a title is usuable.
+     *
+     * @return bool
+     */
+    public function getIsUsableAttribute()
+    {
+        return !($this->isRetired() || $this->is_pending_introduced);
+    }
+
+    /**
+     * Determine if a title is usuable.
+     *
+     * @return bool
+     */
+    public function getIsRetiredAttribute()
+    {
+        return $this->isRetired();
     }
 
     /**
@@ -109,13 +140,11 @@ class Title extends Model
         $query->where('introduced_at', '>', now());
     }
 
-    /**
-     * Activate an inactive title.
-     *
-     * @return boolean
-     */
-    public function activate()
+    public function toArray()
     {
-        return $this->update(['introduced_at' => now()]);
+        $data                 = parent::toArray();
+        $data['status']       = $this->status->label();
+
+        return $data;
     }
 }
