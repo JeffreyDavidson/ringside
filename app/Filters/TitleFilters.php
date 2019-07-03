@@ -2,6 +2,8 @@
 
 namespace App\Filters;
 
+use Carbon\Carbon;
+
 class TitleFilters extends Filters
 {
     /**
@@ -9,7 +11,7 @@ class TitleFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['status', 'introduced'];
+    protected $filters = ['status', 'introduced_at'];
 
     /**
      * Filter a query to include titles of a status.
@@ -40,13 +42,13 @@ class TitleFilters extends Filters
      * @param  array  $introduced
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function introduced($introduced)
+    public function introduced_at($introducedAt)
     {
-        if (isset($introduced[0]) && !isset($introduced[1])) {
-            $this->builder->whereDate('introduced_at', $introduced[0]);
-        } elseif (isset($introduced[1])) {
-            $this->builder->where('introduced_at', '>=', $introduced[0]);
-            $this->builder->where('introduced_at', '<', $introduced[1]);
+        if (isset($introducedAt[0]) && !isset($introducedAt[1])) {
+            $this->builder->whereDate('introduced_at', '=', Carbon::parse($introducedAt[0])->toDateString());
+        } elseif (isset($introducedAt[1])) {
+            $this->builder->whereDate('introduced_at', '>=', Carbon::parse($introducedAt[0])->toDateString());
+            $this->builder->whereDate('introduced_at', '<', Carbon::parse($introducedAt[1])->toDateString());
         }
 
         return $this->builder;
