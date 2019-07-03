@@ -30,4 +30,16 @@ class UpdateTitleRequest extends FormRequest
             'introduced_at' => ['required', 'date_format:Y-m-d H:i:s'],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.ends_with' => 'A name must end with either Title or Titles',
+        ];
+    }
 }
