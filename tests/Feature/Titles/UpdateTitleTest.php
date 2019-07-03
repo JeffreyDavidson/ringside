@@ -107,6 +107,49 @@ class UpdateTitleTest extends TestCase
     }
 
     /** @test */
+    public function a_title_name_must_contain_at_least_3_characters()
+    {
+        $this->actAs('administrator');
+        $title = factory(Title::class)->create();
+
+        $response = $this->patch(route('titles.update', $title), $this->validParams([
+            'name' => 'ab'
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_title_name_must_end_with_title_or_titles()
+    {
+        $this->actAs('administrator');
+        $title = factory(Title::class)->create();
+
+        $response = $this->patch(route('titles.update', $title), $this->validParams([
+            'name' => 'Example Name'
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_title_name_must_be_unique()
+    {
+        $this->actAs('administrator');
+        $title = factory(Title::class)->create(['name' => 'Example One Title']);
+        factory(Title::class)->create(['name' => 'Example Two Title']);
+
+        $response = $this->patch(route('titles.update', $title), $this->validParams([
+            'name' => 'Example Two Title'
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
     public function a_title_introduced_at_date_is_required()
     {
         $this->actAs('administrator');
