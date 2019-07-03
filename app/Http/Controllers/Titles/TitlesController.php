@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Titles;
 
 use App\Models\Title;
-use App\Enums\TitleStatus;
 use Illuminate\Http\Request;
 use App\Filters\TitleFilters;
 use Yajra\DataTables\DataTables;
@@ -92,7 +91,7 @@ class TitlesController extends Controller
     }
 
     /**
-     * Create a new title.
+     * Update an existing title.
      *
      * @param  \App\Http\Requests\UpdateTitleRequest  $request
      * @param  \App\Models\Title  $title
@@ -106,9 +105,9 @@ class TitlesController extends Controller
     }
 
     /**
-     * Delete a wrestler.
+     * Delete a title.
      *
-     * @param  App\Models\Wrestler  $wrestler
+     * @param  App\Models\Title  $title
      * @return \lluminate\Http\RedirectResponse
      */
     public function destroy(Title $title)
