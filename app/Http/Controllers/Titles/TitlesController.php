@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Titles;
 
 use App\Models\Title;
+use App\Enums\TitleStatus;
 use Illuminate\Http\Request;
 use App\Filters\TitleFilters;
 use Yajra\DataTables\DataTables;
