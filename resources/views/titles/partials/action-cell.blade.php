@@ -31,6 +31,28 @@
                     </form>
                 </li>
             @endcan
+            @can('unretire', $model)
+                <li class="kt-nav__item">
+                    <form action="{{ route('titles.unretire', $model) }}" method="post" class="kt-nav__link">
+                        @csrf
+                        <button class="btn w-100 text-left p-0">
+                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <span class="kt-nav__link-text">Unretire</span>
+                        </button>
+                    </form>
+                </li>
+            @endcan
+            @can('activate', $model)
+                <li class="kt-nav__item">
+                    <form action="{{ route('titles.activate', $model) }}" method="post" class="kt-nav__link">
+                        @csrf
+                        <button class="btn w-100 text-left p-0">
+                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <span class="kt-nav__link-text">Activate</span>
+                        </button>
+                    </form>
+                </li>
+            @endcan
         </ul>
     </div>
 </div>
