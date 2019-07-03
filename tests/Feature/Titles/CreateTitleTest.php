@@ -74,7 +74,7 @@ class CreateTitleTest extends TestCase
         $response = $this->post(route('titles.store'), $this->validParams(['introduced_at' => today()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
-            $this->assertTrue($title->is_active);
+            $this->assertTrue($title->is_usable);
         });
     }
 
@@ -86,7 +86,7 @@ class CreateTitleTest extends TestCase
         $response = $this->post(route('titles.store'), $this->validParams(['introduced_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
-            $this->assertFalse($title->is_active);
+            $this->assertTrue($title->is_pending_introduced);
         });
     }
 
