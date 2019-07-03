@@ -89,7 +89,11 @@ class TitlePolicy
      */
     public function activate(User $user, Title $title)
     {
-        return $user->isAdministrator() && !$title->is_active;
+        if ($title->is_usable || $title->is_retired) {
+            return false;
+        }
+
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
