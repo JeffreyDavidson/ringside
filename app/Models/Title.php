@@ -107,7 +107,7 @@ class Title extends Model
     }
 
     /**
-     * Determine if a title is usuable.
+     * Determine if a title is retired.
      *
      * @return bool
      */
