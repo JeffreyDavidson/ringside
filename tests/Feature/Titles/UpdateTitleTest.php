@@ -19,7 +19,7 @@ class UpdateTitleTest extends TestCase
     private function validParams($overrides = [])
     {
         return array_replace([
-            'name' => 'Example Title Name',
+            'name' => 'Example Name Title',
             'introduced_at' => today()->toDateTimeString(),
         ], $overrides);
     }
@@ -67,7 +67,7 @@ class UpdateTitleTest extends TestCase
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
-            $this->assertEquals('Example Title Name', $title->name);
+            $this->assertEquals('Example Name Title', $title->name);
         });
     }
 
