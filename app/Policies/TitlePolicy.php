@@ -62,7 +62,7 @@ class TitlePolicy
      */
     public function retire(User $user, Title $title)
     {
-        if (!$title->is_active) {
+        if ($title->is_pending_introduced || $title->is_retired) {
             return false;
         }
 
