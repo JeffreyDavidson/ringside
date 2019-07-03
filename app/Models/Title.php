@@ -140,6 +140,18 @@ class Title extends Model
         $query->where('introduced_at', '>', now());
     }
 
+    /**
+     * Activate a title.
+     *
+     * @return \App\Models\Title $this
+     */
+    public function activate()
+    {
+        $this->update(['introduced_at' => now()]);
+
+        return $this;
+    }
+
     public function toArray()
     {
         $data                 = parent::toArray();
