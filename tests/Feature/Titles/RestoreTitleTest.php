@@ -7,7 +7,7 @@ use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /** @group titles */
-class RestoreDeletedTitleTest extends TestCase
+class RestoreTitleTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -15,7 +15,7 @@ class RestoreDeletedTitleTest extends TestCase
     public function an_administrator_can_restore_a_deleted_title()
     {
         $this->actAs('administrator');
-        $title = factory(Title::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $title = factory(Title::class)->create(['deleted_at' => today()->toDateTimeString()]);
 
         $response = $this->patch(route('titles.restore', $title));
 
@@ -27,7 +27,7 @@ class RestoreDeletedTitleTest extends TestCase
     public function a_basic_user_cannot_restore_a_deleted_title()
     {
         $this->actAs('basic-user');
-        $title = factory(Title::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $title = factory(Title::class)->create(['deleted_at' => today()->toDateTimeString()]);
 
         $response = $this->patch(route('titles.restore', $title));
 
@@ -37,11 +37,11 @@ class RestoreDeletedTitleTest extends TestCase
     /** @test */
     public function a_guest_cannot_restore_a_deleted_title()
     {
-        $title = factory(Title::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $title = factory(Title::class)->create(['deleted_at' => today()->toDateTimeString()]);
 
         $response = $this->patch(route('titles.restore', $title));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
