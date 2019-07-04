@@ -3,7 +3,6 @@
 namespace Tests\Feature\Titles;
 
 use Tests\TestCase;
-use App\Models\User;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
