@@ -118,21 +118,4 @@ class TitlesController extends Controller
 
         return redirect()->route('titles.index');
     }
-
-    /**
-     * Restore a deleted title.
-     *
-     * @param  int  $titleId
-     * @return \lluminate\Http\RedirectResponse
-     */
-    public function restore($titleId)
-    {
-        $title = Title::onlyTrashed()->findOrFail($titleId);
-
-        $this->authorize('restore', $title);
-
-        $title->restore();
-
-        return redirect()->route('titles.index');
-    }
 }

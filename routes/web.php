@@ -77,7 +77,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
 
     Route::namespace('Titles')->group(function () {
         Route::resource('titles', 'TitlesController');
-        Route::put('/titles/{title}/restore', 'TitlesController@restore')->name('titles.restore');
+        Route::put('/titles/{title}/restore', 'RestoreController')->name('titles.restore');
         Route::put('/titles/{title}/retire', 'RetireController')->name('titles.retire');
         Route::put('/titles/{title}/unretire', 'UnretireController')->name('titles.unretire');
         Route::put('/titles/{title}/activate', 'ActivateController')->name('titles.activate');
