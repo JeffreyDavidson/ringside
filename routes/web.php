@@ -7,6 +7,7 @@ use App\Http\Controllers\Venues\VenuesController;
 use App\Http\Controllers\Titles\RestoreController;
 use App\Http\Controllers\Titles\ActivateController;
 use App\Http\Controllers\Titles\UnretireController;
+use App\Http\Controllers\Wrestlers\WrestlersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ use App\Http\Controllers\Titles\UnretireController;
 Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::prefix('roster')->group(function () {
-        Route::resource('wrestlers', 'WrestlersController');
+        Route::resource('wrestlers', WrestlersController::class);
         Route::patch('/wrestlers/{wrestler}/restore', [WrestlersController::class, 'restore'])->name('wrestlers.restore');
         Route::post('/wrestlers/{wrestler}/retire', [WrestlerRetirementsController::class, 'store'])->name('wrestlers.retire');
         Route::delete('/wrestlers/{wrestler}/unretire', [WrestlerRetirementsController::class, 'destroy'])->name('wrestlers.unretire');
