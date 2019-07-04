@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/** @group titles */
 class UpdateTitleTest extends TestCase
 {
     use RefreshDatabase;

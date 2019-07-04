@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/** @group titles */
 class ViewTitlePageTest extends TestCase
 {
     use RefreshDatabase;
