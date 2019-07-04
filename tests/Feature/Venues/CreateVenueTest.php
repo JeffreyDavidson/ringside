@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/** @group venues */
 class CreateVenueTest extends TestCase
 {
     use RefreshDatabase;
