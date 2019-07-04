@@ -26,7 +26,7 @@
                         @csrf
                         @method('DELETE')
                         <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <i class="kt-nav__link-icon flaticon2-trash"></i>
                             <span class="kt-nav__link-text">Delete</span>
                         </button>
                     </form>
@@ -38,7 +38,7 @@
                         @csrf
                         @method('PUT')
                         <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <i class="kt-nav__link-icon flaticon2-time"></i>
                             <span class="kt-nav__link-text">Retire</span>
                         </button>
                     </form>
@@ -50,7 +50,7 @@
                         @csrf
                         @method('PUT')
                         <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <i class="kt-nav__link-icon flaticon2-reload"></i>
                             <span class="kt-nav__link-text">Unretire</span>
                         </button>
                     </form>
@@ -62,7 +62,7 @@
                         @csrf
                         @method('PUT')
                         <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-contract"></i>
+                            <i class="kt-nav__link-icon flaticon2-power"></i>
                             <span class="kt-nav__link-text">Activate</span>
                         </button>
                     </form>
