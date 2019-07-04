@@ -99,7 +99,7 @@ class CreateVenueTest extends TestCase
     {
         $response = $this->post(route('venues.store'), $this->validParams());
 
-        $response->assertRedirect(route('/login'));
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
