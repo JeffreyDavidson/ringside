@@ -87,7 +87,11 @@ class WrestlerPolicy
      */
     public function suspend(User $user, Wrestler $wrestler)
     {
-        return $user->isAdministrator() && !$wrestler->isSuspended();
+        if ($wrestler->isSuspended()) {
+            return false;
+        }
+
+        return $user->isAdministrator();
     }
 
     /**
@@ -99,7 +103,11 @@ class WrestlerPolicy
      */
     public function reinstate(User $user, Wrestler $wrestler)
     {
-        return $user->isAdministrator() && $wrestler->isSuspended();
+        if (!$wrestler->is_suspended) {
+            return false;
+        }
+
+        return $user->isAdministrator();
     }
 
     /**
@@ -166,6 +174,10 @@ class WrestlerPolicy
      */
     public function view(User $user, Wrestler $wrestler)
     {
-        return $user->isAdministrator() || $wrestler->user->is($user);
+        if ($wrestler->user->isNot($user)) {
+            return false;
+        }
+
+        return $user->isAdministrator();
     }
 }
