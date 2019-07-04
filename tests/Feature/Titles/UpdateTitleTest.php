@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Titles;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -185,6 +186,20 @@ class UpdateTitleTest extends TestCase
 
         $response = $this->patch(route('titles.update', $title), $this->validParams([
             'introduced_at' => 'not-a-datetime'
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('introduced_at');
+    }
+
+    /** @test */
+    public function a_title_that_has_been_introduced_in_the_past_must_be_introduced_before_or_on_same_day()
+    {
+        $this->actAs('administrator');
+        $title = factory(Title::class)->create(['introduced_at' => Carbon::yesterday()]);
+
+        $response = $this->patch(route('titles.update', $title), $this->validParams([
+            'introduced_at' => Carbon::today()->addDays(3)->toDateTimeString(),
         ]));
 
         $response->assertStatus(302);
