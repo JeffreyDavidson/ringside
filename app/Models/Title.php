@@ -117,6 +117,16 @@ class Title extends Model
     }
 
     /**
+     * Retrieve a formatted introduced at date timestamp.
+     *
+     * @return string
+     */
+    public function getFormattedIntroducedAtAttribute()
+    {
+        return $this->introduced_at->toDateString();
+    }
+
+    /**
      * Scope a query to only include active titles.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
