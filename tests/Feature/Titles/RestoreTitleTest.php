@@ -17,7 +17,7 @@ class RestoreTitleTest extends TestCase
         $this->actAs('administrator');
         $title = factory(Title::class)->create(['deleted_at' => today()->toDateTimeString()]);
 
-        $response = $this->patch(route('titles.restore', $title));
+        $response = $this->put(route('titles.restore', $title));
 
         $response->assertRedirect(route('titles.index'));
         $this->assertNull($title->fresh()->deleted_at);
@@ -29,7 +29,7 @@ class RestoreTitleTest extends TestCase
         $this->actAs('basic-user');
         $title = factory(Title::class)->create(['deleted_at' => today()->toDateTimeString()]);
 
-        $response = $this->patch(route('titles.restore', $title));
+        $response = $this->put(route('titles.restore', $title));
 
         $response->assertStatus(403);
     }
@@ -39,7 +39,7 @@ class RestoreTitleTest extends TestCase
     {
         $title = factory(Title::class)->create(['deleted_at' => today()->toDateTimeString()]);
 
-        $response = $this->patch(route('titles.restore', $title));
+        $response = $this->put(route('titles.restore', $title));
 
         $response->assertRedirect(route('login'));
     }
@@ -50,7 +50,7 @@ class RestoreTitleTest extends TestCase
         $this->actAs('administrator');
         $title = factory(Title::class)->create();
 
-        $response = $this->patch(route('titles.restore', $title));
+        $response = $this->put(route('titles.restore', $title));
 
         $response->assertStatus(404);
     }

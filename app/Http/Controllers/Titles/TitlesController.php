@@ -129,7 +129,7 @@ class TitlesController extends Controller
     {
         $title = Title::onlyTrashed()->findOrFail($titleId);
 
-        $this->authorize('restore', Title::class);
+        $this->authorize('restore', $title);
 
         $title->restore();
 

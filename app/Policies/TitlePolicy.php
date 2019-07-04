@@ -47,11 +47,16 @@ class TitlePolicy
      * Determine whether the user can restore a title.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Title  $title
      * @return bool
      */
-    public function restore(User $user)
+    public function restore(User $user, Title $title)
     {
-        return $user->isAdministrator();
+        if (!$title->trashed()) {
+            return false;
+        }
+
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
