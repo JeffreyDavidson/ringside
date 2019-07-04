@@ -112,7 +112,7 @@ class TitlesController extends Controller
      */
     public function destroy(Title $title)
     {
-        $this->authorize('delete', Title::class);
+        $this->authorize('delete', $title);
 
         $title->delete();
 
