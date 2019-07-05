@@ -3,31 +3,42 @@
 namespace App\Http\Controllers\Wrestlers;
 
 use App\Models\Wrestler;
+use Illuminate\Http\Request;
+use App\Filters\WrestlerFilters;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IndexRosterRequest;
 use App\Http\Requests\StoreWrestlerRequest;
 use App\Http\Requests\UpdateWrestlerRequest;
 
 class WrestlersController extends Controller
 {
     /**
-     * Retrieve wrestles of a specific state.
+     * View a list of wrestlers.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \Yajra\DataTables\DataTables $table
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexRosterRequest $request)
+    public function index(Request $request, DataTables $table, WrestlerFilters $requestFilter)
     {
         $this->authorize('viewList', Wrestler::class);
 
-        $state = $request->input('state', 'active');
-        $wrestlers = Wrestler::hasState($state)->get();
-
         if ($request->ajax()) {
-            return $wrestlers->toJson();
+            $query = Wrestler::query();
+            $requestFilter->apply($query);
+
+            return $table->eloquent($query)
+                ->addColumn('action', 'wrestlers.partials.action-cell')
+                ->editColumn('hired_at', function (Wrestler $wrestler) {
+                    return $wrestler->hired_at->format('Y-m-d H:s');
+                })
+                ->filterColumn('id', function ($query, $keyword) {
+                    $query->where($query->qualifyColumn('id'), $keyword);
+                })
+                ->toJson();
         }
 
-        return response()->view('wrestlers.index', compact('wrestlers', 'state'));
+        return view('wrestlers.index');
     }
 
     /**
