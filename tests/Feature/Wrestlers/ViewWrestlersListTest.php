@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/** @group wrestlers */
 class ViewWrestlersListTest extends TestCase
 {
     use RefreshDatabase;
