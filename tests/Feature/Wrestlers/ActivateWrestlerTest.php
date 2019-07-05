@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ActivateInactiveWrestlerTest extends TestCase
+class ActivateWrestlerTest extends TestCase
 {
     use RefreshDatabase;
 
