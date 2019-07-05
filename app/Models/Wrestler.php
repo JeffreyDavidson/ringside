@@ -2,25 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\Hireable;
-use App\Traits\Injurable;
-use App\Traits\Sluggable;
 use App\Traits\Retireable;
-use App\Traits\Activatable;
-use App\Traits\Suspendable;
-use Illuminate\Support\Str;
+use App\Enums\WrestlerStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends Model
 {
-    use SoftDeletes,
-        Retireable,
-        Suspendable,
-        Injurable,
-        Activatable,
-        Hireable,
-        Sluggable;
+    use SoftDeletes, Retireable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -35,15 +25,6 @@ class Wrestler extends Model
      * @var array
      */
     protected $dates = ['hired_at'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
 
     /**
      * Get the user belonging to the wrestler.
@@ -96,18 +77,23 @@ class Wrestler extends Model
     }
 
     /**
-     * Scope a query to only include wrestlers of a given state.
+     * Get the suspensions of the wrestler.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function scopeHasState($query, $state)
+    public function suspensions()
     {
-        $scope = 'scope' . Str::studly($state);
+        return $this->morphMany(Suspension::class, 'suspendable');
+    }
 
-        if (method_exists($this, $scope)) {
-            return $this->{$scope}($query);
-        }
+    /**
+     * Get the injuries of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function injuries()
+    {
+        return $this->morphMany(Injury::class, 'injurable');
     }
 
     /**
@@ -134,17 +120,85 @@ class Wrestler extends Model
     }
 
     /**
-     * Return the wrestler's status.
+     * Determine the status of the wrestler.
      *
-     * @return string
+     * @return \App\Enum\WrestlerStatus
+     *
      */
     public function getStatusAttribute()
     {
-        return $this->is_active ? 'Active' : 'Inactive';
+        if ($this->is_bookable) {
+            return WrestlerStatus::BOOKABLE();
+        }
+
+        if ($this->is_retired) {
+            return WrestlerStatus::RETIRED();
+        }
+
+        if ($this->is_injured) {
+            return WrestlerStatus::INJURED();
+        }
+
+        if ($this->is_suspended) {
+            return WrestlerStatus::SUSPENDED();
+        }
+
+        return WrestlerStatus::INACTIVE();
     }
 
     /**
-     * Return the wrestler's status.
+     * Determine if a wrestler is bookable.
+     *
+     * @return bool
+     */
+    public function getIsBookableAttribute()
+    {
+        return $this->is_hired && !($this->is_retired || $this->is_injured || $this->is_suspended);
+    }
+
+    /**
+     * Determine if a wrestler is hired.
+     *
+     * @return bool
+     */
+    public function getIsHiredAttribute()
+    {
+        return !is_null($this->hired_at) && $this->hired_at->isPast();
+    }
+
+    /**
+     * Determine if a wrestler is retired.
+     *
+     * @return bool
+     */
+    public function getIsRetiredAttribute()
+    {
+        return $this->retirements()->whereNull('ended_at')->exists();
+    }
+
+    /**
+     * Determine if a wrestler is suspended.
+     *
+     * @return bool
+     */
+    public function getIsSuspendedAttribute()
+    {
+        return $this->suspensions()->whereNull('ended_at')->exists();
+    }
+
+    /**
+     * Determine if a wrestler is injured.
+     *
+     * @return bool
+     */
+    public function getIsInjuredAttribute()
+    {
+        return $this->injuries()->whereNull('ended_at')->exists();
+    }
+
+
+    /**
+     * Return the wrestler's height in feet.
      *
      * @return string
      */
@@ -154,12 +208,124 @@ class Wrestler extends Model
     }
 
     /**
-     * Return the wrestler's status.
+     * Return the wrestler's height in inches.
      *
      * @return string
      */
     public function getInchesAttribute()
     {
         return $this->height % 12;
+    }
+
+    /**
+     * Scope a query to only include bookable wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeBookable($query)
+    {
+        return $query->where('hired_at', '<=', now())
+                ->whereDoesntHave('retirements', function (Builder $query) {
+                    $query->whereNull('ended_at');
+                })
+                ->whereDoesntHave('injuries', function (Builder $query) {
+                    $query->whereNull('ended_at');
+                })
+                ->whereDoesntHave('suspensions', function (Builder $query) {
+                    $query->whereNull('ended_at');
+                });
+    }
+
+    /**
+     * Scope a query to only include inactive wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeInactive($query)
+    {
+        return $query->whereNull('hired_at')
+                ->orWhere('hired_at', '>', now());
+    }
+
+    /**
+     * Scope a query to only include retired wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRetired($query)
+    {
+        return $query->whereHas('retirements', function ($query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
+     * Scope a query to only include suspended wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSuspended($query)
+    {
+        return $query->whereHas('suspensions', function ($query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
+     * Scope a query to only include injured wrestlers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInjured($query)
+    {
+        return $query->whereHas('injuries', function ($query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
+     * Activate a wrestler.
+     *
+     * @return boolean
+     */
+    public function activate()
+    {
+        return $this->update(['hired_at' => now()]);
+    }
+
+    /**
+     * Suspend a wrestler.
+     *
+     * @return void
+     */
+    public function suspend()
+    {
+        $this->suspensions()->create(['started_at' => now()]);
+    }
+
+    /**
+     * Injure the wrestler.
+     *
+     * @return void
+     */
+    public function injure()
+    {
+        $this->injuries()->create(['started_at' => now()]);
+    }
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data                 = parent::toArray();
+        $data['status']       = $this->status->label();
+
+        return $data;
     }
 }
