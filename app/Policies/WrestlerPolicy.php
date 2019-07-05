@@ -60,21 +60,31 @@ class WrestlerPolicy
      * Determine whether the user can retire a wrestler.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function retire(User $user)
+    public function retire(User $user, Wrestler $wrestler)
     {
+        if (!$wrestler->is_hired || $wrestler->is_retired) {
+            return false;
+        }
+
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can unretire a retired wrestler.
+     * Determine whether the user can unretire a wrestler.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function unretire(User $user)
+    public function unretire(User $user, Wrestler $wrestler)
     {
+        if (!$wrestler->is_retired) {
+            return false;
+        }
+
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -87,7 +97,7 @@ class WrestlerPolicy
      */
     public function suspend(User $user, Wrestler $wrestler)
     {
-        if ($wrestler->isSuspended()) {
+        if (!$wrestler->is_hired || !$wrestler->is_bookable || $wrestler->is_suspended) {
             return false;
         }
 
@@ -95,7 +105,7 @@ class WrestlerPolicy
     }
 
     /**
-     * Determine whether the user can reinstate a suspended wrestler.
+     * Determine whether the user can reinstate a wrestler.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Wrestler  $wrestler
@@ -114,32 +124,31 @@ class WrestlerPolicy
      * Determine whether the user can injure a wrestler.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function injure(User $user)
+    public function injure(User $user, Wrestler $wrestler)
     {
+        if (!$wrestler->is_hired || !$wrestler->is_bookable || $wrestler->is_injured) {
+            return false;
+        }
+
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can recover an injured wrestler.
+     * Determine whether the user can recover a wrestler.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function recover(User $user)
+    public function recover(User $user, Wrestler $wrestler)
     {
-        return $user->isSuperAdministrator() || $user->isAdministrator();
-    }
+        if (!$wrestler->is_hired || !$wrestler->is_injured) {
+            return false;
+        }
 
-    /**
-     * Determine whether the user can deactivate an active wrestler.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
-     */
-    public function deactivate(User $user)
-    {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -147,10 +156,15 @@ class WrestlerPolicy
      * Determine whether the user can activate an inactive wrestler.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function activate(User $user)
+    public function activate(User $user, Wrestler $wrestler)
     {
+        if ($wrestler->is_hired) {
+            return false;
+        }
+
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -174,10 +188,6 @@ class WrestlerPolicy
      */
     public function view(User $user, Wrestler $wrestler)
     {
-        if ($wrestler->user->isNot($user)) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 }
