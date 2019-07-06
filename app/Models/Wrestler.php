@@ -87,6 +87,26 @@ class Wrestler extends Model
     }
 
     /**
+     * Get the current suspension of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function suspension()
+    {
+        return $this->morphOne(Suspension::class, 'suspendable')->whereNull('ended_at');
+    }
+
+    /**
+     * Get the previous suspension of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function previousSuspension()
+    {
+        return $this->morphOne(Suspension::class, 'suspendable')->whereNotNull('ended_at')->latest('started_at');
+    }
+
+    /**
      * Get the injuries of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -304,6 +324,16 @@ class Wrestler extends Model
     public function suspend()
     {
         $this->suspensions()->create(['started_at' => now()]);
+    }
+
+    /**
+     * Reinstate a wrestler.
+     *
+     * @return void
+     */
+    public function reinstate()
+    {
+        $this->suspension()->update(['ended_at' => now()]);
     }
 
     /**
