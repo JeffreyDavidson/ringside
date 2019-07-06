@@ -342,7 +342,7 @@ class Wrestler extends Model
      */
     public function unretire()
     {
-        $this->retirement()->update(['ended_at' => today()]);
+        $this->retirement()->update(['ended_at' => now()]);
     }
 
     /**
