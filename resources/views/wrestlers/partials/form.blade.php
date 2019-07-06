@@ -7,7 +7,7 @@
                 class="form-control @error('name') is-invalid @enderror"
                 name="name"
                 placeholder="Enter name"
-                value="{{ $wrestler->name ?? old('name') }}"
+                value="{{ old('name', $wrestler->name) }}"
             >
             @error('name')
                 <div id="name-error" class="error invalid-feedback">{{ $message }}</div>
@@ -21,7 +21,7 @@
                         class="form-control @error('hometown') is-invalid @enderror"
                         name="hometown"
                         placeholder="Enter hometown"
-                        value="{{ $wrestler->hometown ?? old('hometown') }}"
+                        value="{{ old('hometown', $wrestler->hometown) }}"
                     >
                     @error('hometown')
                         <div id="hometown-error" class="error invalid-feedback">{{ $message }}</div>
@@ -35,11 +35,11 @@
                         class="form-control @error('hired_at') is-invalid @enderror"
                         name="hired_at"
                         placeholder="Enter date hired"
-                        value="{{ optional($wrestler->hired_at)->toDateString() ?? old('hired_at') }}"
                     >
                     @error('hired_at')
                         <div id="hired-at-error" class="error invalid-feedback">{{ $message }}</div>
                     @enderror
+                            value="{{ old('hired_at', optional($wrestler->hired_at)->toDateTimeString()) }}"
                 </div>
             </div>
             <div class="col-lg-4">
@@ -49,7 +49,7 @@
                         class="form-control @error('signature_move') is-invalid @enderror"
                         name="signature_move"
                         placeholder="Enter signature move"
-                        value="{{ $wrestler->signature_move ?? old('signature_move') }}"
+                        value="{{ old('signature_move', $wrestler->signature_move) }}"
                     >
                     @error('signature_move')
                         <div id="signature-move-error" class="error invalid-feedback">{{ $message }}</div>
@@ -72,7 +72,7 @@
                         max="7"
                         name="feet"
                         placeholder="Enter feet"
-                        value="{{ old('feet') ?? $wrestler->feet }}"
+                        value="{{ old('feet', $wrestler->feet) }}"
                     >
                     @error('feet')
                         <div id="feet-error" class="error invalid-feedback">{{ $messasge }}</div>
@@ -86,7 +86,7 @@
                         class="form-control @error('inches') is-invalid @enderror"
                         max="11" name="inches"
                         placeholder="Enter inches"
-                        value="{{ old('inches') ?? $wrestler->inches }}"
+                        value="{{ old('inches', $wrestler->inches) }}"
                     >
                     @error('inches')
                         <div id="inches-error" class="error invalid-feedback">{{ $message }}</div>
@@ -100,7 +100,7 @@
                         class="form-control @error('weight') is-invalid @enderror"
                         name="weight"
                         placeholder="Enter weight"
-                        value="{{ $wrestler->weight ?? old('weight') }}"
+                        value="{{ old('weight', $wrestler->weight) }}"
                     >
                     @error('weight')
                         <div id="weight-error" class="error invalid-feedback">{{ $message }}</div>
