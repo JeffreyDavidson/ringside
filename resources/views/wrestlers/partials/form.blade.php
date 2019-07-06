@@ -31,15 +31,22 @@
             <div class="col-lg-4">
                 <div class="form-group">
                     <label>Date Hired:</label>
-                    <input type="date"
-                        class="form-control @error('hired_at') is-invalid @enderror"
-                        name="hired_at"
-                        placeholder="Enter date hired"
-                    >
-                    @error('hired_at')
-                        <div id="hired-at-error" class="error invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="kt-input-icon kt-input-icon--right">
+                        <input type="text"
+                            class="form-control @error('hired_at') is-invalid @enderror"
+                            data-datetimepicker
+                            data-input
+                            name="hired_at"
+                            placeholder="Enter date hired"
                             value="{{ old('hired_at', optional($wrestler->hired_at)->toDateTimeString()) }}"
+                        >
+                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                            <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
+                        </span>
+                        @error('hired_at')
+                            <div id="hired-at-error" class="error invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4">
