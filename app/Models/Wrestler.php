@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Retireable;
 use App\Enums\WrestlerStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends Model
 {
-    use SoftDeletes, Retireable;
+    use SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -74,6 +73,26 @@ class Wrestler extends Model
     public function stable()
     {
         return $this->morphToMany(Stable::class, 'member')->where('is_active', true);
+    }
+
+    /**
+     * Get the retirements of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function retirements()
+    {
+        return $this->morphMany(Retirement::class, 'retiree');
+    }
+
+    /**
+     * Get the current retirement of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function retirement()
+    {
+        return $this->morphOne(Retirement::class, 'retiree')->whereNull('ended_at');
     }
 
     /**
@@ -304,6 +323,26 @@ class Wrestler extends Model
     public function activate()
     {
         return $this->update(['hired_at' => now()]);
+    }
+
+    /**
+     * Retire a wrestler.
+     *
+     * @return void
+     */
+    public function retire()
+    {
+        $this->retirements()->create(['started_at' => now()]);
+    }
+
+    /**
+     * Unretire a wrestlerl.
+     *
+     * @return void
+     */
+    public function unretire()
+    {
+        $this->retirement()->update(['ended_at' => today()]);
     }
 
     /**
