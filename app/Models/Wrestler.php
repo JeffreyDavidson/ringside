@@ -97,16 +97,6 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the previous suspension of the wrestler.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-     */
-    public function previousSuspension()
-    {
-        return $this->morphOne(Suspension::class, 'suspendable')->whereNotNull('ended_at')->latest('started_at');
-    }
-
-    /**
      * Get the injuries of the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany

@@ -19,7 +19,7 @@ class ReinstateSuspendedWrestlerTest extends TestCase
         $response = $this->delete(route('wrestlers.reinstate', $wrestler));
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertNotNull($wrestler->fresh()->previousSuspension->ended_at);
+        $this->assertNotNull($wrestler->fresh()->suspensions->latest('started_at')->ended_at);
     }
 
     /** @test */
