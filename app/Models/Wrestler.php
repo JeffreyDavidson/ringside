@@ -126,6 +126,16 @@ class Wrestler extends Model
     }
 
     /**
+     * Get the current injury of the wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function injury()
+    {
+        return $this->morphOne(Injury::class, 'injurable')->whereNull('ended_at');
+    }
+
+    /**
      * Return the wrestler's height formatted.
      *
      * @return string
@@ -332,6 +342,14 @@ class Wrestler extends Model
      */
     public function retire()
     {
+        if ($this->is_suspended) {
+            $this->reinstate();
+        }
+
+        if ($this->is_injured) {
+            $this->recover();
+        }
+
         $this->retirements()->create(['started_at' => now()]);
     }
 
@@ -366,13 +384,23 @@ class Wrestler extends Model
     }
 
     /**
-     * Injure the wrestler.
+     * Injure a wrestler.
      *
      * @return void
      */
     public function injure()
     {
         $this->injuries()->create(['started_at' => now()]);
+    }
+
+    /**
+     * Recover a wrestler.
+     *
+     * @return void
+     */
+    public function recover()
+    {
+        $this->injury()->update(['ended_at' => now()]);
     }
 
     /**
