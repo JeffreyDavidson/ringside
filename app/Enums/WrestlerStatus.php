@@ -13,9 +13,9 @@ use MadWeb\Enum\Enum;
  */
 final class WrestlerStatus extends Enum
 {
-    const BOOKABLE = 'bookable';
-    const INACTIVE = 'inactive';
-    const RETIRED = 'retired';
+    const BOOKABLE  = 'bookable';
+    const INACTIVE  = 'inactive';
+    const RETIRED   = 'retired';
     const SUSPENDED = 'suspended';
-    const INJURED = 'injured';
+    const INJURED   = 'injured';
 }
