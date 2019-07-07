@@ -10,7 +10,7 @@ class ActivateController extends Controller
     /**
      * Activate a wrestler.
      *
-     * @param  \App\Models\Wrestler $wrestler
+     * @param  \App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function __invoke(Wrestler $wrestler)

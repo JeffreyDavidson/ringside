@@ -16,7 +16,7 @@ class WrestlersController extends Controller
      * View a list of wrestlers.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Yajra\DataTables\DataTables $table
+     * @param  \Yajra\DataTables\DataTables  $table
      * @return \Illuminate\View\View
      */
     public function index(Request $request, DataTables $table, WrestlerFilters $requestFilter)
