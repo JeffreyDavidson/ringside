@@ -22,6 +22,7 @@ class ViewWrestlersListTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        
         $mapToIdAndName = function (Wrestler $wrestler) {
             return ['id' => $wrestler->id, 'name' => e($wrestler->name)];
         };
