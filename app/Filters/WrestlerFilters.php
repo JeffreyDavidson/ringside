@@ -14,7 +14,7 @@ class WrestlerFilters extends Filters
     protected $filters = ['status', 'hired_at'];
 
     /**
-     * Filter a query to include titles of a status.
+     * Filter a query to include wrestlers of a status.
      *
      * @param  string  $status
      * @return \Illuminate\Database\Eloquent\Builder
@@ -43,7 +43,7 @@ class WrestlerFilters extends Filters
     }
 
     /**
-     * Filter a query to include titles of a specific date hired.
+     * Filter a query to include wrestlers of a specific date hired.
      *
      * @param  array  $hiredAt
      * @return \Illuminate\Database\Eloquent\Builder
