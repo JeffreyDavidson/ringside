@@ -17,7 +17,7 @@ class WrestlersController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Yajra\DataTables\DataTables $table
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index(Request $request, DataTables $table, WrestlerFilters $requestFilter)
     {
@@ -44,13 +44,13 @@ class WrestlersController extends Controller
     /**
      * Show the form for creating a new wrestler.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Wrestler $wrestler)
     {
         $this->authorize('create', Wrestler::class);
 
-        return response()->view('wrestlers.create', compact('wrestler'));
+        return view('wrestlers.create', compact('wrestler'));
     }
 
     /**
@@ -72,26 +72,26 @@ class WrestlersController extends Controller
      * Show the profile of a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Wrestler $wrestler)
     {
         $this->authorize('view', $wrestler);
 
-        return response()->view('wrestlers.show', compact('wrestler'));
+        return view('wrestlers.show', compact('wrestler'));
     }
 
     /**
      * Edit a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Wrestler $wrestler)
     {
         $this->authorize('update', $wrestler);
 
-        return response()->view('wrestlers.edit', compact('wrestler'));
+        return view('wrestlers.edit', compact('wrestler'));
     }
 
     /**
