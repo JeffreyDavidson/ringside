@@ -43,7 +43,7 @@ class ActivateWrestlerTest extends TestCase
 
         $response = $this->post(route('wrestlers.activate', $wrestler));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */

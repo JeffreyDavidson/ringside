@@ -58,7 +58,7 @@ class CreateWrestlerTest extends TestCase
     {
         $response = $this->get(route('wrestlers.create'));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
@@ -131,7 +131,7 @@ class CreateWrestlerTest extends TestCase
     {
         $response = $this->post(route('wrestlers.store'), $this->validParams());
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
