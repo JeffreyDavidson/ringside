@@ -124,21 +124,4 @@ class WrestlersController extends Controller
 
         return redirect()->route('wrestlers.index');
     }
-
-    /**
-     * Restore a deleted wrestler.
-     *
-     * @param  int  $wrestlerId
-     * @return \lluminate\Http\RedirectResponse
-     */
-    public function restore($wrestlerId)
-    {
-        $wrestler = Wrestler::onlyTrashed()->findOrFail($wrestlerId);
-
-        $this->authorize('restore', Wrestler::class);
-
-        $wrestler->restore();
-
-        return redirect()->route('wrestlers.index');
-    }
 }
