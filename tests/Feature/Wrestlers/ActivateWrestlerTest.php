@@ -52,7 +52,7 @@ class ActivateWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('active')->create();
 
-        $response = $this->post(route('wrestlers.activate', $wrestler));
+        $response = $this->put(route('wrestlers.activate', $wrestler));
 
         $response->assertForbidden();
     }
