@@ -14,6 +14,11 @@ class ViewWrestlersListTest extends TestCase
     /** @var \Illuminate\Support\Collection */
     protected $wrestlers;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
