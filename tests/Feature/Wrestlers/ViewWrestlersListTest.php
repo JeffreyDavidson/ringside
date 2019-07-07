@@ -171,7 +171,7 @@ class ViewWrestlersListTest extends TestCase
     }
 
     /**
-     * Provide a state of a user role to the test/
+     * Provide a state of a user role to the test.
      *
      * @return array
      */

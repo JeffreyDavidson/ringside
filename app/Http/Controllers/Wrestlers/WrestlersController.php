@@ -82,7 +82,7 @@ class WrestlersController extends Controller
     }
 
     /**
-     * Edit a wrestler.
+     * Show the form for editing a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\View\View

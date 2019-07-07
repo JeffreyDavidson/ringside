@@ -30,7 +30,7 @@ class UpdateWrestlerTest extends TestCase
     }
 
     /**
-     * Valid Parameters for request.
+     * Valid parameters for request.
      *
      * @param  array $overrides
      * @return array
