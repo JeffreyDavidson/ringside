@@ -50,7 +50,7 @@ class CreateWrestlerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('wrestlers.create'));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     /** @test */
@@ -123,7 +123,7 @@ class CreateWrestlerTest extends TestCase
                         ->from(route('wrestlers.create'))
                         ->post(route('wrestlers.store'), $this->validParams());
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     /** @test */

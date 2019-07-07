@@ -33,7 +33,7 @@ class ActivateWrestlerTest extends TestCase
 
         $response = $this->post(route('wrestlers.activate', $wrestler));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     /** @test */
@@ -54,6 +54,6 @@ class ActivateWrestlerTest extends TestCase
 
         $response = $this->post(route('wrestlers.activate', $wrestler));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 }
