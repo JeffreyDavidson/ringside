@@ -49,7 +49,7 @@ class ViewWrestlersListTest extends TestCase
 
         $response = $this->get(route('wrestlers.index'));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     /** @test */
