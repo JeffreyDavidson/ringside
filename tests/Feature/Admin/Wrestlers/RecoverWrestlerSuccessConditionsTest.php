@@ -19,6 +19,6 @@ class RecoverInjuredWrestlerTest extends TestCase
         $response = $this->put(route('wrestlers.recover', $wrestler));
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->injuries->latest()->first()->ended_at);
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->injuries()->latest()->first()->ended_at);
     }
 }
