@@ -32,7 +32,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::prefix('roster')->group(function () {
         Route::resource('wrestlers', WrestlersController::class);
-        Route::put('/wrestlers/{wrestler}/restore', [WrestlerRestoreController::class])->name('wrestlers.restore');
+        Route::put('/wrestlers/{wrestler}/restore', WrestlerRestoreController::class)->name('wrestlers.restore');
         Route::put('/wrestlers/{wrestler}/activate', WrestlerActivateController::class)->name('wrestlers.activate');
         Route::put('/wrestlers/{wrestler}/retire', WrestlerRetireController::class)->name('wrestlers.retire');
         Route::put('/wrestlers/{wrestler}/unretire', WrestlerUnretireController::class)->name('wrestlers.unretire');
