@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Sluggable;
 use App\Traits\Retireable;
 use App\Traits\Activatable;
 use App\Traits\Suspendable;
@@ -15,8 +14,7 @@ class Stable extends Model
 {
     use SoftDeletes,
         Activatable,
-        Suspendable,
-        Sluggable;
+        Suspendable;
 
     use Retireable {
         Retireable::retire as private retireStable;

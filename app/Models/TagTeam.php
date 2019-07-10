@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\Hireable;
-use App\Traits\Sluggable;
 use App\Traits\Retireable;
 use App\Traits\Activatable;
 use App\Traits\Suspendable;
@@ -16,8 +15,7 @@ class TagTeam extends Model
     use SoftDeletes,
         Suspendable,
         Activatable,
-        Hireable,
-        Sluggable;
+        Hireable;
 
     use Retireable {
         Retireable::retire as private retireableRetire;
