@@ -30,7 +30,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
 
         $this->titles = collect([
             'bookable'           => $bookable,
-            'pending_introduced' => $pendingIntroduced,
+            'pending-introduced' => $pendingIntroduced,
             'retired'            => $retired,
             'all'                => collect()
                                 ->concat($bookable)
