@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Wrestler;
 use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
