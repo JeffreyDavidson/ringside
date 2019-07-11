@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Title extends Model
 {
-    use Retireable;
+    use SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
