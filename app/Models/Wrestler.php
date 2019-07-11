@@ -328,7 +328,7 @@ class Wrestler extends Model
     /**
      * Activate a wrestler.
      *
-     * @return boolean
+     * @return bool
      */
     public function activate()
     {
@@ -338,7 +338,7 @@ class Wrestler extends Model
     /**
      * Retire a wrestler.
      *
-     * @return void
+     * @return \App\Models\Retirement
      */
     public function retire()
     {
@@ -354,9 +354,9 @@ class Wrestler extends Model
     }
 
     /**
-     * Unretire a wrestlerl.
+     * Unretire a wrestler.
      *
-     * @return void
+     * @return bool
      */
     public function unretire()
     {
@@ -366,7 +366,7 @@ class Wrestler extends Model
     /**
      * Suspend a wrestler.
      *
-     * @return void
+     * @return \App\Models\Suspension
      */
     public function suspend()
     {
@@ -376,7 +376,7 @@ class Wrestler extends Model
     /**
      * Reinstate a wrestler.
      *
-     * @return void
+     * @return bool
      */
     public function reinstate()
     {
@@ -386,7 +386,7 @@ class Wrestler extends Model
     /**
      * Injure a wrestler.
      *
-     * @return void
+     * @return \App\Models\Injury
      */
     public function injure()
     {
@@ -396,7 +396,7 @@ class Wrestler extends Model
     /**
      * Recover a wrestler.
      *
-     * @return void
+     * @return bool
      */
     public function recover()
     {
