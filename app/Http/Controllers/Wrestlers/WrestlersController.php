@@ -61,9 +61,7 @@ class WrestlersController extends Controller
      */
     public function store(StoreWrestlerRequest $request)
     {
-        $request->merge(['height' => ($request->input('feet') * 12) + $request->input('inches')]);
-
-        $wrestler = Wrestler::create($request->except(['feet', 'inches']));
+        Wrestler::create($request->all());
 
         return redirect()->route('wrestlers.index');
     }
@@ -103,9 +101,7 @@ class WrestlersController extends Controller
      */
     public function update(UpdateWrestlerRequest $request, Wrestler $wrestler)
     {
-        $request->merge(['height' => ($request->input('feet') * 12) + $request->input('inches')]);
-
-        $wrestler->update($request->except(['feet', 'inches']));
+        $wrestler->update($request->all());
 
         return redirect()->route('wrestlers.index');
     }
