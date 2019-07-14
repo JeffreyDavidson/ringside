@@ -60,7 +60,7 @@ class TitlesController extends Controller
      */
     public function store(StoreTitleRequest $request)
     {
-        $title = Title::create($request->all());
+        Title::create($request->all());
 
         return redirect()->route('titles.index');
     }
