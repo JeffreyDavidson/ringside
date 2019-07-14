@@ -29,8 +29,8 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
         $retired           = factory(Title::class, 3)->states('retired')->create()->map($mapToIdAndName);
 
         $this->titles = collect([
-            'bookable'           => $bookable,
             'pending-introduced' => $pendingIntroduced,
+            'bookable'           => $bookable,
             'retired'            => $retired,
             'all'                => collect()
                                 ->concat($bookable)
