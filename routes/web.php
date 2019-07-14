@@ -8,14 +8,15 @@ use App\Http\Controllers\Titles\RestoreController;
 use App\Http\Controllers\Titles\ActivateController;
 use App\Http\Controllers\Titles\UnretireController;
 use App\Http\Controllers\Wrestlers\InjureController;
+use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Controllers\Wrestlers\RecoverController;
 use App\Http\Controllers\Wrestlers\SuspendController;
 use App\Http\Controllers\Wrestlers\ReinstateController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
-use App\Http\Controllers\Wrestlers\RestoreController as WrestlerRestoreController;
 use App\Http\Controllers\Wrestlers\RetireController as WrestlerRetireController;
-use App\Http\Controllers\Wrestlers\UnretireController as WrestlerUnretireController;
+use App\Http\Controllers\Wrestlers\RestoreController as WrestlerRestoreController;
 use App\Http\Controllers\Wrestlers\ActivateController as WrestlerActivateController;
+use App\Http\Controllers\Wrestlers\UnretireController as WrestlerUnretireController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::put('/wrestlers/{wrestler}/reinstate', ReinstateController::class)->name('wrestlers.reinstate');
         Route::put('/wrestlers/{wrestler}/injure', InjureController::class)->name('wrestlers.injure');
         Route::put('/wrestlers/{wrestler}/recover', RecoverController::class)->name('wrestlers.recover');
-        Route::resource('tagteams', 'TagTeamsController');
+        Route::resource('tagteams', TagTeamsController::class);
         Route::patch('/tag-teams/{tagteam}/restore', [TagTeamsController::class, 'restore'])->name('tagteams.restore');
         Route::post('/tag-teams/{tagteam}/suspend', [TagTeamSuspensionsController::class, 'store'])->name('tagteams.suspend');
         Route::delete('/tag-teams/{tagteam}/reinstate', [TagTeamSuspensionsController::class, 'destroy'])->name('tagteams.reinstate');
