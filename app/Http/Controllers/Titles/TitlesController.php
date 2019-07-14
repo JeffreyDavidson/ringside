@@ -45,11 +45,11 @@ class TitlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Title $title)
     {
         $this->authorize('create', Title::class);
 
-        return view('titles.create');
+        return view('titles.create', compact('title'));
     }
 
     /**
