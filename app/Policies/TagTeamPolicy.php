@@ -87,22 +87,6 @@ class TagTeamPolicy
     }
 
     /**
-     * Determine whether the user can deactivate an active tag team.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
-     * @return bool
-     */
-    public function deactivate(User $user, TagTeam $tagteam)
-    {
-        if ($tagteam->is_bookable) {
-            return false;
-        }
-
-        return $user->isSuperAdministrator() || $user->isAdministrator();
-    }
-
-    /**
      * Determine whether the user can activate an inactive tag team.
      *
      * @param  \App\Models\User  $user
@@ -111,7 +95,7 @@ class TagTeamPolicy
      */
     public function activate(User $user, TagTeam $tagteam)
     {
-        if ($tagteam->is_hired) {
+        if ($tagteam->is_bookable) {
             return false;
         }
         return $user->isSuperAdministrator() || $user->isAdministrator();
@@ -169,6 +153,10 @@ class TagTeamPolicy
      */
     public function view(User $user, TagTeam $tagteam)
     {
+        if (!is_null($tagteam->user) && $tagteam->user->is($user)) {
+            return true;
+        }
+
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 }
