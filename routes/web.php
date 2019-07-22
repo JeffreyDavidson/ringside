@@ -31,6 +31,7 @@ use App\Http\Controllers\Wrestlers\RestoreController as WrestlerRestoreControlle
 use App\Http\Controllers\TagTeams\ReinstateController as TagTeamReinstateController;
 use App\Http\Controllers\Wrestlers\ActivateController as WrestlerActivateController;
 use App\Http\Controllers\Wrestlers\UnretireController as WrestlerUnretireController;
+use App\Http\Controllers\Managers\ActivateController as ManagerActivateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +70,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::post('/managers/{manager}/injure', [ManagerInjuriesController::class, 'store'])->name('managers.injure');
         Route::delete('/managers/{manager}/recover', [ManagerInjuriesController::class, 'destroy'])->name('managers.recover');
         Route::post('/managers/{manager}/deactivate', [ManagerActivationsController::class, 'destroy'])->name('managers.deactivate');
-        Route::post('/managers/{manager}/activate', [ManagerActivationsController::class, 'store'])->name('managers.activate');
+        Route::put('/managers/{manager}/activate', ManagerActivateController::class)->name('managers.activate');
         Route::post('/managers/{manager}/suspend', [ManagerSuspensionsController::class, 'store'])->name('managers.suspend');
         Route::delete('/managers/{manager}/reinstate', [ManagerSuspensionsController::class, 'destroy'])->name('managers.reinstate');
         Route::resource('referees', RefereesController::class);
