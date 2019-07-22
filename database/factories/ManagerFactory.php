@@ -7,14 +7,9 @@ $factory->define(Manager::class, function (Faker $faker) {
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
-        'hired_at' => $faker->dateTime(),
-        'is_active' => true,
     ];
 });
 
-$factory->state(Manager::class, 'active', [
-    'is_active' => true,
-]);
 
 $factory->afterCreatingState(Manager::class, 'retired', function ($manager) {
     $manager->retire();
