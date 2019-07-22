@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Managers;
 
 use App\Models\Manager;
+use Illuminate\Http\Request;
+use App\Filters\ManagerFilters;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateManagerRequest;
@@ -10,18 +13,36 @@ use App\Http\Requests\UpdateManagerRequest;
 class ManagersController extends Controller
 {
     /**
-     * Retrieve managers of a specific state.
+     * View a list of managers.
      *
-     * @param  string  $state
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Yajra\DataTables\DataTables  $table
+     * @param  \App\Filters\ManagerFilters  $requestFilter
+     * @return \Illuminate\View\View
      */
-    public function index($state = 'active')
+    public function index(Request $request, DataTables $table, ManagerFilters $requestFilter)
     {
         $this->authorize('viewList', Manager::class);
 
-        $managers = Manager::hasState($state)->get();
+        if ($request->ajax()) {
+            $query = Manager::query();
+            $requestFilter->apply($query);
 
-        return view('managers.index', compact('managers'));
+            return $table->eloquent($query)
+                ->addColumn('action', 'managers.partials.action-cell')
+                ->editColumn('name', function (Manager $manager) {
+                    return $manager->full_name;
+                })
+                ->editColumn('started_at', function (Manager $manager) {
+                    return $manager->formatted_started_at;
+                })
+                ->filterColumn('id', function ($query, $keyword) {
+                    $query->where($query->qualifyColumn('id'), $keyword);
+                })
+                ->toJson();
+        }
+
+        return view('managers.index');
     }
 
     /**
