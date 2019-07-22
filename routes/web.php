@@ -69,7 +69,6 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::delete('/managers/{manager}/unretire', [ManagerRetirementsController::class, 'destroy'])->name('managers.unretire');
         Route::post('/managers/{manager}/injure', [ManagerInjuriesController::class, 'store'])->name('managers.injure');
         Route::delete('/managers/{manager}/recover', [ManagerInjuriesController::class, 'destroy'])->name('managers.recover');
-        Route::post('/managers/{manager}/deactivate', [ManagerActivationsController::class, 'destroy'])->name('managers.deactivate');
         Route::put('/managers/{manager}/activate', ManagerActivateController::class)->name('managers.activate');
         Route::post('/managers/{manager}/suspend', [ManagerSuspensionsController::class, 'store'])->name('managers.suspend');
         Route::delete('/managers/{manager}/reinstate', [ManagerSuspensionsController::class, 'destroy'])->name('managers.reinstate');
