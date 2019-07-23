@@ -22,7 +22,7 @@ table.DataTable({
         }
     },
     columns: [
-        { data: "id", title: "Wrestler ID" },
+        { data: "id", title: "Manager ID" },
         { data: "name", title: "Name" },
         { data: "started_at", title: "Date Started" },
         { data: "status", title: "Status", searchable: false },
