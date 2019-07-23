@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Guest\Manager;
+namespace Tests\Feature\Guest\Managers;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
