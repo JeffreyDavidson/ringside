@@ -34,21 +34,21 @@ class ViewManagersListSuccessConditionsTest extends TestCase
             ];
         };
 
-        $bookable          = factory(Manager::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduced = factory(Manager::class, 3)->states('pending-introduced')->create()->map($mapToIdAndName);
-        $retired           = factory(Manager::class, 3)->states('retired')->create()->map($mapToIdAndName);
-        $suspended         = factory(Manager::class, 3)->states('suspended')->create()->map($mapToIdAndName);
-        $injured           = factory(Manager::class, 3)->states('injured')->create()->map($mapToIdAndName);
+        $bookable             = factory(Manager::class, 3)->states('bookable')->create()->map($mapToIdAndName);
+        $pendingIntroduction  = factory(Manager::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
+        $retired              = factory(Manager::class, 3)->states('retired')->create()->map($mapToIdAndName);
+        $suspended            = factory(Manager::class, 3)->states('suspended')->create()->map($mapToIdAndName);
+        $injured              = factory(Manager::class, 3)->states('injured')->create()->map($mapToIdAndName);
 
         $this->managers = collect([
-            'bookable'           => $bookable,
-            'pending-introduced' => $pendingIntroduced,
-            'retired'            => $retired,
-            'suspended'          => $suspended,
-            'injured'            => $injured,
-            'all'                => collect()
+            'bookable'             => $bookable,
+            'pending-introduction' => $pendingIntroduction,
+            'retired'              => $retired,
+            'suspended'            => $suspended,
+            'injured'              => $injured,
+            'all'                  => collect()
                                 ->concat($bookable)
-                                ->concat($pendingIntroduced)
+                                ->concat($pendingIntroduction)
                                 ->concat($retired)
                                 ->concat($suspended)
                                 ->concat($injured)
@@ -97,11 +97,11 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'only_pending_introduced']));
+        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'only_pending_introduction']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->managers->get('pending-introduced')->count(),
-            'data'         => $this->managers->get('pending-introduced')->toArray(),
+            'recordsTotal' => $this->managers->get('pending-introduction')->count(),
+            'data'         => $this->managers->get('pending-introduction')->toArray(),
         ]);
     }
 
