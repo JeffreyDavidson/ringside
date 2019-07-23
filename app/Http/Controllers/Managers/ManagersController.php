@@ -34,7 +34,7 @@ class ManagersController extends Controller
                     return $manager->full_name;
                 })
                 ->editColumn('started_at', function (Manager $manager) {
-                    return $manager->formatted_started_at;
+                    return $manager->employment->started_at ?? null;
                 })
                 ->filterColumn('id', function ($query, $keyword) {
                     $query->where($query->qualifyColumn('id'), $keyword);
