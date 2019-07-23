@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ManagerStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -105,6 +106,33 @@ class Manager extends Model
     public function employment()
     {
         return $this->morphOne(Employment::class, 'employable')->whereNull('ended_at');
+    }
+
+    /**
+     * Determine the status of the manager.
+     *
+     * @return \App\Enum\ManagerStatus
+     *
+     */
+    public function getStatusAttribute()
+    {
+        if ($this->is_bookable) {
+            return ManagerStatus::BOOKABLE();
+        }
+
+        if ($this->is_retired) {
+            return ManagerStatus::RETIRED();
+        }
+
+        if ($this->is_injured) {
+            return ManagerStatus::INJURED();
+        }
+
+        if ($this->is_suspended) {
+            return ManagerStatus::SUSPENDED();
+        }
+
+        return ManagerStatus::PENDING_INTRODUCTION();
     }
 
     /**
@@ -317,5 +345,18 @@ class Manager extends Model
     public function recover()
     {
         $this->injury()->update(['ended_at' => now()]);
+    }
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data                 = parent::toArray();
+        $data['status']       = $this->status->label();
+
+        return $data;
     }
 }
