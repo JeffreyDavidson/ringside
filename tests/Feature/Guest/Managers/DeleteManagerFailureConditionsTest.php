@@ -6,6 +6,10 @@ use App\Models\Manager;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * @group managers
+ * @group guests
+ */
 class DeleteManagerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
