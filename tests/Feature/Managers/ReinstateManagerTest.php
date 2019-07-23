@@ -6,7 +6,7 @@ use App\Models\Manager;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ReinstateSuspendedManagerTest extends TestCase
+class ReinstateManagerTest extends TestCase
 {
     use RefreshDatabase;
 
