@@ -50,11 +50,11 @@ class ManagersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Manager $manager)
     {
         $this->authorize('create', Manager::class);
 
-        return view('managers.create');
+        return view('managers.create', compact('manager'));
     }
 
     /**
@@ -65,7 +65,11 @@ class ManagersController extends Controller
      */
     public function store(StoreManagerRequest $request)
     {
-        Manager::create($request->all());
+        $manager = Manager::create($request->except('started_at'));
+
+        if ($request->filled('started_at')) {
+            $manager->employments()->create($request->only('started_at'));
+        }
 
         return redirect()->route('managers.index');
     }
