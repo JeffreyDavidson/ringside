@@ -122,7 +122,7 @@ class ManagersController extends Controller
      */
     public function destroy(Manager $manager)
     {
-        $this->authorize('delete', Manager::class);
+        $this->authorize('delete', $manager);
 
         $manager->delete();
 
