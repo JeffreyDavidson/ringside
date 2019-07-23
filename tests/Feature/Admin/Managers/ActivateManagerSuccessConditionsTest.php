@@ -18,7 +18,7 @@ class ActivateManagerSuccessConditionsTest extends TestCase
     public function an_administrator_can_activate_a_pending_introduced_manager()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-introduced')->create();
+        $manager = factory(Manager::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('managers.activate', $manager));
 

@@ -17,7 +17,7 @@ class ActivateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_activate_pending_introduced_manager()
     {
-        $manager = factory(Manager::class)->states('pending-introduced')->create();
+        $manager = factory(Manager::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('managers.activate', $manager));
 

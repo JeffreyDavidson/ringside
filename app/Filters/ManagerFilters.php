@@ -25,8 +25,8 @@ class ManagerFilters extends Filters
             case 'only_bookable':
                 $this->builder->bookable();
                 break;
-            case 'only_pending_introduced':
-                $this->builder->pendingIntroduced();
+            case 'only_pending_introduction':
+                $this->builder->pendingIntroduction();
                 break;
             case 'only_retired':
                 $this->builder->retired();

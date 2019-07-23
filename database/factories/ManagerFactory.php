@@ -17,7 +17,7 @@ $factory->afterCreatingState(Manager::class, 'bookable', function ($manager) {
     ]);
 });
 
-$factory->afterCreatingState(Manager::class, 'pending-introduced', function ($manager) {
+$factory->afterCreatingState(Manager::class, 'pending-introduction', function ($manager) {
     $manager->employments()->create([
         'started_at' => Carbon::tomorrow()->toDateTimeString()
     ]);
