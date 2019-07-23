@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\SuperAdmin\Manager;
+namespace Tests\Feature\SuperAdmin\Managers;
 
 use Tests\TestCase;
 use App\Models\Manager;
