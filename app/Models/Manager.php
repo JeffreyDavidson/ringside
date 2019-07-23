@@ -95,7 +95,7 @@ class Manager extends Model
      */
     public function employments()
     {
-        return $this->morphMany(Employment::class, 'employable')->whereNull('ended_at');
+        return $this->morphMany(Employment::class, 'employable');
     }
 
     /**
@@ -172,7 +172,7 @@ class Manager extends Model
      */
     public function getIsSuspendedAttribute()
     {
-        return $this->suspensions()->whereNull('ended_at')->exists();
+        return $this->suspension()->exists();
     }
 
     /**
@@ -182,7 +182,7 @@ class Manager extends Model
      */
     public function getIsInjuredAttribute()
     {
-        return $this->injuries()->whereNull('ended_at')->exists();
+        return $this->injury()->exists();
     }
 
 
@@ -215,14 +215,14 @@ class Manager extends Model
     }
 
     /**
-     * Scope a query to only include inactive managers.
+     * Scope a query to only include pending introduced managers.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopePendingIntroduced($query)
+    public function scopePendingIntroduction($query)
     {
         return $query->whereHas('employments', function (Builder $query) {
-            $query->whereNull('started_at')->orWhere('started_at', '>', now());
+            $query->where('started_at', '>', now());
         });
     }
 
@@ -234,9 +234,7 @@ class Manager extends Model
      */
     public function scopeRetired($query)
     {
-        return $query->whereHas('retirements', function ($query) {
-            $query->whereNull('ended_at');
-        });
+        return $query->whereHas('retirement');
     }
 
     /**
@@ -247,9 +245,7 @@ class Manager extends Model
      */
     public function scopeSuspended($query)
     {
-        return $query->whereHas('suspensions', function ($query) {
-            $query->whereNull('ended_at');
-        });
+        return $query->whereHas('suspension');
     }
 
     /**
@@ -260,9 +256,7 @@ class Manager extends Model
      */
     public function scopeInjured($query)
     {
-        return $query->whereHas('injuries', function ($query) {
-            $query->whereNull('ended_at');
-        });
+        return $query->whereHas('injury');
     }
 
     /**
@@ -272,11 +266,7 @@ class Manager extends Model
      */
     public function activate()
     {
-        if (!$this->employment()->exists()) {
-            $this->employments()->create(['started_at' => now()]);
-        }
-
-        return $this->employments()->latest()->first()->update(['started_at' => now()]);
+        return $this->employments()->updateOrCreate(['started_at' => null], ['started_at' => now()]);
     }
 
     /**
