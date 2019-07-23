@@ -215,7 +215,7 @@ class Manager extends Model
     }
 
     /**
-     * Scope a query to only include pending introduced managers.
+     * Scope a query to only include pending introduction managers.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
