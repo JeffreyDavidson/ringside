@@ -95,7 +95,7 @@ class ManagersController extends Controller
      */
     public function edit(Manager $manager)
     {
-        $this->authorize('update', Manager::class);
+        $this->authorize('update', $manager);
 
         return view('managers.edit', compact('manager'));
     }
@@ -109,7 +109,16 @@ class ManagersController extends Controller
      */
     public function update(UpdateManagerRequest $request, Manager $manager)
     {
-        $manager->update($request->all());
+        $manager->update($request->except('started_at'));
+
+        if ($manager->employment()->exists() && !is_null($request->input('started_at'))) {
+            if ($manager->employment->started_at != $request->input('started_at')) {
+                $manager->employment()->update($request->only('started_at'));
+            }
+        } else {
+            $manager->employments()->create($request->only('started_at'));
+        }
+
 
         return redirect()->route('managers.index');
     }
