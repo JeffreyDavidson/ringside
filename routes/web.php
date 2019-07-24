@@ -38,6 +38,7 @@ use App\Http\Controllers\Managers\RetireController as ManagerRetireController;
 use App\Http\Controllers\Managers\UnretireController as ManagerUnretireController;
 use App\Http\Controllers\Managers\InjureController as ManagerInjureController;
 use App\Http\Controllers\Managers\RecoverController as ManagerRecoverController;
+use App\Http\Controllers\Managers\RestoreController as ManagerRestoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +71,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::put('/tag-teams/{tagteam}/retire', TagTeamRetireController::class)->name('tagteams.retire');
         Route::put('/tag-teams/{tagteam}/unretire', TagTeamUnretireController::class)->name('tagteams.unretire');
         Route::resource('managers', ManagersController::class);
-        Route::patch('/managers/{manager}/restore', [ManagersController::class, 'restore'])->name('managers.restore');
+        Route::put('/managers/{manager}/restore', ManagerRestoreController::class)->name('managers.restore');
         Route::put('/managers/{manager}/retire', ManagerRetireController::class)->name('managers.retire');
         Route::put('/managers/{manager}/unretire', ManagerUnretireController::class)->name('managers.unretire');
         Route::put('/managers/{manager}/injure', ManagerInjureController::class)->name('managers.injure');
