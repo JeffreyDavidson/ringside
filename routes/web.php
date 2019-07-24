@@ -36,6 +36,7 @@ use App\Http\Controllers\Managers\SuspendController as ManagerSuspendController;
 use App\Http\Controllers\Managers\ReinstateController as ManagerReinstateController;
 use App\Http\Controllers\Managers\RetireController as ManagerRetireController;
 use App\Http\Controllers\Managers\UnretireController as ManagerUnretireController;
+use App\Http\Controllers\Managers\InjureController as ManagerInjureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,9 +71,9 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
         Route::resource('managers', ManagersController::class);
         Route::patch('/managers/{manager}/restore', [ManagersController::class, 'restore'])->name('managers.restore');
         Route::put('/managers/{manager}/retire', ManagerRetireController::class)->name('managers.retire');
-        Route::post('/managers/{manager}/injure', [ManagerInjuriesController::class, 'store'])->name('managers.injure');
         Route::put('/managers/{manager}/unretire', ManagerUnretireController::class)->name('managers.unretire');
         Route::delete('/managers/{manager}/recover', [ManagerInjuriesController::class, 'destroy'])->name('managers.recover');
+        Route::put('/managers/{manager}/injure', ManagerInjureController::class)->name('managers.injure');
         Route::put('/managers/{manager}/activate', ManagerActivateController::class)->name('managers.activate');
         Route::put('/managers/{manager}/suspend', ManagerSuspendController::class)->name('managers.suspend');
         Route::put('/managers/{manager}/reinstate', ManagerReinstateController::class)->name('managers.reinstate');
