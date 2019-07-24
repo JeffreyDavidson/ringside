@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use App\Enums\StableStatus;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stable extends Model
@@ -12,41 +13,11 @@ class Stable extends Model
     use SoftDeletes;
 
     /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->is_active = $model->started_at->lte(today());
-        });
-    }
-
-    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
     protected $guarded = [];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['started_at'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
 
     /**
      * Get the user belonging to the tag team.
@@ -79,6 +50,46 @@ class Stable extends Model
     }
 
     /**
+     * Get the retirements of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function retirements()
+    {
+        return $this->morphMany(Retirement::class, 'retiree');
+    }
+
+    /**
+     * Get the current retirement of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function retirement()
+    {
+        return $this->morphOne(Retirement::class, 'retiree')->whereNull('ended_at');
+    }
+
+    /**
+     * Get all of the employments of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function employments()
+    {
+        return $this->morphMany(Employment::class, 'employable')->whereNull('ended_at');
+    }
+
+    /**
+     * Get the current employment of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function employment()
+    {
+        return $this->morphOne(Employment::class, 'employable')->whereNull('ended_at');
+    }
+
+    /**
      * Get all the members of the stable.
      *
      * @return Collection
@@ -89,18 +100,61 @@ class Stable extends Model
     }
 
     /**
-     * Scope a query to only include tag teams of a given state.
+     * Determine the status of the stable.
+     *
+     * @return \App\Enum\WrestlerStatus
+     *
+     */
+    public function getStatusAttribute()
+    {
+        if ($this->is_bookable) {
+            return StableStatus::BOOKABLE();
+        }
+
+        if ($this->is_retired) {
+            return StableStatus::RETIRED();
+        }
+
+        return StableStatus::PENDING_INTRODUCTION();
+    }
+
+    /**
+     * Scope a query to only include bookable tag teams.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeBookable($query)
+    {
+        return $query->whereHas('employments', function (Builder $query) {
+            $query->where('started_at', '<=', now())->whereNull('ended_at');
+        })->whereDoesntHave('retirements', function (Builder $query) {
+            $query->whereNull('ended_at');
+        });
+    }
+
+    /**
+     * Scope a query to only include pending introduction stables.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopePendingIntroduction($query)
+    {
+        return $query->whereHas('employments', function (Builder $query) {
+            $query->whereNull('started_at')->orWhere('started_at', '>', now());
+        });
+    }
+
+    /**
+     * Scope a query to only include retired stables.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeHasState($query, $state)
+    public function scopeRetired($query)
     {
-        $scope = 'scope' . Str::studly($state);
-
-        if (method_exists($this, $scope)) {
-            return $this->{$scope}($query);
-        }
+        return $query->whereHas('retirements', function ($query) {
+            $query->whereNull('ended_at');
+        });
     }
 
     /**
@@ -140,7 +194,7 @@ class Stable extends Model
      */
     public function retire()
     {
-        $this->retireStable();
+        $this->retirements()->create(['started_at' => now()]);
 
         $this->wrestlers->each->retire();
         $this->tagteams->each->retire();
@@ -157,9 +211,22 @@ class Stable extends Model
     {
         $this->unretireStable();
 
-        $this->wrestlers->filter->isRetired()->each->unretire();
-        $this->tagteams->filter->isRetired()->each->unretire();
+        $this->wrestlers->filter->is_retired->each->unretire();
+        $this->tagteams->filter->is_retired->each->unretire();
 
         return $this;
+    }
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data                 = parent::toArray();
+        $data['status']       = $this->status->label();
+
+        return $data;
     }
 }

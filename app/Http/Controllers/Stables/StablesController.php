@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Stables;
 
 use App\Models\Stable;
+use Illuminate\Http\Request;
+use App\Filters\StableFilters;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStableRequest;
 use App\Http\Requests\UpdateStableRequest;
@@ -10,18 +13,32 @@ use App\Http\Requests\UpdateStableRequest;
 class StablesController extends Controller
 {
     /**
-     * Retrieve stables of a specific state.
+     * View a list of stables.
      *
-     * @param  string  $state
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Yajra\DataTables\DataTables  $table
+     * @return \Illuminate\View\View
      */
-    public function index($state = 'active')
+    public function index(Request $request, DataTables $table, StableFilters $requestFilter)
     {
         $this->authorize('viewList', Stable::class);
 
-        $stables = Stable::hasState($state)->get();
+        if ($request->ajax()) {
+            $query = Stable::query();
+            $requestFilter->apply($query);
 
-        return response()->view('stables.index', compact('stables'));
+            return $table->eloquent($query)
+                ->addColumn('action', 'stables.partials.action-cell')
+                ->editColumn('started_at', function (Stable $stable) {
+                    return $stable->employment->started_at ?? null;
+                })
+                ->filterColumn('id', function ($query, $keyword) {
+                    $query->where($query->qualifyColumn('id'), $keyword);
+                })
+                ->toJson();
+        }
+
+        return view('stables.index');
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Http\Controllers\Titles\RetireController;
 use App\Http\Controllers\Titles\TitlesController;
 use App\Http\Controllers\Venues\VenuesController;
 use App\Http\Controllers\Titles\RestoreController;
+use App\Http\Controllers\Stables\StablesController;
 use App\Http\Controllers\Titles\ActivateController;
 use App\Http\Controllers\Titles\UnretireController;
 use App\Http\Controllers\Wrestlers\InjureController;
