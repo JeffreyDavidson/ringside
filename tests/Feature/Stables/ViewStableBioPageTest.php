@@ -17,7 +17,7 @@ class ViewStableBioPageTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->get(route('stables.show', ['stable' => $stable]));
+        $response = $this->get(route('roster.stables.show', ['stable' => $stable]));
 
         $response->assertViewIs('stables.show');
         $this->assertTrue($response->data('stable')->is($stable));
@@ -30,7 +30,7 @@ class ViewStableBioPageTest extends TestCase
 
         $stable = factory(Stable::class)->create(['user_id' => $signedInUser->id]);
 
-        $response = $this->get(route('stables.show', ['stable' => $stable]));
+        $response = $this->get(route('roster.stables.show', ['stable' => $stable]));
 
         $response->assertOk();
     }
@@ -44,7 +44,7 @@ class ViewStableBioPageTest extends TestCase
             'name' => 'Example Stable Name',
         ]);
 
-        $response = $this->get(route('stables.show', ['stable' => $stable]));
+        $response = $this->get(route('roster.stables.show', ['stable' => $stable]));
 
         $response->assertSee('Example Stable Name');
     }
@@ -54,7 +54,7 @@ class ViewStableBioPageTest extends TestCase
     {
         $stable = factory(Stable::class)->create();
 
-        $response = $this->get(route('stables.show', ['stable' => $stable]));
+        $response = $this->get(route('roster.stables.show', ['stable' => $stable]));
 
         $response->assertRedirect('/login');
     }
@@ -66,7 +66,7 @@ class ViewStableBioPageTest extends TestCase
         $otherUser = factory(User::class)->create();
         $stable = factory(Stable::class)->create(['user_id' => $otherUser->id]);
 
-        $response = $this->get(route('stables.show', ['stable' => $stable]));
+        $response = $this->get(route('roster.stables.show', ['stable' => $stable]));
 
         $response->assertStatus(403);
     }

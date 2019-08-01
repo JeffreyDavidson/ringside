@@ -37,7 +37,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->get(route('stables.edit', $stable));
+        $response = $this->get(route('roster.stables.edit', $stable));
 
         $response->assertViewIs('stables.edit');
         $this->assertTrue($response->data('stable')->is($stable));
@@ -49,7 +49,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('basic-user');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->get(route('stables.edit', $stable));
+        $response = $this->get(route('roster.stables.edit', $stable));
 
         $response->assertStatus(403);
     }
@@ -59,7 +59,7 @@ class UpdateStableTest extends TestCase
     {
         $stable = factory(Stable::class)->create();
 
-        $response = $this->get(route('stables.edit', $stable));
+        $response = $this->get(route('roster.stables.edit', $stable));
 
         $response->assertRedirect('/login');
     }
@@ -70,9 +70,9 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams());
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams());
 
-        $response->assertRedirect(route('stables.index'));
+        $response->assertRedirect(route('roster.stables.index'));
         tap($stable->fresh(), function ($stable) {
             $this->assertEquals('Example Stable Name', $stable->name);
         });
@@ -85,7 +85,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $newStableWrestlers = factory(Wrestler::class, 2)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => $newStableWrestlers->modelKeys(),
         ]));
 
@@ -103,7 +103,7 @@ class UpdateStableTest extends TestCase
         $formerWrestlers = $stable->wrestlers()->whereNull('left_at')->get();
         $newStableWrestlers = factory(Wrestler::class, 2)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => $newStableWrestlers->modelKeys(),
         ]));
 
@@ -121,7 +121,7 @@ class UpdateStableTest extends TestCase
         $formerTagTeams = $stable->tagteams()->whereNull('left_at')->get();
         $tagteams = factory(TagTeam::class, 2)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => $tagteams->modelKeys(),
         ]));
 
@@ -138,7 +138,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $tagteams = factory(TagTeam::class, 2)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => $tagteams->modelKeys(),
         ]));
 
@@ -154,7 +154,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('basic-user');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams());
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams());
 
         $response->assertStatus(403);
     }
@@ -164,7 +164,7 @@ class UpdateStableTest extends TestCase
     {
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams());
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams());
 
         $response->assertRedirect('/login');
     }
@@ -175,7 +175,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'name' => ''
         ]));
 
@@ -189,7 +189,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'started_at' => ''
         ]));
 
@@ -203,7 +203,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'started_at' => today()->toDateString()
         ]));
 
@@ -217,7 +217,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'started_at' => 'not-a-datetime'
         ]));
 
@@ -232,7 +232,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $tagteam = factory(TagTeam::class)->states('active')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => [$tagteam->getKey()],
             'wrestlers' => null,
         ]));
@@ -247,7 +247,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => 'not-an-array',
         ]));
 
@@ -261,7 +261,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => ['not-an-integer'],
         ]));
 
@@ -275,7 +275,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => [99],
         ]));
 
@@ -290,7 +290,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $wrestler = factory(Wrestler::class)->states('future')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => [$wrestler->getKey()]
         ]));
 
@@ -305,7 +305,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $wrestler = factory(Wrestler::class)->states('inactive')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => [$wrestler->getKey()]
         ]));
 
@@ -320,7 +320,7 @@ class UpdateStableTest extends TestCase
         $otherStable = factory(Stable::class)->states('active')->create();
         $stable = factory(Stable::class)->states('active')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'wrestlers' => [$otherStable->wrestlers->first()->getKey()]
         ]));
 
@@ -334,7 +334,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => 'not-an-array',
         ]));
 
@@ -349,7 +349,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $wrestlers = factory(Wrestler::class, 2)->states('active')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => null,
             'wrestlers' => $wrestlers->modelKeys(),
         ]));
@@ -364,7 +364,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => ['not-an-integer'],
         ]));
 
@@ -378,7 +378,7 @@ class UpdateStableTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => [99],
         ]));
 
@@ -393,7 +393,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $tagteam = factory(TagTeam::class)->states('future')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => [$tagteam->getKey()]
         ]));
 
@@ -408,7 +408,7 @@ class UpdateStableTest extends TestCase
         $stable = factory(Stable::class)->create();
         $tagteam = factory(TagTeam::class)->states('inactive')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => [$tagteam->getKey()]
         ]));
 
@@ -423,7 +423,7 @@ class UpdateStableTest extends TestCase
         $otherStable = factory(Stable::class)->states('active')->create();
         $stable = factory(Stable::class)->states('active')->create();
 
-        $response = $this->patch(route('stables.update', $stable), $this->validParams([
+        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams([
             'tagteams' => [$otherStable->tagteams->first()->getKey()]
         ]));
 

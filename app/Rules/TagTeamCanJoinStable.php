@@ -26,19 +26,19 @@ class TagTeamCanJoinStable implements Rule
     {
         $tagteam = TagTeam::find($value);
 
-        if (! $tagteam) return false;
-
-        if ($tagteam->hired_at->isFuture()) {
+        if (! $tagteam) {
             return false;
         }
 
-        if (!$tagteam->is_active) {
+        if ($tagteam->employment->started_at->isFuture()) {
             return false;
         }
 
-        if ($tagteam->whereHas('stables', function ($query) {
-            $query->where('is_active', true)->whereKeyNot($this->stable->id);
-        })->exists()) {
+        if (!$tagteam->is_bookable) {
+            return false;
+        }
+
+        if ($tagteam->stables()->bookable()->whereKeyNot($this->stable->id)->exists()) {
             return false;
         }
 

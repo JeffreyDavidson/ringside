@@ -61,11 +61,21 @@ class StablesController extends Controller
      */
     public function store(StoreStableRequest $request)
     {
-        $stable = Stable::create($request->except(['wrestlers', 'tagteams']));
+        $stable = Stable::create($request->except(['wrestlers', 'tagteams', 'started_at']));
 
-        $stable->addWrestlers($request->only('wrestlers'))->addTagTeams($request->only('tagteams'));
+        if ($request->filled('started_at')) {
+            $stable->employments()->create($request->only('started_at'));
+        }
 
-        return redirect()->route('stables.index');
+        if ($request->filled('wrestlers')) {
+            $stable->addWrestlers($request->only('wrestlers'), $request->input('started_at'));
+        }
+
+        if ($request->filled('tagteams')) {
+            $stable->addTagTeams($request->only('tagteams'), $request->input('started_at'));
+        }
+
+        return redirect()->route('roster.stables.index');
     }
 
     /**
@@ -78,7 +88,7 @@ class StablesController extends Controller
     {
         $this->authorize('view', $stable);
 
-        return response()->view('stables.show', compact('stable'));
+        return rview('stables.show', compact('stable'));
     }
 
     /**
@@ -89,9 +99,9 @@ class StablesController extends Controller
      */
     public function edit(Stable $stable)
     {
-        $this->authorize('update', Stable::class);
+        $this->authorize('update', $stable);
 
-        return response()->view('stables.edit', compact('stable'));
+        return view('stables.edit', compact('stable'));
     }
 
     /**
@@ -103,24 +113,48 @@ class StablesController extends Controller
      */
     public function update(UpdateStableRequest $request, Stable $stable)
     {
-        $stable->update($request->except('wrestlers', 'tagteams'));
+        $stable->update($request->except('wrestlers', 'tagteams', 'started_at'));
 
+        if ($stable->employment()->exists() && !is_null($request->input('started_at'))) {
+            if ($stable->employment->started_at != $request->input('started_at')) {
+                $stable->employment()->update($request->only('started_at'));
+            }
+        } else {
+            $stable->employments()->create($request->only('started_at'));
+        }
+
+        // We need to get the new list of wrestlers/tag teams that are
+        // now current for the stable as set from the form.
         $newStableWrestlers = $request->input('wrestlers');
         $newStableTagTeams = $request->input('tagteams');
 
-        $currentStableWrestlers = $stable->wrestlers()->whereNull('left_at')->get()->pluck('id');
-        $currentStableTagTeams = $stable->tagteams()->whereNull('left_at')->get()->pluck('id');
+        // // We need to get the current wrestlers/tagteams for the stable
+        // $currentStableWrestlers = $stable->currentWrestlers()->get()->pluck('wrestlers.id');
+        // $currentStableTagTeams = $stable->currentTagTeams()->get()->pluck('tag_teams.id');
 
-        $formerStableWrestlers = $currentStableWrestlers->diff(collect($newStableWrestlers));
-        $formerStableTagTeams = $currentStableTagTeams->diff(collect($newStableTagTeams));
+        // // We need to find out which wrestlers/tagteams are no longer in the stable
+        // $formerStableWrestlers = $currentStableWrestlers->diff(collect($newStableWrestlers));
+        // $formerStableTagTeams = $currentStableTagTeams->diff(collect($newStableTagTeams));
 
-        $stable->wrestlers()->updateExistingPivot($formerStableWrestlers, ['left_at' => now()]);
-        $stable->tagteams()->updateExistingPivot($formerStableTagTeams, ['left_at' => now()]);
+        // // We need to update the wrestlers/tagteams no longer in the stable as leaving.
+        // $stable->wrestlers()
+        //     ->wherePivotIn('id', $formerStableWrestlers)
+        //     ->updateExistingPivot($formerStableWrestlers, ['left_at' => now()]);
 
-        $stable->wrestlers()->syncWithoutDetaching($newStableWrestlers);
-        $stable->tagteams()->syncWithoutDetaching($newStableTagTeams);
+        // $stable->tagteams()
+        //     ->wherePivotIn('id', $formerStableTagTeams)
+        //     ->updateExistingPivot($formerStableTagTeams, ['left_at' => now()]);
 
-        return redirect()->route('stables.index');
+        // // We need to add the new wrestlers/tagteams added to the stable.
+        // // We also need to make sure that the joined_at field is set with the
+        // // current datetimestamp (now()).
+        // $stable->wrestlers()->syncWithoutDetaching($newStableWrestlers);
+        // $stable->tagteams()->syncWithoutDetaching($newStableTagTeams);
+        $stable->wrestlers()->sync($request->input('wrestlers'));
+        $stable->tagteams()->sync($request->input('tagteams'));
+
+
+        return redirect()->route('roster.stables.index');
     }
 
     /**
@@ -135,23 +169,6 @@ class StablesController extends Controller
 
         $stable->delete();
 
-        return redirect()->route('stables.index');
-    }
-
-    /**
-     * Restore a deleted stable.
-     *
-     * @param  int  $stableId
-     * @return \lluminate\Http\RedirectResponse
-     */
-    public function restore($stableId)
-    {
-        $stable = Stable::onlyTrashed()->findOrFail($stableId);
-
-        $this->authorize('restore', Stable::class);
-
-        $stable->restore();
-
-        return redirect()->route('stables.index');
+        return redirect()->route('roster.stables.index');
     }
 }
