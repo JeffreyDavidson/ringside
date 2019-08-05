@@ -48,7 +48,6 @@ class WrestlerCanJoinStable implements Rule
 
         // We need to to make sure the wrestler isn't in any
         // bookable stables excluding the current stable.
-        dd($wrestler->stables()->toSql());
         if ($wrestler->stables()->bookable()->whereKeyNot($this->stable->id)->exists()) {
             return false;
         }

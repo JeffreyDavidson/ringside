@@ -2,37 +2,19 @@
 
 namespace App\Eloquent\Relationships;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class LeaveableMorphToMany extends MorphToMany
 {
-    public function __construct(
-        Builder $query,
-        Model $parent,
-        $name,
-        $table,
-        $foreignPivotKey,
-        $relatedPivotKey,
-        $parentKey,
-        $relatedKey,
-        $relationName = null,
-        $inverse = false
-    ) {
-        parent::__construct(
-            $query,
-            $parent,
-            $table,
-            $foreignPivotKey,
-            $relatedPivotKey,
-            $parentKey,
-            $relatedKey,
-            $relationName
-        );
-
-        $query->wherePivot('left_at', null);
-    }
+    protected $pivotColumns = ['left_at', 'joined_at'];
+    
+    /**
+     * The cached copy of the currently attached pivot models.
+     *
+     * @var Collection
+     */
+    private $currentlyAttached;
 
     public function detach($ids = null, $touch = true)
     {
@@ -55,20 +37,92 @@ class LeaveableMorphToMany extends MorphToMany
         return $results;
     }
 
+    /**
+     * Sync the intermediate tables with a list of IDs or collection of models.
+     *
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids
+     * @param  bool   $detaching
+     * @return array
+     */
+
+    public function sync($ids, $detaching = true)
+    {
+        $changes = [
+            'attached' => [], 'detached' => [], 'updated' => [],
+        ];
+
+        // First we need to attach any of the associated models that are not currently
+        // in this joining table. We'll spin through the given IDs, checking to see
+        // if they exist in the array of current ones, and if not we will insert.
+        $current = $this->getCurrentlyAttachedPivots()
+                        ->pluck($this->relatedPivotKey)->all();
+
+        $detach = array_diff($current, array_keys(
+            $records = $this->formatRecordsList($this->parseIds($ids))
+        ));
+
+        // Next, we will take the differences of the currents and given IDs and detach
+        // all of the entities that exist in the "current" array but are not in the
+        // array of the new IDs given to the method which will complete the sync.
+        if ($detaching && count($detach) > 0) {
+            $this->detach($detach);
+
+            $changes['detached'] = $this->castKeys($detach);
+        }
+
+        // Now we are finally ready to attach the new records. Note that we'll disable
+        // touching until after the entire operation is complete so we don't fire a
+        // ton of touch operations until we are totally done syncing the records.
+        $changes = array_merge(
+            $changes,
+            $this->attachNew($records, $current, false)
+        );
+
+        // Once we have finished attaching or detaching the records, we will see if we
+        // have done any attaching or detaching, and if we have we will touch these
+        // relationships if they are configured to touch on any database updates.
+        if (count($changes['attached']) ||
+            count($changes['updated'])) {
+            $this->touchIfTouching();
+        }
+
+        return $changes;
+    }
+
+    /**
+     * Get the pivot models that are currently attached.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getCurrentlyAttachedPivots()
+    {
+        return $this->currentlyAttached ?: $this->newPivotQuery()->whereNull('left_at')->get()->map(function ($record) {
+            $class = $this->using ? $this->using : Pivot::class;
+
+            return (new $class)->setRawAttributes((array) $record, true);
+        });
+    }
+
     protected function baseAttachRecord($id, $timed)
     {
-        $record[$this->relatedPivotKey] = $id;
-        $record[$this->foreignPivotKey] = $this->parent->{$this->parentKey};
-        // If the record needs to have creation and update timestamps, we will make
-        // them by calling the parent model's "freshTimestamp" method which will
-        // provide us with a fresh timestamp in this model's preferred format.
-        if ($timed) {
-            $record = $this->addTimestampsToAttachment($record);
-        }
-        foreach ($this->pivotValues as $value) {
-            $record[$value['column']] = $value['value'];
-        }
-        $record['joined_at'] = now();
-        return $record;
+        return Arr::add(
+            parent::baseAttachRecord($id, $timed),
+            'joined_at',
+            now()
+        );
+    }
+
+    public function current()
+    {
+        $this->wherePivot('left_at', null);
+        
+        return $this;
+    }
+
+    public function detached()
+    {
+        $this->wherePivot('left_at', '!=', null); //Laravel translates this to `IS NOT NULL`
+        
+        return $this;
     }
 }

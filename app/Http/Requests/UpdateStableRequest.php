@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Stable;
+use Illuminate\Validation\Rule;
 use App\Rules\TagTeamCanJoinStable;
 use App\Rules\WrestlerCanJoinStable;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,7 +17,9 @@ class UpdateStableRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', Stable::class);
+        $stable = $this->route('stable');
+
+        return $this->user()->can('update', $stable);
     }
 
     /**
@@ -27,8 +30,8 @@ class UpdateStableRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
-            'started_at' => ['required', 'date_format:Y-m-d H:i:s'],
+            'name' => ['filled', Rule::unique('stables')->ignore($this->stable->id),],
+            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
             'wrestlers' =>  ['array'],
             'wrestlers.*'  => ['bail ', 'integer', 'exists:wrestlers,id' , new WrestlerCanJoinStable($this->route('stable'))],
             'tagteams' =>  ['array'],

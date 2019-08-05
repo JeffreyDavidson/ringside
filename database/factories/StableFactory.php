@@ -20,8 +20,8 @@ $factory->afterCreatingState(Stable::class, 'bookable', function ($stable) {
         'started_at' => $startedAt
     ]);
 
-    $stable->wrestlers()->attach(factory(Wrestler::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
-    $stable->tagteams()->attach(factory(TagTeam::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
+    $stable->wrestlerHistory()->attach(factory(Wrestler::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
+    $stable->tagteamHistory()->attach(factory(TagTeam::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
 });
 
 $factory->afterCreatingState(Stable::class, 'pending-introduction', function ($stable) {
@@ -31,8 +31,8 @@ $factory->afterCreatingState(Stable::class, 'pending-introduction', function ($s
         'started_at' => $startedAt
     ]);
 
-    $stable->wrestlers()->attach(factory(Wrestler::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
-    $stable->tagteams()->attach(factory(TagTeam::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
+    $stable->wrestlerHistory()->attach(factory(Wrestler::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
+    $stable->tagTeamHistory()->attach(factory(TagTeam::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
 });
 
 
@@ -43,8 +43,8 @@ $factory->afterCreatingState(Stable::class, 'retired', function ($stable) {
         'started_at' => Carbon::yesterday()->toDateTimeString()
     ]);
 
-    $stable->wrestlers()->attach(factory(Wrestler::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
-    $stable->tagteams()->attach(factory(TagTeam::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
+    $stable->wrestlerHistory()->attach(factory(Wrestler::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
+    $stable->tagTeamHistory()->attach(factory(TagTeam::class)->states('bookable')->create(), ['joined_at' => $startedAt]);
 
     $stable->retire();
 });

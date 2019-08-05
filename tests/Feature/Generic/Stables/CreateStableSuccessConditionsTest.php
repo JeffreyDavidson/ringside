@@ -50,7 +50,7 @@ class CreateStableSuccessConditionsTest extends TestCase
             'wrestlers' => $createdWrestlers->modelKeys()
         ]));
 
-        tap(Stable::first()->wrestlers, function ($wrestlers) use ($createdWrestlers, $now) {
+        tap(Stable::first()->currentWrestlers, function ($wrestlers) use ($createdWrestlers) {
             $this->assertCount(3, $wrestlers);
             $this->assertEquals($wrestlers->modelKeys(), $createdWrestlers->modelKeys());
         });
@@ -66,7 +66,7 @@ class CreateStableSuccessConditionsTest extends TestCase
             'tagteams' => $createdTagTeams->modelKeys()
         ]));
 
-        tap(Stable::first()->tagteams, function ($tagteams) use ($createdTagTeams) {
+        tap(Stable::first()->currentTagTeams, function ($tagteams) use ($createdTagTeams) {
             $this->assertCount(3, $tagteams);
             $this->assertEquals($tagteams->modelKeys(), $createdTagTeams->modelKeys());
         });
@@ -85,8 +85,8 @@ class CreateStableSuccessConditionsTest extends TestCase
         ]));
 
         tap(Stable::first(), function ($stable) use ($now) {
-            $wrestlers = $stable->wrestlers()->get();
-            $tagteams = $stable->tagteams()->get();
+            $wrestlers = $stable->currentWrestlers()->get();
+            $tagteams = $stable->currentTagTeams()->get();
             $wrestlers->each(function ($wrestler) use ($now) {
                 $this->assertEquals(
                     $now->toDateTimeString(),
@@ -115,8 +115,8 @@ class CreateStableSuccessConditionsTest extends TestCase
         ]));
 
         tap(Stable::first(), function ($stable) use ($now) {
-            $wrestlers = $stable->wrestlers()->get();
-            $tagteams = $stable->tagteams()->get();
+            $wrestlers = $stable->currentWrestlers()->get();
+            $tagteams = $stable->currentTagTeams()->get();
             $wrestlers->each(function ($wrestler) use ($now) {
                 $this->assertEquals(
                     $now->toDateTimeString(),

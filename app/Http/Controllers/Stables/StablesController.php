@@ -68,11 +68,11 @@ class StablesController extends Controller
         }
 
         if ($request->filled('wrestlers')) {
-            $stable->addWrestlers($request->only('wrestlers'), $request->input('started_at'));
+            $stable->addWrestlers($request->input('wrestlers'), $request->input('started_at'));
         }
 
         if ($request->filled('tagteams')) {
-            $stable->addTagTeams($request->only('tagteams'), $request->input('started_at'));
+            $stable->addTagTeams($request->input('tagteams'), $request->input('started_at'));
         }
 
         return redirect()->route('roster.stables.index');
@@ -115,44 +115,16 @@ class StablesController extends Controller
     {
         $stable->update($request->except('wrestlers', 'tagteams', 'started_at'));
 
-        if ($stable->employment()->exists() && !is_null($request->input('started_at'))) {
-            if ($stable->employment->started_at != $request->input('started_at')) {
+        if ($request->filled('started_at')) {
+            if ($stable->employment && $stable->employment->started_at != $request->input('started_at')) {
                 $stable->employment()->update($request->only('started_at'));
+            } elseif (!$stable->employment) {
+                $stable->employments()->create($request->only('started_at'));
             }
-        } else {
-            $stable->employments()->create($request->only('started_at'));
         }
 
-        // We need to get the new list of wrestlers/tag teams that are
-        // now current for the stable as set from the form.
-        $newStableWrestlers = $request->input('wrestlers');
-        $newStableTagTeams = $request->input('tagteams');
-
-        // // We need to get the current wrestlers/tagteams for the stable
-        // $currentStableWrestlers = $stable->currentWrestlers()->get()->pluck('wrestlers.id');
-        // $currentStableTagTeams = $stable->currentTagTeams()->get()->pluck('tag_teams.id');
-
-        // // We need to find out which wrestlers/tagteams are no longer in the stable
-        // $formerStableWrestlers = $currentStableWrestlers->diff(collect($newStableWrestlers));
-        // $formerStableTagTeams = $currentStableTagTeams->diff(collect($newStableTagTeams));
-
-        // // We need to update the wrestlers/tagteams no longer in the stable as leaving.
-        // $stable->wrestlers()
-        //     ->wherePivotIn('id', $formerStableWrestlers)
-        //     ->updateExistingPivot($formerStableWrestlers, ['left_at' => now()]);
-
-        // $stable->tagteams()
-        //     ->wherePivotIn('id', $formerStableTagTeams)
-        //     ->updateExistingPivot($formerStableTagTeams, ['left_at' => now()]);
-
-        // // We need to add the new wrestlers/tagteams added to the stable.
-        // // We also need to make sure that the joined_at field is set with the
-        // // current datetimestamp (now()).
-        // $stable->wrestlers()->syncWithoutDetaching($newStableWrestlers);
-        // $stable->tagteams()->syncWithoutDetaching($newStableTagTeams);
-        $stable->wrestlers()->sync($request->input('wrestlers'));
-        $stable->tagteams()->sync($request->input('tagteams'));
-
+        $stable->wrestlerHistory()->sync($request->input('wrestlers'));
+        $stable->tagTeamHistory()->sync($request->input('tagteams'));
 
         return redirect()->route('roster.stables.index');
     }

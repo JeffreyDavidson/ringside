@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\SuperAdmin\Stables;
+namespace Tests\Feature\Admin\Stables;
 
 use Tests\TestCase;
 use App\Models\Stable;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group stables
- * @group superadmins
+ * @group admins
  */
 class UpdateStableSucessConditionsTest extends TestCase
 {
@@ -36,9 +36,9 @@ class UpdateStableSucessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_super_administrator_can_view_the_form_for_editing_a_stable()
+    public function an_administrator_can_view_the_form_for_editing_a_stable()
     {
-        $this->actAs('super-administrator');
+        $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
         $response = $this->get(route('roster.stables.edit', $stable));
@@ -48,9 +48,9 @@ class UpdateStableSucessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_super_administrator_can_update_a_stable()
+    public function an_administrator_can_update_a_stable()
     {
-        $this->actAs('super-administrator');
+        $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
 
         $response = $this->put(route('roster.stables.update', $stable), $this->validParams());

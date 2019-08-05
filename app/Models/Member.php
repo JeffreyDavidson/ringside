@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 class Member extends MorphPivot
 {
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'members';
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array

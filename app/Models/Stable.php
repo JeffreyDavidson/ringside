@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use App\Enums\StableStatus;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
 
@@ -36,9 +34,34 @@ class Stable extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function wrestlers()
+    public function wrestlerHistory()
     {
-        return $this->leaveableMorphedByMany(Wrestler::class, 'member')->using(Member::class)->withPivot(['joined_at', 'left_at']);
+        return $this->leaveableMorphedByMany(Wrestler::class, 'member')
+            ->using(Member::class);
+    }
+
+    /**
+     * Get all current wrestlers that are members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function currentWrestlers()
+    {
+        return $this->leaveableMorphedByMany(Wrestler::class, 'member')
+            ->using(Member::class)
+            ->current();
+    }
+
+    /**
+     * Get all previous wrestlers that were members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function previousWrestlers()
+    {
+        return $this->leaveableMorphedByMany(Wrestler::class, 'member')
+            ->using(Member::class)
+            ->detached();
     }
 
     /**
@@ -46,9 +69,34 @@ class Stable extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function tagteams()
+    public function tagTeamHistory()
     {
-        return $this->leaveableMorphedByMany(TagTeam::class, 'member')->using(Member::class)->withPivot(['joined_at', 'left_at']);
+        return $this->leaveableMorphedByMany(TagTeam::class, 'member')
+            ->using(Member::class);
+    }
+
+    /**
+     * Get all current tag teams that are members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function currentTagTeams()
+    {
+        return $this->leaveableMorphedByMany(TagTeam::class, 'member')
+            ->using(Member::class)
+            ->current();
+    }
+
+    /**
+     * Get all previous tag teams that were members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function previousTagTeams()
+    {
+        return $this->leaveableMorphedByMany(TagTeam::class, 'member')
+            ->using(Member::class)
+            ->detached();
     }
 
     /**
@@ -98,7 +146,7 @@ class Stable extends Model
      */
     public function getMembersAttribute()
     {
-        return $this->wrestlers->merge($this->tagteams);
+        return $this->currentWrestlers->merge($this->currentTagTeams);
     }
 
     /**
@@ -137,7 +185,10 @@ class Stable extends Model
      */
     public function getIsEmployedAttribute()
     {
-        return $this->employments()->where('started_at', '<=', now())->whereNull('ended_at')->exists();
+        return $this->employments()
+            ->where('started_at', '<=', now())
+            ->whereNull('ended_at')
+            ->exists();
     }
 
     /**
@@ -157,9 +208,9 @@ class Stable extends Model
      */
     public function scopeBookable($query)
     {
-        return $query->whereHas('employments', function (EloquentBuilder $query) {
+        return $query->whereHas('employments', function (Builder $query) {
             $query->where('started_at', '<=', now())->whereNull('ended_at');
-        })->whereDoesntHave('retirements', function (EloquentBuilder $query) {
+        })->whereDoesntHave('retirements', function (Builder $query) {
             $query->whereNull('ended_at');
         });
     }
@@ -171,7 +222,7 @@ class Stable extends Model
      */
     public function scopePendingIntroduction($query)
     {
-        return $query->whereHas('employments', function (EloquentBuilder $query) {
+        return $query->whereHas('employments', function (Builder $query) {
             $query->whereNull('started_at')->orWhere('started_at', '>', now());
         });
     }
@@ -190,59 +241,14 @@ class Stable extends Model
     }
 
     /**
-     * Get the current members of a specific type.
-     *
-     * @param  Builder $query
-     * @param  string $type
-     * @return void
-     */
-    public function scopeCurrentMembersOfType(EloquentBuilder $query, $type)
-    {
-        return $query->whereExists(function (QueryBuilder $query) use ($type) {
-            $query->from('members')
-                ->select('members.id')
-                ->whereRaw('members.stable_id = stables.id')
-                ->where('members.member_type', $type)
-                ->whereNotNull('members.left_at');
-        });
-    }
-
-    /**
-     * Retrieve the current wrestler in the stable.
-     *
-     * @param  Builder $query
-     * @return void
-     */
-    public function scopeCurrentWrestlers(EloquentBuilder $query)
-    {
-        return $this->scopeCurrentMembersOfType($query, Wrestler::class);
-    }
-
-    /**
-     * Retrieve the current tag teams in the stable.
-     *
-     * @param  Builder $query
-     * @return void
-     */
-    public function scopeCurrentTagTeams(EloquentBuilder $query)
-    {
-        return $this->scopeCurrentMembersOfType($query, TagTeam::class);
-    }
-
-    /**
      * Add wrestlers to the stable.
      *
      * @param  array  $wrestlerIds
-     * @param  string $joinedAt
      * @return $this
      */
-    public function addWrestlers($wrestlerIds, $joinedAt = null)
+    public function addWrestlers($wrestlerIds)
     {
-        $joinedAt = $joinedAt ?: now();
-
-        foreach ($wrestlerIds as $wrestlerId) {
-            $this->wrestlers()->attach($wrestlerId, ['joined_at' => $joinedAt]);
-        }
+        $this->wrestlerHistory()->sync($wrestlerIds);
 
         return $this;
     }
@@ -251,16 +257,11 @@ class Stable extends Model
      * Add tag teams to the stable.
      *
      * @param  array  $tagteamIds
-     * @param  string $joinedAt
      * @return $this
      */
-    public function addTagTeams($tagteamIds, $joinedAt = null)
+    public function addTagTeams($tagteamIds)
     {
-        $joinedAt = $joinedAt ?: now();
-
-        foreach ($tagteamIds as $tagteamId) {
-            $this->tagteams()->attach($tagteamId, ['joined_at' => $joinedAt]);
-        }
+        $this->tagTeamHistory()->sync($tagteamIds);
 
         return $this;
     }
@@ -284,8 +285,8 @@ class Stable extends Model
     {
         $this->retirements()->create(['started_at' => now()]);
 
-        $this->wrestlers->each->retire();
-        $this->tagteams->each->retire();
+        $this->currentWrestlers->each->retire();
+        $this->currentTagTeams->each->retire();
 
         return $this;
     }
@@ -299,8 +300,8 @@ class Stable extends Model
     {
         $this->retirement()->update(['ended_at' => now()]);
 
-        $this->wrestlers->filter->is_retired->each->unretire();
-        $this->tagteams->filter->is_retired->each->unretire();
+        $this->currentWrestlers->filter->is_retired->each->unretire();
+        $this->currentTagTeams->filter->is_retired->each->unretire();
 
         return $this;
     }

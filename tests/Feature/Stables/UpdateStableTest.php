@@ -32,53 +32,6 @@ class UpdateStableTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_view_the_form_for_editing_a_stable()
-    {
-        $this->actAs('administrator');
-        $stable = factory(Stable::class)->create();
-
-        $response = $this->get(route('roster.stables.edit', $stable));
-
-        $response->assertViewIs('stables.edit');
-        $this->assertTrue($response->data('stable')->is($stable));
-    }
-
-    /** @test */
-    public function a_basic_user_cannot_view_the_form_for_editing_a_stable()
-    {
-        $this->actAs('basic-user');
-        $stable = factory(Stable::class)->create();
-
-        $response = $this->get(route('roster.stables.edit', $stable));
-
-        $response->assertStatus(403);
-    }
-
-    /** @test */
-    public function a_guest_cannot_view_the_form_for_editing_a_stable()
-    {
-        $stable = factory(Stable::class)->create();
-
-        $response = $this->get(route('roster.stables.edit', $stable));
-
-        $response->assertRedirect('/login');
-    }
-
-    /** @test */
-    public function an_administrator_can_update_a_stable()
-    {
-        $this->actAs('administrator');
-        $stable = factory(Stable::class)->create();
-
-        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams());
-
-        $response->assertRedirect(route('roster.stables.index'));
-        tap($stable->fresh(), function ($stable) {
-            $this->assertEquals('Example Stable Name', $stable->name);
-        });
-    }
-
-    /** @test */
     public function wrestlers_of_stable_are_synced_when_stable_is_updated()
     {
         $this->actAs('administrator');
@@ -89,7 +42,7 @@ class UpdateStableTest extends TestCase
             'wrestlers' => $newStableWrestlers->modelKeys(),
         ]));
 
-        tap($stable->fresh()->wrestlers()->whereNull('left_at')->get(), function ($currentStableWrestlers) use ( $newStableWrestlers) {
+        tap($stable->fresh()->wrestlers()->whereNull('left_at')->get(), function ($currentStableWrestlers) use ($newStableWrestlers) {
             $this->assertCount(2, $currentStableWrestlers);
             $this->assertEquals($currentStableWrestlers->modelKeys(), $newStableWrestlers->modelKeys());
         });
@@ -146,27 +99,6 @@ class UpdateStableTest extends TestCase
             $this->assertCount(2, $stableTagTeams);
             $this->assertEquals($stableTagTeams->modelKeys(), $tagteams->modelKeys());
         });
-    }
-
-    /** @test */
-    public function a_basic_user_cannot_update_a_stable()
-    {
-        $this->actAs('basic-user');
-        $stable = factory(Stable::class)->create();
-
-        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams());
-
-        $response->assertStatus(403);
-    }
-
-    /** @test */
-    public function a_guest_cannot_update_a_stable()
-    {
-        $stable = factory(Stable::class)->create();
-
-        $response = $this->patch(route('roster.stables.update', $stable), $this->validParams());
-
-        $response->assertRedirect('/login');
     }
 
     /** @test */
