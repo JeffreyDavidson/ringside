@@ -32,7 +32,7 @@ class UpdateStableRequest extends FormRequest
         return [
             'name' => ['filled', Rule::unique('stables')->ignore($this->stable->id)],
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'wrestlers' =>  ['array'],
+            'wrestlers' => ['array'],
             'wrestlers.*'  => ['bail ', 'integer', 'exists:wrestlers,id' , new WrestlerCanJoinStable($this->route('stable'))],
             'tagteams' =>  ['array'],
             'tagteams.*' => ['bail', 'integer', 'exists:tag_teams,id' , new TagTeamCanJoinStable($this->route('stable'))],
