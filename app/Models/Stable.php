@@ -297,9 +297,6 @@ class Stable extends Model
     {
         $this->retirement()->update(['ended_at' => now()]);
 
-        $this->currentWrestlers->filter->is_retired->each->unretire();
-        $this->currentTagTeams->filter->is_retired->each->unretire();
-
         return $this;
     }
 
