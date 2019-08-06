@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\StableStatus;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use App\Eloquent\Concerns\HasCustomRelationships;
 
 class Stable extends Model
 {
-    use SoftDeletes, HasCustomRelationships;
+    use SoftDeletes, HasCustomRelationships, HasCachedAttributes;
 
     /**
      * The attributes that aren't mass assignable.
