@@ -282,8 +282,8 @@ class Stable extends Model
     {
         $this->retirements()->create(['started_at' => now()]);
 
-        $this->currentWrestlers->each->retire();
-        $this->currentTagTeams->each->retire();
+        $this->currentWrestlers()->detach();
+        $this->currentTagTeams()->detach();
 
         return $this;
     }
