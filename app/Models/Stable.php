@@ -48,9 +48,7 @@ class Stable extends Model
      */
     public function currentWrestlers()
     {
-        return $this->leaveableMorphedByMany(Wrestler::class, 'member')
-            ->using(Member::class)
-            ->current();
+        return $this->wrestlerHistory()->current();
     }
 
     /**
@@ -83,9 +81,7 @@ class Stable extends Model
      */
     public function currentTagTeams()
     {
-        return $this->leaveableMorphedByMany(TagTeam::class, 'member')
-            ->using(Member::class)
-            ->current();
+        return $this->tagTeamHistory()->current();
     }
 
     /**
