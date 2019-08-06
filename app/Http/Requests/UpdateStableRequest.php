@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Stable;
 use Illuminate\Validation\Rule;
 use App\Rules\TagTeamCanJoinStable;
 use App\Rules\WrestlerCanJoinStable;
