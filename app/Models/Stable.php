@@ -184,7 +184,7 @@ class Stable extends Model
      *
      * @return bool
      */
-    public function getIsEmployedAttribute()
+    public function getIsEmployedCachedAttribute()
     {
         return $this->employments()
             ->where('started_at', '<=', now())
