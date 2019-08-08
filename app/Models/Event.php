@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -53,20 +52,6 @@ class Event extends Model
      */
     public function scopePast($query)
     {
-
-    /**
-     * Scope a query to only include events of a given state.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeHasState($query, $state)
-    {
-        $scope = 'scope' . Str::studly($state);
-
-        if (method_exists($this, $scope)) {
-            return $this->{$scope}($query);
-        }
         return $query->where('date', '<', now());
     }
 
