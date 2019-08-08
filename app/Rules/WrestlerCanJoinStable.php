@@ -38,6 +38,10 @@ class WrestlerCanJoinStable implements Rule
             return false;
         }
 
+        if (!data_get($wrestler, 'employment.started_at')) {
+            return false;
+        }
+
         if ($wrestler->employment->started_at->isFuture()) {
             return false;
         }

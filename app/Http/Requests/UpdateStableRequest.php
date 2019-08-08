@@ -31,12 +31,18 @@ class UpdateStableRequest extends FormRequest
         return [
             'name' => [
                 'filled',
-                Rule::unique('stables')->ignore($this->stable->id)
+                Rule::unique('stables')->ignore($this->route('stable')->id)
             ],
             'started_at' => [
-                'nullable',
+                'sometimes',
                 'string',
-                'date_format:Y-m-d H:i:s'
+                'date_format:Y-m-d H:i:s',
+                function ($attribute, $value, $fail) {
+                    $employment = $this->route('stable')->employment ?? null;
+                    if ($employment && optional($employment->started_at)->isBefore($value)) {
+                        $fail(__('validation.before_or_equal', ['attribute' => $attribute, 'date' => $employment->started_at->toDateTimeString()]));
+                    }
+                }
             ],
             'wrestlers' => [
                 'array'

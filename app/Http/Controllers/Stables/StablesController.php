@@ -88,7 +88,7 @@ class StablesController extends Controller
     {
         $this->authorize('view', $stable);
 
-        return rview('stables.show', compact('stable'));
+        return view('stables.show', compact('stable'));
     }
 
     /**
@@ -122,7 +122,7 @@ class StablesController extends Controller
                 $stable->employments()->create($request->only('started_at'));
             }
         }
-
+        
         $stable->wrestlerHistory()->sync($request->input('wrestlers'));
         $stable->tagTeamHistory()->sync($request->input('tagteams'));
 
