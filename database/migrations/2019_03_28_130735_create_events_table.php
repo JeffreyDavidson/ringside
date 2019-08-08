@@ -20,7 +20,6 @@ class CreateEventsTable extends Migration
             $table->datetime('date');
             $table->unsignedInteger('venue_id');
             $table->text('preview');
-            $table->datetime('archived_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

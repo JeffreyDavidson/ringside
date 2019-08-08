@@ -97,7 +97,6 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::put('/titles/{title}/activate', ActivateController::class)->name('titles.activate');
 
     Route::resource('events', 'EventsController');
-    Route::post('/events/{event}/archive', [ArchivedEventsController::class, 'store'])->name('events.archive');
     Route::patch('/events/{event}/restore', [EventsController::class, 'restore'])->name('events.restore');
 });
 

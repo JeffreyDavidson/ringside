@@ -35,17 +35,6 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include archived events.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeArchived($query)
-    {
-        return $query->whereNotNull('archived_at');
-    }
-
-    /**
      * Scope a query to only include scheduled events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -57,15 +46,13 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include past events that are not archived.
+     * Scope a query to only include past events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePast($query)
     {
-        return $query->where('date', '<', now())->whereNull('archived_at');
-    }
 
     /**
      * Scope a query to only include events of a given state.
@@ -80,6 +67,7 @@ class Event extends Model
         if (method_exists($this, $scope)) {
             return $this->{$scope}($query);
         }
+        return $query->where('date', '<', now());
     }
 
     /**
@@ -100,27 +88,5 @@ class Event extends Model
     public function isPast()
     {
         return $this->date->isPast();
-    }
-
-    /**
-     * Checks to see if the event has been archived.
-     *
-     * @return boolean
-     */
-    public function isArchived()
-    {
-        return $this->archived_at !== null;
-    }
-
-    /**
-     * Archives a past event.
-     *
-     * @return $this
-     */
-    public function archive()
-    {
-        $this->update(['archived_at' => now()]);
-
-        return $this;
     }
 }

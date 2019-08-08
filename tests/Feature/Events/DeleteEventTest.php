@@ -41,15 +41,4 @@ class DeleteEventTest extends TestCase
 
         $response->assertRedirect('/login');
     }
-
-    /** @test */
-    public function an_event_that_is_not_scheduled_cannot_be_deleted()
-    {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('archived')->create();
-
-        $response = $this->delete(route('events.destroy', $event));
-
-        $response->assertStatus(403);
-    }
 }
