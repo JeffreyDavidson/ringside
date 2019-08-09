@@ -39,15 +39,15 @@ class EventsController extends Controller
     }
 
     /**
-     * Show the form for creating an event.
+     * Show the form for creating a new event.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Event $event)
     {
         $this->authorize('create', Event::class);
 
-        return view('events.create');
+        return view('events.create', compact('event'));
     }
 
     /**
@@ -71,6 +71,8 @@ class EventsController extends Controller
      */
     public function show(Event $event)
     {
+        $this->authorize('view', $event);
+        
         $event->load('venue');
 
         return response()->view('events.show', compact('event'));
@@ -83,7 +85,7 @@ class EventsController extends Controller
      */
     public function edit(Event $event)
     {
-        $this->authorize('update', Event::class);
+        $this->authorize('update', $event);
 
         return view('events.edit', compact('event'));
     }

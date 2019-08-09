@@ -18,18 +18,23 @@ class EventPolicy
      */
     public function create(User $user)
     {
-        return $user->isAdministrator();
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
      * Determine whether the user can update an event.
      *
      * @param  App\Models\User  $user
+     * @param  App\Models\Event  $event
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user, Event $event)
     {
-        return $user->isAdministrator();
+        if (!($user->isSuperAdministrator() || $user->isAdministrator())) {
+            return false;
+        }
+
+        return $event->date->isFuture(now());
     }
 
     /**
@@ -41,7 +46,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event)
     {
-        return $user->isAdministrator() && $event->isScheduled();
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
@@ -53,7 +58,7 @@ class EventPolicy
      */
     public function restore(User $user, Event $event)
     {
-        return $user->isAdministrator() && $event->deleted_at !== null;
+        return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
@@ -65,5 +70,17 @@ class EventPolicy
     public function viewList(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can view an event.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Event  $event
+     * @return bool
+     */
+    public function view(User $user, Event $event)
+    {
+        return $user->isSuperAdministrator() ||  $user->isAdministrator();
     }
 }

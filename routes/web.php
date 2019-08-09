@@ -40,6 +40,7 @@ use App\Http\Controllers\Managers\ReinstateController as ManagerReinstateControl
 use App\Http\Controllers\TagTeams\ReinstateController as TagTeamReinstateController;
 use App\Http\Controllers\Wrestlers\ActivateController as WrestlerActivateController;
 use App\Http\Controllers\Wrestlers\UnretireController as WrestlerUnretireController;
+use App\Http\Controllers\Events\RestoreController as EventRestoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,7 +99,7 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::put('/titles/{title}/activate', ActivateController::class)->name('titles.activate');
 
     Route::resource('events', EventsController::class);
-    Route::patch('/events/{event}/restore', [EventsController::class, 'restore'])->name('events.restore');
+    Route::put('/events/{event}/restore', EventRestoreController::class)->name('events.restore');
 });
 
 Auth::routes();
