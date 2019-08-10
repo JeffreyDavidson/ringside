@@ -24,7 +24,7 @@ table.DataTable({
     columns: [
         { data: "id", title: "Wrestler ID" },
         { data: "name", title: "Name" },
-        { data: "hometown", title: "hometown" },
+        { data: "hometown", title: "Hometown" },
         { data: "started_at", title: "Date Started", searchable: false },
         { data: "status", title: "Status", searchable: false },
         {
