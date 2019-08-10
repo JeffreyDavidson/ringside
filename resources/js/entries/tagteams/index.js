@@ -52,7 +52,6 @@ table.DataTable({
     columns: [
         { data: "id", title: "Tag Team ID" },
         { data: "name", title: "Name" },
-        { data: "hometown", title: "Hometown" },
         { data: "started_at", title: "Date Started", searchable: false },
         { data: "status", title: "Status", searchable: false },
         {
