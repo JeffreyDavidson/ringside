@@ -95,7 +95,7 @@ class RefereesController extends Controller
      */
     public function edit(Referee $referee)
     {
-        $this->authorize('update', Referee::class);
+        $this->authorize('update', $referee);
 
         return view('referees.edit', compact('referee'));
     }
@@ -130,7 +130,7 @@ class RefereesController extends Controller
      */
     public function destroy(Referee $referee)
     {
-        $this->authorize('delete', Referee::class);
+        $this->authorize('delete', $referee);
 
         $referee->delete();
 
