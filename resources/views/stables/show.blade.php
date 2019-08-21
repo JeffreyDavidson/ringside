@@ -36,12 +36,7 @@
                         </div>
                     </div>
                     <div class="kt-widget__body">
-                        <div class="kt-widget__content">
-                            <div class="kt-widget__info">
-                                <span class="kt-widget__label">Height:</span>
-                                <span class="kt-widget__data">{{ $wrestler->formatted_height }}</span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
 
