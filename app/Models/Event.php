@@ -75,17 +75,4 @@ class Event extends Model
     {
         return $this->date->isPast();
     }
-
-    /**
-     * Convert the model instance to an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $data                 = parent::toArray();
-        $data['status']       = $this->status->label();
-
-        return $data;
-    }
 }

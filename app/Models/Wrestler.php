@@ -209,16 +209,5 @@ class Wrestler extends Model
         });
     }
 
-    /**
-     * Convert the model instance to an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $data                 = parent::toArray();
-        $data['status']       = $this->status->label();
-
-        return $data;
     }
 }

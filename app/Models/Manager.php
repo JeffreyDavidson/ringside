@@ -70,17 +70,5 @@ class Manager extends Model
         });
     }
 
-    /**
-     * Convert the model instance to an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $data                 = parent::toArray();
-        $data['status']       = $this->status->label();
-        $data['name']         = $this->full_name;
-
-        return $data;
     }
 }
