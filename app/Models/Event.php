@@ -35,21 +35,6 @@ class Event extends Model
     }
 
     /**
-     * Determine the status of the event.
-     *
-     * @return \App\Enum\EventStatus
-     *
-     */
-    public function getStatusAttribute()
-    {
-        if ($this->is_scheduled) {
-            return EventStatus::SCHEDULED();
-        }
-
-        return EventStatus::PAST();
-    }
-
-    /**
      * Scope a query to only include scheduled events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

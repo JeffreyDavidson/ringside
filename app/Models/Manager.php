@@ -31,33 +31,6 @@ class Manager extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
-    /**
-     * Determine the status of the manager.
-     *
-     * @return \App\Enum\ManagerStatus
-     *
-     */
-    public function getStatusAttribute()
-    {
-        if ($this->is_bookable) {
-            return ManagerStatus::BOOKABLE();
-        }
-
-        if ($this->is_retired) {
-            return ManagerStatus::RETIRED();
-        }
-
-        if ($this->is_injured) {
-            return ManagerStatus::INJURED();
-        }
-
-        if ($this->is_suspended) {
-            return ManagerStatus::SUSPENDED();
-        }
-
-        return ManagerStatus::PENDING_INTRODUCTION();
-    }
 
     /**
      * Determine if a manager is bookable.

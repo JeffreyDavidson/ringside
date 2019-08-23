@@ -67,32 +67,6 @@ class Referee extends Model
     protected $guarded = [];
 
     /**
-     * Determine the status of the referee.
-     *
-     * @return \App\Enum\RefereeStatus
-     *
-     */
-    public function getStatusAttribute()
-    {
-        if ($this->is_bookable) {
-            return RefereeStatus::BOOKABLE();
-        }
-
-        if ($this->is_retired) {
-            return RefereeStatus::RETIRED();
-        }
-
-        if ($this->is_injured) {
-            return RefereeStatus::INJURED();
-        }
-
-        if ($this->is_suspended) {
-            return RefereeStatus::SUSPENDED();
-        }
-
-        return RefereeStatus::PENDING_INTRODUCTION();
-    }
-
     /**
      * Determine if a referee is bookable.
      *
