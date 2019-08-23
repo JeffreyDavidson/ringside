@@ -198,16 +198,6 @@ class Wrestler extends Model
      */
     public function scopeBookable($query)
     {
-        return $query->whereHas('employments', function (Builder $query) {
-            $query->where('started_at', '<=', now())->whereNull('ended_at');
-        })->whereDoesntHave('retirements', function (Builder $query) {
-            $query->whereNull('ended_at');
-        })->whereDoesntHave('injuries', function (Builder $query) {
-            $query->whereNull('ended_at');
-        })->whereDoesntHave('suspensions', function (Builder $query) {
-            $query->whereNull('ended_at');
-        });
-    }
-
+        return $query->where('status', WrestlerStatus::BOOKABLE);
     }
 }

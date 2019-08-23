@@ -42,7 +42,7 @@ class Event extends Model
      */
     public function scopeScheduled($query)
     {
-        return $query->where('date', '>', now());
+        return $query->where('status', EventStatus::SCHEDULED);
     }
 
     /**
@@ -53,7 +53,7 @@ class Event extends Model
      */
     public function scopePast($query)
     {
-        return $query->where('date', '<', now());
+        return $query->where('status', EventStatus::PAST);
     }
 
     /**

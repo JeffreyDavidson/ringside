@@ -56,19 +56,10 @@ class Manager extends Model
      * Scope a query to only include bookable managers.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder
      */
     public function scopeBookable($query)
     {
-        return $query->whereHas('employments', function (Builder $query) {
-            $query->where('started_at', '<=', now())->whereNull('ended_at');
-        })->whereDoesntHave('retirements', function (Builder $query) {
-            $query->whereNull('ended_at');
-        })->whereDoesntHave('injuries', function (Builder $query) {
-            $query->whereNull('ended_at');
-        })->whereDoesntHave('suspensions', function (Builder $query) {
-            $query->whereNull('ended_at');
-        });
-    }
-
+        return $query->where('status', ManagerStatus::BOOKABLE);
     }
 }
