@@ -33,7 +33,7 @@ trait CanBeInjured
      */
     public function getIsInjuredAttribute()
     {
-        return $this->injury()->exists();
+        return $this->status === 'injured';
     }
 
     /**
@@ -44,7 +44,7 @@ trait CanBeInjured
      */
     public function scopeInjured($query)
     {
-        return $query->whereHas('injury');
+        return $query->where('status', 'injured');
     }
 
     /**
