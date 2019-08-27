@@ -67,7 +67,6 @@ class Referee extends Model
     protected $guarded = [];
 
     /**
-    /**
      * Determine if a referee is bookable.
      *
      * @return bool

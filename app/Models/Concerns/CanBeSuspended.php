@@ -33,7 +33,7 @@ trait CanBeSuspended
      */
     public function getIsSuspendedAttribute()
     {
-        return $this->suspension()->exists();
+        return $this->status === 'suspended';
     }
 
     /**
@@ -44,7 +44,7 @@ trait CanBeSuspended
      */
     public function scopeSuspended($query)
     {
-        return $query->whereHas('suspension');
+        return $query->where('status', 'suspended');
     }
 
     /**

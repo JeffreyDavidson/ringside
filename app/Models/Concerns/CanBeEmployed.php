@@ -45,9 +45,7 @@ trait CanBeEmployed
      */
     public function scopePendingIntroduction($query)
     {
-        return $query->whereHas('employments', function (Builder $query) {
-            $query->where('started_at', '>', now());
-        })->orWhereDoesntHave('employment');
+        return $query->where('status', 'pending-introduction');
     }
 
     /**

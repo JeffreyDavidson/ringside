@@ -33,7 +33,7 @@ trait CanBeRetired
      */
     public function getIsRetiredAttribute()
     {
-        return $this->retirement()->exists();
+        return $this->status === 'retired';
     }
 
     /**
@@ -44,7 +44,7 @@ trait CanBeRetired
      */
     public function scopeRetired($query)
     {
-        return $query->whereHas('retirement');
+        return $query->where('status', 'retired');
     }
 
     /**
