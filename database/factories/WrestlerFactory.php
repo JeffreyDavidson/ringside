@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\Wrestler;
+use App\Enums\WrestlerStatus;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -17,16 +18,34 @@ $factory->define(Wrestler::class, function (Faker $faker) {
     ];
 });
 
+$factory->state(Wrestler::class, 'bookable', function ($faker) {
+    return [
+        'status' => WrestlerStatus::BOOKABLE,
+    ];
+});
+
 $factory->afterCreatingState(Wrestler::class, 'bookable', function ($wrestler) {
     $wrestler->employments()->create([
         'started_at' => Carbon::yesterday()->toDateTimeString()
     ]);
 });
 
+$factory->state(Wrestler::class, 'pending-introduction', function ($faker) {
+    return [
+        'status' => WrestlerStatus::PENDING_INTRODUCTION,
+    ];
+});
+
 $factory->afterCreatingState(Wrestler::class, 'pending-introduction', function ($wrestler) {
     $wrestler->employments()->create([
         'started_at' => Carbon::tomorrow()->toDateTimeString()
     ]);
+});
+
+$factory->state(Wrestler::class, 'retired', function ($faker) {
+    return [
+        'status' => WrestlerStatus::RETIRED,
+    ];
 });
 
 $factory->afterCreatingState(Wrestler::class, 'retired', function ($wrestler) {
@@ -37,12 +56,24 @@ $factory->afterCreatingState(Wrestler::class, 'retired', function ($wrestler) {
     $wrestler->retire();
 });
 
+$factory->state(Wrestler::class, 'suspended', function ($faker) {
+    return [
+        'status' => WrestlerStatus::SUSPENDED,
+    ];
+});
+
 $factory->afterCreatingState(Wrestler::class, 'suspended', function ($wrestler) {
     $wrestler->employments()->create([
         'started_at' => Carbon::yesterday()->toDateTimeString()
     ]);
 
     $wrestler->suspend();
+});
+
+$factory->state(Wrestler::class, 'injured', function ($faker) {
+    return [
+        'status' => WrestlerStatus::INJURED,
+    ];
 });
 
 $factory->afterCreatingState(Wrestler::class, 'injured', function ($wrestler) {

@@ -146,6 +146,7 @@ class ManagerPolicy
      */
     public function recover(User $user, Manager $manager)
     {
+        // dd($manager);
         if (!$manager->is_employed || !$manager->is_injured) {
             return false;
         }
