@@ -60,6 +60,6 @@ class Manager extends Model
      */
     public function scopeBookable($query)
     {
-        return $query->where('status', ManagerStatus::BOOKABLE);
+        return $query->where('status', 'bookable');
     }
 }
