@@ -12,7 +12,6 @@ $factory->define(Stable::class, function (Faker $faker) {
     ];
 });
 
-
 $factory->afterCreatingState(Stable::class, 'bookable', function ($stable) {
     $startedAt = Carbon::yesterday()->toDateTimeString();
 

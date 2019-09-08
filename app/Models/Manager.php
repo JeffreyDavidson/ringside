@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ManagerStatus;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,10 +11,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Manager extends Model
 {
     use SoftDeletes,
+        HasCachedAttributes,
         Concerns\CanBeSuspended,
         Concerns\CanBeInjured,
         Concerns\CanBeRetired,
-        Concerns\CanBeEmployed;
+        Concerns\CanBeEmployed,
+        Concerns\HasFullName;
 
     /**
      * The attributes that aren't mass assignable.
@@ -43,16 +46,6 @@ class Manager extends Model
     }
 
     /**
-     * Get the full name of the manager.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return $this->first_name . ' '. $this->last_name;
-    }
-
-    /**
      * Scope a query to only include bookable managers.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -60,6 +53,6 @@ class Manager extends Model
      */
     public function scopeBookable($query)
     {
-        return $query->where('status', 'bookable');
+        return $query->where('status', ManagerStatus::BOOKABLE);
     }
 }

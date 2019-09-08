@@ -22,6 +22,8 @@ $factory->afterCreatingState(Referee::class, 'bookable', function ($referee) {
     $referee->employments()->create([
         'started_at' => Carbon::yesterday()->toDateTimeString()
     ]);
+
+    $referee->touch();
 });
 
 $factory->state(Referee::class, 'retired', function ($faker) {
@@ -76,4 +78,6 @@ $factory->afterCreatingState(Referee::class, 'pending-introduction', function ($
     $referee->employments()->create([
         'started_at' => Carbon::tomorrow()->toDateTimeString()
     ]);
+
+    $referee->touch();
 });

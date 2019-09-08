@@ -15,12 +15,12 @@ class ActivateTagTeamSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_activate_an_inactive_tag_team()
+    public function an_administrator_can_employ_a_pending_introduction_tag_team()
     {
         $this->actAs('administrator');
         $tagteam = factory(TagTeam::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('tagteams.activate', $tagteam));
+        $response = $this->put(route('tagteams.employ', $tagteam));
 
         $response->assertRedirect(route('tagteams.index'));
         tap($tagteam->fresh(), function ($tagteam) {

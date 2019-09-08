@@ -10,17 +10,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group managers
  * @group users
  */
-class ActivateManagerFailureConditionsTest extends TestCase
+class EmployManagerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_activate_a_pending_introduction_manager()
+    public function a_basic_user_cannot_employ_a_pending_introduction_manager()
     {
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('managers.activate', $manager));
+        $response = $this->put(route('managers.employ', $manager));
 
         $response->assertForbidden();
     }

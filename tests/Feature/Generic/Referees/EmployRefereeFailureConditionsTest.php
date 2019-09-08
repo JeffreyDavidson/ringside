@@ -10,50 +10,50 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group referees
  * @group generics
  */
-class ActivateRefereeFailureConditionsTest extends TestCase
+class EmployRefereeFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_bookable_referee_cannot_be_activated()
+    public function a_bookable_referee_cannot_be_employed()
     {
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create();
 
-        $response = $this->put(route('referees.activate', $referee));
+        $response = $this->put(route('referees.employ', $referee));
 
         $response->assertForbidden();
     }
 
     /** @test */
-    public function a_retired_referee_cannot_be_activated()
+    public function a_retired_referee_cannot_be_employed()
     {
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('retired')->create();
 
-        $response = $this->put(route('referees.activate', $referee));
+        $response = $this->put(route('referees.employ', $referee));
 
         $response->assertForbidden();
     }
 
     /** @test */
-    public function a_suspended_referee_cannot_be_activated()
+    public function a_suspended_referee_cannot_be_employed()
     {
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $response = $this->put(route('referees.activate', $referee));
+        $response = $this->put(route('referees.employ', $referee));
 
         $response->assertForbidden();
     }
 
     /** @test */
-    public function an_injured_referee_cannot_be_activated()
+    public function an_injured_referee_cannot_be_employed()
     {
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.activate', $referee));
+        $response = $this->put(route('referees.employ', $referee));
 
         $response->assertForbidden();
     }

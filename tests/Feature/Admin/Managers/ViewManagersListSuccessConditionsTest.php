@@ -39,7 +39,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
         $retired             = factory(Manager::class, 3)->states('retired')->create()->map($mapToIdAndName);
         $suspended           = factory(Manager::class, 3)->states('suspended')->create()->map($mapToIdAndName);
         $injured             = factory(Manager::class, 3)->states('injured')->create()->map($mapToIdAndName);
-
+        dd($bookable);
         $this->managers = collect([
             'bookable'             => $bookable,
             'pending-introduction' => $pendingIntroduction,
@@ -84,6 +84,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
+        dd(Manager::all()->toArray());
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'bookable']));
 
         $responseAjax->assertJson([

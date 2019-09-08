@@ -14,11 +14,11 @@ class Injury extends Model
     protected $guarded = [];
 
     /**
-     * The relationships that should be touched on save.
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $touches = ['injurable'];
+    protected $dates = ['started_at', 'ended_at'];
 
     /**
      * Retrieve the injured model.

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RefereeStatus;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -54,10 +55,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Referee extends Model
 {
     use SoftDeletes,
+        HasCachedAttributes,
         Concerns\CanBeSuspended,
         Concerns\CanBeInjured,
         Concerns\CanBeRetired,
-        Concerns\CanBeEmployed;
+        Concerns\CanBeEmployed,
+        Concerns\HasFullName;
 
     /**
      * The attributes that aren't mass assignable.
@@ -74,16 +77,6 @@ class Referee extends Model
     public function getIsBookableAttribute()
     {
         return $this->is_employed && !($this->is_retired || $this->is_injured || $this->is_suspended);
-    }
-
-    /**
-     * Get the full name of the referee.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return "{$this->first_name} {$this->last_name}";
     }
 
     /**

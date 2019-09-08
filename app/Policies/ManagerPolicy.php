@@ -36,8 +36,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can delete a manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function delete(User $user, Manager $manager)
@@ -48,8 +48,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can restore a deleted manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function restore(User $user, Manager $manager)
@@ -60,8 +60,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can retire a manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function retire(User $user, Manager $manager)
@@ -76,8 +76,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can unretire a retired manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function unretire(User $user, Manager $manager)
@@ -92,8 +92,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can suspend a tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function suspend(User $user, Manager $manager)
@@ -108,8 +108,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can suspend a tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function reinstate(User $user, Manager $manager)
@@ -124,8 +124,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can injure a manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function injure(User $user, Manager $manager)
@@ -140,8 +140,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can recover an injured manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function recover(User $user, Manager $manager)
@@ -155,13 +155,13 @@ class ManagerPolicy
     }
 
     /**
-     * Determine whether the user can activate an inactive manager.
+     * Determine whether the user can employ a pending introduction manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function activate(User $user, Manager $manager)
+    public function employ(User $user, Manager $manager)
     {
         if ($manager->is_employed) {
             return false;
@@ -173,7 +173,7 @@ class ManagerPolicy
     /**
      * Determine whether the user can view a list of managers.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function viewList(User $user)
@@ -184,8 +184,8 @@ class ManagerPolicy
     /**
      * Determine whether the user can view a profile for a manager.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\User  $user
+     * @param  App\Models\Manager  $manager
      * @return bool
      */
     public function view(User $user, Manager $manager)

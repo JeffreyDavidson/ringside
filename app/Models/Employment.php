@@ -21,13 +21,6 @@ class Employment extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
-     * The relationships that should be touched on save.
-     *
-     * @var array
-     */
-    protected $touches = ['employable'];
-
-    /**
      * Undocumented function
      *
      * @return void

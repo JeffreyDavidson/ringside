@@ -19,14 +19,13 @@ class ViewRefereeBioPageSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $referee = factory(Referee::class)->create([
+        $referee = factory(Referee::class)->states('bookable')->create([
             'first_name' => 'John',
             'last_name' => 'Smith',
         ]);
 
         $response = $this->get(route('referees.show', ['referee' => $referee]));
 
-        $response->assertSee('John');
-        $response->assertSee('Smith');
+        $response->assertSee('John Smith');
     }
 }

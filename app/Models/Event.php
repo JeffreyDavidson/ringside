@@ -67,7 +67,7 @@ class Event extends Model
     }
 
     /**
-     * Checks to see if the event has past.
+     * Checks to see if the event has taken place.
      *
      * @return boolean
      */

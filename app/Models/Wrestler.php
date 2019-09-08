@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\WrestlerStatus;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -73,6 +74,7 @@ class Wrestler extends Model
 {
     use SoftDeletes,
         HasCustomRelationships,
+        HasCachedAttributes,
         Concerns\CanBeSuspended,
         Concerns\CanBeInjured,
         Concerns\CanBeRetired,

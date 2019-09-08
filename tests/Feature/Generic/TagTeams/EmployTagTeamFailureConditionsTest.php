@@ -10,17 +10,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group tagteams
  * @group generics
  */
-class ActivateTagTeamFailureConditionsTest extends TestCase
+class EmployTagTeamFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_bookable_tag_team_cannot_be_activated()
+    public function a_bookable_tag_team_cannot_be_empoyed()
     {
         $this->actAs('administrator');
         $tagteam = factory(TagTeam::class)->states('bookable')->create();
 
-        $response = $this->put(route('tagteams.activate', $tagteam));
+        $response = $this->put(route('tagteams.employ', $tagteam));
 
         $response->assertForbidden();
     }

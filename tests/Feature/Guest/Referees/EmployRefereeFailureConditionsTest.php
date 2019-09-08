@@ -10,16 +10,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group referees
  * @group guests
  */
-class ActivateRefereeFailureConditionsTest extends TestCase
+class EmployRefereeFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_activate_a_pending_introduction_referee()
+    public function a_guest_cannot_employ_a_pending_introduction_referee()
     {
         $referee = factory(Referee::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('referees.activate', $referee));
+        $response = $this->put(route('referees.employ', $referee));
 
         $response->assertRedirect(route('login'));
     }

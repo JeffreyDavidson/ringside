@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group managers
  * @group admins
  */
-class ActivateManagerSuccessConditionsTest extends TestCase
+class EmployManagerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,10 +20,10 @@ class ActivateManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('managers.activate', $manager));
+        $response = $this->put(route('managers.employ', $manager));
 
         $response->assertRedirect(route('managers.index'));
-        tap($manager->fresh(), function ($manager) {
+        tap($manager->fresh(), function (Manager $manager) {
             $this->assertTrue($manager->is_bookable);
         });
     }

@@ -24,9 +24,9 @@
                 @unretirebutton(['route' => route('referees.unretire', $model)])
                 @endunretirebutton
             @endcan
-            @can('activate', $model)
-                @viewbutton(['route' => route('referees.activate', $model)])
-                @endviewbutton
+            @can('employ', $model)
+                @employbutton(['route' => route('referees.employ', $model)])
+                @endemploybutton
             @endcan
             @can('suspend', $model)
                 @suspendbutton(['route' => route('referees.suspend', $model)])

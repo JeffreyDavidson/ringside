@@ -24,9 +24,9 @@
                 @unretirebutton(['route' => route('tagteams.unretire', $model)])
                 @endunretirebutton
             @endcan
-            @can('activate', $model)
-                @activatebutton(['route' => route('tagteams.activate', $model)])
-                @endactivatebutton
+            @can('employ', $model)
+                @employbutton(['route' => route('tagteams.employ', $model)])
+                @endemploybutton
             @endcan
             @can('suspend', $model)
                 @suspendbutton(['route' => route('tagteams.suspend', $model)])

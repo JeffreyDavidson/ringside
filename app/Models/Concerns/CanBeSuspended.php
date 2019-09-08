@@ -31,7 +31,7 @@ trait CanBeSuspended
      *
      * @return bool
      */
-    public function getIsSuspendedAttribute()
+    public function getIsSuspendedCachedAttribute()
     {
         return $this->status === 'suspended';
     }
@@ -55,6 +55,7 @@ trait CanBeSuspended
     public function suspend()
     {
         $this->suspensions()->create(['started_at' => now()]);
+        $this->touch();
     }
 
     /**

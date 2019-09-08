@@ -259,15 +259,15 @@ class TagTeam extends Model
     }
 
     /**
-     * Activate a tag team.
+     * Employ a tag team.
      *
      * @return bool
      */
-    public function activate()
+    public function employ()
     {
         $this->employments()->latest()->first()->update(['started_at' => now()]);
 
-        $this->wrestlers->each->activate();
+        $this->wrestlers->each->employ();
 
         return $this;
     }

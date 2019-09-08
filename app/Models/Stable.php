@@ -264,11 +264,11 @@ class Stable extends Model
     }
 
     /**
-     * Activate a stable.
+     * Employ a stable.
      *
      * @return bool
      */
-    public function activate()
+    public function employ()
     {
         return $this->employments()->latest()->first()->update(['started_at' => now()]);
     }
@@ -284,6 +284,7 @@ class Stable extends Model
 
         $this->currentWrestlers()->detach();
         $this->currentTagTeams()->detach();
+        $this->touch();
 
         return $this;
     }
@@ -296,6 +297,18 @@ class Stable extends Model
     public function unretire()
     {
         $this->retirement()->update(['ended_at' => now()]);
+
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    public function disassemble()
+    {
+        foreach ($this->members as $member) {
+            $this->members()->updateExistingPivot($member->id, ['left_at' => now()]);
+        }
 
         return $this;
     }

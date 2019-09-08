@@ -10,21 +10,21 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group managers
  * @group generics
  */
-class ActivateManagerSuccessConditionsTest extends TestCase
+class EmployManagerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_manager_without_a_current_employment_can_be_activated()
+    public function a_manager_without_a_current_employment_can_be_employed()
     {
         $this->actAs('administrator');
         $manager = factory(Manager::class)->create();
 
-        $response = $this->put(route('managers.activate', $manager));
+        $response = $this->put(route('managers.employ', $manager));
 
         $response->assertRedirect(route('managers.index'));
         tap($manager->fresh(), function ($manager) {
-            $this->assertTrue($manager->is_bookable);
+            $this->assertTrue($manager->employment()->exists());
         });
     }
 }

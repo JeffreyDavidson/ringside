@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Stables;
+namespace Tests\Feature\Generic\Stables;
 
 use Tests\TestCase;
 use App\Models\Stable;
@@ -8,26 +8,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group stables
- * @group admins
+ * @group generics
  */
 class RetireStableSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_retire_a_bookable_stable()
+    public function retiring_a_stable_also_retires_its_members()
     {
         $this->actAs('administrator');
-        $stable = factory(Stable::class)->states('bookable')->create();
+        $stable = factory(Stable::class)->states('bookabe')->create();
 
         $response = $this->put(route('stables.retire', $stable));
 
-        $response->assertRedirect(route('stables.index'));
         tap($stable->fresh(), function ($stable) {
-            $this->assertEquals(
-                now()->toDateTimeString(), 
-                $stable->retirement->started_at->toDateTimeString()
-            );
+            $this->assertTrue($stable->members->each->is_retired);
         });
     }
 }

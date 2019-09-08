@@ -31,7 +31,7 @@ trait CanBeInjured
      *
      * @return bool
      */
-    public function getIsInjuredAttribute()
+    public function getIsInjuredCachedAttribute()
     {
         return $this->status === 'injured';
     }
@@ -55,6 +55,7 @@ trait CanBeInjured
     public function injure()
     {
         $this->injuries()->create(['started_at' => now()]);
+        $this->touch();
     }
 
     /**

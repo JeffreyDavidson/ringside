@@ -3,10 +3,25 @@
 namespace App\Models\Concerns;
 
 use App\Models\Employment;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Builder;
 
 trait CanBeEmployed
 {
+    /**
+     * 
+     */
+    public static function bootCanBeEmployed()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeEmployed trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get all of the employments of the model.
      *
@@ -32,7 +47,7 @@ trait CanBeEmployed
      *
      * @return bool
      */
-    public function getIsEmployedAttribute()
+    public function getIsEmployedCachedAttribute()
     {
         return $this->employments()->where('started_at', '<=', now())->whereNull('ended_at')->exists();
     }
@@ -49,12 +64,14 @@ trait CanBeEmployed
     }
 
     /**
-     * Activate a model.
+     * Employ a model.
      *
      * @return bool
      */
-    public function activate()
+    public function employ()
     {
-        return $this->employments()->updateOrCreate(['started_at' => null], ['started_at' => now()]);
+        $this->employments()->updateOrCreate(['started_at' => null], ['started_at' => now()]);
+
+        return $this->touch();
     }
 }

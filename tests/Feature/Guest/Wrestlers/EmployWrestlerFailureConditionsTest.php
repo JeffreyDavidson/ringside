@@ -10,16 +10,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group wrestlers
  * @group guests
  */
-class ActivateWrestlerFailureConditionsTest extends TestCase
+class EmployWrestlerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_activate_a_pending_introduction_wrestler()
+    public function a_guest_cannot_employ_a_pending_introduction_wrestler()
     {
         $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('wrestlers.activate', $wrestler));
+        $response = $this->put(route('wrestlers.employ', $wrestler));
 
         $response->assertRedirect(route('login'));
     }

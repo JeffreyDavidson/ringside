@@ -31,7 +31,7 @@ trait CanBeRetired
      *
      * @return bool
      */
-    public function getIsRetiredAttribute()
+    public function getIsRetiredCachedAttribute()
     {
         return $this->status === 'retired';
     }
@@ -63,6 +63,7 @@ trait CanBeRetired
         }
 
         $this->retirements()->create(['started_at' => now()]);
+        $this->touch();
     }
 
     /**

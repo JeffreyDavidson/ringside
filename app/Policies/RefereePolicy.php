@@ -13,7 +13,7 @@ class RefereePolicy
     /**
      * Determine whether the user can create referees.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function create(User $user)
@@ -24,8 +24,8 @@ class RefereePolicy
     /**
      * Determine whether the user can update a referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function update(User $user, Referee $referee)
@@ -36,8 +36,8 @@ class RefereePolicy
     /**
      * Determine whether the user can delete a referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function delete(User $user)
@@ -48,7 +48,7 @@ class RefereePolicy
     /**
      * Determine whether the user can restore a deleted referee.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function restore(User $user)
@@ -59,8 +59,8 @@ class RefereePolicy
     /**
      * Determine whether the user can retire a referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function retire(User $user, Referee $referee)
@@ -75,8 +75,8 @@ class RefereePolicy
     /**
      * Determine whether the user can unretire a retired referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function unretire(User $user, Referee $referee)
@@ -91,8 +91,8 @@ class RefereePolicy
     /**
      * Determine whether the user can injure a referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function injure(User $user, Referee $referee)
@@ -107,8 +107,8 @@ class RefereePolicy
     /**
      * Determine whether the user can recover an injured referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function recover(User $user, Referee $referee)
@@ -121,13 +121,13 @@ class RefereePolicy
     }
 
     /**
-     * Determine whether the user can activate a referee that is pending introduction.
+     * Determine whether the user can employ a referee that is pending introduction.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
-    public function activate(User $user, Referee $referee)
+    public function employ(User $user, Referee $referee)
     {
         if ($referee->is_employed) {
             return false;
@@ -139,7 +139,7 @@ class RefereePolicy
     /**
      * Determine whether the user can view list of referees.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function viewList(User $user)
@@ -150,8 +150,8 @@ class RefereePolicy
     /**
      * Determine whether the user can view a profile for a referee.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Referee  $referee
+     * @param  App\Models\User  $user
+     * @param  App\Models\Referee  $referee
      * @return bool
      */
     public function view(User $user, Referee $referee)

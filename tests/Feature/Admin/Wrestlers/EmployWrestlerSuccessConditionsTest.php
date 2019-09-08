@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\SuperAdmin\Wrestlers;
+namespace Tests\Feature\Admin\Wrestlers;
 
 use Tests\TestCase;
 use App\Models\Wrestler;
@@ -8,22 +8,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers
- * @group superadmins
+ * @group admins
  */
-class ActivateWrestlerSuccessCondtionsTest extends TestCase
+class EmployWrestlerSuccessCondtionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_activate_a_pending_introduction_wrestler()
+    public function an_administrator_can_activate_a_pending_introduction_wrestler()
     {
-        $this->actAs('super-administrator');
+        $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('wrestlers.activate', $wrestler));
+        $response = $this->put(route('wrestlers.employ', $wrestler));
 
         $response->assertRedirect(route('wrestlers.index'));
-        tap($wrestler->fresh(), function ($wrestler) {
+        tap($wrestler->fresh(), function (Wrestler $wrestler) {
             $this->assertTrue($wrestler->is_bookable);
         });
     }

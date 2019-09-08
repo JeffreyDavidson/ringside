@@ -13,7 +13,7 @@ class TagTeamPolicy
     /**
      * Determine whether the user can create tag teams.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function create(User $user)
@@ -24,7 +24,7 @@ class TagTeamPolicy
     /**
      * Determine whether the user can update a tag team.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function update(User $user)
@@ -35,7 +35,7 @@ class TagTeamPolicy
     /**
      * Determine whether the user can delete a tag team.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function delete(User $user)
@@ -46,7 +46,7 @@ class TagTeamPolicy
     /**
      * Determine whether the user can restore a deleted tag team.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function restore(User $user)
@@ -57,8 +57,8 @@ class TagTeamPolicy
     /**
      * Determine whether the user can suspend a tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  App\Models\User  $user
+     * @param  App\Models\TagTeam  $tagteam
      * @return bool
      */
     public function suspend(User $user, TagTeam $tagteam)
@@ -73,8 +73,8 @@ class TagTeamPolicy
     /**
      * Determine whether the user can suspend a tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  App\Models\User  $user
+     * @param  App\Models\TagTeam  $tagteam
      * @return bool
      */
     public function reinstate(User $user, TagTeam $tagteam)
@@ -87,13 +87,13 @@ class TagTeamPolicy
     }
 
     /**
-     * Determine whether the user can activate an inactive tag team.
+     * Determine whether the user can employ a tag team that is pending introduction.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  App\Models\User  $user
+     * @param  App\Models\TagTeam  $tagteam
      * @return bool
      */
-    public function activate(User $user, TagTeam $tagteam)
+    public function employ(User $user, TagTeam $tagteam)
     {
         if ($tagteam->is_employed) {
             return false;
@@ -104,8 +104,8 @@ class TagTeamPolicy
     /**
      * Determine whether the user can retire a tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  App\Models\User  $user
+     * @param  App\Models\TagTeam  $tagteam
      * @return bool
      */
     public function retire(User $user, TagTeam $tagteam)
@@ -120,8 +120,8 @@ class TagTeamPolicy
     /**
      * Determine whether the user can unretire a retired tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  App\Models\User  $user
+     * @param  App\Models\TagTeam  $tagteam
      * @return bool
      */
     public function unretire(User $user, TagTeam $tagteam)
@@ -136,7 +136,7 @@ class TagTeamPolicy
     /**
      * Determine whether the user can view active tag teams.
      *
-     * @param  \App\Models\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function viewList(User $user)
@@ -147,8 +147,8 @@ class TagTeamPolicy
     /**
      * Determine whether the user can view a profile for a tag team.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  App\Models\User  $user
+     * @param  App\Models\TagTeam  $tagteam
      * @return bool
      */
     public function view(User $user, TagTeam $tagteam)

@@ -26,7 +26,7 @@ class BladeServiceProvider extends ServiceProvider
         Blade::component('components.filter', 'filter');
         Blade::component('components.flatpickr', 'flatpickr');
         Blade::component('components.statusSelect', 'statusSelect');
-        Blade::component('components.buttons.activate', 'activatebutton');
+        Blade::component('components.buttons.employ', 'employbutton');
         Blade::component('components.buttons.delete', 'deletebutton');
         Blade::component('components.buttons.edit', 'editbutton');
         Blade::component('components.buttons.injure', 'injurebutton');

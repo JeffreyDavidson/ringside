@@ -24,9 +24,9 @@
                 @unretirebutton(['route' => route('stables.unretire', $model)])
                 @endunretirebutton
             @endcan
-            @can('activate', $model)
-                @activatebutton(['route' => route('stables.activate', $model)])
-                @endactivatebutton
+            @can('employ', $model)
+                @employbutton(['route' => route('stables.employ', $model)])
+                @endemploybutton
             @endcan
             @can('disassemble', $model)
                 <li class="kt-nav__item">

@@ -31,7 +31,7 @@
                         </div>
                         <div class="kt-widget__content">
                             <div class="kt-widget__section">
-                                <span class="kt-widget__username"">{{ $referee->name }}</span>
+                                <span class="kt-widget__username"">{{ $referee->full_name }}</span>
                             </div>
                         </div>
                     </div>

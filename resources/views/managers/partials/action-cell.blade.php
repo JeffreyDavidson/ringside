@@ -24,9 +24,9 @@
                 @unretirebutton(['route' => route('managers.unretire', $model)])
                 @endunretirebutton
             @endcan
-            @can('activate', $model)
-                @activatebutton(['route' => route('managers.activate', $model)])
-                @endactivatebutton
+            @can('employ', $model)
+                @employbutton(['route' => route('managers.employ', $model)])
+                @endemploybutton
             @endcan
             @can('suspend', $model)
                 @suspendbutton(['route' => route('managers.suspend', $model)])

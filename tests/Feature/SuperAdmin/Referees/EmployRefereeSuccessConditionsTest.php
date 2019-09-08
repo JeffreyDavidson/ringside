@@ -10,20 +10,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group referees
  * @group superadmins
  */
-class ActivateRefereeSuccessConditionsTest extends TestCase
+class EmployRefereeSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_activate_a_pending_introduction_referee()
+    public function a_super_administrator_can_employ_a_pending_introduction_referee()
     {
         $this->actAs('super-administrator');
         $referee = factory(Referee::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('referees.activate', $referee));
+        $response = $this->put(route('referees.employ', $referee));
 
         $response->assertRedirect(route('referees.index'));
-        tap($referee->fresh(), function ($referee) {
+        tap($referee->fresh(), function (Referee $referee) {
             $this->assertTrue($referee->is_employed);
         });
     }
