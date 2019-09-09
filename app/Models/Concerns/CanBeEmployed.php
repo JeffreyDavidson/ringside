@@ -65,12 +65,13 @@ trait CanBeEmployed
 
     /**
      * Employ a model.
+     * @param Carbon|string $startedAt
      *
      * @return bool
      */
-    public function employ()
+    public function employ($startedAt = null)
     {
-        $this->employments()->updateOrCreate(['started_at' => null], ['started_at' => now()]);
+        $this->employments()->updateOrCreate(['started_at' => null], ['started_at' => $startedAt ?? now()]);
 
         return $this->touch();
     }
