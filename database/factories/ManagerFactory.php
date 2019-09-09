@@ -19,15 +19,11 @@ $factory->state(Manager::class, 'bookable', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'bookable', function ($manager) {
-    $manager->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
+    $manager->employ();
 });
 
 $factory->afterCreatingState(Manager::class, 'pending-introduction', function ($manager) {
-    $manager->employments()->create([
-        'started_at' => Carbon::tomorrow()->toDateTimeString()
-    ]);
+    $manager->employ(Carbon::tomorrow()->toDateTimeString());
 });
 
 $factory->state(Manager::class, 'retired', function ($faker) {
@@ -37,10 +33,7 @@ $factory->state(Manager::class, 'retired', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'retired', function ($manager) {
-    $manager->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $manager->employ();
     $manager->retire();
 });
 
@@ -51,10 +44,7 @@ $factory->state(Manager::class, 'suspended', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'suspended', function ($manager) {
-    $manager->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $manager->employ();
     $manager->suspend();
 });
 
@@ -65,9 +55,6 @@ $factory->state(Manager::class, 'injured', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'injured', function ($manager) {
-    $manager->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $manager->employ();
     $manager->injure();
 });
