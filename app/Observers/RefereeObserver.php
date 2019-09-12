@@ -15,16 +15,16 @@ class RefereeObserver
      */
     public function saving(Referee $referee)
     {
-        if ($referee->is_bookable) {
-            $referee->status = RefereeStatus::BOOKABLE;
-        } elseif ($referee->is_retired) {
+        if ($referee->checkIsRetired()) {
             $referee->status = RefereeStatus::RETIRED;
-        } elseif ($referee->is_injured) {
+        } elseif ($referee->checkIsInjured()) {
             $referee->status =  RefereeStatus::INJURED;
-        } elseif ($referee->is_suspended) {
+        } elseif ($referee->checkIsSuspended()) {
             $referee->status = RefereeStatus::SUSPENDED;
+        } elseif ($referee->checkIsBookable()) {
+            $referee->status = RefereeStatus::BOOKABLE;
         } else {
-            $referee->status = RefereeStatus::PENDING_INTRODUCTION;
+            $referee->status = RefereeStatus::PENDING_EMPLOYMENT;
         }
     }
 }

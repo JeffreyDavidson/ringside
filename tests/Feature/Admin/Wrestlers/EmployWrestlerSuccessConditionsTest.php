@@ -15,16 +15,16 @@ class EmployWrestlerSuccessCondtionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_activate_a_pending_introduction_wrestler()
+    public function an_administrator_can_employ_a_pending_employment_wrestler()
     {
         $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
+        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
         $response = $this->put(route('wrestlers.employ', $wrestler));
 
         $response->assertRedirect(route('wrestlers.index'));
         tap($wrestler->fresh(), function (Wrestler $wrestler) {
-            $this->assertTrue($wrestler->is_bookable);
+            $this->assertTrue($wrestler->is_employed);
         });
     }
 }

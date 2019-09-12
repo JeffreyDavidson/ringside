@@ -3,13 +3,21 @@
 namespace App\Models;
 
 use App\Enums\TagTeamStatus;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Eloquent\Concerns\HasCustomRelationships;
 
 class TagTeam extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,
+        HasCachedAttributes,
+        HasCustomRelationships,
+        Concerns\CanBeRetired,
+        Concerns\CanBeSuspended,
+        Concerns\CanBeEmployed,
+        Concerns\CanBeBooked;
 
     /**
      * The attributes that aren't mass assignable.
@@ -17,16 +25,6 @@ class TagTeam extends Model
      * @var array
      */
     protected $guarded = [];
-
-    /**
-     * Get the wrestlers belonging to the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function wrestlers()
-    {
-        return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id');
-    }
 
     /**
      * Get the user belonging to the tag team.
@@ -39,13 +37,43 @@ class TagTeam extends Model
     }
 
     /**
+     * Get the wrestlers belonging to the tag team.
+     *
+     * @return App\Eloquent\Relationships\LeaveableBelongsToMany
+     */
+    public function wrestlerHistory()
+    {
+        return $this->leaveableBelongsToMany(Wrestler::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id');
+    }
+
+    /**
+     * Get all current wrestlers that are members of the tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function currentWrestlers()
+    {
+        return $this->wrestlerHistory()->current();
+    }
+
+    /**
+     * Get all current wrestlers that are members of the tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function previousWrestlers()
+    {
+        return $this->wrestlerHistory()->detached();
+    }
+
+    /**
      * Get the stables the tag team are members of.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function stables()
+    public function stableHistory()
     {
-        return $this->morphToMany(Stable::class, 'member');
+        return $this->leaveableMorphToMany(Stable::class, 'member');
     }
 
     /**
@@ -53,132 +81,19 @@ class TagTeam extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function stable()
+    public function currentStable()
     {
-        return $this->morphToMany(Stable::class, 'member')->where('is_active', true);
+        return $this->stableHistory()->current();
     }
 
     /**
-     * Get the retirements of the tag team.
+     * Get the current stable of the tag team.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function retirements()
+    public function previousStables()
     {
-        return $this->morphMany(Retirement::class, 'retiree');
-    }
-
-    /**
-     * Get the current retirement of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-     */
-    public function retirement()
-    {
-        return $this->morphOne(Retirement::class, 'retiree')->whereNull('ended_at');
-    }
-
-    /**
-     * Get the suspensions of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function suspensions()
-    {
-        return $this->morphMany(Suspension::class, 'suspendable');
-    }
-
-    /**
-     * Get the current suspension of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-     */
-    public function suspension()
-    {
-        return $this->morphOne(Suspension::class, 'suspendable')->whereNull('ended_at');
-    }
-
-    /**
-     * Get all of the employments of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function employments()
-    {
-        return $this->morphMany(Employment::class, 'employable')->whereNull('ended_at');
-    }
-
-    /**
-     * Get the current employment of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-     */
-    public function employment()
-    {
-        return $this->morphOne(Employment::class, 'employable')->whereNull('ended_at');
-    }
-
-    /**
-     * Determine the status of the tag team.
-     *
-     * @return \App\Enum\TagTeamStatus
-     *
-     */
-    public function getStatusAttribute()
-    {
-        if ($this->is_bookable) {
-            return TagTeamStatus::BOOKABLE();
-        }
-
-        if ($this->is_retired) {
-            return TagTeamStatus::RETIRED();
-        }
-
-        if ($this->is_suspended) {
-            return TagTeamStatus::SUSPENDED();
-        }
-
-        return TagTeamStatus::PENDING_INTRODUCTION();
-    }
-
-    /**
-     * Determine if a tag team is bookable.
-     *
-     * @return bool
-     */
-    public function getIsBookableAttribute()
-    {
-        return $this->is_employed && !($this->is_retired || $this->is_suspended);
-    }
-
-    /**
-     * Determine if a tag team is hired.
-     *
-     * @return bool
-     */
-    public function getIsEmployedAttribute()
-    {
-        return $this->employments()->where('started_at', '<=', now())->whereNull('ended_at')->exists();
-    }
-
-    /**
-     * Determine if a tag team is retired.
-     *
-     * @return bool
-     */
-    public function getIsRetiredAttribute()
-    {
-        return $this->retirements()->whereNull('ended_at')->exists();
-    }
-
-    /**
-     * Determine if a tag team is suspended.
-     *
-     * @return bool
-     */
-    public function getIsSuspendedAttribute()
-    {
-        return $this->suspensions()->whereNull('ended_at')->exists();
+        return $this->stableHistory()->detached();
     }
 
     /**
@@ -192,68 +107,14 @@ class TagTeam extends Model
     }
 
     /**
-     * Scope a query to only include bookable tag teams.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     */
-    public function scopeBookable($query)
-    {
-        return $query->whereHas('employments', function (Builder $query) {
-            $query->where('started_at', '<=', now())->whereNull('ended_at');
-        })->whereDoesntHave('retirements', function (Builder $query) {
-            $query->whereNull('ended_at');
-        })->whereDoesntHave('suspensions', function (Builder $query) {
-            $query->whereNull('ended_at');
-        });
-    }
-
-    /**
-     * Scope a query to only include pending introduced tag teams.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     */
-    public function scopePendingIntroduction($query)
-    {
-        return $query->whereHas('employments', function (Builder $query) {
-            $query->whereNull('started_at')->orWhere('started_at', '>', now());
-        });
-    }
-
-    /**
-     * Scope a query to only include retired tag teams.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeRetired($query)
-    {
-        return $query->whereHas('retirements', function ($query) {
-            $query->whereNull('ended_at');
-        });
-    }
-
-    /**
-     * Scope a query to only include suspended tag teams.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeSuspended($query)
-    {
-        return $query->whereHas('suspensions', function ($query) {
-            $query->whereNull('ended_at');
-        });
-    }
-
-    /**
      * Add multiple wrestlers to a tag team.
      *
      * @param  array  $wrestlers
      * @return $this
      */
-    public function addWrestlers($wrestlers)
+    public function addWrestlers($wrestlerIds)
     {
-        $this->wrestlers()->attach($wrestlers);
+        $this->wrestlerHistory()->sync($wrestlerIds);
 
         return $this;
     }
@@ -322,18 +183,5 @@ class TagTeam extends Model
     public function reinstate()
     {
         $this->suspension()->update(['ended_at' => now()]);
-    }
-
-    /**
-     * Convert the model instance to an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $data                 = parent::toArray();
-        $data['status']       = $this->status->label();
-
-        return $data;
     }
 }

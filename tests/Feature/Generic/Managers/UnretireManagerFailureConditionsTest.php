@@ -48,10 +48,10 @@ class UnretireManagerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_pending_introduction_manager_cannot_be_unretired()
+    public function a_pending_employment_manager_cannot_be_unretired()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->put(route('managers.unretire', $manager));
 

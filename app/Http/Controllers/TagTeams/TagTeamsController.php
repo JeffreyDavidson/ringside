@@ -63,7 +63,7 @@ class TagTeamsController extends Controller
     public function store(StoreTagTeamRequest $request)
     {
         $tagteam = TagTeam::create($request->except(['wrestlers', 'started_at']));
-        $tagteam->employments()->create($request->only('started_at'));
+        $tagteam->employ($request->input('started_at'));
         $tagteam->addWrestlers($request->input('wrestlers'));
 
         return redirect()->route('tagteams.index');
@@ -106,7 +106,7 @@ class TagTeamsController extends Controller
     {
         $tagteam->update($request->except(['wrestlers', 'started_at']));
 
-        $tagteam->employment($request->only('started_at'));
+        $tagteam->employ($request->input('started_at'));
         $tagteam->wrestlers()->sync($request->input('wrestlers'));
 
         return redirect()->route('tagteams.index');

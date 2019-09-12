@@ -59,7 +59,10 @@ class WrestlersController extends Controller
     public function store(StoreWrestlerRequest $request)
     {
         $wrestler = Wrestler::create($request->except('started_at'));
-        $wrestler->employments()->create($request->only('started_at'));
+
+        if ($request->filled('started_at')) {
+            $wrestler->employ($request->input('started_at'));
+        }
 
         return redirect()->route('wrestlers.index');
     }
@@ -101,13 +104,7 @@ class WrestlersController extends Controller
     {
         $wrestler->update($request->except('started_at'));
 
-        if ($wrestler->employments()->exists() && !is_null($request->input('started_at'))) {
-            if ($wrestler->employment->started_at != $request->input('started_at')) {
-                $wrestler->employment()->update($request->only('started_at'));
-            }
-        } else {
-            $wrestler->employments()->create($request->only('started_at'));
-        }
+        $wrestler->employ($request->input('started_at'));
 
         return redirect()->route('wrestlers.index');
     }

@@ -31,10 +31,10 @@ class DeleteManagerSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_super_administrator_can_delete_a_pending_introduction_manager()
+    public function a_super_administrator_can_delete_a_pending_employment_manager()
     {
         $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->delete(route('managers.destroy', $manager));
 

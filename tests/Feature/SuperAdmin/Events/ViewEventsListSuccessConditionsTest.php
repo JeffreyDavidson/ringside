@@ -26,15 +26,8 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $mapToIdAndName = function (Event $event) {
-            return [
-                'id' => $event->id,
-                'name' => e($event->name),
-            ];
-        };
-
-        $scheduled  = factory(Event::class, 3)->states('scheduled')->create()->map($mapToIdAndName);
-        $past       = factory(Event::class, 3)->states('past')->create()->map($mapToIdAndName);
+        $scheduled  = factory(Event::class, 3)->states('scheduled')->create();
+        $past       = factory(Event::class, 3)->states('past')->create();
 
         $this->events = collect([
             'scheduled' => $scheduled,
@@ -65,7 +58,7 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->events->get('all')->count(),
-            'data'         => $this->events->get('all')->toArray(),
+            'data'         => $this->events->get('all')->only(['id'])->toArray(),
         ]);
     }
 
@@ -78,7 +71,7 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->events->get('scheduled')->count(),
-            'data'         => $this->events->get('scheduled')->toArray(),
+            'data'         => $this->events->get('scheduled')->only(['id'])->toArray(),
         ]);
     }
 
@@ -91,7 +84,7 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->events->get('past')->count(),
-            'data'         => $this->events->get('past')->toArray(),
+            'data'         => $this->events->get('past')->only(['id'])->toArray(),
         ]);
     }
 }

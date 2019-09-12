@@ -20,7 +20,7 @@ class ActivateTitleSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $title = factory(Title::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('titles.activate', $title));
+        $response = $this->put(route('titles.introduced', $title));
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {

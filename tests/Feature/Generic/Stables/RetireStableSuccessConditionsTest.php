@@ -18,12 +18,13 @@ class RetireStableSuccessConditionsTest extends TestCase
     public function retiring_a_stable_also_retires_its_members()
     {
         $this->actAs('administrator');
-        $stable = factory(Stable::class)->states('bookabe')->create();
+        $stable = factory(Stable::class)->states('bookable')->create();
 
         $response = $this->put(route('stables.retire', $stable));
 
         tap($stable->fresh(), function ($stable) {
-            $this->assertTrue($stable->members->each->is_retired);
+            $this->assertTrue($stable->is_retired);
+            $this->assertTrue($stable->previousMembers->every->is_retired);
         });
     }
 }

@@ -33,6 +33,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_manager_started_today_or_before_is_bookable()
     {
+        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
         $this->post(route('managers.store'), $this->validParams([

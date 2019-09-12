@@ -26,29 +26,21 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $mapToIdAndName = function (Manager $manager) {
-            return [
-                'id' => $manager->id,
-                'first_name' => e($manager->first_name),
-                'last_name' => e($manager->last_name),
-            ];
-        };
+        $bookable            = factory(Manager::class, 3)->states('bookable')->create();
+        $pendingEmployment   = factory(Manager::class, 3)->states('pending-employment')->create();
+        $retired             = factory(Manager::class, 3)->states('retired')->create();
+        $suspended           = factory(Manager::class, 3)->states('suspended')->create();
+        $injured             = factory(Manager::class, 3)->states('injured')->create();
 
-        $bookable            = factory(Manager::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduction = factory(Manager::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
-        $retired             = factory(Manager::class, 3)->states('retired')->create()->map($mapToIdAndName);
-        $suspended           = factory(Manager::class, 3)->states('suspended')->create()->map($mapToIdAndName);
-        $injured             = factory(Manager::class, 3)->states('injured')->create()->map($mapToIdAndName);
-        dd($bookable);
         $this->managers = collect([
             'bookable'             => $bookable,
-            'pending-introduction' => $pendingIntroduction,
+            'pending-employment'   => $pendingEmployment,
             'retired'              => $retired,
             'suspended'            => $suspended,
             'injured'              => $injured,
             'all'                  => collect()
                                 ->concat($bookable)
-                                ->concat($pendingIntroduction)
+                                ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
                                 ->concat($injured)
@@ -75,7 +67,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('all')->count(),
-            'data'         => $this->managers->get('all')->toArray(),
+            'data'         => $this->managers->get('all')->only(['id'])->toArray(),
         ]);
     }
 
@@ -84,25 +76,24 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        dd(Manager::all()->toArray());
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'bookable']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('bookable')->count(),
-            'data'         => $this->managers->get('bookable')->toArray(),
+            'data'         => $this->managers->get('bookable')->only(['id'])->toArray(),
         ]);
     }
 
     /** @test */
-    public function an_administrator_can_view_pending_introduction_managers()
+    public function an_administrator_can_view_pending_employment_managers()
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'pending-introduction']));
+        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'pending-employment']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->managers->get('pending-introduction')->count(),
-            'data'         => $this->managers->get('pending-introduction')->toArray(),
+            'recordsTotal' => $this->managers->get('pending-employment')->count(),
+            'data'         => $this->managers->get('pending-employment')->only(['id'])->toArray(),
         ]);
     }
 
@@ -115,7 +106,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('retired')->count(),
-            'data'         => $this->managers->get('retired')->toArray(),
+            'data'         => $this->managers->get('retired')->only(['id'])->toArray(),
         ]);
     }
 
@@ -128,7 +119,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('suspended')->count(),
-            'data'         => $this->managers->get('suspended')->toArray(),
+            'data'         => $this->managers->get('suspended')->only(['id'])->toArray(),
         ]);
     }
 
@@ -141,7 +132,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('injured')->count(),
-            'data'         => $this->managers->get('injured')->toArray(),
+            'data'         => $this->managers->get('injured')->only(['id'])->toArray(),
         ]);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\TitleStatus;
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -42,7 +41,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Title extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,
+        HasCachedAttributes,
+        Concerns\CanBeRetired,
+        Concerns\CanBeBooked;
 
     /**
      * The attributes that aren't mass assignable.
@@ -57,52 +59,6 @@ class Title extends Model
      * @var array
      */
     protected $dates = ['introduced_at'];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['is_bookable'];
-
-    /**
-     * Get the retirements of the title.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function retirements()
-    {
-        return $this->morphMany(Retirement::class, 'retiree');
-    }
-
-    /**
-     * Get the current retirement of the title.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-     */
-    public function retirement()
-    {
-        return $this->morphOne(Retirement::class, 'retiree')->whereNull('ended_at');
-    }
-
-    /**
-     * Determine the status of the title.
-     *
-     * @return \App\Enum\TitleStatus
-     *
-     */
-    public function getStatusAttribute()
-    {
-        if ($this->is_bookable) {
-            return TitleStatus::BOOKABLE();
-        }
-
-        if ($this->is_retired) {
-            return TitleStatus::RETIRED();
-        }
-
-        return TitleStatus::PENDING_INTRODUCTION();
-    }
 
     /**
      * Determine if a title is has been introduced.
@@ -122,16 +78,6 @@ class Title extends Model
     public function getIsBookableAttribute()
     {
         return !($this->is_retired || $this->is_pending_introduction);
-    }
-
-    /**
-     * Determine if a title is retired.
-     *
-     * @return bool
-     */
-    public function getIsRetiredAttribute()
-    {
-        return $this->retirements()->whereNull('ended_at')->exists();
     }
 
     /**
@@ -159,19 +105,6 @@ class Title extends Model
     }
 
     /**
-     * Scope a query to only include retired titles.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeRetired($query)
-    {
-        return $query->whereHas('retirements', function ($query) {
-            $query->whereNull('ended_at');
-        });
-    }
-
-    /**
      * Scope a query to only include pending introduced titles.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -191,25 +124,5 @@ class Title extends Model
         $this->update(['introduced_at' => now()]);
 
         return $this;
-    }
-
-    /**
-     * Retire a title.
-     *
-     * @return \App\Models\Retirement
-     */
-    public function retire()
-    {
-        $this->retirements()->create(['started_at' => now()]);
-    }
-
-    /**
-     * Unretire a title.
-     *
-     * @return bool
-     */
-    public function unretire()
-    {
-        return $this->retirement()->update(['ended_at' => now()]);
     }
 }

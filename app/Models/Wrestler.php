@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\WrestlerStatus;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -78,8 +77,9 @@ class Wrestler extends Model
         Concerns\CanBeSuspended,
         Concerns\CanBeInjured,
         Concerns\CanBeRetired,
-        Concerns\CanBeEmployed;
-
+        Concerns\CanBeEmployed,
+        Concerns\CanBeBooked,
+        Concerns\HasAHeight;
 
     /**
      * The attributes that aren't mass assignable.
@@ -99,107 +99,62 @@ class Wrestler extends Model
     }
 
     /**
-     * Get the tag teams the wrestler has belonged to.
+     * Get the tag team history the wrestler has belonged to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return App\Eloquent\Relationships\LeaveableBelongsToMany
      */
-    public function tagteams()
+    public function tagTeamHistory()
     {
-        return $this->belongsToMany(TagTeam::class);
+        return $this->leaveableBelongsToMany(TagTeam::class, 'tag_team_wrestler', 'wrestler_id', 'tag_team_id');
     }
 
     /**
      * Get the current tag team of the wrestler.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return App\Eloquent\Relationships\LeaveableBelongsToMany
      */
-    public function tagteam()
+    public function currentTagTeam()
     {
-        return $this->belongsToMany(TagTeam::class)->whereHas('employments', function (Builder $query) {
-            $query->where('started_at', '<=', now());
-        });
+        return $this->tagTeamHistory()->where('status', 'bookable')->current();
     }
 
     /**
-     * Get the stables the wrestler is a member of.
+     * Get the previous tag teams the wrestler has belonged to.
      *
-     * @return \App\Eloquent\Relationships\LeaveableMorphToMany
+     * @return App\Eloquent\Relationships\LeaveableBelongsToMany
      */
-    public function stables()
+    public function previousTagTeams()
+    {
+        return $this->tagTeamHistory()->detached();
+    }
+
+    /**
+     * Get the stable history the wrestler has belonged to.
+     *
+     * @return App\Eloquent\Relationships\LeaveableMorphToMany
+     */
+    public function stableHistory()
     {
         return $this->leaveableMorphToMany(Stable::class, 'member')->using(Member::class);
     }
 
     /**
-     * Get the current stable of the wrestler.
+     * Get the current stable the wrestler belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return App\Eloquent\Relationships\LeaveableMorphToMany
      */
-    public function stable()
+    public function currentStable()
     {
-        // return $this->morphToMany(Stable::class, 'member')->where('is_active', true);
+        return $this->stableHistory()->where('status', 'bookable')->current();
     }
 
     /**
-     * Return the wrestler's height formatted.
+     * Get the previous stables the wrestler has belonged to.
      *
-     * @return string
+     * @return App\Eloquent\Relationships\LeaveableMorphToMany
      */
-    public function getFormattedHeightAttribute()
+    public function previousStables()
     {
-        $feet = floor($this->height / 12);
-        $inches = ($this->height % 12);
-
-        return $feet . '\'' . $inches . '"';
-    }
-
-    /**
-     * Return the wrestler's started at date formatted.
-     *
-     * @return string
-     */
-    public function getFormattedStartedAtAttribute()
-    {
-        return $this->employments()->latest()->first()->started_at->format('M d, Y');
-    }
-
-    /**
-     * Determine if a wrestler is bookable.
-     *
-     * @return bool
-     */
-    public function getIsBookableAttribute()
-    {
-        return $this->is_employed && !($this->is_retired || $this->is_injured || $this->is_suspended);
-    }
-
-    /**
-     * Return the wrestler's height in feet.
-     *
-     * @return string
-     */
-    public function getFeetAttribute()
-    {
-        return floor($this->height / 12);
-    }
-
-    /**
-     * Return the wrestler's height in inches.
-     *
-     * @return string
-     */
-    public function getInchesAttribute()
-    {
-        return $this->height % 12;
-    }
-
-    /**
-     * Scope a query to only include bookable wrestlers.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     */
-    public function scopeBookable($query)
-    {
-        return $query->where('status', WrestlerStatus::BOOKABLE);
+        return $this->stableHistory()->detached();
     }
 }

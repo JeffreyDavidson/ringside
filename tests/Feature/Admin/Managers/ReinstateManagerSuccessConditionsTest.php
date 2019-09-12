@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Managers;
 
+use Carbon\Carbon;
 use App\Models\Manager;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,12 +18,17 @@ class ReinstateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_reinstate_a_suspended_manager()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
         $response = $this->put(route('managers.reinstate', $manager));
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->suspensions()->latest()->first()->ended_at);
+        tap($manager->fresh(), function ($manager) use ($now) {
+            $this->assertEquals($now->toDateTimeString(), $manager->suspensions()->latest()->first()->ended_at);
+        });
     }
 }

@@ -64,8 +64,8 @@ class RefereesController extends Controller
     {
         $referee = Referee::create($request->except('started_at'));
 
-        if (!is_null($request->input('started_at'))) {
-            $referee->employments()->create($request->only('started_at'));
+        if ($request->filled('started_at')) {
+            $referee->employ($request->input('started_at'));
         }
 
         return redirect()->route('referees.index');
@@ -108,13 +108,7 @@ class RefereesController extends Controller
     {
         $referee->update($request->except('started_at'));
 
-        if ($referee->employments()->exists() && !is_null($request->input('started_at'))) {
-            if ($referee->employment->started_at != $request->input('started_at')) {
-                $referee->employment()->update($request->only('started_at'));
-            }
-        } else {
-            $referee->employments()->create($request->only('started_at'));
-        }
+        $referee->employ($request->input('started_at'));
 
         return redirect()->route('referees.index');
     }

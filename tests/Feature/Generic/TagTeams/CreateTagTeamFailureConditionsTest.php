@@ -181,7 +181,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     public function a_wrestler_must_be_bookable_to_join_a_tag_team()
     {
         $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
+        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
         $response = $this->from(route('tagteams.create'))
                         ->post(route('tagteams.store'), $this->validParams(['wrestlers' => [$wrestler->id]]));

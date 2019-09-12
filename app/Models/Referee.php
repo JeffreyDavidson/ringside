@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\RefereeStatus;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -60,6 +58,7 @@ class Referee extends Model
         Concerns\CanBeInjured,
         Concerns\CanBeRetired,
         Concerns\CanBeEmployed,
+        Concerns\CanBeBooked,
         Concerns\HasFullName;
 
     /**
@@ -68,24 +67,4 @@ class Referee extends Model
      * @var array
      */
     protected $guarded = [];
-
-    /**
-     * Determine if a referee is bookable.
-     *
-     * @return bool
-     */
-    public function getIsBookableAttribute()
-    {
-        return $this->is_employed && !($this->is_retired || $this->is_injured || $this->is_suspended);
-    }
-
-    /**
-     * Scope a query to only include bookable referees.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     */
-    public function scopeBookable($query)
-    {
-        return $query->where('status', RefereeStatus::BOOKABLE);
-    }
 }

@@ -15,9 +15,9 @@ class EmployRefereeFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_employ_a_pending_introduction_referee()
+    public function a_guest_cannot_employ_a_pending_employment_referee()
     {
-        $referee = factory(Referee::class)->states('pending-introduction')->create();
+        $referee = factory(Referee::class)->states('pending-employment')->create();
 
         $response = $this->put(route('referees.employ', $referee));
 

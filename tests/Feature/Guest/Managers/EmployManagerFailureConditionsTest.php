@@ -15,9 +15,9 @@ class EmployManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_employ_a_pending_introduction_manager()
+    public function a_guest_cannot_employ_a_pending_employment_manager()
     {
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->put(route('managers.employ', $manager));
 

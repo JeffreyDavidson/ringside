@@ -63,10 +63,10 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_super_administrator_can_view_a_pending_introduction_manager_profile()
+    public function a_super_administrator_can_view_a_pending_employment_manager_profile()
     {
         $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->get(route('managers.show', $manager));
 

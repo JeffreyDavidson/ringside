@@ -18,7 +18,7 @@ class EmployRefereeSuccessConditionsTest extends TestCase
     public function a_referee_without_a_current_employment_can_be_employed()
     {
         $this->actAs('administrator');
-        $referee = factory(Manager::class)->create();
+        $referee = factory(Referee::class)->create();
 
         $response = $this->put(route('referees.employ', $referee));
 

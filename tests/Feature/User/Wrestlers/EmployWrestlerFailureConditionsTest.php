@@ -15,10 +15,10 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_employ_a_pending_introduction_wrestler()
+    public function a_basic_user_cannot_employ_a_pending_employment_wrestler()
     {
         $this->actAs('basic-user');
-        $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
+        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
         $response = $this->put(route('wrestlers.employ', $wrestler));
 

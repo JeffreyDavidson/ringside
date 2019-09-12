@@ -22,7 +22,13 @@ $factory->afterCreatingState(Manager::class, 'bookable', function ($manager) {
     $manager->employ();
 });
 
-$factory->afterCreatingState(Manager::class, 'pending-introduction', function ($manager) {
+$factory->state(Manager::class, 'pending-employment', function ($faker) {
+    return [
+        'status' => ManagerStatus::PENDING_EMPLOYMENT,
+    ];
+});
+
+$factory->afterCreatingState(Manager::class, 'pending-employment', function ($manager) {
     $manager->employ(Carbon::tomorrow()->toDateTimeString());
 });
 

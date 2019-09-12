@@ -66,7 +66,7 @@ class ManagersController extends Controller
         $manager = Manager::create($request->except('started_at'));
 
         if ($request->filled('started_at')) {
-            $manager->employments()->create($request->only('started_at'));
+            $manager->employ($request->input('started_at'));
         }
 
         return redirect()->route('managers.index');
@@ -109,14 +109,7 @@ class ManagersController extends Controller
     {
         $manager->update($request->except('started_at'));
 
-        if ($manager->employment()->exists() && !is_null($request->input('started_at'))) {
-            if ($manager->employment->started_at != $request->input('started_at')) {
-                $manager->employment()->update($request->only('started_at'));
-            }
-        } else {
-            $manager->employments()->create($request->only('started_at'));
-        }
-
+        $manager->employ($request->input('started_at'));
 
         return redirect()->route('managers.index');
     }

@@ -23,7 +23,7 @@ class CanJoinTagTeam implements Rule
             return false;
         }
 
-        if ($wrestler->tagteam()->exists()) {
+        if ($wrestler->currentTagTeam()->exists()) {
             return false;
         }
 

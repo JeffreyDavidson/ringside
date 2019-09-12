@@ -25,21 +25,17 @@ $factory->state(Wrestler::class, 'bookable', function ($faker) {
 });
 
 $factory->afterCreatingState(Wrestler::class, 'bookable', function ($wrestler) {
-    $wrestler->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
+    $wrestler->employ();
 });
 
-$factory->state(Wrestler::class, 'pending-introduction', function ($faker) {
+$factory->state(Wrestler::class, 'pending-employment', function ($faker) {
     return [
-        'status' => WrestlerStatus::PENDING_INTRODUCTION,
+        'status' => WrestlerStatus::PENDING_EMPLOYMENT,
     ];
 });
 
-$factory->afterCreatingState(Wrestler::class, 'pending-introduction', function ($wrestler) {
-    $wrestler->employments()->create([
-        'started_at' => Carbon::tomorrow()->toDateTimeString()
-    ]);
+$factory->afterCreatingState(Wrestler::class, 'pending-employment', function ($wrestler) {
+    $wrestler->employ(Carbon::tomorrow()->toDateTimeString());
 });
 
 $factory->state(Wrestler::class, 'retired', function ($faker) {
@@ -49,10 +45,7 @@ $factory->state(Wrestler::class, 'retired', function ($faker) {
 });
 
 $factory->afterCreatingState(Wrestler::class, 'retired', function ($wrestler) {
-    $wrestler->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $wrestler->employ();
     $wrestler->retire();
 });
 
@@ -63,10 +56,7 @@ $factory->state(Wrestler::class, 'suspended', function ($faker) {
 });
 
 $factory->afterCreatingState(Wrestler::class, 'suspended', function ($wrestler) {
-    $wrestler->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $wrestler->employ();
     $wrestler->suspend();
 });
 
@@ -77,9 +67,6 @@ $factory->state(Wrestler::class, 'injured', function ($faker) {
 });
 
 $factory->afterCreatingState(Wrestler::class, 'injured', function ($wrestler) {
-    $wrestler->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $wrestler->employ();
     $wrestler->injure();
 });

@@ -67,4 +67,15 @@ trait CanBeInjured
     {
         $this->injury()->update(['ended_at' => now()]);
     }
+
+    /**
+     * @return bool
+     */
+    public function checkIsInjured()
+    {
+        return $this->injuries()
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at')
+                    ->exists();
+    }
 }

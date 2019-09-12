@@ -27,10 +27,10 @@ class DeleteWrestlerSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_super_administrator_can_delete_a_pending_introduction_wrestler()
+    public function a_super_administrator_can_delete_a_pending_employment_wrestler()
     {
         $this->actAs('super-administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
+        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
         $response = $this->delete(route('wrestlers.destroy', $wrestler));
 

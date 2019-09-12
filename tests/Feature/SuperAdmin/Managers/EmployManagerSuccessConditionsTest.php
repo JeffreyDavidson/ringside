@@ -15,16 +15,16 @@ class EmployManagerSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_employ_a_pending_introduction_manager()
+    public function a_super_administrator_can_employ_a_pending_employment_manager()
     {
         $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->put(route('managers.employ', $manager));
 
         $response->assertRedirect(route('managers.index'));
         tap($manager->fresh(), function (Manager $manager) {
-            $this->assertTrue($manager->is_bookable);
+            $this->assertTrue($manager->is_employed);
         });
     }
 }

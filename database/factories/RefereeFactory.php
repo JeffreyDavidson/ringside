@@ -19,11 +19,17 @@ $factory->state(Referee::class, 'bookable', function ($faker) {
 });
 
 $factory->afterCreatingState(Referee::class, 'bookable', function ($referee) {
-    $referee->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
+    $referee->employ();
+});
 
-    $referee->touch();
+$factory->state(Referee::class, 'pending-employment', function ($faker) {
+    return [
+        'status' => RefereeStatus::PENDING_EMPLOYMENT,
+    ];
+});
+
+$factory->afterCreatingState(Referee::class, 'pending-employment', function ($referee) {
+    $referee->employ(Carbon::tomorrow()->toDateTimeString());
 });
 
 $factory->state(Referee::class, 'retired', function ($faker) {
@@ -33,25 +39,8 @@ $factory->state(Referee::class, 'retired', function ($faker) {
 });
 
 $factory->afterCreatingState(Referee::class, 'retired', function ($referee) {
-    $referee->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $referee->employ();
     $referee->retire();
-});
-
-$factory->state(Referee::class, 'injured', function ($faker) {
-    return [
-        'status' => RefereeStatus::INJURED,
-    ];
-});
-
-$factory->afterCreatingState(Referee::class, 'injured', function ($referee) {
-    $referee->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
-    $referee->injure();
 });
 
 $factory->state(Referee::class, 'suspended', function ($faker) {
@@ -61,23 +50,17 @@ $factory->state(Referee::class, 'suspended', function ($faker) {
 });
 
 $factory->afterCreatingState(Referee::class, 'suspended', function ($referee) {
-    $referee->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $referee->employ();
     $referee->suspend();
 });
 
-$factory->state(Referee::class, 'pending-introduction', function ($faker) {
+$factory->state(Referee::class, 'injured', function ($faker) {
     return [
-        'status' => RefereeStatus::PENDING_INTRODUCTION,
+        'status' => RefereeStatus::INJURED,
     ];
 });
 
-$factory->afterCreatingState(Referee::class, 'pending-introduction', function ($referee) {
-    $referee->employments()->create([
-        'started_at' => Carbon::tomorrow()->toDateTimeString()
-    ]);
-
-    $referee->touch();
+$factory->afterCreatingState(Referee::class, 'injured', function ($referee) {
+    $referee->employ();
+    $referee->injure();
 });

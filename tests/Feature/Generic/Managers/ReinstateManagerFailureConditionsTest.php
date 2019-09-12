@@ -26,10 +26,10 @@ class ReinstateManagerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_pending_introduction_manager_cannot_be_reinstated()
+    public function a_pending_employment_manager_cannot_be_reinstated()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->put(route('managers.reinstate', $manager));
 

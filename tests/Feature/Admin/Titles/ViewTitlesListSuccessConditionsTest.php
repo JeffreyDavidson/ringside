@@ -20,21 +20,18 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $mapToIdAndName = function (Title $title) {
-            return ['id' => $title->id, 'name' => e($title->name)];
-        };
 
-        $bookable          = factory(Title::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduced = factory(Title::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
-        $retired           = factory(Title::class, 3)->states('retired')->create()->map($mapToIdAndName);
+        $bookable            = factory(Title::class, 3)->states('bookable')->create();
+        $pendingIntroduction = factory(Title::class, 3)->states('pending-introduction')->create();
+        $retired             = factory(Title::class, 3)->states('retired')->create();
 
         $this->titles = collect([
-            'bookable'           => $bookable,
-            'pending-introduction' => $pendingIntroduced,
-            'retired'            => $retired,
-            'all'                => collect()
+            'bookable'             => $bookable,
+            'pending-introduction' => $pendingIntroduction,
+            'retired'              => $retired,
+            'all'                  => collect()
                                 ->concat($bookable)
-                                ->concat($pendingIntroduced)
+                                ->concat($pendingIntroduction)
                                 ->concat($retired)
         ]);
     }
@@ -59,7 +56,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->titles->get('all')->count(),
-            'data'         => $this->titles->get('all')->toArray(),
+            'data'         => $this->titles->get('all')->only(['id'])->toArray(),
         ]);
     }
 
@@ -72,7 +69,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->titles->get('bookable')->count(),
-            'data'         => $this->titles->get('bookable')->toArray(),
+            'data'         => $this->titles->get('bookable')->only(['id'])->toArray(),
         ]);
     }
 
@@ -84,7 +81,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->titles->get('pending-introduction')->count(),
-            'data'         => $this->titles->get('pending-introduction')->toArray(),
+            'data'         => $this->titles->get('pending-introduction')->only(['id'])->toArray(),
         ]);
     }
 
@@ -96,7 +93,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->titles->get('retired')->count(),
-            'data'         => $this->titles->get('retired')->toArray(),
+            'data'         => $this->titles->get('retired')->only(['id'])->toArray(),
         ]);
     }
 }

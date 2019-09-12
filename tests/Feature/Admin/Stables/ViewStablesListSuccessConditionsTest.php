@@ -30,9 +30,8 @@ class ViewStablesSuccessConditionsTest extends TestCase
             return ['id' => $stable->id, 'name' => e($stable->name)];
         };
 
-        $bookable            = factory(Stable::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduction = factory(Stable::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
-        $retired             = factory(Stable::class, 3)->states('retired')->create()->map($mapToIdAndName);
+        $bookable            = factory(Stable::class, 3)->states('bookable')->create();
+        $pendingIntroduction = factory(Stable::class, 3)->states('pending-introduction')->create();
 
         $this->stables = collect([
             'bookable'             => $bookable,

@@ -15,10 +15,10 @@ class TitleObserver
      */
     public function saving(Title $title)
     {
-        if ($title->is_scheduled) {
-            $title->status = TitleStatus::BOOKABLE;
-        } elseif ($title->is_retired) {
+        if ($title->checkIsRetired()) {
             $title->status = TitleStatus::RETIRED;
+        } elseif ($title->checkIsBookable()) {
+            $title->status = TitleStatus::BOOKABLE;
         } else {
             $title->status = TitleStatus::PENDING_INTRODUCTION;
         }

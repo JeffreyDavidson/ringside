@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use App\Enums\TagTeamStatus;
 use Faker\Generator as Faker;
 
 $factory->define(TagTeam::class, function (Faker $faker) {
@@ -13,33 +14,47 @@ $factory->define(TagTeam::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(TagTeam::class, function ($tagteam) {
-    $tagteam->wrestlers()->attach(factory(Wrestler::class, 2)->states('bookable')->create());
+    $tagteam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
+});
+
+$factory->state(TagTeam::class, 'bookable', function ($faker) {
+    return [
+        'status' => TagTeamStatus::BOOKABLE,
+    ];
 });
 
 $factory->afterCreatingState(TagTeam::class, 'bookable', function ($tagteam) {
-    $tagteam->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
+    $tagteam->employ();
 });
 
-$factory->afterCreatingState(TagTeam::class, 'pending-introduction', function ($tagteam) {
-    $tagteam->employments()->create([
-        'started_at' => Carbon::tomorrow()->toDateTimeString()
-    ]);
+$factory->state(TagTeam::class, 'pending-employment', function ($faker) {
+    return [
+        'status' => TagTeamStatus::PENDING_EMPLOYMENT,
+    ];
+});
+
+$factory->afterCreatingState(TagTeam::class, 'pending-employment', function ($tagteam) {
+    $tagteam->employ(Carbon::tomorrow()->toDateTimeString());
+});
+
+$factory->state(TagTeam::class, 'suspended', function ($faker) {
+    return [
+        'status' => TagTeamStatus::SUSPENDED,
+    ];
 });
 
 $factory->afterCreatingState(TagTeam::class, 'suspended', function ($tagteam) {
-    $tagteam->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
-
+    $tagteam->employ();
     $tagteam->suspend();
 });
 
-$factory->afterCreatingState(TagTeam::class, 'retired', function ($tagteam) {
-    $tagteam->employments()->create([
-        'started_at' => Carbon::yesterday()->toDateTimeString()
-    ]);
+$factory->state(TagTeam::class, 'retired', function ($faker) {
+    return [
+        'status' => TagTeamStatus::RETIRED,
+    ];
+});
 
+$factory->afterCreatingState(TagTeam::class, 'retired', function ($tagteam) {
+    $tagteam->employ();
     $tagteam->retire();
 });

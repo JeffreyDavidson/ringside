@@ -6,8 +6,10 @@ use App\Models\Event;
 use App\Models\Title;
 use App\Models\Manager;
 use App\Models\Referee;
+use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Observers\EventObserver;
+use App\Observers\TagTeamObserver;
 use App\Observers\TitleObserver;
 use App\Observers\ManagerObserver;
 use App\Observers\RefereeObserver;
@@ -36,6 +38,7 @@ class ObserverServiceProvider extends ServiceProvider
         Wrestler::observe(WrestlerObserver::class);
         Referee::observe(RefereeObserver::class);
         Manager::observe(ManagerObserver::class);
+        TagTeam::observe(TagTeamObserver::class);
         Event::observe(EventObserver::class);
         Title::observe(TitleObserver::class);
     }

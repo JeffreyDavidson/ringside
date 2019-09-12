@@ -75,4 +75,15 @@ trait CanBeRetired
     {
         return $this->retirement()->update(['ended_at' => now()]);
     }
+
+    /**
+     * @return bool
+     */
+    public function checkIsRetired()
+    {
+        return $this->retirements()
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at')
+                    ->exists();
+    }
 }

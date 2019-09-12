@@ -26,13 +26,9 @@ class ViewStablesSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $mapToIdAndName = function (Stable $stable) {
-            return ['id' => $stable->id, 'name' => e($stable->name)];
-        };
-
-        $bookable            = factory(Stable::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduction = factory(Stable::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
-        $retired             = factory(Stable::class, 3)->states('retired')->create()->map($mapToIdAndName);
+        $bookable            = factory(Stable::class, 3)->states('bookable')->create();
+        $pendingIntroduction = factory(Stable::class, 3)->states('pending-introduction')->create();
+        $retired             = factory(Stable::class, 3)->states('retired')->create();
 
         $this->stables = collect([
             'bookable'             => $bookable,
@@ -65,7 +61,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->stables->get('all')->count(),
-            'data'         => $this->stables->get('all')->toArray(),
+            'data'         => $this->stables->get('all')->only(['id'])->toArray(),
         ]);
     }
 
@@ -78,7 +74,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->stables->get('bookable')->count(),
-            'data'         => $this->stables->get('bookable')->toArray(),
+            'data'         => $this->stables->get('bookable')->only(['id'])->toArray(),
         ]);
     }
 
@@ -91,7 +87,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->stables->get('pending-introduction')->count(),
-            'data'         => $this->stables->get('pending-introduction')->toArray(),
+            'data'         => $this->stables->get('pending-introduction')->only(['id'])->toArray(),
         ]);
     }
 
@@ -104,7 +100,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->stables->get('retired')->count(),
-            'data'         => $this->stables->get('retired')->toArray(),
+            'data'         => $this->stables->get('retired')->only(['id'])->toArray(),
         ]);
     }
 }

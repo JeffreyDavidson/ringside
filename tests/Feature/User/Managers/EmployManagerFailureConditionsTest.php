@@ -18,7 +18,7 @@ class EmployManagerFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_employ_a_pending_introduction_manager()
     {
         $this->actAs('basic-user');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->put(route('managers.employ', $manager));
 

@@ -26,25 +26,21 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $mapToIdAndName = function (Wrestler $wrestler) {
-            return ['id' => $wrestler->id, 'name' => e($wrestler->name)];
-        };
-
-        $bookable          = factory(Wrestler::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduced = factory(Wrestler::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
-        $retired           = factory(Wrestler::class, 3)->states('retired')->create()->map($mapToIdAndName);
-        $suspended         = factory(Wrestler::class, 3)->states('suspended')->create()->map($mapToIdAndName);
-        $injured           = factory(Wrestler::class, 3)->states('injured')->create()->map($mapToIdAndName);
+        $bookable            = factory(Wrestler::class, 3)->states('bookable')->create();
+        $pendingEmployment   = factory(Wrestler::class, 3)->states('pending-employment')->create();
+        $retired             = factory(Wrestler::class, 3)->states('retired')->create();
+        $suspended           = factory(Wrestler::class, 3)->states('suspended')->create();
+        $injured             = factory(Wrestler::class, 3)->states('injured')->create();
 
         $this->wrestlers = collect([
-            'bookable'           => $bookable,
-            'pending-introduction' => $pendingIntroduced,
-            'retired'            => $retired,
-            'suspended'          => $suspended,
-            'injured'            => $injured,
-            'all'                => collect()
+            'bookable'             => $bookable,
+            'pending-employment'   => $pendingEmployment,
+            'retired'              => $retired,
+            'suspended'            => $suspended,
+            'injured'              => $injured,
+            'all'                  => collect()
                                 ->concat($bookable)
-                                ->concat($pendingIntroduced)
+                                ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
                                 ->concat($injured)
@@ -71,7 +67,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('all')->count(),
-            'data'         => $this->wrestlers->get('all')->toArray(),
+            'data'         => $this->wrestlers->get('all')->only(['id'])->toArray(),
         ]);
     }
 
@@ -84,20 +80,20 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('bookable')->count(),
-            'data'         => $this->wrestlers->get('bookable')->toArray(),
+            'data'         => $this->wrestlers->get('bookable')->only(['id'])->toArray(),
         ]);
     }
 
     /** @test */
-    public function a_super_administrator_can_view_pending_introduction_wrestlers()
+    public function a_super_administrator_can_view_pending_employment_wrestlers()
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'pending-introduction']));
+        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'pending-employment']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->wrestlers->get('pending-introduction')->count(),
-            'data'         => $this->wrestlers->get('pending-introduction')->toArray(),
+            'recordsTotal' => $this->wrestlers->get('pending-employment')->count(),
+            'data'         => $this->wrestlers->get('pending-employment')->only(['id'])->toArray(),
         ]);
     }
 
@@ -110,7 +106,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('retired')->count(),
-            'data'         => $this->wrestlers->get('retired')->toArray(),
+            'data'         => $this->wrestlers->get('retired')->only(['id'])->toArray(),
         ]);
     }
 
@@ -123,7 +119,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('suspended')->count(),
-            'data'         => $this->wrestlers->get('suspended')->toArray(),
+            'data'         => $this->wrestlers->get('suspended')->only(['id'])->toArray(),
         ]);
     }
 
@@ -136,7 +132,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('injured')->count(),
-            'data'         => $this->wrestlers->get('injured')->toArray(),
+            'data'         => $this->wrestlers->get('injured')->only(['id'])->toArray(),
         ]);
     }
 }

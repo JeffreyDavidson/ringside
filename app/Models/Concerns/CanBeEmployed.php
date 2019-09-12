@@ -53,14 +53,14 @@ trait CanBeEmployed
     }
 
     /**
-     * Scope a query to only include pending introduction models.
+     * Scope a query to only include pending employment models.
      * These model have not been employed.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopePendingIntroduction($query)
+    public function scopePendingEmployment($query)
     {
-        return $query->where('status', 'pending-introduction');
+        return $query->where('status', 'pending-employment');
     }
 
     /**
@@ -71,8 +71,22 @@ trait CanBeEmployed
      */
     public function employ($startedAt = null)
     {
-        $this->employments()->updateOrCreate(['started_at' => null], ['started_at' => $startedAt ?? now()]);
+        $this->employments()->updateOrCreate(
+            ['started_at' => null], 
+            ['started_at' => $startedAt ?? now()
+        ]);
 
         return $this->touch();
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkIsEmployed()
+    {
+        return $this->employments()
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at')
+                    ->exists();
     }
 }

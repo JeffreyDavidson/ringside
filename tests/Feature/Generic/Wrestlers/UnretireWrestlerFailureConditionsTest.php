@@ -26,10 +26,10 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_pending_introduction_wrestler_cannot_be_unretired()
+    public function a_pending_employment_wrestler_cannot_be_unretired()
     {
         $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
+        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
         $response = $this->put(route('wrestlers.unretire', $wrestler));
 

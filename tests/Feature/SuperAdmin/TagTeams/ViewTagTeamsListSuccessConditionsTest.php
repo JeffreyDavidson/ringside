@@ -26,23 +26,19 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $mapToIdAndName = function (TagTeam $tagteam) {
-            return ['id' => $tagteam->id, 'name' => e($tagteam->name)];
-        };
-
-        $bookable          = factory(TagTeam::class, 3)->states('bookable')->create()->map($mapToIdAndName);
-        $pendingIntroduced = factory(TagTeam::class, 3)->states('pending-introduction')->create()->map($mapToIdAndName);
-        $retired           = factory(TagTeam::class, 3)->states('retired')->create()->map($mapToIdAndName);
-        $suspended         = factory(TagTeam::class, 3)->states('suspended')->create()->map($mapToIdAndName);
+        $bookable          = factory(TagTeam::class, 3)->states('bookable')->create();
+        $pendingEmployment = factory(TagTeam::class, 3)->states('pending-employment')->create();
+        $retired           = factory(TagTeam::class, 3)->states('retired')->create();
+        $suspended         = factory(TagTeam::class, 3)->states('suspended')->create();
 
         $this->tagteams = collect([
             'bookable'           => $bookable,
-            'pending-introduction' => $pendingIntroduced,
+            'pending-employment' => $pendingEmployment,
             'retired'            => $retired,
             'suspended'          => $suspended,
             'all'                => collect()
                                 ->concat($bookable)
-                                ->concat($pendingIntroduced)
+                                ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
         ]);
@@ -68,7 +64,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('all')->count(),
-            'data'         => $this->tagteams->get('all')->toArray(),
+            'data'         => $this->tagteams->get('all')->only(['id'])->toArray(),
         ]);
     }
 
@@ -81,20 +77,20 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('bookable')->count(),
-            'data'         => $this->tagteams->get('bookable')->toArray(),
+            'data'         => $this->tagteams->get('bookable')->only(['id'])->toArray(),
         ]);
     }
 
     /** @test */
-    public function a_super_administrator_can_view_pending_introduction_tag_teams()
+    public function a_super_administrator_can_view_pending_employment_tag_teams()
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('tagteams.index', ['status' => 'pending-introduction']));
+        $responseAjax = $this->ajaxJson(route('tagteams.index', ['status' => 'pending-employment']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->tagteams->get('pending-introduction')->count(),
-            'data'         => $this->tagteams->get('pending-introduction')->toArray(),
+            'recordsTotal' => $this->tagteams->get('pending-employment')->count(),
+            'data'         => $this->tagteams->get('pending-employment')->only(['id'])->toArray(),
         ]);
     }
 
@@ -107,7 +103,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('retired')->count(),
-            'data'         => $this->tagteams->get('retired')->toArray(),
+            'data'         => $this->tagteams->get('retired')->only(['id'])->toArray(),
         ]);
     }
 
@@ -120,7 +116,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('suspended')->count(),
-            'data'         => $this->tagteams->get('suspended')->toArray(),
+            'data'         => $this->tagteams->get('suspended')->only(['id'])->toArray(),
         ]);
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Eloquent\Relationships;
 
 use App\Eloquent\Concerns\IsLeaveableBelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class LeaveableMorphToMany extends MorphToMany
+class LeaveableBelongsToMany extends BelongsToMany
 {
     use IsLeaveableBelongsToMany;
 

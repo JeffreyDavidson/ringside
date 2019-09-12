@@ -62,7 +62,7 @@ class DeleteManagerFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_delete_a_pending_introduction_manager()
     {
         $this->actAs('basic-user');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->delete(route('managers.destroy', $manager));
 

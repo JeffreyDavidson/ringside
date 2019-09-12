@@ -26,10 +26,10 @@ class InjureManagerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_pending_introduction_manager_cannot_be_injured()
+    public function a_pending_employment_manager_cannot_be_injured()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->put(route('managers.injure', $manager));
 

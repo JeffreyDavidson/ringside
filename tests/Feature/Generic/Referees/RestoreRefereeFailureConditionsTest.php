@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group referees
  * @group generics
  */
-class RestoreRefereeTest extends TestCase
+class RestoreRefereeFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -48,10 +48,10 @@ class RestoreRefereeTest extends TestCase
     }
     
     /** @test */
-    public function a_pending_introduction_referee_cannot_be_restored()
+    public function a_pending_employment_referee_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('pending-introduction')->create();
+        $referee = factory(Referee::class)->states('pending-employment')->create();
 
         $response = $this->put(route('referees.restore', $referee));
 

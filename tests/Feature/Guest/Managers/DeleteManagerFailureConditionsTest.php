@@ -45,9 +45,9 @@ class DeleteManagerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_cannot_delete_a_pending_introduction_manager()
+    public function a_guest_cannot_delete_a_pending_employment_manager()
     {
-        $manager = factory(Manager::class)->states('pending-introduction')->create();
+        $manager = factory(Manager::class)->states('pending-employment')->create();
 
         $response = $this->delete(route('managers.destroy', $manager));
 
