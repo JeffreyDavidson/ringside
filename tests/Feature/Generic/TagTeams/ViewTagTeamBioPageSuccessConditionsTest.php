@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
 {
@@ -18,15 +19,15 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     public function a_tag_teams_data_can_be_seen_on_their_profile()
     {
         $signedInUser = $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->create([
+        $tagTeam = factory(TagTeam::class)->create([
             'name' => 'Tag Team 1',
             'signature_move' => 'The Finisher',
         ]);
 
-        $response = $this->get(route('tagteams.show', ['tagteam' => $tagteam]));
+        $response = $this->showRequest($tagTeam);
 
         $response->assertSee('Tag Team 1');
-        $response->assertSee($tagteam->combinedWeight);
+        $response->assertSee($tagTeam->combinedWeight);
         $response->assertSee('The Finisher');
     }
 }

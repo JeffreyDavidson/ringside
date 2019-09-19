@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group guests
+ * @group roster
  */
 class UnretireTagTeamFailureConditionsTest extends TestCase
 {
@@ -17,9 +18,9 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_unretire_a_tag_team()
     {
-        $tagteam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = factory(TagTeam::class)->states('retired')->create();
 
-        $response = $this->put(route('tagteams.unretire', $tagteam));
+        $response = $this->unretireRequest($tagTeam);
 
         $response->assertRedirect(route('login'));
     }

@@ -10,17 +10,17 @@ class RestoreController extends Controller
     /**
      * Restore a deleted tag team.
      *
-     * @param  int  $tagteamId
+     * @param  int  $tagTeamId
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke($tagteamId)
+    public function __invoke($tagTeamId)
     {
-        $tagteam = TagTeam::onlyTrashed()->findOrFail($tagteamId);
+        $tagTeam = TagTeam::onlyTrashed()->findOrFail($tagTeamId);
 
-        $this->authorize('restore', $tagteam);
+        $this->authorize('restore', $tagTeam);
 
-        $tagteam->restore();
+        $tagTeam->restore();
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 }

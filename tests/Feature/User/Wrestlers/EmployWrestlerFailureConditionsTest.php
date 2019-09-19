@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class EmployWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class EmployWrestlerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('wrestlers.employ', $wrestler));
+        $response = $this->employRequest($wrestler);
 
         $response->assertForbidden();
     }

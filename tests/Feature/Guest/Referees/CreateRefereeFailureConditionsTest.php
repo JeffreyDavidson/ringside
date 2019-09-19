@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class CreateRefereeFailureConditionsTest extends TestCase
 {
@@ -31,7 +32,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_creating_a_referee()
     {
-        $response = $this->get(route('referees.create'));
+        $response = $this->createRequest('referee');
 
         $response->assertRedirect(route('login'));
     }
@@ -39,7 +40,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_a_referee()
     {
-        $response = $this->post(route('referees.store'), $this->validParams());
+        $response = $this->storeRequest('referee', $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

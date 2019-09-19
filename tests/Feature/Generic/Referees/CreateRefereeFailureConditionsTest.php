@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class CreateRefereeFailureConditionsTest extends TestCase
 {
@@ -34,10 +35,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'first_name' => ''
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['first_name' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));
@@ -50,10 +48,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'first_name' => ['not-a-string']
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['first_name' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));
@@ -66,10 +61,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'last_name' => ''
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['last_name' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));
@@ -82,10 +74,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'last_name' => ['not-a-string']
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['last_name' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));
@@ -98,10 +87,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'started_at' => ['not-a-string']
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));
@@ -114,10 +100,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'started_at' => now()->toDateString()
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['started_at' => now()->toDateString()]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));

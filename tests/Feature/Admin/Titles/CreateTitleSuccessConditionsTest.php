@@ -33,7 +33,7 @@ class CreateTitleSucessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->get(route('titles.create'));
+        $response = $this->createRequest('title');
 
         $response->assertViewIs('titles.create');
         $response->assertViewHas('title', new Title);
@@ -44,7 +44,8 @@ class CreateTitleSucessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('titles.store'), $this->validParams());
+        $response = $this->storeRequest('title', $this->validParams());
+        dd($response);
 
         $response->assertRedirect(route('titles.index'));
         tap(Title::first(), function ($title) {

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group admins
+ * @group roster
  */
 class DeleteManagerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class DeleteManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertSoftDeleted('managers', [
@@ -36,7 +37,7 @@ class DeleteManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertSoftDeleted('managers', [
@@ -52,7 +53,7 @@ class DeleteManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertSoftDeleted('managers', [
@@ -68,7 +69,7 @@ class DeleteManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertSoftDeleted('managers', [
@@ -84,7 +85,7 @@ class DeleteManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertSoftDeleted('managers', [

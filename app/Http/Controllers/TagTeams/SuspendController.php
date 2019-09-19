@@ -10,15 +10,15 @@ class SuspendController extends Controller
     /**
      * Suspend a tag team.
      *
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagteam)
+    public function __invoke(TagTeam $tagTeam)
     {
-        $this->authorize('suspend', $tagteam);
+        $this->authorize('suspend', $tagTeam);
 
-        $tagteam->suspend();
+        $tagTeam->suspend();
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 }

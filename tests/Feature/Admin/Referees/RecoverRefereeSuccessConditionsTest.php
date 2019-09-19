@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group admins
+ * @group roster
  */
 class RecoverRefereeSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RecoverRefereeSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->recoverRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->injuries()->latest()->first()->ended_at);

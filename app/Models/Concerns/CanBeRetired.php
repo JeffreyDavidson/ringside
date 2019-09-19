@@ -73,7 +73,9 @@ trait CanBeRetired
      */
     public function unretire()
     {
-        return $this->retirement()->update(['ended_at' => now()]);
+        $this->retirement()->update(['ended_at' => now()]);
+
+        return $this->touch();
     }
 
     /**

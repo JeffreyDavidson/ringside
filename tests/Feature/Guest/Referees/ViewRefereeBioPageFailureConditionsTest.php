@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class ViewRefereeBioPageFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class ViewRefereeBioPageFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->create();
 
-        $response = $this->get(route('referees.show', ['referee' => $referee]));
+        $response = $this->showRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

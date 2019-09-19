@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class ViewManagerBioPageFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class ViewManagerBioPageFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->create();
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

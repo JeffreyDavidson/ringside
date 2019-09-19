@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group admins
+ * @group roster
  */
 class DeleteWrestlerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class DeleteWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertSoftDeleted('wrestlers', ['name' => $wrestler->name]);
@@ -32,7 +33,7 @@ class DeleteWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertSoftDeleted('wrestlers', ['name' => $wrestler->name]);
@@ -44,7 +45,7 @@ class DeleteWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertSoftDeleted('wrestlers', ['name' => $wrestler->name]);
@@ -56,7 +57,7 @@ class DeleteWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertSoftDeleted('wrestlers', ['name' => $wrestler->name]);
@@ -68,7 +69,7 @@ class DeleteWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertSoftDeleted('wrestlers', ['name' => $wrestler->name]);

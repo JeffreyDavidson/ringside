@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
 class DeleteTagTeamFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,9 @@ class DeleteTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_delete_a_tagteam()
     {
         $this->actAs('basic-user');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->delete(route('tagteams.destroy', $tagteam));
+        $response = $this->deleteRequest($tagTeam);
 
         $response->assertForbidden();
     }

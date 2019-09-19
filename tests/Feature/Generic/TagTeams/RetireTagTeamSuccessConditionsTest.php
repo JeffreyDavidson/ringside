@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class RetireTagTeamSuccessConditionsTest extends TestCase
 {
@@ -18,11 +19,11 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     public function both_wrestlers_are_retired_when_the_tag_team_retires()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
 
-        $this->put(route('tagteams.retire', $tagteam));
+        $this->retireRequest($tagTeam);
 
-        $this->assertCount(1, $tagteam->wrestlers[0]->retirements);
-        $this->assertCount(1, $tagteam->wrestlers[1]->retirements);
+        $this->assertCount(1, $tagTeam->currentWrestlers[0]->retirements);
+        $this->assertCount(1, $tagTeam->currentWrestlers[1]->retirements);
     }
 }

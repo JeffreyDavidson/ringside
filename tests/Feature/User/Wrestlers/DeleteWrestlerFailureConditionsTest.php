@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class DeleteWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertForbidden();
     }

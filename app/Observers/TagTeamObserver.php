@@ -10,19 +10,19 @@ class TagTeamObserver
     /**
      * Handle the Tag Team "saving" event.
      *
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return void
      */
-    public function saving(TagTeam $tagteam)
+    public function saving(TagTeam $tagTeam)
     {
-        if ($tagteam->checkIsRetired()) {
-            $tagteam->status = TagTeamStatus::RETIRED;
-        } elseif ($tagteam->checkIsSuspended()) {
-            $tagteam->status = TagTeamStatus::SUSPENDED;
-        } elseif ($tagteam->checkIsBookable()) {
-            $tagteam->status = TagTeamStatus::BOOKABLE;
+        if ($tagTeam->checkIsRetired()) {
+            $tagTeam->status = TagTeamStatus::RETIRED;
+        } elseif ($tagTeam->checkIsSuspended()) {
+            $tagTeam->status = TagTeamStatus::SUSPENDED;
+        } elseif ($tagTeam->checkIsBookable()) {
+            $tagTeam->status = TagTeamStatus::BOOKABLE;
         } else {
-            $tagteam->status = TagTeamStatus::PENDING_EMPLOYMENT;
+            $tagTeam->status = TagTeamStatus::PENDING_EMPLOYMENT;
         }
     }
 }

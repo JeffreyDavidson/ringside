@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group admins
+ * @group roster
  */
 class ViewStableBioPageSuccessConditionsTest extends TestCase
 {

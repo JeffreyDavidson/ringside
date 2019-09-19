@@ -29,7 +29,7 @@ $factory->state(Manager::class, 'pending-employment', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'pending-employment', function ($manager) {
-    $manager->employ(Carbon::tomorrow()->toDateTimeString());
+    $manager->employ(now()->addWeeks(3)->toDateTimeString());
 });
 
 $factory->state(Manager::class, 'retired', function ($faker) {

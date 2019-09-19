@@ -9,13 +9,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group superadmins
+ * @group roster
  */
 class ViewTagTeamsListSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @var \Illuminate\Support\Collection */
-    protected $tagteams;
+    protected $tagTeams;
 
     /**
      * Setup the test environment.
@@ -49,7 +50,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->get(route('tagteams.index'));
+        $response = $this->get(route('tag-teams.index'));
 
         $response->assertOk();
         $response->assertViewIs('tagteams.index');
@@ -60,7 +61,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('tagteams.index'));
+        $responseAjax = $this->ajaxJson(route('tag-teams.index'));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('all')->count(),
@@ -73,7 +74,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('tagteams.index', ['status' => 'bookable']));
+        $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'bookable']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('bookable')->count(),
@@ -86,7 +87,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('tagteams.index', ['status' => 'pending-employment']));
+        $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'pending-employment']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('pending-employment')->count(),
@@ -99,7 +100,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('tagteams.index', ['status' => 'retired']));
+        $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'retired']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('retired')->count(),
@@ -112,7 +113,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('tagteams.index', ['status' => 'suspended']));
+        $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'suspended']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->tagteams->get('suspended')->count(),

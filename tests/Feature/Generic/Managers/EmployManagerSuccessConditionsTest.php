@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class EmployManagerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class EmployManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         tap($manager->fresh(), function ($manager) {

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group superadmins
+ * @group roster
  */
 class RestoreWrestlerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RestoreWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $wrestler = factory(Wrestler::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertNull($wrestler->fresh()->deleted_at);

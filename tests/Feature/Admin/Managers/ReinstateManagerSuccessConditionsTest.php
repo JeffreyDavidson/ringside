@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group admins
+ * @group roster
  */
 class ReinstateManagerSuccessConditionsTest extends TestCase
 {
@@ -24,7 +25,7 @@ class ReinstateManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.reinstate', $manager));
+        $response = $this->reinstateRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         tap($manager->fresh(), function ($manager) use ($now) {

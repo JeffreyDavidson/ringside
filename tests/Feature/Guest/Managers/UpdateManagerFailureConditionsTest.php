@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class UpdateManagerFailureConditionsTest extends TestCase
 {
@@ -44,7 +45,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->create();
 
-        $response = $this->patch(route('managers.update', $manager), $this->validParams());
+        $response = $this->updateRequest($manager, $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

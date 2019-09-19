@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group generics
+ * @group roster
  */
 class RetireStableFailureConditionsTest extends TestCase
 {

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group superadmins
+ * @group roster
  */
 class RetireManagerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RetireManagerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirement->started_at);
@@ -32,7 +33,7 @@ class RetireManagerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirement->started_at);
@@ -44,7 +45,7 @@ class RetireManagerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirement->started_at);

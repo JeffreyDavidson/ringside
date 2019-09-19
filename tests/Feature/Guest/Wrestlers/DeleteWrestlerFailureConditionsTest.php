@@ -19,7 +19,7 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

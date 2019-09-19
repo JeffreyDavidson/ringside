@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group admins
+ * @group roster
  */
 class UnretireRefereeSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class UnretireRefereeSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('retired')->create();
 
-        $response = $this->put(route('referees.unretire', $referee));
+        $response = $this->unretireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirements()->latest()->first()->ended_at);

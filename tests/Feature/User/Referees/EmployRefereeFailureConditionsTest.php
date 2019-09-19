@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group users
+ * @group roster
  */
 class EmployInactiveRefereeTest extends TestCase
 {
@@ -20,7 +21,7 @@ class EmployInactiveRefereeTest extends TestCase
         $this->actAs('basic-user');
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('referees.employ', $referee));
+        $response = $this->employRequest($referee);
 
         $response->assertForbidden();
     }

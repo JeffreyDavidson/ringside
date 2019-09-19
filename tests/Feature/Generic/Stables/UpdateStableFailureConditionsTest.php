@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group generics
+ * @group roster
  */
 class UpdateStableFailureConditionsTest extends TestCase
 {
@@ -25,13 +26,13 @@ class UpdateStableFailureConditionsTest extends TestCase
     private function validParams($overrides = [])
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         return array_replace_recursive([
             'name' => 'Example Stable Name',
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => [$wrestler->getKey()],
-            'tagteams' => [$tagteam->getKey()],
+            'tagteams' => [$tagTeam->getKey()],
         ], $overrides);
     }
 
@@ -116,11 +117,11 @@ class UpdateStableFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $response = $this->from(route('stables.edit', $stable))
                         ->put(route('stables.update', $stable), $this->validParams([
-                            'tagteams' => [$tagteam->getKey()],
+                            'tagteams' => [$tagTeam->getKey()],
                             'wrestlers' => null,
                         ]));
 
@@ -288,11 +289,11 @@ class UpdateStableFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
-        $tagteam = factory(TagTeam::class)->states('pending-introduction')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-introduction')->create();
 
         $response = $this->from(route('stables.edit', $stable))
                         ->put(route('stables.update', $stable), $this->validParams([
-                            'tagteams' => [$tagteam->getKey()]
+                            'tagteams' => [$tagTeam->getKey()]
                         ]));
 
         $response->assertRedirect(route('stables.edit', $stable));
@@ -304,11 +305,11 @@ class UpdateStableFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
-        $tagteam = factory(TagTeam::class)->states('pending-introduction')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-introduction')->create();
 
         $response = $this->from(route('stables.edit', $stable))
                         ->put(route('stables.update', $stable), $this->validParams([
-                            'tagteams' => [$tagteam->getKey()]
+                            'tagteams' => [$tagTeam->getKey()]
                         ]));
 
         $response->assertRedirect(route('stables.edit', $stable));

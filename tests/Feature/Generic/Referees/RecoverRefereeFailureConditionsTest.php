@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class RecoverRefereeFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RecoverRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->recoverRequest($referee);
 
         $response->assertForbidden();
     }
@@ -31,7 +32,7 @@ class RecoverRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->recoverRequest($referee);
 
         $response->assertForbidden();
     }
@@ -42,7 +43,7 @@ class RecoverRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('retired')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->recoverRequest($referee);
 
         $response->assertForbidden();
     }
@@ -53,7 +54,7 @@ class RecoverRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->recoverRequest($referee);
 
         $response->assertForbidden();
     }

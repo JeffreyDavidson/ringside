@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class ViewWrestlerBioPageFailureConditionsTest extends TestCase
 {
@@ -22,7 +23,7 @@ class ViewWrestlerBioPageFailureConditionsTest extends TestCase
         $otherUser = factory(User::class)->create();
         $wrestler = factory(Wrestler::class)->create(['user_id' => $otherUser->id]);
 
-        $response = $this->get(route('wrestlers.show', ['wrestler' => $wrestler]));
+        $response = $this->showRequest($wrestler);
 
         $response->assertForbidden();
     }

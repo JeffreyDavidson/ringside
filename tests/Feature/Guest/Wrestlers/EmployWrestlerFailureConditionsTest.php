@@ -19,7 +19,7 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('wrestlers.employ', $wrestler));
+        $response = $this->employRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

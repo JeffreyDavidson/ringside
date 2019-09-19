@@ -10,15 +10,15 @@ class RetireController extends Controller
     /**
      * Retire a tag team.
      *
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagteam)
+    public function __invoke(TagTeam $tagTeam)
     {
-        $this->authorize('retire', $tagteam);
+        $this->authorize('retire', $tagTeam);
 
-        $tagteam->retire();
+        $tagTeam->retire();
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 }

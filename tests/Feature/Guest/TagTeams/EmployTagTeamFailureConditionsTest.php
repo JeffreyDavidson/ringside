@@ -9,17 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group guests
+ * @group roster
  */
-class ActivateTagTeamFailureConditionsTest extends TestCase
+class EmployTagTeamFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_activate_an_pending_employment_tag_team()
+    public function a_guest_cannot_employ_an_pending_employment_tag_team()
     {
-        $tagteam = factory(TagTeam::class)->states('pending-employment')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('tagteams.activate', $tagteam));
+        $response = $this->employRequest($tagTeam);
 
         $response->assertRedirect(route('login'));
     }

@@ -9,18 +9,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
-class ActivateTagTeamFailureConditionsTest extends TestCase
+class EmployTagTeamFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_activate_a_pending_employment_tag_team()
+    public function a_basic_user_cannot_employ_a_pending_employment_tag_team()
     {
         $this->actAs('basic-user');
-        $tagteam = factory(TagTeam::class)->states('pending-employment')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('tagteams.activate', $tagteam));
+        $response = $this->employRequest($tagTeam);
 
         $response->assertForbidden();
     }

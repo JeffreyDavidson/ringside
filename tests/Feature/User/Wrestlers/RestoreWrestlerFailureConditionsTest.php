@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class RestoreWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertForbidden();
     }

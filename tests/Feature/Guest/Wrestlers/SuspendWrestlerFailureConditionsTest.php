@@ -19,7 +19,7 @@ class SuspendWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->put(route('wrestlers.suspend', $wrestler));
+        $response = $this->suspendRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

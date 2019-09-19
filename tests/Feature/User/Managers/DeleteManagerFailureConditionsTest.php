@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group users
+ * @group roster
  */
 class DeleteManagerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class DeleteManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertForbidden();
     }
@@ -31,7 +32,7 @@ class DeleteManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertForbidden();
     }
@@ -42,7 +43,7 @@ class DeleteManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertForbidden();
     }
@@ -53,7 +54,7 @@ class DeleteManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertForbidden();
     }
@@ -64,7 +65,7 @@ class DeleteManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertForbidden();
     }

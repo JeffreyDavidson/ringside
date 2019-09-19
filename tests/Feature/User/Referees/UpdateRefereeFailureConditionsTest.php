@@ -6,6 +6,11 @@ use App\Models\Referee;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * @group referees
+ * @group users
+ * @group roster
+ */
 class UpdateRefereeFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;

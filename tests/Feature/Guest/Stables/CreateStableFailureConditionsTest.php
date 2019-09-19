@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group guests
+ * @group roster
  */
 class CreateStableFailureConditionsTest extends TestCase
 {
@@ -24,13 +25,13 @@ class CreateStableFailureConditionsTest extends TestCase
     private function validParams($overrides = [])
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => [$wrestler->getKey()],
-            'tagteams' => [$tagteam->getKey()],
+            'tagteams' => [$tagTeam->getKey()],
         ], $overrides);
     }
 

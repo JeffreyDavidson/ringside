@@ -19,7 +19,7 @@ class ViewWrestlerBioPageFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->get(route('wrestlers.show', ['wrestler' => $wrestler]));
+        $response = $this->showRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

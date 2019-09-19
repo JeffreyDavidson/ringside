@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group superadmins
+ * @group roster
  */
 class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->get(route('wrestlers.show', ['wrestler' => $wrestler]));
+        $response = $this->showRequest($wrestler);
 
         $response->assertViewIs('wrestlers.show');
         $this->assertTrue($response->data('wrestler')->is($wrestler));

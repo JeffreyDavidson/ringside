@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class UpdateManagerFailureConditionsTest extends TestCase
 {
@@ -50,10 +51,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'first_name' => ''
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['first_name' => '']));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('first_name');
@@ -68,10 +66,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'first_name' => ['not-a-string']
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['first_name' => ['not-a-string']]));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('first_name');
@@ -86,10 +81,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'last_name' => ''
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['last_name' => '']));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('last_name');
@@ -104,10 +96,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'last_name' => ['not-a-string']
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['last_name' => ['not-a-string']]));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('last_name');
@@ -122,10 +111,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'started_at' => ['not-a-string']
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
@@ -140,10 +126,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'started_at' => 'not-a-datetime'
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['started_at' => 'not-a-datetime']));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
@@ -158,10 +141,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'started_at' => ''
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['started_at' => '']));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
@@ -177,10 +157,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
         $manager->employment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
-        $response = $this->from(route('managers.edit', $manager))
-                        ->patch(route('managers.update', $manager), $this->validParams([
-                            'started_at' => now()->toDateTimeString()
-                        ]));
+        $response = $this->updateRequest($manager, $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');

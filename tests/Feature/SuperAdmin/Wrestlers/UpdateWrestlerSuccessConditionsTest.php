@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group superadmins
+ * @group roster
  */
 class UpdateWrestlerSuccessConditionsTest extends TestCase
 {
@@ -68,8 +69,7 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams());
+        $response = $this->updateRequest($wrestler, $this->validParams());
 
         $response->assertRedirect(route('wrestlers.index'));
         tap($wrestler->fresh(), function ($wrestler) {

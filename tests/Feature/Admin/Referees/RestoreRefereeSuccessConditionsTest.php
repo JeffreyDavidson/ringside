@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group admins
+ * @group roster
  */
 class RestoreRefereeSuccessConditionsTest extends TestCase
 {
@@ -21,7 +22,7 @@ class RestoreRefereeSuccessConditionsTest extends TestCase
         $referee = factory(Referee::class)->create();
         $referee->delete();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertNull($referee->fresh()->deleted_at);

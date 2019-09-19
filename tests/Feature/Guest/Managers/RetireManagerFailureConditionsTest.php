@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class RetireManagerFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class RetireManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('login'));
     }
@@ -29,7 +30,7 @@ class RetireManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('login'));
     }
@@ -39,7 +40,7 @@ class RetireManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

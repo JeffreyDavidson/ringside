@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class DeleteWrestlerFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,10 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
     public function an_already_deleted_wrestler_cannot_be_deleted()
     {
         $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create()->delete();
+        $wrestler = factory(Wrestler::class)->create();
+        $wrestler->delete();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($wrestler);
 
         $response->assertNotFound();
     }

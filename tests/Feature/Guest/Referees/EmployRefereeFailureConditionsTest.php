@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class EmployRefereeFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class EmployRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('referees.employ', $referee));
+        $response = $this->employRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

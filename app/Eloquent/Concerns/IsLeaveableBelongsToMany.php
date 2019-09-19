@@ -3,6 +3,7 @@
 namespace App\Eloquent\Concerns;
 
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 trait IsLeaveableBelongsToMany
 {   

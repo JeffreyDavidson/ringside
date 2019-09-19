@@ -10,17 +10,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group titles
  * @group admins
  */
-class ActivateTitleSuccessConditionsTest extends TestCase
+class IntroduceTitleSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_activate_a_pending_introduction_title()
+    public function an_administrator_can_introduce_a_pending_introduction_title()
     {
         $this->actAs('administrator');
         $title = factory(Title::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('titles.introduced', $title));
+        $response = $this->put(route('titles.introduce', $title));
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {

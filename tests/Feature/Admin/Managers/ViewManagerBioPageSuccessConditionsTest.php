@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group admins
+ * @group roster
  */
 class ViewManagerBioPageSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertViewIs('managers.show');
         $this->assertTrue($response->data('manager')->is($manager));
@@ -32,7 +33,7 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertViewIs('managers.show');
         $this->assertTrue($response->data('manager')->is($manager));
@@ -44,7 +45,7 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertViewIs('managers.show');
         $this->assertTrue($response->data('manager')->is($manager));
@@ -56,7 +57,7 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertViewIs('managers.show');
         $this->assertTrue($response->data('manager')->is($manager));
@@ -68,7 +69,7 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertViewIs('managers.show');
         $this->assertTrue($response->data('manager')->is($manager));

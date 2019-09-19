@@ -19,7 +19,7 @@ class ReinstateWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->put(route('wrestlers.reinstate', $wrestler));
+        $response = $this->reinstateRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

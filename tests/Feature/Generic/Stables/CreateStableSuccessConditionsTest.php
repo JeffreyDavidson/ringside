@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group generics
+ * @group roster
  */
 class CreateStableSuccessConditionsTest extends TestCase
 {
@@ -26,13 +27,13 @@ class CreateStableSuccessConditionsTest extends TestCase
     private function validParams($overrides = [])
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         return array_replace_recursive([
             'name' => 'Example Stable Name',
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => [$wrestler->getKey()],
-            'tagteams' => [$tagteam->getKey()],
+            'tagteams' => [$tagTeam->getKey()],
         ], $overrides);
     }
 
@@ -66,9 +67,9 @@ class CreateStableSuccessConditionsTest extends TestCase
             'tagteams' => $createdTagTeams->modelKeys()
         ]));
 
-        tap(Stable::first()->currentTagTeams, function ($tagteams) use ($createdTagTeams) {
-            $this->assertCount(3, $tagteams);
-            $this->assertEquals($tagteams->modelKeys(), $createdTagTeams->modelKeys());
+        tap(Stable::first()->currentTagTeams, function ($tagTeams) use ($createdTagTeams) {
+            $this->assertCount(3, $tagTeams);
+            $this->assertEquals($tagTeams->modelKeys(), $createdTagTeams->modelKeys());
         });
     }
 
@@ -86,17 +87,17 @@ class CreateStableSuccessConditionsTest extends TestCase
 
         tap(Stable::first(), function ($stable) use ($now) {
             $wrestlers = $stable->currentWrestlers()->get();
-            $tagteams = $stable->currentTagTeams()->get();
+            $tagTeams = $stable->currentTagTeams()->get();
             $wrestlers->each(function ($wrestler) use ($now) {
                 $this->assertEquals(
                     $now->toDateTimeString(),
                     $wrestler->pivot->joined_at->toDateTimeString()
                 );
             });
-            $tagteams->each(function ($tagteam) use ($now) {
+            $tagTeams->each(function ($tagTeam) use ($now) {
                 $this->assertEquals(
                     $now->toDateTimeString(),
-                    $tagteam->pivot->joined_at->toDateTimeString()
+                    $tagTeam->pivot->joined_at->toDateTimeString()
                 );
             });
         });
@@ -116,17 +117,17 @@ class CreateStableSuccessConditionsTest extends TestCase
 
         tap(Stable::first(), function ($stable) use ($now) {
             $wrestlers = $stable->currentWrestlers()->get();
-            $tagteams = $stable->currentTagTeams()->get();
+            $tagTeams = $stable->currentTagTeams()->get();
             $wrestlers->each(function ($wrestler) use ($now) {
                 $this->assertEquals(
                     $now->toDateTimeString(),
                     $wrestler->pivot->joined_at->toDateTimeString()
                 );
             });
-            $tagteams->each(function ($tagteam) use ($now) {
+            $tagTeams->each(function ($tagTeam) use ($now) {
                 $this->assertEquals(
                     $now->toDateTimeString(),
-                    $tagteam->pivot->joined_at->toDateTimeString()
+                    $tagTeam->pivot->joined_at->toDateTimeString()
                 );
             });
         });

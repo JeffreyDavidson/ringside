@@ -10,11 +10,16 @@ $factory->define(TagTeam::class, function (Faker $faker) {
     return [
         'name' => $faker->words(2, true),
         'signature_move' => $faker->words(4, true),
+        'status' => $faker->word(),
     ];
 });
 
-$factory->afterCreating(TagTeam::class, function ($tagteam) {
-    $tagteam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
+$factory->state(TagTeam::class, 'employable', function ($faker) {
+    return [];
+});
+
+$factory->afterCreatingState(TagTeam::class, 'employable', function ($tagTeam) {
+    $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
 });
 
 $factory->state(TagTeam::class, 'bookable', function ($faker) {
@@ -23,8 +28,8 @@ $factory->state(TagTeam::class, 'bookable', function ($faker) {
     ];
 });
 
-$factory->afterCreatingState(TagTeam::class, 'bookable', function ($tagteam) {
-    $tagteam->employ();
+$factory->afterCreatingState(TagTeam::class, 'bookable', function ($tagTeam) {
+    $tagTeam->employ();
 });
 
 $factory->state(TagTeam::class, 'pending-employment', function ($faker) {
@@ -33,8 +38,8 @@ $factory->state(TagTeam::class, 'pending-employment', function ($faker) {
     ];
 });
 
-$factory->afterCreatingState(TagTeam::class, 'pending-employment', function ($tagteam) {
-    $tagteam->employ(Carbon::tomorrow()->toDateTimeString());
+$factory->afterCreatingState(TagTeam::class, 'pending-employment', function ($tagTeam) {
+    $tagTeam->employ(now()->addWeeks(3)->toDateTimeString());
 });
 
 $factory->state(TagTeam::class, 'suspended', function ($faker) {
@@ -43,9 +48,9 @@ $factory->state(TagTeam::class, 'suspended', function ($faker) {
     ];
 });
 
-$factory->afterCreatingState(TagTeam::class, 'suspended', function ($tagteam) {
-    $tagteam->employ();
-    $tagteam->suspend();
+$factory->afterCreatingState(TagTeam::class, 'suspended', function ($tagTeam) {
+    $tagTeam->employ();
+    $tagTeam->suspend();
 });
 
 $factory->state(TagTeam::class, 'retired', function ($faker) {
@@ -54,7 +59,7 @@ $factory->state(TagTeam::class, 'retired', function ($faker) {
     ];
 });
 
-$factory->afterCreatingState(TagTeam::class, 'retired', function ($tagteam) {
-    $tagteam->employ();
-    $tagteam->retire();
+$factory->afterCreatingState(TagTeam::class, 'retired', function ($tagTeam) {
+    $tagTeam->employ();
+    $tagTeam->retire();
 });

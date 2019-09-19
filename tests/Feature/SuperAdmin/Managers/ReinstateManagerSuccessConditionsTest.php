@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group superadmins
+ * @group roster
  */
 class ReinstateManagerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ReinstateManagerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.reinstate', $manager));
+        $response = $this->reinstateRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->suspensions()->latest()->first()->ended_at);

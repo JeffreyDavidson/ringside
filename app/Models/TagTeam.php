@@ -103,7 +103,7 @@ class TagTeam extends Model
      */
     public function getCombinedWeightAttribute()
     {
-        return $this->wrestlers->sum('weight');
+        return $this->currentWrestlers->sum('weight');
     }
 
     /**
@@ -124,13 +124,13 @@ class TagTeam extends Model
      *
      * @return bool
      */
-    public function employ()
+    public function employ($startDate = null)
     {
-        $this->employments()->latest()->first()->update(['started_at' => now()]);
+        $startDate = $startDate ?? now();
+        $this->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startDate]);
+        $this->wrestlerHistory->each->employ($startDate);
 
-        $this->wrestlers->each->employ();
-
-        return $this;
+        return $this->touch();
     }
 
     /**
@@ -146,9 +146,11 @@ class TagTeam extends Model
 
         $this->retirements()->create(['started_at' => now()]);
 
-        $this->wrestlers->each->retire();
+        $this->currentWrestlers->each->retire();
 
-        return $this;
+        $this->currentWrestlers->each->touch();
+
+        return $this->touch();
     }
 
     /**
@@ -158,9 +160,13 @@ class TagTeam extends Model
      */
     public function unretire()
     {
+        $dateRetired = $this->retirement->started_at;
+    
         $this->retirement()->update(['ended_at' => now()]);
 
-        $this->wrestlers->filter->retired()->each->unretire();
+        $this->wrestlerHistory()->retired()->whereDate('started_at', $dateRetired)->get()->each->unretire();
+
+        return $this->touch();
     }
 
     /**
@@ -172,7 +178,9 @@ class TagTeam extends Model
     {
         $this->suspensions()->create(['started_at' => now()]);
 
-        $this->wrestlers->each->suspend();
+        $this->currentWrestlers->each->suspend();
+
+        return $this->touch();
     }
 
     /**
@@ -183,5 +191,7 @@ class TagTeam extends Model
     public function reinstate()
     {
         $this->suspension()->update(['ended_at' => now()]);
+
+        return $this->touch();
     }
 }

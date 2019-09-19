@@ -27,7 +27,7 @@ class TagTeamPolicy
      * @param  App\Models\User  $user
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user, TagTeam $tagTeam)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
@@ -58,12 +58,12 @@ class TagTeamPolicy
      * Determine whether the user can suspend a tag team.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function suspend(User $user, TagTeam $tagteam)
+    public function suspend(User $user, TagTeam $tagTeam)
     {
-        if (!$tagteam->is_employed || !$tagteam->is_bookable || $tagteam->is_suspended) {
+        if (!$tagTeam->is_employed || !$tagTeam->is_bookable || $tagTeam->is_suspended) {
             return false;
         }
 
@@ -74,12 +74,12 @@ class TagTeamPolicy
      * Determine whether the user can suspend a tag team.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function reinstate(User $user, TagTeam $tagteam)
+    public function reinstate(User $user, TagTeam $tagTeam)
     {
-        if (!$tagteam->is_suspended) {
+        if (!$tagTeam->is_suspended) {
             return false;
         }
 
@@ -90,14 +90,19 @@ class TagTeamPolicy
      * Determine whether the user can employ a tag team that is pending introduction.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function employ(User $user, TagTeam $tagteam)
+    public function employ(User $user, TagTeam $tagTeam)
     {
-        if ($tagteam->is_employed) {
+        if ($tagTeam->is_employed) {
             return false;
         }
+
+        if ($tagTeam->currentWrestlers->count() <= 1) {
+            return false;
+        }
+
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -105,12 +110,12 @@ class TagTeamPolicy
      * Determine whether the user can retire a tag team.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function retire(User $user, TagTeam $tagteam)
+    public function retire(User $user, TagTeam $tagTeam)
     {
-        if ($tagteam->is_retired) {
+        if (!$tagTeam->is_employed || $tagTeam->is_retired) {
             return false;
         }
 
@@ -121,12 +126,12 @@ class TagTeamPolicy
      * Determine whether the user can unretire a retired tag team.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function unretire(User $user, TagTeam $tagteam)
+    public function unretire(User $user, TagTeam $tagTeam)
     {
-        if (!$tagteam->is_retired) {
+        if (!$tagTeam->is_retired) {
             return false;
         }
 
@@ -148,12 +153,12 @@ class TagTeamPolicy
      * Determine whether the user can view a profile for a tag team.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function view(User $user, TagTeam $tagteam)
+    public function view(User $user, TagTeam $tagTeam)
     {
-        if (!is_null($tagteam->user) && $tagteam->user->is($user)) {
+        if (!is_null($tagTeam->user) && $tagTeam->user->is($user)) {
             return true;
         }
 

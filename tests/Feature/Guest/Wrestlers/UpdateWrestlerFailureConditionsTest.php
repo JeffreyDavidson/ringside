@@ -65,7 +65,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->patch(route('wrestlers.update', $wrestler), $this->validParams());
+        $response = $this->updateRequest($wrestler, $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

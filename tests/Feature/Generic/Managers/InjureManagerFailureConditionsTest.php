@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class InjureManagerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->put(route('managers.injure', $manager));
+        $response = $this->injureRequest($manager);
 
         $response->assertForbidden();
     }
@@ -31,7 +32,7 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('managers.injure', $manager));
+        $response = $this->injureRequest($manager);
 
         $response->assertForbidden();
     }
@@ -42,7 +43,7 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.injure', $manager));
+        $response = $this->injureRequest($manager);
 
         $response->assertForbidden();
     }
@@ -53,7 +54,7 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->put(route('managers.injure', $manager));
+        $response = $this->injureRequest($manager);
 
         $response->assertForbidden();
     }

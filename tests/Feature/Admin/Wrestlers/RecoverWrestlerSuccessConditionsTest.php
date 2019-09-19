@@ -6,6 +6,11 @@ use App\Models\Wrestler;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * @group wrestlers
+ * @group admins
+ * @group roster
+ */
 class RecoverInjuredWrestlerTest extends TestCase
 {
     use RefreshDatabase;
@@ -16,7 +21,7 @@ class RecoverInjuredWrestlerTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->put(route('wrestlers.recover', $wrestler));
+        $response = $this->recoverRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->injuries()->latest()->first()->ended_at);

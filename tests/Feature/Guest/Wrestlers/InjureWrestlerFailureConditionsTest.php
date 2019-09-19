@@ -19,7 +19,7 @@ class InjureWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->put(route('wrestlers.injure', $wrestler));
+        $response = $this->injureRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

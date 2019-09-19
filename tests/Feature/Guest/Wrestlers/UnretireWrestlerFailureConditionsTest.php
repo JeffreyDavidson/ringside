@@ -19,7 +19,7 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->put(route('wrestlers.unretire', $wrestler));
+        $response = $this->unretireRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

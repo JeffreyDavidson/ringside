@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class EmployManagerFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class EmployManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

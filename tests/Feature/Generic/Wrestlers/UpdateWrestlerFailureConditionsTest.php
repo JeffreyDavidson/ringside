@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class UpdateWrestlerFailureConditionsTest extends TestCase
 {
@@ -56,10 +57,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'name' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['name' => '']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('name');
@@ -74,10 +72,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'name' => ['not-a-string'],
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['name' => ['not-a-string']]));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('name');
@@ -92,10 +87,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'name' => 'Ab',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['name' => 'Ab']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('name');
@@ -110,10 +102,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'feet' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('feet');
@@ -128,10 +117,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'feet' => 'not-an-integer',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => 'not-an-integer']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('feet');
@@ -146,10 +132,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'feet' => '4',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '4']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('feet');
@@ -164,10 +147,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'feet' => '8',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '8']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('feet');
@@ -182,10 +162,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'inches' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['inches' => '']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('inches');
@@ -200,10 +177,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'inches' => 'not-an-integer',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['inches' => 'not-an-integer']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('inches');
@@ -218,10 +192,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'inches' => 12,
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['inches' => 12]));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('inches');
@@ -236,10 +207,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'weight' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['weight' => '']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('weight');
@@ -254,10 +222,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'weight' => 'not-an-integer',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['weight' => 'not-an-integer']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('weight');
@@ -272,10 +237,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'hometown' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['hometown' => '']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('hometown');
@@ -290,10 +252,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'hometown' => ['not-a-string'],
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['hometown' => ['not-a-string']]));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('hometown');
@@ -308,10 +267,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'signature_move' => ['not-a-string'],
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => ['not-a-string']]));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('signature_move');
@@ -327,10 +283,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'started_at' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => '']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');
@@ -346,10 +299,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'started_at' => ['not-a-string'],
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');
@@ -365,10 +315,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'started_at' => 'not-a-date-format',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => 'not-a-date-format']));
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');

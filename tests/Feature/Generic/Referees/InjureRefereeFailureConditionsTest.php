@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class InjureRefereeFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class InjureRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.injure', $referee));
+        $response = $this->injureRequest($referee);
 
         $response->assertForbidden();
     }

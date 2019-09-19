@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group users
+ * @group roster
  */
 class ViewManagersListFailureConditionsTest extends TestCase
 {

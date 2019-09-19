@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class DeleteManagerFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,10 @@ class DeleteManagerFailureConditionsTest extends TestCase
     public function an_already_deleted_manager_cannot_be_deleted()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->create()->delete();
+        $manager = factory(Manager::class)->create();
+        $manager->delete();
 
-        $response = $this->delete(route('managers.destroy', $manager));
+        $response = $this->deleteRequest($manager);
 
         $response->assertNotFound();
     }

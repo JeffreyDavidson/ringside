@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class ReinstateManagerFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class ReinstateManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.reinstate', $manager));
+        $response = $this->reinstateRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

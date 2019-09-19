@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
 class UpdateTagTeamFailureConditionsTest extends TestCase
 {
@@ -37,9 +38,9 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_view_the_form_for_editing_a_tagteam()
     {
         $this->actAs('basic-user');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->get(route('tagteams.edit', $tagteam));
+        $response = $this->get(route('tag-teams.edit', $tagTeam));
 
         $response->assertForbidden();
     }
@@ -48,9 +49,9 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_update_a_tagteam()
     {
         $this->actAs('basic-user');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->patch(route('tagteams.update', $tagteam), $this->validParams());
+        $response = $this->updateRequest($tagTeam, $this->validParams());
 
         $response->assertForbidden();
     }

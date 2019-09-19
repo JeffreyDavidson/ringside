@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group admins
+ * @group roster
  */
 class RestoreManagerSuccessConditionsTest extends TestCase
 {
@@ -21,7 +22,7 @@ class RestoreManagerSuccessConditionsTest extends TestCase
         $manager = factory(Manager::class)->create();
         $manager->delete();
 
-        $response = $this->put(route('managers.restore', $manager));
+        $response = $this->restoreRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertNull($manager->fresh()->deleted_at);

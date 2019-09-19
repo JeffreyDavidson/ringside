@@ -40,8 +40,8 @@ use App\Eloquent\Concerns\HasCustomRelationships;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $stables
  * @property-read \App\Models\Suspension $suspension
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagteam
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagteams
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeam
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Wrestler bookable()
  * @method static bool|null forceDelete()

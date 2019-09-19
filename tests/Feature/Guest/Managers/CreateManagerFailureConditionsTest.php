@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class CreateManagerFailureConditionsTest extends TestCase
 {
@@ -31,7 +32,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_creating_a_manager()
     {
-        $response = $this->get(route('managers.create'));
+        $response = $this->createRequest('manager');
 
         $response->assertRedirect(route('login'));
     }

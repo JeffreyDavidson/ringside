@@ -19,7 +19,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create(['deleted_at' => now()->subDays(3)->toDateTimeString()]);
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class ViewRefereeBioPageSuccessConditionsTest extends TestCase
 {
@@ -24,7 +25,7 @@ class ViewRefereeBioPageSuccessConditionsTest extends TestCase
             'last_name' => 'Smith',
         ]);
 
-        $response = $this->get(route('referees.show', ['referee' => $referee]));
+        $response = $this->showRequest($referee);
 
         $response->assertSee('John Smith');
     }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class ReinstateTagTeamFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     public function a_bookable_tag_team_cannot_be_reinstated()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
-        $response = $this->put(route('tagteams.reinstate', $tagteam));
+        $response = $this->reinstateRequest($tagTeam);
 
         $response->assertForbidden();
     }
@@ -29,9 +30,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     public function a_pending_employment_tag_team_cannot_be_reinstated()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('pending-employment')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('tagteams.reinstate', $tagteam));
+        $response = $this->reinstateRequest($tagTeam);
 
         $response->assertForbidden();
     }
@@ -40,9 +41,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     public function a_retired_tag_team_cannot_be_reinstated()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = factory(TagTeam::class)->states('retired')->create();
 
-        $response = $this->put(route('tagteams.reinstate', $tagteam));
+        $response = $this->reinstateRequest($tagTeam);
 
         $response->assertForbidden();
     }

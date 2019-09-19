@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class ViewRefereesListFailureConditionsTest extends TestCase
 {

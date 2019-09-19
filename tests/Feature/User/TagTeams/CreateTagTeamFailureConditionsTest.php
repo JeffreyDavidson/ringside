@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
 class CreateTagTeamFailureConditionsTest extends TestCase
 {
@@ -37,7 +38,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->get(route('tagteams.create'));
+        $response = $this->get(route('tag-teams.create'));
 
         $response->assertForbidden();
     }
@@ -47,7 +48,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->post(route('tagteams.store'), $this->validParams());
+        $response = $this->storeRequest('tag-team', $this->validParams());
 
         $response->assertForbidden();
     }

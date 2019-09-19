@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class SuspendTagTeamFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,9 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     public function an_already_suspended_tag_team_cannot_be_suspended()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
 
-        $response = $this->put(route('tagteams.suspend', $tagteam));
+        $response = $this->suspendRequest($tagTeam);
 
         $response->assertForbidden();
     }

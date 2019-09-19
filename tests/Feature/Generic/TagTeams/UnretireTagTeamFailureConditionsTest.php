@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class UnretireTagTeamFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,9 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     public function a_bookable_tag_team_cannot_be_unretired()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
-        $response = $this->put(route('tagteams.unretire', $tagteam));
+        $response = $this->unretireRequest($tagTeam);
 
         $response->assertForbidden();
     }
@@ -29,20 +30,20 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     public function a_suspended_tag_team_cannot_be_unretired()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
 
-        $response = $this->put(route('tagteams.unretire', $tagteam));
+        $response = $this->unretireRequest($tagTeam);
 
         $response->assertForbidden();
     }
 
     /** @test */
-    public function a_pending_introduction_tag_team_cannot_be_unretired()
+    public function a_pending_employment_tag_team_cannot_be_unretired()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('pending-introduction')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('tagteams.unretire', $tagteam));
+        $response = $this->unretireRequest($tagTeam);
 
         $response->assertForbidden();
     }

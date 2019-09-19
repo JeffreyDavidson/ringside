@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group admins
+ * @group roster
  */
 class ReinstateTagTeamSuccessConditionsTest extends TestCase
 {
@@ -18,11 +19,11 @@ class ReinstateTagTeamSuccessConditionsTest extends TestCase
     public function an_administrator_can_reinstate_a_suspended_tag_team()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
 
-        $response = $this->put(route('tagteams.reinstate', $tagteam));
+        $response = $this->reinstateRequest($tagTeam);
 
-        $response->assertRedirect(route('tagteams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagteam->fresh()->suspensions()->latest()->first()->ended_at);
+        $response->assertRedirect(route('tag-teams.index'));
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->suspensions()->latest()->first()->ended_at);
     }
 }

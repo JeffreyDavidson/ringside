@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group admins
+ * @group roster
  */
 class SuspendWrestlerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class SuspendWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->put(route('wrestlers.suspend', $wrestler));
+        $response = $this->suspendRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->suspension->started_at);

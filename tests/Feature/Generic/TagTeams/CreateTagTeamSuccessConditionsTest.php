@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class CreateTagTeamSuccessConditionsTest extends TestCase
 {
@@ -40,11 +41,11 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
 
         $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys();
 
-        $this->post(route('tagteams.store'), $this->validParams(['wrestlers' => $wrestlers]));
+        $this->storeRequest('tag-team', $this->validParams(['wrestlers' => $wrestlers]));
 
-        tap(TagTeam::first(), function ($tagteam) use ($wrestlers) {
-            $this->assertCount(2, $tagteam->wrestlers);
-            $this->assertEquals($tagteam->wrestlers->modelKeys(), $wrestlers);
+        tap(TagTeam::first(), function ($tagTeam) use ($wrestlers) {
+            $this->assertCount(2, $tagTeam->currentWrestlers);
+            $this->assertEquals($tagTeam->currentWrestlers->modelKeys(), $wrestlers);
         });
     }
 
@@ -53,7 +54,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('tagteams.store'), $this->validParams(['name' => '']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['name' => '']));
 
         $response->assertSessionDoesntHaveErrors('name');
     }
@@ -63,7 +64,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('tagteams.store'), $this->validParams(['signature_move' => '']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['signature_move' => '']));
 
         $response->assertSessionDoesntHaveErrors('signature_move');
     }
@@ -73,7 +74,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('tagteams.store'), $this->validParams(['started_at' => '']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['started_at' => '']));
 
         $response->assertSessionDoesntHaveErrors('started_at');
     }

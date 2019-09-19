@@ -57,7 +57,7 @@
                                 </a>
                             </li>
                             <li class="kt-menu__item {{ set_active('tagteams.index') }}" aria-haspopup="true">
-                                <a href="{{ route('tagteams.index') }}" class="kt-menu__link">
+                                <a href="{{ route('tag-teams.index') }}" class="kt-menu__link">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                     <span class="kt-menu__link-text">Tag Teams</span>
                                 </a>

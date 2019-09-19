@@ -10,15 +10,15 @@ class EmployController extends Controller
     /**
      * Employ a pending introduced tag team.
      *
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagteam)
+    public function __invoke(TagTeam $tagTeam)
     {
-        $this->authorize('employ', $tagteam);
+        $this->authorize('employ', $tagTeam);
 
-        $tagteam->employ();
+        $tagTeam->employ();
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 }

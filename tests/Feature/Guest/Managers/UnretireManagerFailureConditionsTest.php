@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class UnretireManagerFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class UnretireManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->put(route('managers.unretire', $manager));
+        $response = $this->unretireRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

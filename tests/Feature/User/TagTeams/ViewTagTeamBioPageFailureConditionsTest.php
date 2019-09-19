@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
 class ViewTagTeamBioPageFailureConditionsTest extends TestCase
 {
@@ -20,9 +21,9 @@ class ViewTagTeamBioPageFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
         $otherUser = factory(User::class)->create();
-        $tagteam = factory(TagTeam::class)->create(['user_id' => $otherUser->id]);
+        $tagTeam = factory(TagTeam::class)->create(['user_id' => $otherUser->id]);
 
-        $response = $this->get(route('tagteams.show', $tagteam));
+        $response = $this->showRequest($tagTeam);
 
         $response->assertForbidden();
     }

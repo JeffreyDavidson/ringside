@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group superadmins
+ * @group roster
  */
 class RetireTagTeamSuccessConditionsTest extends TestCase
 {
@@ -18,23 +19,23 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_retire_a_bookable_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
-        $response = $this->put(route('tagteams.retire', $tagteam));
+        $response = $this->retireRequest($tagTeam);
 
-        $response->assertRedirect(route('tagteams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagteam->fresh()->retirement->started_at);
+        $response->assertRedirect(route('tag-teams.index'));
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->retirement->started_at);
     }
 
     /** @test */
     public function a_super_administrator_can_retire_a_suspended_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagteam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
 
-        $response = $this->put(route('tagteams.retire', $tagteam));
+        $response = $this->retireRequest($tagTeam);
 
-        $response->assertRedirect(route('tagteams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagteam->fresh()->retirement->started_at);
+        $response->assertRedirect(route('tag-teams.index'));
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->retirement->started_at);
     }
 }

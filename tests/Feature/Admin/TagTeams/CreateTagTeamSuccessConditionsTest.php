@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group admins
+ * @group roster
  */
 class CreateTagTeamSuccessConditionsTest extends TestCase
 {
@@ -38,10 +39,10 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->get(route('tagteams.create'));
+        $response = $this->createRequest('tag-team');
 
         $response->assertViewIs('tagteams.create');
-        $response->assertViewHas('tagteam', new TagTeam);
+        $response->assertViewHas('tagTeam', new TagTeam);
     }
 
     /** @test */
@@ -49,12 +50,12 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->post(route('tagteams.store'), $this->validParams());
+        $response = $this->storeRequest('tag-team', $this->validParams());
 
-        $response->assertRedirect(route('tagteams.index'));
-        tap(TagTeam::first(), function ($tagteam) {
-            $this->assertEquals('Example Tag Team Name', $tagteam->name);
-            $this->assertEquals('The Finisher', $tagteam->signature_move);
+        $response->assertRedirect(route('tag-teams.index'));
+        tap(TagTeam::first(), function ($tagTeam) {
+            $this->assertEquals('Example Tag Team Name', $tagTeam->name);
+            $this->assertEquals('The Finisher', $tagTeam->signature_move);
         });
     }
 }

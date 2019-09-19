@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group superadmins
+ * @group roster
  */
 class ViewStablesSuccessConditionsTest extends TestCase
 {

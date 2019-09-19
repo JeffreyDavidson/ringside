@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class RestoreRefereeFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
         $referee = factory(Referee::class)->create();
         $referee->delete();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

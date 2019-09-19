@@ -35,7 +35,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_creating_a_wrestler()
     {
-        $response = $this->get(route('wrestlers.create'));
+        $response = $this->createRequest('wrestler');
 
         $response->assertRedirect(route('login'));
     }
@@ -43,7 +43,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_a_wrestler()
     {
-        $response = $this->post(route('wrestlers.store'), $this->validParams());
+        $response = $this->storeRequest('wrestler', $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

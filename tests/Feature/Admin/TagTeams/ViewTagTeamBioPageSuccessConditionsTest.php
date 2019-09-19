@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group admins
+ * @group roster
  */
 class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
 {
@@ -18,11 +19,11 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     public function an_administrator_can_view_a_tag_team_profile()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->get(route('tagteams.show', $tagteam));
+        $response = $this->showRequest($tagTeam);
 
         $response->assertViewIs('tagteams.show');
-        $this->assertTrue($response->data('tagteam')->is($tagteam));
+        $this->assertTrue($response->data('tagTeam')->is($tagTeam));
     }
 }

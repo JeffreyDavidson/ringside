@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group guests
+ * @group roster
  */
 class ViewTagTeamBioPageFailureConditionsTest extends TestCase
 {
@@ -17,9 +18,9 @@ class ViewTagTeamBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_a_tag_team_profile()
     {
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->get(route('tagteams.show', ['tagteam' => $tagteam]));
+        $response = $this->showRequest($tagTeam);
 
         $response->assertRedirect(route('login'));
     }

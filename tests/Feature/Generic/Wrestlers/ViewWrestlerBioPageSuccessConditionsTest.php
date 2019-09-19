@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
 {
@@ -27,7 +28,7 @@ class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
             'signature_move' => 'The Finisher',
         ]);
 
-        $response = $this->get(route('wrestlers.show', ['wrestler' => $wrestler]));
+        $response = $this->showRequest($wrestler);
 
         $response->assertSee('Wrestler 1');
         $response->assertSee(e('6\'6"'));

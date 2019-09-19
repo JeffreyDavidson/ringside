@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group guests
+ * @group roster
  */
 class CreateTagTeamFailureConditionsTest extends TestCase
 {
@@ -35,7 +36,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_creating_a_tag_team()
     {
-        $response = $this->get(route('tagteams.create'));
+        $response = $this->createRequest('tag-team');
 
         $response->assertRedirect(route('login'));
     }
@@ -43,7 +44,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_a_tag_team()
     {
-        $response = $this->post(route('tagteams.store'), $this->validParams());
+        $response = $this->storeRequest('tag-team', $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

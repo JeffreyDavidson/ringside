@@ -124,12 +124,12 @@ class Stable extends Model
     /**
      * Add tag teams to the stable.
      *
-     * @param  array  $tagteamIds
+     * @param  array  $tagTeamIds
      * @return $this
      */
-    public function addTagTeams($tagteamIds)
+    public function addTagTeams($tagTeamIds)
     {
-        $this->tagTeamHistory()->sync($tagteamIds);
+        $this->tagTeamHistory()->sync($tagTeamIds);
 
         return $this;
     }

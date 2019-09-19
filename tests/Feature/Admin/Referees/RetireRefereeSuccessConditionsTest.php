@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group admins
+ * @group roster
  */
 class RetireRefereeSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RetireRefereeSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create();
 
-        $response = $this->put(route('referees.retire', $referee));
+        $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirement->started_at);
@@ -32,7 +33,7 @@ class RetireRefereeSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.retire', $referee));
+        $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirement->started_at);
@@ -44,7 +45,7 @@ class RetireRefereeSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $response = $this->put(route('referees.retire', $referee));
+        $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirement->started_at);

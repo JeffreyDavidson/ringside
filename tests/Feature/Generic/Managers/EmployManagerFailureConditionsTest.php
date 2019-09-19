@@ -9,10 +9,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class EmployManagerFailureConditionsTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase; 
 
     /** 
      * @test 
@@ -23,7 +24,7 @@ class EmployManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertForbidden();
     }
@@ -37,7 +38,7 @@ class EmployManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertForbidden();
     }
@@ -51,7 +52,7 @@ class EmployManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertForbidden();
     }
@@ -65,7 +66,7 @@ class EmployManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertForbidden();
     }

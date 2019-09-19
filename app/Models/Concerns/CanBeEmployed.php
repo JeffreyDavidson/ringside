@@ -71,10 +71,8 @@ trait CanBeEmployed
      */
     public function employ($startedAt = null)
     {
-        $this->employments()->updateOrCreate(
-            ['started_at' => null], 
-            ['started_at' => $startedAt ?? now()
-        ]);
+        $startDate = $startedAt ?? now();
+        $this->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startDate]);
 
         return $this->touch();
     }

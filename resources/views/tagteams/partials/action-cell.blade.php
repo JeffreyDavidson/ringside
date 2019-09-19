@@ -5,11 +5,11 @@
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
             @can('view', $model)
-                @viewbutton(['route' => route('tagteams.show', $model)])
+                @viewbutton(['route' => route('tag-teams.show', $model)])
                 @endviewbutton
             @endcan
             @can('update', $model)
-                @editbutton(['route' => route('tagteams.edit', $model)])
+                @editbutton(['route' => route('tag-teams.edit', $model)])
                 @endeditbutton
             @endcan
             @can('delete', $model)

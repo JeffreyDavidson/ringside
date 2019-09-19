@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group users
+ * @group roster
  */
 class ViewManagerBioPageFailureConditionsTest extends TestCase
 {

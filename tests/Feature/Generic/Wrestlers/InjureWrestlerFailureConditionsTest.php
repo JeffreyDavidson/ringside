@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class InjureWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class InjureWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->put(route('wrestlers.injure', $wrestler));
+        $response = $this->injureRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -31,7 +32,7 @@ class InjureWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->put(route('wrestlers.suspend', $wrestler));
+        $response = $this->injureRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -42,7 +43,7 @@ class InjureWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('wrestlers.suspend', $wrestler));
+        $response = $this->injureRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -53,7 +54,7 @@ class InjureWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->put(route('wrestlers.suspend', $wrestler));
+        $response = $this->injureRequest($wrestler);
 
         $response->assertForbidden();
     }

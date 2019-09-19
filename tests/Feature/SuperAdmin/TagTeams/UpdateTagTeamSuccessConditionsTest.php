@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group superadmins
+ * @group roster
  */
 class UpdateTagTeamSuccessConditionsTest extends TestCase
 {
@@ -37,26 +38,26 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_view_the_form_for_editing_a_tagteam()
     {
         $this->actAs('super-administrator');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->get(route('tagteams.edit', $tagteam));
+        $response = $this->get(route('tag-teams.edit', $tagTeam));
 
         $response->assertViewIs('tagteams.edit');
-        $this->assertTrue($response->data('tagteam')->is($tagteam));
+        $this->assertTrue($response->data('tagTeam')->is($tagTeam));
     }
 
     /** @test */
     public function a_super_administrator_can_update_a_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->patch(route('tagteams.update', $tagteam), $this->validParams());
+        $response = $this->updateRequest($tagTeam, $this->validParams());
 
-        $response->assertRedirect(route('tagteams.index'));
-        tap($tagteam->fresh(), function ($tagteam) {
-            $this->assertEquals('Example Tag Team Name', $tagteam->name);
-            $this->assertEquals('The Finisher', $tagteam->signature_move);
+        $response->assertRedirect(route('tag-teams.index'));
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertEquals('Example Tag Team Name', $tagTeam->name);
+            $this->assertEquals('The Finisher', $tagTeam->signature_move);
         });
     }
 }

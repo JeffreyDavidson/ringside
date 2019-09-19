@@ -44,7 +44,7 @@ class Title extends Model
     use SoftDeletes,
         HasCachedAttributes,
         Concerns\CanBeRetired,
-        Concerns\CanBeBooked;
+        Concerns\CanBeCompeted;
 
     /**
      * The attributes that aren't mass assignable.

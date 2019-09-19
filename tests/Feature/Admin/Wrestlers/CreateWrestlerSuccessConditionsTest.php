@@ -3,12 +3,14 @@
 namespace Tests\Feature\Admin\Wrestlers;
 
 use Tests\TestCase;
+use Carbon\Carbon;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers
  * @group admins
+ * @group roster
  */
 class CreateWrestlerSuccessConditionsTest extends TestCase
 {
@@ -38,7 +40,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->get(route('wrestlers.create'));
+        $response = $this->createRequest('wrestler');
 
         $response->assertViewIs('wrestlers.create');
         $response->assertViewHas('wrestler', new Wrestler);
@@ -47,19 +49,21 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_wrestler()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams());
+        $response = $this->storeRequest('wrestler', $this->validParams());
 
         $response->assertRedirect(route('wrestlers.index'));
-        tap(Wrestler::first(), function ($wrestler) {
+        tap(Wrestler::first(), function ($wrestler) use ($now) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
             $this->assertEquals(76, $wrestler->height);
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
             $this->assertEquals('The Finisher', $wrestler->signature_move);
-            $this->assertEquals(now()->toDateTimeString(), $wrestler->employment->started_at);
+            $this->assertEquals($now->toDateTimeString(), $wrestler->employment->started_at);
         });
     }
 }

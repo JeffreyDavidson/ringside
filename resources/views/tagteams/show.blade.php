@@ -4,7 +4,7 @@
 <!-- begin:: Content Head -->
 <div class="kt-subheader kt-grid__item" id="kt_subheader">
     <div class="kt-subheader__main">
-        <h3 class="kt-subheader__title">{{ $tagteam->name }}</h3>
+        <h3 class="kt-subheader__title">{{ $tagTeam->name }}</h3>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
                         </div>
                         <div class="kt-widget__content">
                             <div class="kt-widget__section">
-                                <span class="kt-widget__username"">{{ $tagteam->name }}</span>
+                                <span class="kt-widget__username"">{{ $tagTeam->name }}</span>
                             </div>
                         </div>
                     </div>
@@ -39,11 +39,11 @@
                         <div class="kt-widget__content">
                             <div class="kt-widget__info">
                                 <span class="kt-widget__label">Weight:</span>
-                                <span class="kt-widget__data">{{ $tagteam->combined_weight }} lbs.</span>
+                                <span class="kt-widget__data">{{ $tagTeam->combined_weight }} lbs.</span>
                             </div>
                             <div class="kt-widget__info">
                                 <span class="kt-widget__label">Signature Move:</span>
-                                <span class="kt-widget__data">{{ $tagteam->signature_move }}</span>
+                                <span class="kt-widget__data">{{ $tagTeam->signature_move }}</span>
                             </div>
                         </div>
                     </div>

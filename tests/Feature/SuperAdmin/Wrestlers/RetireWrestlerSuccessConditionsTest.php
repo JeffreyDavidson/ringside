@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group superadmins
+ * @group roster
  */
 class RetireWrestlerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RetireWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->put(route('wrestlers.retire', $wrestler));
+        $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);
@@ -32,7 +33,7 @@ class RetireWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->put(route('wrestlers.retire', $wrestler));
+        $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);
@@ -44,7 +45,7 @@ class RetireWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->put(route('wrestlers.retire', $wrestler));
+        $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);

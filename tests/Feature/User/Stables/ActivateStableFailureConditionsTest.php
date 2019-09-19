@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group users
+ * @group roster
  */
 class ActivateStableFailureConditionsTest extends TestCase
 {

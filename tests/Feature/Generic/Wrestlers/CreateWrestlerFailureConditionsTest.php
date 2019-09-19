@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class CreateWrestlerFailureConditionsTest extends TestCase
 {
@@ -38,10 +39,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'name' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['name' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -54,10 +52,8 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'name' => ['not-a-string'],
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams([
+                            'name' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -70,10 +66,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'name' => 'Ab',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['name' => 'Ab']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -86,10 +79,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'feet' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -102,10 +92,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'feet' => 'not-numeric',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => 'not-numeric']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -118,10 +105,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'feet' => '4',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '4']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -134,10 +118,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'feet' => '8',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '8']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -150,10 +131,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'inches' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -166,10 +144,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'inches' => 'not-numeric',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => 'not-numeric']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -182,10 +157,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'inches' => '12',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => '12']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -198,10 +170,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'weight' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['weight' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -214,10 +183,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'weight' => 'not-numeric',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['weight' => 'not-numeric']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -230,10 +196,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'hometown' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['hometown' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -246,10 +209,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'hometown' => ['not-a-string'],
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['hometown' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -262,10 +222,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'signature_move' => ['not-a-string'],
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -278,10 +235,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'started_at' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -294,10 +248,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'started_at' => ['not-a-date-format'],
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => ['not-a-date-format']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -310,10 +261,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'started_at' => 'not-a-date-format',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => 'not-a-date-format']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));

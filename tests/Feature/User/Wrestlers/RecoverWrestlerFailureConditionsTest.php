@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class RecoverWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RecoverWrestlerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->put(route('wrestlers.recover', $wrestler));
+        $response = $this->recoverRequest($wrestler);
 
         $response->assertForbidden();
     }

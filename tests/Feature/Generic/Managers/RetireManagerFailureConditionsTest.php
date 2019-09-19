@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class RetireManagerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RetireManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->put(route('managers.retire', $manager));
+        $response = $this->retireRequest($manager);
 
         $response->assertForbidden();
     }

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class CreateWrestlerFailureConditionsTest extends TestCase
 {
@@ -47,8 +48,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams());
+        $response = $this->storeRequest('wrestler', $this->validParams());
 
         $response->assertForbidden();
     }

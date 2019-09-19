@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group admins
+ * @group roster
  */
 class ViewManagersListSuccessConditionsTest extends TestCase
 {

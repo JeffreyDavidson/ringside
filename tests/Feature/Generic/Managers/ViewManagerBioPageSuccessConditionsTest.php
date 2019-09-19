@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class ViewManagerBioPageSuccessConditionsTest extends TestCase
 {
@@ -24,7 +25,7 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
             'last_name' => 'Smith',
         ]);
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertSee('John Smith');
     }

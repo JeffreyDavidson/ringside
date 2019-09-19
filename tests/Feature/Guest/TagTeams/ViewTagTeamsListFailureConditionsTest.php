@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group guests
+ * @group roster
  */
 class ViewTagTeamsListFailureConditionsTest extends TestCase
 {
@@ -16,7 +17,7 @@ class ViewTagTeamsListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_tag_teams_page()
     {
-        $response = $this->get(route('tagteams.index'));
+        $response = $this->get(route('tag-teams.index'));
 
         $response->assertRedirect(route('login'));
     }

@@ -29,8 +29,8 @@ class TagTeamsController extends Controller
 
             return $table->eloquent($query)
                 ->addColumn('action', 'tagteams.partials.action-cell')
-                ->editColumn('started_at', function (TagTeam $tagteam) {
-                    return $tagteam->employment->started_at->format('Y-m-d H:s');
+                ->editColumn('started_at', function (TagTeam $tagTeam) {
+                    return $tagTeam->employment->started_at->format('Y-m-d H:s');
                 })
                 ->filterColumn('id', function ($query, $keyword) {
                     $query->where($query->qualifyColumn('id'), $keyword);
@@ -47,11 +47,11 @@ class TagTeamsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(TagTeam $tagteam)
+    public function create(TagTeam $tagTeam)
     {
         $this->authorize('create', TagTeam::class);
 
-        return response()->view('tagteams.create', compact('tagteam'));
+        return response()->view('tagteams.create', compact('tagTeam'));
     }
 
     /**
@@ -62,68 +62,68 @@ class TagTeamsController extends Controller
      */
     public function store(StoreTagTeamRequest $request)
     {
-        $tagteam = TagTeam::create($request->except(['wrestlers', 'started_at']));
-        $tagteam->employ($request->input('started_at'));
-        $tagteam->addWrestlers($request->input('wrestlers'));
+        $tagTeam = TagTeam::create($request->except(['wrestlers', 'started_at']));
+        $tagTeam->employ($request->input('started_at'));
+        $tagTeam->addWrestlers($request->input('wrestlers'));
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 
     /**
      * Show the profile of a tag team.
      *
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\Http\Response
      */
-    public function show(TagTeam $tagteam)
+    public function show(TagTeam $tagTeam)
     {
-        $this->authorize('view', $tagteam);
+        $this->authorize('view', $tagTeam);
 
-        return response()->view('tagteams.show', compact('tagteam'));
+        return response()->view('tagteams.show', compact('tagTeam'));
     }
 
     /**
      * Show the form for editing a tag team.
      *
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\Response
      */
-    public function edit(TagTeam $tagteam)
+    public function edit(TagTeam $tagTeam)
     {
-        $this->authorize('update', TagTeam::class);
+        $this->authorize('update', $tagTeam);
 
-        return response()->view('tagteams.edit', compact('tagteam'));
+        return response()->view('tagteams.edit', compact('tagTeam'));
     }
 
     /**
      * Update a given tag team.
      *
      * @param  \App\Http\Requests\UpdateTagTeamRequest  $request
-     * @param  \App\Models\TagTeam  $tagteam
+     * @param  \App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\RedirectResponse
      */
-    public function update(UpdateTagTeamRequest $request, TagTeam $tagteam)
+    public function update(UpdateTagTeamRequest $request, TagTeam $tagTeam)
     {
-        $tagteam->update($request->except(['wrestlers', 'started_at']));
+        $tagTeam->update($request->except(['wrestlers', 'started_at']));
 
-        $tagteam->employ($request->input('started_at'));
-        $tagteam->wrestlers()->sync($request->input('wrestlers'));
+        $tagTeam->employ($request->input('started_at'));
+        $tagTeam->wrestlerHistory()->sync($request->input('wrestlers'));
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 
     /**
      * Delete a tag team.
      *
-     * @param  App\Models\TagTeam  $tagteam
+     * @param  App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\RedirectResponse
      */
-    public function destroy(TagTeam $tagteam)
+    public function destroy(TagTeam $tagTeam)
     {
-        $this->authorize('delete', TagTeam::class);
+        $this->authorize('delete', $tagTeam);
 
-        $tagteam->delete();
+        $tagTeam->delete();
 
-        return redirect()->route('tagteams.index');
+        return redirect()->route('tag-teams.index');
     }
 }

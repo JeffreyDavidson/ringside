@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class DeleteRefereeFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('bookable')->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertRedirect(route('login'));
     }
@@ -29,7 +30,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertRedirect(route('login'));
     }
@@ -39,7 +40,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('retired')->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertRedirect(route('login'));
     }
@@ -49,7 +50,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertRedirect(route('login'));
     }
@@ -59,7 +60,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

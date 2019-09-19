@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group users
+ * @group roster
  */
 class UpdateWrestlerFailureConditionsTest extends TestCase
 {
@@ -67,7 +68,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
 
-        $response = $this->patch(route('wrestlers.update', $wrestler), $this->validParams());
+        $response = $this->updateRequest($wrestler, $this->validParams());
 
         $response->assertForbidden();
     }

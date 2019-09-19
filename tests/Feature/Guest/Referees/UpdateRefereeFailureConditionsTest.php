@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class UpdateRefereeFailureConditionsTest extends TestCase
 {
@@ -44,7 +45,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->create();
 
-        $response = $this->patch(route('referees.update', $referee), $this->validParams());
+        $response = $this->updateRequest($referee, $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

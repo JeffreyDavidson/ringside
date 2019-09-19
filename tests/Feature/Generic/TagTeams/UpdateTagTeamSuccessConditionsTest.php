@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class UpdateTagTeamSuccessConditionsTest extends TestCase
 {
@@ -37,16 +38,14 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
         $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
 
-        $this->patch(route('tagteams.update', $tagteam), $this->validParams([
-            'wrestlers' => $wrestlers->modelKeys(),
-        ]));
+        $this->updateRequest($tagTeam, $this->validParams(['wrestlers' => $wrestlers->modelKeys()]));
 
-        tap($tagteam->fresh()->wrestlers, function ($tagteamWrestlers) use ($wrestlers) {
-            $this->assertCount(2, $tagteamWrestlers);
-            $this->assertEquals($tagteamWrestlers->modelKeys(), $wrestlers->modelKeys());
+        tap($tagTeam->fresh()->currentWrestlers, function ($tagTeamWrestlers) use ($wrestlers) {
+            $this->assertCount(2, $tagTeamWrestlers);
+            $this->assertEquals($tagTeamWrestlers->modelKeys(), $wrestlers->modelKeys());
         });
     }
 
@@ -54,11 +53,9 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_tag_team_name_is_optional()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->patch(route('tagteams.update', $tagteam), $this->validParams([
-            'name' => ''
-        ]));
+        $response = $this->updateRequest($tagTeam, $this->validParams(['name' => '']));
 
         $response->assertSessionDoesntHaveErrors('name');
     }
@@ -67,11 +64,9 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_tag_team_signature_move_is_optional()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->patch(route('tagteams.update', $tagteam), $this->validParams([
-            'signature_move' => ''
-        ]));
+        $response = $this->updateRequest($tagTeam, $this->validParams(['signature_move' => '']));
 
         $response->assertSessionDoesntHaveErrors('signature_move');
     }
@@ -80,11 +75,9 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_tag_team_started_at_is_optional()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
 
-        $response = $this->patch(route('tagteams.update', $tagteam), $this->validParams([
-            'started_at' => ''
-        ]));
+        $response = $this->updateRequest($tagTeam, $this->validParams(['started_at' => '']));
 
         $response->assertSessionDoesntHaveErrors('started_at');
     }

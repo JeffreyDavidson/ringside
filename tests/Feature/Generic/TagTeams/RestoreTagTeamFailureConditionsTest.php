@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class RestoreTagTeamFailureConditionsTest extends TestCase
 {
@@ -18,20 +19,20 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_bookable_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
-        $response = $this->put(route('tagteams.restore', $tagteam));
+        $response = $this->restoreRequest($tagTeam);
 
         $response->assertNotFound();
     }
 
     /** @test */
-    public function a_pending_introduction_tag_team_cannot_be_restored()
+    public function a_pending_employment_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('pending-introduction')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('tagteams.restore', $tagteam));
+        $response = $this->restoreRequest($tagTeam);
 
         $response->assertNotFound();
     }
@@ -40,9 +41,9 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_retired_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = factory(TagTeam::class)->states('retired')->create();
 
-        $response = $this->put(route('tagteams.restore', $tagteam));
+        $response = $this->restoreRequest($tagTeam);
 
         $response->assertNotFound();
     }
@@ -51,9 +52,9 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_suspended_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
 
-        $response = $this->put(route('tagteams.restore', $tagteam));
+        $response = $this->restoreRequest($tagTeam);
 
         $response->assertNotFound();
     }

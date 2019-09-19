@@ -19,7 +19,7 @@ class RetireWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create();
 
-        $response = $this->put(route('wrestlers.retire', $wrestler));
+        $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

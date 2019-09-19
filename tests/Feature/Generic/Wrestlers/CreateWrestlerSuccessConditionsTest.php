@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class CreateWrestlerSuccessConditionsTest extends TestCase
 {
@@ -39,10 +40,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $this->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams([
-                'started_at' => now()->toDateTimeString()
-            ]));
+        $this->storeRequest('wrestler', $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         tap(Wrestler::first(), function ($wrestler) {
             $this->assertTrue($wrestler->is_bookable);
@@ -54,10 +52,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $this->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams([
-                'started_at' => Carbon::tomorrow()->toDateTimeString()
-            ]));
+        $this->storeRequest('wrestler', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Wrestler::first(), function ($wrestler) {
             $this->assertFalse($wrestler->is_bookable);
@@ -70,10 +65,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('wrestlers.create'))
-                        ->post(route('wrestlers.store'), $this->validParams([
-                            'signature_move' => '',
-                        ]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => '']));
 
         $response->assertSessionDoesntHaveErrors('signature_move');
         $response->assertRedirect(route('wrestlers.index'));

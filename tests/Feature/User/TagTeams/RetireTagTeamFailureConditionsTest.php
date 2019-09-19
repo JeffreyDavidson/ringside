@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
 class RetireTagTeamFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,9 @@ class RetireTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_retire_a_tag_team()
     {
         $this->actAs('basic-user');
-        $tagteam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
 
-        $response = $this->put(route('tagteams.retire', $tagteam));
+        $response = $this->retireRequest($tagTeam);
 
         $response->assertForbidden();
     }

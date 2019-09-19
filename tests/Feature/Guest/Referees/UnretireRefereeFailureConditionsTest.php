@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class UnretireRefereeFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class UnretireRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('retired')->create();
 
-        $response = $this->put(route('referees.unretire', $referee));
+        $response = $this->unretireRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

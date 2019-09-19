@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group guests
+ * @group roster
  */
 class ReinstateTagTeamFailureConditionsTest extends TestCase
 {
@@ -17,9 +18,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_reinstate_a_suspended_tag_team()
     {
-        $tagteam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
 
-        $response = $this->put(route('tagteams.reinstate', $tagteam));
+        $response = $this->reinstateRequest($tagTeam);
 
         $response->assertRedirect(route('login'));
     }

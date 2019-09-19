@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class DeleteRefereeFailureConditionsTest extends TestCase
 {
@@ -18,9 +19,10 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     public function an_already_deleted_wrestler_cannot_be_deleted()
     {
         $this->actAs('administrator');
-        $wrestler = factory(Referee::class)->create()->delete();
+        $referee = factory(Referee::class)->create();
+        $referee->delete();
 
-        $response = $this->delete(route('wrestlers.destroy', $wrestler));
+        $response = $this->deleteRequest($referee);
 
         $response->assertNotFound();
     }

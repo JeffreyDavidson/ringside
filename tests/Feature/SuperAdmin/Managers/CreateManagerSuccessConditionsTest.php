@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group superadmins
+ * @group roster
  */
 class CreateManagerSuccessConditionsTest extends TestCase
 {
@@ -34,7 +35,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->get(route('managers.create'));
+        $response = $this->createRequest('manager');
 
         $response->assertViewIs('managers.create');
         $response->assertViewHas('manager', new Manager);
@@ -45,7 +46,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->post(route('managers.store'), $this->validParams());
+        $response = $this->storeRequest('manager', $this->validParams());
 
         $response->assertRedirect(route('managers.index'));
         tap(Manager::first(), function ($manager) {

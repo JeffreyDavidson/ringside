@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class EmployRefereeSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class EmployRefereeSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create();
 
-        $response = $this->put(route('referees.employ', $referee));
+        $response = $this->employRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         tap($referee->fresh(), function ($referee) {

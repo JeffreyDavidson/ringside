@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class RestoreRefereeFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertNotFound();
     }
@@ -31,7 +32,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertNotFound();
     }
@@ -42,7 +43,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('retired')->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertNotFound();
     }
@@ -53,7 +54,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertNotFound();
     }
@@ -64,7 +65,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertNotFound();
     }

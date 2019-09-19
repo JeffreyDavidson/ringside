@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class RetireWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RetireWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->put(route('wrestlers.retire', $wrestler));
+        $response = $this->retireRequest($wrestler);
 
         $response->assertForbidden();
     }

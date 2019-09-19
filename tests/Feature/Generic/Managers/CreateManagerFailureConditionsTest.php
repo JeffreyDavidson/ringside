@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class CreateManagerFailureConditionsTest extends TestCase
 {
@@ -34,8 +35,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams(['first_name' => '']));
+        $response = $this->storeRequest('manager', $this->validParams(['first_name' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));
@@ -48,8 +48,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams(['first_name' => ['not-a-string']]));
+        $response = $this->storeRequest('manager', $this->validParams(['first_name' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));
@@ -62,8 +61,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams(['last_name' => '']));
+        $response = $this->storeRequest('manager', $this->validParams(['last_name' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));
@@ -76,8 +74,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams(['last_name' => ['not-a-string']]));
+        $response = $this->storeRequest('manager', $this->validParams(['last_name' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));
@@ -90,8 +87,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams(['started_at' => ['not-a-string']]));
+        $response = $this->storeRequest('manager', $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));
@@ -104,8 +100,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams(['started_at' => now()->toDateString()]));
+        $response = $this->storeRequest('manager', $this->validParams(['started_at' => now()->toDateString()]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group admins
+ * @group roster
  */
 class ViewWrestlersListSuccessConditionsTest extends TestCase
 {

@@ -15,6 +15,7 @@ $factory->define(Wrestler::class, function (Faker $faker) {
         'weight' => $faker->numberBetween(180, 500),
         'hometown' => $faker->city . ', ' . $faker->state,
         'signature_move' => Str::title($faker->words(3, true)),
+        'status' => $faker->word(),
     ];
 });
 

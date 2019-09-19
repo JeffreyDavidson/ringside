@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group superadmins
+ * @group roster
  */
 class CreateRefereeSuccessConditionsTest extends TestCase
 {
@@ -34,7 +35,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->get(route('referees.create'));
+        $response = $this->createRequest('referee');
 
         $response->assertViewIs('referees.create');
         $response->assertViewHas('referee', new Referee);
@@ -45,8 +46,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams());
+        $response = $this->storeRequest('referee', $this->validParams());
                         
         $response->assertRedirect(route('referees.index'));
         tap(Referee::first(), function ($referee) {

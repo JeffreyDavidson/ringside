@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group users
+ * @group roster
  */
 class CreateRefereeFailureConditionsTest extends TestCase
 {
@@ -33,7 +34,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->get(route('referees.create'));
+        $response = $this->createRequest('referee');
 
         $response->assertForbidden();
     }

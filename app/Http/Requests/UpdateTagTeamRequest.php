@@ -15,9 +15,9 @@ class UpdateTagTeamRequest extends FormRequest
      */
     public function authorize()
     {
-        $tagteam = $this->route('tagteam');
+        $tagTeam = $this->route('tag_team');
 
-        return $this->user()->can('update', $tagteam);
+        return $this->user()->can('update', $tagTeam);
     }
 
     /**
@@ -28,7 +28,7 @@ class UpdateTagTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string', Rule::unique('tag_teams')->ignore($this->tagteam->id)],
+            'name' => ['nullable', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
             'signature_move' => ['nullable', 'string'],
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
             'wrestlers' => ['required', 'array', 'size:2'],

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class SuspendManagerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class SuspendManagerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $response = $this->put(route('managers.suspend', $manager));
+        $response = $this->suspendRequest($manager);
 
         $response->assertForbidden();
     }

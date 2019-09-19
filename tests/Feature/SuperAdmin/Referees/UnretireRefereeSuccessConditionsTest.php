@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group superadmins
+ * @group roster
  */
 class UnretireRefereeSuccessConditionsTest extends TestCase
 {

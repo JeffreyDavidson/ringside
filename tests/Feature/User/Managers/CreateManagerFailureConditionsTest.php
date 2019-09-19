@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group users
+ * @group roster
  */
 class CreateManagerFailureConditionsTest extends TestCase
 {
@@ -33,7 +34,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->get(route('managers.create'));
+        $response = $this->createRequest('manager');
 
         $response->assertForbidden();
     }

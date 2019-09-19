@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group superadmins
+ * @group roster
  */
 class UpdateStableSucessConditionsTest extends TestCase
 {
@@ -25,13 +26,13 @@ class UpdateStableSucessConditionsTest extends TestCase
     private function validParams($overrides = [])
     {
         $wrestlers = factory(Wrestler::class)->states('bookable')->create();
-        $tagteams = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeams = factory(TagTeam::class)->states('bookable')->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => [$wrestlers->getKey()],
-            'tagteams' => [$tagteams->getKey()],
+            'tagteams' => [$tagTeams->getKey()],
         ], $overrides);
     }
 

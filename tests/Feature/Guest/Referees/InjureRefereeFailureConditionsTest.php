@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group guests
+ * @group roster
  */
 class InjureRefereeFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class InjureRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('bookable')->create();
 
-        $response = $this->put(route('referees.injure', $referee));
+        $response = $this->injureRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

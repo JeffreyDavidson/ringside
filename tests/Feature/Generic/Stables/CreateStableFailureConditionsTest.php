@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group generics
+ * @group roster
  */
 class CreateStableFailureConditionsTest extends TestCase
 {
@@ -25,13 +26,13 @@ class CreateStableFailureConditionsTest extends TestCase
     private function validParams($overrides = [])
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => [$wrestler->getKey()],
-            'tagteams' => [$tagteam->getKey()],
+            'tagteams' => [$tagTeam->getKey()],
         ], $overrides);
     }
 
@@ -138,11 +139,11 @@ class CreateStableFailureConditionsTest extends TestCase
     public function a_stable_with_one_tag_team_requires_a_wrestler()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
-                            'tagteams' => [$tagteam->getKey()],
+                            'tagteams' => [$tagTeam->getKey()],
                             'wrestlers' => [],
                         ]));
 

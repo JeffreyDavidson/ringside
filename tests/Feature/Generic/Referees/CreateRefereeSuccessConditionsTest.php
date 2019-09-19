@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class CreateRefereeSuccessConditionsTest extends TestCase
 {
@@ -33,10 +34,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('referees.create'))
-                        ->post(route('referees.store'), $this->validParams([
-                            'started_at' => ''
-                        ]));
+        $response = $this->storeRequest('referee', $this->validParams(['started_at' => '']));
 
         $response->assertSessionDoesntHaveErrors('started_at');
     }

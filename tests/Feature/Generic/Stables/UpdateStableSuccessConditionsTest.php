@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group stables
  * @group generics
+ * @group roster
  */
 class UpdateStableSuccessConditionsTest extends TestCase
 {
@@ -26,13 +27,13 @@ class UpdateStableSuccessConditionsTest extends TestCase
     private function validParams($overrides = [])
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => $overrides['wrestlers'] ?? [$wrestler->getKey()],
-            'tagteams' => $overrides['tagteams'] ?? [$tagteam->getKey()],
+            'tagteams' => $overrides['tagteams'] ?? [$tagTeam->getKey()],
         ], $overrides);
     }
 
@@ -104,11 +105,11 @@ class UpdateStableSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $stable = factory(Stable::class)->states('pending-introduction')->create();
         $formerTagTeams = $stable->currentTagTeams;
-        $tagteams = factory(TagTeam::class, 2)->states('bookable')->create();
+        $tagTeams = factory(TagTeam::class, 2)->states('bookable')->create();
 
         $this->from(route('stables.edit', $stable))
             ->put(route('stables.update', $stable), $this->validParams([
-                'tagteams' => $tagteams->modelKeys(),
+                'tagteams' => $tagTeams->modelKeys(),
             ]));
 
         tap($stable->fresh()->previousTagTeams, function ($stableTagTeams) use ($formerTagTeams) {
@@ -122,16 +123,16 @@ class UpdateStableSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $stable = factory(Stable::class)->create();
-        $tagteams = factory(TagTeam::class, 2)->states('bookable')->create();
+        $tagTeams = factory(TagTeam::class, 2)->states('bookable')->create();
 
         $this->from(route('stables.edit', $stable))
             ->put(route('stables.update', $stable), $this->validParams([
-                'tagteams' => $tagteams->modelKeys(),
+                'tagteams' => $tagTeams->modelKeys(),
             ]));
 
-        tap($stable->fresh()->currentTagTeams, function ($stableTagTeams) use ($tagteams) {
+        tap($stable->fresh()->currentTagTeams, function ($stableTagTeams) use ($tagTeams) {
             $this->assertCount(2, $stableTagTeams);
-            $this->assertEquals($stableTagTeams->modelKeys(), $tagteams->modelKeys());
+            $this->assertEquals($stableTagTeams->modelKeys(), $tagTeams->modelKeys());
         });
     }
 }

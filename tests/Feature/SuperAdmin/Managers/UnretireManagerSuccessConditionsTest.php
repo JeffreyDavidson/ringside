@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group superadmins
+ * @group roster
  */
 class UnretireManagerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class UnretireManagerSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
-        $response = $this->put(route('managers.unretire', $manager));
+        $response = $this->unretireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirements()->latest()->first()->ended_at);

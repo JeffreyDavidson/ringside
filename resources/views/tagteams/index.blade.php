@@ -14,7 +14,7 @@
         @include('tagteams.partials.filters')
     </div>
     <div class="kt-subheader__toolbar">
-        <a href="{{ route('tagteams.create') }}"
+        <a href="{{ route('tag-teams.create') }}"
             class="btn btn-label-brand btn-bold">
             Add Tag Team
         </a>

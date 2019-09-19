@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group generics
+ * @group roster
  */
 class CreateManagerSuccessConditionsTest extends TestCase
 {
@@ -33,12 +34,9 @@ class CreateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_manager_started_today_or_before_is_bookable()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
-        $this->post(route('managers.store'), $this->validParams([
-            'started_at' => today()->toDateTimeString()
-        ]));
+        $this->storeRequest('manager', $this->validParams(['started_at' => today()->toDateTimeString()]));
 
         tap(Manager::first(), function ($manager) {
             $this->assertTrue($manager->is_bookable);
@@ -50,9 +48,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $this->post(route('managers.store'), $this->validParams([
-            'started_at' => Carbon::tomorrow()->toDateTimeString()
-        ]));
+        $this->storeRequest('manager', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Manager::first(), function ($manager) {
             $this->assertFalse($manager->is_bookable);
@@ -64,10 +60,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('managers.create'))
-                        ->post(route('managers.store'), $this->validParams([
-                            'started_at' => ''
-                        ]));
+        $response = $this->storeRequest('manager', $this->validParams(['started_at' => '']));
 
         $response->assertSessionDoesntHaveErrors('started_at');
         tap(Manager::first(), function ($manager) {

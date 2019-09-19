@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group users
+ * @group roster
  */
 class ViewTagTeamsListFailureConditionsTest extends TestCase
 {
@@ -18,7 +19,7 @@ class ViewTagTeamsListFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->get(route('tagteams.index'));
+        $response = $this->get(route('tag-teams.index'));
 
         $response->assertForbidden();
     }

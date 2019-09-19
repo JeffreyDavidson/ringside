@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group generics
+ * @group roster
  */
 class UpdateRefereeFailureConditionsTest extends TestCase
 {
@@ -50,10 +51,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'first_name' => ''
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['first_name' => '']));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('first_name');
@@ -68,10 +66,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'first_name' => ['not-a-string']
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['first_name' => ['not-a-string']]));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('first_name');
@@ -86,10 +81,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'last_name' => ''
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['last_name' => '']));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('last_name');
@@ -104,10 +96,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'last_name' => ['not-a-string']
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['last_name' => ['not-a-string']]));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('last_name');
@@ -122,10 +111,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'started_at' => ''
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['started_at' => '']));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
@@ -141,10 +127,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
         $referee->employment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'started_at' => now()->toDateTimeString()
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
@@ -159,10 +142,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'started_at' => ['not-a-string']
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
@@ -177,10 +157,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
 
-        $response = $this->from(route('referees.edit', $referee))
-                        ->patch(route('referees.update', $referee), $this->validParams([
-                            'started_at' => now()->toDateString()
-                        ]));
+        $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateString()]));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');

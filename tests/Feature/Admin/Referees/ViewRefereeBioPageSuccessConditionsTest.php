@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group referees
  * @group admins
+ * @group roster
  */
 class ViewRefereeBioPageSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ViewRefereeBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $referee = factory(Referee::class)->create();
 
-        $response = $this->get(route('referees.show', ['referee' => $referee]));
+        $response = $this->showRequest($referee);
 
         $response->assertViewIs('referees.show');
         $this->assertTrue($response->data('referee')->is($referee));

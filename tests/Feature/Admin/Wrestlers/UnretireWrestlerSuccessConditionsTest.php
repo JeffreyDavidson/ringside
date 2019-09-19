@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group admins
+ * @group roster
  */
 class UnretireWrestlerSuccessConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class UnretireWrestlerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->put(route('wrestlers.unretire', $wrestler));
+        $response = $this->unretireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirements()->latest()->first()->ended_at);

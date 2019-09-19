@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group admins
+ * @group roster
  */
 class UnretireTagTeamSuccessConditionsTest extends TestCase
 {
@@ -18,11 +19,11 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
     public function an_administrator_can_unretire_a_retired_tag_team()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = factory(TagTeam::class)->states('retired')->create();
 
-        $response = $this->put(route('tagteams.unretire', $tagteam));
+        $response = $this->unretireRequest($tagTeam);
     
-        $response->assertRedirect(route('tagteams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagteam->fresh()->retirements()->latest()->first()->ended_at);
+        $response->assertRedirect(route('tag-teams.index'));
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->retirements()->latest()->first()->ended_at);
     }
 }

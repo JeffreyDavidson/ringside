@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group managers
  * @group guests
+ * @group roster
  */
 class RecoverManagerFailureConditionsTest extends TestCase
 {
@@ -19,7 +20,7 @@ class RecoverManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->put(route('managers.recover', $manager));
+        $response = $this->recoverRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

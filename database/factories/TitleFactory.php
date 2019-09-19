@@ -6,19 +6,28 @@ use Faker\Generator as Faker;
 $factory->define(Title::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence,
-        'introduced_at' => now()->toDateTimeString(),
     ];
 });
 
-$factory->state(Title::class, 'bookable', function ($faker) {
+$factory->state(Wrestler::class, 'competable', function ($faker) {
     return [
-        'introduced_at' => $faker->dateTimeBetween('-1 week', '-1 day')
+        'status' => TitleStatus::COMPETABLE,
     ];
+});
+
+$factory->afterCreatingState(Wrestler::class, 'competable', function ($wrestler) {
+    $wrestler->introduce();
 });
 
 $factory->state(Title::class, 'pending-introduction', function ($faker) {
     return [
-        'introduced_at' => $faker->dateTimeBetween('+1 day', '+1 month')
+        'introduced_at' => Carbon::tomorrow()->toDateTimeString()
+    ];
+});
+
+$factory->state(Wrestler::class, 'retired', function ($faker) {
+    return [
+        'status' => TitleStatus::RETIRED,
     ];
 });
 

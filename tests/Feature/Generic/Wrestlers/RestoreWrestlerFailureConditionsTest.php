@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class RestoreWrestlerFailureConditionsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertNotFound();
     }
@@ -31,7 +32,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertNotFound();
     }
@@ -42,7 +43,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertNotFound();
     }
@@ -53,7 +54,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertNotFound();
     }
@@ -64,7 +65,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->put(route('wrestlers.restore', $wrestler));
+        $response = $this->restoreRequest($wrestler);
 
         $response->assertNotFound();
     }

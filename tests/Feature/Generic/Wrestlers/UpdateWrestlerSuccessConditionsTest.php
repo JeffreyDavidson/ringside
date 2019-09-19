@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group wrestlers
  * @group generics
+ * @group roster
  */
 class UpdateWrestlerSuccessConditionsTest extends TestCase
 {
@@ -57,10 +58,7 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
-        $response = $this->from(route('wrestlers.edit', $wrestler))
-                        ->patch(route('wrestlers.update', $wrestler), $this->validParams([
-                            'signature_move' => '',
-                        ]));
+        $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => '']));
 
         $response->assertSessionDoesntHaveErrors('signature_move');
         $response->assertRedirect(route('wrestlers.index'));

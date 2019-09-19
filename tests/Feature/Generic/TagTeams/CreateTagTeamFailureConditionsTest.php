@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group generics
+ * @group roster
  */
 class CreateTagTeamFailureConditionsTest extends TestCase
 {
@@ -38,11 +39,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['name' => ['not-a-string']]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['name' => ['not-a-string']]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('name');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -53,11 +53,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         factory(TagTeam::class)->create(['name' => 'Example Tag Team Name']);
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['name' => 'Example Tag Team Name']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['name' => 'Example Tag Team Name']));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('name');
         $this->assertEquals(1, TagTeam::count());
     }
@@ -67,11 +66,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['signature_move' => ['not-a-string']]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['signature_move' => ['not-a-string']]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('signature_move');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -81,11 +79,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['started_at' => ['not-a-string']]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('started_at');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -95,11 +92,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['started_at' => now()->toDateString()]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['started_at' => now()->toDateString()]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('started_at');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -109,11 +105,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['wrestlers' => '']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => '']));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -123,11 +118,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['wrestlers' => 'not-an-array']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => 'not-an-array']));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -138,11 +132,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestlers = factory(Wrestler::class, 3)->states('bookable')->create();
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['wrestlers' => $wrestlers->modelKeys()]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => $wrestlers->modelKeys()]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -153,11 +146,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['wrestlers' => [$wrestler->id, 'not-an-integer']]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => [$wrestler->id, 'not-an-integer']]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers.*');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -168,11 +160,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['wrestlers' => [$wrestler->id, 99]]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => [$wrestler->id, 99]]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers.*');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -183,11 +174,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams(['wrestlers' => [$wrestler->id]]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => [$wrestler->id]]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers.*');
         $this->assertEquals(0, TagTeam::count());
     }
@@ -196,15 +186,12 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     public function a_wrestler_cannot_be_a_part_of_two_bookable_tag_teams()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
 
-        $response = $this->from(route('tagteams.create'))
-                        ->post(route('tagteams.store'), $this->validParams([
-                            'wrestlers' => [$tagteam->wrestlers->first()->id]
-                        ]));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => [$tagTeam->currentWrestlers->first()->id]]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tagteams.create'));
+        $response->assertRedirect(route('tag-teams.create'));
         $response->assertSessionHasErrors('wrestlers.*');
         $this->assertEquals(1, TagTeam::count());
     }

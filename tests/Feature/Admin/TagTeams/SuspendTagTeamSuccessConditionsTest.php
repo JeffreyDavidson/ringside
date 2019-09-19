@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 /**
  * @group tagteams
  * @group admins
+ * @group roster
  */
 class SuspendTagTeamSuccessConditionsTest extends TestCase
 {
@@ -18,11 +19,11 @@ class SuspendTagTeamSuccessConditionsTest extends TestCase
     public function an_administrator_can_suspend_a_bookable_tag_team()
     {
         $this->actAs('administrator');
-        $tagteam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
-        $response = $this->put(route('tagteams.suspend', $tagteam));
+        $response = $this->suspendRequest($tagTeam);
 
-        $response->assertRedirect(route('tagteams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagteam->fresh()->suspension->started_at);
+        $response->assertRedirect(route('tag-teams.index'));
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->suspension->started_at);
     }
 }
