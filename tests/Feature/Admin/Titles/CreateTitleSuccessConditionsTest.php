@@ -45,7 +45,6 @@ class CreateTitleSucessConditionsTest extends TestCase
         $this->actAs('administrator');
 
         $response = $this->storeRequest('title', $this->validParams());
-        dd($response);
 
         $response->assertRedirect(route('titles.index'));
         tap(Title::first(), function ($title) {

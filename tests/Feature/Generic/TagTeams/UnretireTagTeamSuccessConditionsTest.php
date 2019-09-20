@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use App\Models\TagTeam;
 use Tests\TestCase;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -20,7 +20,6 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $tagTeam = factory(TagTeam::class)->states('employable', 'retired')->create();
-        dd($tagTeam);
 
         $response = $this->unretireRequest($tagTeam);
 

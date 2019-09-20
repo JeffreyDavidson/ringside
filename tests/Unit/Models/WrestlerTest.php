@@ -96,7 +96,7 @@ class WrestlerTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $wrestler->tagTeamHistory);
     }
-    
+
     /** @test */
     public function a_bookable_wrestler_can_be_a_part_of_one_bookable_tag_team()
     {
@@ -126,7 +126,7 @@ class WrestlerTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $wrestler->stableHistory);
     }
-    
+
     /** @test */
     public function a_bookable_wrestler_can_be_a_part_of_one_active_stable()
     {
@@ -145,7 +145,12 @@ class WrestlerTest extends TestCase
         $wrestler->stableHistory()->attach($stable);
         $wrestler->stableHistory()->detach($stable);
 
-
         $this->assertInstanceOf(Collection::class, $wrestler->previousStables);
+    }
+
+    /** @test */
+    public function a_wrestler_can_be_injured()
+    {
+        $wrestler = factory(Wrestler::class)->create();
     }
 }
