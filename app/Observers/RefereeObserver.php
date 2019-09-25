@@ -21,10 +21,10 @@ class RefereeObserver
             $referee->status =  RefereeStatus::INJURED;
         } elseif ($referee->checkIsSuspended()) {
             $referee->status = RefereeStatus::SUSPENDED;
-        } elseif ($referee->checkIsBookable()) {
-            $referee->status = RefereeStatus::BOOKABLE;
-        } else {
+        } elseif ($referee->checkIsPendingEmployment()) {
             $referee->status = RefereeStatus::PENDING_EMPLOYMENT;
+        } else {
+            $referee->status = RefereeStatus::BOOKABLE;
         }
     }
 }

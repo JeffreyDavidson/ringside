@@ -25,10 +25,9 @@ class WrestlerPolicy
      * Determine whether the user can update a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function update(User $user, Wrestler $wrestler)
+    public function update(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
@@ -37,16 +36,15 @@ class WrestlerPolicy
      * Determine whether the user can delete a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function delete(User $user, Wrestler $wrestler)
+    public function delete(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can restore a deleted wrestler.
+     * Determine whether the user can restore a wrestler.
      *
      * @param  App\Models\User  $user
      * @return bool
@@ -60,15 +58,10 @@ class WrestlerPolicy
      * Determine whether the user can retire a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function retire(User $user, Wrestler $wrestler)
+    public function retire(User $user)
     {
-        if (!$wrestler->is_employed || $wrestler->is_retired) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -76,15 +69,10 @@ class WrestlerPolicy
      * Determine whether the user can unretire a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function unretire(User $user, Wrestler $wrestler)
+    public function unretire(User $user)
     {
-        if (!$wrestler->is_retired) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -92,15 +80,10 @@ class WrestlerPolicy
      * Determine whether the user can suspend a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function suspend(User $user, Wrestler $wrestler)
+    public function suspend(User $user)
     {
-        if (!$wrestler->is_employed || !$wrestler->is_bookable || $wrestler->is_suspended) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -108,15 +91,10 @@ class WrestlerPolicy
      * Determine whether the user can reinstate a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function reinstate(User $user, Wrestler $wrestler)
+    public function reinstate(User $user)
     {
-        if (!$wrestler->is_suspended) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -124,15 +102,10 @@ class WrestlerPolicy
      * Determine whether the user can injure a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function injure(User $user, Wrestler $wrestler)
+    public function injure(User $user)
     {
-        if (!$wrestler->is_employed || !$wrestler->is_bookable || $wrestler->is_injured) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -140,36 +113,26 @@ class WrestlerPolicy
      * Determine whether the user can recover a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function recover(User $user, Wrestler $wrestler)
+    public function recover(User $user)
     {
-        if (!$wrestler->is_employed || !$wrestler->is_injured) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can employ a wrestler that is pending introduction.
+     * Determine whether the user can employ a wrestler.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Wrestler  $wrestler
      * @return bool
      */
-    public function employ(User $user, Wrestler $wrestler)
+    public function employ(User $user)
     {
-        if ($wrestler->is_employed) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can view active wrestlers.
+     * Determine whether the user can view a list of wrestlers.
      *
      * @param  App\Models\User  $user
      * @return bool

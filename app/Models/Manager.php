@@ -15,7 +15,8 @@ class Manager extends Model
         Concerns\CanBeRetired,
         Concerns\CanBeEmployed,
         Concerns\CanBeBooked,
-        Concerns\HasFullName;
+        Concerns\HasFullName,
+        Concerns\CanBeStableMember;
 
     /**
      * The attributes that aren't mass assignable.

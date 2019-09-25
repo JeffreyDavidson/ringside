@@ -37,4 +37,30 @@ abstract class TestCase extends BaseTestCase
     {
         return $this->getJson($url, ['X-Requested-With' => 'XMLHttpRequest']);
     }
+
+    /**
+     * Assert that the given class soft deletes.
+     *
+     * @param  string  $model
+     * @return void
+     */
+    public function assertSoftDeletes(string $model)
+    {
+        $instance = new $model;
+
+        $this->assertUsesTrait(\Illuminate\Database\Eloquent\SoftDeletes::class, $instance);
+        $this->assertContains('deleted_at', $instance->getDates());
+    }
+
+    /**
+     * Assert that the given class uses the provided trait name.
+     *
+     * @param  string  $trait
+     * @param  mixed   $class
+     * @return void
+     */
+    public function assertUsesTrait($trait, $class)
+    {
+        $this->assertContains($trait, class_uses($class));
+    }
 }

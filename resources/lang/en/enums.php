@@ -42,7 +42,7 @@ return [
         ManagerStatus::INJURED => 'Injured',
     ],
     StableStatus::class => [
-        StableStatus::PENDING_EMPLOYMENT => 'Pending Employment',
+        StableStatus::ACTIVE => 'Active',
     ],
     EventStatus::class => [
         EventStatus::SCHEDULED => 'Scheduled',

@@ -25,10 +25,9 @@ class ManagerPolicy
      * Determine whether the user can update a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function update(User $user, Manager $manager)
+    public function update(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
@@ -37,22 +36,20 @@ class ManagerPolicy
      * Determine whether the user can delete a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function delete(User $user, Manager $manager)
+    public function delete(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can restore a deleted manager.
+     * Determine whether the user can restore a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function restore(User $user, Manager $manager)
+    public function restore(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
@@ -61,63 +58,43 @@ class ManagerPolicy
      * Determine whether the user can retire a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function retire(User $user, Manager $manager)
+    public function retire(User $user)
     {
-        if (!$manager->is_employed || $manager->is_retired) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can unretire a retired manager.
+     * Determine whether the user can unretire a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function unretire(User $user, Manager $manager)
+    public function unretire(User $user)
     {
-        if (!$manager->is_retired) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can suspend a tag team.
+     * Determine whether the user can suspend a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function suspend(User $user, Manager $manager)
+    public function suspend(User $user)
     {
-        if (!$manager->is_employed || !$manager->is_bookable || $manager->is_suspended) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can suspend a tag team.
+     * Determine whether the user can reinstate a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function reinstate(User $user, Manager $manager)
+    public function reinstate(User $user)
     {
-        if (!$manager->is_suspended) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -125,47 +102,32 @@ class ManagerPolicy
      * Determine whether the user can injure a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function injure(User $user, Manager $manager)
+    public function injure(User $user)
     {
-        if (!$manager->is_employed || !$manager->is_bookable || $manager->is_injured) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can recover an injured manager.
+     * Determine whether the user can recover a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function recover(User $user, Manager $manager)
+    public function recover(User $user)
     {
-        if (!$manager->is_employed || !$manager->is_injured) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
     /**
-     * Determine whether the user can employ a pending introduction manager.
+     * Determine whether the user can employ a manager.
      *
      * @param  App\Models\User  $user
-     * @param  App\Models\Manager  $manager
      * @return bool
      */
-    public function employ(User $user, Manager $manager)
+    public function employ(User $user)
     {
-        if ($manager->is_employed) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 
@@ -189,6 +151,10 @@ class ManagerPolicy
      */
     public function view(User $user, Manager $manager)
     {
-        return $user->isSuperAdministrator() ||  $user->isAdministrator() || $manager->user->is($user);
+        if (!is_null($manager->user) && $manager->user->is($user)) {
+            return true;
+        }
+
+        return $user->isSuperAdministrator() ||  $user->isAdministrator();
     }
 }

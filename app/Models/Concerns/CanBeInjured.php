@@ -3,9 +3,26 @@
 namespace App\Models\Concerns;
 
 use App\Models\Injury;
+use App\Traits\HasCachedAttributes;
+use App\Exceptions\CannotBeInjuredException;
+use App\Exceptions\CannotBeRecoveredException;
 
 trait CanBeInjured
 {
+    /**
+     *
+     */
+    public static function bootCanBeInjured()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeInjured trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get the injuries of the model.
      *
@@ -54,6 +71,14 @@ trait CanBeInjured
      */
     public function injure()
     {
+        if ($this->checkIsPendingEmployment() ||
+            $this->checkIsRetired() ||
+            $this->checkIsInjured() ||
+            $this->checkIsSuspended()
+        ) {
+            throw new CannotBeInjuredException;
+        }
+
         $this->injuries()->create(['started_at' => now()]);
         $this->touch();
     }
@@ -65,7 +90,13 @@ trait CanBeInjured
      */
     public function recover()
     {
+        if (! $this->checkIsInjured()) {
+            throw new CannotBeRecoveredException;
+        }
+
         $this->injury()->update(['ended_at' => now()]);
+
+        return $this->touch();
     }
 
     /**
@@ -73,9 +104,6 @@ trait CanBeInjured
      */
     public function checkIsInjured()
     {
-        return $this->injuries()
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->exists();
+        return $this->injury()->where('started_at', '<=', now())->exists();
     }
 }

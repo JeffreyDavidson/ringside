@@ -21,10 +21,10 @@ class ManagerObserver
             $manager->status =  ManagerStatus::INJURED;
         } elseif ($manager->checkIsSuspended()) {
             $manager->status = ManagerStatus::SUSPENDED;
-        } elseif ($manager->checkIsBookable()) {
-            $manager->status = ManagerStatus::BOOKABLE;
-        } else {
+        } elseif ($manager->checkIsPendingEmployment()) {
             $manager->status = ManagerStatus::PENDING_EMPLOYMENT;
+        } else {
+            $manager->status = ManagerStatus::BOOKABLE;
         }
     }
 }

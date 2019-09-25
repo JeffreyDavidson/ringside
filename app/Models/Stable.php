@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
 
 class Stable extends Model
 {
-    use SoftDeletes, 
-        HasCustomRelationships;
+    use SoftDeletes,
+        HasCachedAttributes,
+        HasCustomRelationships,
+        Concerns\CanBeEmployed;
 
     /**
      * The attributes that aren't mass assignable.
@@ -135,7 +138,20 @@ class Stable extends Model
     }
 
     /**
-     * 
+     * Add managers to the stable.
+     *
+     * @param  array  $managerIds
+     * @return $this
+     */
+    public function addManagers($managerIds)
+    {
+        $this->managerHistory()->sync($managerIds);
+
+        return $this;
+    }
+
+    /**
+     *
      */
     public function disassemble()
     {
@@ -144,5 +160,40 @@ class Stable extends Model
         $this->touch();
 
         return $this;
+    }
+
+
+
+
+
+
+    /**
+     * Get all members that have been members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function memberHistory()
+    {
+        return $this->leaveableMorphedByMany(Wrestler::class, 'member')->using(Member::class);
+    }
+
+    /**
+     * Get all current members that are members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function currentMembers()
+    {
+        return $this->memberHistory()->current();
+    }
+
+    /**
+     * Get all previous members that were members of the stable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function previousMembers()
+    {
+        return $this->memberHistory()->detached();
     }
 }

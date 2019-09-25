@@ -9,6 +9,7 @@ $factory->define(Referee::class, function (Faker $faker) {
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
+        'status' => $faker->word(),
     ];
 });
 
@@ -39,7 +40,7 @@ $factory->state(Referee::class, 'retired', function ($faker) {
 });
 
 $factory->afterCreatingState(Referee::class, 'retired', function ($referee) {
-    $referee->employ();
+    $referee->employ(Carbon::yesterday());
     $referee->retire();
 });
 
@@ -50,7 +51,7 @@ $factory->state(Referee::class, 'suspended', function ($faker) {
 });
 
 $factory->afterCreatingState(Referee::class, 'suspended', function ($referee) {
-    $referee->employ();
+    $referee->employ(Carbon::yesterday());
     $referee->suspend();
 });
 
@@ -61,6 +62,6 @@ $factory->state(Referee::class, 'injured', function ($faker) {
 });
 
 $factory->afterCreatingState(Referee::class, 'injured', function ($referee) {
-    $referee->employ();
+    $referee->employ(Carbon::yesterday());
     $referee->injure();
 });

@@ -3,9 +3,26 @@
 namespace App\Models\Concerns;
 
 use App\Models\Retirement;
+use App\Traits\HasCachedAttributes;
+use App\Exceptions\CannotBeRetiredException;
+use App\Exceptions\CannotBeUnretiredException;
 
 trait CanBeRetired
 {
+    /**
+     *
+     */
+    public static function bootCanBeRetired()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get the retirements of the model.
      *
@@ -54,16 +71,21 @@ trait CanBeRetired
      */
     public function retire()
     {
-        if ($this->is_suspended) {
+        if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
+            throw new CannotBeRetiredException;
+        }
+
+        if ($this->checkIsSuspended()) {
             $this->reinstate();
         }
 
-        if ($this->is_injured) {
+        if ($this->checkIsInjured()) {
             $this->recover();
         }
 
         $this->retirements()->create(['started_at' => now()]);
-        $this->touch();
+
+        return $this->touch();
     }
 
     /**
@@ -73,6 +95,10 @@ trait CanBeRetired
      */
     public function unretire()
     {
+        if (! $this->checkIsRetired()) {
+            throw new CannotBeUnretiredException;
+        }
+
         $this->retirement()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -83,9 +109,6 @@ trait CanBeRetired
      */
     public function checkIsRetired()
     {
-        return $this->retirements()
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->exists();
+        return $this->retirement()->where('started_at', '<=', now())->exists();
     }
 }

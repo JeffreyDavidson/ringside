@@ -4,12 +4,11 @@ namespace App\Models\Concerns;
 
 use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
-use Illuminate\Database\Eloquent\Builder;
 
 trait CanBeEmployed
 {
     /**
-     * 
+     *
      */
     public static function bootCanBeEmployed()
     {
@@ -49,7 +48,18 @@ trait CanBeEmployed
      */
     public function getIsEmployedCachedAttribute()
     {
-        return $this->employments()->where('started_at', '<=', now())->whereNull('ended_at')->exists();
+        return $this->employment()->where('started_at', '<=', now())->exists();
+    }
+
+    /**
+     * Scope a query to only include pending employment models.
+     * These model have not been employed.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function getIsPendingEmploymentCachedAttribute()
+    {
+        return $this->employment()->where('started_at', '>', now())->exists();
     }
 
     /**
@@ -61,6 +71,16 @@ trait CanBeEmployed
     public function scopePendingEmployment($query)
     {
         return $query->where('status', 'pending-employment');
+    }
+
+    /**
+     * Scope a query to only include employed models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeEmployed($query)
+    {
+        return $query->where('status', '!=', 'pending-employment');
     }
 
     /**
@@ -82,9 +102,14 @@ trait CanBeEmployed
      */
     public function checkIsEmployed()
     {
-        return $this->employments()
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->exists();
+        return $this->employment()->where('started_at', '<=', now())->exists();
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkIsPendingEmployment()
+    {
+        return $this->employment()->where('started_at', '>', now())->exists();
     }
 }

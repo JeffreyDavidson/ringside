@@ -3,9 +3,26 @@
 namespace App\Models\Concerns;
 
 use App\Models\Suspension;
+use App\Traits\HasCachedAttributes;
+use App\Exceptions\CannotBeSuspendedException;
+use App\Exceptions\CannotBeReinstatedException;
 
 trait CanBeSuspended
 {
+    /**
+     *
+     */
+    public static function bootCanBeSuspended()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeSuspended trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get the suspensions of the model.
      *
@@ -54,8 +71,17 @@ trait CanBeSuspended
      */
     public function suspend()
     {
+        if ($this->checkIsPendingEmployment() ||
+            $this->checkIsRetired() ||
+            $this->checkIsInjured() ||
+            $this->checkIsSuspended()
+        ) {
+            throw new CannotBeSuspendedException;
+        }
+
         $this->suspensions()->create(['started_at' => now()]);
-        $this->touch();
+
+        return $this->touch();
     }
 
     /**
@@ -65,7 +91,13 @@ trait CanBeSuspended
      */
     public function reinstate()
     {
+        if (! $this->checkIsSuspended()) {
+            throw new CannotBeReinstatedException;
+        }
+
         $this->suspension()->update(['ended_at' => now()]);
+
+        return $this->touch();
     }
 
     /**
@@ -73,9 +105,6 @@ trait CanBeSuspended
      */
     public function checkIsSuspended()
     {
-        return $this->suspensions()
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->exists();
+        return $this->suspension()->where('started_at', '<=', now())->exists();
     }
 }

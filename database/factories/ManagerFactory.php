@@ -9,6 +9,7 @@ $factory->define(Manager::class, function (Faker $faker) {
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
+        'status' => $faker->word(),
     ];
 });
 
@@ -39,7 +40,7 @@ $factory->state(Manager::class, 'retired', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'retired', function ($manager) {
-    $manager->employ();
+    $manager->employ(Carbon::yesterday());
     $manager->retire();
 });
 
@@ -50,7 +51,7 @@ $factory->state(Manager::class, 'suspended', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'suspended', function ($manager) {
-    $manager->employ();
+    $manager->employ(Carbon::yesterday());
     $manager->suspend();
 });
 
@@ -61,6 +62,6 @@ $factory->state(Manager::class, 'injured', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'injured', function ($manager) {
-    $manager->employ();
+    $manager->employ(Carbon::yesterday());
     $manager->injure();
 });

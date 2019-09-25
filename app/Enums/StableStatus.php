@@ -5,9 +5,9 @@ namespace App\Enums;
 use MadWeb\Enum\Enum;
 
 /**
- * @method static StableStatus PENDING_EMPLOYMENT()
+ * @method static StableStatus ACTIVE()
  */
 final class StableStatus extends Enum
 {
-    const PENDING_EMPLOYMENT = 'pending-employment';
+    const ACTIVE = 'active';
 }

@@ -3,12 +3,11 @@
 namespace App\Models\Concerns;
 
 use App\Traits\HasCachedAttributes;
-use Illuminate\Database\Eloquent\Builder;
 
 trait CanBeBooked
 {
     /**
-     * 
+     *
      */
     public static function bootCanBeBooked()
     {
@@ -26,7 +25,7 @@ trait CanBeBooked
      *
      * @return bool
      */
-    public function getIsBookableAttribute()
+    public function getIsBookableCachedAttribute()
     {
         return $this->status === 'bookable';
     }
@@ -47,9 +46,11 @@ trait CanBeBooked
      */
     public function checkIsBookable()
     {
-        return $this->employments()
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->exists();
+        $isEmployed = $this->employment()->where('started_at', '<=', now())->exists();
+        $isNotSuspended = $this->suspension()->whereNotNull('ended_at')->exists();
+        $isNotInjured = $this->injury()->whereNotNull('ended_at')->exists();
+        $isNotRetired = $this->retirement()->whereNotNull('ended_at')->exists();
+
+        return $isEmployed && $isNotSuspended && $isNotInjured && $isNotRetired;
     }
 }
