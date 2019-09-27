@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Member;
+use App\Models\Stable;
 
 trait CanBeStableMember
 {
@@ -23,7 +24,7 @@ trait CanBeStableMember
      */
     public function currentStable()
     {
-        return $this->stableHistory()->where('status', 'active')->current();
+        return $this->stableHistory()->where('status', 'active')->current()->latest();
     }
 
     /**
@@ -35,4 +36,9 @@ trait CanBeStableMember
     {
         return $this->stableHistory()->detached();
     }
+
+    // public function getCurrentStableAttribute()
+    // {
+    //     return $this->stableHistory()->where('status', 'active')->current()->first();
+    // }
 }

@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 trait IsLeaveableBelongsToMany
-{   
+{
     /**
      * The cached copy of the currently attached pivot models.
      *
@@ -113,14 +113,14 @@ trait IsLeaveableBelongsToMany
     public function current()
     {
         $this->wherePivot('left_at', null);
-        
+
         return $this;
     }
 
     public function detached()
     {
         $this->wherePivot('left_at', '!=', null); //Laravel translates this to `IS NOT NULL`
-        
+
         return $this;
     }
 

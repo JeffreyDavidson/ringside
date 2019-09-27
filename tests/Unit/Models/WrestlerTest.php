@@ -97,6 +97,12 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
+    public function wrestler_uses_can_be_tag_team_partner_trait()
+    {
+        $this->assertUsesTrait(\App\Models\Concerns\CanBeTagTeamPartner::class, Wrestler::class);
+    }
+
+    /** @test */
     public function a_wrestler_can_be_a_part_of_many_tag_teams()
     {
         $wrestler = factory(Wrestler::class)->create();
@@ -127,6 +133,12 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
+    public function wrestler_uses_can_be_stable_member_trait()
+    {
+        $this->assertUsesTrait(\App\Models\Concerns\CanBeStableMember::class, Wrestler::class);
+    }
+
+    /** @test */
     public function a_wrestler_can_be_a_member_of_a_stable()
     {
         $wrestler = factory(Wrestler::class)->create();
@@ -139,9 +151,10 @@ class WrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $stable = factory(Stable::class)->states('active')->create();
+
         $wrestler->stableHistory()->attach($stable);
 
-        $this->assertInstanceOf(Stable::class, $wrestler->currentStable);
+        $this->assertEquals($stable->id, $wrestler->currentStable->id);
     }
 
     /** @test */
@@ -799,23 +812,11 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_without_a_suspension_or_injury_or_retirement_and_employed_in_the_path_is_bookable()
+    public function a_wrestler_without_a_suspension_or_injury_or_retirement_and_employed_in_the_past_is_bookable()
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $wrestler->employments()->create(['started_at' => Carbon::yesterday()]);
 
         $this->assertTrue($wrestler->checkIsBookable());
-    }
-
-    /** @test */
-    public function wrestler_uses_can_be_stable_member_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeStableMember::class, Wrestler::class);
-    }
-
-    /** @test */
-    public function wrestler_uses_can_be_tag_team_partner_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeTagTeamPartner::class, Wrestler::class);
     }
 }
