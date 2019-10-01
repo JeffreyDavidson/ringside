@@ -30,11 +30,11 @@ class TagTeamCanJoinStable implements Rule
             return false;
         }
 
-        if (!data_get($tagTeam, 'employment.started_at')) {
+        if (!data_get($tagTeam, 'currentEmployment.started_at')) {
             return false;
         }
 
-        if ($tagTeam->employment->started_at->isFuture()) {
+        if ($tagTeam->currentEmployment->started_at->isFuture()) {
             return false;
         }
 

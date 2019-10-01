@@ -25,7 +25,7 @@ class EmployRefereeSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('referees.index'));
         tap($referee->fresh(), function ($referee) {
-            $this->assertTrue($referee->employment()->exists());
+            $this->assertTrue($referee->currentEmployment()->exists());
         });
     }
 }

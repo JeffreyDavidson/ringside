@@ -30,7 +30,7 @@ class StablesController extends Controller
             return $table->eloquent($query)
                 ->addColumn('action', 'stables.partials.action-cell')
                 ->editColumn('started_at', function (Stable $stable) {
-                    return $stable->employment->started_at ?? null;
+                    return $stable->currentEmployment->started_at ?? null;
                 })
                 ->filterColumn('id', function ($query, $keyword) {
                     $query->where($query->qualifyColumn('id'), $keyword);
@@ -116,9 +116,9 @@ class StablesController extends Controller
         $stable->update($request->except('wrestlers', 'tagteams', 'started_at'));
 
         if ($request->filled('started_at')) {
-            if ($stable->employment && $stable->employment->started_at != $request->input('started_at')) {
-                $stable->employment()->update($request->only('started_at'));
-            } elseif (!$stable->employment) {
+            if ($stable->currentEmployment && $stable->currentEmployment->started_at != $request->input('started_at')) {
+                $stable->currentEmployment()->update($request->only('started_at'));
+            } elseif (!$stable->currentEmployment) {
                 $stable->employments()->create($request->only('started_at'));
             }
         }

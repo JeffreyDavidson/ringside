@@ -25,7 +25,7 @@ class EmployWrestlerSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('wrestlers.index'));
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->employment()->exists());
+            $this->assertTrue($wrestler->currentEmployment()->exists());
         });
     }
 }

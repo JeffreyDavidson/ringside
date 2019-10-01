@@ -5,6 +5,9 @@ namespace App\Models\Concerns;
 use App\Models\Member;
 use App\Models\Stable;
 
+/**
+ * @mixin \App\Models\Concerns\HasCustomRelationships
+ */
 trait CanBeStableMember
 {
     /**
@@ -37,8 +40,17 @@ trait CanBeStableMember
         return $this->stableHistory()->detached();
     }
 
-    // public function getCurrentStableAttribute()
-    // {
-    //     return $this->stableHistory()->where('status', 'active')->current()->first();
-    // }
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getCurrentStableAttribute()
+    {
+        if (!$this->relationLoaded('currentStable')) {
+            $this->setRelation('currentStable', $this->currentStable()->get());
+        }
+
+        return $this->getRelation('currentStable')->first();
+    }
 }

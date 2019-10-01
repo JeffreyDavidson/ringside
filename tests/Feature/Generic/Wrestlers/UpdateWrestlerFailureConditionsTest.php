@@ -288,7 +288,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertEquals(now()->toDateTimeString(), $wrestler->employment->started_at->toDateTimeString());
+            $this->assertEquals(now()->toDateTimeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
         });
     }
 
@@ -304,7 +304,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertEquals(now()->toDateTimeString(), $wrestler->employment->started_at->toDateTimeString());
+            $this->assertEquals(now()->toDateTimeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
         });
     }
 
@@ -320,7 +320,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertEquals(now()->toDateTImeString(), $wrestler->employment->started_at->toDateTimeString());
+            $this->assertEquals(now()->toDateTImeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
         });
     }
 }

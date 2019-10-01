@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Stable;
 use App\Models\Manager;
 use App\Exceptions\CannotBeInjuredException;
 use App\Exceptions\CannotBeRetiredException;
@@ -99,7 +100,7 @@ class ManagerTest extends TestCase
         $manager->employ();
 
         $this->assertCount(1, $manager->employments);
-        $this->assertEquals($now->toDateTimeString(), $manager->employment->started_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->currentEmployment->started_at);
     }
 
     /** @test */
@@ -112,7 +113,7 @@ class ManagerTest extends TestCase
 
         $manager->employ($yesterday);
 
-        $this->assertEquals($yesterday->toDateTimeString(), $manager->employment->started_at);
+        $this->assertEquals($yesterday->toDateTimeString(), $manager->currentEmployment->started_at);
     }
 
     /** @test */
@@ -126,14 +127,14 @@ class ManagerTest extends TestCase
 
         $manager->employ($today);
 
-        $this->assertEquals($today->toDateTimeString(), $manager->employment->started_at);
+        $this->assertEquals($today->toDateTimeString(), $manager->currentEmployment->started_at);
     }
 
     /** @test */
     public function a_manager_with_an_employment_now_or_in_the_past_is_employed()
     {
         $manager = factory(Manager::class)->create();
-        $manager->employment()->create(['started_at' => Carbon::now()]);
+        $manager->currentEmployment()->create(['started_at' => Carbon::now()]);
 
         $this->assertTrue($manager->is_employed);
     }
@@ -142,7 +143,7 @@ class ManagerTest extends TestCase
     public function a_manager_with_an_employment_in_the_future_is_not_employed()
     {
         $manager = factory(Manager::class)->create();
-        $manager->employment()->create(['started_at' => Carbon::tomorrow()]);
+        $manager->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $this->assertFalse($manager->is_employed);
     }
@@ -691,17 +692,53 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function a_manager_without_a_suspension_or_injury_or_retirement_and_employed_in_the_path_is_bookable()
+    public function a_manager_without_a_suspension_or_injury_or_retirement_and_employed_in_the_past_is_bookable()
     {
-        $manager = factory(Manager::class)->states('bookable')->create();
-        $manager->employments()->create(['started_at' => Carbon::yesterday()]);
+        Manager::setEventDispatcher($this->app['events']);
+
+        $manager = factory(Manager::class)->create();
+        $manager->employ(Carbon::yesterday());
 
         $this->assertTrue($manager->checkIsBookable());
     }
 
     /** @test */
-    public function manager_uses_can_be_stable_member_trait()
+    public function a_manager_without_an_employment_is_pending_employment()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeStableMember::class, Manager::class);
+        $manager = factory(Manager::class)->create();
+
+        $this->assertTrue($manager->checkIsPendingEmployment());
+    }
+
+    /** @test */
+    public function a_manager_without_a_suspension_or_injury_or_retirement_and_employed_in_the_future_is_pending_employment()
+    {
+        $manager = factory(Manager::class)->create();
+        $manager->employ(Carbon::tomorrow());
+
+        $this->assertTrue($manager->checkIsPendingEmployment());
+    }
+
+    /** @test */
+    public function a_manager_has_a_current_stable_after_joining()
+    {
+        $manager = factory(Manager::class)->states('bookable')->create();
+        $stable = factory(Stable::class)->states('active')->create();
+
+        $manager->stableHistory()->attach($stable);
+
+        $this->assertEquals($stable->id, $manager->currentStable->id);
+        $this->assertTrue($manager->stableHistory->contains($stable));
+    }
+
+    /** @test */
+    public function a_stable_remains_in_a_managers_history_after_leaving()
+    {
+        $manager = factory(Manager::class)->create();
+        $stable = factory(Stable::class)->create();
+        $manager->stableHistory()->attach($stable);
+        $manager->stableHistory()->detach($stable);
+
+        $this->assertTrue($manager->previousStables->contains($stable));
     }
 }

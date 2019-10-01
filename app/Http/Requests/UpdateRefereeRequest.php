@@ -31,13 +31,13 @@ class UpdateRefereeRequest extends FormRequest
             'started_at' => ['string', 'date_format:Y-m-d H:i:s']
         ];
 
-        if ($this->referee->employment) {
-            if ($this->referee->employment->started_at) {
+        if ($this->referee->currentEmployment) {
+            if ($this->referee->currentEmployment->started_at) {
                 $rules['started_at'][] = 'required';
             }
 
-            if ($this->referee->employment->started_at && $this->referee->employment->started_at->isPast()) {
-                $rules['started_at'][] = 'before_or_equal:' . $this->referee->employment->started_at->toDateTimeString();
+            if ($this->referee->currentEmployment->started_at && $this->referee->currentEmployment->started_at->isPast()) {
+                $rules['started_at'][] = 'before_or_equal:' . $this->referee->currentEmployment->started_at->toDateTimeString();
             }
         }
 

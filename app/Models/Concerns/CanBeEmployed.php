@@ -36,9 +36,11 @@ trait CanBeEmployed
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function employment()
+    public function currentEmployment()
     {
-        return $this->morphOne(Employment::class, 'employable')->whereNull('ended_at');
+        return $this->morphOne(Employment::class, 'employable')
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at');
     }
 
     /**
@@ -48,7 +50,7 @@ trait CanBeEmployed
      */
     public function getIsEmployedCachedAttribute()
     {
-        return $this->employment()->where('started_at', '<=', now())->exists();
+        return $this->currentEmployment()->exists();
     }
 
     /**
@@ -59,7 +61,13 @@ trait CanBeEmployed
      */
     public function getIsPendingEmploymentCachedAttribute()
     {
-        return $this->employment()->where('started_at', '>', now())->exists();
+        if (!$this->currentEmployment) {
+            return true;
+        }
+
+        return $this->whereHas('currentEmployment', function ($query) {
+            $query->where('started_at', '>', now());
+        })->exists();
     }
 
     /**
@@ -102,7 +110,7 @@ trait CanBeEmployed
      */
     public function checkIsEmployed()
     {
-        return $this->employment()->where('started_at', '<=', now())->exists();
+        return $this->currentEmployment()->exists();
     }
 
     /**
@@ -110,6 +118,20 @@ trait CanBeEmployed
      */
     public function checkIsPendingEmployment()
     {
-        return $this->employment()->where('started_at', '>', now())->exists();
+        return $this->currentEmployment()->doesntExist();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getCurrentEmploymentAttribute()
+    {
+        if (!$this->relationLoaded('currentEmployment')) {
+            $this->setRelation('currentEmployment', $this->currentEmployment()->get());
+        }
+
+        return $this->getRelation('currentEmployment')->first();
     }
 }

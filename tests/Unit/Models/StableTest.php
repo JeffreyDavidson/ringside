@@ -36,7 +36,7 @@ class StableTest extends TestCase
 
         $stable->employ();
 
-        $this->assertEquals($now->toDateTimeString(), $stable->employment->started_at);
+        $this->assertEquals($now->toDateTimeString(), $stable->currentEmployment->started_at);
     }
 
     /** @test */

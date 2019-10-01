@@ -116,7 +116,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
         tap($referee->fresh(), function ($referee) {
-            $this->assertNotNull($referee->employment->started_at);
+            $this->assertNotNull($referee->currentEmployment->started_at);
         });
     }
 
@@ -125,14 +125,14 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
-        $referee->employment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
+        $referee->currentEmployment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
         tap($referee->fresh(), function ($referee) {
-            $this->assertEquals(Carbon::yesterday()->toDateTimeString(), $referee->employment->started_at);
+            $this->assertEquals(Carbon::yesterday()->toDateTimeString(), $referee->currentEmployment->started_at);
         });
     }
 
@@ -147,7 +147,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
         tap($referee->fresh(), function ($referee) {
-            $this->assertNotNull($referee->employment->started_at);
+            $this->assertNotNull($referee->currentEmployment->started_at);
         });
     }
 
@@ -162,7 +162,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
         $response->assertRedirect(route('referees.edit', $referee));
         $response->assertSessionHasErrors('started_at');
         tap($referee->fresh(), function ($referee) {
-            $this->assertNotNull($referee->employment->started_at);
+            $this->assertNotNull($referee->currentEmployment->started_at);
         });
     }
 }

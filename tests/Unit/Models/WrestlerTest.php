@@ -103,33 +103,27 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_can_be_a_part_of_many_tag_teams()
-    {
-        $wrestler = factory(Wrestler::class)->create();
-
-        $this->assertInstanceOf(Collection::class, $wrestler->tagTeamHistory);
-    }
-
-    /** @test */
-    public function a_bookable_wrestler_can_be_a_part_of_one_bookable_tag_team()
+    public function a_wrestler_has_a_current_tag_team_after_joining()
     {
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+
         $wrestler->tagTeamHistory()->attach($tagTeam);
 
-        $this->assertInstanceOf(TagTeam::class, $wrestler->currentTagTeam);
+        $this->assertEquals($tagTeam->id, $wrestler->currentTagTeam->id);
+        $this->assertTrue($wrestler->tagTeamHistory->contains($tagTeam));
     }
 
     /** @test */
-    public function a_wrestler_can_be_a_part_of_many_previous_tag_teams()
+    public function a_tag_team_remains_in_a_wrestlers_history_after_leaving()
     {
         $wrestler = factory(Wrestler::class)->create();
         $tagTeam = factory(TagTeam::class)->create();
+
         $wrestler->tagTeamHistory()->attach($tagTeam);
         $wrestler->tagTeamHistory()->detach($tagTeam);
 
-
-        $this->assertInstanceOf(Collection::class, $wrestler->previousTagTeams);
+        $this->assertTrue($wrestler->previousTagTeams->contains($tagTeam));
     }
 
     /** @test */
@@ -220,7 +214,7 @@ class WrestlerTest extends TestCase
         $wrestler->employ();
 
         $this->assertCount(1, $wrestler->employments);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->employment->started_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->currentEmployment->started_at);
     }
 
     /** @test */
@@ -233,7 +227,7 @@ class WrestlerTest extends TestCase
 
         $wrestler->employ($yesterday);
 
-        $this->assertEquals($yesterday->toDateTimeString(), $wrestler->employment->started_at);
+        $this->assertEquals($yesterday->toDateTimeString(), $wrestler->currentEmployment->started_at);
     }
 
     /** @test */
@@ -247,14 +241,14 @@ class WrestlerTest extends TestCase
 
         $wrestler->employ($today);
 
-        $this->assertEquals($today->toDateTimeString(), $wrestler->employment->started_at);
+        $this->assertEquals($today->toDateTimeString(), $wrestler->currentEmployment->started_at);
     }
 
     /** @test */
     public function a_wrestler_with_an_employment_now_or_in_the_past_is_employed()
     {
         $wrestler = factory(Wrestler::class)->create();
-        $wrestler->employment()->create(['started_at' => Carbon::now()]);
+        $wrestler->currentEmployment()->create(['started_at' => Carbon::now()]);
 
         $this->assertTrue($wrestler->is_employed);
     }
@@ -263,7 +257,7 @@ class WrestlerTest extends TestCase
     public function a_wrestler_with_an_employment_in_the_future_is_not_employed()
     {
         $wrestler = factory(Wrestler::class)->create();
-        $wrestler->employment()->create(['started_at' => Carbon::tomorrow()]);
+        $wrestler->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $this->assertFalse($wrestler->is_employed);
     }
@@ -818,5 +812,22 @@ class WrestlerTest extends TestCase
         $wrestler->employments()->create(['started_at' => Carbon::yesterday()]);
 
         $this->assertTrue($wrestler->checkIsBookable());
+    }
+
+    /** @test */
+    public function a_wrestler_without_an_employment_is_pending_employment()
+    {
+        $wrestler = factory(Wrestler::class)->create();
+
+        $this->assertTrue($wrestler->checkIsPendingEmployment());
+    }
+
+    /** @test */
+    public function a_wrestler_without_a_suspension_or_injury_or_retirement_and_employed_in_the_future_is_pending_employment()
+    {
+        $wrestler = factory(Wrestler::class)->create();
+        $wrestler->employ(Carbon::tomorrow());
+
+        $this->assertTrue($wrestler->checkIsPendingEmployment());
     }
 }

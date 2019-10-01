@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use Tests\TestCase;
 use Carbon\Carbon;
+use Tests\TestCase;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -63,7 +63,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
             $this->assertEquals('The Finisher', $wrestler->signature_move);
-            $this->assertEquals($now->toDateTimeString(), $wrestler->employment->started_at);
+            $this->assertEquals($now->toDateTimeString(), $wrestler->currentEmployment->started_at);
         });
     }
 }

@@ -38,9 +38,9 @@ class UpdateStableRequest extends FormRequest
                 'string',
                 'date_format:Y-m-d H:i:s',
                 function ($attribute, $value, $fail) {
-                    $employment = $this->route('stable')->employment ?? null;
-                    if ($employment && optional($employment->started_at)->isBefore($value)) {
-                        $fail(__('validation.before_or_equal', ['attribute' => $attribute, 'date' => $employment->started_at->toDateTimeString()]));
+                    $currentEmployment = $this->route('stable')->currentEmployment ?? null;
+                    if ($currentEmployment && optional($currentEmployment->started_at)->isBefore($value)) {
+                        $fail(__('validation.before_or_equal', ['attribute' => $attribute, 'date' => $currentEmployment->started_at->toDateTimeString()]));
                     }
                 }
             ],

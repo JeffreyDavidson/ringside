@@ -46,11 +46,22 @@ trait CanBeBooked
      */
     public function checkIsBookable()
     {
-        $isEmployed = $this->employment()->where('started_at', '<=', now())->exists();
-        $isNotSuspended = $this->suspension()->whereNotNull('ended_at')->exists();
-        $isNotInjured = $this->injury()->whereNotNull('ended_at')->exists();
-        $isNotRetired = $this->retirement()->whereNotNull('ended_at')->exists();
+        if (!$this->currentEmployment()->exists()) {
+            return false;
+        }
 
-        return $isEmployed && $isNotSuspended && $isNotInjured && $isNotRetired;
+        if ($this->suspension()->whereNotNull('ended_at')->exists()) {
+            return false;
+        }
+
+        if ($this->injury()->whereNotNull('ended_at')->exists()) {
+            return false;
+        }
+
+        if ($this->retirement()->whereNotNull('ended_at')->exists()) {
+            return false;
+        }
+
+        return true;
     }
 }

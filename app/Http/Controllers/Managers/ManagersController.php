@@ -25,7 +25,7 @@ class ManagersController extends Controller
         $this->authorize('viewList', Manager::class);
 
         if ($request->ajax()) {
-            $query = Manager::with('employment');
+            $query = Manager::with('currentEmployment');
             $requestFilter->apply($query);
 
             return $table->eloquent($query)

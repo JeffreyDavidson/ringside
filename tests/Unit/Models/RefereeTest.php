@@ -99,7 +99,7 @@ class RefereeTest extends TestCase
         $referee->employ();
 
         $this->assertCount(1, $referee->employments);
-        $this->assertEquals($now->toDateTimeString(), $referee->employment->started_at);
+        $this->assertEquals($now->toDateTimeString(), $referee->currentEmployment->started_at);
     }
 
     /** @test */
@@ -112,7 +112,7 @@ class RefereeTest extends TestCase
 
         $referee->employ($yesterday);
 
-        $this->assertEquals($yesterday->toDateTimeString(), $referee->employment->started_at);
+        $this->assertEquals($yesterday->toDateTimeString(), $referee->currentEmployment->started_at);
     }
 
     /** @test */
@@ -126,14 +126,14 @@ class RefereeTest extends TestCase
 
         $referee->employ($today);
 
-        $this->assertEquals($today->toDateTimeString(), $referee->employment->started_at);
+        $this->assertEquals($today->toDateTimeString(), $referee->currentEmployment->started_at);
     }
 
     /** @test */
     public function a_referee_with_an_employment_now_or_in_the_past_is_employed()
     {
         $referee = factory(Referee::class)->create();
-        $referee->employment()->create(['started_at' => Carbon::now()]);
+        $referee->currentEmployment()->create(['started_at' => Carbon::now()]);
 
         $this->assertTrue($referee->is_employed);
     }
@@ -142,7 +142,7 @@ class RefereeTest extends TestCase
     public function a_referee_with_an_employment_in_the_future_is_not_employed()
     {
         $referee = factory(Referee::class)->create();
-        $referee->employment()->create(['started_at' => Carbon::tomorrow()]);
+        $referee->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $this->assertFalse($referee->is_employed);
     }
@@ -691,11 +691,28 @@ class RefereeTest extends TestCase
     }
 
     /** @test */
-    public function a_referee_without_a_suspension_or_injury_or_retirement_and_employed_in_the_path_is_bookable()
+    public function a_referee_without_a_suspension_or_injury_or_retirement_and_employed_in_the_past_is_bookable()
     {
         $referee = factory(Referee::class)->states('bookable')->create();
         $referee->employments()->create(['started_at' => Carbon::yesterday()]);
 
         $this->assertTrue($referee->checkIsBookable());
+    }
+
+    /** @test */
+    public function a_referee_without_an_employment_is_pending_employment()
+    {
+        $referee = factory(Referee::class)->create();
+
+        $this->assertTrue($referee->checkIsPendingEmployment());
+    }
+
+    /** @test */
+    public function a_referee_without_a_suspension_or_injury_or_retirement_and_employed_in_the_future_is_pending_employment()
+    {
+        $referee = factory(Referee::class)->create();
+        $referee->employ(Carbon::tomorrow());
+
+        $this->assertTrue($referee->checkIsPendingEmployment());
     }
 }

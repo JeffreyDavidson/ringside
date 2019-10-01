@@ -31,7 +31,7 @@
             data-input
             name="started_at"
             placeholder="Enter date started"
-            value="{{ old('started_at', optional($manager->employment->started_at ?? null)->toDateTimeString()) }}"
+            value="{{ old('started_at', optional($manager->currentEmployment->started_at ?? null)->toDateTimeString()) }}"
         >
         <span class="kt-input-icon__icon kt-input-icon__icon--right">
             <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>

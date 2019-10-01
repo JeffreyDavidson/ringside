@@ -35,4 +35,18 @@ trait CanBeTagTeamPartner
     {
         return $this->tagTeamHistory()->detached();
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getCurrentTagTeamAttribute()
+    {
+        if (!$this->relationLoaded('currentTagTeam')) {
+            $this->setRelation('currentTagTeam', $this->currentTagTeam()->get());
+        }
+
+        return $this->getRelation('currentTagTeam')->first();
+    }
 }

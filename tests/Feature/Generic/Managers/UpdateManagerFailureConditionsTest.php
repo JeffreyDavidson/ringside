@@ -116,7 +116,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
         tap($manager->fresh(), function ($manager) {
-            $this->assertNotNull($manager->employment->started_at);
+            $this->assertNotNull($manager->currentEmployment->started_at);
         });
     }
 
@@ -131,7 +131,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
         tap($manager->fresh(), function ($manager) {
-            $this->assertNotNull($manager->employment->started_at);
+            $this->assertNotNull($manager->currentEmployment->started_at);
         });
     }
 
@@ -146,7 +146,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
         tap($manager->fresh(), function ($manager) {
-            $this->assertNotNull($manager->employment->started_at);
+            $this->assertNotNull($manager->currentEmployment->started_at);
         });
     }
 
@@ -155,14 +155,14 @@ class UpdateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
-        $manager->employment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
+        $manager->currentEmployment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest($manager, $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         $response->assertRedirect(route('managers.edit', $manager));
         $response->assertSessionHasErrors('started_at');
         tap($manager->fresh(), function ($manager) {
-            $this->assertEquals(Carbon::yesterday()->toDateTimeString(), $manager->employment->started_at);
+            $this->assertEquals(Carbon::yesterday()->toDateTimeString(), $manager->currentEmployment->started_at);
         });
     }
 }

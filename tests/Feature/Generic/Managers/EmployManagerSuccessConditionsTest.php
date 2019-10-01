@@ -25,7 +25,7 @@ class EmployManagerSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('managers.index'));
         tap($manager->fresh(), function ($manager) {
-            $this->assertTrue($manager->employment()->exists());
+            $this->assertTrue($manager->currentEmployment()->exists());
         });
     }
 }

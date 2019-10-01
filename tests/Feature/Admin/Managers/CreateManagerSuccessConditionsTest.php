@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Admin\Manager;
 
-use Tests\TestCase;
 use Carbon\Carbon;
+use Tests\TestCase;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -56,7 +56,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
         tap(Manager::first(), function ($manager) use ($now) {
             $this->assertEquals('John', $manager->first_name);
             $this->assertEquals('Smith', $manager->last_name);
-            $this->assertEquals($now->toDateTimeString(), $manager->employment->started_at);
+            $this->assertEquals($now->toDateTimeString(), $manager->currentEmployment->started_at);
         });
     }
 }

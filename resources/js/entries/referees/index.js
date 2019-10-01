@@ -53,7 +53,7 @@ table.DataTable({
         { data: "id", title: "Referee ID" },
         { data: "name", title: "Name" },
         {
-            data: "employment.started_at",
+            data: "currentEmployment.started_at",
             title: "Date Started",
             searchable: false
         },

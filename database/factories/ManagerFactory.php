@@ -9,7 +9,7 @@ $factory->define(Manager::class, function (Faker $faker) {
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
-        'status' => $faker->word(),
+        'status' => ManagerStatus::PENDING_EMPLOYMENT,
     ];
 });
 

@@ -30,7 +30,7 @@ class TagTeamsController extends Controller
             return $table->eloquent($query)
                 ->addColumn('action', 'tagteams.partials.action-cell')
                 ->editColumn('started_at', function (TagTeam $tagTeam) {
-                    return $tagTeam->employment->started_at->format('Y-m-d H:s');
+                    return $tagTeam->currentEmployment->started_at->format('Y-m-d H:s');
                 })
                 ->filterColumn('id', function ($query, $keyword) {
                     $query->where($query->qualifyColumn('id'), $keyword);

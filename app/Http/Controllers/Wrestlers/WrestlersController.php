@@ -6,9 +6,9 @@ use App\Models\Wrestler;
 use App\Filters\WrestlerFilters;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexWrestlerRequest;
 use App\Http\Requests\StoreWrestlerRequest;
 use App\Http\Requests\UpdateWrestlerRequest;
-use App\Http\Requests\IndexWrestlerRequest;
 
 class WrestlersController extends Controller
 {
@@ -24,7 +24,7 @@ class WrestlersController extends Controller
         $this->authorize('viewList', Wrestler::class);
 
         if ($request->ajax()) {
-            $query = Wrestler::with('employment');
+            $query = Wrestler::with('currentEmployment');
             $requestFilter->apply($query);
 
             return $table->eloquent($query)

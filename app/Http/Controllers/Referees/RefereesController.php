@@ -24,7 +24,7 @@ class RefereesController extends Controller
         $this->authorize('viewList', Referee::class);
 
         if ($request->ajax()) {
-            $query = Referee::with('employment');
+            $query = Referee::with('currentEmployment');
             $requestFilter->apply($query);
 
             return $table->eloquent($query)

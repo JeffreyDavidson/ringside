@@ -60,7 +60,7 @@ class CreateStableSuccessConditionsTest extends TestCase
         $response->assertRedirect(route('stables.index'));
         tap(Stable::first(), function ($stable) use ($now) {
             $this->assertEquals('Example Stable Name', $stable->name);
-            $this->assertEquals($now->toDateTimeString(), $stable->employment->started_at->toDateTimeString());
+            $this->assertEquals($now->toDateTimeString(), $stable->currentEmployment->started_at->toDateTimeString());
         });
     }
 }
