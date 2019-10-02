@@ -4,12 +4,11 @@ namespace App\Models\Concerns;
 
 use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
+use App\Exceptions\CannotBeFiredException;
+
 
 trait CanBeEmployed
 {
-    /**
-     *
-     */
     public static function bootCanBeEmployed()
     {
         if (config('app.debug')) {
@@ -41,6 +40,30 @@ trait CanBeEmployed
         return $this->morphOne(Employment::class, 'employable')
                     ->where('started_at', '<=', now())
                     ->whereNull('ended_at');
+    }
+
+    /**
+     * Get the previous employments of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousEmployments()
+    {
+        return $this->morphMany(Employment::class, 'employable')
+                    ->whereNotNull('ended_at');
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousEmployment()
+    {
+        return $this->morphMany(Employment::class, 'employable')
+                    ->whereNotNull('ended_at')
+                    ->latest('ended_at')
+                    ->limit(1);
     }
 
     /**
@@ -93,8 +116,8 @@ trait CanBeEmployed
 
     /**
      * Employ a model.
-     * @param Carbon|string $startedAt
      *
+     * @param  Carbon|string $startedAt
      * @return bool
      */
     public function employ($startedAt = null)
@@ -106,6 +129,34 @@ trait CanBeEmployed
     }
 
     /**
+     * Fire a model.
+     *
+     * @param  Carbon|string $startedAt
+     * @return bool
+     */
+    public function fire($firededAt = null)
+    {
+        if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
+            throw new CannotBeFiredException;
+        }
+
+        if ($this->checkIsSuspended()) {
+            $this->reinstate();
+        }
+
+        if ($this->checkIsInjured()) {
+            $this->recover();
+        }
+
+        $fireDate = $firededAt ?? now();
+        $this->currentEmployment()->update(['ended_at' => $fireDate]);
+
+        return $this->touch();
+    }
+
+    /**
+     * Check to see if the model is employed.
+     *
      * @return bool
      */
     public function checkIsEmployed()
@@ -114,6 +165,8 @@ trait CanBeEmployed
     }
 
     /**
+     * Check to see if the model is pending employment.
+     *
      * @return bool
      */
     public function checkIsPendingEmployment()
@@ -122,9 +175,9 @@ trait CanBeEmployed
     }
 
     /**
-     * Undocumented function
+     * Get the current employment of the model.
      *
-     * @return void
+     * @return App\Models\Employment
      */
     public function getCurrentEmploymentAttribute()
     {
@@ -133,5 +186,19 @@ trait CanBeEmployed
         }
 
         return $this->getRelation('currentEmployment')->first();
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return App\Models\Employment
+     */
+    public function getPreviousEmploymentAttribute()
+    {
+        if (!$this->relationLoaded('previousEmployment')) {
+            $this->setRelation('previousEmployment', $this->previousEmployment()->get());
+        }
+
+        return $this->getRelation('previousEmployment')->first();
     }
 }

@@ -9,9 +9,6 @@ use App\Exceptions\CannotBeRecoveredException;
 
 trait CanBeInjured
 {
-    /**
-     *
-     */
     public static function bootCanBeInjured()
     {
         if (config('app.debug')) {
@@ -38,9 +35,35 @@ trait CanBeInjured
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function injury()
+    public function currentInjury()
     {
-        return $this->morphOne(Injury::class, 'injurable')->whereNull('ended_at');
+        return $this->morphOne(Injury::class, 'injurable')
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at');
+    }
+
+    /**
+     * Get the previous injuries of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousInjuries()
+    {
+        return $this->morphMany(Injury::class, 'injurable')
+                    ->whereNotNull('ended_at');
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousInjury()
+    {
+        return $this->morphMany(Injury::class, 'injurable')
+                    ->whereNotNull('ended_at')
+                    ->latest('ended_at')
+                    ->limit(1);
     }
 
     /**
@@ -80,7 +103,8 @@ trait CanBeInjured
         }
 
         $this->injuries()->create(['started_at' => now()]);
-        $this->touch();
+
+        return $this->touch();
     }
 
     /**
@@ -94,16 +118,46 @@ trait CanBeInjured
             throw new CannotBeRecoveredException;
         }
 
-        $this->injury()->update(['ended_at' => now()]);
+        $this->currentInjury()->update(['ended_at' => now()]);
 
         return $this->touch();
     }
 
     /**
+     * Check to see if the currently model is injured.
+     *
      * @return bool
      */
     public function checkIsInjured()
     {
-        return $this->injury()->where('started_at', '<=', now())->exists();
+        return $this->currentInjury()->exists();
+    }
+
+    /**
+     * Get the current injury of the model.
+     *
+     * @return App\Models\Injury
+     */
+    public function getCurrentInjuryAttribute()
+    {
+        if (!$this->relationLoaded('currentInjury')) {
+            $this->setRelation('currentInjury', $this->currentInjury()->get());
+        }
+
+        return $this->getRelation('currentInjury')->first();
+    }
+
+    /**
+     * Get the previous injury of the model.
+     *
+     * @return App\Models\Injury
+     */
+    public function getPreviousInjuryAttribute()
+    {
+        if (!$this->relationLoaded('previousInjury')) {
+            $this->setRelation('previousInjury', $this->previousInjury()->get());
+        }
+
+        return $this->getRelation('previousInjury')->first();
     }
 }

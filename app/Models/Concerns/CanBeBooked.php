@@ -50,15 +50,15 @@ trait CanBeBooked
             return false;
         }
 
-        if ($this->suspension()->whereNotNull('ended_at')->exists()) {
+        if ($this->currentSuspension()->exists()) {
             return false;
         }
 
-        if ($this->injury()->whereNotNull('ended_at')->exists()) {
+        if ($this->currentInjury()->exists()) {
             return false;
         }
 
-        if ($this->retirement()->whereNotNull('ended_at')->exists()) {
+        if ($this->currentRetirement()->exists()) {
             return false;
         }
 

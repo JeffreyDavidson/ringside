@@ -9,9 +9,6 @@ use App\Exceptions\CannotBeUnretiredException;
 
 trait CanBeRetired
 {
-    /**
-     *
-     */
     public static function bootCanBeRetired()
     {
         if (config('app.debug')) {
@@ -38,9 +35,35 @@ trait CanBeRetired
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function retirement()
+    public function currentRetirement()
     {
-        return $this->morphOne(Retirement::class, 'retiree')->whereNull('ended_at');
+        return $this->morphOne(Retirement::class, 'retiree')
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at');
+    }
+
+    /**
+     * Get the previous retirements of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousRetirements()
+    {
+        return $this->morphMany(Retirement::class, 'retiree')
+                    ->whereNotNull('ended_at');
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousRetirement()
+    {
+        return $this->morphMany(Retirement::class, 'retiree')
+                    ->whereNotNull('ended_at')
+                    ->latest('ended_at')
+                    ->limit(1);
     }
 
     /**
@@ -67,7 +90,7 @@ trait CanBeRetired
     /**
      * Retire a model.
      *
-     * @return \App\Models\Retirement
+     * @return bool
      */
     public function retire()
     {
@@ -99,16 +122,46 @@ trait CanBeRetired
             throw new CannotBeUnretiredException;
         }
 
-        $this->retirement()->update(['ended_at' => now()]);
+        $this->currentRetirement()->update(['ended_at' => now()]);
 
         return $this->touch();
     }
 
     /**
+     * Check to see if the model is retired.
+     *
      * @return bool
      */
     public function checkIsRetired()
     {
-        return $this->retirement()->where('started_at', '<=', now())->exists();
+        return $this->currentRetirement()->exists();
+    }
+
+    /**
+     * Get the current retirement of the model.
+     *
+     * @return App\Models\Retirement
+     */
+    public function getCurrentRetirementAttribute()
+    {
+        if (!$this->relationLoaded('currentRetirement')) {
+            $this->setRelation('currentRetirement', $this->currentRetirement()->get());
+        }
+
+        return $this->getRelation('currentRetirement')->first();
+    }
+
+    /**
+     * Get the previous retirement of the model.
+     *
+     * @return App\Models\Retirement
+     */
+    public function getPreviousRetirementAttribute()
+    {
+        if (!$this->relationLoaded('previousRetirement')) {
+            $this->setRelation('previousRetirement', $this->previousRetirement()->get());
+        }
+
+        return $this->getRelation('previousRetirement')->first();
     }
 }

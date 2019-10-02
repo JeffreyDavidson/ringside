@@ -38,9 +38,34 @@ trait CanBeSuspended
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function suspension()
+    public function currentSuspension()
     {
-        return $this->morphOne(Suspension::class, 'suspendable')->whereNull('ended_at');
+        return $this->morphOne(Suspension::class, 'suspendable')
+                    ->whereNull('ended_at');
+    }
+
+    /**
+     * Get the previous retirements of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousSuspensions()
+    {
+        return $this->morphMany(Suspension::class, 'suspendable')
+                    ->whereNotNull('ended_at');
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function previousSuspension()
+    {
+        return $this->morphMany(Suspension::class, 'suspendable')
+                    ->whereNotNull('ended_at')
+                    ->latest('ended_at')
+                    ->limit(1);
     }
 
     /**
@@ -95,7 +120,7 @@ trait CanBeSuspended
             throw new CannotBeReinstatedException;
         }
 
-        $this->suspension()->update(['ended_at' => now()]);
+        $this->currentSuspension()->update(['ended_at' => now()]);
 
         return $this->touch();
     }
@@ -105,6 +130,34 @@ trait CanBeSuspended
      */
     public function checkIsSuspended()
     {
-        return $this->suspension()->where('started_at', '<=', now())->exists();
+        return $this->currentSuspension()->exists();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getCurrentSuspensionAttribute()
+    {
+        if (!$this->relationLoaded('currentSuspension')) {
+            $this->setRelation('currentSuspension', $this->currentSuspension()->get());
+        }
+
+        return $this->getRelation('currentSuspension')->first();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getPreviousSuspensionAttribute()
+    {
+        if (!$this->relationLoaded('previousSuspension')) {
+            $this->setRelation('previousSuspension', $this->previousSuspension()->get());
+        }
+
+        return $this->getRelation('previousSuspension')->first();
     }
 }

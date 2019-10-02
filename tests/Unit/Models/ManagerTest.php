@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Stable;
 use App\Models\Manager;
+use App\Exceptions\CannotBeFiredException;
 use App\Exceptions\CannotBeInjuredException;
 use App\Exceptions\CannotBeRetiredException;
 use App\Exceptions\CannotBeRecoveredException;
@@ -58,35 +59,11 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function a_manager_can_be_soft_deleted()
-    {
-        $this->assertSoftDeletes(Manager::class);
-    }
-
-    /** @test */
-    public function manager_uses_has_full_name_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\HasFullName::class, Manager::class);
-    }
-
-    /** @test */
     public function a_manager_has_a_full_name()
     {
         $manager = factory(Manager::class)->make(['first_name' => 'John', 'last_name' => 'Smith']);
 
         $this->assertEquals('John Smith', $manager->full_name);
-    }
-
-    /** @test */
-    public function manager_uses_has_cached_attributes_trait()
-    {
-        $this->assertUsesTrait(\App\Traits\HasCachedAttributes::class, Manager::class);
-    }
-
-    /** @test */
-    public function manager_uses_can_be_employed_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeEmployed::class, Manager::class);
     }
 
     /** @test */
@@ -131,29 +108,118 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
+    public function a_bookable_manager_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $manager = factory(Manager::class)->states('bookable')->create();
+
+        $this->assertNull($manager->currentEmployment->ended_at);
+
+        $manager->fire();
+
+        $this->assertCount(1, $manager->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $manager->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function a_bookable_manager_can_be_fired_at_start_date()
+    {
+        $yesterday = Carbon::yesterday();
+        Carbon::setTestNow($yesterday);
+
+        $manager = factory(Manager::class)->states('bookable')->create();
+
+        $this->assertNull($manager->currentEmployment->ended_at);
+
+        $manager->fire($yesterday);
+
+        $this->assertCount(1, $manager->previousEmployments);
+        $this->assertEquals($yesterday->toDateTimeString(), $manager->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function an_injured_manager_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $manager = factory(Manager::class)->states('injured')->create();
+
+        $this->assertNull($manager->currentInjury->ended_at);
+
+        $manager->fire();
+
+        $this->assertCount(1, $manager->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $manager->previousEmployment->ended_at);
+        $this->assertNotNull($manager->previousInjury->ended_at);
+    }
+
+    /** @test */
+    public function a_suspended_manager_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $manager = factory(Manager::class)->states('suspended')->create();
+
+        $this->assertNull($manager->currentSuspension->ended_at);
+
+        $manager->fire();
+
+        $this->assertCount(1, $manager->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $manager->previousEmployment->ended_at);
+        $this->assertNotNull($manager->previousSuspension->ended_at);
+    }
+
+    /** @test */
+    public function a_pending_employment_manager_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $manager = factory(Manager::class)->states('pending-employment')->create();
+
+        $manager->fire();
+    }
+
+    /** @test */
+    public function a_retired_manager_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $manager = factory(Manager::class)->states('retired')->create();
+
+        $manager->fire();
+    }
+
+    /** @test */
     public function a_manager_with_an_employment_now_or_in_the_past_is_employed()
     {
         $manager = factory(Manager::class)->create();
         $manager->currentEmployment()->create(['started_at' => Carbon::now()]);
 
         $this->assertTrue($manager->is_employed);
+        $this->assertTrue($manager->checkIsEmployed());
     }
 
     /** @test */
-    public function a_manager_with_an_employment_in_the_future_is_not_employed()
+    public function a_manager_with_an_employment_in_the_future_is_not_employed_and_is_pending_employment()
     {
         $manager = factory(Manager::class)->create();
         $manager->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $this->assertFalse($manager->is_employed);
+        $this->assertTrue($manager->is_pending_employment);
     }
 
     /** @test */
-    public function a_manager_without_an_employment_is_not_employed()
+    public function a_manager_without_an_employment_is_not_employed_and_is_pending_employment()
     {
         $manager = factory(Manager::class)->create();
 
         $this->assertFalse($manager->is_employed);
+        $this->assertTrue($manager->is_pending_employment);
     }
 
     /** @test */
@@ -192,12 +258,6 @@ class ManagerTest extends TestCase
         $this->assertTrue($employedManagers->contains($injuredManager));
         $this->assertTrue($employedManagers->contains($suspendedManager));
         $this->assertTrue($employedManagers->contains($retiredManager));
-    }
-
-    /** @test */
-    public function manager_uses_can_be_retired_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeRetired::class, Manager::class);
     }
 
     /** @test */
@@ -248,7 +308,7 @@ class ManagerTest extends TestCase
 
         $this->assertEquals('retired', $manager->status);
         $this->assertCount(1, $manager->retirements);
-        $this->assertEquals($now->toDateTimeString(), $manager->retirement->started_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->currentRetirement->started_at);
     }
 
     /** @test */
@@ -260,14 +320,14 @@ class ManagerTest extends TestCase
 
         $manager = factory(Manager::class)->states('suspended')->create();
 
-        $this->assertNull($manager->suspensions()->latest()->first()->ended_at);
+        $this->assertNull($manager->currentSuspension->ended_at);
 
         $manager->retire();
 
         $this->assertEquals('retired', $manager->status);
         $this->assertCount(1, $manager->retirements);
-        $this->assertNotNull($manager->suspensions()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $manager->retirement->started_at);
+        $this->assertNotNull($manager->previousSuspension->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->currentRetirement->started_at);
     }
 
     /** @test */
@@ -279,14 +339,14 @@ class ManagerTest extends TestCase
 
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $this->assertNull($manager->injuries()->latest()->first()->ended_at);
+        $this->assertNull($manager->currentInjury->ended_at);
 
         $manager->retire();
 
         $this->assertEquals('retired', $manager->status);
         $this->assertCount(1, $manager->retirements);
-        $this->assertNotNull($manager->injuries()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $manager->retirement->started_at);
+        $this->assertNotNull($manager->previousInjury->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->currentRetirement->started_at);
     }
 
     /** @test */
@@ -319,7 +379,7 @@ class ManagerTest extends TestCase
         $manager->unretire();
 
         $this->assertEquals('bookable', $manager->status);
-        $this->assertNotNull($manager->retirements()->latest()->first()->ended_at);
+        $this->assertNotNull($manager->previousRetirement->ended_at);
     }
 
     /** @test */
@@ -363,9 +423,13 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function manager_uses_can_be_injured_trait()
+    public function a_manager_that_retires_and_unretires_has_a_previous_retirement()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeInjured::class, Manager::class);
+        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager->retire();
+        $manager->unretire();
+
+        $this->assertCount(1, $manager->previousRetirements);
     }
 
     /** @test */
@@ -381,8 +445,8 @@ class ManagerTest extends TestCase
 
         $this->assertEquals('injured', $manager->status);
         $this->assertCount(1, $manager->injuries);
-        $this->assertNull($manager->injuries()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $manager->injury->started_at);
+        $this->assertNull($manager->currentInjury->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->currentInjury->started_at);
     }
 
     /** @test */
@@ -475,7 +539,7 @@ class ManagerTest extends TestCase
         $manager->recover();
 
         $this->assertEquals('bookable', $manager->status);
-        $this->assertNotNull($manager->injuries()->latest()->first()->ended_at);
+        $this->assertNotNull($manager->previousInjury->ended_at);
     }
 
     /** @test */
@@ -514,9 +578,14 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function manager_uses_can_be_suspended_trait()
+    public function a_manager_can_be_injured_multiple_times()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeSuspended::class, Manager::class);
+        $manager = factory(Manager::class)->states('injured')->create();
+
+        $manager->recover();
+        $manager->injure();
+
+        $this->assertCount(1, $manager->previousInjuries);
     }
 
     /** @test */
@@ -532,8 +601,8 @@ class ManagerTest extends TestCase
 
         $this->assertEquals('suspended', $manager->status);
         $this->assertCount(1, $manager->suspensions);
-        $this->assertNull($manager->suspensions()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $manager->suspension->started_at);
+        $this->assertNull($manager->currentSuspension->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->currentSuspension->started_at);
     }
 
     /** @test */
@@ -626,7 +695,7 @@ class ManagerTest extends TestCase
         $manager->reinstate();
 
         $this->assertEquals('bookable', $manager->status);
-        $this->assertNotNull($manager->suspensions()->latest()->first()->ended_at);
+        $this->assertNotNull($manager->previousSuspension->ended_at);
     }
 
     /** @test */
@@ -662,6 +731,17 @@ class ManagerTest extends TestCase
         $this->assertFalse($suspendedManagers->contains($bookableManager));
         $this->assertFalse($suspendedManagers->contains($injuredManager));
         $this->assertFalse($suspendedManagers->contains($retiredManager));;
+    }
+
+    /** @test */
+    public function a_manager_can_be_suspended_multiple_times()
+    {
+        $manager = factory(Manager::class)->states('suspended')->create();
+
+        $manager->reinstate();
+        $manager->suspend();
+
+        $this->assertCount(1, $manager->previousSuspensions);
     }
 
     /** @test */

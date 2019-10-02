@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use App\Exceptions\CannotBeFiredException;
 use App\Exceptions\CannotBeInjuredException;
 use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Database\Eloquent\Collection;
@@ -80,127 +81,27 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_has_a_user_id()
+    public function a_wrestler_has_a_formatted_height()
     {
-        $wrestler = factory(Wrestler::class)->create(['user_id' => 1]);
+        $wrestler = factory(Wrestler::class)->create(['height' => 71]);
 
-        $this->assertEquals(1, $wrestler->user_id);
+        $this->assertEquals('5\'11"', $wrestler->formatted_height);
     }
 
     /** @test */
-    public function a_wrestler_can_be_associated_to_a_user()
+    public function a_wrestler_can_get_height_in_feet()
     {
-        $user = factory(User::class)->create();
-        $wrestler = factory(Wrestler::class)->create(['user_id' => $user->getKey()]);
+        $wrestler = factory(Wrestler::class)->create(['height' => 71]);
 
-        $this->assertInstanceOf(User::class, $wrestler->user);
+        $this->assertEquals(5, $wrestler->feet);
     }
 
     /** @test */
-    public function wrestler_uses_can_be_tag_team_partner_trait()
+    public function a_wrestler_can_get_height_in_inches()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeTagTeamPartner::class, Wrestler::class);
-    }
+        $wrestler = factory(Wrestler::class)->create(['height' => 71]);
 
-    /** @test */
-    public function a_wrestler_has_a_current_tag_team_after_joining()
-    {
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
-
-        $wrestler->tagTeamHistory()->attach($tagTeam);
-
-        $this->assertEquals($tagTeam->id, $wrestler->currentTagTeam->id);
-        $this->assertTrue($wrestler->tagTeamHistory->contains($tagTeam));
-    }
-
-    /** @test */
-    public function a_tag_team_remains_in_a_wrestlers_history_after_leaving()
-    {
-        $wrestler = factory(Wrestler::class)->create();
-        $tagTeam = factory(TagTeam::class)->create();
-
-        $wrestler->tagTeamHistory()->attach($tagTeam);
-        $wrestler->tagTeamHistory()->detach($tagTeam);
-
-        $this->assertTrue($wrestler->previousTagTeams->contains($tagTeam));
-    }
-
-    /** @test */
-    public function wrestler_uses_can_be_stable_member_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeStableMember::class, Wrestler::class);
-    }
-
-    /** @test */
-    public function a_wrestler_can_be_a_member_of_a_stable()
-    {
-        $wrestler = factory(Wrestler::class)->create();
-
-        $this->assertInstanceOf(Collection::class, $wrestler->stableHistory);
-    }
-
-    /** @test */
-    public function a_bookable_wrestler_can_be_a_part_of_one_active_stable()
-    {
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $stable = factory(Stable::class)->states('active')->create();
-
-        $wrestler->stableHistory()->attach($stable);
-
-        $this->assertEquals($stable->id, $wrestler->currentStable->id);
-    }
-
-    /** @test */
-    public function a_wrestler_can_be_a_part_of_many_previous_stables()
-    {
-        $wrestler = factory(Wrestler::class)->create();
-        $stable = factory(Stable::class)->create();
-        $wrestler->stableHistory()->attach($stable);
-        $wrestler->stableHistory()->detach($stable);
-
-        $this->assertInstanceOf(Collection::class, $wrestler->previousStables);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    /** @test */
-    public function a_wrestler_can_be_soft_deleted()
-    {
-        $this->assertSoftDeletes(Wrestler::class);
-    }
-
-    /** @test */
-    public function wrestler_uses_has_cached_attributes_trait()
-    {
-        $this->assertUsesTrait(\App\Traits\HasCachedAttributes::class, Wrestler::class);
-    }
-
-    /** @test */
-    public function wrestler_uses_has_custom_relationships_trait()
-    {
-        $this->assertUsesTrait(\App\Eloquent\Concerns\HasCustomRelationships::class, Wrestler::class);
-    }
-
-    /** @test */
-    public function wrestler_uses_has_a_height_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\HasAHeight::class, Wrestler::class);
-    }
-
-    /** @test */
-    public function wrestler_uses_can_be_employed_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeEmployed::class, Wrestler::class);
+        $this->assertEquals(11, $wrestler->inches);
     }
 
     /** @test */
@@ -245,12 +146,99 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
+    public function a_bookable_wrestler_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+
+        $this->assertNull($wrestler->currentEmployment->ended_at);
+
+        $wrestler->fire();
+
+        $this->assertCount(1, $wrestler->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function a_bookable_wrestler_can_be_fired_at_start_date()
+    {
+        $yesterday = Carbon::yesterday();
+        Carbon::setTestNow($yesterday);
+
+        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+
+        $this->assertNull($wrestler->currentEmployment->ended_at);
+
+        $wrestler->fire($yesterday);
+
+        $this->assertCount(1, $wrestler->previousEmployments);
+        $this->assertEquals($yesterday->toDateTimeString(), $wrestler->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function an_injured_wrestler_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $wrestler = factory(Wrestler::class)->states('injured')->create();
+
+        $this->assertNull($wrestler->currentInjury->ended_at);
+
+        $wrestler->fire();
+
+        $this->assertCount(1, $wrestler->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->previousEmployment->ended_at);
+        $this->assertNotNull($wrestler->previousInjury->ended_at);
+    }
+
+    /** @test */
+    public function a_suspended_wrestler_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $wrestler = factory(Wrestler::class)->states('suspended')->create();
+
+        $this->assertNull($wrestler->currentSuspension->ended_at);
+
+        $wrestler->fire();
+
+        $this->assertCount(1, $wrestler->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->previousEmployment->ended_at);
+        $this->assertNotNull($wrestler->previousSuspension->ended_at);
+    }
+
+    /** @test */
+    public function a_pending_employment_wrestler_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
+
+        $wrestler->fire();
+    }
+
+    /** @test */
+    public function a_retired_wrestler_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $wrestler = factory(Wrestler::class)->states('retired')->create();
+
+        $wrestler->fire();
+    }
+
+    /** @test */
     public function a_wrestler_with_an_employment_now_or_in_the_past_is_employed()
     {
         $wrestler = factory(Wrestler::class)->create();
         $wrestler->currentEmployment()->create(['started_at' => Carbon::now()]);
 
         $this->assertTrue($wrestler->is_employed);
+        $this->assertTrue($wrestler->checkIsEmployed());
     }
 
     /** @test */
@@ -260,6 +248,7 @@ class WrestlerTest extends TestCase
         $wrestler->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $this->assertFalse($wrestler->is_employed);
+        $this->assertTrue($wrestler->is_pending_employment);
     }
 
     /** @test */
@@ -268,6 +257,7 @@ class WrestlerTest extends TestCase
         $wrestler = factory(Wrestler::class)->create();
 
         $this->assertFalse($wrestler->is_employed);
+        $this->assertTrue($wrestler->is_pending_employment);
     }
 
     /** @test */
@@ -306,12 +296,6 @@ class WrestlerTest extends TestCase
         $this->assertTrue($employedWrestlers->contains($injuredWrestler));
         $this->assertTrue($employedWrestlers->contains($suspendedWrestler));
         $this->assertTrue($employedWrestlers->contains($retiredWrestler));
-    }
-
-    /** @test */
-    public function wrestler_uses_can_be_retired_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeRetired::class, Wrestler::class);
     }
 
     /** @test */
@@ -362,7 +346,7 @@ class WrestlerTest extends TestCase
 
         $this->assertEquals('retired', $wrestler->status);
         $this->assertCount(1, $wrestler->retirements);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->retirement->started_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->currentRetirement->started_at);
     }
 
     /** @test */
@@ -374,14 +358,14 @@ class WrestlerTest extends TestCase
 
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $this->assertNull($wrestler->suspensions()->latest()->first()->ended_at);
+        $this->assertNull($wrestler->currentSuspension->ended_at);
 
         $wrestler->retire();
 
         $this->assertEquals('retired', $wrestler->status);
         $this->assertCount(1, $wrestler->retirements);
-        $this->assertNotNull($wrestler->suspensions()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->retirement->started_at);
+        $this->assertNotNull($wrestler->previousSuspension->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->currentRetirement->started_at);
     }
 
     /** @test */
@@ -399,8 +383,8 @@ class WrestlerTest extends TestCase
 
         $this->assertEquals('retired', $wrestler->status);
         $this->assertCount(1, $wrestler->retirements);
-        $this->assertNotNull($wrestler->injuries()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->retirement->started_at);
+        $this->assertNotNull($wrestler->previousInjury->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->currentRetirement->started_at);
     }
 
     /** @test */
@@ -433,7 +417,7 @@ class WrestlerTest extends TestCase
         $wrestler->unretire();
 
         $this->assertEquals('bookable', $wrestler->status);
-        $this->assertNotNull($wrestler->retirements()->latest()->first()->ended_at);
+        $this->assertNotNull($wrestler->previousRetirement->ended_at);
     }
 
     /** @test */
@@ -477,9 +461,13 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
-    public function wrestler_uses_can_be_injured_trait()
+    public function a_wrestler_that_retires_and_unretires_has_a_previous_retirement()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeInjured::class, Wrestler::class);
+        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $wrestler->retire();
+        $wrestler->unretire();
+
+        $this->assertCount(1, $wrestler->previousRetirements);
     }
 
     /** @test */
@@ -495,8 +483,8 @@ class WrestlerTest extends TestCase
 
         $this->assertEquals('injured', $wrestler->status);
         $this->assertCount(1, $wrestler->injuries);
-        $this->assertNull($wrestler->injuries()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->injury->started_at);
+        $this->assertNull($wrestler->currentInjury->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->currentInjury->started_at);
     }
 
     /** @test */
@@ -589,7 +577,7 @@ class WrestlerTest extends TestCase
         $wrestler->recover();
 
         $this->assertEquals('bookable', $wrestler->status);
-        $this->assertNotNull($wrestler->injuries()->latest()->first()->ended_at);
+        $this->assertNotNull($wrestler->previousInjury->ended_at);
     }
 
     /** @test */
@@ -628,9 +616,14 @@ class WrestlerTest extends TestCase
     }
 
     /** @test */
-    public function wrestler_uses_can_be_suspended_trait()
+    public function a_wrestler_can_be_injured_multiple_times()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeSuspended::class, Wrestler::class);
+        $wrestler = factory(Wrestler::class)->states('injured')->create();
+
+        $wrestler->recover();
+        $wrestler->injure();
+
+        $this->assertCount(1, $wrestler->previousInjuries);
     }
 
     /** @test */
@@ -646,8 +639,8 @@ class WrestlerTest extends TestCase
 
         $this->assertEquals('suspended', $wrestler->status);
         $this->assertCount(1, $wrestler->suspensions);
-        $this->assertNull($wrestler->suspensions()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->suspension->started_at);
+        $this->assertNull($wrestler->currentSuspension->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->currentSuspension->started_at);
     }
 
     /** @test */
@@ -740,7 +733,7 @@ class WrestlerTest extends TestCase
         $wrestler->reinstate();
 
         $this->assertEquals('bookable', $wrestler->status);
-        $this->assertNotNull($wrestler->suspensions()->latest()->first()->ended_at);
+        $this->assertNotNull($wrestler->previousSuspension->ended_at);
     }
 
     /** @test */
@@ -776,6 +769,17 @@ class WrestlerTest extends TestCase
         $this->assertFalse($suspendedWrestlers->contains($bookableWrestler));
         $this->assertFalse($suspendedWrestlers->contains($injuredWrestler));
         $this->assertFalse($suspendedWrestlers->contains($retiredWrestler));;
+    }
+
+    /** @test */
+    public function a_wrestler_can_be_suspended_multiple_times()
+    {
+        $wrestler = factory(Wrestler::class)->states('suspended')->create();
+
+        $wrestler->reinstate();
+        $wrestler->suspend();
+
+        $this->assertCount(1, $wrestler->previousSuspensions);
     }
 
     /** @test */
@@ -829,5 +833,52 @@ class WrestlerTest extends TestCase
         $wrestler->employ(Carbon::tomorrow());
 
         $this->assertTrue($wrestler->checkIsPendingEmployment());
+    }
+
+    /** @test */
+    public function a_wrestler_has_a_current_stable_after_joining()
+    {
+        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $stable = factory(Stable::class)->states('active')->create();
+
+        $wrestler->stableHistory()->attach($stable);
+
+        $this->assertEquals($stable->id, $wrestler->currentStable->id);
+        $this->assertTrue($wrestler->stableHistory->contains($stable));
+    }
+
+    /** @test */
+    public function a_stable_remains_in_a_wrestlers_history_after_leaving()
+    {
+        $wrestler = factory(Wrestler::class)->create();
+        $stable = factory(Stable::class)->create();
+        $wrestler->stableHistory()->attach($stable);
+        $wrestler->stableHistory()->detach($stable);
+
+        $this->assertTrue($wrestler->previousStables->contains($stable));
+    }
+
+    /** @test */
+    public function a_wrestler_has_a_current_tag_team_after_joining()
+    {
+        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+
+        $wrestler->tagTeamHistory()->attach($tagTeam);
+
+        $this->assertEquals($tagTeam->id, $wrestler->currentTagTeam->id);
+        $this->assertTrue($wrestler->tagTeamHistory->contains($tagTeam));
+    }
+
+    /** @test */
+    public function a_tag_team_remains_in_a_wrestlers_history_after_leaving()
+    {
+        $wrestler = factory(Wrestler::class)->create();
+        $tagTeam = factory(TagTeam::class)->create();
+
+        $wrestler->tagTeamHistory()->attach($tagTeam);
+        $wrestler->tagTeamHistory()->detach($tagTeam);
+
+        $this->assertTrue($wrestler->previousTagTeams->contains($tagTeam));
     }
 }

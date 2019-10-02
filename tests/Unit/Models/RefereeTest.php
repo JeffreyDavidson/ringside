@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Referee;
+use App\Exceptions\CannotBeFiredException;
 use App\Exceptions\CannotBeInjuredException;
 use App\Exceptions\CannotBeRetiredException;
 use App\Exceptions\CannotBeRecoveredException;
@@ -57,35 +58,11 @@ class RefereeTest extends TestCase
     }
 
     /** @test */
-    public function a_referee_can_be_soft_deleted()
-    {
-        $this->assertSoftDeletes(Referee::class);
-    }
-
-    /** @test */
-    public function referee_uses_has_full_name_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\HasFullName::class, Referee::class);
-    }
-
-    /** @test */
     public function a_referee_has_a_full_name()
     {
         $referee = factory(Referee::class)->make(['first_name' => 'John', 'last_name' => 'Smith']);
 
         $this->assertEquals('John Smith', $referee->full_name);
-    }
-
-    /** @test */
-    public function referee_uses_has_cached_attributes_trait()
-    {
-        $this->assertUsesTrait(\App\Traits\HasCachedAttributes::class, Referee::class);
-    }
-
-    /** @test */
-    public function referee_uses_can_be_employed_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeEmployed::class, Referee::class);
     }
 
     /** @test */
@@ -130,12 +107,99 @@ class RefereeTest extends TestCase
     }
 
     /** @test */
+    public function a_bookable_referee_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $referee = factory(Referee::class)->states('bookable')->create();
+
+        $this->assertNull($referee->currentEmployment->ended_at);
+
+        $referee->fire();
+
+        $this->assertCount(1, $referee->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $referee->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function a_bookable_referee_can_be_fired_at_start_date()
+    {
+        $yesterday = Carbon::yesterday();
+        Carbon::setTestNow($yesterday);
+
+        $referee = factory(Referee::class)->states('bookable')->create();
+
+        $this->assertNull($referee->currentEmployment->ended_at);
+
+        $referee->fire($yesterday);
+
+        $this->assertCount(1, $referee->previousEmployments);
+        $this->assertEquals($yesterday->toDateTimeString(), $referee->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function an_injured_referee_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $referee = factory(Referee::class)->states('injured')->create();
+
+        $this->assertNull($referee->currentInjury->ended_at);
+
+        $referee->fire();
+
+        $this->assertCount(1, $referee->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $referee->previousEmployment->ended_at);
+        $this->assertNotNull($referee->previousInjury->ended_at);
+    }
+
+    /** @test */
+    public function a_suspended_referee_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $referee = factory(Referee::class)->states('suspended')->create();
+
+        $this->assertNull($referee->currentSuspension->ended_at);
+
+        $referee->fire();
+
+        $this->assertCount(1, $referee->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $referee->previousEmployment->ended_at);
+        $this->assertNotNull($referee->previousSuspension->ended_at);
+    }
+
+    /** @test */
+    public function a_pending_employment_referee_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $referee = factory(Referee::class)->states('pending-employment')->create();
+
+        $referee->fire();
+    }
+
+    /** @test */
+    public function a_retired_referee_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $referee = factory(Referee::class)->states('retired')->create();
+
+        $referee->fire();
+    }
+
+    /** @test */
     public function a_referee_with_an_employment_now_or_in_the_past_is_employed()
     {
         $referee = factory(Referee::class)->create();
         $referee->currentEmployment()->create(['started_at' => Carbon::now()]);
 
         $this->assertTrue($referee->is_employed);
+        $this->assertTrue($referee->checkIsEmployed());
     }
 
     /** @test */
@@ -145,6 +209,7 @@ class RefereeTest extends TestCase
         $referee->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $this->assertFalse($referee->is_employed);
+        $this->assertTrue($referee->is_pending_employment);
     }
 
     /** @test */
@@ -153,6 +218,7 @@ class RefereeTest extends TestCase
         $referee = factory(Referee::class)->create();
 
         $this->assertFalse($referee->is_employed);
+        $this->assertTrue($referee->is_pending_employment);
     }
 
     /** @test */
@@ -191,12 +257,6 @@ class RefereeTest extends TestCase
         $this->assertTrue($employedReferees->contains($injuredReferee));
         $this->assertTrue($employedReferees->contains($suspendedReferee));
         $this->assertTrue($employedReferees->contains($retiredReferee));
-    }
-
-    /** @test */
-    public function referee_uses_can_be_retired_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeRetired::class, Referee::class);
     }
 
     /** @test */
@@ -247,7 +307,7 @@ class RefereeTest extends TestCase
 
         $this->assertEquals('retired', $referee->status);
         $this->assertCount(1, $referee->retirements);
-        $this->assertEquals($now->toDateTimeString(), $referee->retirement->started_at);
+        $this->assertEquals($now->toDateTimeString(), $referee->currentRetirement->started_at);
     }
 
     /** @test */
@@ -259,14 +319,14 @@ class RefereeTest extends TestCase
 
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $this->assertNull($referee->suspensions()->latest()->first()->ended_at);
+        $this->assertNull($referee->currentSuspension->ended_at);
 
         $referee->retire();
 
         $this->assertEquals('retired', $referee->status);
         $this->assertCount(1, $referee->retirements);
-        $this->assertNotNull($referee->suspensions()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $referee->retirement->started_at);
+        $this->assertNotNull($referee->previousSuspension->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $referee->currentRetirement->started_at);
     }
 
     /** @test */
@@ -278,14 +338,14 @@ class RefereeTest extends TestCase
 
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $this->assertNull($referee->injuries()->latest()->first()->ended_at);
+        $this->assertNull($referee->currentInjury->ended_at);
 
         $referee->retire();
 
         $this->assertEquals('retired', $referee->status);
         $this->assertCount(1, $referee->retirements);
-        $this->assertNotNull($referee->injuries()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $referee->retirement->started_at);
+        $this->assertNotNull($referee->previousInjury->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $referee->currentRetirement->started_at);
     }
 
     /** @test */
@@ -318,7 +378,7 @@ class RefereeTest extends TestCase
         $referee->unretire();
 
         $this->assertEquals('bookable', $referee->status);
-        $this->assertNotNull($referee->retirements()->latest()->first()->ended_at);
+        $this->assertNotNull($referee->previousRetirement->ended_at);
     }
 
     /** @test */
@@ -362,9 +422,13 @@ class RefereeTest extends TestCase
     }
 
     /** @test */
-    public function referee_uses_can_be_injured_trait()
+    public function a_referee_that_retires_and_unretires_has_a_previous_retirement()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeInjured::class, Referee::class);
+        $referee = factory(Referee::class)->states('bookable')->create();
+        $referee->retire();
+        $referee->unretire();
+
+        $this->assertCount(1, $referee->previousRetirements);
     }
 
     /** @test */
@@ -380,8 +444,8 @@ class RefereeTest extends TestCase
 
         $this->assertEquals('injured', $referee->status);
         $this->assertCount(1, $referee->injuries);
-        $this->assertNull($referee->injuries()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $referee->injury->started_at);
+        $this->assertNull($referee->currentInjury->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $referee->currentInjury->started_at);
     }
 
     /** @test */
@@ -474,7 +538,7 @@ class RefereeTest extends TestCase
         $referee->recover();
 
         $this->assertEquals('bookable', $referee->status);
-        $this->assertNotNull($referee->injuries()->latest()->first()->ended_at);
+        $this->assertNotNull($referee->previousInjury->ended_at);
     }
 
     /** @test */
@@ -513,9 +577,14 @@ class RefereeTest extends TestCase
     }
 
     /** @test */
-    public function referee_uses_can_be_suspended_trait()
+    public function a_referee_can_be_injured_multiple_times()
     {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeSuspended::class, Referee::class);
+        $referee = factory(Referee::class)->states('injured')->create();
+
+        $referee->recover();
+        $referee->injure();
+
+        $this->assertCount(1, $referee->previousInjuries);
     }
 
     /** @test */
@@ -531,8 +600,8 @@ class RefereeTest extends TestCase
 
         $this->assertEquals('suspended', $referee->status);
         $this->assertCount(1, $referee->suspensions);
-        $this->assertNull($referee->suspensions()->latest()->first()->ended_at);
-        $this->assertEquals($now->toDateTimeString(), $referee->suspension->started_at);
+        $this->assertNull($referee->currentSuspension->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $referee->currentSuspension->started_at);
     }
 
     /** @test */
@@ -625,7 +694,7 @@ class RefereeTest extends TestCase
         $referee->reinstate();
 
         $this->assertEquals('bookable', $referee->status);
-        $this->assertNotNull($referee->suspensions()->latest()->first()->ended_at);
+        $this->assertNotNull($referee->previousSuspension->ended_at);
     }
 
     /** @test */
@@ -661,6 +730,17 @@ class RefereeTest extends TestCase
         $this->assertFalse($suspendedReferees->contains($bookableReferee));
         $this->assertFalse($suspendedReferees->contains($injuredReferee));
         $this->assertFalse($suspendedReferees->contains($retiredReferee));;
+    }
+
+    /** @test */
+    public function a_referee_can_be_suspended_multiple_times()
+    {
+        $referee = factory(Referee::class)->states('suspended')->create();
+
+        $referee->reinstate();
+        $referee->suspend();
+
+        $this->assertCount(1, $referee->previousSuspensions);
     }
 
     /** @test */
