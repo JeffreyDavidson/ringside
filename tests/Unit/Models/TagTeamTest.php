@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\TagTeam;
+use App\Exceptions\CannotBeFiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -51,24 +52,6 @@ class TagTeamTest extends TestCase
     }
 
     /** @test */
-    public function a_tag_team_can_be_soft_deleted()
-    {
-        $this->assertSoftDeletes(TagTeam::class);
-    }
-
-    /** @test */
-    public function tag_team_uses_has_cached_attributes_trait()
-    {
-        $this->assertUsesTrait(\App\Traits\HasCachedAttributes::class, TagTeam::class);
-    }
-
-    /** @test */
-    public function tag_team_uses_can_be_employed_trait()
-    {
-        $this->assertUsesTrait(\App\Models\Concerns\CanBeEmployed::class, TagTeam::class);
-    }
-
-    /** @test */
     public function tag_team_can_be_employed_default_to_now()
     {
         $now = Carbon::now();
@@ -107,6 +90,75 @@ class TagTeamTest extends TestCase
         $tagTeam->employ($today);
 
         $this->assertEquals($today->toDateTimeString(), $tagTeam->currentEmployment->started_at);
+    }
+
+    /** @test */
+    public function a_bookable_tag_team_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+
+        $this->assertNull($tagTeam->currentEmployment->ended_at);
+
+        $tagTeam->fire();
+
+        $this->assertCount(1, $tagTeam->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $tagTeam->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function a_bookable_tag_team_can_be_fired_at_start_date()
+    {
+        $yesterday = Carbon::yesterday();
+        Carbon::setTestNow($yesterday);
+
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+
+        $this->assertNull($tagTeam->currentEmployment->ended_at);
+
+        $tagTeam->fire($yesterday);
+
+        $this->assertCount(1, $tagTeam->previousEmployments);
+        $this->assertEquals($yesterday->toDateTimeString(), $tagTeam->previousEmployment->ended_at);
+    }
+
+    /** @test */
+    public function a_suspended_tag_team_can_be_fired_default_to_now()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $wrestler = factory(TagTeam::class)->states('suspended')->create();
+
+        $this->assertNull($wrestler->currentSuspension->ended_at);
+
+        $wrestler->fire();
+
+        $this->assertCount(1, $wrestler->previousEmployments);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->previousEmployment->ended_at);
+        $this->assertNotNull($wrestler->previousSuspension->ended_at);
+    }
+
+    /** @test */
+    public function a_pending_employment_tag_team_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $wrestler = factory(TagTeam::class)->states('pending-employment')->create();
+
+        $wrestler->fire();
+    }
+
+    /** @test */
+    public function a_retired_tag_team_cannot_be_fired()
+    {
+        $this->expectException(CannotBeFiredException::class);
+
+        $wrestler = factory(TagTeam::class)->states('retired')->create();
+
+        $wrestler->fire();
     }
 
     /** @test */
@@ -162,7 +214,7 @@ class TagTeamTest extends TestCase
 
         $employedTagTeams = TagTeam::employed()->get();
 
-        $this->assertCount(4, $employedTagTeams);
+        $this->assertCount(3, $employedTagTeams);
         $this->assertFalse($employedTagTeams->contains($pendingEmploymentTagTeam));
         $this->assertTrue($employedTagTeams->contains($bookableTagTeam));
         $this->assertTrue($employedTagTeams->contains($suspendedTagTeam));

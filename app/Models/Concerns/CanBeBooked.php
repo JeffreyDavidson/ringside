@@ -46,7 +46,7 @@ trait CanBeBooked
      */
     public function checkIsBookable()
     {
-        if (!$this->currentEmployment()->exists()) {
+        if ($this->currentEmployment()->doesntExist()) {
             return false;
         }
 

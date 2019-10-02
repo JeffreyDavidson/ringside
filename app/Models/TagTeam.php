@@ -160,9 +160,9 @@ class TagTeam extends Model
      */
     public function unretire()
     {
-        $dateRetired = $this->retirement->started_at;
+        $dateRetired = $this->currentRetirement->started_at;
     
-        $this->retirement()->update(['ended_at' => now()]);
+        $this->currentRetirement()->update(['ended_at' => now()]);
 
         $this->wrestlerHistory()->retired()->whereDate('started_at', $dateRetired)->get()->each->unretire();
 
@@ -190,7 +190,7 @@ class TagTeam extends Model
      */
     public function reinstate()
     {
-        $this->suspension()->update(['ended_at' => now()]);
+        $this->currentSuspension()->update(['ended_at' => now()]);
 
         return $this->touch();
     }

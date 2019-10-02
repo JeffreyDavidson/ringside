@@ -163,10 +163,6 @@ class Stable extends Model
     }
 
 
-
-
-
-
     /**
      * Get all members that have been members of the stable.
      *
