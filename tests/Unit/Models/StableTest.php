@@ -79,9 +79,12 @@ class StableTest extends TestCase
     public function a_stable_can_disassemble()
     {
         $stable = factory(Stable::class)->create();
-        $managers = factory(Wrestler::class, 3)->create();
-        $stable->addWrestlers($managers);
+        $wrestlers = factory(Wrestler::class, 3)->create();
+        $stable->addWrestlers($wrestlers);
 
-        $this->assertTrue($stable->members->isEmpty());
+        dd($stable->members);
+
+        $this->assertTrue($stable->currentMembers->isEmpty());
+        $this->assertCount(2, $stable->previousMembers);
     }
 }

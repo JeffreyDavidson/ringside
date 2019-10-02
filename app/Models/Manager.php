@@ -2,21 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\HasCachedAttributes;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
 
-class Manager extends Model
+class Manager extends SingleRosterMember
 {
     use SoftDeletes,
-        HasCachedAttributes,
         HasCustomRelationships,
-        Concerns\CanBeSuspended,
-        Concerns\CanBeInjured,
-        Concerns\CanBeRetired,
-        Concerns\CanBeEmployed,
-        Concerns\CanBeBooked,
         Concerns\HasFullName,
         Concerns\CanBeStableMember;
 

@@ -2,21 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\HasCachedAttributes;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
 
-class Wrestler extends Model
+class Wrestler extends SingleRosterMember
 {
     use SoftDeletes,
         HasCustomRelationships,
-        HasCachedAttributes,
-        Concerns\CanBeSuspended,
-        Concerns\CanBeInjured,
-        Concerns\CanBeRetired,
-        Concerns\CanBeEmployed,
-        Concerns\CanBeBooked,
         Concerns\HasAHeight,
         Concerns\CanBeStableMember,
         Concerns\CanBeTagTeamPartner;

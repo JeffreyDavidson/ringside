@@ -94,6 +94,19 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
+    public function manager_can_be_employed_in_the_future()
+    {
+        $tomorrow = Carbon::tomorrow();
+        Carbon::setTestNow($tomorrow);
+
+        $manager = factory(Manager::class)->create();
+
+        $manager->employ($tomorrow);
+
+        $this->assertEquals($tomorrow->toDateTimeString(), $manager->currentEmployment->started_at);
+    }
+
+    /** @test */
     public function manager_with_an_employment_in_the_future_can_be_employed_at_start_date()
     {
         $today = Carbon::today();

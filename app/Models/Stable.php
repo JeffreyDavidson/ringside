@@ -162,7 +162,6 @@ class Stable extends Model
         return $this;
     }
 
-
     /**
      * Get all members that have been members of the stable.
      *
