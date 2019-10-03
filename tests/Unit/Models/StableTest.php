@@ -82,8 +82,6 @@ class StableTest extends TestCase
         $wrestlers = factory(Wrestler::class, 3)->create();
         $stable->addWrestlers($wrestlers);
 
-        dd($stable->members);
-
         $this->assertTrue($stable->currentMembers->isEmpty());
         $this->assertCount(2, $stable->previousMembers);
     }
