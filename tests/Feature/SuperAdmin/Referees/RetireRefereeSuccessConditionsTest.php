@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use App\Models\Referee;
 use Tests\TestCase;
+use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,7 +24,7 @@ class RetireRefereeSuccessConditionsTest extends TestCase
         $response = $this->put(route('referees.retire', $referee));
 
         $response->assertRedirect(route('referees.index'));
-        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -36,7 +36,7 @@ class RetireRefereeSuccessConditionsTest extends TestCase
         $response = $this->put(route('referees.retire', $referee));
 
         $response->assertRedirect(route('referees.index'));
-        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -48,6 +48,6 @@ class RetireRefereeSuccessConditionsTest extends TestCase
         $response = $this->put(route('referees.retire', $referee));
 
         $response->assertRedirect(route('referees.index'));
-        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentRetirement->started_at);
     }
 }

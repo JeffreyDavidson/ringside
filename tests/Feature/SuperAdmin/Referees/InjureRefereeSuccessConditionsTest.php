@@ -24,6 +24,6 @@ class InjureRefereeSuccessConditionsTest extends TestCase
         $response = $this->put(route('referees.injure', $referee));
 
         $response->assertRedirect(route('referees.index'));
-        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->injury->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentInjury->started_at);
     }
 }

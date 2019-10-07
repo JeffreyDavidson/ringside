@@ -124,11 +124,11 @@ class TagTeam extends Model
      *
      * @return bool
      */
-    public function employ($startDate = null)
+    public function employ($startAtDate = null)
     {
-        $startDate = $startDate ?? now();
-        $this->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startDate]);
-        $this->wrestlerHistory->each->employ($startDate);
+        $startAtDate = $startAtDate ?? now();
+        $this->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startAtDate]);
+        $this->wrestlerHistory->each->employ($startAtDate);
 
         return $this->touch();
     }
@@ -161,7 +161,7 @@ class TagTeam extends Model
     public function unretire()
     {
         $dateRetired = $this->currentRetirement->started_at;
-    
+
         $this->currentRetirement()->update(['ended_at' => now()]);
 
         $this->wrestlerHistory()->retired()->whereDate('started_at', $dateRetired)->get()->each->unretire();

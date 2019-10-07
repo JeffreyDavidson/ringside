@@ -2,8 +2,8 @@
 
 use Carbon\Carbon;
 use App\Models\Wrestler;
-use App\Enums\WrestlerStatus;
 use Illuminate\Support\Str;
+use App\Enums\WrestlerStatus;
 use Faker\Generator as Faker;
 
 $factory->define(Wrestler::class, function (Faker $faker) {
@@ -15,7 +15,7 @@ $factory->define(Wrestler::class, function (Faker $faker) {
         'weight' => $faker->numberBetween(180, 500),
         'hometown' => $faker->city . ', ' . $faker->state,
         'signature_move' => Str::title($faker->words(3, true)),
-        'status' => $faker->word(),
+        'status' => WrestlerStatus::PENDING_EMPLOYMENT,
     ];
 });
 

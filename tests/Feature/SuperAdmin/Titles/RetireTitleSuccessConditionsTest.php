@@ -23,6 +23,6 @@ class RetireTitleSuccessConditionsTest extends TestCase
         $response = $this->put(route('titles.retire', $title));
 
         $response->assertRedirect(route('titles.index'));
-        $this->assertEquals(now()->toDateTimeString(), $title->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $title->fresh()->currentRetirement->started_at);
     }
 }

@@ -22,7 +22,6 @@ class RefereeTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Referee::unsetEventDispatcher();
         \Event::fake();
     }
 
@@ -45,16 +44,8 @@ class RefereeTest extends TestCase
     /** @test */
     public function a_referee_has_a_status()
     {
-        $referee = factory(Referee::class)->make(['status' => 'Example Status']);
+        $referee = factory(Referee::class)->create(['status' => 'Example Status']);
 
         $this->assertEquals('Example Status', $referee->status);
-    }
-
-    /** @test */
-    public function a_referee_has_a_full_name()
-    {
-        $referee = factory(Referee::class)->make(['first_name' => 'John', 'last_name' => 'Smith']);
-
-        $this->assertEquals('John Smith', $referee->full_name);
     }
 }

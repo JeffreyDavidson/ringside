@@ -24,7 +24,7 @@ class TagTeamTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        TagTeam::unsetEventDispatcher();
+        \Event::fake();
     }
 
     /** @test */
@@ -52,17 +52,25 @@ class TagTeamTest extends TestCase
     }
 
     /** @test */
-    public function tag_team_can_be_employed_default_to_now()
+    public function a_tag_team_has_a_default_status_of_pending_employment()
+    {
+        $tagTeam = factory(TagTeam::class)->create();
+
+        $this->assertEquals('pending-employment', $tagTeam->status);
+    }
+
+    /** @test */
+    public function tag_team_wrestlers_are_employed_when_team_is_employed()
     {
         $now = Carbon::now();
         Carbon::setTestNow($now);
 
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = factory(TagTeam::class)->with(2, 'wrestlerHistory')->create();
 
         $tagTeam->employ();
 
-        $this->assertCount(1, $tagTeam->employments);
         $this->assertEquals($now->toDateTimeString(), $tagTeam->currentEmployment->started_at);
+        $this->assertEquals($now->toDateTimeString(), $tagTeam->wrestlerHistory->each->currentEmployment->started_at);
     }
 
     /** @test */
@@ -85,7 +93,7 @@ class TagTeamTest extends TestCase
         Carbon::setTestNow($today);
 
         $tagTeam = factory(TagTeam::class)->create();
-        $tagTeam->employments()->create(['started_at' => Carbon::tomorrow()]);
+        $tagTeam->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
 
         $tagTeam->employ($today);
 

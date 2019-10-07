@@ -25,9 +25,7 @@ class RetireStableSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('stables.index'));
         tap($stable->fresh(), function ($stable) {
-            $this->assertEquals(
-                now()->toDateTimeString(), 
-                $stable->retirement->started_at->toDateTimeString()
+            $this->assertEquals(now()->toDateTimeString(), $stable->currentRetirement->started_at->toDateTimeString()
             );
         });
     }

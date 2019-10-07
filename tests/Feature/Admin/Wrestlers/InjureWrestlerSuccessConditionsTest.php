@@ -24,6 +24,6 @@ class InjureWrestlerSuccessConditionsTest extends TestCase
         $response = $this->injureRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->injury->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->currentInjury->started_at);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use App\Models\TagTeam;
 use Tests\TestCase;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,7 +24,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -36,6 +36,6 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->currentRetirement->started_at);
     }
 }

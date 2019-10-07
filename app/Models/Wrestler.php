@@ -21,7 +21,7 @@ class Wrestler extends SingleRosterMember
     protected $guarded = [];
 
     /**
-     * Get the user belonging to the wrestler.
+     * Get the user assigned to the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -24,6 +24,6 @@ class SuspendWrestlerSuccessConditionsTest extends TestCase
         $response = $this->suspendRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->suspension->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->currentSuspension->started_at);
     }
 }

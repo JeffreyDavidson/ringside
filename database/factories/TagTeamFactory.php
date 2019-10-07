@@ -10,15 +10,15 @@ $factory->define(TagTeam::class, function (Faker $faker) {
     return [
         'name' => $faker->words(2, true),
         'signature_move' => $faker->words(4, true),
-        'status' => $faker->word(),
+        'status' => TagTeamStatus::PENDING_EMPLOYMENT,
     ];
 });
 
-$factory->state(TagTeam::class, 'employable', function ($faker) {
+$factory->state(TagTeam::class, 'introduced', function ($faker) {
     return [];
 });
 
-$factory->afterCreatingState(TagTeam::class, 'employable', function ($tagTeam) {
+$factory->afterCreatingState(TagTeam::class, 'bookable', function ($tagTeam) {
     $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
 });
 

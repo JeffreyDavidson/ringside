@@ -5,7 +5,7 @@ namespace App\Models\Concerns;
 trait HasAHeight
 {
     /**
-     * Return the wrestler's height formatted.
+     * Return the model's height formatted.
      *
      * @return string
      */
@@ -15,7 +15,7 @@ trait HasAHeight
     }
 
     /**
-     * Return the wrestler's height in feet.
+     * Return the model's height in feet.
      *
      * @return string
      */
@@ -25,7 +25,7 @@ trait HasAHeight
     }
 
     /**
-     * Return the wrestler's height in inches.
+     * Return the model's height in inches.
      *
      * @return string
      */

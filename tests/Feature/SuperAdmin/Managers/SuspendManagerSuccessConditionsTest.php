@@ -28,6 +28,6 @@ class SuspendManagerSuccessConditionsTest extends TestCase
         $response = $this->suspendRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals($now->toDateTimeString(), $manager->fresh()->suspension->started_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->fresh()->currentSuspension->started_at);
     }
 }

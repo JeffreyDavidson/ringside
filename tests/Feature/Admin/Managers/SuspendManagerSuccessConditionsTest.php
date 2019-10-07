@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Admin\Managers;
 
-use App\Models\Manager;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -28,6 +28,6 @@ class SuspendManagerSuccessConditionsTest extends TestCase
         $response = $this->suspendRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals($now->toDateTimeString(), $manager->fresh()->suspension->started_at);
+        $this->assertEquals($now->toDateTimeString(), $manager->fresh()->currentSuspension->started_at);
     }
 }

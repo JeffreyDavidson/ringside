@@ -24,6 +24,6 @@ class InjureManagerSuccessConditionsTest extends TestCase
         $response = $this->injureRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->injury->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->currentInjury->started_at);
     }
 }

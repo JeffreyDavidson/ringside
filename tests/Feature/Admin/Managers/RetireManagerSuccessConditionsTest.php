@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Admin\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,7 +24,7 @@ class RetireManagerSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -36,7 +36,7 @@ class RetireManagerSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -48,6 +48,6 @@ class RetireManagerSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->currentRetirement->started_at);
     }
 }

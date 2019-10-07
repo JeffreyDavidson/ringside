@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use App\Models\Wrestler;
 use Tests\TestCase;
+use App\Models\Wrestler;
+use App\Exceptions\CannotBeUnretiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -51,11 +52,12 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_wrestler_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(\App\Exceptions\CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
         $response = $this->unretireRequest($wrestler);
-
-        $response->assertForbidden();
     }
 }

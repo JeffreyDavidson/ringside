@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
-use App\Models\Wrestler;
 use Tests\TestCase;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,7 +24,7 @@ class RetireWrestlerSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -36,7 +36,7 @@ class RetireWrestlerSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->currentRetirement->started_at);
     }
 
     /** @test */
@@ -48,6 +48,6 @@ class RetireWrestlerSuccessConditionsTest extends TestCase
         $response = $this->retireRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirement->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->currentRetirement->started_at);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use App\Models\TagTeam;
 use Tests\TestCase;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,6 +24,6 @@ class SuspendTagTeamSuccessConditionsTest extends TestCase
         $response = $this->suspendRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->suspension->started_at);
+        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->currentSuspension->started_at);
     }
 }
