@@ -32,10 +32,8 @@ class EmployWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
-        dd($wrestler->employments);
 
         $response = $this->employRequest($wrestler);
-        dd($response);
 
         $response->assertForbidden();
     }
