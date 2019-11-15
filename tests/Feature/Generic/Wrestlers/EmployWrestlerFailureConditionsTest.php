@@ -29,7 +29,6 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_wrestler_cannot_be_employed()
     {
-        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 

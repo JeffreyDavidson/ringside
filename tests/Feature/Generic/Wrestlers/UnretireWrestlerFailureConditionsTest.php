@@ -52,7 +52,6 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_wrestler_cannot_be_unretired()
     {
-        $this->withoutExceptionHandling();
         $this->expectException(\App\Exceptions\CannotBeUnretiredException::class);
 
         $this->actAs('administrator');
