@@ -52,7 +52,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
         tap(Manager::first(), function ($manager) {
             $this->assertEquals('John', $manager->first_name);
             $this->assertEquals('Smith', $manager->last_name);
-            $this->assertEquals(now()->toDateTimeString(), $manager->employment->started_at);
+            $this->assertEquals(now()->toDateTimeString(), $manager->currentEmployment->started_at);
         });
     }
 }
