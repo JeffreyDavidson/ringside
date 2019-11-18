@@ -47,7 +47,7 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
             'weight' => '240',
             'hometown' => 'Laraville, FL',
             'signature_move' => 'The Finisher',
-            'started_at' => now()->toDateString(),
+            'started_at' => now()->toDateTimeString(),
         ], $overrides);
     }
 
