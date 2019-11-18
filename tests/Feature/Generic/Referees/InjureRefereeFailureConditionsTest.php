@@ -4,6 +4,7 @@ namespace Tests\Feature\Generic\Referees;
 
 use Tests\TestCase;
 use App\Models\Referee;
+use App\Exceptions\CannotBeInjuredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,6 +19,9 @@ class InjureRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_injured_referee_cannot_be_injured()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeInjuredException::class);
+
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 

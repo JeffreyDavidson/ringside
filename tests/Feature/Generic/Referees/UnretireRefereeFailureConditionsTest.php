@@ -3,6 +3,7 @@
 namespace Tests\Feature\Generic\Referees;
 
 use App\Models\Referee;
+use App\Exceptions\CannotBeUnretiredException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,6 +19,9 @@ class UnretireRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_referee_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('bookable')->create();
 
@@ -29,6 +33,9 @@ class UnretireRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_referee_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
@@ -40,6 +47,9 @@ class UnretireRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_referee_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('suspended')->create();
 
@@ -51,6 +61,9 @@ class UnretireRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function an_injured_referee_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
