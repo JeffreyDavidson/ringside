@@ -25,9 +25,7 @@ class EmployWrestlerFailureConditionsTest extends TestCase
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->employRequest($wrestler);
-
-        $response->assertForbidden();
+        $this->employRequest($wrestler);
     }
 
     /** @test */
