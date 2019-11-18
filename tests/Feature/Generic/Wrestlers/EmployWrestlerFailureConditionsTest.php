@@ -4,6 +4,7 @@ namespace Tests\Feature\Generic\Wrestlers;
 
 use Tests\TestCase;
 use App\Models\Wrestler;
+use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,6 +19,9 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_wrestler_cannot_be_employed()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
@@ -29,6 +33,9 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_wrestler_cannot_be_employed()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
@@ -40,6 +47,9 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_wrestler_cannot_be_employed()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
@@ -51,6 +61,9 @@ class EmployWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function an_injured_wrestler_cannot_be_employed()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 

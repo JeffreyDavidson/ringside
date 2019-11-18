@@ -4,6 +4,7 @@ namespace Tests\Feature\Generic\Wrestlers;
 
 use App\Models\Wrestler;
 use Tests\TestCase;
+use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,6 +19,9 @@ class RetireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_retired_wrestler_cannot_be_retired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRetiredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 

@@ -4,6 +4,7 @@ namespace Tests\Feature\Generic\Wrestlers;
 
 use Tests\TestCase;
 use App\Models\Wrestler;
+use App\Exceptions\CannotBeInjuredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,6 +19,9 @@ class InjureWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_injured_wrestler_cannot_be_injured()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeInjuredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
@@ -29,6 +33,9 @@ class InjureWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_wrestler_cannot_be_injured()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeInjuredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
@@ -40,6 +47,9 @@ class InjureWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_wrestler_cannot_be_injured()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeInjuredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
@@ -51,6 +61,9 @@ class InjureWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_wrestler_cannot_be_injured()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeInjuredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 

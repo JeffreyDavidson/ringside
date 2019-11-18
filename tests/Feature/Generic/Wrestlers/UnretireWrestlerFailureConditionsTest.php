@@ -19,6 +19,9 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_wrestler_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
@@ -30,6 +33,9 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_wrestler_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
@@ -41,6 +47,9 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function an_injured_wrestler_cannot_be_unretired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
@@ -52,7 +61,8 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_wrestler_cannot_be_unretired()
     {
-        $this->expectException(\App\Exceptions\CannotBeUnretiredException::class);
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
 
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
