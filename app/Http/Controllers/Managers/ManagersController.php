@@ -109,7 +109,12 @@ class ManagersController extends Controller
     {
         $manager->update($request->except('started_at'));
 
-        $manager->employ($request->input('started_at'));
+        $startedAt = $request->input('started_at');
+        $isEmployed = $manager->checkIsEmployed();
+
+        if ($startedAt && $isEmployed && Carbon::parse($startedAt)->lt($manager->currentEmployment->started_at)) {
+            $manager->employ($request->input('started_at'));
+        }
 
         return redirect()->route('managers.index');
     }
