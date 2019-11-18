@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
+use Carbon\Carbon;
 use App\Models\Wrestler;
 use App\Filters\WrestlerFilters;
 use Yajra\DataTables\DataTables;
@@ -104,7 +105,12 @@ class WrestlersController extends Controller
     {
         $wrestler->update($request->except('started_at'));
 
-        $wrestler->employ($request->input('started_at'));
+        $startedAt = $request->input('started_at');
+        $isEmployed = $wrestler->checkIsEmployed();
+
+        if ($startedAt && $isEmployed && Carbon::parse($startedAt)->lt($wrestler->currentEmployment->started_at)) {
+            $wrestler->employ($request->input('started_at'));
+        }
 
         return redirect()->route('wrestlers.index');
     }
