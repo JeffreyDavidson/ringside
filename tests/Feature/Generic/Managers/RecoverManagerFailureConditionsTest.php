@@ -3,6 +3,7 @@
 namespace Tests\Feature\Generic\Managers;
 
 use App\Models\Manager;
+use App\Exceptions\CannotBeRecoveredException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,6 +19,9 @@ class RecoverManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_manager_cannot_be_recovered()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRecoveredException::class);
+
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('bookable')->create();
 
@@ -29,6 +33,9 @@ class RecoverManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_manager_cannot_be_recovered()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRecoveredException::class);
+
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
@@ -40,6 +47,9 @@ class RecoverManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_manager_cannot_be_recovered()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRecoveredException::class);
+
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('retired')->create();
 
@@ -51,6 +61,9 @@ class RecoverManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_manager_cannot_be_recovered()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRecoveredException::class);
+
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('suspended')->create();
 
