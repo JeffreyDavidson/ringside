@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 trait CanBeCompeted
 {
     /**
-     * 
+     *
      */
     public static function bootCanBeCompeted()
     {
@@ -26,7 +26,7 @@ trait CanBeCompeted
      *
      * @return bool
      */
-    public function getIsBookableAttribute()
+    public function getIsCompetableCachedAttribute()
     {
         return $this->status === 'competable';
     }
@@ -37,19 +37,18 @@ trait CanBeCompeted
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @param  \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBookable($query)
+    public function scopeCompetable($query)
     {
         return $query->where('status', 'competable');
     }
 
     /**
+     * Check to see if the model can be competed for.
+     *
      * @return bool
      */
-    public function checkIsBookable()
+    public function checkIsCompetable()
     {
-        return $this->employments()
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->exists();
+        return $this->status === 'competable';
     }
 }
