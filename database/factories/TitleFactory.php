@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Title;
 use Faker\Generator as Faker;
 
