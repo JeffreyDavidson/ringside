@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\Title;
+use App\Enums\TitleStatus;
 use Faker\Generator as Faker;
 
 $factory->define(Title::class, function (Faker $faker) {
@@ -10,14 +11,14 @@ $factory->define(Title::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Wrestler::class, 'competable', function ($faker) {
+$factory->state(Title::class, 'competable', function ($faker) {
     return [
         'status' => TitleStatus::COMPETABLE,
     ];
 });
 
-$factory->afterCreatingState(Wrestler::class, 'competable', function ($wrestler) {
-    $wrestler->introduce();
+$factory->afterCreatingState(Title::class, 'competable', function ($Title) {
+    $Title->introduce();
 });
 
 $factory->state(Title::class, 'pending-introduction', function ($faker) {
@@ -26,7 +27,7 @@ $factory->state(Title::class, 'pending-introduction', function ($faker) {
     ];
 });
 
-$factory->state(Wrestler::class, 'retired', function ($faker) {
+$factory->state(Title::class, 'retired', function ($faker) {
     return [
         'status' => TitleStatus::RETIRED,
     ];
