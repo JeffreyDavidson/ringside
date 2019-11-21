@@ -24,7 +24,7 @@ class ActivateTitleSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
-            $this->assertTrue($title->is_bookable);
+            $this->assertTrue($title->is_competable);
         });
     }
 }

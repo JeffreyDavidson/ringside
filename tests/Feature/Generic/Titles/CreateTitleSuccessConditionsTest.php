@@ -30,14 +30,14 @@ class CreateTitleSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_title_introduced_today_or_before_is_bookable()
+    public function a_title_introduced_today_or_before_is_competable()
     {
         $this->actAs('administrator');
 
         $this->post(route('titles.store'), $this->validParams(['introduced_at' => today()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
-            $this->assertTrue($title->is_bookable);
+            $this->assertTrue($title->is_competable);
         });
     }
 

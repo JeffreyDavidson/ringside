@@ -21,17 +21,17 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $bookable            = factory(Title::class, 3)->states('bookable')->create();
+        $competable          = factory(Title::class, 3)->states('competable')->create();
         $pendingIntroduction = factory(Title::class, 3)->states('pending-introduction')->create();
         $retired             = factory(Title::class, 3)->states('retired')->create();
 
         $this->titles = collect([
             'pending-introduction' => $pendingIntroduction,
-            'bookable'             => $bookable,
+            'competable'           => $competable,
             'retired'              => $retired,
             'all'                  => collect()
-                                ->concat($bookable)
-                                ->concat($pendingIntroduced)
+                                ->concat($competable)
+                                ->concat($pendingIntroduction)
                                 ->concat($retired)
         ]);
     }
@@ -61,15 +61,15 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_super_administrator_can_view_all_bookable_titles()
+    public function a_super_administrator_can_view_all_competable_titles()
     {
         $this->actAs('super-administrator');
 
-        $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'bookable']));
+        $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'competable']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->titles->get('bookable')->count(),
-            'data'         => $this->titles->get('bookable')->only(['id'])->toArray(),
+            'recordsTotal' => $this->titles->get('competable')->count(),
+            'data'         => $this->titles->get('competable')->only(['id'])->toArray(),
         ]);
     }
 

@@ -15,7 +15,7 @@ class UnretireTitleFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_bookable_title_cannot_unretire()
+    public function a_competable_title_cannot_unretire()
     {
         $this->actAs('administrator');
         $title = factory(Title::class)->states('competable')->create();

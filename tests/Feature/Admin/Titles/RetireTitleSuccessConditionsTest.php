@@ -15,7 +15,7 @@ class RetireTitleSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_retire_a_bookable_title()
+    public function an_administrator_can_retire_a_competable_title()
     {
         $this->actAs('administrator');
         $title = factory(Title::class)->states('competable')->create();

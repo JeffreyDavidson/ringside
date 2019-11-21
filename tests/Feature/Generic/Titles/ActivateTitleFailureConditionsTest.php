@@ -15,7 +15,7 @@ class ActivateTitleFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_bookable_title_cannot_be_activated()
+    public function a_competable_title_cannot_be_activated()
     {
         $this->actAs('administrator');
         $title = factory(Title::class)->states('competable')->create();

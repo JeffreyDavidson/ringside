@@ -15,7 +15,7 @@ class RetireTitleFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_retire_a_bookable_title()
+    public function a_guest_cannot_retire_a_competable_title()
     {
         $title = factory(Title::class)->states('competable')->create();
 
