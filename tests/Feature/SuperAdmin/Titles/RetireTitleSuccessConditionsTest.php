@@ -18,7 +18,7 @@ class RetireTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_retire_a_bookable_title()
     {
         $this->actAs('super-administrator');
-        $title = factory(Title::class)->states('bookable')->create();
+        $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->put(route('titles.retire', $title));
 

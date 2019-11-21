@@ -17,8 +17,8 @@ class TitleObserver
     {
         if ($title->checkIsRetired()) {
             $title->status = TitleStatus::RETIRED;
-        } elseif ($title->checkIsBookable()) {
-            $title->status = TitleStatus::BOOKABLE;
+        } elseif ($title->checkIsCompetable()) {
+            $title->status = TitleStatus::COMPETABLE;
         } else {
             $title->status = TitleStatus::PENDING_INTRODUCTION;
         }

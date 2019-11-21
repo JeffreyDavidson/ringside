@@ -17,7 +17,7 @@ class RetireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_retire_a_bookable_title()
     {
-        $title = factory(Title::class)->states('bookable')->create();
+        $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->put(route('titles.retire', $title));
 

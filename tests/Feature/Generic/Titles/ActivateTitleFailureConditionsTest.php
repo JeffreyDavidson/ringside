@@ -18,7 +18,7 @@ class ActivateTitleFailureConditionsTest extends TestCase
     public function a_bookable_title_cannot_be_activated()
     {
         $this->actAs('administrator');
-        $title = factory(Title::class)->states('bookable')->create();
+        $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->put(route('titles.activate', $title));
 

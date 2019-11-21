@@ -18,7 +18,7 @@ class RetireTitleFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_retire_a_bookable_title()
     {
         $this->actAs('basic-user');
-        $title = factory(Title::class)->states('bookable')->create();
+        $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->put(route('titles.retire', $title));
 
