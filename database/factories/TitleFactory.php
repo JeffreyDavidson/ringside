@@ -8,6 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Title::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence,
+        'status' => TitleStatus::PENDING_INTRODUCTION,
     ];
 });
 
@@ -17,8 +18,8 @@ $factory->state(Title::class, 'competable', function ($faker) {
     ];
 });
 
-$factory->afterCreatingState(Title::class, 'competable', function ($Title) {
-    $Title->introduce();
+$factory->afterCreatingState(Title::class, 'competable', function ($title) {
+    $title->introduce();
 });
 
 $factory->state(Title::class, 'pending-introduction', function ($faker) {
@@ -34,5 +35,6 @@ $factory->state(Title::class, 'retired', function ($faker) {
 });
 
 $factory->afterCreatingState(Title::class, 'retired', function ($title) {
+    $title->introduce();
     $title->retire();
 });

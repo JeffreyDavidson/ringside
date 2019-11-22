@@ -92,24 +92,7 @@ trait CanBeRetired
      *
      * @return bool
      */
-    public function retire()
-    {
-        if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
-            throw new CannotBeRetiredException;
-        }
-
-        if ($this->checkIsSuspended()) {
-            $this->reinstate();
-        }
-
-        if ($this->checkIsInjured()) {
-            $this->recover();
-        }
-
-        $this->retirements()->create(['started_at' => now()]);
-
-        return $this->touch();
-    }
+    abstract public function retire();
 
     /**
      * Unretire a model.

@@ -2,6 +2,8 @@
 
 namespace App\Models\Concerns;
 
+use App\Exceptions\CannotBeIntroducedException;
+
 trait CanBeIntroduced
 {
     /**
@@ -39,10 +41,31 @@ trait CanBeIntroduced
      *
      * @return $this
      */
-    public function introduce()
+    public function introduce($introducedAt = null)
     {
-        $this->update(['introduced_at' => now()]);
+        if ($this->checkIsIntroduced()) {
+            throw new CannotBeIntroducedException;
+        }
 
-        return $this;
+        $introducedDate = $introducedAt ?? now();
+
+        $this->update(['introduced_at' => $introducedDate]);
+
+        return $this->touch();
+    }
+
+     /**
+     * Determine if a model has been introduced.
+     *
+     * @return bool
+     */
+    public function checkIsPendingIntroduction()
+    {
+        return is_null($this->introduced_at) || $this->introduced_at->isFuture();
+    }
+
+    public function checkIsIntroduced()
+    {
+        return !is_null($this->introduced_at) && $this->introduced_at->isPast();
     }
 }

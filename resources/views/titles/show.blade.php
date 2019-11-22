@@ -56,7 +56,7 @@
                         <div class="kt-widget__content">
                             <div class="kt-widget__info">
                                 <span class="kt-widget__label">Date Introduced:</span>
-                                <span class="kt-widget__data">{!! $title->formatted_introduced_at !!}</span>
+                                <span class="kt-widget__data">{{ $title->is_pending_introduction ? 'TBD' :  $title->formatted_introduced_at  }}</span>
                             </div>
                         </div>
                     </div>

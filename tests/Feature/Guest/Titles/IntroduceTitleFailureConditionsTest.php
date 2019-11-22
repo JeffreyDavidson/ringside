@@ -10,16 +10,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group titles
  * @group guests
  */
-class ActivateTitleFailureConditionsTest extends TestCase
+class IntroduceTitleFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_activate_a_pending_introduction_title()
+    public function a_guest_cannot_introduce_a_pending_introduction_title()
     {
         $title = factory(Title::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('titles.activate', $title));
+        $response = $this->put(route('titles.introduce', $title));
 
         $response->assertRedirect(route('login'));
     }

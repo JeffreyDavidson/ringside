@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Title extends Model
@@ -27,4 +28,18 @@ class Title extends Model
      * @var array
      */
     protected $dates = ['introduced_at'];
+
+    /**
+     *
+     */
+    public function retire()
+    {
+        if ($this->checkIsPendingIntroduction() || $this->checkIsRetired()) {
+            throw new CannotBeRetiredException;
+        }
+
+        $this->retirements()->create(['started_at' => now()]);
+
+        return $this->touch();
+    }
 }

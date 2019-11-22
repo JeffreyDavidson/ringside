@@ -101,12 +101,8 @@ class TitlePolicy
      * @param  \App\Models\Title  $title
      * @return bool
      */
-    public function activate(User $user, Title $title)
+    public function introduce(User $user)
     {
-        if ($title->is_bookable || $title->is_retired) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 

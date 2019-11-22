@@ -17,6 +17,7 @@ class IntroduceTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_introduce_a_pending_introduction_title()
     {
+        // $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $title = factory(Title::class)->states('pending-introduction')->create();
 
@@ -24,7 +25,8 @@ class IntroduceTitleSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
-            $this->assertTrue($title->is_bookable);
+            // dd($title);
+            $this->assertTrue($title->is_competable);
         });
     }
 }

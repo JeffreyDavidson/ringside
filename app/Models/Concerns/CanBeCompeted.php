@@ -49,6 +49,6 @@ trait CanBeCompeted
      */
     public function checkIsCompetable()
     {
-        return $this->status === 'competable';
+        return !is_null($this->introduced_at) && $this->introduced_at->isPast();
     }
 }

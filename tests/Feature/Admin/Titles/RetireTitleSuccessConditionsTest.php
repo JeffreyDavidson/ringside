@@ -19,6 +19,7 @@ class RetireTitleSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
         $title = factory(Title::class)->states('competable')->create();
+        // dd($title);
 
         $response = $this->put(route('titles.retire', $title));
 
