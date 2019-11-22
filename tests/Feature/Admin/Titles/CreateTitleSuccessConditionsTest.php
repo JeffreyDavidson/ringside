@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Titles;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,14 +43,17 @@ class CreateTitleSucessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_title()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs('administrator');
 
         $response = $this->storeRequest('title', $this->validParams());
 
         $response->assertRedirect(route('titles.index'));
-        tap(Title::first(), function ($title) {
+        tap(Title::first(), function ($title) use ($now) {
             $this->assertEquals('Example Name Title', $title->name);
-            $this->assertEquals(now()->toDateTimeString(), $title->introduced_at->toDateTimeString());
+            $this->assertEquals($now->toDateTimeString(), $title->introduced_at->toDateTimeString());
         });
     }
 }

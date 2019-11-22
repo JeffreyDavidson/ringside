@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -311,6 +312,9 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_started_at_must_be_in_date_format()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
@@ -319,8 +323,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('wrestlers.edit', $wrestler));
         $response->assertSessionHasErrors('started_at');
-        tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertEquals(now()->toDateTImeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
+        tap($wrestler->fresh(), function ($wrestler) use ($now) {
+            $this->assertEquals($now->toDateTImeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
         });
     }
 }

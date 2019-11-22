@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\CannotBeRetiredException;
 
 abstract class SingleRosterMember extends Model
 {
