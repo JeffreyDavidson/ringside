@@ -30,31 +30,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
             'started_at' => now()->toDateTimeString(),
         ], $overrides);
     }
-
-    /** @test */
-    public function a_manager_started_today_or_before_is_bookable()
-    {
-        $this->actAs('administrator');
-
-        $this->storeRequest('manager', $this->validParams(['started_at' => today()->toDateTimeString()]));
-
-        tap(Manager::first(), function ($manager) {
-            $this->assertEquals('bookable', $manager->status);
-        });
-    }
-
-    /** @test */
-    public function a_manager_started_after_today_is_pending_employment()
-    {
-        $this->actAs('administrator');
-
-        $this->storeRequest('manager', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
-
-        tap(Manager::first(), function ($manager) {
-            $this->assertEquals('pending-employment', $manager->status);
-        });
-    }
-
+    
     /** @test */
     public function a_manager_started_at_date_is_optional()
     {

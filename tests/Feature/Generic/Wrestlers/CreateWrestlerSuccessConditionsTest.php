@@ -36,30 +36,6 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_started_today_or_before_is_bookable()
-    {
-        $this->actAs('administrator');
-
-        $this->storeRequest('wrestler', $this->validParams(['started_at' => now()->toDateTimeString()]));
-
-        tap(Wrestler::first(), function ($wrestler) {
-            $this->assertEquals('bookable', $wrestler->status);
-        });
-    }
-
-    /** @test */
-    public function a_wrestler_started_after_today_is_pending_employment()
-    {
-        $this->actAs('administrator');
-
-        $this->storeRequest('wrestler', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
-
-        tap(Wrestler::first(), function ($wrestler) {
-            $this->assertEquals('pending-employment', $wrestler->status);
-        });
-    }
-
-    /** @test */
     public function a_wrestler_signature_move_is_optional()
     {
         $this->actAs('administrator');
@@ -82,20 +58,44 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_can_be_created()
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $this->actAs('administrator');
 
         $response = $this->storeRequest('wrestler', $this->validParams());
 
         $response->assertRedirect(route('wrestlers.index'));
-        tap(Wrestler::first(), function ($wrestler) use ($now) {
+        tap(Wrestler::first(), function ($wrestler) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
             $this->assertEquals(76, $wrestler->height);
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
             $this->assertEquals('The Finisher', $wrestler->signature_move);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_can_be_employed_during_creation()
+    {
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $this->actAs('administrator');
+
+        $this->storeRequest('wrestler', $this->validParams(['started_at' => $now->toDateTimeString()]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertTrue($wrestler->isEmployed());
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_can_be_created_without_employing()
+    {
+        $this->actAs('administrator');
+
+        $this->storeRequest('wrestler', $this->validParams(['started_at' => null]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertFalse($wrestler->isEmployed());
         });
     }
 }

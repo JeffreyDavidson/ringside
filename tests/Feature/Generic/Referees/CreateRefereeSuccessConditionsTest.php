@@ -32,30 +32,6 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_referee_started_today_or_before_is_bookable()
-    {
-        $this->actAs('administrator');
-
-        $this->storeRequest('referee', $this->validParams(['started_at' => today()->toDateTimeString()]));
-
-        tap(Referee::first(), function ($referee) {
-            $this->assertEquals('bookable', $referee->status);
-        });
-    }
-
-    /** @test */
-    public function a_referee_started_after_today_is_pending_employment()
-    {
-        $this->actAs('administrator');
-
-        $this->storeRequest('referee', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
-
-        tap(Referee::first(), function ($referee) {
-            $this->assertEquals('pending-employment', $referee->status);
-        });
-    }
-
-    /** @test */
     public function a_referee_started_at_date_is_optional()
     {
         $this->actAs('administrator');
