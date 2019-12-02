@@ -35,7 +35,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('manager', $this->validParams(['first_name' => '']));
+        $response = $this->storeRequest('manager', $this->validParams(['first_name' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));
@@ -61,7 +61,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('manager', $this->validParams(['last_name' => '']));
+        $response = $this->storeRequest('manager', $this->validParams(['last_name' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('managers.create'));

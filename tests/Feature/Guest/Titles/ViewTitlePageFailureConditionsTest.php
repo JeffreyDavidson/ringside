@@ -19,7 +19,7 @@ class ViewTitlePageFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->create();
 
-        $response = $this->get(route('titles.show', ['title' => $title]));
+        $response = $this->showRequest($title);
 
         $response->assertRedirect(route('login'));
     }

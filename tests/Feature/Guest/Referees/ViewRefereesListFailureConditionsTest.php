@@ -17,7 +17,7 @@ class ViewRefereesListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_referees_page()
     {
-        $response = $this->get(route('referees.index'));
+        $response = $this->indexRequest('referee');
 
         $response->assertRedirect(route('login'));
     }

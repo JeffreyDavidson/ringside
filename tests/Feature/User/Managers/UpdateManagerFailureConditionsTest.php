@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -36,7 +36,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->create();
 
-        $response = $this->get(route('managers.edit', $manager));
+        $response = $this->editRequest($manager);
 
         $response->assertForbidden();
     }
@@ -47,7 +47,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->create();
 
-        $response = $this->patch(route('managers.update', $manager), $this->validParams());
+        $response = $this->updateRequest($manager, $this->validParams());
 
         $response->assertForbidden();
     }

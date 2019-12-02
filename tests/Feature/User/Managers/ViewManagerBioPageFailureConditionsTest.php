@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\User\Managers;
 
+use Tests\TestCase;
 use App\Models\User;
 use App\Models\Manager;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -23,7 +23,7 @@ class ViewManagerBioPageFailureConditionsTest extends TestCase
         $otherUser = factory(User::class)->create();
         $manager = factory(Manager::class)->create(['user_id' => $otherUser->id]);
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertForbidden();
     }

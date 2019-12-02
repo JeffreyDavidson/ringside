@@ -19,7 +19,7 @@ class RetireTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->states('competable')->create();
 
-        $response = $this->put(route('titles.retire', $title));
+        $response = $this->retireRequest($title);
 
         $response->assertRedirect(route('login'));
     }

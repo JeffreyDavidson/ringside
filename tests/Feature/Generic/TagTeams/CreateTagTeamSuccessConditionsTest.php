@@ -50,16 +50,6 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_tag_team_name_is_optional()
-    {
-        $this->actAs('administrator');
-
-        $response = $this->storeRequest('tag-team', $this->validParams(['name' => '']));
-
-        $response->assertSessionDoesntHaveErrors('name');
-    }
-
-    /** @test */
     public function a_tag_team_signature_move_is_optional()
     {
         $this->actAs('administrator');

@@ -23,18 +23,26 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted('referees', [
+            'id' => $referee->id,
+            'first_name' => $referee->first_name,
+            'last_name' => $referee->last_name
+        ]);
     }
 
     /** @test */
-    public function an_administrator_can_delete_a_pending_introduction_referee()
+    public function an_administrator_can_delete_a_pending_employment_referee()
     {
         $this->actAs('administrator');
         $referee = factory(Referee::class)->states('pending-employment')->create();
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted('referees', [
+            'id' => $referee->id,
+            'first_name' => $referee->first_name,
+            'last_name' => $referee->last_name
+        ]);
     }
 
     /** @test */
@@ -45,7 +53,11 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted('referees', [
+            'id' => $referee->id,
+            'first_name' => $referee->first_name,
+            'last_name' => $referee->last_name
+        ]);
     }
 
     /** @test */
@@ -56,7 +68,11 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted('referees', [
+            'id' => $referee->id,
+            'first_name' => $referee->first_name,
+            'last_name' => $referee->last_name
+        ]);
     }
 
     /** @test */
@@ -67,6 +83,10 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted('referees', [
+            'id' => $referee->id,
+            'first_name' => $referee->first_name,
+            'last_name' => $referee->last_name
+        ]);
     }
 }

@@ -16,7 +16,7 @@ class ViewWrestlersListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_wrestlers_page()
     {
-        $response = $this->get(route('wrestlers.index'));
+        $response = $this->indexRequest('wrestler');
 
         $response->assertRedirect(route('login'));
     }

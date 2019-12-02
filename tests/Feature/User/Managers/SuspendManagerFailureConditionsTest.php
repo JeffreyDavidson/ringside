@@ -21,7 +21,7 @@ class SuspendManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->put(route('managers.suspend', $manager));
+        $response = $this->suspendRequest($manager);
 
         $response->assertForbidden();
     }

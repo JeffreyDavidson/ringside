@@ -23,14 +23,14 @@ class CreateTitleFailureConditionsTest extends TestCase
     {
         return array_replace([
             'name' => 'Example Name Title',
-            'introduced_at' => today()->toDateTimeString(),
+            'introduced_at' => now()->toDateTimeString(),
         ], $overrides);
     }
 
     /** @test */
     public function a_guest_cannot_view_the_form_for_creating_a_title()
     {
-        $response = $this->get(route('titles.create'));
+        $response = $this->createRequest('titles');
 
         $response->assertRedirect(route('login'));
     }
@@ -38,7 +38,7 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_a_title()
     {
-        $response = $this->post(route('titles.store'), $this->validParams());
+        $response = $this->storeRequest('title', $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

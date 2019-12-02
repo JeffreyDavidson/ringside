@@ -33,7 +33,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->create();
 
-        $response = $this->get(route('titles.edit', $title));
+        $response = $this->editRequest($title);
 
         $response->assertRedirect(route('login'));
     }
@@ -43,7 +43,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->create();
 
-        $response = $this->patch(route('titles.update', $title), $this->validParams());
+        $response = $this->updateRequest($title, $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

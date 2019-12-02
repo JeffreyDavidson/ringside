@@ -19,7 +19,7 @@ class RestoreTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->create(['deleted_at' => now()->toDateTimeString()]);
 
-        $response = $this->put(route('titles.restore', $title));
+        $response = $this->restoreRequest($title);
 
         $response->assertRedirect(route('login'));
     }

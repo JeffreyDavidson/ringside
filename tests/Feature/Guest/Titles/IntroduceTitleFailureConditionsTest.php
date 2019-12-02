@@ -19,7 +19,7 @@ class IntroduceTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->states('pending-introduction')->create();
 
-        $response = $this->put(route('titles.introduce', $title));
+        $response = $this->introduceRequest($title);
 
         $response->assertRedirect(route('login'));
     }

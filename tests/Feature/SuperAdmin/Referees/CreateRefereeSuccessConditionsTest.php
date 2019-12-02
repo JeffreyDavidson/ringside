@@ -49,10 +49,5 @@ class CreateRefereeSuccessConditionsTest extends TestCase
         $response = $this->storeRequest('referee', $this->validParams());
 
         $response->assertRedirect(route('referees.index'));
-        tap(Referee::first(), function ($referee) {
-            $this->assertEquals('John', $referee->first_name);
-            $this->assertEquals('Smith', $referee->last_name);
-            $this->assertEquals(now()->toDateTimeString(), $referee->currentEmployment->started_at->toDateTimeString());
-        });
     }
 }

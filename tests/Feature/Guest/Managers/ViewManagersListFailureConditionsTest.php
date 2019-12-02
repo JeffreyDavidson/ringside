@@ -17,7 +17,7 @@ class ViewManagersListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_managers_page()
     {
-        $response = $this->get(route('managers.index'));
+        $response = $this->indexRequest('manager');
 
         $response->assertRedirect(route('login'));
     }

@@ -16,7 +16,7 @@ class ViewTitlesListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_titles_page()
     {
-        $response = $this->get(route('titles.index'));
+        $response = $this->indexRequest('title');
 
         $response->assertRedirect(route('login'));
     }

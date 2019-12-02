@@ -39,7 +39,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->get(route('wrestlers.create'));
+        $response = $this->createRequest('wrestler');
 
         $response->assertViewIs('wrestlers.create');
         $response->assertViewHas('wrestler', new Wrestler);
@@ -53,13 +53,5 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $response = $this->storeRequest('wrestler', $this->validParams());
 
         $response->assertRedirect(route('wrestlers.index'));
-        tap(Wrestler::first(), function ($wrestler) {
-            $this->assertEquals('Example Wrestler Name', $wrestler->name);
-            $this->assertEquals(76, $wrestler->height);
-            $this->assertEquals(240, $wrestler->weight);
-            $this->assertEquals('Laraville, FL', $wrestler->hometown);
-            $this->assertEquals('The Finisher', $wrestler->signature_move);
-            $this->assertEquals(now()->toDateTimeString(), $wrestler->currentEmployment->started_at);
-        });
     }
 }

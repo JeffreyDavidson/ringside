@@ -35,7 +35,20 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_tag_team_name_must_be_a_string_if_filled()
+    public function a_tag_team_name_is_required()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->storeRequest('tag-team', $this->validParams(['name' => null]));
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('tag-teams.create'));
+        $response->assertSessionHasErrors('name');
+        $this->assertEquals(0, TagTeam::count());
+    }
+
+    /** @test */
+    public function a_tag_team_name_must_be_a_string()
     {
         $this->actAs('administrator');
 
@@ -48,7 +61,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_tag_team_name_must_be_a_unique_if_filled()
+    public function a_tag_team_name_must_be_a_unique()
     {
         $this->actAs('administrator');
         factory(TagTeam::class)->create(['name' => 'Example Tag Team Name']);
@@ -75,7 +88,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_tag_team_started_at_must_be_a_string()
+    public function a_tag_team_started_at_date_must_be_a_string_if_filled()
     {
         $this->actAs('administrator');
 
@@ -88,7 +101,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_tag_team_started_at_must_be_in_datetime_format()
+    public function a_tag_team_started_at_date_must_be_in_datetime_format_if_filled()
     {
         $this->actAs('administrator');
 
@@ -105,7 +118,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => '']));
+        $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('tag-teams.create'));
@@ -183,10 +196,10 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_cannot_be_a_part_of_two_bookable_tag_teams()
+    public function a_wrestler_cannot_be_a_part_of_more_than_one_bookable_tag_team()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $response = $this->storeRequest('tag-team', $this->validParams(['wrestlers' => [$tagTeam->currentWrestlers->first()->id]]));
 

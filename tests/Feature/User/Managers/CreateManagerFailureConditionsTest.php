@@ -44,7 +44,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->post(route('managers.store'), $this->validParams());
+        $response = $this->storeRequest('manager', $this->validParams());
 
         $response->assertForbidden();
     }

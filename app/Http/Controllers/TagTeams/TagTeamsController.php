@@ -5,8 +5,8 @@ namespace App\Http\Controllers\TagTeams;
 use App\Models\TagTeam;
 use Illuminate\Http\Request;
 use App\Filters\TagTeamFilters;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\DataTables\TagTeamsDataTable;
 use App\Http\Requests\StoreTagTeamRequest;
 use App\Http\Requests\UpdateTagTeamRequest;
 
@@ -16,10 +16,10 @@ class TagTeamsController extends Controller
      * View a list of tag teams.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Yajra\DataTables\DataTables  $table
+     * @param  App\DataTables\TagTeamsDataTable  $dataTable
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, DataTables $table, TagTeamFilters $requestFilter)
+    public function index(Request $request, TagTeamsDataTable $dataTable, TagTeamFilters $requestFilter)
     {
         $this->authorize('viewList', TagTeam::class);
 
@@ -27,17 +27,8 @@ class TagTeamsController extends Controller
             $query = TagTeam::query();
             $requestFilter->apply($query);
 
-            return $table->eloquent($query)
-                ->addColumn('action', 'tagteams.partials.action-cell')
-                ->editColumn('started_at', function (TagTeam $tagTeam) {
-                    return $tagTeam->currentEmployment->started_at->format('Y-m-d H:s');
-                })
-                ->filterColumn('id', function ($query, $keyword) {
-                    $query->where($query->qualifyColumn('id'), $keyword);
-                })
-                ->toJson();
+            return $dataTable->eloquent($query)->toJson();
         }
-
 
         return view('tagteams.index');
     }
@@ -63,7 +54,11 @@ class TagTeamsController extends Controller
     public function store(StoreTagTeamRequest $request)
     {
         $tagTeam = TagTeam::create($request->except(['wrestlers', 'started_at']));
-        $tagTeam->employ($request->input('started_at'));
+
+        if ($request->filled('started_at')) {
+            $tagTeam->employ($request->input('started_at'));
+        }
+
         $tagTeam->addWrestlers($request->input('wrestlers'));
 
         return redirect()->route('tag-teams.index');

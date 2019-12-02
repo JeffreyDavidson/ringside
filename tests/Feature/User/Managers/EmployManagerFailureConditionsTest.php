@@ -16,12 +16,12 @@ class EmployManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_employ_a_pending_introduction_manager()
+    public function a_basic_user_cannot_employ_a_pending_employment_manager()
     {
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 
-        $response = $this->put(route('managers.employ', $manager));
+        $response = $this->employRequest($manager);
 
         $response->assertForbidden();
     }

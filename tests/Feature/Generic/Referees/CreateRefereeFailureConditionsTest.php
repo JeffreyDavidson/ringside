@@ -35,7 +35,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('referee', $this->validParams(['first_name' => '']));
+        $response = $this->storeRequest('referee', $this->validParams(['first_name' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));
@@ -61,7 +61,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('referee', $this->validParams(['last_name' => '']));
+        $response = $this->storeRequest('referee', $this->validParams(['last_name' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('referees.create'));

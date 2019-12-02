@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -21,7 +21,7 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('bookable')->create();
 
-        $response = $this->put(route('managers.injure', $manager));
+        $response = $this->injureRequest($manager);
 
         $response->assertForbidden();
     }

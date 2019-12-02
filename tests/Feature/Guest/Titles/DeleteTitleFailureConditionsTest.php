@@ -19,7 +19,7 @@ class DeleteTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->create();
 
-        $response = $this->delete(route('titles.destroy', $title));
+        $response = $this->deleteRequest($title);
 
         $response->assertRedirect(route('login'));
     }

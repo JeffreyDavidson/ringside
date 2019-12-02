@@ -16,8 +16,7 @@ class TagTeam extends Model
         HasCustomRelationships,
         Concerns\CanBeRetired,
         Concerns\CanBeSuspended,
-        Concerns\CanBeEmployed,
-        Concerns\CanBeBooked;
+        Concerns\CanBeEmployed;
 
     /**
      * The attributes that aren't mass assignable.
@@ -193,5 +192,25 @@ class TagTeam extends Model
         $this->currentSuspension()->update(['ended_at' => now()]);
 
         return $this->touch();
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkIsBookable()
+    {
+        if ($this->currentEmployment()->doesntExist()) {
+            return false;
+        }
+
+        if ($this->currentSuspension()->exists()) {
+            return false;
+        }
+
+        if ($this->currentRetirement()->exists()) {
+            return false;
+        }
+
+        return true;
     }
 }

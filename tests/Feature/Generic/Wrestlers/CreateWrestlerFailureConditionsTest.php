@@ -39,7 +39,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['name' => '']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['name' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -79,7 +79,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -131,7 +131,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => '']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -170,7 +170,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['weight' => '']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['weight' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -196,7 +196,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['hometown' => '']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['hometown' => null]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -231,20 +231,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_started_at_date_is_required()
-    {
-        $this->actAs('administrator');
-
-        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => '']));
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('wrestlers.create'));
-        $response->assertSessionHasErrors('started_at');
-        $this->assertEquals(0, Wrestler::count());
-    }
-
-    /** @test */
-    public function a_wrestler_started_at_must_be_a_string()
+    public function a_wrestler_started_at_must_be_a_string_if_filled()
     {
         $this->actAs('administrator');
 
@@ -257,7 +244,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_startd_at_must_be_in_date_format()
+    public function a_wrestler_startd_at_must_be_in_date_format_if_filled()
     {
         $this->actAs('administrator');
 

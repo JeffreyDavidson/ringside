@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -21,7 +21,7 @@ class ViewManagerBioPageTest extends TestCase
         $signedInUser = $this->actAs('basic-user');
         $manager = factory(Manager::class)->create(['user_id' => $signedInUser->id]);
 
-        $response = $this->get(route('managers.show', $manager));
+        $response = $this->showRequest($manager);
 
         $response->assertOk();
     }

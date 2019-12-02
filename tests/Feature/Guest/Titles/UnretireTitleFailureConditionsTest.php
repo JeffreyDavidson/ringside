@@ -19,7 +19,7 @@ class UnretireTitleFailureConditionsTest extends TestCase
     {
         $title = factory(Title::class)->states('retired')->create();
 
-        $response = $this->put(route('titles.unretire', $title));
+        $response = $this->unretireRequest($title);
 
         $response->assertRedirect(route('login'));
     }

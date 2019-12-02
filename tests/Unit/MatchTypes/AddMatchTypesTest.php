@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\MatchTypes;
+namespace Tests\Unit\MatchTypes;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;

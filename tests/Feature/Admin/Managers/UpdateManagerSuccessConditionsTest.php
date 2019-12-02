@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Admin\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -36,7 +36,7 @@ class UpdateManagerSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $manager = factory(Manager::class)->create();
 
-        $response = $this->get(route('managers.edit', $manager));
+        $response = $this->editRequest($manager);
 
         $response->assertViewIs('managers.edit');
         $this->assertTrue($response->data('manager')->is($manager));

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -22,7 +22,7 @@ class RestoreManagerFailureConditionsTest extends TestCase
         $manager = factory(Manager::class)->create();
         $manager->delete();
 
-        $response = $this->put(route('managers.restore', $manager));
+        $response = $this->restoreRequest($manager);
 
         $response->assertForbidden();
     }

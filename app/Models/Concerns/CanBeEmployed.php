@@ -5,7 +5,6 @@ namespace App\Models\Concerns;
 use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
 use App\Exceptions\CannotBeFiredException;
-use App\Exceptions\CannotBeEmployedException;
 
 
 trait CanBeEmployed
@@ -123,10 +122,6 @@ trait CanBeEmployed
      */
     public function employ($startedAt = null)
     {
-        if ($this->checkIsEmployed()) {
-            throw new CannotBeEmployedException;
-        }
-
         $startDate = $startedAt ?? now();
         $this->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startDate]);
 
@@ -164,7 +159,7 @@ trait CanBeEmployed
      *
      * @return bool
      */
-    public function checkIsEmployed()
+    public function isEmployed()
     {
         return $this->currentEmployment()->exists();
     }

@@ -43,20 +43,19 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $this->storeRequest('wrestler', $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         tap(Wrestler::first(), function ($wrestler) {
-            $this->assertTrue($wrestler->is_bookable);
+            $this->assertEquals('bookable', $wrestler->status);
         });
     }
 
     /** @test */
-    public function a_wrestler_started_after_today_is_not_bookable()
+    public function a_wrestler_started_after_today_is_pending_employment()
     {
         $this->actAs('administrator');
 
         $this->storeRequest('wrestler', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Wrestler::first(), function ($wrestler) {
-            $this->assertFalse($wrestler->is_bookable);
-            $this->assertFalse($wrestler->is_employed);
+            $this->assertEquals('pending-employment', $wrestler->status);
         });
     }
 
@@ -65,12 +64,38 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => '']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => null]));
 
         $response->assertSessionDoesntHaveErrors('signature_move');
+    }
+
+    /** @test */
+    public function a_wrestler_started_at_date_is_optional()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => null]));
+
+        $response->assertSessionDoesntHaveErrors('started_at');
+    }
+
+    /** @test */
+    public function a_wrestler_can_be_created()
+    {
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $this->actAs('administrator');
+
+        $response = $this->storeRequest('wrestler', $this->validParams());
+
         $response->assertRedirect(route('wrestlers.index'));
-        tap(Wrestler::first(), function ($wrestler) {
-            $this->assertNull($wrestler->signature_move);
+        tap(Wrestler::first(), function ($wrestler) use ($now) {
+            $this->assertEquals('Example Wrestler Name', $wrestler->name);
+            $this->assertEquals(76, $wrestler->height);
+            $this->assertEquals(240, $wrestler->weight);
+            $this->assertEquals('Laraville, FL', $wrestler->hometown);
+            $this->assertEquals('The Finisher', $wrestler->signature_move);
         });
     }
 }

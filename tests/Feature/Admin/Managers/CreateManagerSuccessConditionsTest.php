@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin\Manager;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,18 +44,10 @@ class CreateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_manager()
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $this->actAs('administrator');
 
         $response = $this->storeRequest('manager', $this->validParams());
 
         $response->assertRedirect(route('managers.index'));
-        tap(Manager::first(), function ($manager) use ($now) {
-            $this->assertEquals('John', $manager->first_name);
-            $this->assertEquals('Smith', $manager->last_name);
-            $this->assertEquals($now->toDateTimeString(), $manager->currentEmployment->started_at);
-        });
     }
 }

@@ -39,19 +39,19 @@ class CreateManagerSuccessConditionsTest extends TestCase
         $this->storeRequest('manager', $this->validParams(['started_at' => today()->toDateTimeString()]));
 
         tap(Manager::first(), function ($manager) {
-            $this->assertTrue($manager->is_bookable);
+            $this->assertEquals('bookable', $manager->status);
         });
     }
 
     /** @test */
-    public function a_manager_started_after_today_is_pending_introduction()
+    public function a_manager_started_after_today_is_pending_employment()
     {
         $this->actAs('administrator');
 
         $this->storeRequest('manager', $this->validParams(['started_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Manager::first(), function ($manager) {
-            $this->assertFalse($manager->is_bookable);
+            $this->assertEquals('pending-employment', $manager->status);
         });
     }
 
@@ -63,8 +63,49 @@ class CreateManagerSuccessConditionsTest extends TestCase
         $response = $this->storeRequest('manager', $this->validParams(['started_at' => '']));
 
         $response->assertSessionDoesntHaveErrors('started_at');
+    }
+
+    /** @test */
+    public function a_manager_can_be_created()
+    {
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $this->actAs('administrator');
+
+        $response = $this->storeRequest('manager', $this->validParams());
+
+        $response->assertRedirect(route('managers.index'));
         tap(Manager::first(), function ($manager) {
-            $this->assertEmpty($manager->employments);
+            $this->assertEquals('John', $manager->first_name);
+            $this->assertEquals('Smith', $manager->last_name);
+        });
+    }
+
+    /** @test */
+    public function a_manager_can_be_employed_during_creation()
+    {
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $this->actAs('administrator');
+
+        $this->storeRequest('manager', $this->validParams(['started_at' => $now->toDateTimeString()]));
+
+        tap(Manager::first(), function ($manager) {
+            $this->assertTrue($manager->isEmployed());
+        });
+    }
+
+    /** @test */
+    public function a_manager_can_be_created_without_employing()
+    {
+        $this->actAs('administrator');
+
+        $this->storeRequest('manager', $this->validParams(['started_at' => null]));
+
+        tap(Manager::first(), function ($manager) {
+            $this->assertFalse($manager->isEmployed());
         });
     }
 }

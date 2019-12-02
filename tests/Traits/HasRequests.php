@@ -9,7 +9,7 @@ trait HasRequests
 {
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function deleteRequest(Model $entity)
     {
@@ -20,7 +20,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function retireRequest(Model $entity)
     {
@@ -29,9 +29,9 @@ trait HasRequests
         return $this->put(route("{$entityName}.retire", $entity));
     }
 
-        /**
+    /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function showRequest(Model $entity)
     {
@@ -42,7 +42,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function employRequest(Model $entity)
     {
@@ -53,7 +53,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function injureRequest(Model $entity)
     {
@@ -64,7 +64,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function suspendRequest(Model $entity)
     {
@@ -75,7 +75,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function recoverRequest(Model $entity)
     {
@@ -84,9 +84,9 @@ trait HasRequests
         return $this->put(route("{$entityName}.recover", $entity));
     }
 
-       /**
+    /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function reinstateRequest(Model $entity)
     {
@@ -97,7 +97,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function restoreRequest(Model $entity)
     {
@@ -108,7 +108,7 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function unretireRequest(Model $entity)
     {
@@ -120,7 +120,7 @@ trait HasRequests
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
      * @param  array  $overrides
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function updateRequest(Model $entity, $overrides)
     {
@@ -133,7 +133,7 @@ trait HasRequests
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
      * @param  array  $overrides
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function storeRequest($entity, $overrides)
     {
@@ -145,13 +145,45 @@ trait HasRequests
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $entity
-     * @param  array  $overrides
-     * @return
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function createRequest($entity)
     {
         $entityName = Str::plural($entity);
 
         return $this->get(route("{$entityName}.create"));
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Model  $entity
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function editRequest(Model $entity)
+    {
+        $entityName = Str::replaceFirst('_', '-', $entity->getTable());
+
+        return $this->get(route("{$entityName}.edit", $entity->getKey()));
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Model  $entity
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function introduceRequest(Model $entity)
+    {
+        $entityName = Str::replaceFirst('_', '-', $entity->getTable());
+
+        return $this->put(route("{$entityName}.introduce", $entity));
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Model  $entity
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function indexRequest($entity)
+    {
+        $entityName = Str::plural($entity);
+
+        return $this->get(route("{$entityName}.index"));
     }
 }

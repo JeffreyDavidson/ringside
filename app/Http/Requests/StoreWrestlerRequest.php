@@ -32,7 +32,7 @@ class StoreWrestlerRequest extends FormRequest
             'weight' => ['required', 'numeric'],
             'hometown' => ['required', 'string'],
             'signature_move' => ['nullable', 'string'],
-            'started_at' => ['required', 'string', 'date'],
+            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
         ];
     }
 

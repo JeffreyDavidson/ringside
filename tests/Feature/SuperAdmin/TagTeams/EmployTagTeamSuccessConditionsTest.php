@@ -19,7 +19,7 @@ class EmployTagTeamSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_employ_a_pending_employment_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'pending-employment')->create();
+        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
 
         $response = $this->employRequest($tagTeam);
 

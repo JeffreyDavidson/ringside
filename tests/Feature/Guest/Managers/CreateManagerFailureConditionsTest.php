@@ -3,7 +3,6 @@
 namespace Tests\Feature\Guest\Managers;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group managers
@@ -12,8 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class CreateManagerFailureConditionsTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Valid parameters for request.
      *
@@ -40,7 +37,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_a_manager()
     {
-        $response = $this->post(route('managers.store'), $this->validParams());
+        $response = $this->storeRequest('manager', $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

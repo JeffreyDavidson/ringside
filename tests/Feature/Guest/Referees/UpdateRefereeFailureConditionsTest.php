@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use App\Models\Referee;
 use Tests\TestCase;
+use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -35,7 +35,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->create();
 
-        $response = $this->get(route('referees.edit', $referee));
+        $response = $this->editRequest($referee);
 
         $response->assertRedirect(route('login'));
     }
