@@ -35,7 +35,7 @@ return [
         RefereeStatus::INJURED => 'Injured',
     ],
     ManagerStatus::class => [
-        ManagerStatus::BOOKABLE => 'Bookable',
+        ManagerStatus::AVAILABLE => 'Available',
         ManagerStatus::PENDING_EMPLOYMENT => 'Pending Employment',
         ManagerStatus::RETIRED => 'Retired',
         ManagerStatus::SUSPENDED => 'Suspended',

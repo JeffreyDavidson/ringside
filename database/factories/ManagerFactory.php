@@ -13,13 +13,13 @@ $factory->define(Manager::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Manager::class, 'bookable', function ($faker) {
+$factory->state(Manager::class, 'available', function ($faker) {
     return [
-        'status' => ManagerStatus::BOOKABLE,
+        'status' => ManagerStatus::AVAILABLE,
     ];
 });
 
-$factory->afterCreatingState(Manager::class, 'bookable', function ($manager) {
+$factory->afterCreatingState(Manager::class, 'available', function ($manager) {
     $manager->employ();
 });
 

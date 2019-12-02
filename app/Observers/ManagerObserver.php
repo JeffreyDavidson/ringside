@@ -24,7 +24,7 @@ class ManagerObserver
         } elseif ($manager->checkIsPendingEmployment()) {
             $manager->status = ManagerStatus::PENDING_EMPLOYMENT;
         } else {
-            $manager->status = ManagerStatus::BOOKABLE;
+            $manager->status = ManagerStatus::AVAILABLE;
         }
     }
 }

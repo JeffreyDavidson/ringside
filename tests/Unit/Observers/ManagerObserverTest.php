@@ -25,24 +25,24 @@ class ManagerObserverTest extends TestCase
         $this->assertEquals('pending-employment', $manager->status);
 
         $manager->employ(Carbon::today()->toDateTimeString());
-        $this->assertEquals('bookable', $manager->status);
+        $this->assertEquals('available', $manager->status);
 
         $manager->injure();
         $this->assertEquals('injured', $manager->status);
 
         $manager->recover();
-        $this->assertEquals('bookable', $manager->status);
+        $this->assertEquals('available', $manager->status);
 
         $manager->suspend();
         $this->assertEquals('suspended', $manager->status);
 
         $manager->reinstate();
-        $this->assertEquals('bookable', $manager->status);
+        $this->assertEquals('available', $manager->status);
 
         $manager->retire();
         $this->assertEquals('retired', $manager->status);
 
         $manager->unretire();
-        $this->assertEquals('bookable', $manager->status);
+        $this->assertEquals('available', $manager->status);
     }
 }

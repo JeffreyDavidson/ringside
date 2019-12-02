@@ -5,7 +5,7 @@ namespace App\Enums;
 use MadWeb\Enum\Enum;
 
 /**
- * @method static ManagerStatus BOOKABLE()
+ * @method static ManagerStatus AVAILABLE()
  * @method static ManagerStatus PENDING_EMPLOYMENT()
  * @method static ManagerStatus INJURED()
  * @method static ManagerStatus SUSPENDED()
@@ -13,7 +13,7 @@ use MadWeb\Enum\Enum;
  */
 final class ManagerStatus extends Enum
 {
-    const BOOKABLE = 'bookable';
+    const AVAILABLE = 'available';
     const PENDING_EMPLOYMENT = 'pending-employment';
     const INJURED = 'injured';
     const SUSPENDED = 'suspended';
