@@ -52,8 +52,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->storeRequest('wrestler', $this->validParams([
-                            'name' => ['not-a-string']]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['name' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
