@@ -134,7 +134,7 @@ trait CanBeEmployed
      * @param  Carbon|string $startedAt
      * @return bool
      */
-    public function fire($firededAt = null)
+    public function fire($firedAt = null)
     {
         if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
             throw new CannotBeFiredException;
@@ -148,7 +148,7 @@ trait CanBeEmployed
             $this->recover();
         }
 
-        $fireDate = $firededAt ?? now();
+        $fireDate = $firedAt ?? now();
         $this->currentEmployment()->update(['ended_at' => $fireDate]);
 
         return $this->touch();
