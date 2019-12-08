@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -16,12 +16,12 @@ class RecoverManagerSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_recover_an_injured_manager()
+    public function a_super_administrator_can_mark_an_injured_manager_as_healed()
     {
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($manager);
+        $response = $this->markAsHealedRequest($manager);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals(now()->toDateTimeString(), $manager->fresh()->injuries()->latest()->first()->ended_at);

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use App\Models\Manager;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -17,13 +17,13 @@ class SuspendManagerSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_suspend_a_bookable_manager()
+    public function a_super_administrator_can_suspend_an_available_manager()
     {
         $now = now();
         Carbon::setTestNow($now);
 
         $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->suspendRequest($manager);
 

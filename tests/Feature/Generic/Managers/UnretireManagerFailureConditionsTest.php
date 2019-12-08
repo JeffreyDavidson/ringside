@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Generic\Managers;
 
+use Tests\TestCase;
 use App\Models\Manager;
 use App\Exceptions\CannotBeUnretiredException;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -17,13 +17,13 @@ class UnretireManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_bookable_manager_cannot_be_unretired()
+    public function an_available_manager_cannot_be_unretired()
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeUnretiredException::class);
 
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->unretireRequest($manager);
 

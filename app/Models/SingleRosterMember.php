@@ -17,15 +17,11 @@ abstract class SingleRosterMember extends Model
 
     public function retire()
     {
-        if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
-            throw new CannotBeRetiredException;
-        }
-
-        if ($this->checkIsSuspended()) {
+        if ($this->isSuspended()) {
             $this->reinstate();
         }
 
-        if ($this->checkIsInjured()) {
+        if ($this->isInjured()) {
             $this->recover();
         }
 

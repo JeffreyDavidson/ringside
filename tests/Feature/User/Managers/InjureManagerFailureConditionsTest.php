@@ -16,10 +16,10 @@ class InjureManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_injure_a_bookable_manager()
+    public function a_basic_user_cannot_injure_an_available_manager()
     {
         $this->actAs('basic-user');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->injureRequest($manager);
 

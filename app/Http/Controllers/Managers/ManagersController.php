@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Filters\ManagerFilters;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreManagerRequest;
-use App\Http\Requests\UpdateManagerRequest;
+use App\Http\Requests\Managers\StoreManagerRequest;
+use App\Http\Requests\Managers\UpdateManagerRequest;
 
 class ManagersController extends Controller
 {
@@ -58,7 +58,7 @@ class ManagersController extends Controller
     /**
      * Create a new manager.
      *
-     * @param  \App\Http\Requests\StoreManagerRequest  $request
+     * @param  \App\Http\Requests\Managers\StoreManagerRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreManagerRequest $request)
@@ -101,7 +101,7 @@ class ManagersController extends Controller
     /**
      * Update a given manager.
      *
-     * @param  \App\Http\Requests\UpdateManagerRequest  $request
+     * @param  \App\Http\Requests\Managers\UpdateManagerRequest  $request
      * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
@@ -110,7 +110,7 @@ class ManagersController extends Controller
         $manager->update($request->except('started_at'));
 
         $startedAt = $request->input('started_at');
-        $isEmployed = $manager->checkIsEmployed();
+        $isEmployed = $manager->isEmployed();
 
         if ($startedAt && $isEmployed && Carbon::parse($startedAt)->lt($manager->currentEmployment->started_at)) {
             $manager->employ($request->input('started_at'));

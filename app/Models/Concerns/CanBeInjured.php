@@ -4,8 +4,6 @@ namespace App\Models\Concerns;
 
 use App\Models\Injury;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeInjuredException;
-use App\Exceptions\CannotBeRecoveredException;
 
 trait CanBeInjured
 {
@@ -94,14 +92,6 @@ trait CanBeInjured
      */
     public function injure()
     {
-        if ($this->checkIsPendingEmployment() ||
-            $this->checkIsRetired() ||
-            $this->checkIsInjured() ||
-            $this->checkIsSuspended()
-        ) {
-            throw new CannotBeInjuredException;
-        }
-
         $this->injuries()->create(['started_at' => now()]);
 
         return $this->touch();
@@ -114,10 +104,6 @@ trait CanBeInjured
      */
     public function recover()
     {
-        if (! $this->checkIsInjured()) {
-            throw new CannotBeRecoveredException;
-        }
-
         $this->currentInjury()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -128,7 +114,7 @@ trait CanBeInjured
      *
      * @return bool
      */
-    public function checkIsInjured()
+    public function isInjured()
     {
         return $this->currentInjury()->exists();
     }

@@ -45,6 +45,7 @@ class UpdateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_manager()
     {
+        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $manager = factory(Manager::class)->create();
 

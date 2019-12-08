@@ -77,7 +77,7 @@ trait HasRequests
      * @param  \Illuminate\Database\Eloquent\Model  $entity
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function recoverRequest(Model $entity)
+    public function markAsHealedRequest(Model $entity)
     {
         $entityName = Str::replaceFirst('_', '-', $entity->getTable());
 

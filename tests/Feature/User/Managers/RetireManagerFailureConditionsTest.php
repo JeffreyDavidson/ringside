@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -16,10 +16,10 @@ class RetireManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_retire_a_bookable_manager()
+    public function a_basic_user_cannot_retire_an_available_manager()
     {
         $this->actAs('basic-user');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->retireRequest($manager);
 

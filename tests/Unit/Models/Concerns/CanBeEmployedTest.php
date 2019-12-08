@@ -236,7 +236,7 @@ class CanBeEmployedTest extends TestCase
     {
         $model = factory($modelClass)->create();
 
-        $this->assertTrue($model->checkIsPendingEmployment());
+        $this->assertTrue($model->isPendingEmployment());
     }
 
     /**
@@ -248,7 +248,7 @@ class CanBeEmployedTest extends TestCase
         $model = factory($modelClass)->create();
         $model->employ(Carbon::tomorrow());
 
-        $this->assertTrue($model->checkIsPendingEmployment());
+        $this->assertTrue($model->isPendingEmployment());
     }
 
     public function modelClassDataProvider()

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Guest\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -16,9 +16,9 @@ class InjureManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_injure_a_bookable_manager()
+    public function a_guest_cannot_injure_an_available_manager()
     {
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->injureRequest($manager);
 

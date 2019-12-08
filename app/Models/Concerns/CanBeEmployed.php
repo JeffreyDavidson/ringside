@@ -136,15 +136,15 @@ trait CanBeEmployed
      */
     public function fire($firedAt = null)
     {
-        if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
+        if ($this->isPendingEmployment() || $this->isRetired()) {
             throw new CannotBeFiredException;
         }
 
-        if ($this->checkIsSuspended()) {
+        if ($this->isSuspended()) {
             $this->reinstate();
         }
 
-        if ($this->checkIsInjured()) {
+        if ($this->isInjured()) {
             $this->recover();
         }
 
@@ -169,7 +169,7 @@ trait CanBeEmployed
      *
      * @return bool
      */
-    public function checkIsPendingEmployment()
+    public function isPendingEmployment()
     {
         return $this->currentEmployment()->doesntExist();
     }

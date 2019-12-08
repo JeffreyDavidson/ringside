@@ -18,6 +18,7 @@ class EmployManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_employ_a_pending_employment_manager()
     {
+        $this->withoutExceptionHandling();
         $this->actAs('administrator');
         $manager = factory(Manager::class)->states('pending-employment')->create();
 

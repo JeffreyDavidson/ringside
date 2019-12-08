@@ -20,7 +20,7 @@ class RecoverManagerFailureConditionsTest extends TestCase
     {
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($manager);
+        $response = $this->markAsHealedRequest($manager);
 
         $response->assertRedirect(route('login'));
     }

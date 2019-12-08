@@ -15,13 +15,13 @@ class ManagerObserver
      */
     public function saving(Manager $manager)
     {
-        if ($manager->checkIsRetired()) {
+        if ($manager->isRetired()) {
             $manager->status = ManagerStatus::RETIRED;
-        } elseif ($manager->checkIsInjured()) {
+        } elseif ($manager->isInjured()) {
             $manager->status =  ManagerStatus::INJURED;
-        } elseif ($manager->checkIsSuspended()) {
+        } elseif ($manager->isSuspended()) {
             $manager->status = ManagerStatus::SUSPENDED;
-        } elseif ($manager->checkIsPendingEmployment()) {
+        } elseif ($manager->isPendingEmployment()) {
             $manager->status = ManagerStatus::PENDING_EMPLOYMENT;
         } else {
             $manager->status = ManagerStatus::AVAILABLE;

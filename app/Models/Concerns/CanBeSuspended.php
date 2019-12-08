@@ -4,8 +4,6 @@ namespace App\Models\Concerns;
 
 use App\Models\Suspension;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeSuspendedException;
-use App\Exceptions\CannotBeReinstatedException;
 
 trait CanBeSuspended
 {
@@ -96,14 +94,6 @@ trait CanBeSuspended
      */
     public function suspend()
     {
-        if ($this->checkIsPendingEmployment() ||
-            $this->checkIsRetired() ||
-            $this->checkIsInjured() ||
-            $this->checkIsSuspended()
-        ) {
-            throw new CannotBeSuspendedException;
-        }
-
         $this->suspensions()->create(['started_at' => now()]);
 
         return $this->touch();
@@ -116,10 +106,6 @@ trait CanBeSuspended
      */
     public function reinstate()
     {
-        if (! $this->checkIsSuspended()) {
-            throw new CannotBeReinstatedException;
-        }
-
         $this->currentSuspension()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -128,7 +114,7 @@ trait CanBeSuspended
     /**
      * @return bool
      */
-    public function checkIsSuspended()
+    public function isSuspended()
     {
         return $this->currentSuspension()->exists();
     }

@@ -21,7 +21,7 @@ class RecoverManagerTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($manager);
+        $response = $this->markAsHealedRequest($manager);
 
         $response->assertForbidden();
     }

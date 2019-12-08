@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CannotBeRecoveredException extends Exception
+class CannotBeMarkedAsHealedException extends Exception
 {
     //
 }

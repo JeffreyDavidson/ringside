@@ -28,4 +28,15 @@ class Manager extends SingleRosterMember
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Scope a query to only include bookable managers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 'available');
+    }
 }

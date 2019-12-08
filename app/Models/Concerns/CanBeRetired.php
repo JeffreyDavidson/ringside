@@ -101,10 +101,6 @@ trait CanBeRetired
      */
     public function unretire()
     {
-        if (! $this->checkIsRetired()) {
-            throw new CannotBeUnretiredException;
-        }
-
         $this->currentRetirement()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -115,7 +111,7 @@ trait CanBeRetired
      *
      * @return bool
      */
-    public function checkIsRetired()
+    public function isRetired()
     {
         return $this->currentRetirement()->exists();
     }

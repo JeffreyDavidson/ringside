@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -16,10 +16,10 @@ class ViewManagerBioPageSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_view_a_bookable_manager_profile()
+    public function a_super_administrator_can_view_an_available_manager_profile()
     {
         $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->showRequest($manager);
 

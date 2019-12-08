@@ -27,7 +27,7 @@ class CanBeRetiredTest extends TestCase
     {
         $model = factory($modelClass)->states('retired')->create();
 
-        $this->assertTrue($model->checkIsRetired());
+        $this->assertTrue($model->isRetired());
     }
 
     /**
