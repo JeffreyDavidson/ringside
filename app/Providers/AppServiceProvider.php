@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Blade;
+use Spatie\BladeX\Facades\BladeX;
 use Illuminate\Support\ServiceProvider;
 use App\Http\Requests\CustomDataTablesRequest;
 
@@ -31,6 +31,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
+        BladeX::component('components.*');
     }
 }
