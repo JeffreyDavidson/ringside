@@ -26,7 +26,6 @@ class RecoverManagerSuccessConditionsTest extends TestCase
         $manager = factory(Manager::class)->states('injured')->create();
 
         $response = $this->markAsHealedRequest($manager);
-        dd($response);
 
         $response->assertRedirect(route('managers.index'));
         $this->assertEquals($now->toDateTimeString(), $manager->fresh()->injuries()->latest()->first()->ended_at);
