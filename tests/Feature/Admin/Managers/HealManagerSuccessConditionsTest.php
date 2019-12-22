@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group admins
  * @group roster
  */
-class RecoverManagerSuccessConditionsTest extends TestCase
+class HealManagerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 

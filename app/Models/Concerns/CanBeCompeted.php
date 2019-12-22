@@ -3,7 +3,6 @@
 namespace App\Models\Concerns;
 
 use App\Traits\HasCachedAttributes;
-use Illuminate\Database\Eloquent\Builder;
 
 trait CanBeCompeted
 {
@@ -47,7 +46,7 @@ trait CanBeCompeted
      *
      * @return bool
      */
-    public function checkIsCompetable()
+    public function isCompetable()
     {
         return !is_null($this->introduced_at) && $this->introduced_at->isPast();
     }

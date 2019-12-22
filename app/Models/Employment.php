@@ -21,9 +21,9 @@ class Employment extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
-     * Undocumented function
+     * Get the owning employed model.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function employable()
     {

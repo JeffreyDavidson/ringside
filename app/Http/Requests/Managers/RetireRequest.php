@@ -5,7 +5,7 @@ namespace App\Http\Requests\Managers;
 use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RecoverFromInjuryRequest extends FormRequest
+class RetireRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class RecoverFromInjuryRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('heal', Manager::class);
+        return $this->user()->can('retire', Manager::class);
     }
 
     /**
@@ -28,13 +28,19 @@ class RecoverFromInjuryRequest extends FormRequest
     }
 
     /**
-     * Determine if the manager can be marked as healed.
+     * Determine if the manager can be retired.
      *
      * @return boolean
      */
-    public function canBeMarkedAsHealed()
+    public function canBeRetired()
     {
-        if (!$this->route('manager')->isInjured()) {
+        $manager = $this->route('manager');
+
+        if ($manager->isPendingEmployment()) {
+            return false;
+        }
+
+        if ($manager->isRetired()) {
             return false;
         }
 

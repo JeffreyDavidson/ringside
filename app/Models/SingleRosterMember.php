@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
-use App\Exceptions\CannotBeRetiredException;
 
 abstract class SingleRosterMember extends Model
 {
@@ -22,7 +21,7 @@ abstract class SingleRosterMember extends Model
         }
 
         if ($this->isInjured()) {
-            $this->recover();
+            $this->heal();
         }
 
         $this->retirements()->create(['started_at' => now()]);

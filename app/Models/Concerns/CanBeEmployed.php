@@ -9,6 +9,11 @@ use App\Exceptions\CannotBeFiredException;
 
 trait CanBeEmployed
 {
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public static function bootCanBeEmployed()
     {
         if (config('app.debug')) {
@@ -49,7 +54,7 @@ trait CanBeEmployed
      */
     public function previousEmployments()
     {
-        return $this->morphMany(Employment::class, 'employable')
+        return $this->employments()
                     ->whereNotNull('ended_at');
     }
 
@@ -60,7 +65,7 @@ trait CanBeEmployed
      */
     public function previousEmployment()
     {
-        return $this->morphMany(Employment::class, 'employable')
+        return $this->employments()
                     ->whereNotNull('ended_at')
                     ->latest('ended_at')
                     ->limit(1);

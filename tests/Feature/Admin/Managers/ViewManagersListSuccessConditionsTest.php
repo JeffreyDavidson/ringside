@@ -34,7 +34,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
         $injured             = factory(Manager::class, 3)->states('injured')->create();
 
         $this->managers = collect([
-            'available'             => $available,
+            'available'            => $available,
             'pending-employment'   => $pendingEmployment,
             'retired'              => $retired,
             'suspended'            => $suspended,

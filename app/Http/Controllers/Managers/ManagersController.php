@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Managers;
 
+use Carbon\Carbon;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use App\Filters\ManagerFilters;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Managers\StoreManagerRequest;
-use App\Http\Requests\Managers\UpdateManagerRequest;
+use App\Http\Requests\Managers\StoreRequest;
+use App\Http\Requests\Managers\UpdateRequest;
 
 class ManagersController extends Controller
 {
@@ -58,10 +59,10 @@ class ManagersController extends Controller
     /**
      * Create a new manager.
      *
-     * @param  \App\Http\Requests\Managers\StoreManagerRequest  $request
+     * @param  \App\Http\Requests\Managers\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreManagerRequest $request)
+    public function store(StoreRequest $request)
     {
         $manager = Manager::create($request->except('started_at'));
 
@@ -101,11 +102,11 @@ class ManagersController extends Controller
     /**
      * Update a given manager.
      *
-     * @param  \App\Http\Requests\Managers\UpdateManagerRequest  $request
+     * @param  \App\Http\Requests\Managers\UpdateRequest  $request
      * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
-    public function update(UpdateManagerRequest $request, Manager $manager)
+    public function update(UpdateRequest $request, Manager $manager)
     {
         $manager->update($request->except('started_at'));
 

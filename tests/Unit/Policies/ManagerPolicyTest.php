@@ -193,27 +193,27 @@ class ManagerPolicyTest extends TestCase
     }
 
     /** @test */
-    public function a_basic_user_cannot_recover_a_manager()
+    public function a_basic_user_cannot_heal_a_manager()
     {
         $user = factory(User::class)->states('basic-user')->create();
 
-        $this->assertFalse($this->policy->recover($user));
+        $this->assertFalse($this->policy->heal($user));
     }
 
     /** @test */
-    public function an_administrator_can_recover_a_manager()
+    public function an_administrator_can_heal_a_manager()
     {
         $user = factory(User::class)->states('administrator')->create();
 
-        $this->assertTrue($this->policy->recover($user));
+        $this->assertTrue($this->policy->heal($user));
     }
 
     /** @test */
-    public function a_super_administrator_can_recover_a_manager()
+    public function a_super_administrator_can_heal_a_manager()
     {
         $user = factory(User::class)->states('super-administrator')->create();
 
-        $this->assertTrue($this->policy->recover($user));
+        $this->assertTrue($this->policy->heal($user));
     }
 
     /** @test */

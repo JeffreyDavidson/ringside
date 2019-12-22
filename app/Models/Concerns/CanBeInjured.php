@@ -47,7 +47,7 @@ trait CanBeInjured
      */
     public function previousInjuries()
     {
-        return $this->morphMany(Injury::class, 'injurable')
+        return $this->injuries()
                     ->whereNotNull('ended_at');
     }
 
@@ -58,7 +58,7 @@ trait CanBeInjured
      */
     public function previousInjury()
     {
-        return $this->morphMany(Injury::class, 'injurable')
+        return $this->injuries()
                     ->whereNotNull('ended_at')
                     ->latest('ended_at')
                     ->limit(1);
@@ -102,7 +102,7 @@ trait CanBeInjured
      *
      * @return bool
      */
-    public function recover()
+    public function heal()
     {
         $this->currentInjury()->update(['ended_at' => now()]);
 

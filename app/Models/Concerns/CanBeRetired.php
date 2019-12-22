@@ -4,8 +4,6 @@ namespace App\Models\Concerns;
 
 use App\Models\Retirement;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeRetiredException;
-use App\Exceptions\CannotBeUnretiredException;
 
 trait CanBeRetired
 {
@@ -49,7 +47,7 @@ trait CanBeRetired
      */
     public function previousRetirements()
     {
-        return $this->morphMany(Retirement::class, 'retiree')
+        return $this->retirements()
                     ->whereNotNull('ended_at');
     }
 
@@ -60,7 +58,7 @@ trait CanBeRetired
      */
     public function previousRetirement()
     {
-        return $this->morphMany(Retirement::class, 'retiree')
+        return $this->retirements()
                     ->whereNotNull('ended_at')
                     ->latest('ended_at')
                     ->limit(1);

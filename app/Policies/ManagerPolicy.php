@@ -115,7 +115,7 @@ class ManagerPolicy
      * @param  App\Models\User  $user
      * @return bool
      */
-    public function recover(User $user)
+    public function heal(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }

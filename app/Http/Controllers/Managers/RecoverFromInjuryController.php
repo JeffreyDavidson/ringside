@@ -12,7 +12,7 @@ class RecoverFromInjuryController extends Controller
     /**
      * Recover a manager.
      *
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\Manager  $manager
      * @param  App\Http\Requests\Managers\RecoverFromInjuryRequest  $request
      * @return \lluminate\Http\RedirectResponse
      */
@@ -22,7 +22,7 @@ class RecoverFromInjuryController extends Controller
             throw new CannotBeMarkedAsHealedException();
         }
 
-        $manager->markAsHealed();
+        $manager->heal();
 
         return redirect()->route('managers.index');
     }

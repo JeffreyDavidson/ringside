@@ -11,13 +11,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group superadmins
  * @group roster
  */
-class RecoverManagerSuccessConditionsTest extends TestCase
+class HealManagerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function a_super_administrator_can_mark_an_injured_manager_as_healed()
     {
+        $this->withoutExceptionHandling();
         $this->actAs('super-administrator');
         $manager = factory(Manager::class)->states('injured')->create();
 
