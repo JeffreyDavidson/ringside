@@ -4,9 +4,9 @@ namespace App\DataTables;
 
 use App\Models\Manager;
 use App\Filters\ManagerFilters;
-use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Services\DataTable;
 
-class ManagersDataTable extends DataTables
+class ManagersDataTable extends DataTable
 {
     /** @var managerFilters */
     private $managerFilters;
@@ -27,7 +27,7 @@ class ManagersDataTable extends DataTables
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    public function render($query)
+    public function dataTable($query)
     {
         return datatables($query)
             ->editColumn('started_at', function (Manager $manager) {
@@ -51,9 +51,9 @@ class ManagersDataTable extends DataTables
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query($builder)
+    public function query()
     {
-        $query = Manager::with('employment');
+        $query = Manager::with('currentEmployment');
 
         $this->managerFilters->apply($query);
 
