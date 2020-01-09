@@ -13,11 +13,15 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
+Route::namespace('App\Http\Controllers')->group(function () {
+    Auth::routes();
+});
+
+
 Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 });
 
-Auth::routes();
 
 /************************************************************************
  * Roster
