@@ -64,7 +64,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index'));
+        $responseAjax = $this->ajaxJson(route('api.managers.index'));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('all')->count(),
@@ -77,7 +77,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'available']));
+        $responseAjax = $this->ajaxJson(route('api.managers.index', ['status' => 'available']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('available')->count(),
@@ -90,7 +90,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'pending-employment']));
+        $responseAjax = $this->ajaxJson(route('api.managers.index', ['status' => 'pending-employment']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('pending-employment')->count(),
@@ -103,7 +103,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'retired']));
+        $responseAjax = $this->ajaxJson(route('api.managers.index', ['status' => 'retired']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('retired')->count(),
@@ -116,7 +116,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'suspended']));
+        $responseAjax = $this->ajaxJson(route('api.managers.index', ['status' => 'suspended']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('suspended')->count(),
@@ -129,7 +129,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'injured']));
+        $responseAjax = $this->ajaxJson(route('api.managers.index', ['status' => 'injured']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->managers->get('injured')->count(),
