@@ -5,6 +5,7 @@
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
             @can('view', $model)
+                <action-button label="" />
                 @viewbutton(['route' => route('managers.show', $model)])
                 @endviewbutton
             @endcan
@@ -21,8 +22,9 @@
                 @endretirebutton
             @endcan
             @can('unretire', $model)
-                @unretirebutton(['route' => route('managers.unretire', $model)])
-                @endunretirebutton
+                <unretire
+                    :route="route('managers.unretire', $model)"
+                />
             @endcan
             @can('employ', $model)
                 @employbutton(['route' => route('managers.employ', $model)])
