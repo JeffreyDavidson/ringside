@@ -31,10 +31,17 @@ class ManagersDataTable extends DataTable
     {
         return datatables($query)
             ->editColumn('started_at', function (Manager $manager) {
-                return $manager->currentEmployment->started_at->format('Y-m-d H:s');
+                if ($manager->isEmployed()) {
+                    return $manager->currentEmployment->started_at->toDateString();
+                }
+
+                return $manager->pendingEmployment->started_at->toDateString();
             })
             ->editColumn('name', function (Manager $manager) {
                 return $manager->full_name;
+            })
+            ->editColumn('status', function (Manager $manager) {
+                return $manager->status->label();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
@@ -53,7 +60,7 @@ class ManagersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Manager::with('currentEmployment');
+        $query = Manager::query();
 
         $this->managerFilters->apply($query);
 
