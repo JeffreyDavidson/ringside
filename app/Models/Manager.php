@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ManagerStatus;
+use MadWeb\Enum\EnumCastable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
 
@@ -10,7 +12,8 @@ class Manager extends SingleRosterMember
     use SoftDeletes,
         HasCustomRelationships,
         Concerns\HasFullName,
-        Concerns\CanBeStableMember;
+        Concerns\CanBeStableMember,
+        EnumCastable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -18,6 +21,15 @@ class Manager extends SingleRosterMember
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => ManagerStatus::class,
+    ];
 
     /**
      * Get the user belonging to the manager.
