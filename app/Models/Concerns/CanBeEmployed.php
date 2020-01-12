@@ -48,6 +48,18 @@ trait CanBeEmployed
     }
 
     /**
+     * Get the pending employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function pendingEmployment()
+    {
+        return $this->morphOne(Employment::class, 'employable')
+            ->where('started_at', '>', now())
+            ->whereNull('ended_at');
+    }
+
+    /**
      * Get the previous employments of the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -205,5 +217,19 @@ trait CanBeEmployed
         }
 
         return $this->getRelation('previousEmployment')->first();
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return App\Models\Employment
+     */
+    public function getPendingEmploymentAttribute()
+    {
+        if (!$this->relationLoaded('pendingEmployment')) {
+            $this->setRelation('pendingEmployment', $this->pendingEmployment()->get());
+        }
+
+        return $this->getRelation('pendingEmployment')->first();
     }
 }
