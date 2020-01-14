@@ -43,7 +43,7 @@ const clearFilters = () => {
 // begin first table
 table.DataTable({
     ajax: {
-        url: "/api" + window.location.pathname,
+        url: window.location.pathname,
         data(params) {
             params.status = filterData.status;
             params.started_at = filterData.started_at;
