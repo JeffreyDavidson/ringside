@@ -192,6 +192,20 @@ trait CanBeEmployed
     }
 
     /**
+     * Determine if the model can be employed.
+     *
+     * @return boolean
+     */
+    public function canBeEmployed()
+    {
+        if ($this->isEmployed()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Get the current employment of the model.
      *
      * @return App\Models\Employment
