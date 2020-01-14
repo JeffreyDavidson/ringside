@@ -7,6 +7,7 @@ use App\Models\Manager;
 use Illuminate\Http\Request;
 use App\Filters\ManagerFilters;
 use App\Http\Controllers\Controller;
+use App\ViewModels\ManagerViewModel;
 use App\DataTables\ManagersDataTable;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
@@ -37,7 +38,7 @@ class ManagersController extends Controller
     {
         $this->authorize('create', Manager::class);
 
-        return view('managers.create', compact('manager'));
+        return view('managers.create', new ManagerViewModel());
     }
 
     /**
@@ -80,7 +81,7 @@ class ManagersController extends Controller
     {
         $this->authorize('update', $manager);
 
-        return view('managers.edit', compact('manager'));
+        return view('managers.edit', new ManagerViewModel($manager));
     }
 
     /**
