@@ -115,6 +115,38 @@ trait CanBeRetired
     }
 
     /**
+     * Determine if the model can be retired.
+     *
+     * @return boolean
+     */
+    public function canBeRetired()
+    {
+        if (!$this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return boolean
+     */
+    public function canBeUnretired()
+    {
+        if (!$this->isRetired()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Get the current retirement of the model.
      *
      * @return App\Models\Retirement

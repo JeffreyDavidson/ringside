@@ -120,6 +120,38 @@ trait CanBeInjured
     }
 
     /**
+     * Determine if the model can be retired.
+     *
+     * @return boolean
+     */
+    public function canBeInjured()
+    {
+        if (!$this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isInjured()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return boolean
+     */
+    public function canBeMarkedAsHealed()
+    {
+        if (!$this->isInjured()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Get the current injury of the model.
      *
      * @return App\Models\Injury

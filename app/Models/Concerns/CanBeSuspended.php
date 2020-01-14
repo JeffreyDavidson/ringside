@@ -120,6 +120,38 @@ trait CanBeSuspended
     }
 
     /**
+     * Determine if the model can be retired.
+     *
+     * @return boolean
+     */
+    public function canBeSuspended()
+    {
+        if (!$this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return boolean
+     */
+    public function canBeReinstated()
+    {
+        if (!$this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Undocumented function
      *
      * @return void
