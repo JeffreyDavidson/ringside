@@ -6,6 +6,7 @@
         class="form-control @error($name) is-invalid @enderror"
         name="{{ $name }}"
         placeholder="Enter {{ $label }}"
+        value="{{ old($name, $model->$name) }}"
         data-datetimepicker
         data-input
     >
