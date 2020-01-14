@@ -60,7 +60,7 @@ class ManagersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Manager::query();
+        $query = Manager::whereHas('employments');
 
         $this->managerFilters->apply($query);
 
