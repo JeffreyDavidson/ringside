@@ -206,6 +206,16 @@ trait CanBeEmployed
     }
 
     /**
+     * Get the model's first employment date.
+     *
+     * @return string|null
+     */
+    public function getStartedAtAttribute()
+    {
+        return optional($this->employments->first()->started_at ?? null)->toDateTimeString();
+    }
+
+    /**
      * Get the current employment of the model.
      *
      * @return App\Models\Employment

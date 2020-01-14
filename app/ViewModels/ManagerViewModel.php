@@ -11,9 +11,4 @@ class ManagerViewModel extends ViewModel
     {
         $this->manager = $manager ?? new Manager;
     }
-
-    public function started_at()
-    {
-        return optional($this->manager->employment->started_at ?? null)->toDateTimeString();
-    }
 }
