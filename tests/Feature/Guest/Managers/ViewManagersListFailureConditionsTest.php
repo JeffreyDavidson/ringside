@@ -25,7 +25,7 @@ class ViewManagersListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_get_managers()
     {
-        $response = $this->ajaxJson(route('api.managers.index'));
+        $response = $this->ajaxJson(route('managers.index'));
 
         $response->assertForbidden();
     }

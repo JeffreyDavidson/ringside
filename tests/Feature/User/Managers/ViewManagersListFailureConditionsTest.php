@@ -29,7 +29,7 @@ class ViewManagersListFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->ajaxJson(route('api.managers.index'));
+        $response = $this->ajaxJson(route('managers.index'));
 
         $response->assertForbidden();
     }

@@ -18,13 +18,16 @@ class ManagersController extends Controller
      * View a list of managers.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  App\DataTables\ManagersDataTable  $table
-     * @param  App\Filters\ManagerFilters  $requestFilter
+     * @param  App\DataTables\ManagersDataTable  $dataTable
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, ManagersDataTable $dataTable, ManagerFilters $requestFilter)
+    public function index(Request $request, ManagersDataTable $dataTable)
     {
         $this->authorize('viewList', Manager::class);
+
+        if ($request->ajax()) {
+            return $dataTable->ajax();
+        }
 
         return view('managers.index');
     }
