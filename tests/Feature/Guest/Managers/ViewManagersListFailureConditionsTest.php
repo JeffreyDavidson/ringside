@@ -27,6 +27,6 @@ class ViewManagersListFailureConditionsTest extends TestCase
     {
         $response = $this->ajaxJson(route('managers.index'));
 
-        $response->assertForbidden();
+        $response->assertUnauthorized();
     }
 }
