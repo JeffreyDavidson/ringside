@@ -6,7 +6,6 @@ use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
 use App\Exceptions\CannotBeFiredException;
 
-
 trait CanBeEmployed
 {
     /**
