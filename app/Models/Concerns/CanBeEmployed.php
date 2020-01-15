@@ -211,7 +211,7 @@ trait CanBeEmployed
      */
     public function getStartedAtAttribute()
     {
-        return optional($this->employments->first()->started_at ?? null)->toDateTimeString();
+        return optional($this->employments->first())->started_at;
     }
 
     /**
