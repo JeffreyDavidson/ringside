@@ -31,11 +31,7 @@ class ManagersDataTable extends DataTable
     {
         return datatables($query)
             ->editColumn('started_at', function (Manager $manager) {
-                if ($manager->isEmployed()) {
-                    return $manager->currentEmployment->started_at->toDateString();
-                }
-
-                return $manager->pendingEmployment->started_at->toDateString();
+                return $manager->started_at->toDateString();
             })
             ->editColumn('name', function (Manager $manager) {
                 return $manager->full_name;
