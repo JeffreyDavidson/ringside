@@ -18,10 +18,6 @@ class EmployController extends Controller
      */
     public function __invoke(Manager $manager, EmployRequest $request)
     {
-        if (!$request->canBeEmployed()) {
-            throw new CannotBeEmployedException();
-        }
-
         $manager->employ($request->input('started_at'));
 
         return redirect()->route('managers.index');
