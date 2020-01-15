@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Managers;
 
-use Carbon\Carbon;
 use App\Models\Manager;
 use Illuminate\Http\Request;
-use App\Filters\ManagerFilters;
 use App\Http\Controllers\Controller;
 use App\ViewModels\ManagerViewModel;
 use App\DataTables\ManagersDataTable;
@@ -98,10 +96,7 @@ class ManagersController extends Controller
     {
         $manager->update($request->except('started_at'));
 
-        $startedAt = $request->input('started_at');
-        $isEmployed = $manager->isEmployed();
-
-        if ($startedAt && $isEmployed && Carbon::parse($startedAt)->lt($manager->currentEmployment->started_at)) {
+        if ($request->filled('started_at')) {
             $manager->employ($request->input('started_at'));
         }
 
