@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
         return [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s']
+            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
         ];
     }
 }

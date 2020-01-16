@@ -12,7 +12,7 @@ trait CanBeRetired
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
             }
         }
@@ -117,11 +117,11 @@ trait CanBeRetired
     /**
      * Determine if the model can be retired.
      *
-     * @return boolean
+     * @return bool
      */
     public function canBeRetired()
     {
-        if (!$this->isEmployed()) {
+        if (! $this->isEmployed()) {
             return false;
         }
 
@@ -135,11 +135,11 @@ trait CanBeRetired
     /**
      * Determine if the model can be retired.
      *
-     * @return boolean
+     * @return bool
      */
     public function canBeUnretired()
     {
-        if (!$this->isRetired()) {
+        if (! $this->isRetired()) {
             return false;
         }
 
@@ -153,7 +153,7 @@ trait CanBeRetired
      */
     public function getCurrentRetirementAttribute()
     {
-        if (!$this->relationLoaded('currentRetirement')) {
+        if (! $this->relationLoaded('currentRetirement')) {
             $this->setRelation('currentRetirement', $this->currentRetirement()->get());
         }
 
@@ -167,7 +167,7 @@ trait CanBeRetired
      */
     public function getPreviousRetirementAttribute()
     {
-        if (!$this->relationLoaded('previousRetirement')) {
+        if (! $this->relationLoaded('previousRetirement')) {
             $this->setRelation('previousRetirement', $this->previousRetirement()->get());
         }
 

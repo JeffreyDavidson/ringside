@@ -26,32 +26,4 @@ class InjureRequest extends FormRequest
     {
         return [];
     }
-
-    /**
-     * Determine if the manager can be injured.
-     *
-     * @return boolean
-     */
-    public function canBeInjured()
-    {
-        $manager = $this->route('manager');
-
-        if ($manager->isPendingEmployment()){
-            return false;
-        }
-
-        if ($manager->isRetired()){
-            return false;
-        }
-
-        if ($manager->isInjured()) {
-            return false;
-        }
-
-        if ($manager->isSuspended()) {
-            return false;
-        }
-
-        return true;
-    }
 }

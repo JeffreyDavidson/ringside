@@ -26,24 +26,4 @@ class RetireRequest extends FormRequest
     {
         return [];
     }
-
-    /**
-     * Determine if the manager can be retired.
-     *
-     * @return boolean
-     */
-    public function canBeRetired()
-    {
-        $manager = $this->route('manager');
-
-        if ($manager->isPendingEmployment()) {
-            return false;
-        }
-
-        if ($manager->isRetired()) {
-            return false;
-        }
-
-        return true;
-    }
 }

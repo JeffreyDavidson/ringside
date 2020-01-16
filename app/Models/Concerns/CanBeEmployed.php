@@ -104,9 +104,7 @@ trait CanBeEmployed
             return true;
         }
 
-        return $this->whereHas('currentEmployment', function ($query) {
-            $query->where('started_at', '>', now());
-        })->exists();
+        return $this->whereHas('pendingEmployment');
     }
 
     /**

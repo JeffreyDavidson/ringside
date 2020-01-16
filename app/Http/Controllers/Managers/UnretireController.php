@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use App\Http\Controllers\Controller;
 use App\Exceptions\CannotBeUnretiredException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\UnretireRequest;
+use App\Models\Manager;
 
 class UnretireController extends Controller
 {
@@ -18,7 +18,7 @@ class UnretireController extends Controller
      */
     public function __invoke(Manager $manager, UnretireRequest $request)
     {
-        if (!$request->canBeUnretired()) {
+        if (! $manager->canBeUnretired()) {
             throw new CannotBeUnretiredException();
         }
 

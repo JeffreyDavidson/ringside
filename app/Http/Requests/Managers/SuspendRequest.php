@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Managers;
 
+use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SuspendRequest extends FormRequest
@@ -13,7 +14,7 @@ class SuspendRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('suspend', $this->route('manager'));
+        return $this->user()->can('suspend', Manager::class);
     }
 
     /**
@@ -24,33 +25,5 @@ class SuspendRequest extends FormRequest
     public function rules()
     {
         return [];
-    }
-
-    /**
-     * Determine if the manager can be suspended.
-     *
-     * @return boolean
-     */
-    public function canBeSuspended()
-    {
-        $manager = $this->route('manager');
-
-        if ($manager->isPendingEmployment()) {
-            return false;
-        }
-
-        if ($manager->isRetired()) {
-            return false;
-        }
-
-        if ($manager->isInjured()) {
-            return false;
-        }
-
-        if ($manager->isSuspended()) {
-            return false;
-        }
-
-        return true;
     }
 }

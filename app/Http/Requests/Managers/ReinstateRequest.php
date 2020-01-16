@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Managers;
 
+use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReinstateRequest extends FormRequest
@@ -13,7 +14,7 @@ class ReinstateRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('reinstate', $this->route('manager'));
+        return $this->user()->can('reinstate', Manager::class);
     }
 
     /**
@@ -24,19 +25,5 @@ class ReinstateRequest extends FormRequest
     public function rules()
     {
         return [];
-    }
-
-    /**
-     * Determine if the manager can be reinstated.
-     *
-     * @return boolean
-     */
-    public function canBeReinstated()
-    {
-        if (!$this->route('manager')->isSuspended()) {
-            return false;
-        }
-
-        return true;
     }
 }

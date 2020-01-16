@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
 use App\Http\Controllers\Controller;
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Requests\Managers\EmployRequest;
+use App\Models\Manager;
 
 class EmployController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use App\Http\Controllers\Controller;
 use App\Exceptions\CannotBeReinstatedException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\ReinstateRequest;
+use App\Models\Manager;
 
 class ReinstateController extends Controller
 {
@@ -18,7 +18,7 @@ class ReinstateController extends Controller
      */
     public function __invoke(Manager $manager, ReinstateRequest $request)
     {
-        if (!$request->canBeReinstated()) {
+        if (! $manager->canBeReinstated()) {
             throw new CannotBeReinstatedException();
         }
 

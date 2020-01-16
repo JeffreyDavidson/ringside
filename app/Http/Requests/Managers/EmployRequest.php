@@ -28,29 +28,18 @@ class EmployRequest extends FormRequest
         return [
             'started_at' => [
                 'nullable',
-                new WithoutActiveEmployment($this->route('manager'))
-            ]
+                new WithoutActiveEmployment($this->route('manager')),
+            ],
         ];
     }
 
+    /*
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
     public function prepareForValidation()
     {
         $this->merge(['started_at' => $this->input('started_at', now()->toDateTimeString())]);
-    }
-
-    /**
-     * Determine if the manager can be employed.
-     *
-     * @return boolean
-     */
-    public function canBeEmployed()
-    {
-        $manager = $this->route('manager');
-
-        if ($manager->isEmployed()) {
-            return false;
-        }
-
-        return true;
     }
 }

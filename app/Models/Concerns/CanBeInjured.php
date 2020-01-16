@@ -12,7 +12,7 @@ trait CanBeInjured
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeInjured trait used without HasCachedAttributes trait');
             }
         }
@@ -120,13 +120,13 @@ trait CanBeInjured
     }
 
     /**
-     * Determine if the model can be retired.
+     * Determine if the model can be injured.
      *
-     * @return boolean
+     * @return bool
      */
     public function canBeInjured()
     {
-        if (!$this->isEmployed()) {
+        if (! $this->isEmployed()) {
             return false;
         }
 
@@ -134,17 +134,25 @@ trait CanBeInjured
             return false;
         }
 
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        if ($this->isSuspended()) {
+            return false;
+        }
+
         return true;
     }
 
     /**
-     * Determine if the model can be retired.
+     * Determine if the model can be marked as healed.
      *
-     * @return boolean
+     * @return bool
      */
     public function canBeMarkedAsHealed()
     {
-        if (!$this->isInjured()) {
+        if (! $this->isInjured()) {
             return false;
         }
 
@@ -158,7 +166,7 @@ trait CanBeInjured
      */
     public function getCurrentInjuryAttribute()
     {
-        if (!$this->relationLoaded('currentInjury')) {
+        if (! $this->relationLoaded('currentInjury')) {
             $this->setRelation('currentInjury', $this->currentInjury()->get());
         }
 
@@ -172,7 +180,7 @@ trait CanBeInjured
      */
     public function getPreviousInjuryAttribute()
     {
-        if (!$this->relationLoaded('previousInjury')) {
+        if (! $this->relationLoaded('previousInjury')) {
             $this->setRelation('previousInjury', $this->previousInjury()->get());
         }
 

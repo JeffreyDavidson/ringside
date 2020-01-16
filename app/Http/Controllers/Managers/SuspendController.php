@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use App\Http\Controllers\Controller;
 use App\Exceptions\CannotBeSuspendedException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\SuspendRequest;
+use App\Models\Manager;
 
 class SuspendController extends Controller
 {
@@ -18,7 +18,7 @@ class SuspendController extends Controller
      */
     public function __invoke(Manager $manager, SuspendRequest $request)
     {
-        if (!$request->canBeSuspended()) {
+        if (! $manager->canBeSuspended()) {
             throw new CannotBeSuspendedException();
         }
 

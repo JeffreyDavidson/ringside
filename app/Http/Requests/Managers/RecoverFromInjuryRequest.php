@@ -26,18 +26,4 @@ class RecoverFromInjuryRequest extends FormRequest
     {
         return [];
     }
-
-    /**
-     * Determine if the manager can be marked as healed.
-     *
-     * @return boolean
-     */
-    public function canBeMarkedAsHealed()
-    {
-        if (!$this->route('manager')->isInjured()) {
-            return false;
-        }
-
-        return true;
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Managers;
 
+use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UnretireRequest extends FormRequest
@@ -24,19 +25,5 @@ class UnretireRequest extends FormRequest
     public function rules()
     {
         return [];
-    }
-
-    /**
-     * Determine if the manager can be unretired.
-     *
-     * @return boolean
-     */
-    public function canBeUnretired()
-    {
-        if (!$this->route('manager')->isRetired()) {
-            return false;
-        }
-
-        return true;
     }
 }

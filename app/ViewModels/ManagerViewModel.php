@@ -11,9 +11,9 @@ class ManagerViewModel extends ViewModel
     public $manager;
 
     /**
-     * Undocumented function
+     * Create a new manager view model instance.
      *
-     * @param App\Models\Manager $manager
+     * @param App\Models\Manager|null $manager
      */
     public function __construct(Manager $manager = null)
     {

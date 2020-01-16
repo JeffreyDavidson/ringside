@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\ManagerStatus;
-use MadWeb\Enum\EnumCastable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
+use App\Enums\ManagerStatus;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use MadWeb\Enum\EnumCastable;
 
 class Manager extends SingleRosterMember
 {

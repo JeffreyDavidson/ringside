@@ -2,16 +2,16 @@
 
 namespace App\Rules;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Database\Eloquent\Model;
 
 class WithoutActiveEmployment implements Rule
 {
     /** @var $model */
     protected $model;
-    
+
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param Model $employable
      */
@@ -19,9 +19,9 @@ class WithoutActiveEmployment implements Rule
     {
         $this->model = $employable;
     }
-    
+
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param [type] $attribute
      * @param [type] $value
@@ -32,13 +32,13 @@ class WithoutActiveEmployment implements Rule
         if ($value === null) {
             return true;
         }
-        
+
         $activeEmployment = $this->model->currentEmployment;
 
-        if (!$activeEmployment || $activeEmployment->started_at->eq($value) || $activeEmployment->started_at->isFuture()) {
+        if (! $activeEmployment || $activeEmployment->started_at->eq($value) || $activeEmployment->started_at->isFuture()) {
             return true;
         }
-        
+
         return false;
     }
 

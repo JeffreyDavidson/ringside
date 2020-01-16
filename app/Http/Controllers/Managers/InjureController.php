@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use App\Http\Controllers\Controller;
 use App\Exceptions\CannotBeInjuredException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\InjureRequest;
+use App\Models\Manager;
 
 class InjureController extends Controller
 {
@@ -18,10 +18,10 @@ class InjureController extends Controller
      */
     public function __invoke(Manager $manager, InjureRequest $request)
     {
-        if (!$request->canBeInjured()) {
+        if (! $manager->canBeInjured()) {
             throw new CannotBeInjuredException();
         }
-        
+
         $manager->injure();
 
         return redirect()->route('managers.index');

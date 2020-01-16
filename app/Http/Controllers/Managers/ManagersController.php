@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\ViewModels\ManagerViewModel;
 use App\DataTables\ManagersDataTable;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
+use App\Models\Manager;
+use App\ViewModels\ManagerViewModel;
+use Illuminate\Http\Request;
 
 class ManagersController extends Controller
 {

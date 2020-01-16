@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use App\Http\Controllers\Controller;
 use App\Exceptions\CannotBeMarkedAsHealedException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\RecoverFromInjuryRequest;
+use App\Models\Manager;
 
 class RecoverFromInjuryController extends Controller
 {
@@ -18,7 +18,7 @@ class RecoverFromInjuryController extends Controller
      */
     public function __invoke(Manager $manager, RecoverFromInjuryRequest $request)
     {
-        if (!$request->canBeMarkedAsHealed()) {
+        if (! $manager->canBeMarkedAsHealed()) {
             throw new CannotBeMarkedAsHealedException();
         }
 

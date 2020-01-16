@@ -7,15 +7,12 @@ use App\Traits\HasCachedAttributes;
 
 trait CanBeSuspended
 {
-    /**
-     *
-     */
     public static function bootCanBeSuspended()
     {
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeSuspended trait used without HasCachedAttributes trait');
             }
         }
@@ -122,11 +119,11 @@ trait CanBeSuspended
     /**
      * Determine if the model can be retired.
      *
-     * @return boolean
+     * @return bool
      */
     public function canBeSuspended()
     {
-        if (!$this->isEmployed()) {
+        if (! $this->isEmployed()) {
             return false;
         }
 
@@ -134,17 +131,11 @@ trait CanBeSuspended
             return false;
         }
 
-        return true;
-    }
+        if ($this->isRetired()) {
+            return false;
+        }
 
-    /**
-     * Determine if the model can be retired.
-     *
-     * @return boolean
-     */
-    public function canBeReinstated()
-    {
-        if (!$this->isSuspended()) {
+        if ($this->isInjured()) {
             return false;
         }
 
@@ -152,13 +143,27 @@ trait CanBeSuspended
     }
 
     /**
-     * Undocumented function
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeReinstated()
+    {
+        if (! $this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Undocumented function.
      *
      * @return void
      */
     public function getCurrentSuspensionAttribute()
     {
-        if (!$this->relationLoaded('currentSuspension')) {
+        if (! $this->relationLoaded('currentSuspension')) {
             $this->setRelation('currentSuspension', $this->currentSuspension()->get());
         }
 
@@ -166,13 +171,13 @@ trait CanBeSuspended
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
     public function getPreviousSuspensionAttribute()
     {
-        if (!$this->relationLoaded('previousSuspension')) {
+        if (! $this->relationLoaded('previousSuspension')) {
             $this->setRelation('previousSuspension', $this->previousSuspension()->get());
         }
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use App\Http\Controllers\Controller;
 use App\Exceptions\CannotBeRetiredException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\RetireRequest;
+use App\Models\Manager;
 
 class RetireController extends Controller
 {
@@ -18,7 +18,7 @@ class RetireController extends Controller
      */
     public function __invoke(Manager $manager, RetireRequest $request)
     {
-        if (!$request->canBeRetired()) {
+        if (! $manager->canBeRetired()) {
             throw new CannotBeRetiredException();
         }
 
