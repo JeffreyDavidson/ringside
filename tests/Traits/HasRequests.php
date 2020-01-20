@@ -77,11 +77,11 @@ trait HasRequests
      * @param  \Illuminate\Database\Eloquent\Model  $entity
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function markAsHealedRequest(Model $entity)
+    public function clearInjuryRequest(Model $entity)
     {
         $entityName = Str::replaceFirst('_', '-', $entity->getTable());
 
-        return $this->put(route("{$entityName}.recover", $entity));
+        return $this->put(route("{$entityName}.clear-from-injury", $entity));
     }
 
     /**

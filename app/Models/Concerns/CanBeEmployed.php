@@ -2,14 +2,14 @@
 
 namespace App\Models\Concerns;
 
+use App\Exceptions\CannotBeFiredException;
 use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeFiredException;
 
 trait CanBeEmployed
 {
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -18,7 +18,7 @@ trait CanBeEmployed
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeEmployed trait used without HasCachedAttributes trait');
             }
         }
@@ -100,7 +100,7 @@ trait CanBeEmployed
      */
     public function getIsPendingEmploymentCachedAttribute()
     {
-        if (!$this->currentEmployment) {
+        if (! $this->currentEmployment) {
             return true;
         }
 
@@ -159,7 +159,7 @@ trait CanBeEmployed
         }
 
         if ($this->isInjured()) {
-            $this->recover();
+            $this->clearFromInjury();
         }
 
         $fireDate = $firedAt ?? now();
@@ -191,7 +191,7 @@ trait CanBeEmployed
     /**
      * Determine if the model can be employed.
      *
-     * @return boolean
+     * @return bool
      */
     public function canBeEmployed()
     {
@@ -219,7 +219,7 @@ trait CanBeEmployed
      */
     public function getCurrentEmploymentAttribute()
     {
-        if (!$this->relationLoaded('currentEmployment')) {
+        if (! $this->relationLoaded('currentEmployment')) {
             $this->setRelation('currentEmployment', $this->currentEmployment()->get());
         }
 
@@ -233,7 +233,7 @@ trait CanBeEmployed
      */
     public function getPreviousEmploymentAttribute()
     {
-        if (!$this->relationLoaded('previousEmployment')) {
+        if (! $this->relationLoaded('previousEmployment')) {
             $this->setRelation('previousEmployment', $this->previousEmployment()->get());
         }
 
@@ -247,7 +247,7 @@ trait CanBeEmployed
      */
     public function getPendingEmploymentAttribute()
     {
-        if (!$this->relationLoaded('pendingEmployment')) {
+        if (! $this->relationLoaded('pendingEmployment')) {
             $this->setRelation('pendingEmployment', $this->pendingEmployment()->get());
         }
 

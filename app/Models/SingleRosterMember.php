@@ -21,7 +21,7 @@ abstract class SingleRosterMember extends Model
         }
 
         if ($this->isInjured()) {
-            $this->heal();
+            $this->clearFromInjury();
         }
 
         $this->retirements()->create(['started_at' => now()]);

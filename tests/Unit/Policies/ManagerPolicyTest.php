@@ -193,27 +193,27 @@ class ManagerPolicyTest extends TestCase
     }
 
     /** @test */
-    public function a_basic_user_cannot_heal_a_manager()
+    public function a_basic_user_cannot_clear_a_manager_from_an_injury()
     {
         $user = factory(User::class)->states('basic-user')->create();
 
-        $this->assertFalse($this->policy->heal($user));
+        $this->assertFalse($this->policy->clearFromInjury($user));
     }
 
     /** @test */
-    public function an_administrator_can_heal_a_manager()
+    public function an_administrator_can_clear_a_manager_from_injury()
     {
         $user = factory(User::class)->states('administrator')->create();
 
-        $this->assertTrue($this->policy->heal($user));
+        $this->assertTrue($this->policy->clearFromInjury($user));
     }
 
     /** @test */
-    public function a_super_administrator_can_heal_a_manager()
+    public function a_super_administrator_can_clear_a_manager_from_injury()
     {
         $user = factory(User::class)->states('super-administrator')->create();
 
-        $this->assertTrue($this->policy->heal($user));
+        $this->assertTrue($this->policy->clearFromInjury($user));
     }
 
     /** @test */

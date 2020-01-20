@@ -5,7 +5,7 @@ namespace App\Http\Requests\Managers;
 use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RecoverFromInjuryRequest extends FormRequest
+class ClearFromInjuryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class RecoverFromInjuryRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('heal', Manager::class);
+        return $this->user()->can('clearFromInjury', Manager::class);
     }
 
     /**

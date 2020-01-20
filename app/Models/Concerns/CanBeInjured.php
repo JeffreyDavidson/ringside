@@ -102,7 +102,7 @@ trait CanBeInjured
      *
      * @return bool
      */
-    public function heal()
+    public function clearFromInjury()
     {
         $this->currentInjury()->update(['ended_at' => now()]);
 
@@ -146,11 +146,11 @@ trait CanBeInjured
     }
 
     /**
-     * Determine if the model can be marked as healed.
+     * Determine if the model can be cleared from an injury.
      *
      * @return bool
      */
-    public function canBeMarkedAsHealed()
+    public function canBeClearedFromInjury()
     {
         if (! $this->isInjured()) {
             return false;

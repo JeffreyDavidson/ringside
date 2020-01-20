@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CannotBeMarkedAsHealedException extends Exception
+class CannotBeClearedFromInjuryException extends Exception
 {
     //
 }
