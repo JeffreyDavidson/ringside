@@ -21,4 +21,12 @@ class ViewManagersListFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function a_guest_cannot_get_managers()
+    {
+        $response = $this->ajaxJson(route('managers.index'));
+
+        $response->assertUnauthorized();
+    }
 }

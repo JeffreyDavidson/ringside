@@ -8,41 +8,63 @@
                 @viewbutton(['route' => route('managers.show', $model)])
                 @endviewbutton
             @endcan
+
             @can('update', $model)
                 @editbutton(['route' => route('managers.edit', $model)])
                 @endeditbutton
             @endcan
+
             @can('delete', $model)
                 @deletebutton(['route' => route('managers.destroy', $model)])
                 @enddeletebutton
             @endcan
+
             @can('retire', $model)
-                @retirebutton(['route' => route('managers.retire', $model)])
-                @endretirebutton
+                @if($model->canBeRetired())
+                    @retirebutton(['route' => route('managers.retire', $model)])
+                    @endretirebutton
+                @endif
             @endcan
+
             @can('unretire', $model)
-                @unretirebutton(['route' => route('managers.unretire', $model)])
-                @endunretirebutton
+                @if($model->canBeUnretired())
+                    <unretire :route="route('managers.unretire', $model)" />
+                @endif
             @endcan
+
             @can('employ', $model)
-                @employbutton(['route' => route('managers.employ', $model)])
-                @endemploybutton
+                @if($model->canBeEmployed())
+                    @employbutton(['route' => route('managers.employ', $model)])
+                    @endemploybutton
+                @endif
             @endcan
+
             @can('suspend', $model)
-                @suspendbutton(['route' => route('managers.suspend', $model)])
-                @endsuspendbutton
+                @if($model->canBeSuspended())
+                    @suspendbutton(['route' => route('managers.suspend', $model)])
+                    @endsuspendbutton
+                @endif
             @endcan
+
             @can('reinstate', $model)
-                @reinstatebutton(['route' => route('managers.reinstate', $model)])
-                @endreinstatebutton
+                @if($model->canBeReinstated())
+                    @reinstatebutton(['route' => route('managers.reinstate', $model)])
+                    @endreinstatebutton
+                @endif
             @endcan
+
             @can('injure', $model)
-                @injurebutton(['route' => route('managers.injure', $model)])
-                @endinjurebutton
+                @if($model->canBeInjured())
+                    @injurebutton(['route' => route('managers.injure', $model)])
+                    @endinjurebutton
+                @endif
             @endcan
+
             @can('recover', $model)
-                @recoverbutton(['route' => route('managers.recover', $model)])
-                @endrecoverbutton
+                @if($model->canBeMarkedAsHealed())
+                    @recoverbutton(['route' => route('managers.recover', $model)])
+                    @endrecoverbutton
+                @endif
             @endcan
         </ul>
     </div>

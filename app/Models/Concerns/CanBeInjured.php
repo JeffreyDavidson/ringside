@@ -4,8 +4,6 @@ namespace App\Models\Concerns;
 
 use App\Models\Injury;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeInjuredException;
-use App\Exceptions\CannotBeRecoveredException;
 
 trait CanBeInjured
 {
@@ -14,7 +12,7 @@ trait CanBeInjured
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeInjured trait used without HasCachedAttributes trait');
             }
         }
@@ -49,7 +47,7 @@ trait CanBeInjured
      */
     public function previousInjuries()
     {
-        return $this->morphMany(Injury::class, 'injurable')
+        return $this->injuries()
                     ->whereNotNull('ended_at');
     }
 
@@ -60,7 +58,7 @@ trait CanBeInjured
      */
     public function previousInjury()
     {
-        return $this->morphMany(Injury::class, 'injurable')
+        return $this->injuries()
                     ->whereNotNull('ended_at')
                     ->latest('ended_at')
                     ->limit(1);
@@ -94,14 +92,6 @@ trait CanBeInjured
      */
     public function injure()
     {
-        if ($this->checkIsPendingEmployment() ||
-            $this->checkIsRetired() ||
-            $this->checkIsInjured() ||
-            $this->checkIsSuspended()
-        ) {
-            throw new CannotBeInjuredException;
-        }
-
         $this->injuries()->create(['started_at' => now()]);
 
         return $this->touch();
@@ -112,12 +102,8 @@ trait CanBeInjured
      *
      * @return bool
      */
-    public function recover()
+    public function clearFromInjury()
     {
-        if (! $this->checkIsInjured()) {
-            throw new CannotBeRecoveredException;
-        }
-
         $this->currentInjury()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -128,9 +114,49 @@ trait CanBeInjured
      *
      * @return bool
      */
-    public function checkIsInjured()
+    public function isInjured()
     {
         return $this->currentInjury()->exists();
+    }
+
+    /**
+     * Determine if the model can be injured.
+     *
+     * @return bool
+     */
+    public function canBeInjured()
+    {
+        if (! $this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isInjured()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        if ($this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be cleared from an injury.
+     *
+     * @return bool
+     */
+    public function canBeClearedFromInjury()
+    {
+        if (! $this->isInjured()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -140,7 +166,7 @@ trait CanBeInjured
      */
     public function getCurrentInjuryAttribute()
     {
-        if (!$this->relationLoaded('currentInjury')) {
+        if (! $this->relationLoaded('currentInjury')) {
             $this->setRelation('currentInjury', $this->currentInjury()->get());
         }
 
@@ -154,7 +180,7 @@ trait CanBeInjured
      */
     public function getPreviousInjuryAttribute()
     {
-        if (!$this->relationLoaded('previousInjury')) {
+        if (! $this->relationLoaded('previousInjury')) {
             $this->setRelation('previousInjury', $this->previousInjury()->get());
         }
 

@@ -20,7 +20,7 @@ $factory->state(Manager::class, 'available', function ($faker) {
 });
 
 $factory->afterCreatingState(Manager::class, 'available', function ($manager) {
-    $manager->employ();
+    $manager->employ(Carbon::yesterday());
 });
 
 $factory->state(Manager::class, 'pending-employment', function ($faker) {

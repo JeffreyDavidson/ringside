@@ -4,8 +4,6 @@ namespace App\Models\Concerns;
 
 use App\Models\Retirement;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeRetiredException;
-use App\Exceptions\CannotBeUnretiredException;
 
 trait CanBeRetired
 {
@@ -14,7 +12,7 @@ trait CanBeRetired
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
             }
         }
@@ -49,7 +47,7 @@ trait CanBeRetired
      */
     public function previousRetirements()
     {
-        return $this->morphMany(Retirement::class, 'retiree')
+        return $this->retirements()
                     ->whereNotNull('ended_at');
     }
 
@@ -60,7 +58,7 @@ trait CanBeRetired
      */
     public function previousRetirement()
     {
-        return $this->morphMany(Retirement::class, 'retiree')
+        return $this->retirements()
                     ->whereNotNull('ended_at')
                     ->latest('ended_at')
                     ->limit(1);
@@ -101,10 +99,6 @@ trait CanBeRetired
      */
     public function unretire()
     {
-        if (! $this->checkIsRetired()) {
-            throw new CannotBeUnretiredException;
-        }
-
         $this->currentRetirement()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -115,9 +109,41 @@ trait CanBeRetired
      *
      * @return bool
      */
-    public function checkIsRetired()
+    public function isRetired()
     {
         return $this->currentRetirement()->exists();
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeRetired()
+    {
+        if (! $this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeUnretired()
+    {
+        if (! $this->isRetired()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -127,7 +153,7 @@ trait CanBeRetired
      */
     public function getCurrentRetirementAttribute()
     {
-        if (!$this->relationLoaded('currentRetirement')) {
+        if (! $this->relationLoaded('currentRetirement')) {
             $this->setRelation('currentRetirement', $this->currentRetirement()->get());
         }
 
@@ -141,7 +167,7 @@ trait CanBeRetired
      */
     public function getPreviousRetirementAttribute()
     {
-        if (!$this->relationLoaded('previousRetirement')) {
+        if (! $this->relationLoaded('previousRetirement')) {
             $this->setRelation('previousRetirement', $this->previousRetirement()->get());
         }
 

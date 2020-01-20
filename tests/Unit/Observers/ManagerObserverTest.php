@@ -30,7 +30,7 @@ class ManagerObserverTest extends TestCase
         $manager->injure();
         $this->assertEquals('injured', $manager->status);
 
-        $manager->recover();
+        $manager->clearFromInjury();
         $this->assertEquals('available', $manager->status);
 
         $manager->suspend();

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreManagerRequest extends FormRequest
+class InjureRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreManagerRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('create', Manager::class);
+        return $this->user()->can('injure', Manager::class);
     }
 
     /**
@@ -24,10 +24,6 @@ class StoreManagerRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s']
-        ];
+        return [];
     }
 }

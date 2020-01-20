@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateManagerRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,9 +14,7 @@ class UpdateManagerRequest extends FormRequest
      */
     public function authorize()
     {
-        $manager = $this->route('manager');
-
-        return $this->user()->can('update', $manager);
+        return $this->user()->can('update', Manager::class);
     }
 
     /**
@@ -29,7 +27,7 @@ class UpdateManagerRequest extends FormRequest
         $rules = [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s']
+            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
         ];
 
         if ($this->manager->currentEmployment) {
@@ -38,7 +36,7 @@ class UpdateManagerRequest extends FormRequest
             }
 
             if ($this->manager->currentEmployment->started_at && $this->manager->currentEmployment->started_at->isPast()) {
-                $rules['started_at'][] = 'before_or_equal:' . $this->manager->currentEmployment->started_at->toDateTimeString();
+                $rules['started_at'][] = 'before_or_equal:'.$this->manager->currentEmployment->started_at->toDateTimeString();
             }
         }
 

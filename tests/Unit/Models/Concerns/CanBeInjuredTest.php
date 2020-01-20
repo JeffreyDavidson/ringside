@@ -8,8 +8,8 @@ use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\Wrestler;
 use App\Exceptions\CannotBeInjuredException;
-use App\Exceptions\CannotBeRecoveredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 
 /**
  * @group roster
@@ -96,7 +96,7 @@ class CanBeInjuredTest extends TestCase
      */
     public function a_bookable_single_roster_member_cannot_be_recovered($modelClass)
     {
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $model = factory($modelClass)->states('bookable')->create();
 
@@ -109,7 +109,7 @@ class CanBeInjuredTest extends TestCase
      */
     public function a_pending_employment_single_roster_member_cannot_be_recovered($modelClass)
     {
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $model = factory($modelClass)->states('pending-employment')->create();
 
@@ -122,7 +122,7 @@ class CanBeInjuredTest extends TestCase
      */
     public function a_suspended_single_roster_member_cannot_be_recovered($modelClass)
     {
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $model = factory($modelClass)->states('suspended')->create();
 
@@ -133,9 +133,9 @@ class CanBeInjuredTest extends TestCase
      * @test
      * @dataProvider modelClassDataProvider
      */
-    public function a_retired_single_roster_member_cannot_be_recovered($modelClass)
+    public function a_retired_single_roster_member_cannot_be_cleared_from_injury($modelClass)
     {
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $model = factory($modelClass)->states('retired')->create();
 
@@ -164,7 +164,7 @@ class CanBeInjuredTest extends TestCase
     {
         $model = factory($modelClass)->states('injured')->create();
 
-        $this->assertTrue($model->checkIsInjured());
+        $this->assertTrue($model->isInjured());
     }
 
     /**

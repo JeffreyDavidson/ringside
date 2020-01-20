@@ -27,20 +27,20 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $bookable            = factory(Manager::class, 3)->states('bookable')->create();
+        $available            = factory(Manager::class, 3)->states('available')->create();
         $pendingEmployment   = factory(Manager::class, 3)->states('pending-employment')->create();
         $retired             = factory(Manager::class, 3)->states('retired')->create();
         $suspended           = factory(Manager::class, 3)->states('suspended')->create();
         $injured             = factory(Manager::class, 3)->states('injured')->create();
 
         $this->managers = collect([
-            'bookable'             => $bookable,
+            'available'            => $available,
             'pending-employment'   => $pendingEmployment,
             'retired'              => $retired,
             'suspended'            => $suspended,
             'injured'              => $injured,
             'all'                  => collect()
-                                ->concat($bookable)
+                                ->concat($available)
                                 ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
@@ -73,15 +73,15 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_view_bookable_managers()
+    public function an_administrator_can_view_available_managers()
     {
         $this->actAs('administrator');
 
-        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'bookable']));
+        $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'available']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->managers->get('bookable')->count(),
-            'data'         => $this->managers->get('bookable')->only(['id'])->toArray(),
+            'recordsTotal' => $this->managers->get('available')->count(),
+            'data'         => $this->managers->get('available')->only(['id'])->toArray(),
         ]);
     }
 

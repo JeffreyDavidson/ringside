@@ -164,7 +164,7 @@ class CanBeSuspendedTest extends TestCase
     {
         $model = factory($modelClass)->states('suspended')->create();
 
-        $this->assertTrue($model->checkIsSuspended());
+        $this->assertTrue($model->isSuspended());
     }
 
     /**

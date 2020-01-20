@@ -4,20 +4,15 @@ namespace App\Models\Concerns;
 
 use App\Models\Suspension;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeSuspendedException;
-use App\Exceptions\CannotBeReinstatedException;
 
 trait CanBeSuspended
 {
-    /**
-     *
-     */
     public static function bootCanBeSuspended()
     {
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeSuspended trait used without HasCachedAttributes trait');
             }
         }
@@ -96,14 +91,6 @@ trait CanBeSuspended
      */
     public function suspend()
     {
-        if ($this->checkIsPendingEmployment() ||
-            $this->checkIsRetired() ||
-            $this->checkIsInjured() ||
-            $this->checkIsSuspended()
-        ) {
-            throw new CannotBeSuspendedException;
-        }
-
         $this->suspensions()->create(['started_at' => now()]);
 
         return $this->touch();
@@ -116,10 +103,6 @@ trait CanBeSuspended
      */
     public function reinstate()
     {
-        if (! $this->checkIsSuspended()) {
-            throw new CannotBeReinstatedException;
-        }
-
         $this->currentSuspension()->update(['ended_at' => now()]);
 
         return $this->touch();
@@ -128,19 +111,59 @@ trait CanBeSuspended
     /**
      * @return bool
      */
-    public function checkIsSuspended()
+    public function isSuspended()
     {
         return $this->currentSuspension()->exists();
     }
 
     /**
-     * Undocumented function
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeSuspended()
+    {
+        if (! $this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isSuspended()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        if ($this->isInjured()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeReinstated()
+    {
+        if (! $this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Undocumented function.
      *
      * @return void
      */
     public function getCurrentSuspensionAttribute()
     {
-        if (!$this->relationLoaded('currentSuspension')) {
+        if (! $this->relationLoaded('currentSuspension')) {
             $this->setRelation('currentSuspension', $this->currentSuspension()->get());
         }
 
@@ -148,13 +171,13 @@ trait CanBeSuspended
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
     public function getPreviousSuspensionAttribute()
     {
-        if (!$this->relationLoaded('previousSuspension')) {
+        if (! $this->relationLoaded('previousSuspension')) {
             $this->setRelation('previousSuspension', $this->previousSuspension()->get());
         }
 

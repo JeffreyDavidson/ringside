@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Models\Manager;
-use Illuminate\Http\Request;
-use App\Filters\ManagerFilters;
-use Yajra\DataTables\DataTables;
+use App\DataTables\ManagersDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreManagerRequest;
-use App\Http\Requests\UpdateManagerRequest;
+use App\Http\Requests\Managers\StoreRequest;
+use App\Http\Requests\Managers\UpdateRequest;
+use App\Models\Manager;
+use App\ViewModels\ManagerViewModel;
+use Illuminate\Http\Request;
 
 class ManagersController extends Controller
 {
@@ -16,28 +16,15 @@ class ManagersController extends Controller
      * View a list of managers.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Yajra\DataTables\DataTables  $table
-     * @param  \App\Filters\ManagerFilters  $requestFilter
+     * @param  App\DataTables\ManagersDataTable  $dataTable
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, DataTables $table, ManagerFilters $requestFilter)
+    public function index(Request $request, ManagersDataTable $dataTable)
     {
         $this->authorize('viewList', Manager::class);
 
         if ($request->ajax()) {
-            $query = Manager::with('currentEmployment');
-            $requestFilter->apply($query);
-
-            return $table->eloquent($query)
-                ->addColumn('action', 'managers.partials.action-cell')
-                ->filterColumn('name', function ($query, $keyword) {
-                    $sql = "CONCAT(managers.first_name, ' ', managers.last_name)  like ?";
-                    $query->whereRaw($sql, ["%{$keyword}%"]);
-                })
-                ->filterColumn('id', function ($query, $keyword) {
-                    $query->where($query->qualifyColumn('id'), $keyword);
-                })
-                ->toJson();
+            return $dataTable->ajax();
         }
 
         return view('managers.index');
@@ -52,16 +39,16 @@ class ManagersController extends Controller
     {
         $this->authorize('create', Manager::class);
 
-        return view('managers.create', compact('manager'));
+        return view('managers.create', new ManagerViewModel());
     }
 
     /**
      * Create a new manager.
      *
-     * @param  \App\Http\Requests\StoreManagerRequest  $request
+     * @param  \App\Http\Requests\Managers\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreManagerRequest $request)
+    public function store(StoreRequest $request)
     {
         $manager = Manager::create($request->except('started_at'));
 
@@ -95,24 +82,21 @@ class ManagersController extends Controller
     {
         $this->authorize('update', $manager);
 
-        return view('managers.edit', compact('manager'));
+        return view('managers.edit', new ManagerViewModel($manager));
     }
 
     /**
      * Update a given manager.
      *
-     * @param  \App\Http\Requests\UpdateManagerRequest  $request
+     * @param  \App\Http\Requests\Managers\UpdateRequest  $request
      * @param  \App\Models\Manager  $manager
      * @return \lluminate\Http\RedirectResponse
      */
-    public function update(UpdateManagerRequest $request, Manager $manager)
+    public function update(UpdateRequest $request, Manager $manager)
     {
         $manager->update($request->except('started_at'));
 
-        $startedAt = $request->input('started_at');
-        $isEmployed = $manager->checkIsEmployed();
-
-        if ($startedAt && $isEmployed && Carbon::parse($startedAt)->lt($manager->currentEmployment->started_at)) {
+        if ($request->filled('started_at')) {
             $manager->employ($request->input('started_at'));
         }
 

@@ -16,10 +16,10 @@ class DeleteManagerSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_delete_a_bookable_manager()
+    public function a_super_administrator_can_delete_an_available_manager()
     {
         $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->deleteRequest($manager);
 

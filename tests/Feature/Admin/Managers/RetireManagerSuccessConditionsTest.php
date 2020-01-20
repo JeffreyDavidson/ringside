@@ -16,10 +16,10 @@ class RetireManagerSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_retire_a_bookable_manager()
+    public function an_administrator_can_retire_an_available_manager()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->retireRequest($manager);
 

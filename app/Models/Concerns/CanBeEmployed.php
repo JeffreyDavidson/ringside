@@ -2,19 +2,23 @@
 
 namespace App\Models\Concerns;
 
+use App\Exceptions\CannotBeFiredException;
 use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
-use App\Exceptions\CannotBeFiredException;
-
 
 trait CanBeEmployed
 {
+    /**
+     * Undocumented function.
+     *
+     * @return void
+     */
     public static function bootCanBeEmployed()
     {
         if (config('app.debug')) {
             $traits = class_uses_recursive(static::class);
 
-            if (!in_array(HasCachedAttributes::class, $traits)) {
+            if (! in_array(HasCachedAttributes::class, $traits)) {
                 throw new \LogicException('CanBeEmployed trait used without HasCachedAttributes trait');
             }
         }
@@ -43,13 +47,25 @@ trait CanBeEmployed
     }
 
     /**
+     * Get the pending employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function pendingEmployment()
+    {
+        return $this->morphOne(Employment::class, 'employable')
+            ->where('started_at', '>', now())
+            ->whereNull('ended_at');
+    }
+
+    /**
      * Get the previous employments of the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function previousEmployments()
     {
-        return $this->morphMany(Employment::class, 'employable')
+        return $this->employments()
                     ->whereNotNull('ended_at');
     }
 
@@ -60,7 +76,7 @@ trait CanBeEmployed
      */
     public function previousEmployment()
     {
-        return $this->morphMany(Employment::class, 'employable')
+        return $this->employments()
                     ->whereNotNull('ended_at')
                     ->latest('ended_at')
                     ->limit(1);
@@ -84,13 +100,11 @@ trait CanBeEmployed
      */
     public function getIsPendingEmploymentCachedAttribute()
     {
-        if (!$this->currentEmployment) {
+        if (! $this->currentEmployment) {
             return true;
         }
 
-        return $this->whereHas('currentEmployment', function ($query) {
-            $query->where('started_at', '>', now());
-        })->exists();
+        return $this->whereHas('pendingEmployment');
     }
 
     /**
@@ -136,16 +150,16 @@ trait CanBeEmployed
      */
     public function fire($firedAt = null)
     {
-        if ($this->checkIsPendingEmployment() || $this->checkIsRetired()) {
+        if ($this->isPendingEmployment() || $this->isRetired()) {
             throw new CannotBeFiredException;
         }
 
-        if ($this->checkIsSuspended()) {
+        if ($this->isSuspended()) {
             $this->reinstate();
         }
 
-        if ($this->checkIsInjured()) {
-            $this->recover();
+        if ($this->isInjured()) {
+            $this->clearFromInjury();
         }
 
         $fireDate = $firedAt ?? now();
@@ -169,9 +183,33 @@ trait CanBeEmployed
      *
      * @return bool
      */
-    public function checkIsPendingEmployment()
+    public function isPendingEmployment()
     {
         return $this->currentEmployment()->doesntExist();
+    }
+
+    /**
+     * Determine if the model can be employed.
+     *
+     * @return bool
+     */
+    public function canBeEmployed()
+    {
+        if ($this->isEmployed()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @return string|null
+     */
+    public function getStartedAtAttribute()
+    {
+        return optional($this->employments->first())->started_at;
     }
 
     /**
@@ -181,7 +219,7 @@ trait CanBeEmployed
      */
     public function getCurrentEmploymentAttribute()
     {
-        if (!$this->relationLoaded('currentEmployment')) {
+        if (! $this->relationLoaded('currentEmployment')) {
             $this->setRelation('currentEmployment', $this->currentEmployment()->get());
         }
 
@@ -195,10 +233,24 @@ trait CanBeEmployed
      */
     public function getPreviousEmploymentAttribute()
     {
-        if (!$this->relationLoaded('previousEmployment')) {
+        if (! $this->relationLoaded('previousEmployment')) {
             $this->setRelation('previousEmployment', $this->previousEmployment()->get());
         }
 
         return $this->getRelation('previousEmployment')->first();
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return App\Models\Employment
+     */
+    public function getPendingEmploymentAttribute()
+    {
+        if (! $this->relationLoaded('pendingEmployment')) {
+            $this->setRelation('pendingEmployment', $this->pendingEmployment()->get());
+        }
+
+        return $this->getRelation('pendingEmployment')->first();
     }
 }

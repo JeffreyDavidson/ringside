@@ -23,4 +23,14 @@ class ViewManagersListFailureConditionsTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    /** @test */
+    public function a_basic_user_cannot_get_managers()
+    {
+        $this->actAs('basic-user');
+
+        $response = $this->ajaxJson(route('managers.index'));
+
+        $response->assertForbidden();
+    }
 }

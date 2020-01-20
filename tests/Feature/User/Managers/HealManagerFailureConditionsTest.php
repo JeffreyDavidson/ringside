@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group users
  * @group roster
  */
-class RecoverManagerTest extends TestCase
+class HealManagerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,7 +21,7 @@ class RecoverManagerTest extends TestCase
         $this->actAs('basic-user');
         $manager = factory(Manager::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($manager);
+        $response = $this->clearInjuryRequest($manager);
 
         $response->assertForbidden();
     }

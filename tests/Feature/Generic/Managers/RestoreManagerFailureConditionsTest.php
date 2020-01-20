@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use App\Models\Manager;
 use Tests\TestCase;
+use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -16,10 +16,10 @@ class RestoreManagerFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_bookable_manager_cannot_be_restored()
+    public function an_available_manager_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create();
+        $manager = factory(Manager::class)->states('available')->create();
 
         $response = $this->restoreRequest($manager);
 

@@ -43,7 +43,7 @@ const clearFilters = () => {
 // begin first table
 table.DataTable({
     ajax: {
-        url: window.location.href,
+        url: window.location.pathname,
         data(params) {
             params.status = filterData.status;
             params.started_at = filterData.started_at;
@@ -53,7 +53,7 @@ table.DataTable({
         { data: "id", title: "Manager ID" },
         { data: "name", title: "Name" },
         {
-            data: "currentEmployment.started_at",
+            data: "started_at",
             title: "Date Started",
             searchable: false
         },

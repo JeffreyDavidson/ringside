@@ -49,7 +49,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_first_name_is_required()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['first_name' => '']));
 
@@ -64,7 +64,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_first_name_must_be_a_string()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['first_name' => ['not-a-string']]));
 
@@ -79,7 +79,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_last_name_is_required()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['last_name' => '']));
 
@@ -94,7 +94,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_last_name_must_be_a_string()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['last_name' => ['not-a-string']]));
 
@@ -109,7 +109,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_started_at_date_must_be_a_string_if_filled()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['started_at' => ['not-a-string']]));
 
@@ -124,7 +124,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_started_at_must_be_a_datetime_format()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['started_at' => 'not-a-datetime']));
 
@@ -139,7 +139,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_started_at_date_is_required_if_employment_start_date_is_set()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
 
         $response = $this->updateRequest($manager, $this->validParams(['started_at' => '']));
 
@@ -154,7 +154,7 @@ class UpdateManagerFailureConditionsTest extends TestCase
     public function a_manager_started_at_date_if_filled_must_be_before_or_equal_to_manager_employment_started_at_date_is_set()
     {
         $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('bookable')->create($this->oldAttributes());
+        $manager = factory(Manager::class)->states('available')->create($this->oldAttributes());
         $manager->currentEmployment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest($manager, $this->validParams(['started_at' => now()->toDateTimeString()]));

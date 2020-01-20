@@ -46,6 +46,6 @@ class ManagerTest extends TestCase
     {
         $manager = factory(Manager::class)->create(['status' => 'Example Status']);
 
-        $this->assertEquals('Example Status', $manager->status);
+        $this->assertEquals('Example Status', $manager->getOriginal('status'));
     }
 }
