@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Exceptions\CannotBeEmployedException;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
-class EmployController extends Controller
+class SuspendController extends Controller
 {
     /**
-     * Employ a referee.
+     * Suspend a referee.
      *
      * @param  App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
      */
     public function __invoke(Referee $referee)
     {
-        $this->authorize('employ', $referee);
+        $this->authorize('suspend', $referee);
 
-        if (! $referee->canBeEmployed()) {
-            throw new CannotBeEmployedException();
+        if (! $referee->canBeSuspended()) {
+            throw new CannotBeSuspendedException();
         }
 
-        $referee->employ();
+        $referee->suspend();
 
         return redirect()->route('referees.index');
     }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Referees;
 
+use App\Models\Referee;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRefereeRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,9 +14,7 @@ class UpdateRefereeRequest extends FormRequest
      */
     public function authorize()
     {
-        $referee = $this->route('referee');
-
-        return $this->user()->can('update', $referee);
+        return $this->user()->can('update', Referee::class);
     }
 
     /**

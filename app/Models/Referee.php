@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\RefereeStatus;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use MadWeb\Enum\EnumCastable;
 
 class Referee extends SingleRosterMember
 {
     use SoftDeletes,
+        EnumCastable,
         Concerns\HasFullName;
 
     /**
@@ -15,4 +18,13 @@ class Referee extends SingleRosterMember
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => RefereeStatus::class,
+    ];
 }

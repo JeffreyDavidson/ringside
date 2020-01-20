@@ -46,6 +46,6 @@ class RefereeTest extends TestCase
     {
         $referee = factory(Referee::class)->create(['status' => 'Example Status']);
 
-        $this->assertEquals('Example Status', $referee->status);
+        $this->assertEquals('Example Status', $referee->getOriginal('status'));
     }
 }

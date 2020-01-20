@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group superadmins
  * @group roster
  */
-class RecoverRefereeSuccessConditionsTest extends TestCase
+class ClearFromInjuryRefereeSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,7 +21,7 @@ class RecoverRefereeSuccessConditionsTest extends TestCase
         $this->actAs('super-administrator');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->clearInjuryRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->injuries()->latest()->first()->ended_at);

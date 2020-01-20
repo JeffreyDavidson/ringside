@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group guests
  * @group roster
  */
-class RecoverRefereeFailureConditionsTest extends TestCase
+class ClearFromInjuryRefereeFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,7 +20,7 @@ class RecoverRefereeFailureConditionsTest extends TestCase
     {
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($referee);
+        $response = $this->clearInjuryRequest($referee);
 
         $response->assertRedirect(route('login'));
     }

@@ -92,7 +92,7 @@ class RefereePolicy
      * @param  App\Models\User  $user
      * @return bool
      */
-    public function recover(User $user)
+    public function clearFromInjury(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }

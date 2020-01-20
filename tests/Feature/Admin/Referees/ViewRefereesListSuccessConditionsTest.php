@@ -51,6 +51,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_referees_page()
     {
+        $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
         $response = $this->get(route('referees.index'));

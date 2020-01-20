@@ -11,17 +11,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group users
  * @group roster
  */
-class RecoverRefereeFailureConditionsTest extends TestCase
+class ClearFromInjuryRefereeFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_recover_an_injured_referee()
+    public function a_basic_user_cannot_clear_an_injured_referee()
     {
         $this->actAs('basic-user');
         $referee = factory(Referee::class)->states('injured')->create();
 
-        $response = $this->put(route('referees.recover', $referee));
+        $response = $this->clearInjuryRequest($referee);
 
         $response->assertForbidden();
     }
