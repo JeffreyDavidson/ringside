@@ -30,7 +30,7 @@ class RefereeObserverTest extends TestCase
         $referee->injure();
         $this->assertEquals('injured', $referee->status);
 
-        $referee->recover();
+        $referee->clearFromInjury();
         $this->assertEquals('bookable', $referee->status);
 
         $referee->suspend();

@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Referees;
 
 use App\Models\Referee;
 use App\Http\Controllers\Controller;
+use App\Exceptions\CannotBeInjuredException;
 
 class InjureController extends Controller
 {
     /**
-     * Create an injury for the referee.
+     * Injure a referee.
      *
      * @param  \App\Models\Referee  $referee
      * @return \lluminate\Http\RedirectResponse
@@ -16,6 +17,10 @@ class InjureController extends Controller
     public function __invoke(Referee $referee)
     {
         $this->authorize('injure', $referee);
+
+        if (! $referee->canBeInjured()) {
+            throw new CannotBeInjuredException();
+        }
 
         $referee->injure();
 

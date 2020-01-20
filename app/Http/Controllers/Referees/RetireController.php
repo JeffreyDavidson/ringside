@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Referees;
 
 use App\Models\Referee;
 use App\Http\Controllers\Controller;
+use App\Exceptions\CannotBeRetiredException;
 
 class RetireController extends Controller
 {
@@ -16,6 +17,10 @@ class RetireController extends Controller
     public function __invoke(Referee $referee)
     {
         $this->authorize('retire', $referee);
+
+        if (! $referee->canBeRetired()) {
+            throw new CannotBeRetiredException();
+        }
 
         $referee->retire();
 
