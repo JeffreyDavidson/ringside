@@ -57,7 +57,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->get(route('wrestlers.index'));
+        $response = $this->indexRequest('wrestlers');
 
         $response->assertOk();
         $response->assertViewIs('wrestlers.index');

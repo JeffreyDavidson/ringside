@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Exceptions\CannotBeEmployedException;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
 
-class EmployController extends Controller
+class ClearInjuryController extends Controller
 {
     /**
-     * Employ a wrestler.
+     * Clear a wrestler.
      *
      * @param  App\Models\Wrestler  $wrestler
      * @return \lluminate\Http\RedirectResponse
      */
     public function __invoke(Wrestler $wrestler)
     {
-        $this->authorize('employ', $wrestler);
+        $this->authorize('clearFromInjury', $wrestler);
 
-        if (! $wrestler->canBeEmployed()) {
-            throw new CannotBeEmployedException();
+        if (! $wrestler->canBeClearedFromInjury()) {
+            throw new CannotBeClearedFromInjuryException();
         }
 
-        $wrestler->employ();
+        $wrestler->clearFromInjury();
 
         return redirect()->route('wrestlers.index');
     }

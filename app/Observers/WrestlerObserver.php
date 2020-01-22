@@ -15,13 +15,13 @@ class WrestlerObserver
      */
     public function saving(Wrestler $wrestler)
     {
-        if ($wrestler->checkIsRetired()) {
+        if ($wrestler->isRetired()) {
             $wrestler->status = WrestlerStatus::RETIRED;
-        } elseif ($wrestler->checkIsInjured()) {
+        } elseif ($wrestler->isInjured()) {
             $wrestler->status =  WrestlerStatus::INJURED;
-        } elseif ($wrestler->checkIsSuspended()) {
+        } elseif ($wrestler->isSuspended()) {
             $wrestler->status = WrestlerStatus::SUSPENDED;
-        } elseif ($wrestler->checkIsBookable()) {
+        } elseif ($wrestler->isBookable()) {
             $wrestler->status = WrestlerStatus::BOOKABLE;
         } else {
             $wrestler->status = WrestlerStatus::PENDING_EMPLOYMENT;

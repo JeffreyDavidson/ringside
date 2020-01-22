@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group wrestlers
  * @group guests
  */
-class RecoverWrestlerFailureConditionsTest extends TestCase
+class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -19,7 +19,7 @@ class RecoverWrestlerFailureConditionsTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($wrestler);
+        $response = $this->clearInjuryRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }

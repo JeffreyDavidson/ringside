@@ -65,6 +65,6 @@ class WrestlerTest extends TestCase
     {
         $wrestler = factory(Wrestler::class)->create(['status' => 'Example Status']);
 
-        $this->assertEquals('Example Status', $wrestler->status);
+        $this->assertEquals('Example Status', $wrestler->getOriginal('status'));
     }
 }

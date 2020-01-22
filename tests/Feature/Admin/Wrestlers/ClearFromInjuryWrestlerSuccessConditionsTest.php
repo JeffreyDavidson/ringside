@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use App\Models\Wrestler;
+use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -11,19 +12,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group admins
  * @group roster
  */
-class RecoverInjuredWrestlerTest extends TestCase
+class ClearFromInjuryWrestlerTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function an_administrator_can_recover_an_injured_wrestler()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('injured')->create();
 
-        $response = $this->recoverRequest($wrestler);
+        $response = $this->clearInjuryRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
-        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->injuries()->latest()->first()->ended_at);
+        $this->assertEquals($now->toDateTimeString(), $wrestler->fresh()->injuries()->latest()->first()->ended_at);
     }
 }
