@@ -18,6 +18,6 @@ class ManagerViewModel extends ViewModel
     public function __construct(Manager $manager = null)
     {
         $this->manager = $manager ?? new Manager;
-        $this->manager->started_at = optional($this->manager->started_at ?? null)->toDateTimeString();
+        $this->manager->started_at = optional($this->manager->started_at)->toDateTimeString();
     }
 }

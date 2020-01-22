@@ -18,6 +18,6 @@ class WrestlerViewModel extends ViewModel
     public function __construct(Wrestler $wrestler = null)
     {
         $this->wrestler = $wrestler ?? new Wrestler;
-        $this->wrestler->started_at = optional($this->wrestler->started_at ?? null)->toDateTimeString();
+        $this->wrestler->started_at = optional($this->wrestler->started_at)->toDateTimeString();
     }
 }

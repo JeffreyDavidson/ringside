@@ -18,6 +18,6 @@ class RefereeViewModel extends ViewModel
     public function __construct(Referee $referee = null)
     {
         $this->referee = $referee ?? new Referee;
-        $this->referee->started_at = optional($this->referee->started_at ?? null)->toDateTimeString();
+        $this->referee->started_at = optional($this->referee->started_at)->toDateTimeString();
     }
 }
