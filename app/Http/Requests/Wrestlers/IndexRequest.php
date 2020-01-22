@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Wrestlers;
 
 use App\Enums\WrestlerStatus;
+use App\Http\Requests\AjaxOnlyFormRequest;
+use App\Models\Wrestler;
 
-class IndexWrestlerRequest extends AjaxOnlyFormRequest
+class IndexRequest extends AjaxOnlyFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,7 @@ class IndexWrestlerRequest extends AjaxOnlyFormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('viewList', Wrestler::class);
     }
 
     /**
@@ -27,7 +29,7 @@ class IndexWrestlerRequest extends AjaxOnlyFormRequest
             'status' => [
                 'nullable',
                 'string',
-                WrestlerStatus::rule()
+                WrestlerStatus::rule(),
             ],
             'started_at' => [
                 'nullable',
@@ -36,14 +38,14 @@ class IndexWrestlerRequest extends AjaxOnlyFormRequest
             'started_at.0' => [
                 'nullable',
                 'string',
-                'date_format:Y-m-d H:i:s'
+                'date_format:Y-m-d H:i:s',
             ],
             'started_at.1' => [
                 'nullable',
                 'required_with:started_at.0',
                 'string',
                 'date_format:Y-m-d H:i:s',
-                'after:started_at.0'
+                'after:started_at.0',
             ],
         ];
     }

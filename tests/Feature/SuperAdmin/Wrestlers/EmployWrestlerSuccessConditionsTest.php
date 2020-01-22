@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
-use Tests\TestCase;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
  * @group superadmins
  * @group roster
  */
-class EmployWrestlerSuccessCondtionsTest extends TestCase
+class EmployWrestlerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,7 +25,7 @@ class EmployWrestlerSuccessCondtionsTest extends TestCase
 
         $response->assertRedirect(route('wrestlers.index'));
         tap($wrestler->fresh(), function (Wrestler $wrestler) {
-            $this->assertTrue($wrestler->is_bookable);
+            $this->assertTrue($wrestler->is_employed);
         });
     }
 }

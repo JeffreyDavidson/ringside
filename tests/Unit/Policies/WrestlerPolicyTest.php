@@ -197,7 +197,7 @@ class WrestlerPolicyTest extends TestCase
     {
         $user = factory(User::class)->states('basic-user')->create();
 
-        $this->assertFalse($this->policy->recover($user));
+        $this->assertFalse($this->policy->clearFromInjury($user));
     }
 
     /** @test */
@@ -205,7 +205,7 @@ class WrestlerPolicyTest extends TestCase
     {
         $user = factory(User::class)->states('administrator')->create();
 
-        $this->assertTrue($this->policy->recover($user));
+        $this->assertTrue($this->policy->clearFromInjury($user));
     }
 
     /** @test */
@@ -213,7 +213,7 @@ class WrestlerPolicyTest extends TestCase
     {
         $user = factory(User::class)->states('super-administrator')->create();
 
-        $this->assertTrue($this->policy->recover($user));
+        $this->assertTrue($this->policy->clearFromInjury($user));
     }
 
     /** @test */

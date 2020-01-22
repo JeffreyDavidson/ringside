@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Wrestlers;
 
+use App\Models\Wrestler;
 use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateWrestlerRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,9 +15,7 @@ class UpdateWrestlerRequest extends FormRequest
      */
     public function authorize()
     {
-        $wrestler = $this->route('wrestler');
-
-        return $this->user()->can('update', $wrestler);
+        return $this->user()->can('update', Wrestler::class);
     }
 
     /**

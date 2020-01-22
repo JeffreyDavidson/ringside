@@ -4,7 +4,7 @@ namespace Tests\Feature\Generic\Wrestlers;
 
 use App\Models\Wrestler;
 use Tests\TestCase;
-use App\Exceptions\CannotBeRecoveredException;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group generics
  * @group roster
  */
-class RecoverWrestlerFailureConditionsTest extends TestCase
+class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,12 +20,12 @@ class RecoverWrestlerFailureConditionsTest extends TestCase
     public function a_bookable_wrestler_cannot_be_recovered()
     {
         $this->withoutExceptionHandling();
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
-        $response = $this->recoverRequest($wrestler);
+        $response = $this->clearInjuryRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -34,12 +34,12 @@ class RecoverWrestlerFailureConditionsTest extends TestCase
     public function a_pending_employment_wrestler_cannot_be_recovered()
     {
         $this->withoutExceptionHandling();
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
 
-        $response = $this->recoverRequest($wrestler);
+        $response = $this->clearInjuryRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -48,12 +48,12 @@ class RecoverWrestlerFailureConditionsTest extends TestCase
     public function a_suspended_wrestler_cannot_be_recovered()
     {
         $this->withoutExceptionHandling();
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('suspended')->create();
 
-        $response = $this->recoverRequest($wrestler);
+        $response = $this->clearInjuryRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -62,12 +62,12 @@ class RecoverWrestlerFailureConditionsTest extends TestCase
     public function an_retired_wrestler_cannot_be_recovered()
     {
         $this->withoutExceptionHandling();
-        $this->expectException(CannotBeRecoveredException::class);
+        $this->expectException(CannotBeClearedFromInjuryException::class);
 
         $this->actAs('administrator');
         $wrestler = factory(Wrestler::class)->states('retired')->create();
 
-        $response = $this->recoverRequest($wrestler);
+        $response = $this->clearInjuryRequest($wrestler);
 
         $response->assertForbidden();
     }

@@ -54,7 +54,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->actAs('administrator');
 
-        $response = $this->get(route('referees.index'));
+        $response = $this->indexRequest('referees');
 
         $response->assertOk();
         $response->assertViewIs('referees.index');

@@ -30,7 +30,7 @@ class WrestlerObserverTest extends TestCase
         $wrestler->injure();
         $this->assertEquals('injured', $wrestler->status);
 
-        $wrestler->recover();
+        $wrestler->clearFromInjury();
         $this->assertEquals('bookable', $wrestler->status);
 
         $wrestler->suspend();

@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Eloquent\Concerns\HasCustomRelationships;
+use App\Enums\WrestlerStatus;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use MadWeb\Enum\EnumCastable;
 
 class Wrestler extends SingleRosterMember
 {
     use SoftDeletes,
+        EnumCastable,
         HasCustomRelationships,
         Concerns\HasAHeight,
         Concerns\CanBeStableMember,
-        Concerns\CanBeTagTeamPartner;
+        Concerns\CanBeTagTeamPartner,
+        Concerns\CanBeBooked;
 
     /**
      * The attributes that aren't mass assignable.
@@ -19,6 +23,15 @@ class Wrestler extends SingleRosterMember
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => WrestlerStatus::class,
+    ];
 
     /**
      * Get the user assigned to the wrestler.
