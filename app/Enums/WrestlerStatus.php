@@ -13,6 +13,8 @@ use MadWeb\Enum\Enum;
  */
 final class WrestlerStatus extends Enum
 {
+    const __default = self::PENDING_EMPLOYMENT;
+
     const BOOKABLE = 'bookable';
     const PENDING_EMPLOYMENT = 'pending-employment';
     const INJURED = 'injured';

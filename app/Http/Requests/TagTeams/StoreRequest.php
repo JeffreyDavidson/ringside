@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\TagTeams;
 
+use App\Models\TagTeam;
 use App\Rules\CanJoinTagTeam;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTagTeamRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,9 +16,7 @@ class UpdateTagTeamRequest extends FormRequest
      */
     public function authorize()
     {
-        $tagTeam = $this->route('tag_team');
-
-        return $this->user()->can('update', $tagTeam);
+        return $this->user()->can('create', TagTeam::class);
     }
 
     /**
@@ -28,11 +27,13 @@ class UpdateTagTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
+            'name' => ['required', 'string', Rule::unique('tag_teams')],
             'signature_move' => ['nullable', 'string'],
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'wrestlers' => ['required', 'array', 'size:2'],
-            'wrestlers.*' => ['bail', 'integer', 'exists:wrestlers,id', new CanJoinTagTeam],
+            'wrestlers' => ['nullable', 'array', 'max:2'],
+            'wrestlers.*' => [
+                'bail', 'integer', Rule::exists('wrestlers'), new CanJoinTagTeam($this->input('started_at'))
+            ],
         ];
     }
 }

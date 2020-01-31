@@ -13,11 +13,11 @@ class TagTeamsTableSeeder extends Seeder
     public function run()
     {
         for ($w = 1; $w <= 50; $w++) {
-            factory(TagTeam::class)->create([
+            $tagTeam = factory(TagTeam::class)->create([
                 'name' => 'Tag Team '.$w,
-            ])->employments()->create([
-                'started_at' => now()->subYears(1)
             ]);
+
+            $tagTeam->employ(now()->subYears(1));
         }
 
         $eNum = 51;
@@ -25,9 +25,10 @@ class TagTeamsTableSeeder extends Seeder
             for ($j = 1; $j <= 5; $j++) {
                 factory(TagTeam::class)->create([
                     'name' => 'Tag Team '. $eNum,
-                ])->employments()->create([
-                    'started_at' => now()->subYear(1)->addMonth($i)
                 ]);
+
+                $tagTeam->employ(now()->subYears(1)->addMonth($i));
+
                 $eNum ++;
             }
         }

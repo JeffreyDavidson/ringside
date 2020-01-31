@@ -38,7 +38,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
         $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
 
         $this->updateRequest($tagTeam, $this->validParams(['wrestlers' => $wrestlers->modelKeys()]));

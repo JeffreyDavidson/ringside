@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2553eed4da8c04ae45b1d182e11305a",
+    "content-hash": "3b089bc4448f1fcf20a2f9d4d1c55b70",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -4839,6 +4839,44 @@
             "time": "2016-01-20T08:20:44+00:00"
         },
         {
+            "name": "jasonmccreary/laravel-test-assertions",
+            "version": "dev-form-validation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasonmccreary/laravel-test-assertions.git",
+                "reference": "d6563ac67ba51833e1593d2530fbc2fcbc0c17bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasonmccreary/laravel-test-assertions/zipball/d6563ac67ba51833e1593d2530fbc2fcbc0c17bb",
+                "reference": "d6563ac67ba51833e1593d2530fbc2fcbc0c17bb",
+                "shasum": ""
+            },
+            "require": {
+                "mockery/mockery": "^1.0",
+                "php": ">=7.2",
+                "phpunit/phpunit": "^7.5|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JMac\\Testing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jason McCreary",
+                    "email": "jason@pureconcepts.net"
+                }
+            ],
+            "description": "A set of helpful assertions when testing Laravel applications.",
+            "time": "2020-01-24T20:38:53+00:00"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.9",
             "source": {
@@ -6743,7 +6781,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "jasonmccreary/laravel-test-assertions": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

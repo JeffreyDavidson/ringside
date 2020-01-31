@@ -7,6 +7,13 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CanJoinTagTeam implements Rule
 {
+    protected $startedAt;
+
+    public function __construct(string $startedAt)
+    {
+        $this->startedAt = $startedAt;
+    }
+
     /**
      * Determine if the validation rule passes.
      *
@@ -17,14 +24,25 @@ class CanJoinTagTeam implements Rule
     public function passes($attribute, $value)
     {
         $wrestler = Wrestler::find($value);
-        $startedAtDate = $wrestler->currentEmployment->started_at;
 
-        if (is_null($startedAtDate) || $startedAtDate->isFuture()) {
-            return false;
-        }
+        if ($wrestler->isEmployed()) {
+            if ($wrestler->isSuspended() || $wrestler->isRetired() || $wrestler->isInjured()) {
+                return false;
+            }
 
-        if ($wrestler->currentTagTeam()->exists()) {
-            return false;
+            if ($wrestler->currentEmployment->started_at->gt($this->started_at)) {
+                return false;
+            }
+
+            if ($wrestler->currentTagTeam()->exists()) {
+                return false;
+            }
+        } else {
+            if ($wrestler->has('pendingEmployment')) {
+                if ($wrestler->pendingEmployment->started_at->gt($this->started_at)) {
+                    return false;
+                }
+            }
         }
 
         return true;

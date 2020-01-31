@@ -19,7 +19,7 @@ class RetireTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_retire_a_tag_team()
     {
         $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $response = $this->retireRequest($tagTeam);
 

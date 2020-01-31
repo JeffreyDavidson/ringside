@@ -50,7 +50,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('administrator');
 
-        $response = $this->get(route('tag-teams.index'));
+        $response = $this->indexRequest('tag-teams');
 
         $response->assertOk();
         $response->assertViewIs('tagteams.index');

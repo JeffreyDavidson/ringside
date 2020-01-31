@@ -49,7 +49,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_a_tag_team()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
         $this->actAs('super-administrator');
 
         $response = $this->storeRequest('tag-team', $this->validParams());

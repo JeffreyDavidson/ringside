@@ -19,7 +19,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     public function both_wrestlers_are_retired_when_the_tag_team_retires()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $this->retireRequest($tagTeam);
 

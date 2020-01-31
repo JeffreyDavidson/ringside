@@ -19,11 +19,11 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
     public function unretiring_a_tag_team_makes_both_wrestlers_bookable()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'retired')->create();
+        $tagTeam = factory(TagTeam::class)->states('retired')->create();
 
         $response = $this->unretireRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
-        $this->assertCount(2, $tagTeam->currentWrestlers->filter->is_bookable);
+        $this->assertCount(2, $tagTeam->fresh()->currentWrestlers->filter->isBookable());
     }
 }

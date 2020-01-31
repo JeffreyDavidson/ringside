@@ -2,32 +2,29 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\Models\TagTeam;
-use Illuminate\Http\Request;
-use App\Filters\TagTeamFilters;
-use App\Http\Controllers\Controller;
 use App\DataTables\TagTeamsDataTable;
-use App\Http\Requests\StoreTagTeamRequest;
-use App\Http\Requests\UpdateTagTeamRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TagTeams\IndexRequest;
+use App\Http\Requests\TagTeams\StoreRequest;
+use App\Http\Requests\TagTeams\UpdateRequest;
+use App\Models\TagTeam;
+use App\ViewModels\TagTeamViewModel;
 
 class TagTeamsController extends Controller
 {
     /**
      * View a list of tag teams.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\TagTeams\IndexRequest  $request
      * @param  App\DataTables\TagTeamsDataTable  $dataTable
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, TagTeamsDataTable $dataTable, TagTeamFilters $requestFilter)
+    public function index(IndexRequest $request, TagTeamsDataTable $dataTable)
     {
         $this->authorize('viewList', TagTeam::class);
 
         if ($request->ajax()) {
-            $query = TagTeam::query();
-            $requestFilter->apply($query);
-
-            return $dataTable->eloquent($query)->toJson();
+            return $dataTable->ajax();
         }
 
         return view('tagteams.index');
@@ -38,20 +35,20 @@ class TagTeamsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(TagTeam $tagTeam)
+    public function create()
     {
         $this->authorize('create', TagTeam::class);
 
-        return response()->view('tagteams.create', compact('tagTeam'));
+        return view('tagteams.create', new TagTeamViewModel());
     }
 
     /**
      * Create a new tag team.
      *
-     * @param  \App\Http\Requests\StoreTagTeamRequest  $request
+     * @param  App\Http\Requests\TagTeams\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreTagTeamRequest $request)
+    public function store(StoreRequest $request)
     {
         $tagTeam = TagTeam::create($request->except(['wrestlers', 'started_at']));
 
@@ -74,7 +71,7 @@ class TagTeamsController extends Controller
     {
         $this->authorize('view', $tagTeam);
 
-        return response()->view('tagteams.show', compact('tagTeam'));
+        return view('tagteams.show', compact('tagTeam'));
     }
 
     /**
@@ -87,17 +84,17 @@ class TagTeamsController extends Controller
     {
         $this->authorize('update', $tagTeam);
 
-        return response()->view('tagteams.edit', compact('tagTeam'));
+        return view('tagteams.edit', new TagTeamViewModel($tagTeam));
     }
 
     /**
      * Update a given tag team.
      *
-     * @param  \App\Http\Requests\UpdateTagTeamRequest  $request
-     * @param  \App\Models\TagTeam  $tagTeam
+     * @param  App\Http\Requests\TagTeams\UpdateRequest  $request
+     * @param  App\Models\TagTeam  $tagTeam
      * @return \lluminate\Http\RedirectResponse
      */
-    public function update(UpdateTagTeamRequest $request, TagTeam $tagTeam)
+    public function update(UpdateRequest $request, TagTeam $tagTeam)
     {
         $tagTeam->update($request->except(['wrestlers', 'started_at']));
 

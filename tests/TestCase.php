@@ -5,10 +5,12 @@ namespace Tests;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use JMac\Testing\Traits\HttpTestAssertions;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication,
+        HttpTestAssertions,
         Traits\HasRequests;
 
     /**

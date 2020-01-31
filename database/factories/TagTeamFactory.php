@@ -14,14 +14,6 @@ $factory->define(TagTeam::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(TagTeam::class, 'introduced', function ($faker) {
-    return [];
-});
-
-$factory->afterCreatingState(TagTeam::class, 'bookable', function ($tagTeam) {
-    $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
-});
-
 $factory->state(TagTeam::class, 'bookable', function ($faker) {
     return [
         'status' => TagTeamStatus::BOOKABLE,
@@ -30,7 +22,9 @@ $factory->state(TagTeam::class, 'bookable', function ($faker) {
 
 $factory->afterCreatingState(TagTeam::class, 'bookable', function ($tagTeam) {
     $tagTeam->employ();
+    $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
 });
+
 
 $factory->state(TagTeam::class, 'pending-employment', function ($faker) {
     return [
@@ -39,8 +33,10 @@ $factory->state(TagTeam::class, 'pending-employment', function ($faker) {
 });
 
 $factory->afterCreatingState(TagTeam::class, 'pending-employment', function ($tagTeam) {
-    $tagTeam->employ(now()->addWeeks(3)->toDateTimeString());
+    $tagTeam->employ(Carbon::tomorrow()->toDateTimeString());
+    $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
 });
+
 
 $factory->state(TagTeam::class, 'suspended', function ($faker) {
     return [
@@ -50,6 +46,7 @@ $factory->state(TagTeam::class, 'suspended', function ($faker) {
 
 $factory->afterCreatingState(TagTeam::class, 'suspended', function ($tagTeam) {
     $tagTeam->employ();
+    $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
     $tagTeam->suspend();
 });
 
@@ -61,5 +58,6 @@ $factory->state(TagTeam::class, 'retired', function ($faker) {
 
 $factory->afterCreatingState(TagTeam::class, 'retired', function ($tagTeam) {
     $tagTeam->employ();
+    $tagTeam->addWrestlers(factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys());
     $tagTeam->retire();
 });

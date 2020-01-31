@@ -1,6 +1,10 @@
 <?php
 
-class StableFactory
+use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
+
+class StableFactory extends BaseFactory
 {
     public $wrestlersCount = 0;
     public $tagTeamsCount = 0;

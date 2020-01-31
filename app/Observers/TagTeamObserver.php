@@ -15,11 +15,11 @@ class TagTeamObserver
      */
     public function saving(TagTeam $tagTeam)
     {
-        if ($tagTeam->checkIsRetired()) {
+        if ($tagTeam->isRetired()) {
             $tagTeam->status = TagTeamStatus::RETIRED;
-        } elseif ($tagTeam->checkIsSuspended()) {
+        } elseif ($tagTeam->isSuspended()) {
             $tagTeam->status = TagTeamStatus::SUSPENDED;
-        } elseif ($tagTeam->checkIsBookable()) {
+        } elseif ($tagTeam->isBookable()) {
             $tagTeam->status = TagTeamStatus::BOOKABLE;
         } else {
             $tagTeam->status = TagTeamStatus::PENDING_EMPLOYMENT;

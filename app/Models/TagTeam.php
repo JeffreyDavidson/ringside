@@ -2,21 +2,23 @@
 
 namespace App\Models;
 
+use App\Eloquent\Concerns\HasCustomRelationships;
 use App\Enums\TagTeamStatus;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Eloquent\Concerns\HasCustomRelationships;
+use MadWeb\Enum\EnumCastable;
 
 class TagTeam extends Model
 {
     use SoftDeletes,
+        EnumCastable,
         HasCachedAttributes,
         HasCustomRelationships,
         Concerns\CanBeRetired,
         Concerns\CanBeSuspended,
-        Concerns\CanBeEmployed;
+        Concerns\CanBeEmployed,
+        Concerns\CanBeBooked;
 
     /**
      * The attributes that aren't mass assignable.
@@ -24,6 +26,15 @@ class TagTeam extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => TagTeamStatus::class,
+    ];
 
     /**
      * Get the user belonging to the tag team.
@@ -98,7 +109,7 @@ class TagTeam extends Model
     /**
      * Get the combined weight of both wrestlers in a tag team.
      *
-     * @return integer
+     * @return int
      */
     public function getCombinedWeightAttribute()
     {
@@ -163,7 +174,18 @@ class TagTeam extends Model
 
         $this->currentRetirement()->update(['ended_at' => now()]);
 
-        $this->wrestlerHistory()->retired()->whereDate('started_at', $dateRetired)->get()->each->unretire();
+        // dd($this->wrestlerHistory()->whereHas('currentRetirement', function($query) use ($dateRetired) {
+        //     $query->whereDate('started_at', $dateRetired);
+        // })->get());
+        $this->wrestlerHistory()
+            ->whereHas('currentRetirement', function($query) use ($dateRetired) {
+                $query->whereDate('started_at', $dateRetired);
+            })
+            ->get()
+            ->each
+            ->unretire();
+
+        // dd($this->currentWrestlers);
 
         return $this->touch();
     }
@@ -197,7 +219,7 @@ class TagTeam extends Model
     /**
      * @return bool
      */
-    public function checkIsBookable()
+    public function isBookable()
     {
         if ($this->currentEmployment()->doesntExist()) {
             return false;

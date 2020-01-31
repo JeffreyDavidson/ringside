@@ -19,7 +19,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     public function an_administrator_can_retire_a_bookable_tag_team()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $response = $this->retireRequest($tagTeam);
 

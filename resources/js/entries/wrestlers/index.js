@@ -64,7 +64,7 @@ table.DataTable({
         { data: "name", title: "Name" },
         { data: "hometown", title: "Hometown" },
         {
-            data: "currentEmployment.started_at",
+            data: "started_at",
             title: "Date Started",
             searchable: false
         },

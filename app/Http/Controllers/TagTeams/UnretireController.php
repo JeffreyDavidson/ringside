@@ -18,6 +18,7 @@ class UnretireController extends Controller
         $this->authorize('unretire', $tagTeam);
 
         $tagTeam->unretire();
+        // dd($tagTeam->fresh()->load('currentWrestlers'));
 
         return redirect()->route('tag-teams.index');
     }
