@@ -68,7 +68,6 @@ class CanJoinTagTeamTest extends TestCase
     {
         $tagTeam = TagTeamFactory::new()->bookable()->create();
         dd($tagTeam);
-
-        $this->assertFalse((new CanJoinTagTeam())->passes(null, $tagTeam->wrestlers->first()->id));
+        $this->assertFalse((new CanJoinTagTeam())->passes(null, $tagTeam->currentWrestlers->first()->id));
     }
 }
