@@ -46,19 +46,19 @@ trait CanBeBooked
      */
     public function isBookable()
     {
-        if ($this->currentEmployment()->exists()) {
+        if ($this->currentEmployment()->doesntExist()) {
             return false;
         }
 
-        if ($this->currentSuspension()->doesntExist()) {
+        if ($this->currentSuspension()->exists()) {
             return false;
         }
 
-        if ($this->currentInjury()->doesntExist()) {
+        if ($this->currentInjury()->exists()) {
             return false;
         }
 
-        if ($this->currentRetirement()->doesntExist()) {
+        if ($this->currentRetirement()->exists()) {
             return false;
         }
 
