@@ -95,6 +95,7 @@ class EmploymentFactory extends BaseFactory
                 $employment->employable()->associate($this->wrestlers[0]);
                 $employment->save();
 
+                $this->wrestlers[0]->save();
                 return $employment;
             }
 
