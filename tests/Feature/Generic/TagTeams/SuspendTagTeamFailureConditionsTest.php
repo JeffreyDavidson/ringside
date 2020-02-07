@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use App\Models\TagTeam;
+use TagTeamFactory;
 use Tests\TestCase;
+use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,8 +19,11 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_suspended_tag_team_cannot_be_suspended()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeSuspendedException::class);
+
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->suspendRequest($tagTeam);
 

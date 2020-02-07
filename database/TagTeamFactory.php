@@ -1,47 +1,34 @@
 <?php
 
-use App\Models\TagTeam;
 use App\Enums\TagTeamStatus;
+use App\Models\TagTeam;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 class TagTeamFactory extends BaseFactory
 {
-    public $attributes = [];
     /** @var EmploymentFactory|null */
     public $employmentFactory;
     /** @var SuspensionFactory|null */
     public $suspensionFactory;
     /** @var WrestlerFactory|null */
     public $wrestlerFactory;
-    /** @var InjuryFactory|null */
-    public $injuryFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
-    protected $propertiesToClone = [
+    protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
         'wrestlerFactory',
-        'injuryFactory',
-        'retirementFactory'
+        'retirementFactory',
     ];
 
-    public function __construct($attributes = [])
-    {
-        $this->attributes = $attributes;
-    }
-
-    public static function new(array $attributes = [])
-    {
-        return new static($attributes);
-    }
-
-    public function pendingEmployment(): self
+    public function pendingEmployment()
     {
         $clone = clone $this;
         $clone->status = TagTeamStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
         $clone->employmentFactory = null;
         $clone->suspensionFactory = null;
-        $clone->injuryFactory = null;
         $clone->retirementFactory = null;
 
         return $clone;
@@ -55,7 +42,7 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
-    public function bookable(EmploymentFactory $employmentFactory = null)
+    public function bookable(EmploymentFactory $employmentFactory = null, WrestlerFactory $wrestlerFactory = null)
     {
         $clone = clone $this;
         $clone->status = TagTeamStatus::BOOKABLE;
@@ -63,13 +50,12 @@ class TagTeamFactory extends BaseFactory
         $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
         // We set these to null since a TagTeam cannot be bookable if any of these exist
         $clone->suspensionFactory = null;
-        $clone->injuryFactory = null;
         $clone->retirementFactory = null;
 
         return $clone;
     }
 
-    public function suspended(SuspensionFactory $suspensionFactory = null, EmploymentFactory $employmentFactory = null): self
+    public function suspended(SuspensionFactory $suspensionFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = TagTeamStatus::SUSPENDED;
@@ -81,14 +67,14 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
-    public function retired(RetirementFactory $retirementFactory, EmploymentFactory $employmentFactory = null): self
+    public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = TagTeamStatus::RETIRED;
-        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
-        // We set the employment factory since a wrestler must be employed to retire
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
         $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
+
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
 
         return $clone;
     }
@@ -103,14 +89,28 @@ class TagTeamFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
+        if ($this->count > 1) {
+            $created = new Collection();
+            for ($i = 0; $i < $this->count; $i++) {
+                $clone = clone $this;
+                $clone->count = 1;
+                $created->push($clone->create($attributes));
+            }
 
-        if ($this->wrestlerFactory) {
-            $this->wrestlerFactory->forTagTeam($tagTeam)->create();
+            return $created;
         }
+
+        // dd($this->resolveAttributes($attributes));
+        $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
 
         if ($this->employmentFactory) {
             $this->employmentFactory->forTagTeam($tagTeam)->create();
+        }
+
+        if ($this->wrestlerFactory) {
+            $this->wrestlerFactory->forTagTeam($tagTeam)->create();
+            // dd($tagTeam->currentWrestlers);
+            // dd($tagTeam->wrestlerHistory);
         }
 
         if ($this->suspensionFactory) {
@@ -126,47 +126,12 @@ class TagTeamFactory extends BaseFactory
         return $tagTeam;
     }
 
-    protected function resolveAttributes($attributes = [])
+    protected function defaultAttributes(Faker\Generator $faker)
     {
-        // Allows overriding attributes on the final `create` call
-        if (! empty($attributes)) {
-            return $attributes;
-        }
-        // Allows setting attributes on the `::new()` call
-        if (! empty($this->attributes)) {
-            return $this->attributes;
-        }
-        // Default if neither of them are used
-        /* @var \Faker\Generator $faker */
-        $faker = resolve(\Faker\Generator::class);
-
         return [
             'name'           => $faker->words(2, true),
-            'signature_move' => $faker->words(4, true),
+            'signature_move' => Str::title($faker->words(3, true)),
             'status'         => TagTeamStatus::PENDING_EMPLOYMENT,
         ];
-    }
-
-    public function __clone()
-    {
-        if ($this->employmentFactory) {
-            $this->employmentFactory = clone $this->employmentFactory;
-        }
-
-        if ($this->suspensionFactory) {
-            $this->suspensionFactory = clone $this->suspensionFactory;
-        }
-
-        if ($this->wrestlerFactory) {
-            $this->wrestlerFactory = clone $this->wrestlerFactory;
-        }
-
-        if ($this->injuryFactory) {
-            $this->injuryFactory = clone $this->injuryFactory;
-        }
-
-        if ($this->retirementFactory) {
-            $this->retirementFactory = clone $this->retirementFactory;
-        }
     }
 }

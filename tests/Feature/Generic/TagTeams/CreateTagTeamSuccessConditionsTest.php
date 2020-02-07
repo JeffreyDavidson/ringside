@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use Tests\TestCase;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -24,7 +24,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -32,21 +32,6 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
             'started_at' => now()->toDateTimeString(),
             'wrestlers' => $overrides['wrestlers'] ?? $wrestlers->modelKeys(),
         ], $overrides);
-    }
-
-    /** @test */
-    public function two_wrestlers_make_a_tag_team()
-    {
-        $this->actAs('administrator');
-
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys();
-
-        $this->storeRequest('tag-team', $this->validParams(['wrestlers' => $wrestlers]));
-
-        tap(TagTeam::first(), function ($tagTeam) use ($wrestlers) {
-            $this->assertCount(2, $tagTeam->currentWrestlers);
-            $this->assertEquals($tagTeam->currentWrestlers->modelKeys(), $wrestlers);
-        });
     }
 
     /** @test */

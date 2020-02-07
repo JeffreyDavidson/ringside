@@ -144,6 +144,25 @@ class TagTeam extends Model
     }
 
     /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeRetired()
+    {
+        if (! $this->isEmployed()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * Retire a tag team.
      *
      * @return \App\Models\Retirement
@@ -174,9 +193,6 @@ class TagTeam extends Model
 
         $this->currentRetirement()->update(['ended_at' => now()]);
 
-        // dd($this->wrestlerHistory()->whereHas('currentRetirement', function($query) use ($dateRetired) {
-        //     $query->whereDate('started_at', $dateRetired);
-        // })->get());
         $this->wrestlerHistory()
             ->whereHas('currentRetirement', function($query) use ($dateRetired) {
                 $query->whereDate('started_at', $dateRetired);
@@ -184,8 +200,6 @@ class TagTeam extends Model
             ->get()
             ->each
             ->unretire();
-
-        // dd($this->currentWrestlers);
 
         return $this->touch();
     }

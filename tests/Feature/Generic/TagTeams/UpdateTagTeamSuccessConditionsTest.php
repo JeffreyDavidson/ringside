@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
+use WrestlerFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,7 +24,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace([
             'name' => 'Example Tag Team Name',
@@ -38,8 +38,8 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         $this->updateRequest($tagTeam, $this->validParams(['wrestlers' => $wrestlers->modelKeys()]));
 
@@ -53,7 +53,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_tag_team_name_is_optional()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams(['name' => '']));
 
@@ -64,7 +64,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_tag_team_signature_move_is_optional()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams(['signature_move' => '']));
 
@@ -75,7 +75,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     public function a_tag_team_started_at_is_optional()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams(['started_at' => '']));
 

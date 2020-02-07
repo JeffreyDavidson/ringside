@@ -3,7 +3,7 @@
 namespace Tests\Feature\User\TagTeams;
 
 use Tests\TestCase;
-use App\Models\Wrestler;
+use WrestlerFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -23,7 +23,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -38,7 +38,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->get(route('tag-teams.create'));
+        $response = $this->createRequest('tag-teams');
 
         $response->assertForbidden();
     }

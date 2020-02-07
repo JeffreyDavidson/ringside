@@ -19,7 +19,7 @@ class ViewTagTeamsListFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
 
-        $response = $this->get(route('tag-teams.index'));
+        $response = $this->indexRequest('tag-teams');
 
         $response->assertForbidden();
     }

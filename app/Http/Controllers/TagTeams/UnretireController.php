@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TagTeams;
 
 use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
+use App\Exceptions\CannotBeUnretiredException;
 
 class UnretireController extends Controller
 {
@@ -17,8 +18,11 @@ class UnretireController extends Controller
     {
         $this->authorize('unretire', $tagTeam);
 
+        if (! $tagTeam->canBeUnretired()) {
+            throw new CannotBeUnretiredException();
+        }
+
         $tagTeam->unretire();
-        // dd($tagTeam->fresh()->load('currentWrestlers'));
 
         return redirect()->route('tag-teams.index');
     }

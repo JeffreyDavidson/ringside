@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
 use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,7 +19,7 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_reinstate_a_suspended_tag_team()
     {
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->reinstateRequest($tagTeam);
 

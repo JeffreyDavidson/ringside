@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\Manager;
+use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Models\Employment;
@@ -13,19 +14,14 @@ class EmploymentFactory extends BaseFactory
     public $startDate;
     /** @var \Carbon\Carbon|null */
     public $endDate;
-    /** @var TagTeam */
-    public $tagTeam;
+    /** @var TagTeam[] */
+    public $tagTeams;
     /** @var Wrestler[] */
     public $wrestlers;
-
-    public function __construct()
-    {
-    }
-
-    public static function new()
-    {
-        return new static();
-    }
+    /** @var Manager[] */
+    public $managers;
+    /** @var Referee[] */
+    public $referees;
 
     /**
      * @param string|Carbon $startDate
@@ -51,18 +47,20 @@ class EmploymentFactory extends BaseFactory
 
     public function forTagTeam(TagTeam $tagTeam)
     {
+        return $this->forTagTeams([$tagTeam]);
+    }
+
+    public function forTagTeams($tagTeams)
+    {
         $clone = clone $this;
-        $clone->tagTeam = $tagTeam;
+        $clone->tagTeams = $tagTeams;
 
         return $clone;
     }
 
     public function forWrestler(Wrestler $wrestler)
     {
-        $clone = clone $this;
-        $clone->wrestlers = [$wrestler];
-
-        return $clone;
+        return $this->forWrestlers([$wrestler]);
     }
 
     public function forWrestlers($wrestlers)
@@ -75,59 +73,59 @@ class EmploymentFactory extends BaseFactory
 
     public function forManager(Manager $manager)
     {
+        return $this->forManagers([$manager]);
+    }
+
+    public function forManagers($managers)
+    {
         $clone = clone $this;
-        $clone->managers = [$manager];
+        $clone->managers = $managers;
+
+        return $clone;
+    }
+
+    public function forReferee(Referee $referee)
+    {
+        return $this->forReferees([$referee]);
+    }
+
+    public function forReferees($referees)
+    {
+        $clone = clone $this;
+        $clone->referees = $referees;
 
         return $clone;
     }
 
     public function create($attributes = [])
     {
-        $employment = new Employment();
-        $employment->started_at = $this->startDate ?? now();
+        $employees = array_merge(
+            $this->tagTeams ?? [],
+            $this->wrestlers ?? [],
+            $this->managers ?? [],
+            $this->referees ?? [],
+        );
 
-        if ($this->endDate) {
+        $this->startDate = $this->startDate ?? now();
+
+        if (empty($employees)) {
+            throw new \Exception('Attempted to create an employment without a employable entity');
+        }
+
+        $employments = new Collection();
+
+        foreach ($employees as $employee) {
+            $employment = new Employment();
+            $employment->started_at = $this->startDate;
             $employment->ended_at = $this->endDate;
-        }
-
-        if ($this->wrestlers && ! empty($this->wrestlers)) {
-            if (count($this->wrestlers) === 1) {
-                $employment->employable()->associate($this->wrestlers[0]);
-                $employment->save();
-
-                $this->wrestlers[0]->save();
-                return $employment;
-            }
-
-            $wrestlers = new Collection();
-
-            foreach ($this->wrestlers as $wrestler) {
-                $clone = clone $this;
-                $clone->startDate = $employment->started_at;
-                $clone->endDate = $employment->ended_at;
-                $wrestlers->push($clone->forWrestler($wrestler)->create());
-            }
-
-            return $wrestlers;
-        }
-
-        if ($this->tagTeam) {
-            $employment->employable()->associate($this->tagTeam);
+            $employment->employable()->associate($employee);
             $employment->save();
-
-
-            if ($this->tagTeam->currentWrestlers->isNotEmpty()) {
-                $clone = clone $this;
-                $clone->tagTeam = null;
-                $clone->startDate = $employment->started_at;
-                $clone->endDate = $employment->ended_at;
-                $clone = $clone->forWrestlers($this->tagTeam->currentWrestlers);
-                $clone->create();
+            $employments->push($employment);
+            if ($employee instanceof TagTeam && $employee->currentWrestlers->isNotEmpty()) {
+                $this->forWrestlers($employee->currentWrestlers)->create();
             }
-
-            return $employment;
         }
 
-        throw new \Exception('Attempted to create an Employment without an employable entity');
+        return $employments->count() === 1 ? $employments->first() : $employments;
     }
 }

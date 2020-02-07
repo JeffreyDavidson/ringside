@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use App\Models\TagTeam;
+use TagTeamFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -19,7 +19,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_suspend_a_tag_team()
     {
         $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->suspendRequest($tagTeam);
 

@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use App\Models\TagTeam;
+use TagTeamFactory;
 use Tests\TestCase;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -19,7 +20,7 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_unretire_a_tag_team()
     {
         $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($tagTeam);
 

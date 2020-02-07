@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
 use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,7 +20,7 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
     public function unretiring_a_tag_team_makes_both_wrestlers_bookable()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($tagTeam);
 

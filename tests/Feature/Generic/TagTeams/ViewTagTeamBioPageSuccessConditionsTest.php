@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use App\Models\TagTeam;
+use TagTeamFactory;
 use Tests\TestCase;
+use WrestlerFactory;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,8 +20,14 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_tag_teams_data_can_be_seen_on_their_profile()
     {
-        $signedInUser = $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->create([
+        $this->actAs('administrator');
+
+        $tagTeam = TagTeamFactory::new()
+        ->withWrestlers(
+            WrestlerFactory::new()->bookable()->create(['weight' => 200]),
+            WrestlerFactory::new()->bookable()->create(['weight' => 320])
+        )->bookable()
+        ->create([
             'name' => 'Tag Team 1',
             'signature_move' => 'The Finisher',
         ]);
@@ -27,7 +35,7 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
         $response = $this->showRequest($tagTeam);
 
         $response->assertSee('Tag Team 1');
-        $response->assertSee($tagTeam->combinedWeight);
+        $response->assertSee('520 lbs.');
         $response->assertSee('The Finisher');
     }
 }

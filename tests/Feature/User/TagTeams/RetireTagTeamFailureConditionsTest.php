@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -19,7 +19,7 @@ class RetireTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_retire_a_tag_team()
     {
         $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->retireRequest($tagTeam);
 

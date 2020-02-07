@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
-use App\Models\TagTeam;
-use App\Models\Wrestler;
+use TagTeamFactory;
 use Tests\TestCase;
+use WrestlerFactory;
+use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -24,7 +25,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->create();
 
         return array_replace([
             'name' => 'Example Tag Team Name',
@@ -37,7 +38,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_editing_a_tagteam()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->get(route('tag-teams.edit', $tagTeam));
 
@@ -47,7 +48,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_update_a_tagteam()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams());
 

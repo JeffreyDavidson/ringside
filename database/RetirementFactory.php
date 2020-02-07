@@ -1,6 +1,8 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\Manager;
+use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Models\Retirement;
@@ -12,19 +14,14 @@ class RetirementFactory extends BaseFactory
     public $startDate;
     /** @var \Carbon\Carbon|null */
     public $endDate;
-    /** @var TagTeam */
-    public $tagTeam;
+    /** @var TagTeam[] */
+    public $tagTeams;
     /** @var Wrestler[] */
     public $wrestlers;
-
-    public function __construct()
-    {
-    }
-
-    public static function new()
-    {
-        return new static();
-    }
+    /** @var Manager[] */
+    public $managers;
+    /** @var Referee[] */
+    public $referees;
 
     /**
      * @param string|Carbon $startDate
@@ -50,18 +47,20 @@ class RetirementFactory extends BaseFactory
 
     public function forTagTeam(TagTeam $tagTeam)
     {
+        return $this->forTagTeams([$tagTeam]);
+    }
+
+    public function forTagTeams($tagTeams)
+    {
         $clone = clone $this;
-        $clone->tagTeam = $tagTeam;
+        $clone->tagTeams = $tagTeams;
 
         return $clone;
     }
 
     public function forWrestler(Wrestler $wrestler)
     {
-        $clone = clone $this;
-        $clone->wrestlers = [$wrestler];
-
-        return $clone;
+        return $this->forWrestlers([$wrestler]);
     }
 
     public function forWrestlers($wrestlers)
@@ -72,49 +71,61 @@ class RetirementFactory extends BaseFactory
         return $clone;
     }
 
+    public function forManager(Manager $manager)
+    {
+        return $this->forManagers([$manager]);
+    }
+
+    public function forManagers($managers)
+    {
+        $clone = clone $this;
+        $clone->managers = $managers;
+
+        return $clone;
+    }
+
+    public function forReferee(Referee $referee)
+    {
+        return $this->forReferees([$referee]);
+    }
+
+    public function forReferees($referees)
+    {
+        $clone = clone $this;
+        $clone->referees = $referees;
+
+        return $clone;
+    }
+
     public function create($attributes = [])
     {
-        $retirement = new Retirement();
-        $retirement->started_at = $this->startDate ?? now();
+        $retirees = array_merge(
+            $this->tagTeams ?? [],
+            $this->wrestlers ?? [],
+            $this->managers ?? [],
+            $this->referees ?? [],
+        );
 
-        if ($this->endDate) {
+        $this->startDate = $this->startDate ?? now();
+
+        if (empty($retirees)) {
+            throw new \Exception('Attempted to create an retirement without a retireable entity');
+        }
+
+        $retirements = new Collection();
+
+        foreach ($retirees as $retiree) {
+            $retirement = new Retirement();
+            $retirement->started_at = $this->startDate;
             $retirement->ended_at = $this->endDate;
-        }
-
-        if ($this->wrestlers && ! empty($this->wrestlers)) {
-            if (count($this->wrestlers) === 1) {
-                $retirement->retiree()->associate($this->wrestler);
-                $retirement->save();
-
-                return $retirement;
-            }
-            $wrestlers = new Collection();
-            foreach ($this->wrestlers as $wrestler) {
-                $clone = clone $this;
-                $clone->startDate = $retirement->started_at;
-                $clone->endDate = $retirement->ended_at;
-                $wrestlers->push($clone->forWrestler($wrestler)->create());
-            }
-
-            return $wrestlers;
-        }
-
-        if ($this->tagTeam) {
-            $retirement->retiree()->associate($this->tagTeam);
+            $retirement->retiree()->associate($retiree);
             $retirement->save();
-
-            if ($this->tagTeam->wrestlers->isNotEmpty()) {
-                $clone = clone $this;
-                $clone->tagTeam = null;
-                $clone->startDate = $retirement->started_at;
-                $clone->endDate = $retirement->ended_at;
-                $clone->forWrestlers($this->tagTeam->wrestlers);
-                $clone->create();
+            $retirements->push($retirement);
+            if ($retiree instanceof TagTeam && $retiree->currentWrestlers->isNotEmpty()) {
+                $this->forWrestlers($retiree->currentWrestlers)->create();
             }
-
-            return $retirement;
         }
 
-        throw new \Exception('Attempted to create an retirement without an employable entity');
+        return $retirements->count() === 1 ? $retirements->first() : $retirements;
     }
 }

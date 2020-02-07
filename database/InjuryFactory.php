@@ -2,6 +2,8 @@
 
 use Carbon\Carbon;
 use App\Models\Injury;
+use App\Models\Manager;
+use App\Models\Referee;
 use App\Models\Wrestler;
 use Illuminate\Support\Collection;
 
@@ -13,15 +15,10 @@ class InjuryFactory extends BaseFactory
     public $endDate;
     /** @var Wrestler[] */
     public $wrestlers;
-
-    public function __construct()
-    {
-    }
-
-    public static function new()
-    {
-        return new static();
-    }
+    /** @var Manager[] */
+    public $managers;
+    /** @var Referee[] */
+    public $referees;
 
     /**
      * @param string|Carbon $startDate
@@ -47,10 +44,7 @@ class InjuryFactory extends BaseFactory
 
     public function forWrestler(Wrestler $wrestler)
     {
-        $clone = clone $this;
-        $clone->wrestlers = [$wrestler];
-
-        return $clone;
+        return $this->forWrestlers([$wrestler]);
     }
 
     public function forWrestlers($wrestlers)
@@ -61,35 +55,57 @@ class InjuryFactory extends BaseFactory
         return $clone;
     }
 
+    public function forManager(Manager $manager)
+    {
+        return $this->forManagers([$manager]);
+    }
+
+    public function forManagers($managers)
+    {
+        $clone = clone $this;
+        $clone->managers = $managers;
+
+        return $clone;
+    }
+
+    public function forReferee(Referee $referee)
+    {
+        return $this->forReferees([$referee]);
+    }
+
+    public function forReferees($referees)
+    {
+        $clone = clone $this;
+        $clone->referees = $referees;
+
+        return $clone;
+    }
+
     public function create($attributes = [])
     {
-        $injury = new Injury();
-        $injury->started_at = $this->startDate ?? now();
+        $injurables = array_merge(
+            $this->wrestlers ?? [],
+            $this->managers ?? [],
+            $this->referees ?? [],
+        );
 
-        if ($this->endDate) {
+        $this->startDate = $this->startDate ?? now();
+
+        if (empty($injurables)) {
+            throw new \Exception('Attempted to create an injury without an injurable entity');
+        }
+
+        $injuries = new Collection();
+
+        foreach ($injurables as $injuree) {
+            $injury = new Injury();
+            $injury->started_at = $this->startDate;
             $injury->ended_at = $this->endDate;
+            $injury->injurable()->associate($injuree);
+            $injury->save();
+            $injuries->push($injuree);
         }
 
-        if ($this->wrestlers && ! empty($this->wrestlers)) {
-            if (count($this->wrestlers) === 1) {
-                $injury->injurable()->associate($this->wrestler);
-                $injury->save();
-
-                return $injury;
-            }
-
-            $wrestlers = new Collection();
-
-            foreach ($this->wrestlers as $wrestler) {
-                $clone = clone $this;
-                $clone->startDate = $injury->started_at;
-                $clone->endDate = $injury->ended_at;
-                $wrestlers->push($clone->forWrestler($wrestler)->create());
-            }
-
-            return $wrestlers;
-        }
-
-        throw new \Exception('Attempted to create an injury without an employable entity');
+        return $injuries->count() === 1 ? $injuries->first() : $injuries;
     }
 }

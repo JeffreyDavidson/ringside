@@ -3,12 +3,11 @@
 use App\Enums\WrestlerStatus;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 class WrestlerFactory extends BaseFactory
 {
-    public $attributes = [];
     /** @var EmploymentFactory|null */
     public $employmentFactory;
     /** @var SuspensionFactory|null */
@@ -17,17 +16,14 @@ class WrestlerFactory extends BaseFactory
     public $injuryFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
-    public $count = 1;
-
-    public function __construct($attributes = [])
-    {
-        $this->attributes = $this->resolveAttributes($attributes);
-    }
-
-    public static function new(array $attributes = [])
-    {
-        return new static($attributes);
-    }
+    /** @var TagTeam */
+    public $tagTeam;
+    protected $factoriesToClone = [
+        'employmentFactory',
+        'suspensionFactory',
+        'injuryFactory',
+        'retirementFactory',
+    ];
 
     public function create($attributes = [])
     {
@@ -85,7 +81,28 @@ class WrestlerFactory extends BaseFactory
         return $clone;
     }
 
-    public function bookable(): self
+    public function unemployed(EmploymentFactory $employmentFactory = null)
+    {
+        $clone = clone $this;
+        $clone->employmentFactory = null;
+
+        return $clone;
+    }
+
+    public function pendingEmployment()
+    {
+        $clone = clone $this;
+        $clone->status = WrestlerStatus::PENDING_EMPLOYMENT;
+        // We set these to null since we can't be pending employment if they're set
+        $clone->employmentFactory = null;
+        $clone->suspensionFactory = null;
+        $clone->injuryFactory = null;
+        $clone->retirementFactory = null;
+
+        return $clone;
+    }
+
+    public function bookable(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = WrestlerStatus::BOOKABLE;
@@ -98,29 +115,28 @@ class WrestlerFactory extends BaseFactory
         return $clone;
     }
 
-    public function injured(): self
+    public function injured(InjuryFactory $injuryFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = WrestlerStatus::RETIRED;
-        $clone->injuryFactory = $retirementFactory ?? InjuryFactory::new();
-        // We set the employment factory since a wrestler must be employed to retire
+        $clone->status = WrestlerStatus::INJURED;
+        $clone->injuryFactory = $injuryFactory ?? InjuryFactory::new();
+        // We set the employment factory since a wrestler must be employed to be injured
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
-
         return $clone;
     }
 
-    public function suspended(): self
+    public function suspended(SuspensionFactory $suspensionFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = WrestlerStatus::SUSPENDED;
+        $clone->suspensionFactory = $suspensionFactory ?? SuspensionFactory::new();
+        // We set the employment factory since a wrestler must be employed to be suspended
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
-
-        $clone->suspensionFactory = $suspensionFactory ?? $this->suspensionFactory ?? SuspensionFactory::new();
 
         return $clone;
     }
 
-    public function retired(): self
+    public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = WrestlerStatus::RETIRED;
@@ -131,36 +147,15 @@ class WrestlerFactory extends BaseFactory
         return $clone;
     }
 
-    public function count(int $count)
+    protected function defaultAttributes(Faker\Generator $faker)
     {
-        $clone = clone $this;
-        $clone->count = $count;
-
-        return $clone;
-    }
-
-    protected function resolveAttributes($attributes = [])
-    {
-        /* @var \Faker\Generator $faker */
-        $faker = resolve(\Faker\Generator::class);
-
-        // These are attributes that should *always* be set
-        $defaultAttributes = [
-            // $this->status ?? WrestlerStatus::__default::class
+        return [
+            'name' => $faker->name,
+            'height' => $faker->numberBetween(60, 95),
+            'weight' => $faker->numberBetween(180, 500),
+            'hometown' => $faker->city.', '.$faker->state,
+            'signature_move' => Str::title($faker->words(3, true)),
+            'status' => WrestlerStatus::PENDING_EMPLOYMENT,
         ];
-
-        // These are default attributes that should be set of nothing else is provided
-        if (empty($attributes)) {
-            $attributes = [
-                'name' => $faker->name,
-                'height' => $faker->numberBetween(60, 95),
-                'weight' => $faker->numberBetween(180, 500),
-                'hometown' => $faker->city.', '.$faker->state,
-                'signature_move' => Str::title($faker->words(3, true)),
-                'status' => WrestlerStatus::PENDING_EMPLOYMENT,
-            ];
-        }
-
-        return array_merge($defaultAttributes, $attributes);
     }
 }

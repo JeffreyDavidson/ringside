@@ -3,6 +3,7 @@
 namespace App\Eloquent\Concerns;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 trait IsLeaveableBelongsToMany
@@ -112,7 +113,8 @@ trait IsLeaveableBelongsToMany
 
     public function current()
     {
-        $this->wherePivot('left_at', null);
+        // $this->wherePivot('left_at', null);
+        $this->wherePivot('left_at', DB::raw('null'));
 
         return $this;
     }

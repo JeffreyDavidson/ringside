@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -19,7 +19,7 @@ class EmployTagTeamFailureConditionsTest extends TestCase
     public function a_bookable_tag_team_cannot_be_employed()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->employRequest($tagTeam);
 
@@ -30,7 +30,7 @@ class EmployTagTeamFailureConditionsTest extends TestCase
     public function a_pending_employment_tag_team_without_wrestlers_cannot_be_employed()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($tagTeam);
 

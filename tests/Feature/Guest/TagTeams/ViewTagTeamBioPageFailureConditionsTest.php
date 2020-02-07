@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
-use App\Models\TagTeam;
+use TagTeamFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,7 +18,7 @@ class ViewTagTeamBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_a_tag_team_profile()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->showRequest($tagTeam);
 

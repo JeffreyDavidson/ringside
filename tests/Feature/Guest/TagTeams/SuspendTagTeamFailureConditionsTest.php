@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,7 +18,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_suspend_a_tagteam()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->suspendRequest($tagTeam);
 

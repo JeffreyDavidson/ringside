@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use TagTeamFactory;
+use Tests\TestCase;
 use App\Models\User;
 use App\Models\TagTeam;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -21,7 +22,7 @@ class ViewTagTeamBioPageFailureConditionsTest extends TestCase
     {
         $this->actAs('basic-user');
         $otherUser = factory(User::class)->create();
-        $tagTeam = factory(TagTeam::class)->create(['user_id' => $otherUser->id]);
+        $tagTeam = TagTeamFactory::new()->create(['user_id' => $otherUser->id]);
 
         $response = $this->showRequest($tagTeam);
 

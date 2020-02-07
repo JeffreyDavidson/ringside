@@ -1,11 +1,10 @@
 <?php
 
-use App\Enums\ManagerStatus;
-use App\Models\Manager;
-use App\Models\TagTeam;
+use App\Enums\RefereeStatus;
+use App\Models\Referee;
 use Illuminate\Database\Eloquent\Collection;
 
-class ManagerFactory extends BaseFactory
+class RefereeFactory extends BaseFactory
 {
     /** @var EmploymentFactory|null */
     public $employmentFactory;
@@ -22,18 +21,10 @@ class ManagerFactory extends BaseFactory
         'retirementFactory',
     ];
 
-    public function forTagTeam(TagTeam $tagTeam)
-    {
-        $clone = clone $this;
-        $clone->tagTeam = $tagTeam;
-
-        return $clone;
-    }
-
     public function pendingEmployment()
     {
         $clone = clone $this;
-        $clone->status = ManagerStatus::PENDING_EMPLOYMENT;
+        $clone->status = RefereeStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
         $clone->employmentFactory = null;
         $clone->suspensionFactory = null;
@@ -50,12 +41,12 @@ class ManagerFactory extends BaseFactory
         return $clone;
     }
 
-    public function available(EmploymentFactory $employmentFactory = null)
+    public function bookable(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = ManagerStatus::AVAILABLE;
+        $clone->status = RefereeStatus::BOOKABLE;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
-        // We set these to null since a TagTeam cannot be bookable if any of these exist
+        // We set these to null since a referee cannot be bookable if any of these exist
         $clone->suspensionFactory = null;
         $clone->injuryFactory = null;
         $clone->retirementFactory = null;
@@ -66,7 +57,7 @@ class ManagerFactory extends BaseFactory
     public function injured(InjuryFactory $injuryFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = ManagerStatus::INJURED;
+        $clone->status = RefereeStatus::INJURED;
         $clone->injuryFactory = $injuryFactory ?? InjuryFactory::new();
         // We set the employment factory since a wrestler must be employed to retire
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
@@ -77,7 +68,7 @@ class ManagerFactory extends BaseFactory
     public function suspended(SuspensionFactory $suspensionFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = ManagerStatus::SUSPENDED;
+        $clone->status = RefereeStatus::SUSPENDED;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
 
         $clone->suspensionFactory = $suspensionFactory ?? $this->suspensionFactory ?? SuspensionFactory::new();
@@ -88,7 +79,7 @@ class ManagerFactory extends BaseFactory
     public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = ManagerStatus::RETIRED;
+        $clone->status = RefereeStatus::RETIRED;
         $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
         // We set the employment factory since a wrestler must be employed to retire
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
@@ -109,25 +100,25 @@ class ManagerFactory extends BaseFactory
             return $created;
         }
 
-        $manager = Manager::create($this->resolveAttributes($attributes));
+        $referee = Referee::create($this->resolveAttributes($attributes));
 
         if ($this->employmentFactory) {
-            $this->employmentFactory->forManager($manager)->create();
+            $this->employmentFactory->forReferee($referee)->create();
         }
 
         if ($this->suspensionFactory) {
-            $this->suspensionFactory->forManager($manager)->create();
+            $this->suspensionFactory->forReferee($referee)->create();
         }
 
         if ($this->retirementFactory) {
-            $this->retirementFactory->forManager($manager)->create();
+            $this->retirementFactory->forReferee($referee)->create();
         }
 
         if ($this->injuryFactory) {
-            $this->injuryFactory->forManager($manager)->create();
+            $this->injuryFactory->forReferee($referee)->create();
         }
 
-        return $manager;
+        return $referee;
     }
 
     protected function defaultAttributes(Faker\Generator $faker)
@@ -135,7 +126,7 @@ class ManagerFactory extends BaseFactory
         return [
             'first_name' => $faker->firstName,
             'last_name' => $faker->lastName,
-            'status' => ManagerStatus::PENDING_EMPLOYMENT,
+            'status' => RefereeStatus::PENDING_EMPLOYMENT,
         ];
     }
 }

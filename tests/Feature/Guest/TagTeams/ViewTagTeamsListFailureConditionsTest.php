@@ -17,7 +17,7 @@ class ViewTagTeamsListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_tag_teams_page()
     {
-        $response = $this->get(route('tag-teams.index'));
+        $response = $this->indexRequest('tag-teams');
 
         $response->assertRedirect(route('login'));
     }

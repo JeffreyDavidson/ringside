@@ -29,4 +29,15 @@ class Employment extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * R
+     *
+     * @param  string $date
+     * @return boolean
+     */
+    public function startedBefore($date)
+    {
+        return $this->started_at->lte($date);
+    }
 }

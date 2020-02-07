@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -19,13 +19,13 @@ class EmployTagTeamSuccessConditionsTest extends TestCase
     public function an_administrator_can_employ_a_pending_employment_tag_team_with_wrestlers()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
         tap($tagTeam->fresh(), function ($tagTeam) {
-            $this->assertTrue($tagTeam->is_employed);
+            $this->assertTrue($tagTeam->isCurrentlyEmployed());
         });
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use App\Models\TagTeam;
+use TagTeamFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -19,7 +19,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_bookable_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->restoreRequest($tagTeam);
 
@@ -30,7 +30,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_pending_employment_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->restoreRequest($tagTeam);
 
@@ -41,7 +41,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_retired_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->restoreRequest($tagTeam);
 
@@ -52,7 +52,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     public function a_suspended_tag_team_cannot_be_restored()
     {
         $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->restoreRequest($tagTeam);
 

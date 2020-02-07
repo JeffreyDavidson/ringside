@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use App\Models\TagTeam;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
 
 /**
  * @group tagteams
@@ -19,7 +19,7 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     public function a_basic_user_can_view_their_tag_team_profile()
     {
         $signedInUser = $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->create(['user_id' => $signedInUser->id]);
+        $tagTeam = TagTeamFactory::new()->create(['user_id' => $signedInUser->id]);
 
         $response = $this->showRequest($tagTeam);
 
