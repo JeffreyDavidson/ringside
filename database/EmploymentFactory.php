@@ -103,7 +103,7 @@ class EmploymentFactory extends BaseFactory
             $this->tagTeams ?? [],
             $this->wrestlers ?? [],
             $this->managers ?? [],
-            $this->referees ?? [],
+            $this->referees ?? []
         );
 
         $this->startDate = $this->startDate ?? now();

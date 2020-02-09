@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -25,7 +24,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = WrestlerFactory::new()->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace([
             'name' => 'Example Tag Team Name',
@@ -41,7 +40,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('basic-user');
         $tagTeam = TagTeamFactory::new()->create();
 
-        $response = $this->get(route('tag-teams.edit', $tagTeam));
+        $response = $this->editRequest($tagTeam);
 
         $response->assertForbidden();
     }
@@ -50,7 +49,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_update_a_tagteam()
     {
         $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams());
 

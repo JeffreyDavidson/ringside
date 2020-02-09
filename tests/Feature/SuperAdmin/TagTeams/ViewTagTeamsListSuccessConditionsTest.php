@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -27,10 +27,10 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $bookable          = factory(TagTeam::class, 3)->states('bookable')->create();
-        $pendingEmployment = factory(TagTeam::class, 3)->states('pending-employment')->create();
-        $retired           = factory(TagTeam::class, 3)->states('retired')->create();
-        $suspended         = factory(TagTeam::class, 3)->states('suspended')->create();
+        $bookable = TagTeamFactory::new()->count(3)->bookable()->create();
+        $pendingEmployment = TagTeamFactory::new()->count(3)->pendingEmployment()->create();
+        $retired = TagTeamFactory::new()->count(3)->retired()->create();
+        $suspended = TagTeamFactory::new()->count(3)->suspended()->create();
 
         $this->tagteams = collect([
             'bookable'           => $bookable,
@@ -41,7 +41,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
                                 ->concat($bookable)
                                 ->concat($pendingEmployment)
                                 ->concat($retired)
-                                ->concat($suspended)
+                                ->concat($suspended),
         ]);
     }
 
@@ -50,7 +50,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         $this->actAs('super-administrator');
 
-        $response = $this->get(route('tag-teams.index'));
+        $response = $this->indexRequest('tag-teams');
 
         $response->assertOk();
         $response->assertViewIs('tagteams.index');

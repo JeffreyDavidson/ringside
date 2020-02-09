@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams

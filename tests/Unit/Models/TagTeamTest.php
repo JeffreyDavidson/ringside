@@ -65,15 +65,16 @@ class TagTeamTest extends TestCase
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $this->assertCount(2, $tagTeam->wrestlerHistory);
+        //dd($tagTeam->wrestlerHistory()->current()->get()); // WORKS!!!!
 
-        // dd($tagTeam->wrestlerHistory);
         // DB::enableQueryLog();
         // $tagTeam->currentWrestlers()->get();
-        dd($tagTeam->currentWrestlers);
+        // dd($tagTeam->currentWrestlers()->get()); // WORKS!!!!
+        // dd($tagTeam->currentWrestlers);
         // dd(DB::getQueryLog());
 
 
-        $this->assertInstanceOf(Collection::class, $tagTeam->currentWrestlers);
+        // $this->assertInstanceOf(Collection::class, $tagTeam->currentWrestlers);
         $this->assertCount(2, $tagTeam->currentWrestlers);
     }
 }

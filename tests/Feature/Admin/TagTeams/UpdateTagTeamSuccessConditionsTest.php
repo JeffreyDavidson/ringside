@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
 use WrestlerFactory;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams
@@ -42,7 +40,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
         $tagTeam = TagTeamFactory::new()->create();
 
-        $response = $this->get(route('tag-teams.edit', $tagTeam));
+        $response = $this->editRequest($tagTeam);
 
         $response->assertViewIs('tagteams.edit');
         $this->assertTrue($response->data('tagTeam')->is($tagTeam));

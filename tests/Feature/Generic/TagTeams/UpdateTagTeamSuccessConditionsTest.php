@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
 use WrestlerFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams

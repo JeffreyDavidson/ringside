@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -25,7 +25,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -49,7 +49,6 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_a_tag_team()
     {
-        // $this->withoutExceptionHandling();
         $this->actAs('super-administrator');
 
         $response = $this->storeRequest('tag-team', $this->validParams());
@@ -75,7 +74,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
             $this->assertDatabaseHas('employments', [
                 'employable_id' => $tagteam->id,
                 'employable_type' => get_class($tagteam),
-                'started_at' => $now->toDateTimeString()
+                'started_at' => $now->toDateTimeString(),
             ]);
         });
     }
@@ -94,7 +93,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
             $this->assertDatabaseMissing('employments', [
                 'employable_id' => $tagteam->id,
                 'employable_type' => get_class($tagteam),
-                'started_at' => $now->toDateTimeString()
+                'started_at' => $now->toDateTimeString(),
             ]);
         });
     }

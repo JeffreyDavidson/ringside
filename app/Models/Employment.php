@@ -31,7 +31,7 @@ class Employment extends Model
     }
 
     /**
-     * R
+     *
      *
      * @param  string $date
      * @return boolean

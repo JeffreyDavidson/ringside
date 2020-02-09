@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
 use WrestlerFactory;
-use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams
@@ -40,7 +39,7 @@ class UpdateTagTeamFailureConditionsTest extends TestCase
     {
         $tagTeam = TagTeamFactory::new()->create();
 
-        $response = $this->get(route('tag-teams.edit', $tagTeam));
+        $response = $this->editRequest($tagTeam);
 
         $response->assertRedirect(route('login'));
     }

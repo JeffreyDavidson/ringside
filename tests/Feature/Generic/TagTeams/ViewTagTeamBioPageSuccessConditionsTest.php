@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
 use WrestlerFactory;
-use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams
@@ -23,14 +22,14 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
 
         $tagTeam = TagTeamFactory::new()
-        ->withWrestlers(
-            WrestlerFactory::new()->bookable()->create(['weight' => 200]),
-            WrestlerFactory::new()->bookable()->create(['weight' => 320])
-        )->bookable()
-        ->create([
-            'name' => 'Tag Team 1',
-            'signature_move' => 'The Finisher',
-        ]);
+            ->withWrestlers(
+                WrestlerFactory::new()->bookable()->create(['weight' => 200]),
+                WrestlerFactory::new()->bookable()->create(['weight' => 320])
+            )->bookable()
+            ->create([
+                'name' => 'Tag Team 1',
+                'signature_move' => 'The Finisher',
+            ]);
 
         $response = $this->showRequest($tagTeam);
 

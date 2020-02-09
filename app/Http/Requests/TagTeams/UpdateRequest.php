@@ -41,6 +41,7 @@ class UpdateRequest extends FormRequest
                 new CannotBeEmployedAfterDate($this->input('started_at')),
                 new CannotBeHindered,
                 new CannotBelongToTagTeam,
+            ]
         ];
     }
 }

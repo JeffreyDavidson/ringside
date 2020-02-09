@@ -67,6 +67,17 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
+    public function softDeleted(EmploymentFactory $employmentFactory = null)
+    {
+        $clone = clone $this;
+        $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
+        $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
+
+        $clone->suspensionFactory = $suspensionFactory ?? $this->suspensionFactory ?? SuspensionFactory::new();
+
+        return $clone;
+    }
+
     public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;

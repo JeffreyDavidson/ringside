@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -19,7 +19,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_retire_a_bookable_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->retireRequest($tagTeam);
 
@@ -31,7 +31,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_retire_a_suspended_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->retireRequest($tagTeam);
 

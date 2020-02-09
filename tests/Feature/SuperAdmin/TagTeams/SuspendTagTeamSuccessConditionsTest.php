@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -19,7 +19,7 @@ class SuspendTagTeamSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_suspend_a_bookable_tag_team()
     {
         $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->suspendRequest($tagTeam);
 

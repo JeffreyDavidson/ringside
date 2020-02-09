@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use UserFactory;
 
 /**
  * @group tagteams
@@ -21,7 +20,7 @@ class ViewTagTeamBioPageFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_view_another_users_tag_team_profile()
     {
         $this->actAs('basic-user');
-        $otherUser = factory(User::class)->create();
+        $otherUser = UserFactory::new()->create();
         $tagTeam = TagTeamFactory::new()->create(['user_id' => $otherUser->id]);
 
         $response = $this->showRequest($tagTeam);

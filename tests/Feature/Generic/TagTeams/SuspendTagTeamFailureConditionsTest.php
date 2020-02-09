@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use TagTeamFactory;
-use Tests\TestCase;
 use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
