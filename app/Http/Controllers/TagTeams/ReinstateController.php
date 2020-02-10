@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TagTeams;
 
 use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
+use App\Exceptions\CannotBeReinstatedException;
 
 class ReinstateController extends Controller
 {
@@ -16,6 +17,10 @@ class ReinstateController extends Controller
     public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('reinstate', $tagTeam);
+
+        if (! $tagTeam->canBeReinstated()) {
+            throw new CannotBeReinstatedException();
+        }
 
         $tagTeam->reinstate();
 

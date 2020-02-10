@@ -118,8 +118,8 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         $this->actAs('administrator');
 
         $response = $this->storeRequest('tag-team', $this->validParams([
-            'started_at' => now()->toDateString(), ]
-        ));
+            'started_at' => now()->toDateString(),
+        ]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('tag-teams.create'));

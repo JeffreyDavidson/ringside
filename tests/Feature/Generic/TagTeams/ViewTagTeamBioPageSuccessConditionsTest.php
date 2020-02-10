@@ -22,10 +22,10 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
         $this->actAs('administrator');
 
         $tagTeam = TagTeamFactory::new()
-            ->withWrestlers(
+            ->withExistingWrestlers([
                 WrestlerFactory::new()->bookable()->create(['weight' => 200]),
                 WrestlerFactory::new()->bookable()->create(['weight' => 320])
-            )->bookable()
+            ])->bookable()
             ->create([
                 'name' => 'Tag Team 1',
                 'signature_move' => 'The Finisher',

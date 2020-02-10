@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Collection;
+
 abstract class BaseFactory
 {
     public $attributes = [];
@@ -24,6 +26,22 @@ abstract class BaseFactory
         return $clone;
     }
 
+    public function make(callable $callback, $attributes = [])
+    {
+        if ($this->count > 1) {
+            $created = new Collection();
+            for ($i = 0; $i < $this->count; $i++) {
+                $clone = clone $this;
+                $clone->count = 1;
+                $created->push($clone->create($attributes));
+            }
+
+            return $created;
+        }
+
+        return call_user_func($callback, $attributes);
+    }
+
     protected function resolveAttributes($attributes = [])
     {
         /* @var \Faker\Generator $faker */
@@ -38,15 +56,6 @@ abstract class BaseFactory
         if (! empty($this->attributes)) {
             return $this->attributes;
         }
-
-        // dd($this->defaultAttributes($faker));
-
-
-        // dd(array_replace($attributes, $this->defaultAttributes($faker)));
-        // dd($this->defaultAttributes($faker));
-
-        // return array_merge($attributes, $this->defaultAttributes($faker));
-        // dd($this->attributes);
 
         return $this->defaultAttributes($faker);
     }

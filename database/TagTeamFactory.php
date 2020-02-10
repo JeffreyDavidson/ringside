@@ -2,7 +2,6 @@
 
 use App\Enums\TagTeamStatus;
 use App\Models\TagTeam;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 class TagTeamFactory extends BaseFactory
@@ -15,6 +14,7 @@ class TagTeamFactory extends BaseFactory
     public $wrestlerFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
+    public $existingWrestlers;
     protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
@@ -67,13 +67,11 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
-    public function softDeleted(EmploymentFactory $employmentFactory = null)
+    public function softDeleted()
     {
         $clone = clone $this;
-        $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
-        $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
 
-        $clone->suspensionFactory = $suspensionFactory ?? $this->suspensionFactory ?? SuspensionFactory::new();
+        $clone->deleted_at = now()->toDateTimeString();
 
         return $clone;
     }
@@ -98,43 +96,54 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
+    public function withExistingWrestlers(array $wrestlers)
+    {
+        $clone = clone $this;
+        $clone->wrestlerFactory = null;
+        $clone->existingWrestlers = $wrestlers;
+
+        return $clone;
+    }
+
+    public function withoutWrestlers()
+    {
+        $clone = clone $this;
+        $clone->wrestlerFactory = null;
+
+        return $clone;
+    }
+
     public function create($attributes = [])
     {
-        if ($this->count > 1) {
-            $created = new Collection();
-            for ($i = 0; $i < $this->count; $i++) {
-                $clone = clone $this;
-                $clone->count = 1;
-                $created->push($clone->create($attributes));
+        return $this->make(function ($attributes) {
+            $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
+
+            if ($this->employmentFactory) {
+                $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
 
-            return $created;
-        }
+            if ($this->wrestlerFactory) {
+                $this->wrestlerFactory->forTagTeam($tagTeam)->create();
+            }
 
-        // dd($this->resolveAttributes($attributes));
-        $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
+            if ($this->existingWrestlers) {
+                foreach ($this->existingWrestlers as $wrestler) {
+                    $wrestler->tagTeamHistory()->attach($tagTeam);
+                }
+            }
 
-        if ($this->employmentFactory) {
-            $this->employmentFactory->forTagTeam($tagTeam)->create();
-        }
+            if ($this->suspensionFactory) {
+                $this->suspensionFactory->forTagTeam($tagTeam)->create();
+            }
 
-        if ($this->wrestlerFactory) {
-            $this->wrestlerFactory->forTagTeam($tagTeam)->create();
-            // dd($tagTeam->currentWrestlers);
-            // dd($tagTeam->wrestlerHistory);
-        }
+            if ($this->retirementFactory) {
+                $this->retirementFactory->forTagTeam($tagTeam)->create();
+            }
 
-        if ($this->suspensionFactory) {
-            $this->suspensionFactory->forTagTeam($tagTeam)->create();
-        }
+            $tagTeam->save();
 
-        if ($this->retirementFactory) {
-            $this->retirementFactory->forTagTeam($tagTeam)->create();
-        }
-
-        $tagTeam->save();
-
-        return $tagTeam;
+            return $tagTeam;
+        }, $attributes);
     }
 
     protected function defaultAttributes(Faker\Generator $faker)

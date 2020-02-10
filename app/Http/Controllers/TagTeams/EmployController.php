@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\Models\TagTeam;
+use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
+use App\Models\TagTeam;
 
 class EmployController extends Controller
 {
@@ -16,6 +17,10 @@ class EmployController extends Controller
     public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('employ', $tagTeam);
+
+        if (! $tagTeam->canBeEmployed()) {
+            throw new CannotBeEmployedException();
+        }
 
         $tagTeam->employ();
 

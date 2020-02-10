@@ -130,6 +130,24 @@ class TagTeam extends Model
     }
 
     /**
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeEmployed()
+    {
+        if ($this->isCurrentlyEmployed()) {
+            return false;
+        }
+
+        if ($this->currentWrestlers->count() != 2) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Employ a tag team.
      *
      * @return bool
@@ -150,7 +168,7 @@ class TagTeam extends Model
      */
     public function canBeRetired()
     {
-        if (! $this->isEmployed()) {
+        if (! $this->isCurrentlyEmployed()) {
             return false;
         }
 
@@ -216,6 +234,24 @@ class TagTeam extends Model
         $this->currentWrestlers->each->suspend();
 
         return $this->touch();
+    }
+
+    /**
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeReinstated()
+    {
+        if (! $this->isCurrentlyEmployed()) {
+            return false;
+        }
+
+        if (! $this->isSuspended()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

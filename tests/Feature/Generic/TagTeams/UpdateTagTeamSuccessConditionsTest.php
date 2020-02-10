@@ -41,7 +41,9 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
         $tagTeam = TagTeamFactory::new()->bookable()->create();
         $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
-        $this->updateRequest($tagTeam, $this->validParams(['wrestlers' => $wrestlers->modelKeys()]));
+        $this->updateRequest($tagTeam, $this->validParams([
+            'wrestlers' => $wrestlers->modelKeys()
+        ]));
 
         tap($tagTeam->fresh()->currentWrestlers, function ($tagTeamWrestlers) use ($wrestlers) {
             $this->assertCount(2, $tagTeamWrestlers);

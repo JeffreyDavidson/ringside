@@ -3,12 +3,11 @@
 namespace App\Http\Requests\TagTeams;
 
 use App\Models\TagTeam;
-use App\Rules\CanJoinTagTeam;
-use App\Rules\CannotBeHindered;
-use Illuminate\Validation\Rule;
-use App\Rules\CannotBelongToTagTeam;
 use App\Rules\CannotBeEmployedAfterDate;
+use App\Rules\CannotBeHindered;
+use App\Rules\CannotBelongToTagTeam;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -41,7 +40,7 @@ class UpdateRequest extends FormRequest
                 new CannotBeEmployedAfterDate($this->input('started_at')),
                 new CannotBeHindered,
                 new CannotBelongToTagTeam,
-            ]
+            ],
         ];
     }
 }

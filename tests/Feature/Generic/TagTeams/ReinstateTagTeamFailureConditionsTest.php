@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
+use App\Exceptions\CannotBeReinstatedException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams
@@ -18,6 +19,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_tag_team_cannot_be_reinstated()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeReinstatedException::class);
+
         $this->actAs('administrator');
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
@@ -29,6 +33,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_tag_team_cannot_be_reinstated()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeReinstatedException::class);
+
         $this->actAs('administrator');
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
@@ -40,6 +47,9 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_tag_team_cannot_be_reinstated()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeReinstatedException::class);
+
         $this->actAs('administrator');
         $tagTeam = TagTeamFactory::new()->retired()->create();
 
