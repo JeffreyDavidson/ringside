@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use TagTeamFactory;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Exceptions\CannotBeReinstatedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -22,7 +23,7 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->reinstateRequest($tagTeam);
@@ -36,7 +37,7 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->reinstateRequest($tagTeam);
@@ -50,7 +51,7 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->reinstateRequest($tagTeam);

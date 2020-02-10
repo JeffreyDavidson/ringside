@@ -27,42 +27,33 @@ class WrestlerFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        if ($this->count > 1) {
-            $created = new Collection();
-            for ($i = 0; $i < $this->count; $i++) {
-                $clone = clone $this;
-                $clone->count = 1;
-                $created->push($clone->create($attributes));
+        return $this->make(function ($attributes) {
+            $wrestler = Wrestler::create($this->resolveAttributes($attributes));
+
+            if ($this->employmentFactory) {
+                $this->employmentFactory->forWrestler($wrestler)->create();
             }
 
-            return $created;
-        }
+            if ($this->suspensionFactory) {
+                $this->suspensionFactory->forWrestler($wrestler)->create();
+            }
 
-        $wrestler = Wrestler::create($this->resolveAttributes($attributes));
+            if ($this->retirementFactory) {
+                $this->retirementFactory->forWrestler($wrestler)->create();
+            }
 
-        if ($this->employmentFactory) {
-            $this->employmentFactory->forWrestler($wrestler)->create();
-        }
+            if ($this->injuryFactory) {
+                $this->injuryFactory->forWrestler($wrestler)->create();
+            }
 
-        if ($this->suspensionFactory) {
-            $this->suspensionFactory->forWrestler($wrestler)->create();
-        }
+            if ($this->tagTeam) {
+                $this->tagTeam->currentWrestlers()->attach($wrestler);
+            }
 
-        if ($this->retirementFactory) {
-            $this->retirementFactory->forWrestler($wrestler)->create();
-        }
+            $wrestler->save();
 
-        if ($this->injuryFactory) {
-            $this->injuryFactory->forWrestler($wrestler)->create();
-        }
-
-        if ($this->tagTeam) {
-            $this->tagTeam->currentWrestlers()->attach($wrestler);
-        }
-
-        $wrestler->save();
-
-        return $wrestler;
+            return $wrestler;
+        }, $attributes);
     }
 
     public function forTagTeam(TagTeam $tagTeam)

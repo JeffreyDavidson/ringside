@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class EmployTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_employ_a_pending_employment_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($tagTeam);

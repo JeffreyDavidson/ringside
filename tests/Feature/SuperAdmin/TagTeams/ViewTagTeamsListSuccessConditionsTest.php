@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -48,7 +49,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_tag_teams_page()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->indexRequest('tag-teams');
 
@@ -59,7 +60,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_all_tag_teams()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index'));
 
@@ -72,7 +73,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_bookable_tag_teams()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'bookable']));
 
@@ -85,7 +86,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_pending_employment_tag_teams()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'pending-employment']));
 
@@ -98,7 +99,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_retired_tag_teams()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'retired']));
 
@@ -111,7 +112,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_suspended_tag_teams()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'suspended']));
 

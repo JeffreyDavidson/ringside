@@ -223,6 +223,24 @@ class TagTeam extends Model
     }
 
     /**
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeSuspended()
+    {
+        if (! $this->isCurrentlyEmployed()) {
+            return false;
+        }
+
+        if ($this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Suspend a tag team.
      *
      * @return \App\Models\Suspension

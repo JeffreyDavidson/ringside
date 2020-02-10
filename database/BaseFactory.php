@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+
+// use Illuminate\Support\Collection;
 
 abstract class BaseFactory
 {
@@ -40,6 +42,19 @@ abstract class BaseFactory
         }
 
         return call_user_func($callback, $attributes);
+    }
+
+    protected function withClone(callable $callback)
+    {
+        $clone = clone $this;
+        call_user_func($callback, $clone);
+
+        return $clone;
+    }
+
+    public function softDeleted($delete = true)
+    {
+        return $this->withClone(fn ($factory) => $factory->softDeleted = $delete);
     }
 
     protected function resolveAttributes($attributes = [])

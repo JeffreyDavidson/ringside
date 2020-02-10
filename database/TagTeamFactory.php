@@ -15,6 +15,7 @@ class TagTeamFactory extends BaseFactory
     /** @var RetirementFactory|null */
     public $retirementFactory;
     public $existingWrestlers;
+    public $softDelete = false;
     protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
@@ -22,12 +23,12 @@ class TagTeamFactory extends BaseFactory
         'retirementFactory',
     ];
 
-    public function pendingEmployment()
+    public function pendingEmployment(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = TagTeamStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
-        $clone->employmentFactory = null;
+        $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->addDays(2));
         $clone->suspensionFactory = null;
         $clone->retirementFactory = null;
 
@@ -67,15 +68,6 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
-    public function softDeleted()
-    {
-        $clone = clone $this;
-
-        $clone->deleted_at = now()->toDateTimeString();
-
-        return $clone;
-    }
-
     public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
@@ -98,19 +90,10 @@ class TagTeamFactory extends BaseFactory
 
     public function withExistingWrestlers(array $wrestlers)
     {
-        $clone = clone $this;
-        $clone->wrestlerFactory = null;
-        $clone->existingWrestlers = $wrestlers;
-
-        return $clone;
-    }
-
-    public function withoutWrestlers()
-    {
-        $clone = clone $this;
-        $clone->wrestlerFactory = null;
-
-        return $clone;
+        return $this->withClone(function ($factory) use ($wrestlers) {
+            $factory->wrestlerFactory = null;
+            $factory->existingWrestlers = $wrestlers;
+        });
     }
 
     public function create($attributes = [])
@@ -126,12 +109,6 @@ class TagTeamFactory extends BaseFactory
                 $this->wrestlerFactory->forTagTeam($tagTeam)->create();
             }
 
-            if ($this->existingWrestlers) {
-                foreach ($this->existingWrestlers as $wrestler) {
-                    $wrestler->tagTeamHistory()->attach($tagTeam);
-                }
-            }
-
             if ($this->suspensionFactory) {
                 $this->suspensionFactory->forTagTeam($tagTeam)->create();
             }
@@ -141,6 +118,16 @@ class TagTeamFactory extends BaseFactory
             }
 
             $tagTeam->save();
+
+            if ($this->existingWrestlers) {
+                foreach ($this->existingWrestlers as $wrestler) {
+                    $wrestler->tagTeamHistory()->attach($tagTeam);
+                }
+            }
+
+            if ($this->softDelete) {
+                $tagTeam->delete();
+            }
 
             return $tagTeam;
         }, $attributes);

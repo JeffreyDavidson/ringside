@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class RestoreTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_restore_a_deleted_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($tagTeam);

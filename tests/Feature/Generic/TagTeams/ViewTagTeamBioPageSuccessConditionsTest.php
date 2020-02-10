@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -19,12 +20,12 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_tag_teams_data_can_be_seen_on_their_profile()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $tagTeam = TagTeamFactory::new()
             ->withExistingWrestlers([
                 WrestlerFactory::new()->bookable()->create(['weight' => 200]),
-                WrestlerFactory::new()->bookable()->create(['weight' => 320])
+                WrestlerFactory::new()->bookable()->create(['weight' => 320]),
             ])->bookable()
             ->create([
                 'name' => 'Tag Team 1',

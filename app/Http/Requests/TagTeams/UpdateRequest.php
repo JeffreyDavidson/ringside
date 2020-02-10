@@ -29,14 +29,14 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['nullable', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
+            'name' => ['required', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
             'signature_move' => ['nullable', 'string'],
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'wrestlers' => ['required', 'array', 'max:2'],
+            'wrestlers' => ['bail', 'required_with:started_at', 'array', 'max:2'],
             'wrestlers.*' => [
                 'bail',
                 'integer',
-                Rule::exists('wrestlers'),
+                'exists:wrestlers,id',
                 new CannotBeEmployedAfterDate($this->input('started_at')),
                 new CannotBeHindered,
                 new CannotBelongToTagTeam,

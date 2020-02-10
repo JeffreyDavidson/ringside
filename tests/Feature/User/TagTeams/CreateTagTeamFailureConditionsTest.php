@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use WrestlerFactory;
@@ -36,7 +37,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->createRequest('tag-teams');
 
@@ -46,7 +47,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->storeRequest('tag-team', $this->validParams());
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_unretire_a_retired_tag_team()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($tagTeam);

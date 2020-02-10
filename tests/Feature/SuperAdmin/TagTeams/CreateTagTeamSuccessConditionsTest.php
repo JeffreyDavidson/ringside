@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use App\Enums\Role;
 use App\Models\TagTeam;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,7 +39,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_creating_a_tag_team()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->createRequest('tag-team');
 
@@ -49,7 +50,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_a_tag_team()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams());
 
@@ -66,7 +67,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => $now->toDateTimeString()]));
 
@@ -85,7 +86,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => null]));
 

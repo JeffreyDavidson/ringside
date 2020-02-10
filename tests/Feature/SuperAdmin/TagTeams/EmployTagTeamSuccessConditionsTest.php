@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -16,16 +17,16 @@ class EmployTagTeamSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_super_administrator_can_employ_a_pending_employment_tag_team()
+    public function a_super_administrator_can_employ_a_pending_employment_tag_team_with_wrestlers()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->withWrestlers()->create();
 
         $response = $this->employRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
         tap($tagTeam->fresh(), function ($tagTeam) {
-            $this->assertTrue($tagTeam->is_employed);
+            $this->assertTrue($tagTeam->isCurrentlyEmployed());
         });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
@@ -22,7 +23,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeSuspendedException::class);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->suspendRequest($tagTeam);

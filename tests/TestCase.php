@@ -2,10 +2,12 @@
 
 namespace Tests;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Str;
 use JMac\Testing\Traits\HttpTestAssertions;
+use UserFactory;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -27,31 +29,13 @@ abstract class TestCase extends BaseTestCase
         });
     }
 
-    public function actAs($states = [], $attributes = [])
+    public function actAs($role = Role::BASIC, $attributes = [])
     {
-        $user = ($states instanceof User) ? $states : factory(User::class)->states($states)->create($attributes);
+        $user = UserFactory::new()->withRole($role)->create($attributes);
+
         $this->actingAs($user);
 
         return $user;
-    }
-
-    protected function ajaxJson($url)
-    {
-        return $this->getJson($url, ['X-Requested-With' => 'XMLHttpRequest']);
-    }
-
-    /**
-     * Assert that the given class soft deletes.
-     *
-     * @param  string  $model
-     * @return void
-     */
-    public function assertSoftDeletes(string $model)
-    {
-        $instance = new $model;
-
-        $this->assertUsesTrait(\Illuminate\Database\Eloquent\SoftDeletes::class, $instance);
-        $this->assertContains('deleted_at', $instance->getDates());
     }
 
     /**

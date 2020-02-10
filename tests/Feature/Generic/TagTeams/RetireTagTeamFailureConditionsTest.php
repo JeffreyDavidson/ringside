@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
@@ -22,7 +23,7 @@ class RetireTagTeamFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeRetiredException::class);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->retireRequest($tagTeam);

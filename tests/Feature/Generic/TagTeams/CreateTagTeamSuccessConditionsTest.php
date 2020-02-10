@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use WrestlerFactory;
@@ -36,7 +37,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_signature_move_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams(['signature_move' => '']));
 
@@ -46,7 +47,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_started_at_date_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams(['started_at' => '']));
 

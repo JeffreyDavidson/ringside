@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class SuspendTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_suspend_a_bookable_tag_team()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->suspendRequest($tagTeam);

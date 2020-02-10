@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use App\Enums\Role;
 use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -37,7 +38,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('tag-team');
 
@@ -48,7 +49,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams());
 
@@ -62,7 +63,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_employ_a_tag_team_during_creation_with_a_valid_started_at()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => now()->toDateTimeString()]));
 
@@ -74,7 +75,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_tag_team_without_employing()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => null]));
 

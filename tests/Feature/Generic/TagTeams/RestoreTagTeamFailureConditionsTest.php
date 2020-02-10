@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_tag_team_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->restoreRequest($tagTeam);
@@ -29,7 +30,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_tag_team_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->restoreRequest($tagTeam);
@@ -40,7 +41,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_tag_team_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->restoreRequest($tagTeam);
@@ -51,7 +52,7 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_tag_team_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->restoreRequest($tagTeam);

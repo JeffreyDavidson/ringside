@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use App\Enums\Role;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
@@ -22,7 +23,7 @@ class SuspendTagTeamSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->suspendRequest($tagTeam);

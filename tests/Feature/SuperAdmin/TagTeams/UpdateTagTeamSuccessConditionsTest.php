@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -37,7 +38,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_editing_a_tagteam()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->editRequest($tagTeam);
@@ -49,7 +50,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_update_a_tag_team()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams());

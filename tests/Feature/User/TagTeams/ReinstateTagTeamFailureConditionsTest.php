@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class ReinstateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_reinstate_a_suspended_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->reinstateRequest($tagTeam);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,7 +18,7 @@ class ViewTagTeamsListFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_tag_teams_page()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->indexRequest('tag-teams');
 

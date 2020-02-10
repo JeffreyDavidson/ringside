@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_a_tag_team_profile()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->showRequest($tagTeam);

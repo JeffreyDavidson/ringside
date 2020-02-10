@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use App\Models\TagTeam;
 use EmploymentFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -39,7 +40,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'name' => null,
@@ -54,7 +55,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'name' => ['not-a-string'],
@@ -69,7 +70,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_name_must_be_a_unique()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         TagTeamFactory::new()->create(['name' => 'Example Tag Team Name']);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
@@ -85,7 +86,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_signature_move_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'signature_move' => ['not-a-string'],
@@ -100,7 +101,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_started_at_date_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'started_at' => ['not-a-string'],
@@ -115,7 +116,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_started_at_date_must_be_in_datetime_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'started_at' => now()->toDateString(),
@@ -130,7 +131,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_wrestlers_is_required_if_started_at_is_valid()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'started_at' => now()->toDateTimeString(),
@@ -146,7 +147,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_wrestlers_must_be_an_array_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'wrestlers' => 'not-an-array',
@@ -161,7 +162,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_must_contain_a_max_of_two_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $wrestlers = WrestlerFactory::new()->count(3)->create();
 
         $response = $this->storeRequest('tag-team', $this->validParams([
@@ -177,7 +178,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function each_value_in_the_wrestlers_array_must_be_an_integer()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'wrestlers' => ['not-an-integer'],
@@ -192,7 +193,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function each_value_in_the_wrestlers_array_must_exist_in_the_wrestlers_table()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams([
             'wrestlers' => [99],
@@ -207,7 +208,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_can_have_a_pending_employment_status_to_join_a_tag_team_as_long_as_wrestler_started_at_date_is_before_tag_team_started_at_date()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $wrestler = WrestlerFactory::new()->pendingEmployment(
             EmploymentFactory::new()->started(now()->addDays(2)->toDateTimeString())
         )->create();
@@ -226,7 +227,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_cannot_be_a_part_of_more_than_one_bookable_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->storeRequest('tag-team', $this->validParams([

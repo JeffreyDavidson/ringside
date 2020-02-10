@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class DeleteTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_deleted_tag_team_cannot_be_deleted()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->softDeleted()->create();
 
         $response = $this->deleteRequest($tagTeam);

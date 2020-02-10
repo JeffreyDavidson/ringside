@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_suspend_a_tag_team_that_is_pending_employment()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->suspendRequest($tagTeam);
@@ -29,7 +30,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_suspend_a_bookable_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->suspendRequest($tagTeam);
@@ -40,7 +41,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_suspend_a_retired_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->suspendRequest($tagTeam);
@@ -51,7 +52,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_suspend_a_suspended_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->suspendRequest($tagTeam);

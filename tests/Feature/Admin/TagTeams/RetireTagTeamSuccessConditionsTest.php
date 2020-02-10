@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_bookable_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->retireRequest($tagTeam);
@@ -30,7 +31,7 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_suspended_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->retireRequest($tagTeam);

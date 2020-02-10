@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User\TagTeams;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use TagTeamFactory;
 use Tests\TestCase;
@@ -18,7 +19,8 @@ class DeleteTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_tagteam()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
+
         $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->deleteRequest($tagTeam);

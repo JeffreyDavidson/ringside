@@ -186,4 +186,9 @@ trait HasRequests
 
         return $this->get(route("{$entityName}.index"));
     }
+
+    protected function ajaxJson($url)
+    {
+        return $this->getJson($url, ['X-Requested-With' => 'XMLHttpRequest']);
+    }
 }
