@@ -15,7 +15,7 @@ class TagTeamFactory extends BaseFactory
     /** @var RetirementFactory|null */
     public $retirementFactory;
     public $existingWrestlers;
-    public $softDelete = false;
+    public $softDeleted = false;
     protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
@@ -125,7 +125,7 @@ class TagTeamFactory extends BaseFactory
                 }
             }
 
-            if ($this->softDelete) {
+            if ($this->softDeleted) {
                 $tagTeam->delete();
             }
 

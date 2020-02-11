@@ -179,7 +179,6 @@ class TagTeam extends Model
         return true;
     }
 
-
     /**
      * Retire a tag team.
      *
@@ -212,7 +211,7 @@ class TagTeam extends Model
         $this->currentRetirement()->update(['ended_at' => now()]);
 
         $this->wrestlerHistory()
-            ->whereHas('currentRetirement', function($query) use ($dateRetired) {
+            ->whereHas('currentRetirement', function ($query) use ($dateRetired) {
                 $query->whereDate('started_at', $dateRetired);
             })
             ->get()

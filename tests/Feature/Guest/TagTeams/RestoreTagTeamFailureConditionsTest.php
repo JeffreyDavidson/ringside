@@ -16,13 +16,12 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_restore_a_deleted_tag_team()
+    public function a_guest_cannot_restore_a_deleted_tag_team()
     {
-        $this->actAs('basic-user');
         $tagTeam = TagTeamFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($tagTeam);
 
-        $response->assertForbidden();
+        $response->assertRedirect(route('login'));
     }
 }
