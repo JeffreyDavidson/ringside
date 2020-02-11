@@ -3,7 +3,6 @@
 use App\Enums\WrestlerStatus;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 class WrestlerFactory extends BaseFactory
@@ -24,37 +23,6 @@ class WrestlerFactory extends BaseFactory
         'injuryFactory',
         'retirementFactory',
     ];
-
-    public function create($attributes = [])
-    {
-        return $this->make(function ($attributes) {
-            $wrestler = Wrestler::create($this->resolveAttributes($attributes));
-
-            if ($this->employmentFactory) {
-                $this->employmentFactory->forWrestler($wrestler)->create();
-            }
-
-            if ($this->suspensionFactory) {
-                $this->suspensionFactory->forWrestler($wrestler)->create();
-            }
-
-            if ($this->retirementFactory) {
-                $this->retirementFactory->forWrestler($wrestler)->create();
-            }
-
-            if ($this->injuryFactory) {
-                $this->injuryFactory->forWrestler($wrestler)->create();
-            }
-
-            if ($this->tagTeam) {
-                $this->tagTeam->currentWrestlers()->attach($wrestler);
-            }
-
-            $wrestler->save();
-
-            return $wrestler;
-        }, $attributes);
-    }
 
     public function forTagTeam(TagTeam $tagTeam)
     {
@@ -113,6 +81,7 @@ class WrestlerFactory extends BaseFactory
         $clone->injuryFactory = $injuryFactory ?? InjuryFactory::new();
         // We set the employment factory since a wrestler must be employed to be injured
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
+
         return $clone;
     }
 
@@ -136,6 +105,37 @@ class WrestlerFactory extends BaseFactory
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
 
         return $clone;
+    }
+
+    public function create($attributes = [])
+    {
+        return $this->make(function ($attributes) {
+            $wrestler = Wrestler::create($this->resolveAttributes($attributes));
+
+            if ($this->employmentFactory) {
+                $this->employmentFactory->forWrestler($wrestler)->create();
+            }
+
+            if ($this->suspensionFactory) {
+                $this->suspensionFactory->forWrestler($wrestler)->create();
+            }
+
+            if ($this->retirementFactory) {
+                $this->retirementFactory->forWrestler($wrestler)->create();
+            }
+
+            if ($this->injuryFactory) {
+                $this->injuryFactory->forWrestler($wrestler)->create();
+            }
+
+            if ($this->tagTeam) {
+                $this->tagTeam->currentWrestlers()->attach($wrestler);
+            }
+
+            $wrestler->save();
+
+            return $wrestler;
+        }, $attributes);
     }
 
     protected function defaultAttributes(Faker\Generator $faker)

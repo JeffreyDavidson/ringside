@@ -136,9 +136,9 @@ class TagTeamFactory extends BaseFactory
     protected function defaultAttributes(Faker\Generator $faker)
     {
         return [
-            'name'           => $faker->words(2, true),
+            'name'           => Str::title($faker->words(2, true)),
             'signature_move' => Str::title($faker->words(3, true)),
-            'status'         => TagTeamStatus::PENDING_EMPLOYMENT,
+            'status'         => TagTeamStatus::__default,
         ];
     }
 }

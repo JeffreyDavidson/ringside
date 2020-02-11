@@ -124,7 +124,7 @@ class TagTeam extends Model
      */
     public function addWrestlers($wrestlerIds)
     {
-        $this->wrestlerHistory()->sync($wrestlerIds);
+        $this->currentWrestlers()->sync($wrestlerIds);
 
         return $this;
     }
@@ -278,7 +278,11 @@ class TagTeam extends Model
      */
     public function reinstate()
     {
+        $dateRetired = $this->currentSuspension->started_at;
+
         $this->currentSuspension()->update(['ended_at' => now()]);
+
+        $this->currentWrestlers()->each->reinstate();
 
         return $this->touch();
     }
@@ -300,6 +304,24 @@ class TagTeam extends Model
             return false;
         }
 
+        if (! $this->currentWrestlers->each->isBookable()) {
+            return false;
+        }
+
         return true;
+    }
+
+    /**
+     * Get the previous employment of the model.
+     *
+     * @return App\Models\Employment
+     */
+    public function getCurrentWrestlersAttribute()
+    {
+        if (! $this->relationLoaded('currentWrestlers')) {
+            $this->setRelation('currentWrestlers', $this->currentWrestlers()->get());
+        }
+
+        return $this->getRelation('currentWrestlers');
     }
 }
