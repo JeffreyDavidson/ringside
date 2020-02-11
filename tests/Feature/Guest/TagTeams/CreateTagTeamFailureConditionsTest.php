@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -23,7 +23,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',

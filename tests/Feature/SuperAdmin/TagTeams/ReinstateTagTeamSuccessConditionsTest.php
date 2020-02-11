@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,8 +19,8 @@ class ReinstateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_reinstate_a_suspended_tag_team()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->reinstateRequest($tagTeam);
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -16,10 +17,10 @@ class RetireTagTeamFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_retire_a_tag_team()
+    public function a_basic_user_cannot_retire_a_bookable_tag_team()
     {
-        $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $this->actAs(Role::BASIC);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->retireRequest($tagTeam);
 

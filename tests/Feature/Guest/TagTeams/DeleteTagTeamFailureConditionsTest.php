@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,7 +18,7 @@ class DeleteTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_tagteam()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->deleteRequest($tagTeam);
 

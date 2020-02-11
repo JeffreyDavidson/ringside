@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,7 +18,7 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_unretire_a_tag_team()
     {
-        $tagTeam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($tagTeam);
 

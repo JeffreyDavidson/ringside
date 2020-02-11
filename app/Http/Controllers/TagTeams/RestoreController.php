@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
+use App\Models\TagTeam;
 
 class RestoreController extends Controller
 {

@@ -7,7 +7,7 @@ use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
- * @group tagteams
+ * @group stables
  * @group roster
  */
 class StableObserverTest extends TestCase

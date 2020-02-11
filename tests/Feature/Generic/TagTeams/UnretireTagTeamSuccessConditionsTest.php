@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,12 +19,12 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function unretiring_a_tag_team_makes_both_wrestlers_bookable()
     {
-        $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
-        $this->assertCount(2, $tagTeam->currentWrestlers->filter->is_bookable);
+        $this->assertCount(2, $tagTeam->fresh()->currentWrestlers->filter->isBookable());
     }
 }

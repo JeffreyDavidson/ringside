@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -23,7 +24,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -36,9 +37,9 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('tag-teams.create'));
+        $response = $this->createRequest('tag-teams');
 
         $response->assertForbidden();
     }
@@ -46,7 +47,7 @@ class CreateTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_tag_team()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->storeRequest('tag-team', $this->validParams());
 

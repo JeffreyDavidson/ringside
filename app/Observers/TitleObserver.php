@@ -15,9 +15,9 @@ class TitleObserver
      */
     public function saving(Title $title)
     {
-        if ($title->checkIsRetired()) {
+        if ($title->isRetired()) {
             $title->status = TitleStatus::RETIRED;
-        } elseif ($title->checkIsCompetable()) {
+        } elseif ($title->isCompetable()) {
             $title->status = TitleStatus::COMPETABLE;
         } else {
             $title->status = TitleStatus::PENDING_INTRODUCTION;

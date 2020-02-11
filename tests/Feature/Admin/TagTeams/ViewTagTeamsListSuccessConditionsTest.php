@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -27,10 +28,10 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $bookable            = factory(TagTeam::class, 3)->states('bookable')->create();
-        $pendingEmployment   = factory(TagTeam::class, 3)->states('pending-employment')->create();
-        $retired             = factory(TagTeam::class, 3)->states('retired')->create();
-        $suspended           = factory(TagTeam::class, 3)->states('suspended')->create();
+        $bookable = TagTeamFactory::new()->count(3)->bookable()->create();
+        $pendingEmployment = TagTeamFactory::new()->count(3)->pendingEmployment()->create();
+        $retired = TagTeamFactory::new()->count(3)->retired()->create();
+        $suspended = TagTeamFactory::new()->count(3)->suspended()->create();
 
         $this->tagteams = collect([
             'bookable'             => $bookable,
@@ -41,16 +42,16 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
                                 ->concat($bookable)
                                 ->concat($pendingEmployment)
                                 ->concat($retired)
-                                ->concat($suspended)
+                                ->concat($suspended),
         ]);
     }
 
     /** @test */
     public function an_administrator_can_view_tag_teams_page()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->get(route('tag-teams.index'));
+        $response = $this->indexRequest('tag-teams');
 
         $response->assertOk();
         $response->assertViewIs('tagteams.index');
@@ -59,7 +60,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_tag_teams()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index'));
 
@@ -72,7 +73,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_bookable_tag_teams()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'bookable']));
 
@@ -85,7 +86,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_pending_employment_tag_teams()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'pending-employment']));
 
@@ -98,7 +99,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_retired_tag_teams()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'retired']));
 
@@ -111,7 +112,7 @@ class ViewTagTeamsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_suspended_tag_teams()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('tag-teams.index', ['status' => 'suspended']));
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -24,7 +24,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -35,24 +35,9 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function two_wrestlers_make_a_tag_team()
-    {
-        $this->actAs('administrator');
-
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create()->modelKeys();
-
-        $this->storeRequest('tag-team', $this->validParams(['wrestlers' => $wrestlers]));
-
-        tap(TagTeam::first(), function ($tagTeam) use ($wrestlers) {
-            $this->assertCount(2, $tagTeam->currentWrestlers);
-            $this->assertEquals($tagTeam->currentWrestlers->modelKeys(), $wrestlers);
-        });
-    }
-
-    /** @test */
     public function a_tag_team_signature_move_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams(['signature_move' => '']));
 
@@ -62,7 +47,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_started_at_date_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams(['started_at' => '']));
 

@@ -94,6 +94,7 @@ trait IsLeaveableBelongsToMany
      */
     protected function getCurrentlyAttachedPivots()
     {
+        //dd($this);
         return $this->currentlyAttached ?: $this->newPivotQuery()->whereNull('left_at')->get()->map(function ($record) {
             $class = $this->using ? $this->using : Pivot::class;
 
@@ -112,7 +113,11 @@ trait IsLeaveableBelongsToMany
 
     public function current()
     {
-        $this->wherePivot('left_at', null);
+        // $this->wherePivot('left_at', null);
+        // $this->wherePivot('left_at', DB::raw('is null'));
+        // $this->wherePivot('left_at', 'is', DB::raw('null'));
+        // $this->wherePivot('left_at', '==', DB::raw('is null'));
+        $this->whereNull('left_at');
 
         return $this;
     }

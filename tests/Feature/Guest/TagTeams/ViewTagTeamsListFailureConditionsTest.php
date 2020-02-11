@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Guest\TagTeams;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -17,7 +17,7 @@ class ViewTagTeamsListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_tag_teams_page()
     {
-        $response = $this->get(route('tag-teams.index'));
+        $response = $this->indexRequest('tag-teams');
 
         $response->assertRedirect(route('login'));
     }

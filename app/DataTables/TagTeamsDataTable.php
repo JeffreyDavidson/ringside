@@ -2,13 +2,13 @@
 
 namespace App\DataTables;
 
-use App\Models\TagTeam;
 use App\Filters\TagTeamFilters;
-use Yajra\DataTables\DataTables;
+use App\Models\TagTeam;
+use Yajra\DataTables\Services\DataTable;
 
-class TagTeamsDataTable extends DataTables
+class TagTeamsDataTable extends DataTable
 {
-    /** @var TagTeamFilters */
+    /** @var $tagTeamFilters */
     private $tagTeamFilters;
 
     /**
@@ -25,13 +25,16 @@ class TagTeamsDataTable extends DataTables
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
-     * @return DataTableAbstract
+     * @return \Yajra\DataTables\DataTableAbstract
      */
-    public function dataTable($query): DataTableAbstract
+    public function dataTable($query)
     {
         return datatables($query)
             ->editColumn('started_at', function (TagTeam $tagTeam) {
-                return $tagTeam->currentEmployment->started_at->format('Y-m-d H:s');
+                return $tagTeam->started_at->toDateString();
+            })
+            ->editColumn('status', function (TagTeam $tagTeam) {
+                return $tagTeam->status->label();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
@@ -42,13 +45,13 @@ class TagTeamsDataTable extends DataTables
     /**
      * Get query source of dataTable.
      *
-     * @return Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(): Builder
+    public function query()
     {
-        $query = User::with('employment');
+        $query = TagTeam::whereHas('employments');
 
-        $this->userFilters->apply($query);
+        $this->tagTeamFilters->apply($query);
 
         return $query;
     }

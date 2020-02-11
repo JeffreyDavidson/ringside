@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,8 +19,9 @@ class RestoreTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_tag_team()
     {
-        $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $this->markTestIncomplete();
+        $this->actAs(Role::BASIC);
+        $tagTeam = TagTeamFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($tagTeam);
 

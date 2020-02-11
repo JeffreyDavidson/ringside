@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use App\Models\TagTeam;
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -24,7 +25,7 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace([
             'name' => 'Example Tag Team Name',
@@ -37,10 +38,10 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_editing_a_tagteam()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->create();
 
-        $response = $this->get(route('tag-teams.edit', $tagTeam));
+        $response = $this->editRequest($tagTeam);
 
         $response->assertViewIs('tagteams.edit');
         $this->assertTrue($response->data('tagTeam')->is($tagTeam));
@@ -49,8 +50,8 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_update_a_tag_team()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->create();
 
         $response = $this->updateRequest($tagTeam, $this->validParams());
 

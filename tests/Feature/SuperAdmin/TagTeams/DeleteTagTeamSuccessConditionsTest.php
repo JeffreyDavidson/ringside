@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,8 +19,8 @@ class DeleteTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_bookable_tag_team()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->deleteRequest($tagTeam);
 
@@ -30,8 +31,8 @@ class DeleteTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_retired_tag_team()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('retired')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->deleteRequest($tagTeam);
 
@@ -42,8 +43,8 @@ class DeleteTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_pending_employment_tag_team()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->deleteRequest($tagTeam);
 
@@ -54,8 +55,8 @@ class DeleteTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_suspended_tag_team()
     {
-        $this->actAs('super-administrator');
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->deleteRequest($tagTeam);
 

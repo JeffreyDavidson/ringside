@@ -5,8 +5,10 @@ namespace App\Rules;
 use App\Models\Wrestler;
 use Illuminate\Contracts\Validation\Rule;
 
-class CanJoinTagTeam implements Rule
+class CannotBeHindered implements Rule
 {
+    protected $wrestler;
+
     /**
      * Determine if the validation rule passes.
      *
@@ -16,14 +18,9 @@ class CanJoinTagTeam implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestler = Wrestler::find($value);
-        $startedAtDate = $wrestler->currentEmployment->started_at;
+        $this->wrestler = Wrestler::find($value);
 
-        if (is_null($startedAtDate) || $startedAtDate->isFuture()) {
-            return false;
-        }
-
-        if ($wrestler->currentTagTeam()->exists()) {
+        if ($this->wrestler->isSuspended() || $this->wrestler->isRetired() || $this->wrestler->isInjured()) {
             return false;
         }
 
@@ -37,6 +34,6 @@ class CanJoinTagTeam implements Rule
      */
     public function message()
     {
-        return 'A wrestler is not allowed to be added to this tag team.';
+        return $this->wreslter->name.' is not allowed to join this tag team.';
     }
 }

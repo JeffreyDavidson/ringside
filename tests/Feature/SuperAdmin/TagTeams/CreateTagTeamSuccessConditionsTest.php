@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\SuperAdmin\TagTeams;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -25,7 +26,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -38,7 +39,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_creating_a_tag_team()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->createRequest('tag-team');
 
@@ -49,8 +50,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_a_tag_team()
     {
-        $this->withoutExceptionHandling();
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams());
 
@@ -67,7 +67,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => $now->toDateTimeString()]));
 
@@ -75,7 +75,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
             $this->assertDatabaseHas('employments', [
                 'employable_id' => $tagteam->id,
                 'employable_type' => get_class($tagteam),
-                'started_at' => $now->toDateTimeString()
+                'started_at' => $now->toDateTimeString(),
             ]);
         });
     }
@@ -86,7 +86,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => null]));
 
@@ -94,7 +94,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
             $this->assertDatabaseMissing('employments', [
                 'employable_id' => $tagteam->id,
                 'employable_type' => get_class($tagteam),
-                'started_at' => $now->toDateTimeString()
+                'started_at' => $now->toDateTimeString(),
             ]);
         });
     }

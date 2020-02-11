@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Admin\TagTeams;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -25,7 +25,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
         return array_replace_recursive([
             'name' => 'Example Tag Team Name',
@@ -38,7 +38,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('tag-team');
 
@@ -49,7 +49,7 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('tag-team', $this->validParams());
 
@@ -61,40 +61,26 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_employ_a_tag_team_during_creation()
+    public function an_administrator_can_employ_a_tag_team_during_creation_with_a_valid_started_at()
     {
-        $now = now();
-        Carbon::setTestNow($now);
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $this->actAs('administrator');
+        $this->storeRequest('tag-team', $this->validParams(['started_at' => now()->toDateTimeString()]));
 
-        $this->storeRequest('tag-team', $this->validParams(['started_at' => $now->toDateTimeString()]));
-
-        tap(TagTeam::first(), function ($tagteam) use ($now) {
-            $this->assertDatabaseHas('employments', [
-                'employable_id' => $tagteam->id,
-                'employable_type' => get_class($tagteam),
-                'started_at' => $now->toDateTimeString()
-            ]);
+        tap(TagTeam::first(), function ($tagTeam) {
+            $this->assertCount(1, $tagTeam->employments);
         });
     }
 
     /** @test */
     public function an_administrator_can_create_a_tag_team_without_employing()
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('tag-team', $this->validParams(['started_at' => null]));
 
-        tap(TagTeam::first(), function ($tagteam) use ($now) {
-            $this->assertDatabaseMissing('employments', [
-                'employable_id' => $tagteam->id,
-                'employable_type' => get_class($tagteam),
-                'started_at' => $now->toDateTimeString()
-            ]);
+        tap(TagTeam::first(), function ($tagTeam) {
+            $this->assertCount(0, $tagTeam->employments);
         });
     }
 }

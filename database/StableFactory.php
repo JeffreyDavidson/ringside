@@ -1,51 +1,64 @@
 <?php
 
-class StableFactory
+use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
+
+class StableFactory extends BaseFactory
 {
-    public $wrestlersCount = 0;
-    public $tagTeamsCount = 0;
-    public $startedAtDate = null;
-    public $states = null;
+    /** @var EmploymentFactory|null */
+    public $employmentFactory;
+    /** @var SuspensionFactory|null */
+    public $suspensionFactory;
+    /** @var InjuryFactory|null */
+    public $injuryFactory;
+    /** @var RetirementFactory|null */
+    public $retirementFactory;
+    protected $factoriesToClone = [
+        'employmentFactory',
+        'suspensionFactory',
+        'retirementFactory',
+    ];
 
-    /**
-     * Give the number of wrestler members for the stable.
-     *
-     * @param  int $count
-     * @return void
-     */
-    public function withWrestlers($count)
+    public function withWrestlers(WrestlerFactory $wrestlerFactory = null)
     {
-        $this->withWrestlersCount = $count;
+        $clone = clone $this;
+        $clone->wrestlerFactory = $wrestlerFactory ?? WrestlerFactory::new()->bookable();
 
-        return $this;
+        return $clone;
     }
 
-    /**
-     * Give the number of tag team members for the stable.
-     *
-     * @param  int $count
-     * @return void
-     */
-    public function withTagTeams($count)
+    public function withTagTeams(TagTeamFactory $tagTeamFactory = null)
     {
-        $this->withTagTeamssCount = $count;
+        $clone = clone $this;
+        $clone->tagTeamFactory = $tagTeamFactory ?? TagTeamFactory::new()->bookable();
 
-        return $this;
+        return $clone;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    public function create()
+    public function create($attributes = [])
     {
-        $stable = factory(Stable::class)->states($this->states)->create();
-        $wrestlers = factory(Wrestler::class, $this->wrestlersCount)->states('bookable')->create();
-        $tagTeams = factory(TagTeam::class, $this->tagTeamsCount)->states('bookable')->create();
+        $stable = Stable::create($this->resolveAttributes($attributes));
 
-        $stable->wrestlerHistory()->attach($wrestlers, ['joined_at' => $this->startedAtDate]);
-        $stable->tagTeamHistory()->attach($tagTeams, ['joined_at' => $this->startedAtDate]);
+        if ($this->employmentFactory) {
+            $this->employmentFactory->forStable($stable)->create();
+        }
+
+        if ($this->suspensionFactory) {
+            $this->suspensionFactory->forStable($stable)->create();
+        }
+
+        if ($this->retirementFactory) {
+            $this->retirementFactory->forStable($stable)->create();
+        }
+
+        if ($this->wrestlerFactory) {
+            $this->wrestlerFactory->forStable($stable)->create();
+        }
+
+        if ($this->tagTeamFactory) {
+            $this->tagTeamFactory->forStable($stable)->create();
+        }
 
         return $stable;
     }

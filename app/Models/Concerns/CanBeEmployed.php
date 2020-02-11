@@ -51,7 +51,7 @@ trait CanBeEmployed
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function pendingEmployment()
+    public function futureEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
             ->where('started_at', '>', now())
@@ -87,9 +87,19 @@ trait CanBeEmployed
      *
      * @return bool
      */
-    public function getIsEmployedCachedAttribute()
+    public function getIsCurrentlyEmployedCachedAttribute()
     {
-        return $this->isEmployed();
+        return $this->isCurrenlyEmployed();
+    }
+
+    /**
+     * Determine if a model is employed.
+     *
+     * @return bool
+     */
+    public function getIsUnemployedCachedAttribute()
+    {
+        return ! $this->isEmployed();
     }
 
     /**
@@ -98,7 +108,7 @@ trait CanBeEmployed
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function getIsPendingEmploymentCachedAttribute()
+    public function getHasPendingEmploymentCachedAttribute()
     {
         if (! $this->currentEmployment) {
             return true;
@@ -173,19 +183,29 @@ trait CanBeEmployed
      *
      * @return bool
      */
-    public function isEmployed()
+    public function isCurrentlyEmployed()
     {
         return $this->currentEmployment()->exists();
     }
 
     /**
-     * Check to see if the model is pending employment.
+     * Check to see if the model is employed.
      *
      * @return bool
      */
-    public function isPendingEmployment()
+    public function isUnemployed()
     {
-        return $this->currentEmployment()->doesntExist();
+        return $this->currentEmployment()->doesntExist() && $this->futureEmployment()->doesntExist();
+    }
+
+    /**
+     * Check to see if the model has a future scheduled employment.
+     *
+     * @return bool
+     */
+    public function hasFutureEmployment()
+    {
+        return $this->futureEmployment()->exists();
     }
 
     /**
@@ -195,11 +215,7 @@ trait CanBeEmployed
      */
     public function canBeEmployed()
     {
-        if ($this->isEmployed()) {
-            return false;
-        }
-
-        return true;
+        return ! $this->isCurrentlyEmployed();
     }
 
     /**
@@ -245,12 +261,12 @@ trait CanBeEmployed
      *
      * @return App\Models\Employment
      */
-    public function getPendingEmploymentAttribute()
+    public function getFutureEmploymentAttribute()
     {
-        if (! $this->relationLoaded('pendingEmployment')) {
-            $this->setRelation('pendingEmployment', $this->pendingEmployment()->get());
+        if (! $this->relationLoaded('futureEmployment')) {
+            $this->setRelation('futureEmployment', $this->futureEmployment()->get());
         }
 
-        return $this->getRelation('pendingEmployment')->first();
+        return $this->getRelation('futureEmployment')->first();
     }
 }

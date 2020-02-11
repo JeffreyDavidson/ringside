@@ -2,11 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\TagTeam;
-use App\Exceptions\CannotBeFiredException;
+use App\Enums\TagTeamStatus;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use TagTeamFactory;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group tagteams
@@ -24,13 +26,13 @@ class TagTeamTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        \Event::fake();
+        Event::fake();
     }
 
     /** @test */
     public function a_tag_team_has_a_name()
     {
-        $tagTeam = factory(TagTeam::class)->create(['name' => 'Example Tag Team Name']);
+        $tagTeam = TagTeamFactory::new()->create(['name' => 'Example Tag Team Name']);
 
         $this->assertEquals('Example Tag Team Name', $tagTeam->name);
     }
@@ -38,7 +40,7 @@ class TagTeamTest extends TestCase
     /** @test */
     public function a_tag_team_can_have_a_signature_move()
     {
-        $tagTeam = factory(TagTeam::class)->create(['signature_move' => 'Example Signature Move']);
+        $tagTeam = TagTeamFactory::new()->create(['signature_move' => 'Example Signature Move']);
 
         $this->assertEquals('Example Signature Move', $tagTeam->signature_move);
     }
@@ -46,186 +48,174 @@ class TagTeamTest extends TestCase
     /** @test */
     public function a_tag_team_has_a_status()
     {
-        $tagTeam = factory(TagTeam::class)->create(['status' => 'Example Status']);
+        $tagTeam = TagTeamFactory::new()->create(['status' => 'Example Status']);
 
-        $this->assertEquals('Example Status', $tagTeam->status);
+        $this->assertEquals('Example Status', $tagTeam->getOriginal('status'));
     }
 
     /** @test */
-    public function a_tag_team_has_a_default_status_of_pending_employment()
+    public function a_tag_team_status_gets_cast_as_a_tag_team_status_enum()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->create();
 
-        $this->assertEquals('pending-employment', $tagTeam->status);
+        $this->assertInstanceOf(TagTeamStatus::class, $tagTeam->status);
     }
 
     /** @test */
-    public function tag_team_wrestlers_are_employed_when_team_is_employed()
+    public function a_tag_team_has_a_wrestler_history()
     {
-        $now = Carbon::now();
-        Carbon::setTestNow($now);
+        $tagTeam = TagTeamFactory::new()->create();
 
-        $tagTeam = factory(TagTeam::class)->with(2, 'wrestlerHistory')->create();
-
-        $tagTeam->employ();
-
-        $this->assertEquals($now->toDateTimeString(), $tagTeam->currentEmployment->started_at);
-        $this->assertEquals($now->toDateTimeString(), $tagTeam->wrestlerHistory->each->currentEmployment->started_at);
+        $this->assertInstanceOf(Collection::class, $tagTeam->wrestlerHistory);
     }
 
     /** @test */
-    public function tag_team_can_be_employed_at_start_date()
+    public function a_bookable_tag_team_has_two_current_wrestlers()
     {
-        $yesterday = Carbon::yesterday();
-        Carbon::setTestNow($yesterday);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
-        $tagTeam = factory(TagTeam::class)->create();
-
-        $tagTeam->employ($yesterday);
-
-        $this->assertEquals($yesterday->toDateTimeString(), $tagTeam->currentEmployment->started_at);
+        $this->assertCount(2, $tagTeam->wrestlerHistory);
+        dd($tagTeam->wrestlerHistory);
+        $this->assertCount(2, $tagTeam->currentWrestlers);
     }
 
     /** @test */
-    public function tag_team_with_an_employment_in_the_future_can_be_employed_at_start_date()
+    public function a_tag_team_can_add_wrestlers()
     {
-        $today = Carbon::today();
-        Carbon::setTestNow($today);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
-        $tagTeam = factory(TagTeam::class)->create();
-        $tagTeam->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
+        $formerTagTeamPartner = $tagTeam->currentWrestlers->last();
+        $stayingTagTeamPartner = $tagTeam->currentWrestlers->first();
 
-        $tagTeam->employ($today);
+        $newTagTeamPartner = WrestlerFactory::new()->employed()->create();
 
-        $this->assertEquals($today->toDateTimeString(), $tagTeam->currentEmployment->started_at);
+        $tagTeam->addWrestlers([
+            $stayingTagTeamPartner->getKey(),
+            $newTagTeamPartner->getKey(),
+        ]);
+
+        $this->assertTrue($tagTeam->currentWrestlers->contains($stayingTagTeamPartner));
+        $this->assertTrue($tagTeam->currentWrestlers->contains($newTagTeamPartner));
+        $this->assertFalse($tagTeam->currentWrestlers->contains($formerTagTeamPartner));
     }
 
     /** @test */
-    public function a_bookable_tag_team_can_be_fired_default_to_now()
+    public function a_tag_team_combined_weight_is_calculated_from_both_current_wrestlers_weight()
     {
-        $now = Carbon::now();
-        Carbon::setTestNow($now);
+        $tagTeam = TagTeamFactory::new()
+            ->withExistingWrestlers([
+                WrestlerFactory::new()->employed()->create(['weight' => 315]),
+                WrestlerFactory::new()->employed()->create(['weight' => 340]),
+            ])
+            ->create();
 
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
-
-        $this->assertNull($tagTeam->currentEmployment->ended_at);
-
-        $tagTeam->fire();
-
-        $this->assertCount(1, $tagTeam->previousEmployments);
-        $this->assertEquals($now->toDateTimeString(), $tagTeam->previousEmployment->ended_at);
+        $this->assertEquals(655, $tagTeam->combined_weight);
     }
 
     /** @test */
-    public function a_bookable_tag_team_can_be_fired_at_start_date()
+    public function a_tag_team_without_a_current_employment_is_not_bookable()
     {
-        $yesterday = Carbon::yesterday();
-        Carbon::setTestNow($yesterday);
+        $tagTeam = TagTeamFactory::new()->create();
 
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
-
-        $this->assertNull($tagTeam->currentEmployment->ended_at);
-
-        $tagTeam->fire($yesterday);
-
-        $this->assertCount(1, $tagTeam->previousEmployments);
-        $this->assertEquals($yesterday->toDateTimeString(), $tagTeam->previousEmployment->ended_at);
+        $this->assertFalse($tagTeam->isBookable());
     }
 
     /** @test */
-    public function a_suspended_tag_team_can_be_fired_default_to_now()
+    public function a_suspended_tag_team_is_not_bookable()
     {
-        $now = Carbon::now();
-        Carbon::setTestNow($now);
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
-        $wrestler = factory(TagTeam::class)->states('suspended')->create();
-
-        $this->assertNull($wrestler->currentSuspension->ended_at);
-
-        $wrestler->fire();
-
-        $this->assertCount(1, $wrestler->previousEmployments);
-        $this->assertEquals($now->toDateTimeString(), $wrestler->previousEmployment->ended_at);
-        $this->assertNotNull($wrestler->previousSuspension->ended_at);
+        $this->assertFalse($tagTeam->isBookable());
     }
 
     /** @test */
-    public function a_pending_employment_tag_team_cannot_be_fired()
+    public function a_retired_tag_team_is_not_bookable()
     {
-        $this->expectException(CannotBeFiredException::class);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
-        $wrestler = factory(TagTeam::class)->states('pending-employment')->create();
-
-        $wrestler->fire();
+        $this->assertFalse($tagTeam->isBookable());
     }
 
     /** @test */
-    public function a_retired_tag_team_cannot_be_fired()
+    public function a_suspended_tag_team_can_be_reinstated()
     {
-        $this->expectException(CannotBeFiredException::class);
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
-        $wrestler = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam->reinstate();
 
-        $wrestler->fire();
+        $this->assertTrue($tagTeam->isBookable());
+        $this->assertNotNull($tagTeam->suspensions()->last()->ended_at);
+        $this->assertNotNull($tagTeam->currentWrestlers()->first()->suspensions()->last()->ended_at);
+        $this->assertNotNull($tagTeam->currentWrestlers()->last()->suspensions()->last()->ended_at);
+        $this->assertTrue($tagTeam->currentWrestlers()->first()->isBookable());
+        $this->assertTrue($tagTeam->currentWrestlers()->last()->isBookable());
     }
 
     /** @test */
-    public function a_tag_team_with_an_employment_now_or_in_the_past_is_employed()
+    public function a_non_currently_employed_tag_team_cannot_be_reinstated()
     {
-        $tagTeam = factory(TagTeam::class)->create();
-        $tagTeam->currentEmployment()->create(['started_at' => Carbon::now()]);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
-        $this->assertTrue($tagTeam->is_employed);
+        $this->assertFalse($tagTeam->canBeEmployed());
     }
 
     /** @test */
-    public function a_tag_team_with_an_employment_in_the_future_is_not_employed()
+    public function a_non_suspended_tag_team_cannot_be_reinstated()
     {
-        $tagTeam = factory(TagTeam::class)->create();
-        $tagTeam->currentEmployment()->create(['started_at' => Carbon::tomorrow()]);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
+        $this->assertFalse($tagTeam->canBeEmployed());
 
-        $this->assertFalse($tagTeam->is_employed);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
+        $this->assertFalse($tagTeam->canBeEmployed());
     }
 
     /** @test */
-    public function a_tag_team_without_an_employment_is_not_employed()
+    public function a_tag_team_can_be_suspended()
     {
-        $tagTeam = factory(TagTeam::class)->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
-        $this->assertFalse($tagTeam->is_employed);
+        $tagTeam->suspend();
+
+        $this->assertFalse($tagTeam->isBookable());
+        $this->assertTrue($tagTeam->suspensions()->exists());
+        $this->assertNull($tagTeam->suspensions()->last()->ended_at);
+        $this->assertTrue($tagTeam->currentWrestlers()->first()->suspensions()->exists());
+        $this->assertTrue($tagTeam->currentWrestlers()->last()->suspensions()->exists());
+        $this->assertNull($tagTeam->currentWrestlers()->first()->suspensions()->first()->ended_at);
+        $this->assertNull($tagTeam->currentWrestlers()->last()->suspensions()->first()->ended_at);
+        $this->assertFalse($tagTeam->currentWrestlers()->first()->isBookable());
+        $this->assertFalse($tagTeam->currentWrestlers()->last()->isBookable());
     }
 
     /** @test */
-    public function it_can_get_pending_employment_tagTeams()
+    public function a_non_currently_employed_tag_team_cannot_be_suspended()
     {
-        $pendingEmploymentTagTeam = factory(TagTeam::class)->states('pending-employment')->create();
-        $bookableTagTeam = factory(TagTeam::class)->states('bookable')->create();
-        $suspendedTagTeam = factory(TagTeam::class)->states('suspended')->create();
-        $retiredTagTeam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
-        $pendingEmploymentTagTeams = TagTeam::pendingEmployment()->get();
-
-        $this->assertCount(1, $pendingEmploymentTagTeams);
-        $this->assertTrue($pendingEmploymentTagTeams->contains($pendingEmploymentTagTeam));
-        $this->assertFalse($pendingEmploymentTagTeams->contains($bookableTagTeam));
-        $this->assertFalse($pendingEmploymentTagTeams->contains($suspendedTagTeam));
-        $this->assertFalse($pendingEmploymentTagTeams->contains($retiredTagTeam));
+        $this->assertFalse($tagTeam->canBeEmployed());
     }
 
     /** @test */
-    public function it_can_get_employed_tagTeams()
+    public function a_bookable_tag_team_can_be_suspended()
     {
-        $pendingEmploymentTagTeam = factory(TagTeam::class)->states('pending-employment')->create();
-        $bookableTagTeam = factory(TagTeam::class)->states('bookable')->create();
-        $suspendedTagTeam = factory(TagTeam::class)->states('suspended')->create();
-        $retiredTagTeam = factory(TagTeam::class)->states('retired')->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
-        $employedTagTeams = TagTeam::employed()->get();
+        $this->assertTrue($tagTeam->canBeSuspended());
+    }
 
-        $this->assertCount(3, $employedTagTeams);
-        $this->assertFalse($employedTagTeams->contains($pendingEmploymentTagTeam));
-        $this->assertTrue($employedTagTeams->contains($bookableTagTeam));
-        $this->assertTrue($employedTagTeams->contains($suspendedTagTeam));
-        $this->assertTrue($employedTagTeams->contains($retiredTagTeam));
+    /** @test */
+    public function a_suspended_tag_team_cannot_be_suspended()
+    {
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
+
+        $this->assertFalse($tagTeam->canBeSuspended());
+    }
+
+    /** @test */
+    public function a_retired_tag_team_cannot_be_suspended()
+    {
+        $tagTeam = TagTeamFactory::new()->retired()->create();
+
+        $this->assertFalse($tagTeam->canBeSuspended());
     }
 }

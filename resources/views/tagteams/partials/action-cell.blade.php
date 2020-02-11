@@ -13,27 +13,27 @@
                 @endeditbutton
             @endcan
             @can('delete', $model)
-                @deletebutton(['route' => route('tagteams.destroy', $model)])
+                @deletebutton(['route' => route('tag-teams.destroy', $model)])
                 @enddeletebutton
             @endcan
             @can('retire', $model)
-                @retirebutton(['route' => route('tagteams.retire', $model)])
+                @retirebutton(['route' => route('tag-teams.retire', $model)])
                 @endretirebutton
             @endcan
             @can('unretire', $model)
-                @unretirebutton(['route' => route('tagteams.unretire', $model)])
+                @unretirebutton(['route' => route('tag-teams.unretire', $model)])
                 @endunretirebutton
             @endcan
             @can('employ', $model)
-                @employbutton(['route' => route('tagteams.employ', $model)])
+                @employbutton(['route' => route('tag-teams.employ', $model)])
                 @endemploybutton
             @endcan
             @can('suspend', $model)
-                @suspendbutton(['route' => route('tagteams.suspend', $model)])
+                @suspendbutton(['route' => route('tag-teams.suspend', $model)])
                 @endsuspendbutton
             @endcan
             @can('reinstate', $model)
-                @reinstatebutton(['route' => route('tagteams.reinstate', $model)])
+                @reinstatebutton(['route' => route('tag-teams.reinstate', $model)])
                 @endreinstatebutton
             @endcan
         </ul>

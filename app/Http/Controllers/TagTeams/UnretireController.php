@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TagTeams;
 
 use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
+use App\Exceptions\CannotBeUnretiredException;
 
 class UnretireController extends Controller
 {
@@ -16,6 +17,10 @@ class UnretireController extends Controller
     public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('unretire', $tagTeam);
+
+        if (! $tagTeam->canBeUnretired()) {
+            throw new CannotBeUnretiredException();
+        }
 
         $tagTeam->unretire();
 

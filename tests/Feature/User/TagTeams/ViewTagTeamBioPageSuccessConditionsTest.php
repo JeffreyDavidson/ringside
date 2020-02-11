@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,8 +19,8 @@ class ViewTagTeamBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_can_view_their_tag_team_profile()
     {
-        $signedInUser = $this->actAs('basic-user');
-        $tagTeam = factory(TagTeam::class)->create(['user_id' => $signedInUser->id]);
+        $signedInUser = $this->actAs(Role::BASIC);
+        $tagTeam = TagTeamFactory::new()->create(['user_id' => $signedInUser->id]);
 
         $response = $this->showRequest($tagTeam);
 

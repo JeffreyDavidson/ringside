@@ -13,7 +13,7 @@ final class Role extends Enum
 {
     const __default = self::BASIC;
 
-    const SUPER_ADMINISTRATOR = 'super-admin';
+    const SUPER_ADMINISTRATOR = 'super_admin';
     const ADMINISTRATOR = 'admin';
     const BASIC = 'basic';
 }

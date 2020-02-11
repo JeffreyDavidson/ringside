@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use App\Models\TagTeam;
-use Tests\TestCase;
+use App\Enums\Role;
+use App\Exceptions\CannotBeUnretiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,8 +20,11 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_tag_team_cannot_be_unretired()
     {
-        $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->unretireRequest($tagTeam);
 
@@ -29,8 +34,11 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_tag_team_cannot_be_unretired()
     {
-        $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('suspended')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
 
         $response = $this->unretireRequest($tagTeam);
 
@@ -40,8 +48,11 @@ class UnretireTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_tag_team_cannot_be_unretired()
     {
-        $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->unretireRequest($tagTeam);
 

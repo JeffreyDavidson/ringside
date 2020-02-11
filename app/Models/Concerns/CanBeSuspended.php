@@ -123,7 +123,7 @@ trait CanBeSuspended
      */
     public function canBeSuspended()
     {
-        if (! $this->isEmployed()) {
+        if (! $this->isCurrentlyEmployed()) {
             return false;
         }
 

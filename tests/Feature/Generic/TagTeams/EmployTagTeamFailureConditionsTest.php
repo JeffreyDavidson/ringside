@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Generic\TagTeams;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
+use App\Enums\Role;
+use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -18,8 +20,11 @@ class EmployTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_tag_team_cannot_be_employed()
     {
-        $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('employable', 'bookable')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->employRequest($tagTeam);
 
@@ -29,8 +34,11 @@ class EmployTagTeamFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_tag_team_without_wrestlers_cannot_be_employed()
     {
-        $this->actAs('administrator');
-        $tagTeam = factory(TagTeam::class)->states('pending-employment')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($tagTeam);
 
