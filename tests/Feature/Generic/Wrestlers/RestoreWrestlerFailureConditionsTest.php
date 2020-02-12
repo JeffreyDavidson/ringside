@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_wrestler_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->bookable()->create();
 
         $response = $this->restoreRequest($wrestler);
 
@@ -29,8 +30,8 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_wrestler_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->pendingEmployment()->create();
 
         $response = $this->restoreRequest($wrestler);
 
@@ -40,8 +41,8 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_wrestler_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->retired()->create();
 
         $response = $this->restoreRequest($wrestler);
 
@@ -51,8 +52,8 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_wrestler_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->suspended()->create();
 
         $response = $this->restoreRequest($wrestler);
 
@@ -62,8 +63,8 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function an_injured_wrestler_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->injured()->create();
 
         $response = $this->restoreRequest($wrestler);
 

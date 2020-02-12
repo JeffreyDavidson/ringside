@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,9 +19,8 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_deleted_wrestler_cannot_be_deleted()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create();
-        $wrestler->delete();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->softDeleted()->create();
 
         $response = $this->deleteRequest($wrestler);
 

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -31,11 +33,11 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
             return ['id' => $wrestler->id, 'name' => e($wrestler->name)];
         };
 
-        $bookable            = factory(Wrestler::class, 3)->states('bookable')->create();
-        $pendingEmployment   = factory(Wrestler::class, 3)->states('pending-employment')->create();
-        $retired             = factory(Wrestler::class, 3)->states('retired')->create();
-        $suspended           = factory(Wrestler::class, 3)->states('suspended')->create();
-        $injured             = factory(Wrestler::class, 3)->states('injured')->create();
+        $bookable = WrestlerFactory::new()->count(3)->bookable()->create();
+        $pendingEmployment = WrestlerFactory::new()->count(3)->pendingEmployment()->create();
+        $retired = WrestlerFactory::new()->count(3)->retired()->create();
+        $suspended = WrestlerFactory::new()->count(3)->suspended()->create();
+        $injured = WrestlerFactory::new()->count(3)->injured()->create();
 
         $this->wrestlers = collect([
             'bookable'           => $bookable,
@@ -48,14 +50,14 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
                                 ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
-                                ->concat($injured)
+                                ->concat($injured),
         ]);
     }
 
     /** @test */
     public function an_administrator_can_view_wrestlers_page()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->indexRequest('wrestlers');
 
@@ -66,7 +68,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('wrestlers.index'));
 
@@ -79,7 +81,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_bookable_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'bookable']));
 
@@ -92,7 +94,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_pending_employment_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'pending-employment']));
 
@@ -105,7 +107,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_retired_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'retired']));
 
@@ -118,7 +120,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_suspended_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'suspended']));
 
@@ -131,7 +133,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_injured_wrestlers()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'injured']));
 

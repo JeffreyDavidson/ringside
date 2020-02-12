@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,9 +19,9 @@ class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestlers_data_can_be_seen_on_their_profile()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $wrestler = factory(Wrestler::class)->create([
+        $wrestler = WrestlerFactory::new()->create([
             'name' => 'Wrestler 1',
             'height' => 78,
             'weight' => 220,

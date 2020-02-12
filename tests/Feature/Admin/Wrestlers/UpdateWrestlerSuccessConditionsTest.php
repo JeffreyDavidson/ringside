@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
+use App\Enums\Role;
 use Tests\TestCase;
+use WrestlerFactory;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,23 +16,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class UpdateWrestlerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * Default attributes for model.
-     *
-     * @param  array  $overrides
-     * @return array
-     */
-    private function oldAttributes($overrides = [])
-    {
-        return array_replace([
-            'name' => 'Old Wrestler Name',
-            'height' => 73,
-            'weight' => 240,
-            'hometown' => 'Old City, State',
-            'signature_move' => 'Old Finisher',
-        ], $overrides);
-    }
 
     /**
      * Valid parameters for request.
@@ -54,10 +39,10 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_editing_a_wrestler()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
 
-        $response = $this->get(route('wrestlers.edit', $wrestler));
+        $response = $this->editRequest($wrestler);
 
         $response->assertViewIs('wrestlers.edit');
         $this->assertTrue($response->data('wrestler')->is($wrestler));
@@ -66,8 +51,8 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_wrestler()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->updateRequest($wrestler, $this->validParams());
 

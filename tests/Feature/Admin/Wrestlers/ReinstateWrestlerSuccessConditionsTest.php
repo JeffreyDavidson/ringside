@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
+use App\Enums\Role;
 use Tests\TestCase;
+use WrestlerFactory;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,8 +20,8 @@ class ReinstateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_reinstate_a_suspended_wrestler()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->suspended()->create();
 
         $response = $this->reinstateRequest($wrestler);
 

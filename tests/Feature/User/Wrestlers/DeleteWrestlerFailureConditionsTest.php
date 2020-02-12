@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Wrestlers;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_wrestler()
     {
-        $this->actAs('basic-user');
-        $wrestler = factory(Wrestler::class)->create();
+        $this->actAs(Role::BASIC);
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->deleteRequest($wrestler);
 

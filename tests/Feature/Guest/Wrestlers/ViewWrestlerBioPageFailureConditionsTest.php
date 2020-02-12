@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -17,7 +17,7 @@ class ViewWrestlerBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_a_wrestler_profile()
     {
-        $wrestler = factory(Wrestler::class)->create();
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->showRequest($wrestler);
 

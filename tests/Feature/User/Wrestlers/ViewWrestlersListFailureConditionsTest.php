@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Wrestlers;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
@@ -17,9 +18,9 @@ class ViewWrestlersListFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_wrestlers_page()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('wrestlers.index'));
+        $response = $this->indexRequest('wrestlers');
 
         $response->assertForbidden();
     }

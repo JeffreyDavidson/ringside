@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,7 +38,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['name' => null]));
 
@@ -50,7 +51,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['name' => ['not-a-string']]));
 
@@ -63,7 +64,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_name_must_be_at_least_three_characters()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['name' => 'Ab']));
 
@@ -76,7 +77,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_feet_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['feet' => null]));
 
@@ -89,7 +90,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_feet_must_be_numeric()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['feet' => 'not-numeric']));
 
@@ -102,7 +103,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_feet_must_be_a_minimum_of_five()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '4']));
 
@@ -115,7 +116,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_feet_must_be_a_maximum_of_seven()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '8']));
 
@@ -128,7 +129,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_inches_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['inches' => null]));
 
@@ -141,7 +142,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_inches_is_must_be_numeric()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['inches' => 'not-numeric']));
 
@@ -154,7 +155,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_inches_must_be_less_than_twelve()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['inches' => '12']));
 
@@ -167,7 +168,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_weight_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['weight' => null]));
 
@@ -180,7 +181,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_weight_must_be_numeric()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['weight' => 'not-numeric']));
 
@@ -193,7 +194,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_hometown_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['hometown' => null]));
 
@@ -206,7 +207,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_hometown_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['hometown' => ['not-a-string']]));
 
@@ -219,7 +220,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_signature_move_must_be_a_string_if_present()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => ['not-a-string']]));
 
@@ -232,7 +233,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_started_at_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => ['not-a-date-format']]));
 
@@ -245,7 +246,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_startd_at_must_be_in_date_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => 'not-a-date-format']));
 

@@ -3,7 +3,9 @@
 namespace Tests\Feature\Generic\Wrestlers;
 
 use Carbon\Carbon;
+use App\Enums\Role;
 use Tests\TestCase;
+use WrestlerFactory;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -55,8 +57,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_name_is_required()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['name' => '']));
 
@@ -70,8 +72,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_name_must_be_a_string()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['name' => ['not-a-string']]));
 
@@ -85,8 +87,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_name_must_be_at_least_three_characters()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['name' => 'Ab']));
 
@@ -100,8 +102,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_feet_is_required()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '']));
 
@@ -115,8 +117,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_feet_must_be_numeric()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['feet' => 'not-an-integer']));
 
@@ -130,8 +132,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_feet_must_be_a_minimum_of_five()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '4']));
 
@@ -145,8 +147,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_feet_must_be_a_maximum_of_seven()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '8']));
 
@@ -160,8 +162,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_inches_is_required()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['inches' => '']));
 
@@ -175,8 +177,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_inches_is_must_be_numeric()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['inches' => 'not-an-integer']));
 
@@ -190,8 +192,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_height_in_inches_must_be_less_than_twelve()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['inches' => 12]));
 
@@ -205,8 +207,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_weight_is_required()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['weight' => '']));
 
@@ -220,8 +222,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_weight_must_be_numeric()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['weight' => 'not-an-integer']));
 
@@ -235,8 +237,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_hometown_is_required()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['hometown' => '']));
 
@@ -250,8 +252,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_hometown_must_be_a_string()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['hometown' => ['not-a-string']]));
 
@@ -265,8 +267,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_signature_move_must_be_a_string_if_present()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => ['not-a-string']]));
 
@@ -280,8 +282,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_started_at_date_is_required()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
         $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => '']));
@@ -296,8 +298,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_started_at_date_must_be_a_string()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
         $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => ['not-a-string']]));
@@ -315,8 +317,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
         $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => 'not-a-date-format']));

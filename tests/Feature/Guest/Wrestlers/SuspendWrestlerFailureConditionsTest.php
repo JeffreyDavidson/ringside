@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -17,7 +17,7 @@ class SuspendWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_suspend_a_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->create();
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->suspendRequest($wrestler);
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class UnretireWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_administrator_can_unretire_a_retired_wrestler()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($wrestler);
 

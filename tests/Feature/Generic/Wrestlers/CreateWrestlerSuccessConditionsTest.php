@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
@@ -38,7 +39,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_signature_move_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => null]));
 
@@ -48,7 +49,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_started_at_date_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => null]));
 
@@ -58,7 +59,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_can_be_created()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams());
 
@@ -78,24 +79,24 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('wrestler', $this->validParams(['started_at' => $now->toDateTimeString()]));
 
         tap(Wrestler::first(), function ($wrestler) {
-            $this->assertTrue($wrestler->isEmployed());
+            $this->assertTrue($wrestler->isCurrentlyEmployed());
         });
     }
 
     /** @test */
     public function a_wrestler_can_be_created_without_employing()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('wrestler', $this->validParams(['started_at' => null]));
 
         tap(Wrestler::first(), function ($wrestler) {
-            $this->assertFalse($wrestler->isEmployed());
+            $this->assertFalse($wrestler->isCurrentlyEmployed());
         });
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -17,7 +17,7 @@ class RestoreWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_restore_a_deleted_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->create(['deleted_at' => now()->subDays(3)->toDateTimeString()]);
+        $wrestler = WrestlerFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($wrestler);
 

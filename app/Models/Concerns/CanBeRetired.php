@@ -121,7 +121,7 @@ trait CanBeRetired
      */
     public function canBeRetired()
     {
-        if (! $this->isEmployed()) {
+        if (! $this->isCurrentlyEmployed()) {
             return false;
         }
 

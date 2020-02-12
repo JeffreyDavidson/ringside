@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Exceptions\CannotBeReinstatedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -22,8 +23,8 @@ class ReinstateWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->bookable()->create();
 
         $response = $this->reinstateRequest($wrestler);
 
@@ -36,8 +37,8 @@ class ReinstateWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->pendingEmployment()->create();
 
         $response = $this->reinstateRequest($wrestler);
 
@@ -50,8 +51,8 @@ class ReinstateWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->injured()->create();
 
         $response = $this->reinstateRequest($wrestler);
 
@@ -64,8 +65,8 @@ class ReinstateWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeReinstatedException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->retired()->create();
 
         $response = $this->reinstateRequest($wrestler);
 

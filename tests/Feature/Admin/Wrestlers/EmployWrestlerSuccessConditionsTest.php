@@ -2,30 +2,32 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
  * @group admins
  * @group roster
  */
-class EmployWrestlerSuccessCondtionsTest extends TestCase
+class EmployWrestlerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function an_administrator_can_employ_a_pending_employment_wrestler()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         tap($wrestler->fresh(), function (Wrestler $wrestler) {
-            $this->assertTrue($wrestler->is_employed);
+            $this->assertTrue($wrestler->isCurrentlyEmployed());
         });
     }
 }

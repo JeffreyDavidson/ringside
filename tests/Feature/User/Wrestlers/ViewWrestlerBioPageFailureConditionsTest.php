@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\User\Wrestlers;
 
-use App\Models\User;
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use UserFactory;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -19,9 +20,9 @@ class ViewWrestlerBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_another_users_wrestler_profile()
     {
-        $this->actAs('basic-user');
-        $otherUser = factory(User::class)->create();
-        $wrestler = factory(Wrestler::class)->create(['user_id' => $otherUser->id]);
+        $this->actAs(Role::BASIC);
+        $otherUser = UserFactory::new()->create();
+        $wrestler = WrestlerFactory::new()->create(['user_id' => $otherUser->id]);
 
         $response = $this->showRequest($wrestler);
 

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -17,7 +17,7 @@ class UnretireWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_unretire_a_retired_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->states('retired')->create();
+        $wrestler = WrestlerFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($wrestler);
 

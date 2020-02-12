@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
+use App\Enums\Role;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -22,8 +23,8 @@ class ClearFromInjuryWrestlerSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
-        $wrestler = factory(Wrestler::class)->states('injured')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->injured()->create();
 
         $response = $this->clearInjuryRequest($wrestler);
 

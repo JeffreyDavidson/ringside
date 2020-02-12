@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Wrestlers;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -17,7 +17,7 @@ class InjureWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_injure_a_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->create();
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->injureRequest($wrestler);
 

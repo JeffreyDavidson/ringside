@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Wrestlers;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -54,10 +55,10 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_editing_a_wrestler()
     {
-        $this->actAs('basic-user');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::BASIC);
+        $wrestler = WrestlerFactory::new()->create();
 
-        $response = $this->get(route('wrestlers.edit', $wrestler));
+        $response = $this->editRequest($wrestler);
 
         $response->assertForbidden();
     }
@@ -65,8 +66,8 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_a_wrestler()
     {
-        $this->actAs('basic-user');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::BASIC);
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->updateRequest($wrestler, $this->validParams());
 

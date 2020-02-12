@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class SuspendWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_suspend_a_bookable_wrestler()
     {
-        $this->actAs('super-administrator');
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->bookable()->create();
 
         $response = $this->suspendRequest($wrestler);
 

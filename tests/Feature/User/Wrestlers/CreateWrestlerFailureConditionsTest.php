@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Wrestlers;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
@@ -36,9 +37,9 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_wrestler()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('wrestlers.create'));
+        $response = $this->createRequest('wrestler');
 
         $response->assertForbidden();
     }
@@ -46,7 +47,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_wrestler()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->storeRequest('wrestler', $this->validParams());
 

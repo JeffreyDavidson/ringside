@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_a_wrestler_profile()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->showRequest($wrestler);
 

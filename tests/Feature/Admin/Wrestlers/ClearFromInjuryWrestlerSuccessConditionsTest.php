@@ -2,17 +2,18 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
+use App\Enums\Role;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
  * @group admins
  * @group roster
  */
-class ClearFromInjuryWrestlerTest extends TestCase
+class ClearFromInjuryWrestlerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,8 +23,8 @@ class ClearFromInjuryWrestlerTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->injured()->create();
 
         $response = $this->clearInjuryRequest($wrestler);
 

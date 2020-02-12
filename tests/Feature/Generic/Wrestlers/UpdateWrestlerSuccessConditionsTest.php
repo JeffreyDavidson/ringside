@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
+use App\Enums\Role;
 use Tests\TestCase;
+use WrestlerFactory;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -54,8 +56,8 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_signature_move_is_optional()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
         $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
 
         $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => '']));

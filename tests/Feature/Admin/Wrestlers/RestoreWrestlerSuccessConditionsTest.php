@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class RestoreWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_restore_a_deleted_wrestler()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create(['deleted_at' => now()->subDays(3)->toDateTimeString()]);
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($wrestler);
 

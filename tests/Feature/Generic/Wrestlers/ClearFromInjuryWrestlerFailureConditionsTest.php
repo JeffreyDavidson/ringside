@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Wrestlers;
 
-use App\Models\Wrestler;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -22,8 +23,8 @@ class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->bookable()->create();
 
         $response = $this->clearInjuryRequest($wrestler);
 
@@ -36,8 +37,8 @@ class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->pendingEmployment()->create();
 
         $response = $this->clearInjuryRequest($wrestler);
 
@@ -50,8 +51,8 @@ class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->suspended()->create();
 
         $response = $this->clearInjuryRequest($wrestler);
 
@@ -64,8 +65,8 @@ class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->retired()->create();
 
         $response = $this->clearInjuryRequest($wrestler);
 

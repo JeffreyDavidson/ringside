@@ -2,8 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Models\Wrestler;
 use App\Filters\WrestlerFilters;
+use App\Models\Wrestler;
 use Yajra\DataTables\Services\DataTable;
 
 class WrestlersDataTable extends DataTable

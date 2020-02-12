@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Wrestlers;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -53,9 +53,9 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_editing_a_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
-        $response = $this->get(route('wrestlers.edit', $wrestler));
+        $response = $this->editRequest($wrestler);
 
         $response->assertRedirect(route('login'));
     }
@@ -63,7 +63,7 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_update_a_wrestler()
     {
-        $wrestler = factory(Wrestler::class)->create($this->oldAttributes());
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($wrestler, $this->validParams());
 

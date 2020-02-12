@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Wrestler;
 
-use Tests\TestCase;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,8 +19,8 @@ class EmployWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_without_a_current_employment_can_be_employed()
     {
-        $this->actAs('administrator');
-        $wrestler = factory(Wrestler::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
 
         $response = $this->employRequest($wrestler);
 

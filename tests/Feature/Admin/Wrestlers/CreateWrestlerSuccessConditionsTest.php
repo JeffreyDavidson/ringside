@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Wrestlers;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
@@ -37,7 +38,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_wrestler()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('wrestler');
 
@@ -48,7 +49,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_wrestler()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('wrestler', $this->validParams());
 

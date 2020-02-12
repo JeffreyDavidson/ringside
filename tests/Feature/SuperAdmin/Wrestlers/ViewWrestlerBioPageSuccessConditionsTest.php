@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Tests\TestCase;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,7 +19,7 @@ class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_a_wrestler_profile()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $wrestler = factory(Wrestler::class)->create();
 
         $response = $this->showRequest($wrestler);

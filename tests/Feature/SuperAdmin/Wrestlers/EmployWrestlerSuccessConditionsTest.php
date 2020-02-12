@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
+use App\Enums\Role;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use WrestlerFactory;
 
 /**
  * @group wrestlers
@@ -18,14 +20,14 @@ class EmployWrestlerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_employ_a_pending_employment_wrestler()
     {
-        $this->actAs('super-administrator');
-        $wrestler = factory(Wrestler::class)->states('pending-employment')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($wrestler);
 
         $response->assertRedirect(route('wrestlers.index'));
         tap($wrestler->fresh(), function (Wrestler $wrestler) {
-            $this->assertTrue($wrestler->is_employed);
+            $this->assertTrue($wrestler->isCurrentlyEmployed());
         });
     }
 }

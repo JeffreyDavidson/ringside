@@ -17,6 +17,7 @@ class WrestlerFactory extends BaseFactory
     public $retirementFactory;
     /** @var TagTeam */
     public $tagTeam;
+    public $softDeleted = false;
     protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
@@ -40,7 +41,7 @@ class WrestlerFactory extends BaseFactory
         return $clone;
     }
 
-    public function unemployed(EmploymentFactory $employmentFactory = null)
+    public function unemployed()
     {
         $clone = clone $this;
         $clone->employmentFactory = null;
@@ -48,12 +49,12 @@ class WrestlerFactory extends BaseFactory
         return $clone;
     }
 
-    public function pendingEmployment()
+    public function pendingEmployment(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = WrestlerStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
-        $clone->employmentFactory = null;
+        $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->addDays(2));
         $clone->suspensionFactory = null;
         $clone->injuryFactory = null;
         $clone->retirementFactory = null;
@@ -134,6 +135,10 @@ class WrestlerFactory extends BaseFactory
 
             $wrestler->save();
 
+            if ($this->softDeleted) {
+                $wrestler->delete();
+            }
+
             return $wrestler;
         }, $attributes);
     }
@@ -146,7 +151,7 @@ class WrestlerFactory extends BaseFactory
             'weight' => $faker->numberBetween(180, 500),
             'hometown' => $faker->city.', '.$faker->state,
             'signature_move' => Str::title($faker->words(3, true)),
-            'status' => WrestlerStatus::PENDING_EMPLOYMENT,
+            'status' => WrestlerStatus::__default,
         ];
     }
 }
