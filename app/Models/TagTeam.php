@@ -310,18 +310,4 @@ class TagTeam extends Model
 
         return true;
     }
-
-    /**
-     * Get the previous employment of the model.
-     *
-     * @return App\Models\Employment
-     */
-    public function getCurrentWrestlersAttribute()
-    {
-        if (! $this->relationLoaded('currentWrestlers')) {
-            $this->setRelation('currentWrestlers', $this->currentWrestlers()->get());
-        }
-
-        return $this->getRelation('currentWrestlers');
-    }
 }
