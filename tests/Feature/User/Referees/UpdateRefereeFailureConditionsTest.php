@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -33,10 +34,10 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_editing_a_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->create();
 
-        $response = $this->get(route('referees.edit', $referee));
+        $response = $this->editRequest($referee);
 
         $response->assertForbidden();
     }
@@ -44,10 +45,10 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_a_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->create();
 
-        $response = $this->patch(route('referees.update', $referee), $this->validParams());
+        $response = $this->updateRequest($referee, $this->validParams());
 
         $response->assertForbidden();
     }

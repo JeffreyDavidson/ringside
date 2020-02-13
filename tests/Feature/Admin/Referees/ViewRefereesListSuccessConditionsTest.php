@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -27,11 +28,11 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $bookable            = factory(Referee::class, 3)->states('bookable')->create();
-        $pendingEmployment   = factory(Referee::class, 3)->states('pending-employment')->create();
-        $retired             = factory(Referee::class, 3)->states('retired')->create();
-        $suspended           = factory(Referee::class, 3)->states('suspended')->create();
-        $injured             = factory(Referee::class, 3)->states('injured')->create();
+        $bookable = RefereeFactory::new()->count(3)->bookable()->create();
+        $pendingEmployment = RefereeFactory::new()->count(3)->pendingEmployment()->create();
+        $retired = RefereeFactory::new()->count(3)->retired()->create();
+        $suspended = RefereeFactory::new()->count(3)->suspended()->create();
+        $injured = RefereeFactory::new()->count(3)->injured()->create();
 
         $this->referees = collect([
             'bookable'             => $bookable,
@@ -44,15 +45,14 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
                                 ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
-                                ->concat($injured)
+                                ->concat($injured),
         ]);
     }
 
     /** @test */
     public function an_administrator_can_view_referees_page()
     {
-        $this->withoutExceptionHandling();
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->indexRequest('referees');
 
@@ -63,7 +63,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_referees()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('referees.index'));
 
@@ -76,7 +76,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_bookable_referees()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('referees.index', ['status' => 'bookable']));
 
@@ -89,7 +89,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_pending_employment_referees()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('referees.index', ['status' => 'pending-employment']));
 
@@ -102,7 +102,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_retired_referees()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('referees.index', ['status' => 'retired']));
 
@@ -115,7 +115,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_suspended_referees()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('referees.index', ['status' => 'suspended']));
 
@@ -128,7 +128,7 @@ class ViewRefereesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_injured_referees()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('referees.index', ['status' => 'injured']));
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,10 +19,10 @@ class ViewRefereeBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_a_referee_profile()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create();
 
-        $response = $this->get(route('referees.show', ['referee' => $referee]));
+        $response = $this->showRequest($referee);
 
         $response->assertViewIs('referees.show');
         $this->assertTrue($response->data('referee')->is($referee));

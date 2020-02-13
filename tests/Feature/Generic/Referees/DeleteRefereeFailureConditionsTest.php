@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,9 +19,8 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_deleted_wrestler_cannot_be_deleted()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create();
-        $referee->delete();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->softDeleted()->create();
 
         $response = $this->deleteRequest($referee);
 

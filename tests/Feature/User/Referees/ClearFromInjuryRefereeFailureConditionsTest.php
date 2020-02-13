@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +19,8 @@ class ClearFromInjuryRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_clear_an_injured_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->clearInjuryRequest($referee);
 

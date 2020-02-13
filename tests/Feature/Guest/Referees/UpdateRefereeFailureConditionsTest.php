@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -33,7 +33,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_editing_a_referee()
     {
-        $referee = factory(Referee::class)->create();
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->editRequest($referee);
 
@@ -43,7 +43,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_update_a_referee()
     {
-        $referee = factory(Referee::class)->create();
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->updateRequest($referee, $this->validParams());
 

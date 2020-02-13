@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
+use App\Enums\Role;
+use RefereeFactory;
 use Tests\TestCase;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,10 +20,10 @@ class RetireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_a_bookable_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
-        $response = $this->put(route('referees.retire', $referee));
+        $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentRetirement->started_at);
@@ -30,10 +32,10 @@ class RetireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_an_injured_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
-        $response = $this->put(route('referees.retire', $referee));
+        $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentRetirement->started_at);
@@ -42,10 +44,10 @@ class RetireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_a_suspended_referee()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $referee = factory(Referee::class)->states('suspended')->create();
 
-        $response = $this->put(route('referees.retire', $referee));
+        $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->currentRetirement->started_at);

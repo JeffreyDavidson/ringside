@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,11 +19,10 @@ class RestoreRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_restore_a_deleted_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->create();
-        $referee->delete();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertNull($referee->fresh()->deleted_at);

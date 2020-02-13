@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Admin\Referees;
 
+use App\Enums\Role;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -22,8 +23,8 @@ class ClearFromInjuryRefereeSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->clearInjuryRequest($referee);
 

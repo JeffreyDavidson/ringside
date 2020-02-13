@@ -1,8 +1,7 @@
 <?php
 
-use App\Enums\RefereeStatus;
 use App\Models\Referee;
-use Illuminate\Database\Eloquent\Collection;
+use App\Enums\RefereeStatus;
 
 class RefereeFactory extends BaseFactory
 {
@@ -14,6 +13,7 @@ class RefereeFactory extends BaseFactory
     public $injuryFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
+    public $softDeleted = false;
     protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
@@ -21,13 +21,14 @@ class RefereeFactory extends BaseFactory
         'retirementFactory',
     ];
 
-    public function pendingEmployment()
+    public function pendingEmployment(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
         $clone->status = RefereeStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
-        $clone->employmentFactory = null;
+        $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->addDays(2));
         $clone->suspensionFactory = null;
+        $clone->injuryFactory = null;
         $clone->retirementFactory = null;
 
         return $clone;
@@ -89,36 +90,33 @@ class RefereeFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        if ($this->count > 1) {
-            $created = new Collection();
-            for ($i = 0; $i < $this->count; $i++) {
-                $clone = clone $this;
-                $clone->count = 1;
-                $created->push($clone->create($attributes));
+        return $this->make(function ($attributes) {
+            $referee = Referee::create($this->resolveAttributes($attributes));
+
+            if ($this->employmentFactory) {
+                $this->employmentFactory->forReferee($referee)->create();
             }
 
-            return $created;
-        }
+            if ($this->suspensionFactory) {
+                $this->suspensionFactory->forReferee($referee)->create();
+            }
 
-        $referee = Referee::create($this->resolveAttributes($attributes));
+            if ($this->retirementFactory) {
+                $this->retirementFactory->forReferee($referee)->create();
+            }
 
-        if ($this->employmentFactory) {
-            $this->employmentFactory->forReferee($referee)->create();
-        }
+            if ($this->injuryFactory) {
+                $this->injuryFactory->forReferee($referee)->create();
+            }
 
-        if ($this->suspensionFactory) {
-            $this->suspensionFactory->forReferee($referee)->create();
-        }
+            $referee->save();
 
-        if ($this->retirementFactory) {
-            $this->retirementFactory->forReferee($referee)->create();
-        }
+            if ($this->softDeleted) {
+                $referee->delete();
+            }
 
-        if ($this->injuryFactory) {
-            $this->injuryFactory->forReferee($referee)->create();
-        }
-
-        return $referee;
+            return $referee;
+        }, $attributes);
     }
 
     protected function defaultAttributes(Faker\Generator $faker)
@@ -126,7 +124,7 @@ class RefereeFactory extends BaseFactory
         return [
             'first_name' => $faker->firstName,
             'last_name' => $faker->lastName,
-            'status' => RefereeStatus::PENDING_EMPLOYMENT,
+            'status' => RefereeStatus::__default,
         ];
     }
 }

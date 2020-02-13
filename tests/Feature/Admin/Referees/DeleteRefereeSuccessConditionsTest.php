@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Admin\Referees;
 
+use App\Enums\Role;
+use RefereeFactory;
 use Tests\TestCase;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,8 +20,8 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_bookable_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $this->deleteRequest($referee);
 
@@ -33,8 +35,8 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_pending_employment_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $this->deleteRequest($referee);
 
@@ -48,8 +50,8 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_retired_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
 
         $this->deleteRequest($referee);
 
@@ -63,8 +65,8 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_suspended_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->suspended()->create();
 
         $this->deleteRequest($referee);
 
@@ -78,8 +80,8 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_an_injured_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $this->deleteRequest($referee);
 

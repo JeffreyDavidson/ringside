@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +19,8 @@ class ClearFromInjuryRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_recover_an_injured_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->clearInjuryRequest($referee);
 

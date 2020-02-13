@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,7 +18,7 @@ class ViewRefereeBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_a_referee_profile()
     {
-        $referee = factory(Referee::class)->create();
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->showRequest($referee);
 

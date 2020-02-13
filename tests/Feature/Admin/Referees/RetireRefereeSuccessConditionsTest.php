@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +19,8 @@ class RetireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_bookable_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->retireRequest($referee);
 
@@ -30,8 +31,8 @@ class RetireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_an_injured_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->retireRequest($referee);
 
@@ -42,8 +43,8 @@ class RetireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_suspended_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->suspended()->create();
 
         $response = $this->retireRequest($referee);
 

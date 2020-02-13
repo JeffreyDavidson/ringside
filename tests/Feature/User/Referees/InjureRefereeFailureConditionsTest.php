@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,10 +19,10 @@ class InjureRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_injure_a_bookable_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->bookable()->create();
 
-        $response = $this->put(route('referees.injure', $referee));
+        $response = $this->injureRequest($referee);
 
         $response->assertForbidden();
     }

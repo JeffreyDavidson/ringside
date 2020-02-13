@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,55 +19,55 @@ class DeleteRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_bookable_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted($referee);
     }
 
     /** @test */
     public function a_super_administrator_can_delete_a_pending_employment_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted($referee);
     }
 
     /** @test */
     public function a_super_administrator_can_delete_a_retired_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted($referee);
     }
 
     /** @test */
     public function a_super_administrator_can_delete_a_suspended_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->suspended()->create();
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted($referee);
     }
 
     /** @test */
     public function a_super_administrator_can_delete_an_injured_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $this->deleteRequest($referee);
 
-        $this->assertSoftDeleted('referees', ['id' => $referee->id, 'first_name' => $referee->first_name, 'last_name' => $referee->last_name]);
+        $this->assertSoftDeleted($referee);
     }
 }

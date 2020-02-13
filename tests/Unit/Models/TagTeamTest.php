@@ -75,7 +75,6 @@ class TagTeamTest extends TestCase
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $this->assertCount(2, $tagTeam->wrestlerHistory);
-        dd($tagTeam->wrestlerHistory);
         $this->assertCount(2, $tagTeam->currentWrestlers);
     }
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Referee;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +19,8 @@ class EmployRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_referee_without_a_current_employment_can_be_employed()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->employRequest($referee);
 

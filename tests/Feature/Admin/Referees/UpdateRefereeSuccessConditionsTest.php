@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -33,10 +34,10 @@ class UpdateRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_editing_a_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create();
 
-        $response = $this->get(route('referees.edit', $referee));
+        $response = $this->editRequest($referee);
 
         $response->assertViewIs('referees.edit');
         $this->assertTrue($response->data('referee')->is($referee));
@@ -45,8 +46,8 @@ class UpdateRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->updateRequest($referee, $this->validParams());
 

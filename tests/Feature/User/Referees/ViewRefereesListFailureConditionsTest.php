@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Referees;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -17,9 +18,9 @@ class ViewRefereesListFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_referees_page()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('referees.index'));
+        $response = $this->indexRequest('referees');
 
         $response->assertForbidden();
     }

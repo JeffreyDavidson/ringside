@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +18,7 @@ class RestoreRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_restore_a_deleted_referee()
     {
-        $referee = factory(Referee::class)->create();
-        $referee->delete();
+        $referee = RefereeFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($referee);
 

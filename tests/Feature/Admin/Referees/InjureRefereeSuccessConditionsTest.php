@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +19,8 @@ class InjureRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_injure_a_bookable_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->injureRequest($referee);
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,10 +19,10 @@ class UnretireRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_unretire_a_retired_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->retired()->create();
 
-        $response = $this->put(route('referees.unretire', $referee));
+        $response = $this->unretireRequest($referee);
 
         $response->assertForbidden();
     }

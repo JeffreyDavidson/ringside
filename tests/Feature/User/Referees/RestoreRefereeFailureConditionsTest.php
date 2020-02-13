@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,11 +19,10 @@ class RestoreRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->create();
-        $referee->delete();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('referees.restore', $referee));
+        $response = $this->restoreRequest($referee);
 
         $response->assertForbidden();
     }

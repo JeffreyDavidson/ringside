@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -33,7 +34,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_first_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['first_name' => null]));
 
@@ -46,7 +47,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_first_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['first_name' => ['not-a-string']]));
 
@@ -59,7 +60,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_last_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['last_name' => null]));
 
@@ -72,7 +73,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_last_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['last_name' => ['not-a-string']]));
 
@@ -85,7 +86,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['started_at' => ['not-a-string']]));
 
@@ -98,7 +99,7 @@ class CreateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_must_be_in_datetime_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['started_at' => now()->toDateString()]));
 

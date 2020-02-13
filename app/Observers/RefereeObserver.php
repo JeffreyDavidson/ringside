@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Referee;
 use App\Enums\RefereeStatus;
+use App\Models\Referee;
 
 class RefereeObserver
 {
@@ -18,13 +18,13 @@ class RefereeObserver
         if ($referee->isRetired()) {
             $referee->status = RefereeStatus::RETIRED;
         } elseif ($referee->isInjured()) {
-            $referee->status =  RefereeStatus::INJURED;
+            $referee->status = RefereeStatus::INJURED;
         } elseif ($referee->isSuspended()) {
             $referee->status = RefereeStatus::SUSPENDED;
-        } elseif ($referee->isPendingEmployment()) {
-            $referee->status = RefereeStatus::PENDING_EMPLOYMENT;
-        } else {
+        } elseif ($referee->isBookable()) {
             $referee->status = RefereeStatus::BOOKABLE;
+        } else {
+            $referee->status = RefereeStatus::PENDING_EMPLOYMENT;
         }
     }
 }

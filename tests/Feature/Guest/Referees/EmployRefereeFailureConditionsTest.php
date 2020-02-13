@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,7 +18,7 @@ class EmployRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_employ_a_pending_employment_referee()
     {
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($referee);
 

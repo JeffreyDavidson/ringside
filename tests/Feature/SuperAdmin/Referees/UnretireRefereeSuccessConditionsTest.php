@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,10 +19,10 @@ class UnretireRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_unretire_a_retired_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
 
-        $response = $this->put(route('referees.unretire', $referee));
+        $response = $this->unretireRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         $this->assertEquals(now()->toDateTimeString(), $referee->fresh()->retirements()->latest()->first()->ended_at);

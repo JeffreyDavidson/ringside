@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Referee;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -48,8 +50,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_first_name_is_required()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['first_name' => '']));
 
@@ -63,8 +65,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_first_name_must_be_a_string()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['first_name' => ['not-a-string']]));
 
@@ -78,8 +80,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_last_name_is_required()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['last_name' => '']));
 
@@ -93,8 +95,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_last_name_must_be_a_string()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['last_name' => ['not-a-string']]));
 
@@ -108,8 +110,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_date_is_required_if_employment_start_date_is_set()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => '']));
 
@@ -123,8 +125,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_date_if_filled_must_be_before_or_equal_to_referee_employment_started_at_date_is_set()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create($this->oldAttributes());
         $referee->currentEmployment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateTimeString()]));
@@ -139,8 +141,8 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_date_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => ['not-a-string']]));
 
@@ -154,7 +156,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_date_must_be_in_datetime_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $referee = factory(Referee::class)->states('bookable')->create($this->oldAttributes());
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateString()]));

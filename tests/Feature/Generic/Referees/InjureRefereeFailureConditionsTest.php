@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use App\Exceptions\CannotBeInjuredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -22,8 +23,8 @@ class InjureRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeInjuredException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->injureRequest($referee);
 

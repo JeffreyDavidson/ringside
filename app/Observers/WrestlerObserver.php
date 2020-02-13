@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Wrestler;
 use App\Enums\WrestlerStatus;
+use App\Models\Wrestler;
 
 class WrestlerObserver
 {
@@ -18,7 +18,7 @@ class WrestlerObserver
         if ($wrestler->isRetired()) {
             $wrestler->status = WrestlerStatus::RETIRED;
         } elseif ($wrestler->isInjured()) {
-            $wrestler->status =  WrestlerStatus::INJURED;
+            $wrestler->status = WrestlerStatus::INJURED;
         } elseif ($wrestler->isSuspended()) {
             $wrestler->status = WrestlerStatus::SUSPENDED;
         } elseif ($wrestler->isBookable()) {

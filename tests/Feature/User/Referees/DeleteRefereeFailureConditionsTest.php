@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,10 +19,10 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_bookable_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->bookable()->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertForbidden();
     }
@@ -29,10 +30,10 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_pending_employment_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertForbidden();
     }
@@ -40,10 +41,10 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_suspended_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->suspended()->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertForbidden();
     }
@@ -51,10 +52,10 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_an_injured_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->injured()->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertForbidden();
     }
@@ -62,10 +63,10 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_retired_referee()
     {
-        $this->actAs('basic-user');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->retired()->create();
 
-        $response = $this->delete(route('referees.destroy', $referee));
+        $response = $this->deleteRequest($referee);
 
         $response->assertForbidden();
     }

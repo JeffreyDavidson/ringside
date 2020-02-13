@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,7 +18,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_bookable_referee()
     {
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->deleteRequest($referee);
 
@@ -28,7 +28,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_pending_employment_referee()
     {
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $response = $this->deleteRequest($referee);
 
@@ -38,7 +38,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_retired_referee()
     {
-        $referee = factory(Referee::class)->states('retired')->create();
+        $referee = RefereeFactory::new()->retired()->create();
 
         $response = $this->deleteRequest($referee);
 
@@ -48,7 +48,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_suspended_referee()
     {
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $referee = RefereeFactory::new()->suspended()->create();
 
         $response = $this->deleteRequest($referee);
 
@@ -58,7 +58,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_an_injured_referee()
     {
-        $referee = factory(Referee::class)->states('injured')->create();
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->deleteRequest($referee);
 

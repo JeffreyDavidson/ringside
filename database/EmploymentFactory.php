@@ -115,6 +115,7 @@ class EmploymentFactory extends BaseFactory
         $employments = new Collection();
 
         foreach ($employees as $employee) {
+
             $employment = new Employment();
             $employment->started_at = $this->startDate;
             $employment->ended_at = $this->endDate;

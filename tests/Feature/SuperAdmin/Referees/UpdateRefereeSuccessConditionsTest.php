@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -31,24 +32,24 @@ class UpdateRefereeSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_view_the_form_for_editing_a_referee()
+    public function a_super_administrator_can_view_the_form_for_editing_a_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create();
 
-        $response = $this->get(route('referees.edit', $referee));
+        $response = $this->editRequest($referee);
 
         $response->assertViewIs('referees.edit');
         $this->assertTrue($response->data('referee')->is($referee));
     }
 
     /** @test */
-    public function an_administrator_can_update_a_referee()
+    public function a_super_administrator_can_update_a_referee()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->create();
 
-        $response = $this->patch(route('referees.update', $referee), $this->validParams());
+        $response = $this->updateRequest($referee, $this->validParams());
 
         $response->assertRedirect(route('referees.index'));
         tap($referee->fresh(), function ($referee) {

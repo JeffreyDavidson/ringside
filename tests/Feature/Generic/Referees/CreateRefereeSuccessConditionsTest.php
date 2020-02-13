@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Referee;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -34,7 +35,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_referee_started_at_date_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams(['started_at' => null]));
 
@@ -44,7 +45,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_referee_can_be_created()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams());
 
@@ -61,24 +62,24 @@ class CreateRefereeSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('referee', $this->validParams(['started_at' => $now->toDateTimeString()]));
 
         tap(Referee::first(), function ($referee) {
-            $this->assertTrue($referee->isEmployed());
+            $this->assertTrue($referee->isCurrentlyEmployed());
         });
     }
 
     /** @test */
     public function a_referee_can_be_created_without_employing()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('referee', $this->validParams(['started_at' => null]));
 
         tap(Referee::first(), function ($referee) {
-            $this->assertFalse($referee->isEmployed());
+            $this->assertFalse($referee->isCurrentlyEmployed());
         });
     }
 }

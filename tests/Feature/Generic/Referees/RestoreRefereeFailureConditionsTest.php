@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,8 +19,8 @@ class RestoreRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_referee_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->restoreRequest($referee);
 
@@ -29,8 +30,8 @@ class RestoreRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_referee_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->suspended()->create();
 
         $response = $this->restoreRequest($referee);
 
@@ -40,19 +41,19 @@ class RestoreRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_referee_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
 
         $response = $this->restoreRequest($referee);
 
         $response->assertNotFound();
     }
-    
+
     /** @test */
     public function a_pending_employment_referee_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $response = $this->restoreRequest($referee);
 
@@ -62,8 +63,8 @@ class RestoreRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function an_injured_referee_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->restoreRequest($referee);
 

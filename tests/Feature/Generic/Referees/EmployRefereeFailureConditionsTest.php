@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Referees;
 
-use Tests\TestCase;
-use App\Models\Referee;
+use App\Enums\Role;
 use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -22,8 +23,8 @@ class EmployRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeEmployedException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->employRequest($referee);
 
@@ -36,8 +37,8 @@ class EmployRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeEmployedException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
 
         $response = $this->employRequest($referee);
 
@@ -50,8 +51,8 @@ class EmployRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeEmployedException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->suspended()->create();
 
         $response = $this->employRequest($referee);
 
@@ -64,8 +65,8 @@ class EmployRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeEmployedException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->employRequest($referee);
 

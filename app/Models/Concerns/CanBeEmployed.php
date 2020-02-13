@@ -89,7 +89,7 @@ trait CanBeEmployed
      */
     public function getIsCurrentlyEmployedCachedAttribute()
     {
-        return $this->isCurrenlyEmployed();
+        return $this->isCurrentlyEmployed();
     }
 
     /**

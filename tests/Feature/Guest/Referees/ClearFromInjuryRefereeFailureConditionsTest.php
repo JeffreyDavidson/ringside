@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use App\Models\Referee;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,7 +18,7 @@ class ClearFromInjuryRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_recover_an_injured_referee()
     {
-        $referee = factory(Referee::class)->states('injured')->create();
+        $referee = RefereeFactory::new()->injured()->create();
 
         $response = $this->clearInjuryRequest($referee);
 

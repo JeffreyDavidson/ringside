@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Generic\Referees;
 
+use App\Enums\Role;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
 use Tests\TestCase;
 
 /**
@@ -22,8 +24,8 @@ class ClearInjuryRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('bookable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->clearInjuryRequest($referee);
 
@@ -36,8 +38,8 @@ class ClearInjuryRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $response = $this->clearInjuryRequest($referee);
 
@@ -50,8 +52,8 @@ class ClearInjuryRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $referee = factory(Referee::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
 
         $response = $this->clearInjuryRequest($referee);
 
@@ -64,7 +66,7 @@ class ClearInjuryRefereeFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $referee = factory(Referee::class)->states('suspended')->create();
 
         $response = $this->clearInjuryRequest($referee);

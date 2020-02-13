@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Guest\Referees;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group referees

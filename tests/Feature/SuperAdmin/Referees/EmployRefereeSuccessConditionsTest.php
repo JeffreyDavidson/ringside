@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -18,14 +20,14 @@ class EmployRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_employ_a_pending_employment_referee()
     {
-        $this->actAs('super-administrator');
-        $referee = factory(Referee::class)->states('pending-employment')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $referee = RefereeFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($referee);
 
         $response->assertRedirect(route('referees.index'));
         tap($referee->fresh(), function (Referee $referee) {
-            $this->assertTrue($referee->is_employed);
+            $this->assertTrue($referee->isCurrentlyEmployed);
         });
     }
 }

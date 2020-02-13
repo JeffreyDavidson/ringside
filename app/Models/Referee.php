@@ -10,7 +10,8 @@ class Referee extends SingleRosterMember
 {
     use SoftDeletes,
         EnumCastable,
-        Concerns\HasFullName;
+        Concerns\HasFullName,
+        Concerns\CanBeBooked;
 
     /**
      * The attributes that aren't mass assignable.

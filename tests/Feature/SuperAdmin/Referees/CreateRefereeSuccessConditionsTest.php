@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Referees;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -33,7 +34,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_creating_a_referee()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->createRequest('referee');
 
@@ -44,7 +45,7 @@ class CreateRefereeSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_a_referee()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->storeRequest('referee', $this->validParams());
 
