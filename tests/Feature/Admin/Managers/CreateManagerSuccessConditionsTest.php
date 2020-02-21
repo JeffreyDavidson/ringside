@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Manager;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -33,7 +34,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_manager()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('manager');
 
@@ -44,7 +45,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_manager()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('manager', $this->validParams());
 

@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Enums\Role;
 use App\Exceptions\CannotBeClearedFromInjuryException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -22,8 +23,8 @@ class ClearFromInjuryManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->clearInjuryRequest($manager);
 
@@ -36,8 +37,8 @@ class ClearFromInjuryManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->pendingEmployment()->create();
 
         $response = $this->clearInjuryRequest($manager);
 
@@ -50,8 +51,8 @@ class ClearFromInjuryManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->clearInjuryRequest($manager);
 
@@ -64,8 +65,8 @@ class ClearFromInjuryManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->clearInjuryRequest($manager);
 

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
+use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -21,12 +23,15 @@ class EmployManagerFailureConditionsTest extends TestCase
      */
     public function an_available_manager_cannot_be_employed()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->employRequest($manager);
 
-        $response->assertSessionHasErrors('started_at');
+        $response->assertForbidden();
     }
 
     /**
@@ -35,12 +40,15 @@ class EmployManagerFailureConditionsTest extends TestCase
      */
     public function a_retired_manager_cannot_be_employed()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->employRequest($manager);
 
-        $response->assertSessionHasErrors('started_at');
+        $response->assertForbidden();
     }
 
     /**
@@ -49,12 +57,15 @@ class EmployManagerFailureConditionsTest extends TestCase
      */
     public function a_suspended_manager_cannot_be_employed()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->employRequest($manager);
 
-        $response->assertSessionHasErrors('started_at');
+        $response->assertForbidden();
     }
 
     /**
@@ -63,11 +74,14 @@ class EmployManagerFailureConditionsTest extends TestCase
      */
     public function an_injured_manager_cannot_be_employed()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('injured')->create();
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->injured()->create();
 
         $response = $this->employRequest($manager);
 
-        $response->assertSessionHasErrors('started_at');
+        $response->assertForbidden();
     }
 }

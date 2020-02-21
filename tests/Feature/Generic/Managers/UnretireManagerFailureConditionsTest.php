@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use App\Exceptions\CannotBeUnretiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -22,8 +23,8 @@ class UnretireManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeUnretiredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->unretireRequest($manager);
 
@@ -36,8 +37,8 @@ class UnretireManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeUnretiredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->unretireRequest($manager);
 
@@ -50,8 +51,8 @@ class UnretireManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeUnretiredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->injured()->create();
 
         $response = $this->unretireRequest($manager);
 
@@ -64,8 +65,8 @@ class UnretireManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeUnretiredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->pendingEmployment()->create();
 
         $response = $this->unretireRequest($manager);
 

@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
+use App\Enums\Role;
+use ManagerFactory;
 use Tests\TestCase;
-use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,8 +19,8 @@ class RetireManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_an_available_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->retireRequest($manager);
 
@@ -30,8 +31,8 @@ class RetireManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_an_injured_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('injured')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->injured()->create();
 
         $response = $this->retireRequest($manager);
 
@@ -42,8 +43,8 @@ class RetireManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_an_suspended_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->retireRequest($manager);
 

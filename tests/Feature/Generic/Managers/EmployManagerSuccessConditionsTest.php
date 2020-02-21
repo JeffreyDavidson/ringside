@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Manager;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,8 +19,8 @@ class EmployManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_manager_without_a_current_employment_can_be_employed()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->create();
 
         $response = $this->employRequest($manager);
 

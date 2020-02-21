@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Manager;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -32,7 +33,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_manager()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->createRequest('manager');
 
@@ -42,7 +43,7 @@ class CreateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_manager()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->storeRequest('manager', $this->validParams());
 

@@ -25,28 +25,12 @@ class IndexRequest extends AjaxOnlyFormRequest
      */
     public function rules()
     {
-        return [
-            'status' => [
-                'nullable',
-                'string',
-                TagTeamStatus::rule(),
-            ],
-            'started_at' => [
-                'nullable',
-                'array',
-            ],
-            'started_at.0' => [
-                'nullable',
-                'string',
-                'date_format:Y-m-d H:i:s',
-            ],
-            'started_at.1' => [
-                'nullable',
-                'required_with:started_at.0',
-                'string',
-                'date_format:Y-m-d H:i:s',
-                'after:started_at.0',
-            ],
+        $rules = [
+            'status' => ['nullable', 'string', TagTeamStatus::rule()],
         ];
+
+        $rules = $this->validateDateRange($rules, 'started_at');
+
+        return $rules;
     }
 }

@@ -101,12 +101,12 @@ class TagTeamFactory extends BaseFactory
         return $this->make(function ($attributes) {
             $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
 
-            if ($this->employmentFactory) {
-                $this->employmentFactory->forTagTeam($tagTeam)->create();
-            }
-
             if ($this->wrestlerFactory) {
                 $this->wrestlerFactory->forTagTeam($tagTeam)->create();
+            }
+
+            if ($this->employmentFactory) {
+                $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
 
             if ($this->suspensionFactory) {

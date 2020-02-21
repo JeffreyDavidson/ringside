@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,8 +19,8 @@ class UnretireManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_unretire_a_retired_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($manager);
 

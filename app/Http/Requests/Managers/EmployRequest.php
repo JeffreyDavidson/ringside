@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
-use App\Rules\WithoutActiveEmployment;
+use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EmployRequest extends FormRequest
@@ -28,7 +28,7 @@ class EmployRequest extends FormRequest
         return [
             'started_at' => [
                 'nullable',
-                new WithoutActiveEmployment($this->route('manager')),
+                new EmploymentStartDateCanBeChanged($this->route('manager')),
             ],
         ];
     }

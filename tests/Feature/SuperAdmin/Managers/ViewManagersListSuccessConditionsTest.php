@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -27,11 +28,11 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $available             = factory(Manager::class, 3)->states('available')->create();
-        $pendingEmployment    = factory(Manager::class, 3)->states('pending-employment')->create();
-        $retired              = factory(Manager::class, 3)->states('retired')->create();
-        $suspended            = factory(Manager::class, 3)->states('suspended')->create();
-        $injured              = factory(Manager::class, 3)->states('injured')->create();
+        $available = ManagerFactory::new()->count(3)->available()->create();
+        $pendingEmployment = ManagerFactory::new()->count(3)->pendingEmployment()->create();
+        $retired = ManagerFactory::new()->count(3)->retired()->create();
+        $suspended = ManagerFactory::new()->count(3)->suspended()->create();
+        $injured = ManagerFactory::new()->count(3)->injured()->create();
 
         $this->managers = collect([
             'available'             => $available,
@@ -44,16 +45,16 @@ class ViewManagersListSuccessConditionsTest extends TestCase
                                 ->concat($pendingEmployment)
                                 ->concat($retired)
                                 ->concat($suspended)
-                                ->concat($injured)
+                                ->concat($injured),
         ]);
     }
 
     /** @test */
     public function a_super_administrator_can_view_managers_page()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $response = $this->get(route('managers.index'));
+        $response = $this->indexRequest('managers');
 
         $response->assertOk();
         $response->assertViewIs('managers.index');
@@ -62,7 +63,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_all_managers()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('managers.index'));
 
@@ -75,7 +76,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_available_managers()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'available']));
 
@@ -88,7 +89,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_pending_employment_managers()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'pending-employment']));
 
@@ -101,7 +102,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_retired_managers()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'retired']));
 
@@ -114,7 +115,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_suspended_managers()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'suspended']));
 
@@ -127,7 +128,7 @@ class ViewManagersListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_injured_managers()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('managers.index', ['status' => 'injured']));
 

@@ -99,12 +99,12 @@ class SuspensionFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $suspendees = array_merge(
-            $this->tagTeams ?? [],
-            $this->wrestlers ?? [],
-            $this->managers ?? [],
-            $this->referees ?? [],
-        );
+        $suspendees = collect()
+            ->merge($this->tagTeams)
+            ->merge($this->wrestlers)
+            ->merge($this->referees)
+            ->merge($this->managers)
+            ->flatten(1);
 
         $this->startDate = $this->startDate ?? now();
 

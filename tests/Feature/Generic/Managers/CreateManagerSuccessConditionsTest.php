@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Manager;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Manager;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -30,11 +31,11 @@ class CreateManagerSuccessConditionsTest extends TestCase
             'started_at' => now()->toDateTimeString(),
         ], $overrides);
     }
-    
+
     /** @test */
     public function a_manager_started_at_date_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('manager', $this->validParams(['started_at' => '']));
 
@@ -47,7 +48,7 @@ class CreateManagerSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('manager', $this->validParams());
 
@@ -64,24 +65,24 @@ class CreateManagerSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('manager', $this->validParams(['started_at' => $now->toDateTimeString()]));
 
         tap(Manager::first(), function ($manager) {
-            $this->assertTrue($manager->isEmployed());
+            $this->assertTrue($manager->isCurrentlyEmployed());
         });
     }
 
     /** @test */
     public function a_manager_can_be_created_without_employing()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('manager', $this->validParams(['started_at' => null]));
 
         tap(Manager::first(), function ($manager) {
-            $this->assertFalse($manager->isEmployed());
+            $this->assertFalse($manager->isCurrentlyEmployed());
         });
     }
 }

@@ -51,4 +51,14 @@ class Manager extends SingleRosterMember
     {
         return $query->where('status', 'available');
     }
+
+    /**
+     * Check to see if the model is available.
+     *
+     * @return bool
+     */
+    public function isAvailable()
+    {
+        return $this->currentEmployment()->exists();
+    }
 }

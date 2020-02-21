@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Admin\Managers;
 
+use App\Enums\Role;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -22,8 +23,8 @@ class UnretireManagerSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->unretireRequest($manager);
 

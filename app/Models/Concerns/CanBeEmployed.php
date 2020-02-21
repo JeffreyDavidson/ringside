@@ -99,7 +99,7 @@ trait CanBeEmployed
      */
     public function getIsUnemployedCachedAttribute()
     {
-        return ! $this->isEmployed();
+        return ! $this->isCurrentlyEmployed();
     }
 
     /**
@@ -135,7 +135,7 @@ trait CanBeEmployed
      */
     public function scopeEmployed($query)
     {
-        return $query->where('status', '!=', 'pending-employment');
+        return $query->whereHas('currentEmployment');;
     }
 
     /**

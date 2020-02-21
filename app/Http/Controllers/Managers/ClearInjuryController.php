@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Managers;
 
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Managers\ClearFromInjuryRequest;
 use App\Models\Manager;
 
 class ClearInjuryController extends Controller
@@ -13,11 +12,12 @@ class ClearInjuryController extends Controller
      * Clear a manager.
      *
      * @param  App\Models\Manager  $manager
-     * @param  App\Http\Requests\Managers\ClearInjuryRequest  $request
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager, ClearFromInjuryRequest $request)
+    public function __invoke(Manager $manager)
     {
+        $this->authorize('clearFromInjury', $manager);
+
         if (! $manager->canBeClearedFromInjury()) {
             throw new CannotBeClearedFromInjuryException();
         }

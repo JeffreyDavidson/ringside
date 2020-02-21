@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Managers;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -17,9 +18,9 @@ class ViewManagersListFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_managers_page()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('managers.index'));
+        $response = $this->indexRequest('managers');
 
         $response->assertForbidden();
     }
@@ -27,7 +28,7 @@ class ViewManagersListFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_get_managers()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->ajaxJson(route('managers.index'));
 

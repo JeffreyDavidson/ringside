@@ -2,24 +2,25 @@
 
 namespace Tests\Feature\User\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
  * @group users
  * @group roster
  */
-class ViewManagerBioPageTest extends TestCase
+class ViewManagerBioPageSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function a_basic_user_can_view_their_manager_profile()
     {
-        $signedInUser = $this->actAs('basic-user');
-        $manager = factory(Manager::class)->create(['user_id' => $signedInUser->id]);
+        $signedInUser = $this->actAs(Role::BASIC);
+        $manager = ManagerFactory::new()->create(['user_id' => $signedInUser->id]);
 
         $response = $this->showRequest($manager);
 

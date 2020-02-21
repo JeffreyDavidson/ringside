@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -33,8 +34,8 @@ class UpdateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_editing_a_manager()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->create();
 
         $response = $this->editRequest($manager);
 
@@ -45,9 +46,8 @@ class UpdateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_manager()
     {
-        $this->withoutExceptionHandling();
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->create();
 
         $response = $this->updateRequest($manager, $this->validParams());
 

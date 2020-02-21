@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use App\Models\Manager;
+use App\Enums\Role;
 use App\Exceptions\CannotBeRetiredException;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -22,8 +23,8 @@ class RetireManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeRetiredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->retireRequest($manager);
 

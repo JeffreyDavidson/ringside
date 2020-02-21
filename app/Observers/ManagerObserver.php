@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Manager;
 use App\Enums\ManagerStatus;
+use App\Models\Manager;
 
 class ManagerObserver
 {
@@ -18,13 +18,13 @@ class ManagerObserver
         if ($manager->isRetired()) {
             $manager->status = ManagerStatus::RETIRED;
         } elseif ($manager->isInjured()) {
-            $manager->status =  ManagerStatus::INJURED;
+            $manager->status = ManagerStatus::INJURED;
         } elseif ($manager->isSuspended()) {
             $manager->status = ManagerStatus::SUSPENDED;
-        } elseif ($manager->isPendingEmployment()) {
-            $manager->status = ManagerStatus::PENDING_EMPLOYMENT;
-        } else {
+        } elseif ($manager->isAvailable()) {
             $manager->status = ManagerStatus::AVAILABLE;
+        } else {
+            $manager->status = ManagerStatus::PENDING_EMPLOYMENT;
         }
     }
 }

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use App\Models\Manager;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,9 +19,8 @@ class RestoreManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_restore_a_deleted_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->create();
-        $manager->delete();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($manager);
 

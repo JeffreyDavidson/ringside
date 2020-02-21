@@ -3,7 +3,6 @@
 use App\Enums\ManagerStatus;
 use App\Models\Manager;
 use App\Models\TagTeam;
-use Illuminate\Database\Eloquent\Collection;
 
 class ManagerFactory extends BaseFactory
 {
@@ -15,6 +14,7 @@ class ManagerFactory extends BaseFactory
     public $injuryFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
+    public $softDeleted = false;
     protected $factoriesToClone = [
         'employmentFactory',
         'suspensionFactory',
@@ -35,7 +35,7 @@ class ManagerFactory extends BaseFactory
         $clone = clone $this;
         $clone->status = ManagerStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
-        $clone->employmentFactory = null;
+        $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->addDays(2));
         $clone->suspensionFactory = null;
         $clone->retirementFactory = null;
 
@@ -98,36 +98,33 @@ class ManagerFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        if ($this->count > 1) {
-            $created = new Collection();
-            for ($i = 0; $i < $this->count; $i++) {
-                $clone = clone $this;
-                $clone->count = 1;
-                $created->push($clone->create($attributes));
+        return $this->make(function ($attributes) {
+            $manager = Manager::create($this->resolveAttributes($attributes));
+
+            if ($this->employmentFactory) {
+                $this->employmentFactory->forManager($manager)->create();
             }
 
-            return $created;
-        }
+            if ($this->suspensionFactory) {
+                $this->suspensionFactory->forManager($manager)->create();
+            }
 
-        $manager = Manager::create($this->resolveAttributes($attributes));
+            if ($this->retirementFactory) {
+                $this->retirementFactory->forManager($manager)->create();
+            }
 
-        if ($this->employmentFactory) {
-            $this->employmentFactory->forManager($manager)->create();
-        }
+            if ($this->injuryFactory) {
+                $this->injuryFactory->forManager($manager)->create();
+            }
 
-        if ($this->suspensionFactory) {
-            $this->suspensionFactory->forManager($manager)->create();
-        }
+            $manager->save();
 
-        if ($this->retirementFactory) {
-            $this->retirementFactory->forManager($manager)->create();
-        }
+            if ($this->softDeleted) {
+                $manager->delete();
+            }
 
-        if ($this->injuryFactory) {
-            $this->injuryFactory->forManager($manager)->create();
-        }
-
-        return $manager;
+            return $manager;
+        }, $attributes);
     }
 
     protected function defaultAttributes(Faker\Generator $faker)
@@ -135,7 +132,7 @@ class ManagerFactory extends BaseFactory
         return [
             'first_name' => $faker->firstName,
             'last_name' => $faker->lastName,
-            'status' => ManagerStatus::PENDING_EMPLOYMENT,
+            'status' => ManagerStatus::__default,
         ];
     }
 }

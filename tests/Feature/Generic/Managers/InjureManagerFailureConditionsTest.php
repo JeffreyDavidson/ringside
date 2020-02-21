@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use App\Models\Manager;
+use App\Enums\Role;
 use App\Exceptions\CannotBeInjuredException;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -22,8 +23,8 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeInjuredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->injured()->create();
 
         $response = $this->injureRequest($manager);
 
@@ -36,8 +37,8 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeInjuredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->pendingEmployment()->create();
 
         $response = $this->injureRequest($manager);
 
@@ -50,8 +51,8 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeInjuredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->injureRequest($manager);
 
@@ -64,8 +65,8 @@ class InjureManagerFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeInjuredException::class);
 
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->injureRequest($manager);
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use App\Models\Manager;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,8 +19,8 @@ class ReinstateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_reinstate_a_suspended_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->reinstateRequest($manager);
 

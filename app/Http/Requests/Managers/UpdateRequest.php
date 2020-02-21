@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
+use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -24,22 +25,16 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+        return [
+            'first_name' => ['required', 'string', 'min:3'],
+            'last_name' => ['required', 'string', 'min:3'],
+            'started_at' => [
+                'sometimes',
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s',
+                new EmploymentStartDateCanBeChanged($this->route('manager')),
+            ],
         ];
-
-        if ($this->manager->currentEmployment) {
-            if ($this->manager->currentEmployment->started_at) {
-                $rules['started_at'][] = 'required';
-            }
-
-            if ($this->manager->currentEmployment->started_at && $this->manager->currentEmployment->started_at->isPast()) {
-                $rules['started_at'][] = 'before_or_equal:'.$this->manager->currentEmployment->started_at->toDateTimeString();
-            }
-        }
-
-        return $rules;
     }
 }

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,8 +19,8 @@ class RestoreManagerFailureConditionsTest extends TestCase
     /** @test */
     public function an_available_manager_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->restoreRequest($manager);
 
@@ -29,8 +30,8 @@ class RestoreManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_employment_manager_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('pending-employment')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->pendingEmployment()->create();
 
         $response = $this->restoreRequest($manager);
 
@@ -40,8 +41,8 @@ class RestoreManagerFailureConditionsTest extends TestCase
     /** @test */
     public function an_injured_manager_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('injured')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->injured()->create();
 
         $response = $this->restoreRequest($manager);
 
@@ -51,8 +52,8 @@ class RestoreManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_suspended_manager_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('suspended')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->suspended()->create();
 
         $response = $this->restoreRequest($manager);
 
@@ -62,8 +63,8 @@ class RestoreManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_manager_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->retired()->create();
 
         $response = $this->restoreRequest($manager);
 

@@ -99,12 +99,13 @@ class RetirementFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $retirees = array_merge(
-            $this->tagTeams ?? [],
-            $this->wrestlers ?? [],
-            $this->managers ?? [],
-            $this->referees ?? [],
-        );
+        $retirees = collect()
+            ->merge($this->tagTeams)
+            ->merge($this->wrestlers)
+            ->merge($this->referees)
+            ->merge($this->managers)
+            ->flatten(1);
+
 
         $this->startDate = $this->startDate ?? now();
 

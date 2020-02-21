@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Wrestlers;
+namespace App\Http\Requests\Managers;
 
-use App\Enums\WrestlerStatus;
+use App\Enums\ManagerStatus;
 use App\Http\Requests\AjaxOnlyFormRequest;
-use App\Models\Wrestler;
+use App\Models\Manager;
 
 class IndexRequest extends AjaxOnlyFormRequest
 {
@@ -15,7 +15,7 @@ class IndexRequest extends AjaxOnlyFormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('viewList', Wrestler::class);
+        return $this->user()->can('viewList', Manager::class);
     }
 
     /**
@@ -26,7 +26,7 @@ class IndexRequest extends AjaxOnlyFormRequest
     public function rules()
     {
         $rules = [
-            'status' => ['nullable', 'string', WrestlerStatus::rule()],
+            'status' => ['nullable', 'string', ManagerStatus::rule()],
         ];
 
         $rules = $this->validateDateRange($rules, 'started_at');

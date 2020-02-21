@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,9 +19,8 @@ class DeleteManagerFailureConditionsTest extends TestCase
     /** @test */
     public function an_already_deleted_manager_cannot_be_deleted()
     {
-        $this->actAs('administrator');
-        $manager = factory(Manager::class)->create();
-        $manager->delete();
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()->softDeleted()->create();
 
         $response = $this->deleteRequest($manager);
 

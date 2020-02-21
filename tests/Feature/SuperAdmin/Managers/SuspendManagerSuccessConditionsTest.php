@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
+use App\Enums\Role;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -22,8 +23,8 @@ class SuspendManagerSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->suspendRequest($manager);
 

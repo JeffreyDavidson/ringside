@@ -1,11 +1,11 @@
 <?php
 
-use Carbon\Carbon;
+use App\Models\Employment;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Models\Employment;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class EmploymentFactory extends BaseFactory
@@ -99,12 +99,12 @@ class EmploymentFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $employees = array_merge(
-            $this->tagTeams ?? [],
-            $this->wrestlers ?? [],
-            $this->managers ?? [],
-            $this->referees ?? []
-        );
+        $employees = collect()
+            ->merge($this->tagTeams)
+            ->merge($this->wrestlers)
+            ->merge($this->referees)
+            ->merge($this->managers)
+            ->flatten(1);
 
         $this->startDate = $this->startDate ?? now();
 
@@ -115,7 +115,6 @@ class EmploymentFactory extends BaseFactory
         $employments = new Collection();
 
         foreach ($employees as $employee) {
-
             $employment = new Employment();
             $employment->started_at = $this->startDate;
             $employment->ended_at = $this->endDate;

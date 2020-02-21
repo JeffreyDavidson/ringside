@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -33,8 +34,8 @@ class UpdateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_editing_a_manager()
     {
-        $this->actAs('basic-user');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::BASIC);
+        $manager = ManagerFactory::new()->create();
 
         $response = $this->editRequest($manager);
 
@@ -44,8 +45,8 @@ class UpdateManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_a_manager()
     {
-        $this->actAs('basic-user');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::BASIC);
+        $manager = ManagerFactory::new()->create();
 
         $response = $this->updateRequest($manager, $this->validParams());
 

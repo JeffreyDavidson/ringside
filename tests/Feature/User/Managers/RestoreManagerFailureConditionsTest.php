@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,9 +19,8 @@ class RestoreManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_manager()
     {
-        $this->actAs('basic-user');
-        $manager = factory(Manager::class)->create();
-        $manager->delete();
+        $this->actAs(Role::BASIC);
+        $manager = ManagerFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($manager);
 

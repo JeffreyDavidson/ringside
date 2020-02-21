@@ -4,6 +4,7 @@ namespace App\Http\Requests\Referees;
 
 use App\Models\Referee;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\EmploymentStartDateCanBeChanged;
 
 class UpdateRequest extends FormRequest
 {
@@ -24,22 +25,15 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'started_at' => ['string', 'date_format:Y-m-d H:i:s']
+            'started_at' => [
+                'sometimes',
+                'string',
+                'date_format:Y-m-d H:i:s',
+                new EmploymentStartDateCanBeChanged($this->route('referee'))
+            ]
         ];
-
-        if ($this->referee->currentEmployment) {
-            if ($this->referee->currentEmployment->started_at) {
-                $rules['started_at'][] = 'required';
-            }
-
-            if ($this->referee->currentEmployment->started_at && $this->referee->currentEmployment->started_at->isPast()) {
-                $rules['started_at'][] = 'before_or_equal:' . $this->referee->currentEmployment->started_at->toDateTimeString();
-            }
-        }
-
-        return $rules;
     }
 }

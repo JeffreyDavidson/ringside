@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Manager;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,8 +19,8 @@ class EmployManagerFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_employ_a_pending_employment_manager()
     {
-        $this->actAs('basic-user');
-        $manager = factory(Manager::class)->states('pending-employment')->create();
+        $this->actAs(Role::BASIC);
+        $manager = ManagerFactory::new()->pendingEmployment()->create();
 
         $response = $this->employRequest($manager);
 

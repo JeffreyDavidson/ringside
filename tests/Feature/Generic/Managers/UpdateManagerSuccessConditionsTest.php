@@ -3,7 +3,6 @@
 namespace Tests\Feature\Generic\Managers;
 
 use App\Enums\Role;
-use Carbon\Carbon;
 use EmploymentFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use ManagerFactory;
@@ -14,7 +13,7 @@ use Tests\TestCase;
  * @group generics
  * @group roster
  */
-class UpdateManagerFailureConditionsTest extends TestCase
+class UpdateManagerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -48,37 +47,35 @@ class UpdateManagerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_manager_started_at_date_is_required_if_employment_start_date_is_in_past()
-    {
-        $this->actAs(Role::ADMINISTRATOR);
-        $manager = ManagerFactory::new()->employed(
-                EmploymentFactory::new()->started(now()->subWeek()->toDateTimeString())
-        )->create();
-
-        $response = $this->updateRequest($manager, $this->validParams(['started_at' => '']));
-
-        $response->assertRedirect(route('managers.edit', $manager));
-        $response->assertSessionHasErrors('started_at');
-        tap($manager->fresh(), function ($manager) {
-            $this->assertNotNull($manager->currentEmployment->started_at);
-        });
-    }
-
-    /** @test */
-    public function a_manager_started_at_date_if_filled_cannot_be_after_existing_employment_date_if_date_has_past()
+    public function a_manager_started_at_date_if_not_filled_can_be_changed_if_future_employment_started_at_is_in_future()
     {
         $this->actAs(Role::ADMINISTRATOR);
         $manager = ManagerFactory::new()
             ->employed(
-                EmploymentFactory::new()->started(Carbon::yesterday()->toDateTimeString())
+                EmploymentFactory::new()->started(now()->addWeek()->toDateTimeString())
+            )->create();
+
+        // dd($manager);
+
+        $response = $this->updateRequest($manager, $this->validParams(['started_at' => '']));
+
+        $response->assertSessionDoesntHaveErrors('started_at');
+    }
+
+    /** @test */
+    public function a_manager_started_at_date_if_filled_can_be_before_existing_employment_date_if_date_is_in_future()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $manager = ManagerFactory::new()
+            ->employed(
+                EmploymentFactory::new()->started(now()->addWeek()->toDateTimeString())
             )
             ->create();
 
         $response = $this->updateRequest($manager, $this->validParams([
-            'started_at' => Carbon::tomorrow()->toDateTimeString(),
+            'started_at' => now()->addDays(2)->toDateTimeString(),
         ]));
 
-        $response->assertRedirect(route('managers.edit', $manager));
-        $response->assertSessionHasErrors('started_at');
+        $response->assertSessionDoesntHaveErrors('started_at');
     }
 }

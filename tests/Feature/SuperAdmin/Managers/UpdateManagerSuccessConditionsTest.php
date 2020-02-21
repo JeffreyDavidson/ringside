@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use App\Models\Manager;
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -33,10 +34,10 @@ class UpdateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_editing_a_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->create();
 
-        $response = $this->get(route('managers.edit', $manager));
+        $response = $this->editRequest($manager);
 
         $response->assertViewIs('managers.edit');
         $this->assertTrue($response->data('manager')->is($manager));
@@ -45,8 +46,8 @@ class UpdateManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_update_a_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->create();
 
         $response = $this->updateRequest($manager, $this->validParams());
 

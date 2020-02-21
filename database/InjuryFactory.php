@@ -83,11 +83,12 @@ class InjuryFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $injurables = array_merge(
-            $this->wrestlers ?? [],
-            $this->managers ?? [],
-            $this->referees ?? [],
-        );
+        $injurables = collect()
+            ->merge($this->wrestlers)
+            ->merge($this->referees)
+            ->merge($this->managers)
+            ->flatten(1);
+
 
         $this->startDate = $this->startDate ?? now();
 

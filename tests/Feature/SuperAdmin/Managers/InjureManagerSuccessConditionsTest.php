@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Managers;
 
-use Tests\TestCase;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -18,8 +19,8 @@ class InjureManagerSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_injure_an_available_manager()
     {
-        $this->actAs('super-administrator');
-        $manager = factory(Manager::class)->states('available')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $manager = ManagerFactory::new()->available()->create();
 
         $response = $this->injureRequest($manager);
 

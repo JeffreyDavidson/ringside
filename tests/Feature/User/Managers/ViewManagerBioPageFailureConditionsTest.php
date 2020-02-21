@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\User\Managers;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Manager;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use ManagerFactory;
+use Tests\TestCase;
+use UserFactory;
 
 /**
  * @group managers
@@ -19,9 +20,9 @@ class ViewManagerBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_another_users_manager_profile()
     {
-        $this->actAs('basic-user');
-        $otherUser = factory(User::class)->create();
-        $manager = factory(Manager::class)->create(['user_id' => $otherUser->id]);
+        $this->actAs(Role::BASIC);
+        $otherUser = UserFactory::new()->create();
+        $manager = ManagerFactory::new()->create(['user_id' => $otherUser->id]);
 
         $response = $this->showRequest($manager);
 
