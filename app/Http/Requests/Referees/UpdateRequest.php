@@ -28,12 +28,9 @@ class UpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'started_at' => [
-                'sometimes',
-                'string',
-                'date_format:Y-m-d H:i:s',
+            'started_at' => array_merge($this->started_at ? ['string', 'date_format:Y-m-d H:i:s'] : [], [
                 new EmploymentStartDateCanBeChanged($this->route('referee'))
-            ]
+            ])
         ];
     }
 }

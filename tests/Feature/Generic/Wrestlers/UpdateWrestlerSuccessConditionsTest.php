@@ -58,7 +58,7 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
         $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
-        $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
+
 
         $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => '']));
 

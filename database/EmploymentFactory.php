@@ -113,7 +113,7 @@ class EmploymentFactory extends BaseFactory
         }
 
         $employments = new Collection();
-
+        dd($employees);
         foreach ($employees as $employee) {
             $employment = new Employment();
             $employment->started_at = $this->startDate;

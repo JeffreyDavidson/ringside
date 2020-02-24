@@ -5,6 +5,7 @@ namespace App\Http\Requests\Wrestlers;
 use App\Models\Wrestler;
 use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\EmploymentStartDateCanBeChanged;
 
 class UpdateRequest extends FormRequest
 {
@@ -32,7 +33,9 @@ class UpdateRequest extends FormRequest
             'weight' => ['required', 'numeric'],
             'hometown' => ['required', 'string'],
             'signature_move' => ['nullable', 'string'],
-            'started_at' => ['required', 'string', 'date'],
+            'started_at' => array_merge($this->started_at ? ['string', 'date_format:Y-m-d H:i:s'] : [], [
+                new EmploymentStartDateCanBeChanged($this->route('wrestler'))
+            ]),
         ];
     }
 

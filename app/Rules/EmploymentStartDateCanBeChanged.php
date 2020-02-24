@@ -45,7 +45,7 @@ class EmploymentStartDateCanBeChanged implements Rule
             return false;
         }
 
-        if (!$futureEmployment) {
+        if (! $futureEmployment) {
             return true;
         }
 
