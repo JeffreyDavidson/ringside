@@ -17,7 +17,7 @@ class RestoreTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->create(['deleted_at' => now()->toDateTimeString()]);
 
         $response = $this->put(route('titles.restore', $title));

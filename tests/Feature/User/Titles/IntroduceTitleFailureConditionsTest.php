@@ -17,7 +17,7 @@ class IntroduceTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_introduce_a_pending_introduction_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('titles.introduce', $title));

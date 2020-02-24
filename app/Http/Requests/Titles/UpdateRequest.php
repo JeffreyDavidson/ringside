@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Titles;
 
-use App\Models\Title;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTitleRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +27,12 @@ class UpdateTitleRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => ['required', 'min:3', 'ends_with:Title, Titles', Rule::unique('titles')->ignore($this->title->id)],
+            'name' => [
+                'required',
+                'min:3',
+                'ends_with:Title, Titles',
+                Rule::unique('titles')->ignore($this->title->id)
+            ],
             'introduced_at' => ['required', 'date_format:Y-m-d H:i:s'],
         ];
 

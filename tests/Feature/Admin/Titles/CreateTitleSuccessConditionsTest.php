@@ -2,16 +2,17 @@
 
 namespace Tests\Feature\Admin\Titles;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Title;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group titles
  * @group admins
  */
-class CreateTitleSucessConditionsTest extends TestCase
+class CreateTitleSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -32,7 +33,7 @@ class CreateTitleSucessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_title()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('title');
 
@@ -46,7 +47,7 @@ class CreateTitleSucessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('title', $this->validParams());
 

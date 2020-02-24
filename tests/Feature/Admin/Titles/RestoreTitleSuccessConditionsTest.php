@@ -17,7 +17,7 @@ class RestoreTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_restore_a_deleted_title()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $title = factory(Title::class)->create(['deleted_at' => now()->toDateTimeString()]);
 
         $response = $this->put(route('titles.restore', $title));

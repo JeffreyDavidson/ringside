@@ -32,7 +32,7 @@ class CreateTitleSucessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_creating_a_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->createRequest('title');
 
@@ -46,7 +46,7 @@ class CreateTitleSucessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->storeRequest('title', $this->validParams());
 

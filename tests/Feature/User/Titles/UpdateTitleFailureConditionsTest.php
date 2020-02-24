@@ -31,7 +31,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_editing_a_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->create();
 
         $response = $this->get(route('titles.edit', $title));
@@ -42,7 +42,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_a_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->create();
 
         $response = $this->patch(route('titles.update', $title), $this->validParams());

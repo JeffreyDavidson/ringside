@@ -17,7 +17,7 @@ class DeleteTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->create();
 
         $response = $this->delete(route('titles.destroy', $title));

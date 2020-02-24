@@ -17,7 +17,7 @@ class IntroduceTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_introduce_a_pending_introduction_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('titles.introduce', $title));

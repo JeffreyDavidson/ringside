@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\Title;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
@@ -22,6 +23,8 @@ class RetirementFactory extends BaseFactory
     public $managers;
     /** @var Referee[] */
     public $referees;
+    /** @var Title[] */
+    public $titles;
 
     /**
      * @param string|Carbon $startDate
@@ -97,6 +100,19 @@ class RetirementFactory extends BaseFactory
         return $clone;
     }
 
+    public function forTitle(Title $title)
+    {
+        return $this->forTitles([$title]);
+    }
+
+    public function forTitles($titles)
+    {
+        $clone = clone $this;
+        $clone->titles = $titles;
+
+        return $clone;
+    }
+
     public function create($attributes = [])
     {
         $retirees = collect()
@@ -104,6 +120,7 @@ class RetirementFactory extends BaseFactory
             ->merge($this->wrestlers)
             ->merge($this->referees)
             ->merge($this->managers)
+            ->merge($this->titles)
             ->flatten(1);
 
 

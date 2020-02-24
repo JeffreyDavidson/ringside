@@ -17,7 +17,7 @@ class UnretireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_unretire_a_retired_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->states('retired')->create();
 
         $response = $this->put(route('titles.unretire', $title));

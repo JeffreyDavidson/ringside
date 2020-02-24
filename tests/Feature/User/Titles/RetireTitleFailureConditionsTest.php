@@ -17,7 +17,7 @@ class RetireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_retire_a_competable_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
         $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->put(route('titles.retire', $title));

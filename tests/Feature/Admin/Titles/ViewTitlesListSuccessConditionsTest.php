@@ -39,7 +39,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_titles_page()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->get(route('titles.index'));
 
@@ -50,7 +50,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_titles()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('titles.index'));
 
@@ -63,7 +63,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_competable_titles()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'competable']));
 
@@ -76,7 +76,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_pending_introduction_titles()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'pending-introduction']));
 
         $responseAjax->assertJson([
@@ -88,7 +88,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_retired_titles()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'retired']));
 
         $responseAjax->assertJson([

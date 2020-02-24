@@ -17,7 +17,7 @@ class ViewTitlePageSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_a_title_page()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $title = factory(Title::class)->create();
 
         $response = $this->get(route('titles.show', ['title' => $title]));

@@ -17,7 +17,7 @@ class RetireTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_a_competable_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->put(route('titles.retire', $title));

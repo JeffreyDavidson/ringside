@@ -30,7 +30,7 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->get(route('titles.create'));
 
@@ -40,7 +40,7 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_title()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->post(route('titles.store'), $this->validParams());
 

@@ -17,7 +17,7 @@ class UnretireTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_unretire_a_retired_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->states('retired')->create();
 
         $response = $this->put(route('titles.unretire', $title));

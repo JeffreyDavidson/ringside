@@ -17,7 +17,7 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_competable_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->states('competable')->create();
 
         $response = $this->delete(route('titles.destroy', $title));
@@ -29,7 +29,7 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_pending_introduction_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->states('pending-introduction')->create();
 
         $response = $this->delete(route('titles.destroy', $title));
@@ -41,7 +41,7 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_retired_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->states('retired')->create();
 
         $response = $this->delete(route('titles.destroy', $title));

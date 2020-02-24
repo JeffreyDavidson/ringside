@@ -31,7 +31,7 @@ class UpdateTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_editing_a_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->create();
 
         $response = $this->get(route('titles.edit', $title));
@@ -43,7 +43,7 @@ class UpdateTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_update_a_title()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
         $title = factory(Title::class)->create();
 
         $response = $this->from(route('titles.edit', $title))

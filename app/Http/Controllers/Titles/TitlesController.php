@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Titles;
 
+use App\DataTables\TitlesDataTable;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Titles\StoreRequest;
+use App\Http\Requests\Titles\UpdateRequest;
 use App\Models\Title;
 use Illuminate\Http\Request;
-use App\Filters\TitleFilters;
-use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTitleRequest;
-use App\Http\Requests\UpdateTitleRequest;
 
 class TitlesController extends Controller
 {
@@ -18,23 +17,12 @@ class TitlesController extends Controller
      * @param  string  $state
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, DataTables $table, TitleFilters $requestFilter)
+    public function index(Request $request, TitlesDataTable $dataTable)
     {
         $this->authorize('viewList', Title::class);
 
         if ($request->ajax()) {
-            $query = Title::query();
-            $requestFilter->apply($query);
-
-            return $table->eloquent($query)
-                ->addColumn('action', 'titles.partials.action-cell')
-                ->editColumn('introduced_at', function (Title $title) {
-                    return $title->introduced_at->format('Y-m-d H:s');
-                })
-                ->filterColumn('id', function ($query, $keyword) {
-                    $query->where($query->qualifyColumn('id'), $keyword);
-                })
-                ->toJson();
+            return $dataTable->ajax();
         }
 
         return view('titles.index');
@@ -55,10 +43,10 @@ class TitlesController extends Controller
     /**
      * Create a new title.
      *
-     * @param  \App\Http\Requests\StoreTitleRequest  $request
+     * @param  App\Http\Requests\Titls\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreTitleRequest $request)
+    public function store(StoreRequest $request)
     {
         Title::create($request->all());
 
@@ -93,11 +81,11 @@ class TitlesController extends Controller
     /**
      * Update an existing title.
      *
-     * @param  \App\Http\Requests\UpdateTitleRequest  $request
+     * @param  \App\Http\Requests\UpdateRequest  $request
      * @param  \App\Models\Title  $title
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateTitleRequest $request, Title $title)
+    public function update(UpdateRequest $request, Title $title)
     {
         $title->update($request->all());
 
