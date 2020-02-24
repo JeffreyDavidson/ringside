@@ -30,4 +30,18 @@ class StoreRequest extends FormRequest
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'first_name' => 'first name',
+            'last_name' => 'last name',
+            'started_at' => 'started at',
+        ];
+    }
 }

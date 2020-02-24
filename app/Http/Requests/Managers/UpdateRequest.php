@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
-use App\Rules\EmploymentStartDateCanBeChanged;
+use App\Rules\ConditionalEmploymentStartDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -28,9 +28,21 @@ class UpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'min:3'],
             'last_name' => ['required', 'string', 'min:3'],
-            'started_at' => array_merge($this->started_at ? ['string', 'date_format:Y-m-d H:i:s'] : [], [
-                new EmploymentStartDateCanBeChanged($this->route('manager'))
-            ])
+            'started_at' => [new ConditionalEmploymentStartDateRule($this->route('manager'))],
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'first_name' => 'first name',
+            'last_name' => 'last name',
+            'started_at' => 'started at',
         ];
     }
 }

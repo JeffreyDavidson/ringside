@@ -55,8 +55,6 @@ class UpdateManagerSuccessConditionsTest extends TestCase
                 EmploymentFactory::new()->started(now()->addWeek()->toDateTimeString())
             )->create();
 
-        // dd($manager);
-
         $response = $this->updateRequest($manager, $this->validParams(['started_at' => '']));
 
         $response->assertSessionDoesntHaveErrors('started_at');
