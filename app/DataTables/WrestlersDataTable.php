@@ -8,7 +8,7 @@ use Yajra\DataTables\Services\DataTable;
 
 class WrestlersDataTable extends DataTable
 {
-    /** @var wrestlerFilters */
+    /** @var $wrestlerFilters */
     private $wrestlerFilters;
 
     /**

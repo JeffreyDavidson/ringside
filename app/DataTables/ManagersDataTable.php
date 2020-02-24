@@ -8,7 +8,7 @@ use Yajra\DataTables\Services\DataTable;
 
 class ManagersDataTable extends DataTable
 {
-    /** @var managerFilters */
+    /** @var $managerFilters */
     private $managerFilters;
 
     /**
@@ -30,11 +30,11 @@ class ManagersDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('started_at', function (Manager $manager) {
-                return $manager->started_at->toDateString();
-            })
             ->editColumn('name', function (Manager $manager) {
                 return $manager->full_name;
+            })
+            ->editColumn('started_at', function (Manager $manager) {
+                return $manager->started_at->toDateString();
             })
             ->editColumn('status', function (Manager $manager) {
                 return $manager->status->label();

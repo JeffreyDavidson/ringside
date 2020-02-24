@@ -30,11 +30,11 @@ class RefereesDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('started_at', function (Referee $referee) {
-                return $referee->started_at->toDateString();
-            })
             ->editColumn('name', function (Referee $referee) {
                 return $referee->full_name;
+            })
+            ->editColumn('started_at', function (Referee $referee) {
+                return $referee->started_at->toDateString();
             })
             ->editColumn('status', function (Referee $referee) {
                 return $referee->status->label();
