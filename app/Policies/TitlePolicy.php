@@ -72,10 +72,6 @@ class TitlePolicy
      */
     public function retire(User $user, Title $title)
     {
-        if ($title->is_pending_introduction || $title->is_retired) {
-            return false;
-        }
-
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }
 

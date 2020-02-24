@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Titles;
 
-use App\Models\Title;
+use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
+use App\Models\Title;
 
 class RetireController extends Controller
 {
@@ -16,6 +17,10 @@ class RetireController extends Controller
     public function __invoke(Title $title)
     {
         $this->authorize('retire', $title);
+
+        if (! $title->canBeRetired()) {
+            throw new CannotBeRetiredException();
+        }
 
         $title->retire();
 

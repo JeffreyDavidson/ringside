@@ -3,9 +3,9 @@
 namespace Tests\Feature\Admin\Titles;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -43,11 +43,11 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     public function an_administrator_can_delete_a_retired_title()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = factory(Title::class)->states('retired')->create();
+        $title = TitleFactory::new()->retired()->create();
 
-        $response = $this->delete(route('titles.destroy', $title));
+        $response = $this->deleteRequest($title);
 
         $response->assertRedirect(route('titles.index'));
-        $this->assertSoftDeleted('titles', ['name' => $title->name]);
+        $this->assertSoftDeleted($title);
     }
 }

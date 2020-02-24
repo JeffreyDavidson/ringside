@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Titles;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group titles
@@ -18,7 +19,7 @@ class ViewTitlesListFailureConditionsTest extends TestCase
     {
         $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('titles.index'));
+        $response = $this->indexRequest('titles');
 
         $response->assertForbidden();
     }

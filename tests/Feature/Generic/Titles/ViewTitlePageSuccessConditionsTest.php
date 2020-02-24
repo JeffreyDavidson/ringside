@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -17,10 +18,10 @@ class ViewTitlePageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_titles_data_can_be_seen_on_the_title_page()
     {
-        $this->actAs('administrator');
-        $title = factory(Title::class)->create(['name' => 'Title 1']);
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->create(['name' => 'Title 1']);
 
-        $response = $this->get(route('titles.show', ['title' => $title]));
+        $response = $this->showRequest($title);
 
         $response->assertSee('Title 1');
     }

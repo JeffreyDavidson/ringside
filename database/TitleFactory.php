@@ -1,18 +1,16 @@
 <?php
 
-use App\Models\Title;
 use App\Enums\TitleStatus;
+use App\Models\Title;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class TitleFactory extends BaseFactory
 {
-    /** @var IntroductionFactory|null */
-    public $introductionFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
     public $softDeleted = false;
     protected $factoriesToClone = [
-        'introductionFactory',
         'retirementFactory',
     ];
 
@@ -25,31 +23,31 @@ class TitleFactory extends BaseFactory
         return $clone;
     }
 
-    public function introduced(IntroductionFactory $introductionFactory = null)
+    public function introduced()
     {
         $clone = clone $this;
-        $clone->introductionFactory = $introductionFactory ?? IntroductionFactory::new();
+        $clone->attributes['introduced_at'] = Carbon::yesterday()->toDateTimeString();
+        dd($clone);
 
         return $clone;
     }
 
-    public function available(IntroductionFactory $introductionFactory = null)
+    public function competable()
     {
         $clone = clone $this;
         $clone->status = TitleStatus::COMPETABLE;
-        $clone = $clone->introduced($introductionFactory ?? $this->introductionFactory);
+        $clone = $clone->introduced();
         $clone->retirementFactory = null;
 
         return $clone;
     }
 
-    public function retired(RetirementFactory $retirementFactory = null, IntroductionFactory $introductionFactory = null)
+    public function retired(RetirementFactory $retirementFactory = null)
     {
         $clone = clone $this;
         $clone->status = TitleStatus::RETIRED;
+        $clone = $clone->introduced();
         $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
-        // We set the introduction factory since a wrestler must be employed to retire
-        $clone = $clone->introduced($introductionFactory ?? $this->introductionFactory);
 
         return $clone;
     }

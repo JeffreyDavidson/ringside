@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use App\Exceptions\CannotBeIntroducedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -21,10 +22,10 @@ class IntroduceTitleFailureConditionsTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeIntroducedException::class);
 
-        $this->actAs('administrator');
-        $title = factory(Title::class)->states('competable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->competable()->create();
 
-        $response = $this->put(route('titles.introduce', $title));
+        $response = $this->introduceRequest($title);
 
         $response->assertForbidden();
     }

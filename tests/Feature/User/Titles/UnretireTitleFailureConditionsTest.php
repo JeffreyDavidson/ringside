@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,9 +19,9 @@ class UnretireTitleFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_unretire_a_retired_title()
     {
         $this->actAs(Role::BASIC);
-        $title = factory(Title::class)->states('retired')->create();
+        $title = TitleFactory::new()->retired()->create();
 
-        $response = $this->put(route('titles.unretire', $title));
+        $response = $this->unretireRequest($title);
 
         $response->assertForbidden();
     }

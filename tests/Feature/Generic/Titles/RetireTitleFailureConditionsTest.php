@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -17,10 +18,10 @@ class RetireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_title_cannot_be_retired_again()
     {
-        $this->actAs('administrator');
-        $title = factory(Title::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->retired()->create();
 
-        $response = $this->put(route('titles.retire', $title));
+        $response = $this->retireRequest($title);
 
         $response->assertForbidden();
     }
@@ -28,10 +29,10 @@ class RetireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_title_cannot_be_retired()
     {
-        $this->actAs('administrator');
-        $title = factory(Title::class)->states('pending-introduction')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->put(route('titles.retire', $title));
+        $response = $this->retireRequest($title);
 
         $response->assertForbidden();
     }

@@ -3,10 +3,9 @@
 namespace Tests\Feature\Admin\Wrestlers;
 
 use App\Enums\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use WrestlerFactory;
-use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers

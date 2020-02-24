@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,9 +19,9 @@ class ViewTitlePageFailureConditionsTest extends TestCase
     public function a_basic_user_can_view_a_title()
     {
         $this->actAs(Role::BASIC);
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
-        $response = $this->get(route('titles.show', ['title' => $title]));
+        $response = $this->showRequest($title);
 
         $response->assertForbidden();
     }

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,9 +19,9 @@ class RetireTitleFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_retire_a_competable_title()
     {
         $this->actAs(Role::BASIC);
-        $title = factory(Title::class)->states('competable')->create();
+        $title = TitleFactory::new()->competable()->create();
 
-        $response = $this->put(route('titles.retire', $title));
+        $response = $this->retireRequest($title);
 
         $response->assertForbidden();
     }

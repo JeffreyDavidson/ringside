@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -17,10 +18,10 @@ class UnretireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_competable_title_cannot_unretire()
     {
-        $this->actAs('administrator');
-        $title = factory(Title::class)->states('competable')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->competable()->create();
 
-        $response = $this->put(route('titles.unretire', $title));
+        $response = $this->unretireRequest($title);
 
         $response->assertForbidden();
     }
@@ -28,10 +29,10 @@ class UnretireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_title_cannot_unretire()
     {
-        $this->actAs('administrator');
-        $title = factory(Title::class)->states('pending-introduction')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->put(route('titles.unretire', $title));
+        $response = $this->unretireRequest($title);
 
         $response->assertForbidden();
     }

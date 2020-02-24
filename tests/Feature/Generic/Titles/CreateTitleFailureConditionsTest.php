@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -31,10 +33,9 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['name' => '']));
+        $response = $this->storeRequest('titles', $this->validParams(['name' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));
@@ -45,10 +46,9 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_name_must_contain_at_least_three_characters()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['name' => 'ab']));
+        $response = $this->storeRequest('titles', $this->validParams(['name' => 'ab']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));
@@ -59,10 +59,9 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_name_must_end_with_title_or_titles()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['name' => 'Example Name']));
+        $response = $this->storeRequest('titles', $this->validParams(['name' => 'Example Name']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));
@@ -73,11 +72,10 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_name_must_be_unique()
     {
-        $this->actAs('administrator');
-        factory(Title::class)->create(['name' => 'Example Title']);
+        $this->actAs(Role::ADMINISTRATOR);
+        TitleFactory::new()->create(['name' => 'Example Title']);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['name' => 'Example Title']));
+        $response = $this->storeRequest('titles', $this->validParams(['name' => 'Example Title']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));
@@ -88,10 +86,9 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_introduced_at_date_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['introduced_at' => '']));
+        $response = $this->storeRequest('titles', $this->validParams(['introduced_at' => '']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));
@@ -102,10 +99,9 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_introduced_at_must_be_in_datetime_format()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['introduced_at' => now()->toDateString()]));
+        $response = $this->storeRequest('titles', $this->validParams(['introduced_at' => now()->toDateString()]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));
@@ -116,10 +112,9 @@ class CreateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_title_introduced_at_must_be_a_datetime_format()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->from(route('titles.create'))
-                        ->post(route('titles.store'), $this->validParams(['introduced_at' => 'not-a-datetime']));
+        $response = $this->storeRequest('titles.store', $this->validParams(['introduced_at' => 'not-a-datetime']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));

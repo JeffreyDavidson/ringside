@@ -42,4 +42,42 @@ class Title extends Model
 
         return $this->touch();
     }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeRetired()
+    {
+        if (! $this->isCurrentlyIntroduced()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if a model is introduced.
+     *
+     * @return bool
+     */
+    public function getIsCurrentlyIntroducedCachedAttribute()
+    {
+        return $this->isCurrentlyIntroduced();
+    }
+
+    /**
+     * Check to see if the model is introduced.
+     *
+     * @return bool
+     */
+    public function isCurrentlyIntroduced()
+    {
+        return $this->introduced_at->isPast();
+    }
 }

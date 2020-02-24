@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -32,9 +33,9 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_view_the_form_for_editing_a_title()
     {
         $this->actAs(Role::BASIC);
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
-        $response = $this->get(route('titles.edit', $title));
+        $response = $this->editRequest($title);
 
         $response->assertForbidden();
     }
@@ -43,9 +44,9 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_update_a_title()
     {
         $this->actAs(Role::BASIC);
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
-        $response = $this->patch(route('titles.update', $title), $this->validParams());
+        $response = $this->updateRequest($title, $this->validParams());
 
         $response->assertForbidden();
     }

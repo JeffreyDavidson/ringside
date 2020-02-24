@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Guest\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,9 +19,9 @@ class DeleteTitleFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_delete_a_title()
     {
         $this->actAs(Role::BASIC);
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
-        $response = $this->delete(route('titles.destroy', $title));
+        $response = $this->deleteRequest($title);
 
         $response->assertForbidden();
     }

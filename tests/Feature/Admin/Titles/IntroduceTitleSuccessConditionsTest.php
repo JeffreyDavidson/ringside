@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Admin\Titles;
 
+use TitleFactory;
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,15 +19,13 @@ class IntroduceTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_introduce_a_pending_introduction_title()
     {
-        // $this->withoutExceptionHandling();
         $this->actAs(Role::ADMINISTRATOR);
-        $title = factory(Title::class)->states('pending-introduction')->create();
+        $title = TitleFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->put(route('titles.introduce', $title));
+        $response = $this->introduceRequest($title);
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
-            // dd($title);
             $this->assertTrue($title->is_competable);
         });
     }

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Admin\Titles;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,10 +20,11 @@ class RetireTitleSuccessConditionsTest extends TestCase
     public function an_administrator_can_retire_a_competable_title()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = factory(Title::class)->states('competable')->create();
-        // dd($title);
+        $title = TitleFactory::new()->competable()->create();
+        dd($title);
 
-        $response = $this->put(route('titles.retire', $title));
+        $response = $this->retireRequest($title);
+        dd($response);
 
         $response->assertRedirect(route('titles.index'));
         $this->assertEquals(now()->toDateTimeString(), $title->fresh()->currentRetirement->started_at);

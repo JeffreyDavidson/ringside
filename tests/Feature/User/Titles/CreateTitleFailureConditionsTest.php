@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Titles;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group titles
@@ -32,7 +33,7 @@ class CreateTitleFailureConditionsTest extends TestCase
     {
         $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('titles.create'));
+        $response = $this->createRequest('titles');
 
         $response->assertForbidden();
     }
@@ -42,7 +43,7 @@ class CreateTitleFailureConditionsTest extends TestCase
     {
         $this->actAs(Role::BASIC);
 
-        $response = $this->post(route('titles.store'), $this->validParams());
+        $response = $this->storeRequest('titles', $this->validParams());
 
         $response->assertForbidden();
     }

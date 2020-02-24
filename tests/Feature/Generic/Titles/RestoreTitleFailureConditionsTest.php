@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -17,10 +18,10 @@ class RestoreTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_non_deleted_title_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $title = factory(Title::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->create();
 
-        $response = $this->put(route('titles.restore', $title));
+        $response = $this->restoreRequest($title);
 
         $response->assertNotFound();
     }

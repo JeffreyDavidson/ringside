@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Generic\Titles;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Title;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group titles
@@ -32,9 +33,9 @@ class CreateTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_title_introduced_today_or_before_is_competable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $this->post(route('titles.store'), $this->validParams(['introduced_at' => today()->toDateTimeString()]));
+        $this->storeRequest('titles', $this->validParams(['introduced_at' => today()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
             $this->assertTrue($title->is_competable);
@@ -44,9 +45,9 @@ class CreateTitleSuccessConditionsTest extends TestCase
     /** @test */
     public function a_title_introduced_after_today_is_pending_introduction()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $this->post(route('titles.store'), $this->validParams(['introduced_at' => Carbon::tomorrow()->toDateTimeString()]));
+        $this->storeRequest('titles', $this->validParams(['introduced_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
             $this->assertTrue($title->is_pending_introduction);

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -21,9 +22,9 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $competable          = factory(Title::class, 3)->states('competable')->create();
-        $pendingIntroduction = factory(Title::class, 3)->states('pending-introduction')->create();
-        $retired             = factory(Title::class, 3)->states('retired')->create();
+        $competable = TitleFactory::new()->count(3)->competable()->create();
+        $pendingIntroduction = TitleFactory::new()->count(3)->pendingIntroduction()->create();
+        $retired = TitleFactory::new()->count(3)->retired()->create();
 
         $this->titles = collect([
             'competable'           => $competable,
@@ -32,7 +33,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
             'all'                  => collect()
                                 ->concat($competable)
                                 ->concat($pendingIntroduction)
-                                ->concat($retired)
+                                ->concat($retired),
         ]);
     }
 
@@ -41,7 +42,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->get(route('titles.index'));
+        $response = $this->indexRequest('titles');
 
         $response->assertOk();
         $response->assertViewIs('titles.index');
