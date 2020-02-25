@@ -17,7 +17,7 @@ class TitleFactory extends BaseFactory
     public function pendingIntroduction()
     {
         $clone = clone $this;
-        $clone->status = TitleStatus::PENDING_INTRODUCTION;
+        $clone->attributes['status'] = TitleStatus::PENDING_INTRODUCTION;
         $clone->retirementFactory = null;
 
         return $clone;
@@ -27,7 +27,6 @@ class TitleFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->attributes['introduced_at'] = Carbon::yesterday()->toDateTimeString();
-        dd($clone);
 
         return $clone;
     }
@@ -35,7 +34,7 @@ class TitleFactory extends BaseFactory
     public function competable()
     {
         $clone = clone $this;
-        $clone->status = TitleStatus::COMPETABLE;
+        $clone->attributes['status'] = TitleStatus::COMPETABLE;
         $clone = $clone->introduced();
         $clone->retirementFactory = null;
 
@@ -45,7 +44,7 @@ class TitleFactory extends BaseFactory
     public function retired(RetirementFactory $retirementFactory = null)
     {
         $clone = clone $this;
-        $clone->status = TitleStatus::RETIRED;
+        $clone->attributes['status'] = TitleStatus::RETIRED;
         $clone = $clone->introduced();
         $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
 
