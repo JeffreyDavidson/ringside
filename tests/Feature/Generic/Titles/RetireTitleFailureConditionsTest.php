@@ -3,6 +3,7 @@
 namespace Tests\Feature\Generic\Titles;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use TitleFactory;
@@ -18,6 +19,9 @@ class RetireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_title_cannot_be_retired_again()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRetiredException::class);
+
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->retired()->create();
 
@@ -29,6 +33,9 @@ class RetireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_title_cannot_be_retired()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRetiredException::class);
+
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->pendingIntroduction()->create();
 

@@ -36,6 +36,11 @@ trait CanBeIntroduced
         $query->where('introduced_at', '>', now());
     }
 
+    public function scopeIntroduced($query)
+    {
+        return $query->where('introduced_at', '=<', now());
+    }
+
     /**
      * Introduce a model.
      *
@@ -43,7 +48,7 @@ trait CanBeIntroduced
      */
     public function introduce($introducedAt = null)
     {
-        if ($this->checkIsIntroduced()) {
+        if ($this->isIntroduced()) {
             throw new CannotBeIntroducedException;
         }
 
@@ -59,13 +64,26 @@ trait CanBeIntroduced
      *
      * @return bool
      */
-    public function checkIsPendingIntroduction()
+    public function isPendingIntroduction()
     {
         return is_null($this->introduced_at) || $this->introduced_at->isFuture();
     }
 
-    public function checkIsIntroduced()
+    public function isIntroduced()
     {
         return !is_null($this->introduced_at) && $this->introduced_at->isPast();
+    }
+
+    public function canBeIntroduced()
+    {
+        if ($this->isIntroduced()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
     }
 }

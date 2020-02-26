@@ -2,16 +2,17 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Title;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group titles
  * @group superadmins
  */
-class CreateTitleSucessConditionsTest extends TestCase
+class CreateTitleSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 

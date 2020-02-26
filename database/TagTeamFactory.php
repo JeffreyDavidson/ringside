@@ -108,6 +108,7 @@ class TagTeamFactory extends BaseFactory
             if ($this->employmentFactory) {
                 $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
+            dd('t2esting');
 
             if ($this->suspensionFactory) {
                 $this->suspensionFactory->forTagTeam($tagTeam)->create();

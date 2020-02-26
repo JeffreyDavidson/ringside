@@ -114,7 +114,7 @@ class CreateTitleFailureConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('titles.store', $this->validParams(['introduced_at' => 'not-a-datetime']));
+        $response = $this->storeRequest('titles', $this->validParams(['introduced_at' => 'not-a-datetime']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('titles.create'));

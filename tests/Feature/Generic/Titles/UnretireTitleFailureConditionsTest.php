@@ -3,6 +3,7 @@
 namespace Tests\Feature\Generic\Titles;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeUnretiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use TitleFactory;
@@ -18,6 +19,9 @@ class UnretireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_competable_title_cannot_unretire()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->competable()->create();
 
@@ -29,6 +33,9 @@ class UnretireTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_title_cannot_unretire()
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeUnretiredException::class);
+
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->pendingIntroduction()->create();
 

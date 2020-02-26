@@ -38,7 +38,7 @@ class CreateTitleSuccessConditionsTest extends TestCase
         $this->storeRequest('titles', $this->validParams(['introduced_at' => today()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
-            $this->assertTrue($title->is_competable);
+            $this->assertTrue($title->isCompetable());
         });
     }
 
@@ -50,7 +50,7 @@ class CreateTitleSuccessConditionsTest extends TestCase
         $this->storeRequest('titles', $this->validParams(['introduced_at' => Carbon::tomorrow()->toDateTimeString()]));
 
         tap(Title::first(), function ($title) {
-            $this->assertTrue($title->is_pending_introduction);
+            $this->assertTrue($title->isPendingIntroduction());
         });
     }
 }

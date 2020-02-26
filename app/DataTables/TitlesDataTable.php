@@ -56,7 +56,7 @@ class TitlesDataTable extends DataTable
      */
     public function query()
     {
-        $query = Title::query();
+        $query = Title::whereNotNull('introduced_at');
 
         $this->titleFilters->apply($query);
 

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -32,9 +34,9 @@ class UpdateTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_view_the_form_for_editing_a_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
-        $response = $this->get(route('titles.edit', $title));
+        $response = $this->editRequest($title);
 
         $response->assertViewIs('titles.edit');
         $this->assertTrue($response->data('title')->is($title));
@@ -44,10 +46,9 @@ class UpdateTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_update_a_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
-        $response = $this->from(route('titles.edit', $title))
-                        ->patch(route('titles.update', $title), $this->validParams());
+        $response = $this->updateRequest($title, $this->validParams());
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {

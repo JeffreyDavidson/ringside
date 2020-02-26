@@ -26,7 +26,7 @@ class IntroduceTitleSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
-            $this->assertTrue($title->is_competable);
+            $this->assertTrue($title->isCompetable());
         });
     }
 }

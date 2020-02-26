@@ -55,22 +55,12 @@ abstract class BaseFactory
         return $this->withClone(fn ($factory) => $factory->softDeleted = $delete);
     }
 
-    protected function resolveAttributes($attributes = [])
+    protected function resolveAttributes($overrides = [])
     {
         /* @var \Faker\Generator $faker */
         $faker = resolve(\Faker\Generator::class);
 
-        // Allows overriding attributes on the final `create` call
-        if (! empty($attributes)) {
-            return array_replace($this->defaultAttributes($faker), $attributes);
-        }
-
-        // Allows setting attributes on the `::new()` call
-        if (! empty($this->attributes)) {
-            return $this->attributes;
-        }
-
-        return $this->defaultAttributes($faker);
+        return array_replace($this->defaultAttributes($faker), $this->attributes, $overrides);
     }
 
     protected function defaultAttributes(Faker\Generator $faker)

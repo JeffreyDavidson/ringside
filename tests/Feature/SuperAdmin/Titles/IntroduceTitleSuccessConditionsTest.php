@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,13 +19,13 @@ class IntroduceTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_introduce_a_pending_introduction_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->states('pending-introduction')->create();
+        $title = TitleFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->put(route('titles.introduce', $title));
+        $response = $this->introduceRequest($title);
 
         $response->assertRedirect(route('titles.index'));
         tap($title->fresh(), function ($title) {
-            $this->assertTrue($title->is_competable);
+            $this->assertTrue($title->isCompetable());
         });
     }
 }

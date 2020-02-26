@@ -18,6 +18,7 @@ class TitleFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->attributes['status'] = TitleStatus::PENDING_INTRODUCTION;
+        $clone->attributes['introduced_at'] = Carbon::tomorrow()->toDateTimeString();
         $clone->retirementFactory = null;
 
         return $clone;
@@ -74,6 +75,7 @@ class TitleFactory extends BaseFactory
     {
         return [
             'name' => Str::title($faker->words(2, true)),
+            'introduced_at' => now()->toDateTimeString(),
             'status' => TitleStatus::__default,
         ];
     }

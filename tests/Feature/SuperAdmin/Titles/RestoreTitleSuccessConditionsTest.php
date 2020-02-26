@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,9 +19,9 @@ class RestoreTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_restore_a_deleted_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->create(['deleted_at' => now()->toDateTimeString()]);
+        $title = TitleFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('titles.restore', $title));
+        $response = $this->restoreRequest($title);
 
         $response->assertRedirect(route('titles.index'));
         $this->assertNull($title->fresh()->deleted_at);

@@ -95,7 +95,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->create($this->oldAttributes(['name' => 'Example One Title']));
-        TitleFactory::new()->create();
+        TitleFactory::new()->create(['name' => 'Example Two Title']);
 
         $response = $this->updateRequest($title, $this->validParams(['name' => 'Example Two Title']));
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use TitleFactory;
 
 /**
  * @group titles
@@ -18,9 +19,9 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_delete_a_competable_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->states('competable')->create();
+        $title = TitleFactory::new()->competable()->create();
 
-        $response = $this->delete(route('titles.destroy', $title));
+        $response = $this->deleteRequest($title);
 
         $response->assertRedirect(route('titles.index'));
         $this->assertSoftDeleted('titles', ['name' => $title->name]);
@@ -30,9 +31,9 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_delete_a_pending_introduction_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->states('pending-introduction')->create();
+        $title = TitleFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->delete(route('titles.destroy', $title));
+        $response = $this->deleteRequest($title);
 
         $response->assertRedirect(route('titles.index'));
         $this->assertSoftDeleted('titles', ['name' => $title->name]);
@@ -42,9 +43,9 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     public function a_super_administrator_can_delete_a_retired_title()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
-        $title = factory(Title::class)->states('retired')->create();
+        $title = TitleFactory::new()->retired()->create();
 
-        $response = $this->delete(route('titles.destroy', $title));
+        $response = $this->deleteRequest($title);
 
         $response->assertRedirect(route('titles.index'));
         $this->assertSoftDeleted('titles', ['name' => $title->name]);

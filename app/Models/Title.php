@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\TitleStatus;
+use App\Exceptions\CannotBeRetiredException;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
-use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use MadWeb\Enum\EnumCastable;
 
 class Title extends Model
 {
     use SoftDeletes,
+        EnumCastable,
         HasCachedAttributes,
         Concerns\CanBeRetired,
         Concerns\CanBeCompeted,
@@ -23,18 +26,24 @@ class Title extends Model
     protected $guarded = [];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => TitleStatus::class,
+    ];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = ['introduced_at'];
 
-    /**
-     *
-     */
     public function retire()
     {
-        if ($this->checkIsPendingIntroduction() || $this->checkIsRetired()) {
+        if (! $this->isIntroduced() || $this->isRetired()) {
             throw new CannotBeRetiredException;
         }
 
@@ -50,7 +59,7 @@ class Title extends Model
      */
     public function canBeRetired()
     {
-        if (! $this->isCurrentlyIntroduced()) {
+        if (! $this->isIntroduced()) {
             return false;
         }
 
@@ -71,13 +80,4 @@ class Title extends Model
         return $this->isCurrentlyIntroduced();
     }
 
-    /**
-     * Check to see if the model is introduced.
-     *
-     * @return bool
-     */
-    public function isCurrentlyIntroduced()
-    {
-        return $this->introduced_at->isPast();
-    }
 }

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
+use TitleFactory;
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,13 +23,14 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $competable          = factory(Title::class, 3)->states('competable')->create();
-        $pendingIntroduction = factory(Title::class, 3)->states('pending-introduction')->create();
-        $retired             = factory(Title::class, 3)->states('retired')->create();
+        $competable = TitleFactory::new()->count(3)->competable()->create();
+        $pendingIntroduction = TitleFactory::new()->count(3)->pendingIntroduction()->create();
+        $retired = TitleFactory::new()->count(3)->retired()->create();
+
 
         $this->titles = collect([
-            'pending-introduction' => $pendingIntroduction,
             'competable'           => $competable,
+            'pending-introduction' => $pendingIntroduction,
             'retired'              => $retired,
             'all'                  => collect()
                                 ->concat($competable)
@@ -41,7 +44,7 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $response = $this->get(route('titles.index'));
+        $response = $this->indexRequest('titles');
 
         $response->assertOk();
         $response->assertViewIs('titles.index');

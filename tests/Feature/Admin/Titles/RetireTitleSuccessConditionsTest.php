@@ -21,10 +21,8 @@ class RetireTitleSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->competable()->create();
-        dd($title);
 
         $response = $this->retireRequest($title);
-        dd($response);
 
         $response->assertRedirect(route('titles.index'));
         $this->assertEquals(now()->toDateTimeString(), $title->fresh()->currentRetirement->started_at);
