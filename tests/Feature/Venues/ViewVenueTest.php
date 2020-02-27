@@ -2,11 +2,15 @@
 
 namespace Tests\Feature\Venues;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Venue;
+use Tests\Factories\VenueFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-/** @group venues */
+/**
+ * @group venues
+ */
 class ViewVenueTest extends TestCase
 {
     use RefreshDatabase;
@@ -14,10 +18,10 @@ class ViewVenueTest extends TestCase
     /** @test */
     public function an_administrator_can_view_a_venue()
     {
-        $this->actAs('administrator');
-        $venue = factory(Venue::class)->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $venue = VenueFactory::new()->create();
 
-        $response = $this->get(route('venues.show', ['venue' => $venue]));
+        $response = $this->showRequest($venue);
 
         $response->assertViewIs('venues.show');
         $this->assertTrue($response->data('venue')->is($venue));
@@ -26,10 +30,10 @@ class ViewVenueTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_a_venue()
     {
-        $this->actAs('basic-user');
-        $venue = factory(Venue::class)->create();
+        $this->actAs(Role::BASIC);
+        $venue = VenueFactory::new()->create();
 
-        $response = $this->get(route('venues.show', ['venue' => $venue]));
+        $response = $this->showRequest($venue);
 
         $response->assertStatus(403);
     }
@@ -37,9 +41,9 @@ class ViewVenueTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_a_venue()
     {
-        $venue = factory(Venue::class)->create();
+        $venue = VenueFactory::new()->create();
 
-        $response = $this->get(route('venues.show', ['venue' => $venue]));
+        $response = $this->showRequest($venue);
 
         $response->assertRedirect(route('login'));
     }

@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\User\Events;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Event;
+use Tests\Factories\EventFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -17,8 +19,8 @@ class RestoreEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_event()
     {
-        $this->actAs('basic-user');
-        $event = factory(Event::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $this->actAs(Role::BASIC);
+        $event = EventFactory::new()->softDeleted()->create();
 
         $response = $this->put(route('events.restore', $event));
 

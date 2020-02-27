@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,9 +18,9 @@ class UnretireStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_unretire_a_retired_stable()
     {
-        $stable = factory(Stable::class)->states('retired')->create();
+        $stable = StableFactory::new()->retired()->create();
 
-        $response = $this->put(route('stables.retire', $stable));
+        $response = $this->retireRequest($stable);
 
         $response->assertRedirect(route('login'));
     }

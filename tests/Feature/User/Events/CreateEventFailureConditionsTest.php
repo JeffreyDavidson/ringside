@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Events;
 
-use Tests\TestCase;
-use App\Models\Venue;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\VenueFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -25,7 +26,7 @@ class CreateEventFailureConditionsTest extends TestCase
         return array_replace([
             'name' => 'Example Event Name',
             'date' => now()->toDateTimeString(),
-            'venue_id' => factory(Venue::class)->create()->id,
+            'venue_id' => VenueFactory::new()->create()->id,
             'preview' => 'This is an event preview.',
         ], $overrides);
     }
@@ -33,9 +34,9 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_an_event()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('events.create'));
+        $response = $this->createRequest('events');
 
         $response->assertForbidden();
     }
@@ -43,9 +44,9 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_an_event()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->post(route('events.store'), $this->validParams());
+        $response = $this->storeRequest('events', $this->validParams());
 
         $response->assertForbidden();
     }

@@ -2,17 +2,18 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\TagTeamFactory;
+use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
  * @group users
  * @group roster
  */
-class CreateStableTest extends TestCase
+class CreateStableFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,8 +25,8 @@ class CreateStableTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $wrestler = WrestlerFactory::new()->bookable()->create();
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
@@ -38,9 +39,9 @@ class CreateStableTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_stable()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('stables.create'));
+        $response = $this->createRequest('stables.create');
 
         $response->assertForbidden();
     }
@@ -48,9 +49,9 @@ class CreateStableTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_stable()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->post(route('stables.store'), $this->validParams());
+        $response = $this->storeRequest('stables', $this->validParams());
 
         $response->assertForbidden();
     }

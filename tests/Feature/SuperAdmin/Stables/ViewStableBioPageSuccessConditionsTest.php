@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,10 +19,10 @@ class ViewStableBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_a_stable_profile()
     {
-        $this->actAs('super-administrator');
-        $stable = factory(Stable::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $stable = StableFactory::new()->create();
 
-        $response = $this->get(route('stables.show', $stable));
+        $response = $this->showRequest($stable);
 
         $response->assertViewIs('stables.show');
         $this->assertTrue($response->data('stable')->is($stable));

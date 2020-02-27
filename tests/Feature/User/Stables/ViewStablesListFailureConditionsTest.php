@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -17,9 +18,9 @@ class ViewStablesListFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_stables_page()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('stables.index'));
+        $response = $this->indexRequest('stable');
 
         $response->assertForbidden();
     }

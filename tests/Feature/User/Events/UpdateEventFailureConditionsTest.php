@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\User\Events;
 
-use Tests\TestCase;
-use App\Models\Event;
-use App\Models\Venue;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
+use Tests\Factories\VenueFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -26,7 +27,7 @@ class UpdateEventFailureConditionsTest extends TestCase
         return array_replace([
             'name' => 'Example Event Name',
             'date' => now()->toDateTimeString(),
-            'venue_id' => factory(Venue::class)->create()->id,
+            'venue_id' => VenueFactory::new()->create()->id,
             'preview' => 'This is an event preview.',
         ], $overrides);
     }
@@ -34,10 +35,10 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_editing_an_event()
     {
-        $this->actAs('basic-user');
-        $event = factory(Event::class)->create();
+        $this->actAs(Role::BASIC);
+        $event = EventFactory::new()->create();
 
-        $response = $this->get(route('events.edit', $event));
+        $response = $this->editRequest($event);
 
         $response->assertForbidden();
     }
@@ -45,10 +46,10 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_an_event()
     {
-        $this->actAs('basic-user');
-        $event = factory(Event::class)->create();
+        $this->actAs(Role::BASIC);
+        $event = EventFactory::new()->create();
 
-        $response = $this->patch(route('events.update', $event), $this->validParams());
+        $response = $this->updateRequest($event, $this->validParams());
 
         $response->assertForbidden();
     }

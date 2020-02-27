@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -16,12 +17,12 @@ class RetireStableFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_retire_a_bookable_stable()
+    public function a_basic_user_cannot_retire_an_active_stable()
     {
-        $this->actAs('basic-user');
-        $stable = factory(Stable::class)->states('bookable')->create();
+        $this->actAs(Role::BASIC);
+        $stable = StableFactory::new()->active()->create();
 
-        $response = $this->put(route('stables.retire', $stable));
+        $response = $this->retireRequest($stable);
 
         $response->assertForbidden();
     }

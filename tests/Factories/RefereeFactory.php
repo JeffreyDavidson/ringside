@@ -27,7 +27,7 @@ class RefereeFactory extends BaseFactory
     public function pendingEmployment(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = RefereeStatus::PENDING_EMPLOYMENT;
+        $clone->attributes['status'] = RefereeStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
         $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->addDays(2));
         $clone->suspensionFactory = null;
@@ -48,7 +48,7 @@ class RefereeFactory extends BaseFactory
     public function bookable(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = RefereeStatus::BOOKABLE;
+        $clone->attributes['status'] = RefereeStatus::BOOKABLE;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
         // We set these to null since a referee cannot be bookable if any of these exist
         $clone->suspensionFactory = null;
@@ -61,7 +61,7 @@ class RefereeFactory extends BaseFactory
     public function injured(InjuryFactory $injuryFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = RefereeStatus::INJURED;
+        $clone->attributes['status'] = RefereeStatus::INJURED;
         $clone->injuryFactory = $injuryFactory ?? InjuryFactory::new();
         // We set the employment factory since a wrestler must be employed to retire
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
@@ -72,7 +72,7 @@ class RefereeFactory extends BaseFactory
     public function suspended(SuspensionFactory $suspensionFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = RefereeStatus::SUSPENDED;
+        $clone->attributes['status'] = RefereeStatus::SUSPENDED;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
 
         $clone->suspensionFactory = $suspensionFactory ?? $this->suspensionFactory ?? SuspensionFactory::new();
@@ -83,7 +83,7 @@ class RefereeFactory extends BaseFactory
     public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = RefereeStatus::RETIRED;
+        $clone->attributes['status'] = RefereeStatus::RETIRED;
         $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
         // We set the employment factory since a wrestler must be employed to retire
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);

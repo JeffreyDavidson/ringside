@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Stables;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Stable;
+use Tests\Factories\StableFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,10 +20,10 @@ class RetireStableSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_a_bookable_stable()
     {
-        $this->actAs('super-administrator');
-        $stable = factory(Stable::class)->states('bookable')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $stable = StableFactory::new()->active()->create();
 
-        $response = $this->put(route('stables.retire', $stable));
+        $response = $this->retireRequest($stable);
 
         $response->assertRedirect(route('stables.index'));
         tap($stable->fresh(), function ($stable) {

@@ -2,23 +2,24 @@
 
 namespace Tests\Feature\User\Events;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events
  * @group users
  */
-class ViewEventListFailureConditionsTest extends TestCase
+class ViewEventsListFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function a_basic_user_cannot_view_events_page()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('events.index'));
+        $response = $this->indexRequest('events');
 
         $response->assertForbidden();
     }

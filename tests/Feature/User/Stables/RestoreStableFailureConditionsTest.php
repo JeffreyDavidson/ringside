@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,11 +19,10 @@ class RestoreStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_stable()
     {
-        $this->actAs('basic-user');
-        $stable = factory(Stable::class)->create();
-        $stable->delete();
+        $this->actAs(Role::BASIC);
+        $stable = StableFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('stables.restore', $stable));
+        $response = $this->restoreRequest($stable);
 
         $response->assertForbidden();
     }

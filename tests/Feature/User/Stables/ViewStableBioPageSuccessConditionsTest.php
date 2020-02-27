@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,10 +19,10 @@ class ViewStableBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_can_view_their_stable_profile()
     {
-        $signedInUser = $this->actAs('basic-user');
-        $stable = factory(Stable::class)->create(['user_id' => $signedInUser->id]);
+        $signedInUser = $this->actAs(Role::BASIC);
+        $stable = StableFactory::new()->create(['user_id' => $signedInUser->id]);
 
-        $response = $this->get(route('stables.show', $stable));
+        $response = $this->showRequest($stable);
 
         $response->assertOk();
     }

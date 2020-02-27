@@ -2,23 +2,44 @@
 
 namespace Tests\Factories;
 
+use App\Enums\StableStatus;
 use App\Models\Stable;
+use Faker\Generator;
 
 class StableFactory extends BaseFactory
 {
-    /** @var EmploymentFactory|null */
-    public $employmentFactory;
-    /** @var SuspensionFactory|null */
-    public $suspensionFactory;
-    /** @var InjuryFactory|null */
-    public $injuryFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
     protected $factoriesToClone = [
-        'employmentFactory',
-        'suspensionFactory',
         'retirementFactory',
     ];
+
+    public function pendingIntroduction()
+    {
+        $clone = clone $this;
+        $clone->attributes['status'] = StableStatus::PENDING_INTRODUCTION;
+        $clone->retirementFactory = null;
+
+        return $clone;
+    }
+
+    public function active()
+    {
+        $clone = clone $this;
+        $clone->attributes['status'] = StableStatus::ACTIVE;
+        $clone->retirementFactory = null;
+
+        return $clone;
+    }
+
+    public function retired(RetirementFactory $retirementFactory = null)
+    {
+        $clone = clone $this;
+        $clone->attributes['status'] = StableStatus::RETIRED;
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
+
+        return $clone;
+    }
 
     public function withWrestlers(WrestlerFactory $wrestlerFactory = null)
     {
@@ -40,14 +61,6 @@ class StableFactory extends BaseFactory
     {
         $stable = Stable::create($this->resolveAttributes($attributes));
 
-        if ($this->employmentFactory) {
-            $this->employmentFactory->forStable($stable)->create();
-        }
-
-        if ($this->suspensionFactory) {
-            $this->suspensionFactory->forStable($stable)->create();
-        }
-
         if ($this->retirementFactory) {
             $this->retirementFactory->forStable($stable)->create();
         }
@@ -61,5 +74,13 @@ class StableFactory extends BaseFactory
         }
 
         return $stable;
+    }
+
+    protected function defaultAttributes(Generator $faker)
+    {
+        return [
+            'name' => $faker->name,
+            'status' => StableStatus::__default,
+        ];
     }
 }

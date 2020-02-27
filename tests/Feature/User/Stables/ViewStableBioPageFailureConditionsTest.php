@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\Factories\UserFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -19,11 +20,11 @@ class ViewStableBioPageFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_another_users_stable_profile()
     {
-        $this->actAs('basic-user');
-        $otherUser = factory(User::class)->create();
-        $stable = factory(Stable::class)->create(['user_id' => $otherUser->id]);
+        $this->actAs(Role::BASIC);
+        $otherUser = UserFactory::new()->create();
+        $stable = StableFactory::new()->create(['user_id' => $otherUser->id]);
 
-        $response = $this->get(route('stables.show', $stable));
+        $response = $this->showRequest($stable);
 
         $response->assertForbidden();
     }

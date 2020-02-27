@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Admin\Stables;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Stable;
+use Tests\Factories\StableFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -27,19 +29,17 @@ class ViewStablesSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $mapToIdAndName = function (Stable $stable) {
-            return ['id' => $stable->id, 'name' => e($stable->name)];
-        };
+        $active              = StableFactory::new()->active()->create();
+        $pendingIntroduction = StableFactory::new()->pendingIntroduction()->create();
+        $retired             = StableFactory::new()->retired()->create();
 
-        $bookable            = factory(Stable::class, 3)->states('bookable')->create();
-        $pendingIntroduction = factory(Stable::class, 3)->states('pending-introduction')->create();
 
         $this->stables = collect([
-            'bookable'             => $bookable,
+            'active'             => $active,
             'pending-introduction' => $pendingIntroduction,
             'retired'              => $retired,
             'all'                  => collect()
-                                  ->concat($bookable)
+                                  ->concat($active)
                                   ->concat($pendingIntroduction)
                                   ->concat($retired)
         ]);
@@ -48,9 +48,9 @@ class ViewStablesSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_stables_page()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->get(route('stables.index'));
+        $response = $this->indexRequest('stables');
 
         $response->assertOk();
         $response->assertViewIs('stables.index');
@@ -59,7 +59,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_stables()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('stables.index'));
 
@@ -70,22 +70,22 @@ class ViewStablesSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_view_bookable_stables()
+    public function an_administrator_can_view_active_stables()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('stables.index', ['status' => 'bookable']));
+        $responseAjax = $this->ajaxJson(route('stables.index', ['status' => 'active']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->stables->get('bookable')->count(),
-            'data'         => $this->stables->get('bookable')->toArray(),
+            'recordsTotal' => $this->stables->get('active')->count(),
+            'data'         => $this->stables->get('active')->toArray(),
         ]);
     }
 
     /** @test */
     public function an_administrator_can_view_pending_introduction_stables()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('stables.index', ['status' => 'pending-introduction']));
 
@@ -98,7 +98,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_retired_stables()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('stables.index', ['status' => 'retired']));
 

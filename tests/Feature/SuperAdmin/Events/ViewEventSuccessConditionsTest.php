@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Events;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Event;
+use Tests\Factories\EventFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -17,10 +19,10 @@ class ViewEventSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_an_event()
     {
-        $this->actAs('super-administrator');
-        $event = factory(Event::class)->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $event = EventFactory::new()->create();
 
-        $response = $this->get(route('events.show', $event));
+        $response = $this->showRequest($event);
 
         $response->assertViewIs('events.show');
         $this->assertTrue($response->data('event')->is($event));

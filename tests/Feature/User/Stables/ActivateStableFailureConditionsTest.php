@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\User\Stables;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Stable;
+use Tests\Factories\StableFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -18,10 +20,10 @@ class ActivateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_activate_a_pending_introduction_stable()
     {
-        $this->actAs('basic-user');
-        $stable = factory(Stable::class)->states('pending-introduction')->create();
+        $this->actAs(Role::BASIC);
+        $stable = StableFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->put(route('stables.activate', $stable));
+        $response = $this->activateRequest($stable);
 
         $response->assertForbidden();
     }

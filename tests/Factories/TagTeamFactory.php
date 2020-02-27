@@ -29,7 +29,7 @@ class TagTeamFactory extends BaseFactory
     public function pendingEmployment(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = TagTeamStatus::PENDING_EMPLOYMENT;
+        $clone->attributes['status'] = TagTeamStatus::PENDING_EMPLOYMENT;
         // We set these to null since we can't be pending employment if they're set
         $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->addDays(2));
         $clone->suspensionFactory = null;
@@ -49,7 +49,7 @@ class TagTeamFactory extends BaseFactory
     public function bookable(EmploymentFactory $employmentFactory = null, WrestlerFactory $wrestlerFactory = null)
     {
         $clone = clone $this;
-        $clone->status = TagTeamStatus::BOOKABLE;
+        $clone->attributes['status'] = TagTeamStatus::BOOKABLE;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
         $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
         // We set these to null since a TagTeam cannot be bookable if any of these exist
@@ -62,7 +62,7 @@ class TagTeamFactory extends BaseFactory
     public function suspended(SuspensionFactory $suspensionFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = TagTeamStatus::SUSPENDED;
+        $clone->attributes['status'] = TagTeamStatus::SUSPENDED;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
         $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
 
@@ -74,7 +74,7 @@ class TagTeamFactory extends BaseFactory
     public function retired(RetirementFactory $retirementFactory = null, EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
-        $clone->status = TagTeamStatus::RETIRED;
+        $clone->attributes['status'] = TagTeamStatus::RETIRED;
         $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
         $clone = $clone->withWrestlers($wrestlerFactory ?? $this->wrestlerFactory);
 

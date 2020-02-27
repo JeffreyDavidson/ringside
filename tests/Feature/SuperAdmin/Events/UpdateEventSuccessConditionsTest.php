@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Events;
 
-use Tests\TestCase;
-use App\Models\Event;
-use App\Models\Venue;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
+use Tests\Factories\VenueFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -26,7 +27,7 @@ class UpdateEventSuccessConditionsTest extends TestCase
         return array_replace([
             'name' => 'Example Event Name',
             'date' => now()->toDateTimeString(),
-            'venue_id' => factory(Venue::class)->create()->id,
+            'venue_id' => VenueFactory::new()->create()->id,
             'preview' => 'This is an event preview.',
         ], $overrides);
     }
@@ -34,10 +35,10 @@ class UpdateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_editing_a_scheduled_event()
     {
-        $this->actAs('super-administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $event = EventFactory::new()->scheduled()->create();
 
-        $response = $this->get(route('events.edit', $event));
+        $response = $this->editRequest($event);
 
         $response->assertViewIs('events.edit');
         $this->assertTrue($response->data('event')->is($event));
@@ -46,10 +47,10 @@ class UpdateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_update_a_scheduled_event()
     {
-        $this->actAs('super-administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $event = EventFactory::new()->scheduled()->create();
 
-        $response = $this->patch(route('events.update', $event), $this->validParams());
+        $response = $this->updateRequest($event, $this->validParams());
 
         $response->assertRedirect(route('events.index'));
         tap($event->fresh(), function ($event) {

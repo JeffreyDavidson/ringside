@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\User\Venues;
 
+use App\Enums\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -10,6 +12,8 @@ use Tests\TestCase;
  */
 class CreateVenueFailureConditionsTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Valid parameters for request.
      *
@@ -31,7 +35,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_venue()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->createRequest('venue');
 
@@ -41,7 +45,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_venue()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->storeRequest('venue', $this->validParams());
 

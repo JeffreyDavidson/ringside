@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Events;
 
-use Tests\TestCase;
-use App\Models\Event;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -17,10 +18,10 @@ class DeleteEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_an_event()
     {
-        $this->actAs('basic-user');
-        $event = factory(Event::class)->create();
+        $this->actAs(Role::BASIC);
+        $event = EventFactory::new()->create();
 
-        $response = $this->delete(route('events.destroy', $event));
+        $response = $this->deleteRequest($event);
 
         $response->assertForbidden();
     }

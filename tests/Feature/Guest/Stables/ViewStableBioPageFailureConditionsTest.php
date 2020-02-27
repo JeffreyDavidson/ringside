@@ -2,25 +2,25 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
  * @group guests
  * @group roster
  */
-class ViewStableBioPageTest extends TestCase
+class ViewStableBioPageFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function a_guest_cannot_view_a_stable_profile()
     {
-        $stable = factory(Stable::class)->create();
+        $stable = StableFactory::new()->create();
 
-        $response = $this->get(route('stables.show', $stable));
+        $response = $this->showRequest($stable);
 
         $response->assertRedirect(route('login'));
     }

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,10 +19,10 @@ class UnretireStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_unretire_a_retired_stable()
     {
-        $this->actAs('basic-user');
-        $stable = factory(Stable::class)->states('retired')->create();
+        $this->actAs(Role::BASIC);
+        $stable = StableFactory::new()->retired()->create();
 
-        $response = $this->put(route('stables.retire', $stable));
+        $response = $this->retireRequest($stable);
 
         $response->assertForbidden();
     }

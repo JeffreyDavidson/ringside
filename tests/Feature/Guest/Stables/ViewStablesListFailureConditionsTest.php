@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -17,7 +17,7 @@ class ViewStablesListFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_stables_page()
     {
-        $response = $this->get(route('stables.index'));
+        $response = $this->indexRequest('stables');
 
         $response->assertRedirect(route('login'));
     }

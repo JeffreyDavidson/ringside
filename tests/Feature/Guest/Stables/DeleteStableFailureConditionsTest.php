@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -16,11 +16,11 @@ class DeleteStableFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_delete_a_bookable_stable()
+    public function a_guest_cannot_delete_an_active_stable()
     {
-        $stable = factory(Stable::class)->states('bookable')->create();
+        $stable = StableFactory::new()->active()->create();
 
-        $response = $this->delete(route('stables.destroy', $stable));
+        $response = $this->delete($stable);
 
         $response->assertRedirect(route('login'));
     }
@@ -28,9 +28,9 @@ class DeleteStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_pending_introduction_stable()
     {
-        $stable = factory(Stable::class)->states('pending-introduction')->create();
+        $stable = StableFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->delete(route('stables.destroy', $stable));
+        $response = $this->deleteRequest($stable);
 
         $response->assertRedirect(route('login'));
     }
@@ -38,9 +38,9 @@ class DeleteStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_retired_stable()
     {
-        $stable = factory(Stable::class)->states('retired')->create();
+        $stable = StableFactory::new()->retired()->create();
 
-        $response = $this->delete(route('stables.destroy', $stable));
+        $response = $this->deleteRequest($stable);
 
         $response->assertRedirect(route('login'));
     }

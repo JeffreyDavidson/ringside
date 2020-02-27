@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Admin\Stables;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Stable;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\TagTeamFactory;
+use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -26,8 +27,8 @@ class CreateStableSuccessConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestler = factory(Wrestler::class)->states('bookable')->create();
-        $tagTeam = factory(TagTeam::class)->states('bookable')->create();
+        $wrestler = WrestlerFactory::new()->count(1)->bookable()->create();
+        $tagTeam = TagTeamFactory::new()->count(1)->bookable()->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
@@ -40,7 +41,7 @@ class CreateStableSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_stable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('stable');
 
@@ -53,7 +54,7 @@ class CreateStableSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('stable', $this->validParams());
 

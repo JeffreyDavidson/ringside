@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Admin\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -16,16 +17,16 @@ class EmployStableSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_employ_a_pending_introduction_stable()
+    public function an_administrator_can_introduce_a_pending_introduction_stable()
     {
-        $this->actAs('administrator');
-        $stable = factory(Stable::class)->states('pending-introduction')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $stable = StableFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->put(route('stables.employ', $stable));
+        $response = $this->introduceRequest($stable);
 
         $response->assertRedirect(route('stables.index'));
         tap($stable->fresh(), function ($stable) {
-            $this->assertTrue($stable->is_bookable);
+            $this->assertTrue($stable->isIntroduced());
         });
     }
 }

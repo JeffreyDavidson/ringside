@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Events;
 
-use Tests\TestCase;
-use App\Models\Event;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -17,10 +18,10 @@ class RestoreEventSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_restore_a_deleted_event()
     {
-        $this->actAs('super-administrator');
-        $event = factory(Event::class)->states('scheduled')->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $event = EventFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('events.restore', $event));
+        $response = $this->restoreRequest($event);
 
         $response->assertRedirect(route('events.index'));
         $this->assertNull($event->fresh()->deleted_at);

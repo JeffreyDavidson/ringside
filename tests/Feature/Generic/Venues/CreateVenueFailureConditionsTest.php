@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Generic\Venues;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group venues
@@ -35,7 +36,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['name' => null]));
 
@@ -48,7 +49,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['name' => ['not-a-string']]));
 
@@ -61,7 +62,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_address_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['address1' => null]));
 
@@ -74,7 +75,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_address_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['address1' => ['not-a-string']]));
 
@@ -87,7 +88,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_city_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['city' => null]));
 
@@ -100,7 +101,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_city_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['city' => ['not-a-string']]));
 
@@ -113,7 +114,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_state_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['state' => null]));
 
@@ -126,7 +127,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_state_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['state' => ['not-a-string']]));
 
@@ -139,7 +140,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_zip_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['zip' => null]));
 
@@ -152,7 +153,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_zip_must_be_an_integer()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['zip' => 'not-an-integer']));
 
@@ -165,7 +166,7 @@ class CreateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_venue_zip_must_be_five_digits_long()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->storeRequest('venue', $this->validParams(['zip' => '123456']));
 

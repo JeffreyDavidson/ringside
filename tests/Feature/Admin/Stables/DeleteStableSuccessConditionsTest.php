@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Admin\Stables;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,10 +20,10 @@ class DeleteStableSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_bookable_stable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('bookable')->create();
 
-        $response = $this->delete(route('stables.destroy', $stable));
+        $response = $this->deleteRequest($stable);
 
         $response->assertRedirect(route('stables.index'));
         $this->assertSoftDeleted('stables', ['name' => $stable->name]);
@@ -30,10 +32,10 @@ class DeleteStableSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_pending_introduction_stable()
     {
-        $this->actAs('administrator');
-        $stable = factory(Stable::class)->states('pending-introduction')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $stable = StableFactory::new()->pendingIntroduction()->create();
 
-        $response = $this->delete(route('stables.destroy', $stable));
+        $response = $this->deleteRequest($stable);
 
         $response->assertRedirect(route('stables.index'));
         $this->assertSoftDeleted('stables', ['name' => $stable->name]);
@@ -42,10 +44,10 @@ class DeleteStableSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_retired_stable()
     {
-        $this->actAs('administrator');
-        $stable = factory(Stable::class)->states('retired')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $stable = StableFactory::new()->retired()->create();
 
-        $response = $this->delete(route('stables.destroy', $stable));
+        $response = $this->deleteRequest($stable);
 
         $response->assertRedirect(route('stables.index'));
         $this->assertSoftDeleted('stables', ['name' => $stable->name]);

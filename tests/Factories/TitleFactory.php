@@ -5,6 +5,7 @@ namespace Tests\Factories;
 use App\Enums\TitleStatus;
 use App\Models\Title;
 use Carbon\Carbon;
+use Faker\Generator;
 use Illuminate\Support\Str;
 
 class TitleFactory extends BaseFactory
@@ -73,7 +74,7 @@ class TitleFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [
             'name' => Str::title($faker->words(2, true)),

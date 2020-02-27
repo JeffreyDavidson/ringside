@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\User\Venues;
 
-use Tests\TestCase;
-use App\Models\Venue;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\VenueFactory;
+use Tests\TestCase;
 
 /**
  * @group venues
@@ -35,8 +36,8 @@ class UpdateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_editing_a_venue()
     {
-        $this->actAs('basic-user');
-        $venue = factory(Venue::class)->create();
+        $this->actAs(Role::BASIC);
+        $venue = VenueFactory::new()->create();
 
         $response = $this->editRequest($venue);
 
@@ -46,8 +47,8 @@ class UpdateVenueFailureConditionsTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_a_venue()
     {
-        $this->actAs('basic-user');
-        $venue = factory(Venue::class)->create();
+        $this->actAs(Role::BASIC);
+        $venue = VenueFactory::new()->create();
 
         $response = $this->updateRequest($venue, $this->validParams());
 

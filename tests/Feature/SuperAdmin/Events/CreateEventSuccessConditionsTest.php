@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\SuperAdmin\Events;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Event;
-use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\VenueFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -26,7 +27,7 @@ class CreateEventSuccessConditionsTest extends TestCase
         return array_replace([
             'name' => 'Example Event Name',
             'date' => now()->toDateTimeString(),
-            'venue_id' => factory(Venue::class)->create()->id,
+            'venue_id' => VenueFactory::new()->create()->id,
             'preview' => 'This is an event preview.',
         ], $overrides);
     }
@@ -34,9 +35,9 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_the_form_for_creating_an_event()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $response = $this->get(route('events.create'));
+        $response = $this->createRequest('events');
 
         $response->assertViewIs('events.create');
         $response->assertViewHas('event', new Event);
@@ -45,10 +46,9 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_an_event()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $response = $this->from(route('events.create'))
-                        ->post(route('events.store'), $this->validParams());
+        $response = $this->storeRequest('events', $this->validParams());
 
         $response->assertRedirect(route('events.index'));
         tap(Event::first(), function ($event) {

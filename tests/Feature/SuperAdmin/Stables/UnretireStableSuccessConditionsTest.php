@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\SuperAdmin\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,10 +19,10 @@ class UnretireStableSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_unretire_a_retired_stable()
     {
-        $this->actAs('super-administrator');
-        $stable = factory(Stable::class)->states('retired')->create();
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
+        $stable = StableFactory::new()->retired()->create();
 
-        $response = $this->put(route('stables.unretire', $stable));
+        $response = $this->unretireRequest($stable);
 
         $response->assertRedirect(route('stables.index'));
         $this->assertEquals(now()->toDateTimeString(), $stable->fresh()->retirements()->latest()->first()->ended_at);

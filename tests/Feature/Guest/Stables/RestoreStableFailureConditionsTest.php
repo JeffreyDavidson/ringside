@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -18,10 +18,9 @@ class RestoreStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_restore_a_deleted_stable()
     {
-        $stable = factory(Stable::class)->create();
-        $stable->delete();
+        $stable = StableFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('stables.restore', $stable));
+        $response = $this->restoreRequest($stable);
 
         $response->assertRedirect(route('login'));
     }

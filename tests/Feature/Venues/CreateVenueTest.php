@@ -2,11 +2,14 @@
 
 namespace Tests\Feature\Venues;
 
-use Tests\TestCase;
+use App\Enums\Role;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-/** @group venues */
+/**
+ * @group venues
+ */
 class CreateVenueTest extends TestCase
 {
     use RefreshDatabase;
@@ -32,9 +35,9 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_a_venue()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->get(route('venues.create'));
+        $response = $this->createRequest('venues');
 
         $response->assertViewIs('venues.create');
     }
@@ -42,9 +45,9 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_the_form_for_creating_a_venue()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
-        $response = $this->get(route('venues.create'));
+        $response = $this->createRequest('venues');
 
         $response->assertStatus(403);
     }
@@ -52,7 +55,7 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_creating_a_venue()
     {
-        $response = $this->get(route('venues.create'));
+        $response = $this->createRequest('venues');
 
         $response->assertRedirect(route('login'));
     }
@@ -60,9 +63,9 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_venue()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->post(route('venues.store'), $this->validParams());
+        $response = $this->storeRequest('venues', $this->validParams());
 
         $response->assertRedirect(route('venues.index'));
         tap(Venue::first(), function ($venue) {
@@ -78,9 +81,9 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function a_venue_address2_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->post(route('venues.store'), $this->validParams(['address2' => null]));
+        $response = $this->storeRequest('venues', $this->validParams(['address2' => null]));
 
         $response->assertSessionHasNoErrors();
     }
@@ -88,7 +91,7 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_venue()
     {
-        $this->actAs('basic-user');
+        $this->actAs(Role::BASIC);
 
         $response = $this->post(route('venues.store'), $this->validParams());
 
@@ -98,7 +101,7 @@ class CreateVenueTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_a_venue()
     {
-        $response = $this->post(route('venues.store'), $this->validParams());
+        $response = $this->storeRequest('venues', $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

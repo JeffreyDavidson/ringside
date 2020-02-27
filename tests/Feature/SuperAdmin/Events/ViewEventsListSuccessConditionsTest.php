@@ -2,15 +2,16 @@
 
 namespace Tests\Feature\SuperAdmin\Events;
 
-use Tests\TestCase;
-use App\Models\Event;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
+use Tests\TestCase;
 
 /**
  * @group events
  * @group superadmins
  */
-class ViewScheduledEventListSuccessConditionsTest extends TestCase
+class ViewEventsListSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -26,24 +27,24 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $scheduled  = factory(Event::class, 3)->states('scheduled')->create();
-        $past       = factory(Event::class, 3)->states('past')->create();
+        $scheduled = EventFactory::new()->count(3)->scheduled()->create();
+        $past = EventFactory::new()->count(3)->past()->create();
 
         $this->events = collect([
             'scheduled' => $scheduled,
             'past'      => $past,
             'all'       => collect()
                         ->concat($scheduled)
-                        ->concat($past)
+                        ->concat($past),
         ]);
     }
 
     /** @test */
     public function a_super_administrator_can_view_events_page()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $response = $this->get(route('events.index'));
+        $response = $this->indexRequest('events');
 
         $response->assertOk();
         $response->assertViewIs('events.index');
@@ -52,7 +53,7 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_all_events()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('events.index'));
 
@@ -65,7 +66,7 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_scheduled_events()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('events.index', ['status' => 'scheduled']));
 
@@ -78,7 +79,7 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_past_events()
     {
-        $this->actAs('super-administrator');
+        $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('events.index', ['status' => 'past']));
 

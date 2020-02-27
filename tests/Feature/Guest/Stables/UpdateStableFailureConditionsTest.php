@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\Factories\TagTeamFactory;
+use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -25,8 +25,8 @@ class UpdateStableFailureConditionsTest extends TestCase
      */
     private function validParams($overrides = [])
     {
-        $wrestlers = factory(Wrestler::class, 1)->states('bookable')->create();
-        $tagTeams = factory(TagTeam::class, 1)->states('bookable')->create();
+        $wrestlers = WrestlerFactory::new()->count(1)->bookable()->create();
+        $tagTeams = TagTeamFactory::new()->count(1)->bookable()->create();
 
         return array_replace([
             'name' => 'Example Stable Name',
@@ -39,9 +39,9 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_editing_a_stable()
     {
-        $stable = factory(Stable::class)->create();
+        $stable = StableFactory::new()->create();
 
-        $response = $this->get(route('stables.edit', $stable));
+        $response = $this->editRequest($stable);
 
         $response->assertRedirect(route('login'));
     }
@@ -49,9 +49,9 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_update_a_stable()
     {
-        $stable = factory(Stable::class)->create();
+        $stable = StableFactory::new()->create();
 
-        $response = $this->put(route('stables.update', $stable), $this->validParams());
+        $response = $this->updateRequest($stable, $this->validParams());
 
         $response->assertRedirect(route('login'));
     }

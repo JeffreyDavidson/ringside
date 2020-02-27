@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Guest\Stables;
 
-use Tests\TestCase;
-use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
@@ -16,11 +16,11 @@ class RetireStableFailureConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_cannot_retire_a_bookable_stable()
+    public function a_guest_cannot_retire_an_active_stable()
     {
-        $stable = factory(Stable::class)->states('bookable')->create();
+        $stable = StableFactory::new()->active()->create();
 
-        $response = $this->put(route('stables.retire', $stable));
+        $response = $this->retireRequest($stable);
 
         $response->assertRedirect(route('login'));
     }
