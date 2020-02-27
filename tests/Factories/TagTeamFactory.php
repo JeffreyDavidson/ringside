@@ -1,8 +1,11 @@
 <?php
 
-use App\Enums\TagTeamStatus;
+namespace Tests\Factories;
+
+use Faker\Generator;
 use App\Models\TagTeam;
 use Illuminate\Support\Str;
+use App\Enums\TagTeamStatus;
 
 class TagTeamFactory extends BaseFactory
 {
@@ -108,7 +111,7 @@ class TagTeamFactory extends BaseFactory
             if ($this->employmentFactory) {
                 $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
-            dd('t2esting');
+            // dd('t2esting');
 
             if ($this->suspensionFactory) {
                 $this->suspensionFactory->forTagTeam($tagTeam)->create();
@@ -134,7 +137,7 @@ class TagTeamFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [
             'name'           => Str::title($faker->words(2, true)),

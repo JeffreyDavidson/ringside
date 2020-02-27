@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin\Wrestlers;
 
 use App\Enums\Role;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin\TagTeams;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use TagTeamFactory;
+use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
 
 /**

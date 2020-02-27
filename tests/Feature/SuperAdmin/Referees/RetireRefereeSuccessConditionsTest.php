@@ -3,7 +3,7 @@
 namespace Tests\Feature\SuperAdmin\Referees;
 
 use App\Enums\Role;
-use RefereeFactory;
+use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin\Manager;
 
 use App\Enums\Role;
-use ManagerFactory;
+use Tests\Factories\ManagerFactory;
 use Tests\TestCase;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;

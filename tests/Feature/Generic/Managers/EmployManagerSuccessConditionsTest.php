@@ -4,7 +4,7 @@ namespace Tests\Feature\Generic\Manager;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use ManagerFactory;
+use Tests\Factories\ManagerFactory;
 use Tests\TestCase;
 
 /**

@@ -4,7 +4,7 @@ namespace Tests\Feature\Guest\Wrestlers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 
 /**
  * @group wrestlers

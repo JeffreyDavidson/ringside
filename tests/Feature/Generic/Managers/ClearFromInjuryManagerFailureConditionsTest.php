@@ -5,7 +5,7 @@ namespace Tests\Feature\Generic\Managers;
 use App\Enums\Role;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use ManagerFactory;
+use Tests\Factories\ManagerFactory;
 use Tests\TestCase;
 
 /**

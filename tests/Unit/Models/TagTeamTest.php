@@ -6,9 +6,9 @@ use App\Enums\TagTeamStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use TagTeamFactory;
+use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 
 /**
  * @group tagteams

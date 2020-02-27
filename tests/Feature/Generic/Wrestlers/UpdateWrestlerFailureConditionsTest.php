@@ -5,7 +5,7 @@ namespace Tests\Feature\Generic\Wrestlers;
 use Carbon\Carbon;
 use App\Enums\Role;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

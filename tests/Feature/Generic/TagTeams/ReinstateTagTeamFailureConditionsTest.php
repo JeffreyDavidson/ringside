@@ -5,7 +5,7 @@ namespace Tests\Feature\Generic\TagTeams;
 use App\Enums\Role;
 use App\Exceptions\CannotBeReinstatedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use TagTeamFactory;
+use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
 
 /**

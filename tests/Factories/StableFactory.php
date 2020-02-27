@@ -1,8 +1,8 @@
 <?php
 
+namespace Tests\Factories;
+
 use App\Models\Stable;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
 
 class StableFactory extends BaseFactory
 {

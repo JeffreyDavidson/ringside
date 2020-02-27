@@ -6,7 +6,7 @@ use App\Enums\Role;
 use App\Models\Referee;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use RefereeFactory;
+use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
 
 /**

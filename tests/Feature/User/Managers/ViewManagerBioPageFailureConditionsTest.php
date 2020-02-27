@@ -4,9 +4,9 @@ namespace Tests\Feature\User\Managers;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use ManagerFactory;
+use Tests\Factories\ManagerFactory;
+use Tests\Factories\UserFactory;
 use Tests\TestCase;
-use UserFactory;
 
 /**
  * @group managers

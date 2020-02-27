@@ -3,7 +3,7 @@
 namespace Tests\Feature\Guest\TagTeams;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use TagTeamFactory;
+use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
 
 /**

@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Factories;
+
 use App\Enums\WrestlerStatus;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Faker\Generator;
 use Illuminate\Support\Str;
 
 class WrestlerFactory extends BaseFactory
@@ -143,7 +146,7 @@ class WrestlerFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [
             'name' => $faker->name,

@@ -7,7 +7,7 @@ use App\Models\Title;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use TitleFactory;
+use Tests\Factories\TitleFactory;
 
 /**
  * @group titles

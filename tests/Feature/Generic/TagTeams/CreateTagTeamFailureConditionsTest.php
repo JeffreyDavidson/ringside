@@ -4,11 +4,11 @@ namespace Tests\Feature\Generic\TagTeams;
 
 use App\Enums\Role;
 use App\Models\TagTeam;
-use EmploymentFactory;
+use Tests\Factories\EmploymentFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use TagTeamFactory;
+use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 
 /**
  * @group tagteams

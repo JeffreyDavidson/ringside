@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Factories;
+
 use App\Enums\Role;
 use App\Models\User;
+use Faker\Generator;
 use Illuminate\Support\Str;
 
 class UserFactory extends BaseFactory
@@ -38,7 +41,7 @@ class UserFactory extends BaseFactory
         return $this->withClone(fn ($factory) => $factory->role = $role);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [
             'first_name' => $faker->firstName,

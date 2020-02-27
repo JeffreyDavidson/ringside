@@ -6,7 +6,7 @@ use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use TitleFactory;
+use Tests\Factories\TitleFactory;
 
 /**
  * @group titles

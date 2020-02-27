@@ -4,9 +4,9 @@ namespace Tests\Feature\User\Wrestlers;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\UserFactory;
+use Tests\Factories\WrestlerFactory;
 use Tests\TestCase;
-use UserFactory;
-use WrestlerFactory;
 
 /**
  * @group wrestlers

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Factories;
+
 use App\Enums\TitleStatus;
 use App\Models\Title;
 use Carbon\Carbon;

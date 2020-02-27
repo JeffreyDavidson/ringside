@@ -1,15 +1,16 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Title;
+namespace Tests\Factories;
+
+use App\Models\Employment;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Models\Retirement;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-class RetirementFactory extends BaseFactory
+class EmploymentFactory extends BaseFactory
 {
     /** @var \Carbon\Carbon|null */
     public $startDate;
@@ -23,8 +24,6 @@ class RetirementFactory extends BaseFactory
     public $managers;
     /** @var Referee[] */
     public $referees;
-    /** @var Title[] */
-    public $titles;
 
     /**
      * @param string|Carbon $startDate
@@ -100,50 +99,36 @@ class RetirementFactory extends BaseFactory
         return $clone;
     }
 
-    public function forTitle(Title $title)
-    {
-        return $this->forTitles([$title]);
-    }
-
-    public function forTitles($titles)
-    {
-        $clone = clone $this;
-        $clone->titles = $titles;
-
-        return $clone;
-    }
-
     public function create($attributes = [])
     {
-        $retirees = collect()
+        $employees = collect()
             ->merge($this->tagTeams)
             ->merge($this->wrestlers)
             ->merge($this->referees)
             ->merge($this->managers)
-            ->merge($this->titles)
             ->flatten(1);
-
+        // dd($employees);
 
         $this->startDate = $this->startDate ?? now();
 
-        if (empty($retirees)) {
-            throw new \Exception('Attempted to create an retirement without a retireable entity');
+        if (empty($employees)) {
+            throw new \Exception('Attempted to create an employment without a employable entity');
         }
 
-        $retirements = new Collection();
+        $employments = new Collection();
 
-        foreach ($retirees as $retiree) {
-            $retirement = new Retirement();
-            $retirement->started_at = $this->startDate;
-            $retirement->ended_at = $this->endDate;
-            $retirement->retiree()->associate($retiree);
-            $retirement->save();
-            $retirements->push($retirement);
-            if ($retiree instanceof TagTeam && $retiree->currentWrestlers->isNotEmpty()) {
-                $this->forWrestlers($retiree->currentWrestlers)->create();
+        foreach ($employees as $employee) {
+            $employment = new Employment();
+            $employment->started_at = $this->startDate;
+            $employment->ended_at = $this->endDate;
+            $employment->employable()->associate($employee);
+            $employment->save();
+            $employments->push($employment);
+            if ($employee instanceof TagTeam && $employee->currentWrestlers->isNotEmpty()) {
+                $this->forWrestlers($employee->currentWrestlers)->create();
             }
         }
 
-        return $retirements->count() === 1 ? $retirements->first() : $retirements;
+        return $employments->count() === 1 ? $employments->first() : $employments;
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\Feature\SuperAdmin\Managers;
 use App\Enums\Role;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use ManagerFactory;
+use Tests\Factories\ManagerFactory;
 use Tests\TestCase;
 
 /**

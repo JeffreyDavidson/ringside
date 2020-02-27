@@ -5,7 +5,7 @@ namespace Tests\Feature\Admin\Titles;
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use TitleFactory;
+use Tests\Factories\TitleFactory;
 
 /**
  * @group titles

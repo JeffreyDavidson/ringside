@@ -5,7 +5,7 @@ namespace Tests\Feature\Generic\Referees;
 use App\Enums\Role;
 use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use RefereeFactory;
+use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
 
 /**

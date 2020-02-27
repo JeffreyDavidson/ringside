@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Factories;
+
 use App\Enums\ManagerStatus;
 use App\Models\Manager;
 use App\Models\TagTeam;
+use Faker\Generator;
 
 class ManagerFactory extends BaseFactory
 {
@@ -127,7 +130,7 @@ class ManagerFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [
             'first_name' => $faker->firstName,

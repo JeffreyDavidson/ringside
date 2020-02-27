@@ -1,7 +1,10 @@
 <?php
 
-use App\Models\Referee;
+namespace Tests\Factories;
+
 use App\Enums\RefereeStatus;
+use App\Models\Referee;
+use Faker\Generator;
 
 class RefereeFactory extends BaseFactory
 {
@@ -119,7 +122,7 @@ class RefereeFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [
             'first_name' => $faker->firstName,

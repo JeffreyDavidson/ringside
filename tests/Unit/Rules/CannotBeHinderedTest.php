@@ -5,7 +5,7 @@ namespace Tests\Unit\Rules;
 use App\Rules\CannotBeHindered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 
 class CannotBeHinderedTest extends TestCase
 {

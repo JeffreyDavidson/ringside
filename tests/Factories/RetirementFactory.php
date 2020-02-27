@@ -1,24 +1,32 @@
 <?php
 
+namespace Tests\Factories;
+
 use Carbon\Carbon;
-use App\Models\Injury;
+use App\Models\Title;
 use App\Models\Manager;
 use App\Models\Referee;
+use App\Models\TagTeam;
 use App\Models\Wrestler;
+use App\Models\Retirement;
 use Illuminate\Support\Collection;
 
-class InjuryFactory extends BaseFactory
+class RetirementFactory extends BaseFactory
 {
     /** @var \Carbon\Carbon|null */
     public $startDate;
     /** @var \Carbon\Carbon|null */
     public $endDate;
+    /** @var TagTeam[] */
+    public $tagTeams;
     /** @var Wrestler[] */
     public $wrestlers;
     /** @var Manager[] */
     public $managers;
     /** @var Referee[] */
     public $referees;
+    /** @var Title[] */
+    public $titles;
 
     /**
      * @param string|Carbon $startDate
@@ -38,6 +46,19 @@ class InjuryFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->endDate = $endDate instanceof Carbon ? $endDate : new Carbon($endDate);
+
+        return $clone;
+    }
+
+    public function forTagTeam(TagTeam $tagTeam)
+    {
+        return $this->forTagTeams([$tagTeam]);
+    }
+
+    public function forTagTeams($tagTeams)
+    {
+        $clone = clone $this;
+        $clone->tagTeams = $tagTeams;
 
         return $clone;
     }
@@ -81,32 +102,49 @@ class InjuryFactory extends BaseFactory
         return $clone;
     }
 
+    public function forTitle(Title $title)
+    {
+        return $this->forTitles([$title]);
+    }
+
+    public function forTitles($titles)
+    {
+        $clone = clone $this;
+        $clone->titles = $titles;
+
+        return $clone;
+    }
+
     public function create($attributes = [])
     {
-        $injurables = collect()
+        $retirees = collect()
+            ->merge($this->tagTeams)
             ->merge($this->wrestlers)
             ->merge($this->referees)
             ->merge($this->managers)
+            ->merge($this->titles)
             ->flatten(1);
-
 
         $this->startDate = $this->startDate ?? now();
 
-        if (empty($injurables)) {
-            throw new \Exception('Attempted to create an injury without an injurable entity');
+        if (empty($retirees)) {
+            throw new \Exception('Attempted to create an retirement without a retireable entity');
         }
 
-        $injuries = new Collection();
+        $retirements = new Collection();
 
-        foreach ($injurables as $injuree) {
-            $injury = new Injury();
-            $injury->started_at = $this->startDate;
-            $injury->ended_at = $this->endDate;
-            $injury->injurable()->associate($injuree);
-            $injury->save();
-            $injuries->push($injuree);
+        foreach ($retirees as $retiree) {
+            $retirement = new Retirement();
+            $retirement->started_at = $this->startDate;
+            $retirement->ended_at = $this->endDate;
+            $retirement->retiree()->associate($retiree);
+            $retirement->save();
+            $retirements->push($retirement);
+            if ($retiree instanceof TagTeam && $retiree->currentWrestlers->isNotEmpty()) {
+                $this->forWrestlers($retiree->currentWrestlers)->create();
+            }
         }
 
-        return $injuries->count() === 1 ? $injuries->first() : $injuries;
+        return $retirements->count() === 1 ? $retirements->first() : $retirements;
     }
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature\Generic\Referee;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use RefereeFactory;
+use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
 
 /**

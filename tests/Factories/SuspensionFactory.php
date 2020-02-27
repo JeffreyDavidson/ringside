@@ -1,14 +1,16 @@
 <?php
 
-use App\Models\Employment;
+namespace Tests\Factories;
+
+use Carbon\Carbon;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use App\Models\Suspension;
 use Illuminate\Support\Collection;
 
-class EmploymentFactory extends BaseFactory
+class SuspensionFactory extends BaseFactory
 {
     /** @var \Carbon\Carbon|null */
     public $startDate;
@@ -99,7 +101,7 @@ class EmploymentFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $employees = collect()
+        $suspendees = collect()
             ->merge($this->tagTeams)
             ->merge($this->wrestlers)
             ->merge($this->referees)
@@ -108,24 +110,24 @@ class EmploymentFactory extends BaseFactory
 
         $this->startDate = $this->startDate ?? now();
 
-        if (empty($employees)) {
-            throw new \Exception('Attempted to create an employment without a employable entity');
+        if (empty($suspendees)) {
+            throw new \Exception('Attempted to create a suspension without a suspendable entity');
         }
 
-        $employments = new Collection();
+        $suspensions = new Collection();
 
-        foreach ($employees as $employee) {
-            $employment = new Employment();
-            $employment->started_at = $this->startDate;
-            $employment->ended_at = $this->endDate;
-            $employment->employable()->associate($employee);
-            $employment->save();
-            $employments->push($employment);
-            if ($employee instanceof TagTeam && $employee->currentWrestlers->isNotEmpty()) {
-                $this->forWrestlers($employee->currentWrestlers)->create();
+        foreach ($suspendees as $suspendee) {
+            $suspension = new Suspension();
+            $suspension->started_at = $this->startDate;
+            $suspension->ended_at = $this->endDate;
+            $suspension->suspendable()->associate($suspendee);
+            $suspension->save();
+            $suspensions->push($suspension);
+            if ($suspendee instanceof TagTeam && $suspendee->currentWrestlers->isNotEmpty()) {
+                $this->forWrestlers($suspendee->currentWrestlers)->create();
             }
         }
 
-        return $employments->count() === 1 ? $employments->first() : $employments;
+        return $suspensions->count() === 1 ? $suspensions->first() : $suspensions;
     }
 }

@@ -1,21 +1,20 @@
 <?php
 
+namespace Tests\Factories;
+
 use Carbon\Carbon;
+use App\Models\Injury;
 use App\Models\Manager;
 use App\Models\Referee;
-use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Models\Suspension;
 use Illuminate\Support\Collection;
 
-class SuspensionFactory extends BaseFactory
+class InjuryFactory extends BaseFactory
 {
     /** @var \Carbon\Carbon|null */
     public $startDate;
     /** @var \Carbon\Carbon|null */
     public $endDate;
-    /** @var TagTeam[] */
-    public $tagTeams;
     /** @var Wrestler[] */
     public $wrestlers;
     /** @var Manager[] */
@@ -41,19 +40,6 @@ class SuspensionFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->endDate = $endDate instanceof Carbon ? $endDate : new Carbon($endDate);
-
-        return $clone;
-    }
-
-    public function forTagTeam(TagTeam $tagTeam)
-    {
-        return $this->forTagTeams([$tagTeam]);
-    }
-
-    public function forTagTeams($tagTeams)
-    {
-        $clone = clone $this;
-        $clone->tagTeams = $tagTeams;
 
         return $clone;
     }
@@ -99,33 +85,30 @@ class SuspensionFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $suspendees = collect()
-            ->merge($this->tagTeams)
+        $injurables = collect()
             ->merge($this->wrestlers)
             ->merge($this->referees)
             ->merge($this->managers)
             ->flatten(1);
 
+
         $this->startDate = $this->startDate ?? now();
 
-        if (empty($suspendees)) {
-            throw new \Exception('Attempted to create a suspension without a suspendable entity');
+        if (empty($injurables)) {
+            throw new \Exception('Attempted to create an injury without an injurable entity');
         }
 
-        $suspensions = new Collection();
+        $injuries = new Collection();
 
-        foreach ($suspendees as $suspendee) {
-            $suspension = new Suspension();
-            $suspension->started_at = $this->startDate;
-            $suspension->ended_at = $this->endDate;
-            $suspension->suspendable()->associate($suspendee);
-            $suspension->save();
-            $suspensions->push($suspension);
-            if ($suspendee instanceof TagTeam && $suspendee->currentWrestlers->isNotEmpty()) {
-                $this->forWrestlers($suspendee->currentWrestlers)->create();
-            }
+        foreach ($injurables as $injuree) {
+            $injury = new Injury();
+            $injury->started_at = $this->startDate;
+            $injury->ended_at = $this->endDate;
+            $injury->injurable()->associate($injuree);
+            $injury->save();
+            $injuries->push($injuree);
         }
 
-        return $suspensions->count() === 1 ? $suspensions->first() : $suspensions;
+        return $injuries->count() === 1 ? $injuries->first() : $injuries;
     }
 }

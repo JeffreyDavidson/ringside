@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Factories;
+
+use Faker\Generator;
 use Illuminate\Database\Eloquent\Collection;
 
 abstract class BaseFactory
@@ -58,12 +61,12 @@ abstract class BaseFactory
     protected function resolveAttributes($overrides = [])
     {
         /* @var \Faker\Generator $faker */
-        $faker = resolve(\Faker\Generator::class);
+        $faker = resolve(Generator::class);
 
         return array_replace($this->defaultAttributes($faker), $this->attributes, $overrides);
     }
 
-    protected function defaultAttributes(Faker\Generator $faker)
+    protected function defaultAttributes(Generator $faker)
     {
         return [];
     }

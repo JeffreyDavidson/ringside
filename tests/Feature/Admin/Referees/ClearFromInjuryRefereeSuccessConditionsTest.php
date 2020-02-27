@@ -5,7 +5,7 @@ namespace Tests\Feature\Admin\Referees;
 use App\Enums\Role;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use RefereeFactory;
+use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
 
 /**

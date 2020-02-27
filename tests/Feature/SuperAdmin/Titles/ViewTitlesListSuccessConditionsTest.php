@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\SuperAdmin\Titles;
 
-use TitleFactory;
+use Tests\Factories\TitleFactory;
 use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\Title;

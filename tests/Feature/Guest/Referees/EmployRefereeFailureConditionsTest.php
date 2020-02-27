@@ -3,7 +3,7 @@
 namespace Tests\Feature\Guest\Referees;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use RefereeFactory;
+use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
 
 /**

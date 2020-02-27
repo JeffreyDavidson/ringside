@@ -3,10 +3,10 @@
 namespace Tests\Unit\Rules;
 
 use App\Rules\CannotBeEmployedAfterDate;
-use EmploymentFactory;
+use Tests\Factories\EmploymentFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 
 class CannotBeEmployedAfterDateTest extends TestCase
 {

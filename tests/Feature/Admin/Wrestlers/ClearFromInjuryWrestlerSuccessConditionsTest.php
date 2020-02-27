@@ -5,8 +5,8 @@ namespace Tests\Feature\Admin\Wrestlers;
 use App\Enums\Role;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\WrestlerFactory;
 use Tests\TestCase;
-use WrestlerFactory;
 
 /**
  * @group wrestlers

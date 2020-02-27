@@ -6,7 +6,7 @@ use App\Enums\Role;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use WrestlerFactory;
+use Tests\Factories\WrestlerFactory;
 
 /**
  * @group wrestlers
