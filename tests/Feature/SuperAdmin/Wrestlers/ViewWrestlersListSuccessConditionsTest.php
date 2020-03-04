@@ -3,10 +3,10 @@
 namespace Tests\Feature\SuperAdmin\Wrestlers;
 
 use App\Enums\Role;
-use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Enums\WrestlerStatus;
 use Tests\Factories\WrestlerFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers
@@ -56,6 +56,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->indexRequest('wrestlers');
+        dd($response);
 
         $response->assertOk();
         $response->assertViewIs('wrestlers.index');
@@ -79,7 +80,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'bookable']));
+        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => WrestlerStatus::BOOKABLE()->getValue()]));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('bookable')->count(),
@@ -92,7 +93,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'pending-employment']));
+        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => WrestlerStatus::PENDING_EMPLOYMENT()->getValue()]));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('pending-employment')->count(),
@@ -105,7 +106,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'retired']));
+        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => WrestlerStatus::RETIRED()->getValue()]));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('retired')->count(),
@@ -118,7 +119,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'suspended']));
+        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => WrestlerStatus::SUSPENDED()->getValue()]));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('suspended')->count(),
@@ -131,7 +132,7 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => 'injured']));
+        $responseAjax = $this->ajaxJson(route('wrestlers.index', ['status' => WrestlerStatus::INJURED()->getValue()]));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->wrestlers->get('injured')->count(),

@@ -1,7 +1,9 @@
 <?php
 
-// Auth::loginUsingId(1);
+Auth::loginUsingId(1);
 use App\Http\Controllers\DashboardController;
+
+Route::view('testing', 'wrestlers.create');
 
 /*
 |--------------------------------------------------------------------------

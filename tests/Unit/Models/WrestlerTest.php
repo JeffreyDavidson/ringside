@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Wrestler;
+use Tests\Factories\WrestlerFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -63,8 +64,9 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_has_a_status()
     {
-        $wrestler = factory(Wrestler::class)->create(['status' => 'Example Status']);
+        $wrestler = WrestlerFactory::new()->create(['status' => 'Example Status']);
+        dd($wrestler);
 
-        $this->assertEquals('Example Status', $wrestler->getOriginal('status'));
+        $this->assertEquals('Example Status', $wrestler->getRawOriginal('status'));
     }
 }
