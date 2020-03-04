@@ -7,12 +7,10 @@ use App\Enums\TagTeamStatus;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use MadWeb\Enum\EnumCastable;
 
 class TagTeam extends Model
 {
     use SoftDeletes,
-        EnumCastable,
         HasCachedAttributes,
         HasCustomRelationships,
         Concerns\CanBeRetired,

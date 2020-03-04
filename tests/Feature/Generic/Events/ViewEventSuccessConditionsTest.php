@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Events;
+namespace Tests\Feature\Generic\Events;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\Event;
 use App\Models\Venue;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Generics\Events;
+namespace Tests\Feature\Generic\Events;
 
 use Tests\TestCase;
 use App\Models\Venue;

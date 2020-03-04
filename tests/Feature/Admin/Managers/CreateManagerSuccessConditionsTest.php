@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Manager;
+namespace Tests\Feature\Admin\Managers;
 
 use App\Enums\Role;
 use App\Models\Manager;

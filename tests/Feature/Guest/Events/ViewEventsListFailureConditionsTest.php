@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group events
  * @group guests
  */
-class ViewEventListFailureConditionsTest extends TestCase
+class ViewEventsListFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 

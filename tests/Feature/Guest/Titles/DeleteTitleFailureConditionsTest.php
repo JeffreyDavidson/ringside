@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Guests\Titles;
+namespace Tests\Feature\Guest\Titles;
 
-use Tests\TestCase;
-use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\TitleFactory;
+use Tests\TestCase;
 
 /**
  * @group titles
@@ -17,7 +17,7 @@ class DeleteTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_a_title()
     {
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
         $response = $this->deleteRequest($title);
 

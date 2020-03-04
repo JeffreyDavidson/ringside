@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Generics\Stables;
+namespace Tests\Feature\Generic\Stables;
 
-use Tests\TestCase;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group stables

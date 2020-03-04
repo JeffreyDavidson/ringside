@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Guest\Titles;
+namespace Tests\Feature\User\Titles;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;

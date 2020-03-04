@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Generic\Wrestler;
+namespace Tests\Feature\Generic\Wrestlers;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;

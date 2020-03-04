@@ -3,17 +3,16 @@
 namespace Tests\Feature\Admin\Stables;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\Stable;
-use Tests\Factories\StableFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
  * @group admins
  * @group roster
  */
-class ViewStablesSuccessConditionsTest extends TestCase
+class ViewStablesListSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,10 +28,9 @@ class ViewStablesSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $active              = StableFactory::new()->active()->create();
+        $active = StableFactory::new()->active()->create();
         $pendingIntroduction = StableFactory::new()->pendingIntroduction()->create();
-        $retired             = StableFactory::new()->retired()->create();
-
+        $retired = StableFactory::new()->retired()->create();
 
         $this->stables = collect([
             'active'             => $active,
@@ -41,7 +39,7 @@ class ViewStablesSuccessConditionsTest extends TestCase
             'all'                  => collect()
                                   ->concat($active)
                                   ->concat($pendingIntroduction)
-                                  ->concat($retired)
+                                  ->concat($retired),
         ]);
     }
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Factories;
 
-use Faker\Generator;
-use App\Models\TagTeam;
-use Illuminate\Support\Str;
 use App\Enums\TagTeamStatus;
+use App\Models\TagTeam;
+use Faker\Generator;
+use Illuminate\Support\Str;
 
 class TagTeamFactory extends BaseFactory
 {
@@ -108,10 +108,12 @@ class TagTeamFactory extends BaseFactory
                 $this->wrestlerFactory->forTagTeam($tagTeam)->create();
             }
 
+            // dd('gets hit');
+
             if ($this->employmentFactory) {
                 $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
-            // dd('t2esting');
+            dd('doesnt get hit');
 
             if ($this->suspensionFactory) {
                 $this->suspensionFactory->forTagTeam($tagTeam)->create();

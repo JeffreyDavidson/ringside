@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Admin\Events;
 
-use Tests\TestCase;
 use App\Models\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events
  * @group admins
  */
-class ViewScheduledEventListSuccessConditionsTest extends TestCase
+class ViewEventsListSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -26,15 +26,15 @@ class ViewScheduledEventListSuccessConditionsTest extends TestCase
     {
         parent::setUp();
 
-        $scheduled  = factory(Event::class, 3)->states('scheduled')->create();
-        $past       = factory(Event::class, 3)->states('past')->create();
+        $scheduled = factory(Event::class, 3)->states('scheduled')->create();
+        $past = factory(Event::class, 3)->states('past')->create();
 
         $this->events = collect([
             'scheduled' => $scheduled,
             'past'      => $past,
             'all'       => collect()
                         ->concat($scheduled)
-                        ->concat($past)
+                        ->concat($past),
         ]);
     }
 

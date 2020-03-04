@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Eloquent\Concerns\HasCustomRelationships;
 use App\Enums\WrestlerStatus;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use MadWeb\Enum\EnumCastable;
 
 class Wrestler extends SingleRosterMember
 {
     use SoftDeletes,
-        EnumCastable,
         HasCustomRelationships,
         Concerns\HasAHeight,
         Concerns\CanBeStableMember,

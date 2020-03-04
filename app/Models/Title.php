@@ -7,12 +7,10 @@ use App\Exceptions\CannotBeRetiredException;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use MadWeb\Enum\EnumCastable;
 
 class Title extends Model
 {
     use SoftDeletes,
-        EnumCastable,
         HasCachedAttributes,
         Concerns\CanBeRetired,
         Concerns\CanBeCompeted,

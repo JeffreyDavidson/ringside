@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Eloquent\Relationships;
+namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Stable;
@@ -17,8 +17,8 @@ class LeaveableMorphToManyTest extends TestCase
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $stable = factory(Stable::class)->create();
 
-        $stable->wrestlerHistory()->attach($wrestler->getKey());  
-        
+        $stable->wrestlerHistory()->attach($wrestler->getKey());
+
         $this->assertCount(1, $stable->wrestlerHistory);
         $this->assertCount(1, $stable->currentWrestlers);
     }
@@ -29,9 +29,9 @@ class LeaveableMorphToManyTest extends TestCase
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $stable = factory(Stable::class)->create();
 
-        $stable->wrestlerHistory()->attach($wrestler->getKey()); 
+        $stable->wrestlerHistory()->attach($wrestler->getKey());
         $stable->wrestlerHistory()->detach($wrestler->getKey());
-        
+
         $this->assertCount(1, $stable->wrestlerHistory);
         $this->assertCount(0, $stable->currentWrestlers);
     }
@@ -42,10 +42,10 @@ class LeaveableMorphToManyTest extends TestCase
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $stable = factory(Stable::class)->create();
 
-        $stable->wrestlerHistory()->attach($wrestler->getKey()); 
+        $stable->wrestlerHistory()->attach($wrestler->getKey());
         $stable->wrestlerHistory()->detach($wrestler->getKey());
-        $stable->wrestlerHistory()->attach($wrestler->getKey()); 
-        
+        $stable->wrestlerHistory()->attach($wrestler->getKey());
+
         $this->assertCount(2, $stable->wrestlerHistory);
         $this->assertCount(1, $stable->currentWrestlers);
     }
@@ -55,10 +55,10 @@ class LeaveableMorphToManyTest extends TestCase
     {
         $stable = factory(Stable::class)->create();
         $oldWrestler = factory(Wrestler::class)->states('bookable')->create();
-        $stable->wrestlerHistory()->attach($oldWrestler->getKey()); 
+        $stable->wrestlerHistory()->attach($oldWrestler->getKey());
 
         $newWrestler = factory(Wrestler::class)->states('bookable')->create();
-        $stable->wrestlerHistory()->attach($newWrestler->getKey()); 
+        $stable->wrestlerHistory()->attach($newWrestler->getKey());
 
         $this->assertCount(2, $stable->wrestlerHistory);
         $this->assertCount(2, $stable->currentWrestlers);
@@ -70,10 +70,10 @@ class LeaveableMorphToManyTest extends TestCase
         $stable = factory(Stable::class)->create();
         $wrestlerA = factory(Wrestler::class)->states('bookable')->create();
         $wrestlerB = factory(Wrestler::class)->states('bookable')->create();
-        $stable->wrestlerHistory()->attach($wrestlerA->getKey()); 
-        $stable->wrestlerHistory()->attach($wrestlerB->getKey()); 
+        $stable->wrestlerHistory()->attach($wrestlerA->getKey());
+        $stable->wrestlerHistory()->attach($wrestlerB->getKey());
 
-        $stable->wrestlerHistory()->detach($wrestlerA->getKey()); 
+        $stable->wrestlerHistory()->detach($wrestlerA->getKey());
 
         $this->assertCount(2, $stable->wrestlerHistory);
         $this->assertCount(1, $stable->currentWrestlers);

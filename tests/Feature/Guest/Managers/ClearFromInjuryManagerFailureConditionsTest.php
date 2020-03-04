@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @group guests
  * @group roster
  */
-class ClearManagerFailureConditionsTest extends TestCase
+class ClearFromInjuryManagerFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 

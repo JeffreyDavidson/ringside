@@ -5,15 +5,13 @@ namespace App\Models;
 use App\Eloquent\Concerns\HasCustomRelationships;
 use App\Enums\ManagerStatus;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use MadWeb\Enum\EnumCastable;
 
 class Manager extends SingleRosterMember
 {
     use SoftDeletes,
         HasCustomRelationships,
         Concerns\HasFullName,
-        Concerns\CanBeStableMember,
-        EnumCastable;
+        Concerns\CanBeStableMember;
 
     /**
      * The attributes that aren't mass assignable.

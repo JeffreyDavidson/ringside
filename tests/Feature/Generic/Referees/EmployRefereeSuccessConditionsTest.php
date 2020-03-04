@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Generic\Referee;
+namespace Tests\Feature\Generic\Referees;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;

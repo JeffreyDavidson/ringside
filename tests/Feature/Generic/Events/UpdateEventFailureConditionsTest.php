@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Generic\Events;
 
-use Tests\TestCase;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -61,7 +61,7 @@ class UpdateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.edit', $event))
                         ->patch(route('events.update', $event), $this->validParams([
-                            'name' => ['not-a-string']
+                            'name' => ['not-a-string'],
                         ]));
 
         $response->assertRedirect(route('events.edit', $event));
@@ -77,7 +77,7 @@ class UpdateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.edit', $event))
                         ->patch(route('events.update', $event), $this->validParams([
-                            'name' => 'Example Event Name'
+                            'name' => 'Example Event Name',
                         ]));
 
         $response->assertRedirect(route('events.edit', $event));
@@ -92,7 +92,7 @@ class UpdateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.edit', $event))
                         ->patch(route('events.update', $event), $this->validParams([
-                            'date' => ['not-a-string']
+                            'date' => ['not-a-string'],
                         ]));
 
         $response->assertRedirect(route('events.edit', $event));
@@ -107,7 +107,7 @@ class UpdateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.edit', $event))
                         ->patch(route('events.update', $event), $this->validParams([
-                            'date' => now()->toDateString()
+                            'date' => now()->toDateString(),
                         ]));
 
         $response->assertRedirect(route('events.edit', $event));
@@ -122,7 +122,7 @@ class UpdateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.edit', $event))
                         ->patch(route('events.update', $event), $this->validParams([
-                            'venue_id' => 'not-an_integer'
+                            'venue_id' => 'not-an_integer',
                         ]));
 
         $response->assertRedirect(route('events.edit', $event));
@@ -137,7 +137,7 @@ class UpdateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.edit', $event))
                         ->patch(route('events.update', $event), $this->validParams([
-                            'venue_id' => 999
+                            'venue_id' => 999,
                         ]));
 
         $response->assertRedirect(route('events.edit', $event));

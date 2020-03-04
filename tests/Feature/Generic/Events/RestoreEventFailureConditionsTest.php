@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Generic\Events;
 
-use Tests\TestCase;
 use App\Models\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events

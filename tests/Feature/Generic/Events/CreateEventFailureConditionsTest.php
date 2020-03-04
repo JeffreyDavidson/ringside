@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Generic\Events;
 
-use Tests\TestCase;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -38,7 +38,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'name' => ''
+                            'name' => '',
                         ]));
 
         $response->assertRedirect(route('events.create'));
@@ -52,7 +52,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'name' => []
+                            'name' => [],
                         ]));
 
         $response->assertRedirect(route('events.create'));
@@ -67,7 +67,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'name' => 'Example Event Name'
+                            'name' => 'Example Event Name',
                         ]));
 
         $response->assertRedirect(route('events.create'));
@@ -81,7 +81,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'date' => []
+                            'date' => [],
                         ]));
 
         $response->assertRedirect(route('events.create'));
@@ -95,7 +95,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'date' => now()->toDateString()
+                            'date' => now()->toDateString(),
                         ]));
 
         $response->assertRedirect(route('events.create'));
@@ -109,7 +109,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'venue_id' => 'not-an-integer'
+                            'venue_id' => 'not-an-integer',
                         ]));
 
         $response->assertRedirect(route('events.create'));
@@ -123,7 +123,7 @@ class CreateEventFailureConditionsTest extends TestCase
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
-                            'venue_id' => 99999999
+                            'venue_id' => 99999999,
                         ]));
 
         $response->assertRedirect(route('events.create'));
