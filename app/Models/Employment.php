@@ -31,7 +31,7 @@ class Employment extends Model
     }
 
     /**
-     *
+     * Retrieve an employment started before a given date.
      *
      * @param  string $date
      * @return boolean

@@ -26,7 +26,7 @@ abstract class Filters
     protected $filters = [];
 
     /**
-     * Create a new TitleFilters instance.
+     * Create a new class instance.
      *
      * @param \Illuminate\Http\Request $request
      */

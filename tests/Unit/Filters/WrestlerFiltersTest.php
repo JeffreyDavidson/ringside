@@ -2,16 +2,39 @@
 
 namespace Tests\Unit\Filters;
 
+use App\Filters\Concerns\FiltersByStartDate;
+use App\Filters\Concerns\FiltersByStatus;
+use App\Filters\WrestlerFilters;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class WrestlerFiltersTest extends TestCase
 {
-    /** @test */
-    public function wrestlers_can_be_filtered_by_status()
+    /** @var App\Filters\WrestlerFilters */
+    protected $subject;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
     {
-        // Test
+        parent::setUp();
+
+        $this->subject = $this->mock(WrestlerFilters::class);
     }
 
+    /** @test */
+    public function wrestler_filters_include_filtering_by_status()
+    {
+        $this->assertUsesTrait(FiltersByStatus::class, $this->subject);
+        $this->assertTrue(in_array('status', get_class($this->subject)->filters));
+    }
+
+    /** @test */
+    public function wrestler_filters_include_filtering_by_started_at_date()
+    {
+        $this->assertUsesTrait(FiltersByStartDate::class, $this->subject);
+        $this->assertTrue(in_array('started_at', $this->subject->filters));
+    }
 }
