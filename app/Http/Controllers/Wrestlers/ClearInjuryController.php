@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wrestlers\ClearInjuryRequest;
 use App\Models\Wrestler;
 
 class ClearInjuryController extends Controller
@@ -12,16 +12,11 @@ class ClearInjuryController extends Controller
      * Clear a wrestler.
      *
      * @param  App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Wrestlers\ClearInjuryRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler)
+    public function __invoke(Wrestler $wrestler, ClearInjuryRequest $request)
     {
-        $this->authorize('clearFromInjury', $wrestler);
-
-        if (! $wrestler->canBeClearedFromInjury()) {
-            throw new CannotBeClearedFromInjuryException();
-        }
-
         $wrestler->clearFromInjury();
 
         return redirect()->route('wrestlers.index');

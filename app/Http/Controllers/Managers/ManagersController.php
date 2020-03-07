@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Managers;
 
 use App\DataTables\ManagersDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Managers\IndexRequest;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Manager;
 use App\ViewModels\ManagerViewModel;
-use Illuminate\Http\Request;
 
 class ManagersController extends Controller
 {
     /**
      * View a list of managers.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Managers\IndexRequest  $request
      * @param  App\DataTables\ManagersDataTable  $dataTable
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, ManagersDataTable $dataTable)
+    public function index(IndexRequest $request, ManagersDataTable $dataTable)
     {
         $this->authorize('viewList', Manager::class);
 
@@ -45,7 +45,7 @@ class ManagersController extends Controller
     /**
      * Create a new manager.
      *
-     * @param  \App\Http\Requests\Managers\StoreRequest  $request
+     * @param  App\Http\Requests\Managers\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request)
@@ -62,7 +62,7 @@ class ManagersController extends Controller
     /**
      * Show the profile of a manager.
      *
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
     public function show(Manager $manager)
@@ -75,7 +75,7 @@ class ManagersController extends Controller
     /**
      * Show the form for editing a manager.
      *
-     * @param  \App\Models\Manager  $manager
+     * @param  App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
     public function edit(Manager $manager)
@@ -88,9 +88,9 @@ class ManagersController extends Controller
     /**
      * Update a given manager.
      *
-     * @param  \App\Http\Requests\Managers\UpdateRequest  $request
-     * @param  \App\Models\Manager  $manager
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Managers\UpdateRequest  $request
+     * @param  App\Models\Manager  $manager
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Manager $manager)
     {
@@ -106,8 +106,8 @@ class ManagersController extends Controller
     /**
      * Delete a manager.
      *
-     * @param  \App\Models\Manager  $manager
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Models\Manager  $manager
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Manager $manager)
     {

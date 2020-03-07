@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Referees\ReinstateRequest;
 use App\Models\Referee;
 
 class ReinstateController extends Controller
@@ -12,16 +12,11 @@ class ReinstateController extends Controller
      * Reinstate a referee.
      *
      * @param  App\Models\Referee  $referee
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Referees\ReinstateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee)
+    public function __invoke(Referee $referee, ReinstateRequest $request)
     {
-        $this->authorize('reinstate', $referee);
-
-        if (! $referee->canBeReinstated()) {
-            throw new CannotBeReinstatedException();
-        }
-
         $referee->reinstate();
 
         return redirect()->route('referees.index');

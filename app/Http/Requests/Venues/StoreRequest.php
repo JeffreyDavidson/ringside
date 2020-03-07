@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Venues;
 
 use App\Models\Venue;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateVenueRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateVenueRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', Venue::class);
+        return $this->user()->can('create', Venue::class);
     }
 
     /**

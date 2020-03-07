@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Models\Referee;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\ViewModels\RefereeViewModel;
 use App\DataTables\RefereesDataTable;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Referees\IndexRequest;
 use App\Http\Requests\Referees\StoreRequest;
 use App\Http\Requests\Referees\UpdateRequest;
+use App\Models\Referee;
+use App\ViewModels\RefereeViewModel;
 
 class RefereesController extends Controller
 {
     /**
-     * View a list of wrestlers.
+     * View a list of referees.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Referees\IndexRequest  $request
      * @param  App\DataTables\RefereesDataTable  $dataTable
-     * @return \Illuminate\View\View|Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, RefereesDataTable $dataTable)
+    public function index(IndexRequest $request, RefereesDataTable $dataTable)
     {
         $this->authorize('viewList', Referee::class);
 
@@ -90,7 +90,7 @@ class RefereesController extends Controller
      *
      * @param  App\Http\Requests\Referees\UpdateRequest  $request
      * @param  App\Models\Referee  $referee
-     * @return \lluminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Referee $referee)
     {
@@ -105,7 +105,7 @@ class RefereesController extends Controller
      * Delete a referee.
      *
      * @param  App\Models\Referee  $referee
-     * @return \lluminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Referee $referee)
     {

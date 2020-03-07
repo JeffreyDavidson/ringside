@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wrestlers\EmployRequest;
 use App\Models\Wrestler;
 
 class EmployController extends Controller
@@ -12,16 +12,11 @@ class EmployController extends Controller
      * Employ a wrestler.
      *
      * @param  App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Wrestlers\EmployRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler)
+    public function __invoke(Wrestler $wrestler, EmployRequest $request)
     {
-        $this->authorize('employ', $wrestler);
-
-        if (! $wrestler->canBeEmployed()) {
-            throw new CannotBeEmployedException();
-        }
-
         $wrestler->employ();
 
         return redirect()->route('wrestlers.index');

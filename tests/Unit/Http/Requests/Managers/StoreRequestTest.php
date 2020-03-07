@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Http\Requests\Managers;
 
-use App\Http\Requests\Managers\IndexFormRequest;
+use App\Http\Requests\Managers\StoreRequest;
 use JMac\Testing\Traits\HttpTestAssertions;
 use Tests\TestCase;
 
@@ -10,16 +10,16 @@ use Tests\TestCase;
  * @group managers
  * @group roster
  */
-class IndexFormRequestTest extends TestCase
+class StoreRequestTest extends TestCase
 {
     use HttpTestAssertions;
 
-    /** @var IndexFormRequest */
+    /** @var StoreRequest */
     private $subject;
 
     public function setUp(): void
     {
-        $this->subject = new IndexFormRequest();
+        $this->subject = new StoreRequest();
     }
 
     /** @test */

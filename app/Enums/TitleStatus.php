@@ -11,6 +11,8 @@ use MadWeb\Enum\Enum;
  */
 final class TitleStatus extends Enum
 {
+    const __default = self::PENDING_INTRODUCTION;
+
     const COMPETABLE = 'competable';
     const PENDING_INTRODUCTION = 'pending-introduction';
     const RETIRED = 'retired';

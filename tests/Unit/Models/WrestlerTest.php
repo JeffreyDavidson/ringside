@@ -2,10 +2,8 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Wrestler;
-use Tests\Factories\WrestlerFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
@@ -13,8 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class WrestlerTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,7 +20,7 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_has_a_name()
     {
-        $wrestler = factory(Wrestler::class)->create(['name' => 'Example Wrestler Name']);
+        $wrestler = new Wrestler(['name' => 'Example Wrestler Name']);
 
         $this->assertEquals('Example Wrestler Name', $wrestler->name);
     }
@@ -32,7 +28,7 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_has_a_height()
     {
-        $wrestler = factory(Wrestler::class)->create(['height' => 70]);
+        $wrestler = new Wrestler(['height' => 70]);
 
         $this->assertEquals('70', $wrestler->height);
     }
@@ -40,7 +36,7 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_has_a_weight()
     {
-        $wrestler = factory(Wrestler::class)->create(['weight' => 210]);
+        $wrestler = new Wrestler(['weight' => 210]);
 
         $this->assertEquals(210, $wrestler->weight);
     }
@@ -48,7 +44,7 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_has_a_hometown()
     {
-        $wrestler = factory(Wrestler::class)->create(['hometown' => 'Los Angeles, California']);
+        $wrestler = new Wrestler(['hometown' => 'Los Angeles, California']);
 
         $this->assertEquals('Los Angeles, California', $wrestler->hometown);
     }
@@ -56,7 +52,7 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_can_have_a_signature_move()
     {
-        $wrestler = factory(Wrestler::class)->create(['signature_move' => 'Example Signature Move']);
+        $wrestler = new Wrestler(['signature_move' => 'Example Signature Move']);
 
         $this->assertEquals('Example Signature Move', $wrestler->signature_move);
     }
@@ -64,9 +60,9 @@ class WrestlerTest extends TestCase
     /** @test */
     public function a_wrestler_has_a_status()
     {
-        $wrestler = WrestlerFactory::new()->create(['status' => 'Example Status']);
-        dd($wrestler);
+        $wrestler = new Wrestler();
+        $wrestler->setRawAttributes(['status' => 'example'], true);
 
-        $this->assertEquals('Example Status', $wrestler->getRawOriginal('status'));
+        $this->assertEquals('example', $wrestler->getRawOriginal('status'));
     }
 }

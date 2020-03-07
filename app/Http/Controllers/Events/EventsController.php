@@ -2,37 +2,28 @@
 
 namespace App\Http\Controllers\Events;
 
-use App\Models\Event;
-use Illuminate\Http\Request;
-use App\Filters\EventFilters;
-use Yajra\DataTables\DataTables;
+use App\DataTables\EventsDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreEventRequest;
-use App\Http\Requests\UpdateEventRequest;
+use App\Http\Requests\Events\IndexRequest;
+use App\Http\Requests\Events\StoreRequest;
+use App\Http\Requests\Events\UpdateRequest;
+use App\Models\Event;
 
 class EventsController extends Controller
 {
     /**
      * View a list of events.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Yajra\DataTables\DataTables  $table
+     * @param  App\Http\Requests\Events\IndexRequest  $request
+     * @param  App\DataTables\EventsDataTable  $dataTable
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, DataTables $table, EventFilters $requestFilter)
+    public function index(IndexRequest $request, EventsDataTable $dataTable)
     {
         $this->authorize('viewList', Event::class);
 
         if ($request->ajax()) {
-            $query = Event::query();
-            $requestFilter->apply($query);
-
-            return $table->eloquent($query)
-                ->addColumn('action', 'events.partials.action-cell')
-                ->filterColumn('id', function ($query, $keyword) {
-                    $query->where($query->qualifyColumn('id'), $keyword);
-                })
-                ->toJson();
+            return $dataTable->ajax();
         }
 
         return view('events.index');
@@ -53,10 +44,10 @@ class EventsController extends Controller
     /**
      * Create a new event.
      *
-     * @param  \App\Http\Requests\StoreEventRequest  $request
+     * @param  App\Http\Requests\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreEventRequest $request)
+    public function store(StoreRequest $request)
     {
         Event::create($request->all());
 
@@ -66,13 +57,13 @@ class EventsController extends Controller
     /**
      * Show the event.
      *
-     * @param  \App\Models\Event  $event
+     * @param  App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
     public function show(Event $event)
     {
         $this->authorize('view', $event);
-        
+
         $event->load('venue');
 
         return response()->view('events.show', compact('event'));
@@ -93,11 +84,11 @@ class EventsController extends Controller
     /**
      * Create a new event.
      *
-     * @param  \App\Http\Requests\UpdateEventRequest  $request
-     * @param  \App\Models\Event  $event
+     * @param  App\Http\Requests\Events\UpdateRequest  $request
+     * @param  App\Models\Event  $event
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateEventRequest $request, Event $event)
+    public function update(UpdateRequest $request, Event $event)
     {
         $event->update($request->all());
 
@@ -108,7 +99,7 @@ class EventsController extends Controller
      * Delete an event.
      *
      * @param  App\Models\Event  $event
-     * @return \lluminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Event $event)
     {
@@ -123,7 +114,7 @@ class EventsController extends Controller
      * Restore a deleted scheduled event.
      *
      * @param  int  $eventId
-     * @return \lluminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function restore($eventId)
     {

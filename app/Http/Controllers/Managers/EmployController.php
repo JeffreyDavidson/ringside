@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Managers\EmployRequest;
 use App\Models\Manager;
 
 class EmployController extends Controller
@@ -12,16 +12,11 @@ class EmployController extends Controller
      * Employ a manager.
      *
      * @param  App\Models\Manager  $manager
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Managers\EmployRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager)
+    public function __invoke(Manager $manager, EmployRequest $request)
     {
-        $this->authorize('employ', $manager);
-
-        if (! $manager->canBeEmployed()) {
-            throw new CannotBeEmployedException();
-        }
-
         $manager->employ();
 
         return redirect()->route('managers.index');

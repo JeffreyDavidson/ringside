@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wrestlers\InjureRequest;
 use App\Models\Wrestler;
 
 class InjureController extends Controller
@@ -12,16 +12,11 @@ class InjureController extends Controller
      * Injure a wrestler.
      *
      * @param  App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Wrestlers\InjureRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler)
+    public function __invoke(Wrestler $wrestler, InjureRequest $request)
     {
-        $this->authorize('injure', $wrestler);
-
-        if (! $wrestler->canBeInjured()) {
-            throw new CannotBeInjuredException();
-        }
-
         $wrestler->injure();
 
         return redirect()->route('wrestlers.index');

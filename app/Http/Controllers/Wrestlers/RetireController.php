@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wrestlers\RetireRequest;
 use App\Models\Wrestler;
 
 class RetireController extends Controller
@@ -12,16 +12,11 @@ class RetireController extends Controller
      * Retire a wrestler.
      *
      * @param  App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Wrestlers\RetireRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler)
+    public function __invoke(Wrestler $wrestler, RetireRequest $request)
     {
-        $this->authorize('retire', $wrestler);
-
-        if (! $wrestler->canBeRetired()) {
-            throw new CannotBeRetiredException();
-        }
-
         $wrestler->retire();
 
         return redirect()->route('wrestlers.index');

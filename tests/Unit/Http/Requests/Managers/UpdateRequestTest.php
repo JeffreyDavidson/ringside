@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Http\Requests\Managers;
 
-use App\Http\Requests\Managers\UpdateFormRequest;
+use App\Http\Requests\Managers\UpdateRequest;
 use JMac\Testing\Traits\HttpTestAssertions;
 use Tests\TestCase;
 
@@ -10,16 +10,16 @@ use Tests\TestCase;
  * @group managers
  * @group roster
  */
-class UpdateFormRequestTest extends TestCase
+class UpdateRequestTest extends TestCase
 {
     use HttpTestAssertions;
 
-    /** @var UpdateFormRequest */
+    /** @var UpdateRequest */
     private $subject;
 
     public function setUp(): void
     {
-        $this->subject = new UpdateFormRequest();
+        $this->subject = new UpdateRequest();
     }
 
     /** @test */

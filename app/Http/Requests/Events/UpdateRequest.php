@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Events;
 
-use App\Models\Event;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEventRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,9 @@ class StoreEventRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('create', Event::class);
+        $event = $this->route('event');
+
+        return $this->user()->can('update', $event);
     }
 
     /**
@@ -25,8 +27,8 @@ class StoreEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'unique:events'],
-            'date' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+            'name' => ['filled', 'string', Rule::unique('events')->ignore($this->route('event')->id)],
+            'date' => ['sometimes', 'string', 'date_format:Y-m-d H:i:s'],
             'venue_id' => ['nullable', 'integer', 'exists:venues,id'],
             'preview' => ['nullable'],
         ];

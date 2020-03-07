@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Managers\SuspendRequest;
 use App\Models\Manager;
 
 class SuspendController extends Controller
@@ -12,16 +12,11 @@ class SuspendController extends Controller
      * Suspend a manager.
      *
      * @param  App\Models\Manager  $manager
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Managers\SuspendRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager)
+    public function __invoke(Manager $manager, SuspendRequest $request)
     {
-        $this->authorize('suspend', $manager);
-
-        if (! $manager->canBeSuspended()) {
-            throw new CannotBeSuspendedException();
-        }
-
         $manager->suspend();
 
         return redirect()->route('managers.index');

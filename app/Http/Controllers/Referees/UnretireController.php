@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Referees\UnretireRequest;
 use App\Models\Referee;
 
 class UnretireController extends Controller
@@ -11,17 +11,12 @@ class UnretireController extends Controller
     /**
      * Unretire a referee.
      *
-     * @param  \App\Models\Referee  $referee
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Models\Referee  $referee
+     * @param  App\Http\Requests\Referees\UnretireRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee)
+    public function __invoke(Referee $referee, UnretireRequest $request)
     {
-        $this->authorize('unretire', $referee);
-
-        if (! $referee->canBeUnretired()) {
-            throw new CannotBeUnretiredException();
-        }
-
         $referee->unretire();
 
         return redirect()->route('referees.index');

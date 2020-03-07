@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Referees\EmployRequest;
 use App\Models\Referee;
 
 class EmployController extends Controller
@@ -12,16 +12,11 @@ class EmployController extends Controller
      * Employ a referee.
      *
      * @param  App\Models\Referee  $referee
-     * @return \lluminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Referees\EmployRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee)
+    public function __invoke(Referee $referee, EmployRequest $request)
     {
-        $this->authorize('employ', $referee);
-
-        if (! $referee->canBeEmployed()) {
-            throw new CannotBeEmployedException();
-        }
-
         $referee->employ();
 
         return redirect()->route('referees.index');

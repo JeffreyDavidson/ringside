@@ -90,7 +90,7 @@ class WrestlersController extends Controller
      *
      * @param  App\Http\Requests\Wrestlers\UpdateRequest  $request
      * @param  App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Wrestler $wrestler)
     {
@@ -105,7 +105,7 @@ class WrestlersController extends Controller
      * Delete a wrestler.
      *
      * @param  App\Models\Wrestler  $wrestler
-     * @return \lluminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Wrestler $wrestler)
     {

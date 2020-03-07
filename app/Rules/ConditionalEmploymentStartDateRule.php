@@ -28,7 +28,8 @@ class ConditionalEmploymentStartDateRule extends CompositeRule
     {
         $data = [];
 
-        Arr::set($data, $attribute, $value); // ensure correct validation for array attributes like 'item_ids.*' or 'items.*.id'
+        // ensure correct validation for array attributes like 'item_ids.*' or 'items.*.id'
+        Arr::set($data, $attribute, $value);
 
         $validator = $this->getValidatorFactory()->make(
             $data,
