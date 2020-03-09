@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\Filters;
 
-use App\Filters\Concerns\FiltersByStatus;
-use App\Filters\TitleFilters;
+use Carbon\Carbon;
 use Tests\TestCase;
+use App\Filters\TitleFilters;
+use App\Filters\Concerns\FiltersByStatus;
 
 class TitleFiltersTest extends TestCase
 {
@@ -39,6 +40,10 @@ class TitleFiltersTest extends TestCase
     /** @test */
     public function titles_can_be_filtered_by()
     {
-        $this->assertTrue(in_array('introduced_at', $this->subject->filters));
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $date = [$now, $now->addDays(2)];
+        $this->subject->intoducedAt($date);
     }
 }
