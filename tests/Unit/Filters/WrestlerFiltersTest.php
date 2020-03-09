@@ -21,14 +21,14 @@ class WrestlerFiltersTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = $this->mock(WrestlerFilters::class);
+        $this->subject = app(WrestlerFilters::class);
     }
 
     /** @test */
     public function wrestler_filters_include_filtering_by_status()
     {
         $this->assertUsesTrait(FiltersByStatus::class, $this->subject);
-        $this->assertTrue(in_array('status', get_class($this->subject)->filters));
+        $this->assertTrue(in_array('status', $this->subject->filters));
     }
 
     /** @test */

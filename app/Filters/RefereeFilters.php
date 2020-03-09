@@ -12,5 +12,5 @@ class RefereeFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['status', 'started_at'];
+    public $filters = ['status', 'started_at'];
 }

@@ -2,19 +2,14 @@
 
 namespace Tests\Unit\Filters;
 
-
 use App\Filters\Concerns\FiltersByStartDate;
 use App\Filters\Concerns\FiltersByStatus;
-use App\Filters\TagTeamFilters;
+use App\Filters\ManagerFilters;
 use Tests\TestCase;
 
-/*
- * @group tagteams
- * @group roster
- */
-class TagTeamFiltersTest extends TestCase
+class ManagerFiltersTest extends TestCase
 {
-    /** @var App\Filters\TagTeamFilters */
+    /** @var App\Filters\ManagerFilters */
     protected $subject;
 
     /**
@@ -26,18 +21,18 @@ class TagTeamFiltersTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = app(TagTeamFilters::class);
+        $this->subject = app(ManagerFilters::class);
     }
 
     /** @test */
-    public function tag_team_filters_include_filtering_by_status()
+    public function manager_filters_include_filtering_by_status()
     {
         $this->assertUsesTrait(FiltersByStatus::class, $this->subject);
         $this->assertTrue(in_array('status', $this->subject->filters));
     }
 
     /** @test */
-    public function tag_team_filters_include_filtering_by_started_at_date()
+    public function manager_filters_include_filtering_by_started_at_date()
     {
         $this->assertUsesTrait(FiltersByStartDate::class, $this->subject);
         $this->assertTrue(in_array('started_at', $this->subject->filters));

@@ -7,13 +7,13 @@ use Carbon\Carbon;
 class TitleFilters extends Filters
 {
     use Concerns\FiltersByStatus;
-    
+
     /**
      * Registered filters to operate upon.
      *
      * @var array
      */
-    protected $filters = ['status', 'introduced_at'];
+    public $filters = ['status', 'introduced_at'];
 
     /**
      * Filter a query to include titles of a specific date introduced.
@@ -21,15 +21,15 @@ class TitleFilters extends Filters
      * @param  array  $introduced
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function introduced_at($introducedAt)
+    public function introducedAt($introducedAt)
     {
         if (isset($introducedAt[1])) {
             $this->builder->whereBetween('started_at', [
-                Carbon::parse($introducedAt[0])->toDateString(),
-                Carbon::parse($introducedAt[1])->toDateString()
+                Carbon::parse($introducedAt[0]),
+                Carbon::parse($introducedAt[1])
             ]);
         } elseif (isset($introducedAt[0])) {
-            $this->builder->whereDate('date', Carbon::parse($introducedAt[0])->toDateString());
+            $this->builder->whereDate('introduced_at', Carbon::parse($introducedAt[0]));
         }
 
         return $this->builder;

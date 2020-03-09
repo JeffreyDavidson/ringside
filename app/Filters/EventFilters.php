@@ -7,13 +7,13 @@ use Carbon\Carbon;
 class EventFilters extends Filters
 {
     use Concerns\FiltersByStatus;
-    
+
     /**
      * Registered filters to operate upon.
      *
      * @var array
      */
-    protected $filters = ['status', 'date'];
+    public $filters = ['status', 'date'];
 
     /**
      * Filter a query to include events of a specific date.
