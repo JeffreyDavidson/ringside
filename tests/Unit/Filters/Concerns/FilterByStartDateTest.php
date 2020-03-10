@@ -47,7 +47,6 @@ class FiltersByStartDateTest extends TestCase
         $this->assertSame($builderMockFromDate, $builderMock);
     }
 
-
     private function getBuilderMock($shouldCallWhereBetween, $dateSet)
     {
         $mock = \Mockery::mock(Builder::class);
@@ -71,8 +70,9 @@ class FiltersByStartDateTest extends TestCase
     }
 }
 
-class Testing {
-    public function startedAt($startedAt) {
-
+class TestingTwo
+{
+    public function startedAt($startedAt)
+    {
     }
 }

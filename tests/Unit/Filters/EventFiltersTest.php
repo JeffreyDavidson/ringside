@@ -56,19 +56,18 @@ class EventFiltersTest extends TestCase
         $this->assertSame($builderMockFromDate, $builderMock);
     }
 
-
     private function getBuilderMock($shouldCallWhereBetween, $dateSet)
     {
         $mock = \Mockery::mock(Builder::class);
 
         // Make sure we expect strings, not objects
         foreach ($dateSet as $arrIndex => $date) {
-            $dateSet[$arrIndex] = Carbon::parse($date);
+            $dateSet[$arrIndex] = Carbon::parse($date)->toDateTimeString();
         }
 
         if ($shouldCallWhereBetween) {
             $mock->shouldReceive('whereBetween')
-                // ->withArgs($dateSet)
+                ->withArgs($dateSet)
                 ->once()
                 ->andReturn(true);
         } else {
