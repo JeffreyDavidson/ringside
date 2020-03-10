@@ -13,12 +13,12 @@ class TitleFilters extends Filters
      *
      * @var array
      */
-    public $filters = ['status', 'introduced_at'];
+    public $filters = ['status', 'introducedAt'];
 
     /**
      * Filter a query to include titles of a specific date introduced.
      *
-     * @param  array  $introduced
+     * @param  array  $introducedAt
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function introducedAt($introducedAt)

@@ -23,13 +23,24 @@ class EventFilters extends Filters
      */
     public function date($date)
     {
+        // if (isset($date[1])) {
+        //     $this->builder->whereBetween('date', [
+        //         $date[0],
+        //         $date[1]
+        //     ]);
+        // } elseif (isset($date[0])) {
+        //     $this->builder->whereDate('date', $date[0]);
+        // }
+
+        // return $this->builder;
+
         if (isset($date[1])) {
-            $this->builder->whereBetween('started_at', [
-                Carbon::parse($date[0])->toDateString(),
-                Carbon::parse($date[1])->toDateString()
+            $this->builder->whereBetween('date', [
+                $date[0],
+                $date[1],
             ]);
         } elseif (isset($date[0])) {
-            $this->builder->whereDate('date', Carbon::parse($date[0])->toDateString());
+            $this->builder->whereDate('date', $date[0]);
         }
 
         return $this->builder;
