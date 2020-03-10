@@ -7,6 +7,10 @@ use App\Filters\Concerns\FiltersByStatus;
 use App\Filters\ManagerFilters;
 use Tests\TestCase;
 
+/*
+ * @group managers
+ * @group roster
+ */
 class ManagerFiltersTest extends TestCase
 {
     /** @var App\Filters\ManagerFilters */

@@ -4,16 +4,16 @@ namespace Tests\Unit\Filters;
 
 use App\Filters\Concerns\FiltersByStartDate;
 use App\Filters\Concerns\FiltersByStatus;
-use App\Filters\RefereeFilters;
+use App\Filters\StableFilters;
 use Tests\TestCase;
 
-/*
- * @group referees
+/**
+ * @group stable
  * @group roster
  */
-class RefereeFiltersTest extends TestCase
+class StableFiltersTest extends TestCase
 {
-    /** @var App\Filters\RefereeFilters */
+    /** @var App\Filters\StableFilters */
     protected $subject;
 
     /**
@@ -25,18 +25,18 @@ class RefereeFiltersTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = app(RefereeFilters::class);
+        $this->subject = app(StableFilters::class);
     }
 
     /** @test */
-    public function referee_filters_include_filtering_by_status()
+    public function stable_filters_include_filtering_by_status()
     {
         $this->assertUsesTrait(FiltersByStatus::class, $this->subject);
         $this->assertTrue(in_array('status', $this->subject->filters));
     }
 
     /** @test */
-    public function referee_filters_include_filtering_by_started_at_date()
+    public function stable_filters_include_filtering_by_started_at_date()
     {
         $this->assertUsesTrait(FiltersByStartDate::class, $this->subject);
         $this->assertTrue(in_array('started_at', $this->subject->filters));

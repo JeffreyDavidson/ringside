@@ -7,6 +7,9 @@ use Tests\TestCase;
 use App\Filters\TitleFilters;
 use App\Filters\Concerns\FiltersByStatus;
 
+/*
+ * @group titles
+ */
 class TitleFiltersTest extends TestCase
 {
     /** @var App\Filters\TitleFilters */

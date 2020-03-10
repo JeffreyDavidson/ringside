@@ -7,6 +7,10 @@ use App\Filters\Concerns\FiltersByStatus;
 use App\Filters\WrestlerFilters;
 use Tests\TestCase;
 
+/*
+ * @group wrestlers
+ * @group roster
+ */
 class WrestlerFiltersTest extends TestCase
 {
     /** @var App\Filters\WrestlerFilters */

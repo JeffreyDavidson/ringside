@@ -12,5 +12,5 @@ class StableFilters extends Filters
      *
      * @var array
      */
-    public $filters = ['status', 'started_at'];
+    public $filters = ['status', 'startedAt'];
 }

@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Filters;
 
-use App\Filters\Concerns\FiltersByStatus;
-use App\Filters\EventFilters;
 use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
@@ -11,7 +9,7 @@ use Tests\TestCase;
 /*
  * @group events
  */
-class EventFiltersTest extends TestCase
+class FiltersByStatusTest extends TestCase
 {
     /** @var App\Filters\EventFilters */
     protected $subject;
@@ -29,14 +27,7 @@ class EventFiltersTest extends TestCase
     }
 
     /** @test */
-    public function event_filters_include_filtering_by_status()
-    {
-        $this->assertUsesTrait(FiltersByStatus::class, $this->subject);
-        $this->assertTrue(in_array('status', $this->subject->filters));
-    }
-
-    /** @test */
-    public function event_filters_include_filtering_by_date()
+    public function models_can_be_filtered_by_their_start_date()
     {
         $now = now();
         Carbon::setTestNow($now);
@@ -77,5 +68,11 @@ class EventFiltersTest extends TestCase
         }
 
         return $mock;
+    }
+}
+
+class Testing {
+    public function startedAt($startedAt) {
+
     }
 }
