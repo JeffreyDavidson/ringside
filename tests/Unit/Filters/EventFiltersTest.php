@@ -4,7 +4,6 @@ namespace Tests\Unit\Filters;
 
 use App\Filters\Concerns\FiltersByStatus;
 use App\Filters\EventFilters;
-use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
 
@@ -38,43 +37,42 @@ class EventFiltersTest extends TestCase
     /** @test */
     public function event_filters_include_filtering_by_date()
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
-        $dateSet = [$now, $now->addDays(2)];
-
         $this->assertTrue(in_array('date', $this->subject->filters));
-
-        $builderMock = $this->getBuilderMock(true, $dateSet);
-        $this->subject->apply($builderMock);
-
-        $builderMockFromDate = $this->subject->date(
-            $dateSet
-        );
-
-        $this->assertInstanceOf(Builder::class, $builderMock);
-        $this->assertSame($builderMockFromDate, $builderMock);
     }
 
-    private function getBuilderMock($shouldCallWhereBetween, $dateSet)
+    /** @test */
+    public function event_filters_can_be_filtered_with_one_date()
     {
-        $mock = \Mockery::mock(Builder::class);
+        $dateSet = ['2020-01-01 00:00:00'];
 
-        // Make sure we expect strings, not objects
-        foreach ($dateSet as $arrIndex => $date) {
-            $dateSet[$arrIndex] = Carbon::parse($date)->toDateTimeString();
-        }
+        $mock = \Mockery::mock(Builder::class)
+            ->shouldReceive('whereDate')
+            ->withArgs([$dateSet[0]])
+            ->once()
+            ->andReturn(true);
 
-        if ($shouldCallWhereBetween) {
-            $mock->shouldReceive('whereBetween')
-                ->withArgs($dateSet)
-                ->once()
-                ->andReturn(true);
-        } else {
-            $mock->shouldReceive('whereDate')
-                ->andReturn(true);
-        }
+        $this->subject->apply($mock);
 
-        return $mock;
+        $builderMockFromDate = $this->subject->date($dateSet);
+
+        $this->assertSame($builderMockFromDate, $mock);
+    }
+
+    /** @test */
+    public function event_filters_can_be_filtered_with_a_date_range()
+    {
+        $dateSet = ['2020-01-01 00:00:00', '2020-01-03 00:00:00'];
+
+        $mock = \Mockery::mock(Builder::class)
+            ->shouldReceive('whereBetween')
+            ->withArgs(['date', $dateSet])
+            ->once()
+            ->andReturn(true);
+
+        $this->subject->apply($mock);
+
+        $builderMockFromDate = $this->subject->date($dateSet);
+
+        $this->assertSame($builderMockFromDate, $mock);
     }
 }
