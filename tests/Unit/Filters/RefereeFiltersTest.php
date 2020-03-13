@@ -10,6 +10,7 @@ use Tests\TestCase;
 /*
  * @group referees
  * @group roster
+ * @group filters
  */
 class RefereeFiltersTest extends TestCase
 {
@@ -39,6 +40,6 @@ class RefereeFiltersTest extends TestCase
     public function referee_filters_include_filtering_by_started_at_date()
     {
         $this->assertUsesTrait(FiltersByStartDate::class, $this->subject);
-        $this->assertTrue(in_array('started_at', $this->subject->filters));
+        $this->assertTrue(in_array('startedAt', $this->subject->filters));
     }
 }

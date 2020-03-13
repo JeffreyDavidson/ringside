@@ -11,6 +11,7 @@ use Tests\TestCase;
 /*
  * @group tagteams
  * @group roster
+ * @group filters
  */
 class TagTeamFiltersTest extends TestCase
 {
@@ -40,6 +41,6 @@ class TagTeamFiltersTest extends TestCase
     public function tag_team_filters_include_filtering_by_started_at_date()
     {
         $this->assertUsesTrait(FiltersByStartDate::class, $this->subject);
-        $this->assertTrue(in_array('started_at', $this->subject->filters));
+        $this->assertTrue(in_array('startedAt', $this->subject->filters));
     }
 }

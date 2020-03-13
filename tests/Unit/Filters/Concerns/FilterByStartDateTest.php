@@ -1,78 +1,43 @@
 <?php
 
-namespace Tests\Unit\Filters;
+namespace Tests\Unit\Filters\Concerns;
 
-use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
 
 /*
- * @group events
+ *
+ * @group filters
  */
-class FiltersByStartDateTest extends TestCase
+class FilterByStartDateTest extends TestCase
 {
-    /** @var App\Filters\EventFilters */
     protected $subject;
 
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    protected function setUp(): void
+    public function setUp(): void
     {
-        parent::setUp();
-
-        $this->subject = app(EventFilters::class);
+        $this->subject = new Example();
     }
 
     /** @test */
     public function models_can_be_filtered_by_their_start_date()
     {
-        $now = now();
-        Carbon::setTestNow($now);
+        $this->markTestIncomplete();
 
-        $dateSet = [$now, $now->addDays(2)];
+        $dateSet = ['2020-01-01 00:00:00'];
 
-        $this->assertTrue(in_array('date', $this->subject->filters));
+        $mock = \Mockery::mock(Builder::class)
+            ->shouldReceive('whereBetween')
+            ->withArgs(['started_at', $dateSet])
+            ->once()
+            ->andReturn(true)
+            ->getMock();
 
-        $builderMock = $this->getBuilderMock(true, $dateSet);
-        $this->subject->apply($builderMock);
+        $builderMockFromDate = $this->subject->date($dateSet);
 
-        $builderMockFromDate = $this->subject->date(
-            $dateSet
-        );
-
-        $this->assertInstanceOf(Builder::class, $builderMock);
-        $this->assertSame($builderMockFromDate, $builderMock);
-    }
-
-    private function getBuilderMock($shouldCallWhereBetween, $dateSet)
-    {
-        $mock = \Mockery::mock(Builder::class);
-
-        // Make sure we expect strings, not objects
-        foreach ($dateSet as $arrIndex => $date) {
-            $dateSet[$arrIndex] = Carbon::parse($date);
-        }
-
-        if ($shouldCallWhereBetween) {
-            $mock->shouldReceive('whereBetween')
-                // ->withArgs($dateSet)
-                ->once()
-                ->andReturn(true);
-        } else {
-            $mock->shouldReceive('whereDate')
-                ->andReturn(true);
-        }
-
-        return $mock;
+        $this->assertSame($builderMockFromDate, $mock);
     }
 }
 
-class TestingTwo
+class Example
 {
-    public function startedAt($startedAt)
-    {
-    }
 }

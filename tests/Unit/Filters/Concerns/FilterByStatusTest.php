@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\Unit\Filters;
+namespace Tests\Unit\Filters\Concerns;
 
 use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
 
 /*
- * @group events
+ * @group filters
  */
-class FiltersByStatusTest extends TestCase
+class FilterByStatusTest extends TestCase
 {
-    /** @var App\Filters\EventFilters */
+    /** @var Example */
     protected $subject;
 
     /**
@@ -23,12 +23,14 @@ class FiltersByStatusTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = app(EventFilters::class);
+        $this->subject = new Example();
     }
 
     /** @test */
     public function models_can_be_filtered_by_their_start_date()
     {
+        $this->markTestIncomplete();
+
         $now = now();
         Carbon::setTestNow($now);
 
@@ -71,8 +73,7 @@ class FiltersByStatusTest extends TestCase
     }
 }
 
-class Testing {
-    public function startedAt($startedAt) {
+class Example
+{
 
-    }
 }

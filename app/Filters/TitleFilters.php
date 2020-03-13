@@ -2,8 +2,6 @@
 
 namespace App\Filters;
 
-use Carbon\Carbon;
-
 class TitleFilters extends Filters
 {
     use Concerns\FiltersByStatus;
@@ -24,12 +22,12 @@ class TitleFilters extends Filters
     public function introducedAt($introducedAt)
     {
         if (isset($introducedAt[1])) {
-            $this->builder->whereBetween('started_at', [
-                Carbon::parse($introducedAt[0]),
-                Carbon::parse($introducedAt[1])
+            $this->builder->whereBetween('introduced_at', [
+                $introducedAt[0],
+                $introducedAt[1]
             ]);
         } elseif (isset($introducedAt[0])) {
-            $this->builder->whereDate('introduced_at', Carbon::parse($introducedAt[0]));
+            $this->builder->whereDate('introduced_at', $introducedAt[0]);
         }
 
         return $this->builder;

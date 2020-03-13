@@ -10,6 +10,7 @@ use Tests\TestCase;
 /*
  * @group managers
  * @group roster
+ * @group filters
  */
 class ManagerFiltersTest extends TestCase
 {
@@ -39,6 +40,6 @@ class ManagerFiltersTest extends TestCase
     public function manager_filters_include_filtering_by_started_at_date()
     {
         $this->assertUsesTrait(FiltersByStartDate::class, $this->subject);
-        $this->assertTrue(in_array('started_at', $this->subject->filters));
+        $this->assertTrue(in_array('startedAt', $this->subject->filters));
     }
 }

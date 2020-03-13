@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 /*
  * @group events
+ * @group filters
  */
 class EventFiltersTest extends TestCase
 {
@@ -47,9 +48,10 @@ class EventFiltersTest extends TestCase
 
         $mock = \Mockery::mock(Builder::class)
             ->shouldReceive('whereDate')
-            ->withArgs([$dateSet[0]])
+            ->withArgs(['date', $dateSet[0]])
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+            ->getMock();
 
         $this->subject->apply($mock);
 
@@ -65,9 +67,10 @@ class EventFiltersTest extends TestCase
 
         $mock = \Mockery::mock(Builder::class)
             ->shouldReceive('whereBetween')
-            ->withArgs(['date', $dateSet])
+            ->withArgs(['started_at', $dateSet])
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+            ->getMock();
 
         $this->subject->apply($mock);
 

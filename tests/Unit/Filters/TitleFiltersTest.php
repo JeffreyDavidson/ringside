@@ -2,13 +2,14 @@
 
 namespace Tests\Unit\Filters;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Filters\TitleFilters;
 use App\Filters\Concerns\FiltersByStatus;
+use App\Filters\TitleFilters;
+use Illuminate\Database\Query\Builder;
+use Tests\TestCase;
 
 /*
  * @group titles
+ * @group filters
  */
 class TitleFiltersTest extends TestCase
 {
@@ -35,15 +36,46 @@ class TitleFiltersTest extends TestCase
     }
 
     /** @test */
-    public function title_filters_include_filtering_by_introduced_at_date()
+    public function title_filters_include_filtering_by_date()
     {
-        $now = now();
-        Carbon::setTestNow($now);
+        $this->assertTrue(in_array('introducedAt', $this->subject->filters));
+    }
 
-        $date = [$now, $now->addDays(2)];
-        $builder = $this->subject->introducedAt($date);
+    /** @test */
+    public function title_filters_can_be_filtered_with_one_date()
+    {
+        $dateSet = ['2020-01-01 00:00:00'];
 
-        $this->assertTrue(in_array('introduced_at', $this->subject->filters));
-        $this->assertAttributeContainsOnly('whereBetween', 'wheres', $builder);
+        $mock = \Mockery::mock(Builder::class)
+            ->shouldReceive('whereDate')
+            ->withArgs(['introduced_at', $dateSet[0]])
+            ->once()
+            ->andReturn(true)
+            ->getMock();
+
+        $this->subject->apply($mock);
+
+        $builderMockFromDate = $this->subject->introducedAt($dateSet);
+
+        $this->assertSame($builderMockFromDate, $mock);
+    }
+
+    /** @test */
+    public function title_filters_can_be_filtered_with_a_date_range()
+    {
+        $dateSet = ['2020-01-01 00:00:00', '2020-01-03 00:00:00'];
+
+        $mock = \Mockery::mock(Builder::class)
+            ->shouldReceive('whereBetween')
+            ->withArgs(['introduced_at', $dateSet])
+            ->once()
+            ->andReturn(true)
+            ->getMock();
+
+        $this->subject->apply($mock);
+
+        $builderMockFromDate = $this->subject->introducedAt($dateSet);
+
+        $this->assertSame($builderMockFromDate, $mock);
     }
 }
