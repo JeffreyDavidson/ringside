@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Http\Requests\Managers;
 
+use App\Enums\ManagerStatus;
 use App\Http\Requests\Managers\IndexRequest;
 use JMac\Testing\Traits\HttpTestAssertions;
 use Tests\TestCase;
@@ -28,8 +29,7 @@ class IndexRequestTest extends TestCase
         $rules = $this->subject->rules();
 
         $this->assertValidationRules([
-            'first_name' => ['required', 'string', 'min:3'],
-            'last_name' => ['required', 'string', 'min:3'],
+            'status' => ['nullable', 'string', ManagerStatus::rule()],
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
         ], $rules);
     }
