@@ -107,7 +107,6 @@ class EmploymentFactory extends BaseFactory
             ->merge($this->referees)
             ->merge($this->managers)
             ->flatten(1);
-        // dd($employees);
 
         $this->startDate = $this->startDate ?? now();
 

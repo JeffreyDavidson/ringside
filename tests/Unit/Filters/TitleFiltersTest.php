@@ -7,7 +7,7 @@ use App\Filters\TitleFilters;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
 
-/*
+/**
  * @group titles
  * @group filters
  */

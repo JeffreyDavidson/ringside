@@ -21,7 +21,6 @@ class DeleteTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
-        dd($tagTeam);
 
         $response = $this->deleteRequest($tagTeam);
 

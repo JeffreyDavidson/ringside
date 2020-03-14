@@ -56,7 +56,6 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
         $this->actAs(Role::SUPER_ADMINISTRATOR);
 
         $response = $this->indexRequest('wrestlers');
-        dd($response);
 
         $response->assertOk();
         $response->assertViewIs('wrestlers.index');

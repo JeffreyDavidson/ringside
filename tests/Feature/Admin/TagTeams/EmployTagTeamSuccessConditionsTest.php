@@ -21,7 +21,6 @@ class EmployTagTeamSuccessConditionsTest extends TestCase
     {
         $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->pendingEmployment()->withWrestlers()->create();
-        dd($tagTeam);
 
         $response = $this->employRequest($tagTeam);
 

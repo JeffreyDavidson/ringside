@@ -8,7 +8,7 @@ use App\Filters\Concerns\FiltersByStatus;
 use App\Filters\TagTeamFilters;
 use Tests\TestCase;
 
-/*
+/**
  * @group tagteams
  * @group roster
  * @group filters

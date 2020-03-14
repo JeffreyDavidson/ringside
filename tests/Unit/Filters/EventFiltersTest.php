@@ -7,7 +7,7 @@ use App\Filters\EventFilters;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
 
-/*
+/**
  * @group events
  * @group filters
  */
@@ -67,7 +67,7 @@ class EventFiltersTest extends TestCase
 
         $mock = \Mockery::mock(Builder::class)
             ->shouldReceive('whereBetween')
-            ->withArgs(['started_at', $dateSet])
+            ->withArgs(['date', $dateSet])
             ->once()
             ->andReturn(true)
             ->getMock();

@@ -7,7 +7,7 @@ use App\Filters\Concerns\FiltersByStatus;
 use App\Filters\RefereeFilters;
 use Tests\TestCase;
 
-/*
+/**
  * @group referees
  * @group roster
  * @group filters

@@ -7,7 +7,7 @@ use App\Filters\Concerns\FiltersByStatus;
 use App\Filters\WrestlerFilters;
 use Tests\TestCase;
 
-/*
+/**
  * @group wrestlers
  * @group roster
  * @group filters

@@ -108,12 +108,9 @@ class TagTeamFactory extends BaseFactory
                 $this->wrestlerFactory->forTagTeam($tagTeam)->create();
             }
 
-            // dd('gets hit');
-
             if ($this->employmentFactory) {
                 $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
-            dd('doesnt get hit');
 
             if ($this->suspensionFactory) {
                 $this->suspensionFactory->forTagTeam($tagTeam)->create();

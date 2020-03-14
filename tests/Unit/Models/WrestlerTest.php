@@ -11,12 +11,6 @@ use Tests\TestCase;
  */
 class WrestlerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        \Event::fake();
-    }
-
     /** @test */
     public function a_wrestler_has_a_name()
     {
