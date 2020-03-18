@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
+use App\Enums\RefereeStatus;
 use App\Models\Referee;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\SingleRosterMember;
+use Tests\TestCase;
 
 /**
  * @group referees
@@ -12,23 +13,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class RefereeTest extends TestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * Set up test environment for this class.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        \Event::fake();
-    }
-
     /** @test */
     public function a_referee_has_a_first_name()
     {
-        $referee = factory(Referee::class)->make(['first_name' => 'John']);
+        $referee = new Referee(['first_name' => 'John']);
 
         $this->assertEquals('John', $referee->first_name);
     }
@@ -36,7 +24,7 @@ class RefereeTest extends TestCase
     /** @test */
     public function a_referee_has_a_last_name()
     {
-        $referee = factory(Referee::class)->make(['last_name' => 'Smith']);
+        $referee = new Referee(['last_name' => 'Smith']);
 
         $this->assertEquals('Smith', $referee->last_name);
     }
@@ -44,8 +32,41 @@ class RefereeTest extends TestCase
     /** @test */
     public function a_referee_has_a_status()
     {
-        $referee = factory(Referee::class)->create(['status' => 'Example Status']);
+        $referee = new Referee();
+        $referee->setRawAttributes(['status' => 'example'], true);
 
-        $this->assertEquals('Example Status', $referee->getOriginal('status'));
+        $this->assertEquals('example', $referee->getRawOriginal('status'));
+    }
+
+    /** @test */
+    public function a_referee_status_gets_cast_as_a_referee_status_enum()
+    {
+        $referee = new Referee();
+
+        $this->assertInstanceOf(RefereeStatus::class, $referee->status);
+    }
+
+    /** @test */
+    public function a_referee_uses_has_a_full_name_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\HasFullName', Referee::class);
+    }
+
+    /** @test */
+    public function a_referee_uses_can_be_booked_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\CanBeBooked', Referee::class);
+    }
+
+    /** @test */
+    public function a_referee_uses_soft_deleted_trait()
+    {
+        $this->assertUsesTrait('Illuminate\Database\Eloquent\SoftDeletes', Referee::class);
+    }
+
+    /** @test */
+    public function a_referee_is_a_single_roster_member()
+    {
+        $this->assertEquals(SingleRosterMember::class, get_parent_class(Referee::class));
     }
 }

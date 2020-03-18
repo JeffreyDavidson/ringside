@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Eloquent\Concerns\HasCustomRelationships;
 use App\Traits\HasCachedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Eloquent\Concerns\HasCustomRelationships;
 
 class Stable extends Model
 {
@@ -32,9 +32,6 @@ class Stable extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     *
-     */
     public function disassemble()
     {
         $this->currentWrestlers()->detach();

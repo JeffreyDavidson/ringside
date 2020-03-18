@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Filters\Concerns;
 
-use Illuminate\Database\Query\Builder;
-use Tests\Fixtures\ExampleFilters;
 use Tests\TestCase;
+use Tests\Fixtures\ExampleFilters;
+use Illuminate\Database\Query\Builder;
 
 /**
  * @group filters
@@ -20,19 +20,23 @@ class FiltersByStartDateTest extends TestCase
     }
 
     /** @test */
-    public function models_can_be_filtered_by_their_start_date()
+    public function models_can_be_filtered_by_their_start_date_daily()
     {
-        $this->markTestIncomplete();
-
         $dateSet = ['2020-01-01 00:00:00'];
 
         $mock = \Mockery::mock(Builder::class)
-            ->shouldReceive('whereHas', \Mockery::any())
-            ->shouldReceive('whereDate')
-            ->withArgs(['started_at', $dateSet])
+            ->shouldReceive('whereHas')
+            ->withArgs([
+                \Mockery::any(),
+                \Mockery::on(function($mock) use ($dateSet) {
+                    $mock->shouldReceive('whereDate')->withArgs(['started_at', $dateSet[0]]);
+                })
+            ])
             ->once()
             ->andReturn(true)
             ->getMock();
+
+        $this->subject->apply($mock);
 
         $builderMockFromDate = $this->subject->startedAt($dateSet);
 
@@ -42,8 +46,6 @@ class FiltersByStartDateTest extends TestCase
     /** @test */
     public function models_can_be_filtered_by_their_start_date_range()
     {
-        $this->markTestIncomplete();
-
         $dateSet = ['2020-01-01 00:00:00', '2020-01-04 00:00:00'];
 
         $mock = \Mockery::mock(Builder::class)
@@ -53,6 +55,8 @@ class FiltersByStartDateTest extends TestCase
             ->once()
             ->andReturn(true)
             ->getMock();
+
+        $this->subject->apply($mock);
 
         $builderMockFromDate = $this->subject->startedAt($dateSet);
 

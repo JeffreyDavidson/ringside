@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\Models;
 
+use App\Enums\WrestlerStatus;
+use App\Models\SingleRosterMember;
+use App\Models\User;
 use App\Models\Wrestler;
 use Tests\TestCase;
 
@@ -58,5 +61,64 @@ class WrestlerTest extends TestCase
         $wrestler->setRawAttributes(['status' => 'example'], true);
 
         $this->assertEquals('example', $wrestler->getRawOriginal('status'));
+    }
+
+    /** @test */
+    public function a_wrestler_status_gets_cast_as_a_wrestler_status_enum()
+    {
+        $wrestler = new Wrestler();
+
+        $this->assertInstanceOf(WrestlerStatus::class, $wrestler->status);
+    }
+
+    /** @test */
+    public function a_wrestler_can_be_managed_to_a_user()
+    {
+        $this->markTestIncomplete();
+        $wrestler = new Wrestler(['user_id' => new User()]);
+
+        $this->assertInstanceOf(User::class, $wrestler->user);
+    }
+
+    /** @test */
+    public function a_wrestler_uses_has_a_height_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\HasAHeight', Wrestler::class);
+    }
+
+    /** @test */
+    public function a_wrestler_uses_can_be_stable_member_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\CanBeStableMember', Wrestler::class);
+    }
+
+    /** @test */
+    public function a_wrestler_uses_can_be_tag_team_partner_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\CanBeTagTeamPartner', Wrestler::class);
+    }
+
+    /** @test */
+    public function a_wrestler_uses_can_be_booked_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\CanBeBooked', Wrestler::class);
+    }
+
+    /** @test */
+    public function a_wrestler_uses_soft_deleted_trait()
+    {
+        $this->assertUsesTrait('Illuminate\Database\Eloquent\SoftDeletes', Wrestler::class);
+    }
+
+    /** @test */
+    public function a_wrestler_has_custom_relationships()
+    {
+        $this->assertUsesTrait('App\Eloquent\Concerns\HasCustomRelationships', Wrestler::class);
+    }
+
+    /** @test */
+    public function a_wrestler_is_a_single_roster_member()
+    {
+        $this->assertEquals(SingleRosterMember::class, get_parent_class(Wrestler::class));
     }
 }

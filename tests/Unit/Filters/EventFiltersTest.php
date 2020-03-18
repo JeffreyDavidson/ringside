@@ -26,6 +26,8 @@ class EventFiltersTest extends TestCase
         parent::setUp();
 
         $this->subject = app(EventFilters::class);
+
+        dd($this->subject);
     }
 
     /** @test */

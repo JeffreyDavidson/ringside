@@ -13,11 +13,11 @@ trait FiltersByStartDate
     public function startedAt($startedAt)
     {
         if (isset($startedAt[1])) {
-            $this->builder->whereHas('currentEmployment', function ($query) use ($startedAt) {
+           $this->builder->whereHas('currentEmployment', function ($query) use ($startedAt) {
                 $query->whereBetween('started_at', [
                     $startedAt[0],
-                    $startedAt[1]
-                ]);
+                    $startedAt[1],
+                 ]);
             });
         } else {
             $this->builder->whereHas('currentEmployment', function ($query) use ($startedAt) {

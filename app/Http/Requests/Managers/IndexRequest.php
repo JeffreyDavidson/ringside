@@ -31,8 +31,6 @@ class IndexRequest extends AjaxOnlyFormRequest
 
         $rules = $this->validateDateRange($rules, 'started_at');
 
-        dd($rules);
-
         return $rules;
     }
 }

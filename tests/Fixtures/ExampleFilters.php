@@ -8,4 +8,6 @@ use App\Filters\Filters;
 class ExampleFilters extends Filters
 {
     use FiltersByStartDate;
+
+    protected $filters = ['startedAt'];
 }
