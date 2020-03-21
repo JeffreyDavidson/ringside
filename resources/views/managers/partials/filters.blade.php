@@ -1,4 +1,4 @@
-<x-filters>
+<x-filter>
     <div class="kt-nav__item">
         <div class="form-group m-3">
             <select-field
@@ -16,4 +16,4 @@
             />
         </div>
     </div>
-</x-filters>
+</x-filter>

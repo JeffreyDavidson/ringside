@@ -58,7 +58,6 @@ class ViewManagersListSuccessConditionsTest extends TestCase
         $this->actAs($adminRoles);
 
         $response = $this->indexRequest('managers');
-        dd($response);
 
         $response->assertOk();
         $response->assertViewIs('managers.index');
