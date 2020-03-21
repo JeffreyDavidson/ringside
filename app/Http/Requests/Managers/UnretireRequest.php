@@ -14,10 +14,26 @@ class UnretireRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('unretire', $this->route('manager'));
+        $manager = $this->route('manager');
 
-        if (! $$this->route('manager')->canBeUnretired()) {
+        if (! $this->user()->can('unretire', $manager)) {
+            return false;
+        }
+
+        if (! $manager->canBeUnretired()) {
             throw new CannotBeUnretiredException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }

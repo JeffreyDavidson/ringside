@@ -16,7 +16,7 @@ class ReinstateRequest extends FormRequest
     {
         $this->user()->can('reinstate', $this->route('referee'));
 
-        if (! $$this->route('referee')->canBeReinstated()) {
+        if (! $this->route('referee')->canBeReinstated()) {
             throw new CannotBeReinstatedException();
         }
     }

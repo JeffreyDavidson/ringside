@@ -14,10 +14,26 @@ class InjureRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('injure', $this->route('manager'));
+        $manager = $this->route('manager');
 
-        if (! $$this->route('manager')->canBeInjured()) {
+        if (! $this->user()->can('injure', $manager)) {
+            return false;
+        }
+
+        if (! $manager->canBeInjured()) {
             throw new CannotBeInjuredException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }

@@ -16,7 +16,7 @@ class EmployRequest extends FormRequest
     {
         $this->user()->can('employ', $this->route('referee'));
 
-        if (! $$this->route('referee')->canBeEmployed()) {
+        if (! $this->route('referee')->canBeEmployed()) {
             throw new CannotBeEmployedException();
         }
     }

@@ -16,7 +16,7 @@ class InjureRequest extends FormRequest
     {
         $this->user()->can('injure', $this->route('referee'));
 
-        if (! $$this->route('referee')->canBeInjured()) {
+        if (! $this->route('referee')->canBeInjured()) {
             throw new CannotBeInjuredException();
         }
     }

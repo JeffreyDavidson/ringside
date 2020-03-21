@@ -16,7 +16,7 @@ class UnretireRequest extends FormRequest
     {
         $this->user()->can('unretire', $this->route('referee'));
 
-        if (! $$this->route('referee')->canBeUnretired()) {
+        if (! $this->route('referee')->canBeUnretired()) {
             throw new CannotBeUnretiredException();
         }
     }

@@ -14,10 +14,26 @@ class RetireRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('retire', $this->route('manager'));
+        $manager = $this->route('manager');
 
-        if (! $$this->route('manager')->canBeRetired()) {
+        if (! $this->user()->can('retire', $manager)) {
+            return false;
+        }
+
+        if (! $manager->canBeRetired()) {
             throw new CannotBeRetiredException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }

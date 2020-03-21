@@ -1,0 +1,39 @@
+<?php
+
+namespace Tests\Feature\User\Referees;
+
+use App\Enums\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\RefereeFactory;
+use Tests\TestCase;
+
+/**
+ * @group referees
+ * @group users
+ * @group roster
+ */
+class RestoreRefereeFailureConditionsTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function a_basic_user_cannot_restore_a_deleted_referee()
+    {
+        $this->actAs(Role::BASIC);
+        $referee = RefereeFactory::new()->softDeleted()->create();
+
+        $response = $this->restoreRequest($referee);
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_restore_a_deleted_referee()
+    {
+        $referee = RefereeFactory::new()->softDeleted()->create();
+
+        $response = $this->restoreRequest($referee);
+
+        $response->assertRedirect(route('login'));
+    }
+}

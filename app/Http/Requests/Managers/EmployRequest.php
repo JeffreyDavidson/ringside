@@ -14,10 +14,26 @@ class EmployRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('employ', $this->route('manager'));
+        $manager = $this->route('manager');
 
-        if (! $$this->route('manager')->canBeEmployed()) {
+        if (! $this->user()->can('employ', $manager)) {
+            return false;
+        }
+
+        if (! $manager->canBeEmployed()) {
             throw new CannotBeEmployedException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }

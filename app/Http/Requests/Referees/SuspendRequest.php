@@ -16,7 +16,7 @@ class SuspendRequest extends FormRequest
     {
         $this->user()->can('suspend', $this->route('referee'));
 
-        if (! $$this->route('referee')->canBeSuspended()) {
+        if (! $this->route('referee')->canBeSuspended()) {
             throw new CannotBeSuspendedException();
         }
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b63e02ce7891ce66b5e8dd5c775b9f94",
+    "content-hash": "d5cc50e88a7c16e93709a5c4f0b4a76f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -6102,6 +6102,41 @@
                 "xunit"
             ],
             "time": "2020-01-08T08:49:49+00:00"
+        },
+        {
+            "name": "rawr/cross-data-providers",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/T-Regx/CrossDataProviders.git",
+                "reference": "9890f085ee604d79f7dcbc73008c22bb09d44dac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/T-Regx/CrossDataProviders/zipball/9890f085ee604d79f7dcbc73008c22bb09d44dac",
+                "reference": "9890f085ee604d79f7dcbc73008c22bb09d44dac",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TRegx\\": "src/TRegx"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Allows you to use mix multiple PhpUnit @dataProvider without duplication",
+            "time": "2020-01-01T19:34:37+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

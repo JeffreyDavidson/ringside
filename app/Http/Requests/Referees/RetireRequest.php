@@ -16,7 +16,7 @@ class RetireRequest extends FormRequest
     {
         $this->user()->can('retire', $this->route('referee'));
 
-        if (! $$this->route('referee')->canBeRetired()) {
+        if (! $this->route('referee')->canBeRetired()) {
             throw new CannotBeRetiredException();
         }
     }

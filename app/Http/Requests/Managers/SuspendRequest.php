@@ -14,10 +14,26 @@ class SuspendRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('suspend', $this->route('manager'));
+        $manager = $this->route('manager');
 
-        if (! $$this->route('manager')->canBeSuspended()) {
+        if (! $this->user()->can('suspend', $manager)) {
+            return false;
+        }
+
+        if (! $manager->canBeSuspended()) {
             throw new CannotBeSuspendedException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }
