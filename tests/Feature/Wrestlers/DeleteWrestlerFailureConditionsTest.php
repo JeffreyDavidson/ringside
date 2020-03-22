@@ -36,4 +36,15 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function an_already_deleted_wrestler_cannot_be_deleted()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->softDeleted()->create();
+
+        $response = $this->deleteRequest($wrestler);
+
+        $response->assertNotFound();
+    }
 }

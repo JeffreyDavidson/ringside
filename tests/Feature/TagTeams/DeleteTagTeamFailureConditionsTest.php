@@ -37,4 +37,15 @@ class DeleteTagTeamFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function an_already_deleted_tag_team_cannot_be_deleted()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->softDeleted()->create();
+
+        $response = $this->deleteRequest($tagTeam);
+
+        $response->assertNotFound();
+    }
 }

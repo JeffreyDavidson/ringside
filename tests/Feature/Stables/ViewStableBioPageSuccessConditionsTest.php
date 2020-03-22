@@ -38,4 +38,15 @@ class ViewStableBioPageSuccessConditionsTest extends TestCase
 
         $response->assertOk();
     }
+
+    /** @test */
+    public function a_stables_name_can_be_seen_on_their_profile()
+    {
+        $this->actAs('administrator');
+        $stable = factory(Stable::class)->create(['name' => 'Example Stable Name']);
+
+        $response = $this->get(route('stables.show', $stable));
+
+        $response->assertSee('Example Stable Name');
+    }
 }

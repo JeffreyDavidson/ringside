@@ -3,9 +3,10 @@
 namespace Tests\Feature\User\Titles;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeIntroducedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Tests\Factories\TitleFactory;
+use Tests\TestCase;
 
 /**
  * @group titles
@@ -34,5 +35,19 @@ class IntroduceTitleFailureConditionsTest extends TestCase
         $response = $this->introduceRequest($title);
 
         $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_competable_title_cannot_be_introduced()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeIntroducedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->competable()->create();
+
+        $response = $this->introduceRequest($title);
+
+        $response->assertForbidden();
     }
 }

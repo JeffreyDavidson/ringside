@@ -36,4 +36,18 @@ class RetireWrestlerFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function an_already_retired_wrestler_cannot_be_retired()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRetiredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->retired()->create();
+
+        $response = $this->retireRequest($wrestler);
+
+        $response->assertForbidden();
+    }
 }

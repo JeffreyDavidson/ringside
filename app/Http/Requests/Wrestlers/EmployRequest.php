@@ -14,10 +14,16 @@ class EmployRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('employ', $this->route('wrestler'));
+        $wrestler = $this->route('wrestler');
 
-        if (! $$this->route('wrestler')->canBeEmployed()) {
+        if (! $this->user()->can('employ', $wrestler)) {
+            return false;
+        }
+
+        if (! $wrestler->canBeEmployed()) {
             throw new CannotBeEmployedException();
         }
+
+        return true;
     }
 }

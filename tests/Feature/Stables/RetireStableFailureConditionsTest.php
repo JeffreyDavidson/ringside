@@ -36,4 +36,26 @@ class RetireStableFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function a_pending_introduction_stable_cannot_be_retired()
+    {
+        $this->actAs('administrator');
+        $stable = factory(Stable::class)->states('pending-introduction')->create();
+
+        $response = $this->put(route('stables.retire', $stable));
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_retired_stable_cannot_be_retired()
+    {
+        $this->actAs('administrator');
+        $stable = factory(Stable::class)->states('retired')->create();
+
+        $response = $this->put(route('stables.retire', $stable));
+
+        $response->assertForbidden();
+    }
 }

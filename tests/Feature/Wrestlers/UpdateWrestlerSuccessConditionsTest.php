@@ -64,4 +64,20 @@ class UpdateWrestlerSuccessConditionsTest extends TestCase
             $this->assertEquals('The Finisher', $wrestler->signature_move);
         });
     }
+
+    /** @test */
+    public function a_wrestler_signature_move_is_optional()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => '']));
+
+        $response->assertSessionDoesntHaveErrors('signature_move');
+        $response->assertRedirect(route('wrestlers.index'));
+        tap($wrestler->first(), function ($wrestler) {
+            $this->assertNull($wrestler->signature_move);
+        });
+    }
 }

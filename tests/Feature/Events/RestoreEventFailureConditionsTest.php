@@ -3,10 +3,10 @@
 namespace Tests\Feature\User\Events;
 
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\Event;
-use Tests\Factories\EventFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -35,5 +35,27 @@ class RestoreEventFailureConditionsTest extends TestCase
         $response = $this->put(route('events.restore', $event));
 
         $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_scheduled_event_cannot_be_restored()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('scheduled')->create();
+
+        $response = $this->put(route('events.restore', $event));
+
+        $response->assertNotFound();
+    }
+
+    /** @test */
+    public function a_past_event_cannot_be_restored()
+    {
+        $this->actAs('administrator');
+        $event = factory(Event::class)->states('past')->create();
+
+        $response = $this->put(route('events.restore', $event));
+
+        $response->assertNotFound();
     }
 }

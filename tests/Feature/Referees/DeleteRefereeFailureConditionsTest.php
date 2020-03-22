@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Referees;
+namespace Tests\Feature\Referees;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 /**
  * @group referees
- * @group users
  * @group roster
  */
 class DeleteRefereeFailureConditionsTest extends TestCase
@@ -20,7 +19,7 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_delete_a_bookable_referee()
     {
         $this->actAs(Role::BASIC);
-        $referee = RefereeFactory::new()->bookable()->create();
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->deleteRequest($referee);
 
@@ -28,53 +27,9 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_basic_user_cannot_delete_a_pending_employment_referee()
+    public function a_guest_cannot_delete_a_referee()
     {
-        $this->actAs(Role::BASIC);
-        $referee = RefereeFactory::new()->pendingEmployment()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertForbidden();
-    }
-
-    /** @test */
-    public function a_basic_user_cannot_delete_a_suspended_referee()
-    {
-        $this->actAs(Role::BASIC);
-        $referee = RefereeFactory::new()->suspended()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertForbidden();
-    }
-
-    /** @test */
-    public function a_basic_user_cannot_delete_an_injured_referee()
-    {
-        $this->actAs(Role::BASIC);
-        $referee = RefereeFactory::new()->injured()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertForbidden();
-    }
-
-    /** @test */
-    public function a_basic_user_cannot_delete_a_retired_referee()
-    {
-        $this->actAs(Role::BASIC);
-        $referee = RefereeFactory::new()->retired()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertForbidden();
-    }
-
-    /** @test */
-    public function a_guest_cannot_delete_a_bookable_referee()
-    {
-        $referee = RefereeFactory::new()->bookable()->create();
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->deleteRequest($referee);
 
@@ -82,42 +37,13 @@ class DeleteRefereeFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_cannot_delete_a_pending_employment_referee()
+    public function an_already_deleted_wrestler_cannot_be_deleted()
     {
-        $referee = RefereeFactory::new()->pendingEmployment()->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->softDeleted()->create();
 
         $response = $this->deleteRequest($referee);
 
-        $response->assertRedirect(route('login'));
-    }
-
-    /** @test */
-    public function a_guest_cannot_delete_a_retired_referee()
-    {
-        $referee = RefereeFactory::new()->retired()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertRedirect(route('login'));
-    }
-
-    /** @test */
-    public function a_guest_cannot_delete_a_suspended_referee()
-    {
-        $referee = RefereeFactory::new()->suspended()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertRedirect(route('login'));
-    }
-
-    /** @test */
-    public function a_guest_cannot_delete_an_injured_referee()
-    {
-        $referee = RefereeFactory::new()->injured()->create();
-
-        $response = $this->deleteRequest($referee);
-
-        $response->assertRedirect(route('login'));
+        $response->assertNotFound();
     }
 }

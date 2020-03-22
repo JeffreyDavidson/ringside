@@ -14,10 +14,26 @@ class ClearInjuryRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('clearFromInjury', $this->route('referee'));
+        $referee = $this->route('referee');
 
-        if (! $$this->route('referee')->canBeClearedFromInjury()) {
+        if (! $this->user()->can('clearFromInjury', $referee)) {
+            return false;
+        }
+
+        if (! $referee->canBeClearedFromInjury()) {
             throw new CannotBeClearedFromInjuryException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }

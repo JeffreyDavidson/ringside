@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Admin\Events;
 
-use Tests\TestCase;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events
@@ -57,5 +57,41 @@ class CreateEventSuccessConditionsTest extends TestCase
             $this->assertEquals(1, $event->venue_id);
             $this->assertEquals('This is an event preview.', $event->preview);
         });
+    }
+
+    /** @test */
+    public function an_event_date_is_optional()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('events.store'), $this->validParams([
+            'date' => '',
+        ]));
+
+        $response->assertSessionDoesntHaveErrors('date');
+    }
+
+    /** @test */
+    public function an_event_venue_id_is_optional()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('events.store'), $this->validParams([
+            'venue_id' => '',
+        ]));
+
+        $response->assertSessionDoesntHaveErrors('venue_id');
+    }
+
+    /** @test */
+    public function an_event_preview_is_optional()
+    {
+        $this->actAs('administrator');
+
+        $response = $this->post(route('events.store'), $this->validParams([
+            'preview' => '',
+        ]));
+
+        $response->assertSessionDoesntHaveErrors('preview');
     }
 }

@@ -27,4 +27,16 @@ class UnretireTagTeamSuccessConditionsTest extends TestCase
         $response->assertRedirect(route('tag-teams.index'));
         $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->retirements()->latest()->first()->ended_at);
     }
+
+    /** @test */
+    public function unretiring_a_tag_team_makes_both_wrestlers_bookable()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
+
+        $response = $this->unretireRequest($tagTeam);
+
+        $response->assertRedirect(route('tag-teams.index'));
+        $this->assertCount(2, $tagTeam->fresh()->currentWrestlers->filter->isBookable());
+    }
 }

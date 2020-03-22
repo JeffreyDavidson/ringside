@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\User\Wrestlers;
 
+use Carbon\Carbon;
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Factories\WrestlerFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers
@@ -92,5 +93,281 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
         $response = $this->updateRequest($wrestler, $this->validParams());
 
         $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_wrestler_name_is_required()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['name' => '']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('name');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Old Wrestler Name', $wrestler->name);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_name_must_be_a_string()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['name' => ['not-a-string']]));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('name');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Old Wrestler Name', $wrestler->name);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_name_must_be_at_least_three_characters()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['name' => 'Ab']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('name');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Old Wrestler Name', $wrestler->name);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_feet_is_required()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('feet');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(6, $wrestler->feet);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_feet_must_be_numeric()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => 'not-an-integer']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('feet');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(6, $wrestler->feet);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_feet_must_be_a_minimum_of_five()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '4']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('feet');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(6, $wrestler->feet);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_feet_must_be_a_maximum_of_seven()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['feet' => '8']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('feet');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(6, $wrestler->feet);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_inches_is_required()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['inches' => '']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('inches');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(1, $wrestler->inches);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_inches_is_must_be_numeric()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['inches' => 'not-an-integer']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('inches');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(1, $wrestler->inches);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_height_in_inches_must_be_less_than_twelve()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['inches' => 12]));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('inches');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(1, $wrestler->inches);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_weight_is_required()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['weight' => '']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('weight');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(240, $wrestler->weight);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_weight_must_be_numeric()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['weight' => 'not-an-integer']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('weight');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(240, $wrestler->weight);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_hometown_is_required()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['hometown' => '']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('hometown');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Old City, State', $wrestler->hometown);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_hometown_must_be_a_string()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['hometown' => ['not-a-string']]));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('hometown');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Old City, State', $wrestler->hometown);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_signature_move_must_be_a_string_if_present()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => ['not-a-string']]));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('signature_move');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Old Finisher', $wrestler->signature_move);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_started_at_date_is_required()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+        $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => '']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('started_at');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(now()->toDateTimeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_started_at_date_must_be_a_string()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+        $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => ['not-a-string']]));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('started_at');
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals(now()->toDateTimeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_started_at_must_be_in_date_format()
+    {
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create($this->oldAttributes());
+        $wrestler->employments()->create(['started_at' => now()->toDateTimeString()]);
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['started_at' => 'not-a-date-format']));
+
+        $response->assertRedirect(route('wrestlers.edit', $wrestler));
+        $response->assertSessionHasErrors('started_at');
+        tap($wrestler->fresh(), function ($wrestler) use ($now) {
+            $this->assertEquals($now->toDateTImeString(), $wrestler->currentEmployment->started_at->toDateTimeString());
+        });
     }
 }

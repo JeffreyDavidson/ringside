@@ -14,10 +14,26 @@ class ReinstateRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user()->can('reinstate', $this->route('referee'));
+        $referee = $this->route('referee');
 
-        if (! $this->route('referee')->canBeReinstated()) {
+        if (! $this->user()->can('reinstate', $referee)) {
+            return false;
+        }
+
+        if (! $referee->canBeReinstated()) {
             throw new CannotBeReinstatedException();
         }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
     }
 }

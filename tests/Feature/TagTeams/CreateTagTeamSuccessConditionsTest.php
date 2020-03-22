@@ -83,4 +83,24 @@ class CreateTagTeamSuccessConditionsTest extends TestCase
             $this->assertCount(0, $tagTeam->employments);
         });
     }
+
+    /** @test */
+    public function a_tag_team_signature_move_is_optional()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $response = $this->storeRequest('tag-team', $this->validParams(['signature_move' => '']));
+
+        $response->assertSessionDoesntHaveErrors('signature_move');
+    }
+
+    /** @test */
+    public function a_tag_team_started_at_date_is_optional()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $response = $this->storeRequest('tag-team', $this->validParams(['started_at' => '']));
+
+        $response->assertSessionDoesntHaveErrors('started_at');
+    }
 }

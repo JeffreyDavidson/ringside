@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Referees;
+namespace Tests\Feature\Referees;
 
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
+use Tests\Factories\RefereeFactory;
+use App\Exceptions\CannotBeInjuredException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group referees
- * @group users
  * @group roster
  */
 class InjureRefereeFailureConditionsTest extends TestCase
@@ -30,10 +30,24 @@ class InjureRefereeFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_injure_a_bookable_referee()
     {
-        $referee = RefereeFactory::new()->bookable()->create();
+        $referee = RefereeFactory::new()->create();
 
         $response = $this->injureRequest($referee);
 
         $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_already_injured_referee_cannot_be_injured()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeInjuredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->injured()->create();
+
+        $response = $this->injureRequest($referee);
+
+        $response->assertForbidden();
     }
 }

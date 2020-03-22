@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature\User\Referees;
+namespace Tests\Feature\Referees;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use TRegx\DataProvider\DataProviders;
 
 /**
  * @group referees
- * @group users
  * @group roster
  */
 class CreateRefereeFailureConditionsTest extends TestCase
@@ -64,5 +64,50 @@ class CreateRefereeFailureConditionsTest extends TestCase
         $response = $this->storeRequest('referee', $this->validParams());
 
         $response->assertRedirect(route('login'));
+    }
+
+    /**
+     * @test
+     * @dataProvider providers
+     */
+    public function test_form_validation($adminUsers, $formInput, $formInputValue)
+    {
+        $this->actAs($adminUsers);
+
+        $response = $this->storeRequest('referee', $this->validParams([
+            $formInput => $formInputValue,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('referees.create'));
+        $response->assertSessionHasErrors($formInput);
+    }
+
+    public function providers()
+    {
+        return DataProviders::cross(
+            $this->adminRoles(),
+            $this->formValidation()
+        );
+    }
+
+    public function adminRoles()
+    {
+        return [
+            [Role::ADMINISTRATOR],
+            [Role::SUPER_ADMINISTRATOR],
+        ];
+    }
+
+    public function formValidation()
+    {
+        return [
+            ['first_name', ''],
+            ['first_name', ['not-a-string']],
+            ['last_name', ''],
+            ['last_name', ['not-a-string']],
+            ['started_at', ['not-a-string']],
+            ['started_at', now()->toDateString()],
+        ];
     }
 }

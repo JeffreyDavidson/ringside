@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Referees;
+namespace Tests\Feature\Referees;
 
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\RefereeFactory;
 use Tests\TestCase;
+use Tests\Factories\RefereeFactory;
+use App\Exceptions\CannotBeRetiredException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group referees
- * @group users
  * @group roster
  */
 class RetireRefereeFailureConditionsTest extends TestCase
@@ -77,5 +77,17 @@ class RetireRefereeFailureConditionsTest extends TestCase
         $response = $this->retireRequest($referee);
 
         $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_retired_referee_cannot_be_retired()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRetiredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $referee = RefereeFactory::new()->retired()->create();
+
+        $response = $this->retireRequest($referee);
     }
 }

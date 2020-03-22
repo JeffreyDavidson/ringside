@@ -69,4 +69,18 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function an_already_suspended_tag_team_cannot_be_suspended()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeSuspendedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->suspended()->create();
+
+        $response = $this->suspendRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
 }

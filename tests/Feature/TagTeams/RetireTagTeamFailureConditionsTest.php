@@ -36,4 +36,18 @@ class RetireTagTeamFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function an_already_retired_tag_team_cannot_be_retired()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeRetiredException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
+
+        $response = $this->retireRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
 }

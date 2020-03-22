@@ -27,4 +27,46 @@ class ReinstateTagTeamSuccessConditionsTest extends TestCase
         $response->assertRedirect(route('tag-teams.index'));
         $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->suspensions()->latest()->first()->ended_at);
     }
+
+    /** @test */
+    public function a_bookable_tag_team_cannot_be_reinstated()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeReinstatedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
+
+        $response = $this->reinstateRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_pending_employment_tag_team_cannot_be_reinstated()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeReinstatedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
+
+        $response = $this->reinstateRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_retired_tag_team_cannot_be_reinstated()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeReinstatedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->retired()->create();
+
+        $response = $this->reinstateRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
 }

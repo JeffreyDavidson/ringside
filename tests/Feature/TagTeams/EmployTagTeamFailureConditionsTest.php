@@ -36,4 +36,32 @@ class EmployTagTeamFailureConditionsTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    /** @test */
+    public function a_bookable_tag_team_cannot_be_employed()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->bookable()->create();
+
+        $response = $this->employRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_pending_employment_tag_team_without_wrestlers_cannot_be_employed()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeEmployedException::class);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
+
+        $response = $this->employRequest($tagTeam);
+
+        $response->assertForbidden();
+    }
 }

@@ -30,6 +30,20 @@ class ViewRefereeBioPageSuccessConditionsTest extends TestCase
         $this->assertTrue($response->data('referee')->is($referee));
     }
 
+    /** @test */
+    public function a_referees_data_can_be_seen_on_their_profile()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $referee = RefereeFactory::new()
+            ->bookable()
+            ->create(['first_name' => 'John', 'last_name' => 'Smith']);
+
+        $response = $this->showRequest($referee);
+
+        $response->assertSee('John Smith');
+    }
+
     public function adminRoles()
     {
         return [

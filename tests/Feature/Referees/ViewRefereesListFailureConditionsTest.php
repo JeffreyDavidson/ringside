@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Referees;
+namespace Tests\Feature\Referees;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 /**
  * @group referees
- * @group users
  * @group roster
  */
 class ViewRefereesListFailureConditionsTest extends TestCase
