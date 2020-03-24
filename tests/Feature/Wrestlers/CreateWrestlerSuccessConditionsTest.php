@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin\Wrestlers;
 
 use App\Enums\Role;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -41,6 +42,7 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('wrestler');
+        dd($response);
 
         $response->assertViewIs('wrestlers.create');
         $response->assertViewHas('wrestler', new Wrestler);

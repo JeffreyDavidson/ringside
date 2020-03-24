@@ -1,20 +1,7 @@
 @extends('layouts.app')
 
 @section('content-head')
-<!-- begin:: Content Head -->
-<div class="kt-subheader kt-grid__item" id="kt_subheader">
-    <div class="kt-subheader__main">
-        <h3 class="kt-subheader__title">{{ $title->name }}</h3>
-    </div>
-    <div class="kt-subheader__toolbar">
-        <a href="{{ route('titles.index') }}"
-            class="btn btn-label-brand btn-bold">
-            Back To Titles
-        </a>
-    </div>
-</div>
-
-<!-- end:: Content Head -->
+<x-subheader :title="$title->name" :link="route('titles.index')" />
 @endsection
 
 @section('content')

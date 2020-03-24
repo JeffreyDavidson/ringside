@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use Carbon\Carbon;
@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group admins
  * @group roster
  */
 class ClearFromInjuryWrestlerSuccessConditionsTest extends TestCase

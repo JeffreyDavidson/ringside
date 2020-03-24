@@ -5,4 +5,6 @@
     placeholder="Enter {{ $label }}"
     value="{{ $value }}">
 
-<x-validation-error />
+@if ($errors->has($name))
+    <x-validation-error name="{{ $name }}"/>
+@endif

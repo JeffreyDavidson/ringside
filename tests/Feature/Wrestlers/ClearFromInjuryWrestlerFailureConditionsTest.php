@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use App\Exceptions\CannotBeClearedFromInjuryException;
@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group users
  * @group roster
  */
 class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase

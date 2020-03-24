@@ -1,16 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
-use Carbon\Carbon;
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\WrestlerFactory;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group users
  * @group roster
  */
 class UpdateWrestlerFailureConditionsTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use Tests\TestCase;
@@ -10,7 +10,6 @@ use Tests\Factories\TitleFactory;
 
 /**
  * @group titles
- * @group admins
  */
 class RetireTitleSuccessConditionsTest extends TestCase
 {

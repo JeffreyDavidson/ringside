@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group titles
- * @group admins
  */
 class CreateTitleSuccessConditionsTest extends TestCase
 {

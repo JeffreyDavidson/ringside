@@ -1,10 +1,12 @@
 <div class="form-group">
     <label>Title Name:</label>
+    <x-inputs.text name="" value="{{ $title->name ?? old('name') }}" />
     <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Enter title name" value="{{ $title->name ?? old('name') }}">
     @if ($errors->has('name'))
         <div id="name-error" class="error invalid-feedback">{{ $errors->first('name') }}</div>
     @endif
 </div>
+
 <div class="form-group input-group flatpickr">
     <label>Date Introduced:</label>
     <div class="input-group flatpickr kt-input-icon kt-input-icon--right">

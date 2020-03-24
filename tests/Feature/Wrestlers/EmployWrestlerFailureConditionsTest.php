@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group users
  * @group roster
  */
 class EmployWrestlerFailureConditionsTest extends TestCase

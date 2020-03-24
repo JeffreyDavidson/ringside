@@ -1,16 +1,14 @@
 <?php
 
-namespace Tests\Feature\Admin\Titles;
+namespace Tests\Feature\Titles;
 
-use Tests\Factories\TitleFactory;
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\TitleFactory;
+use Tests\TestCase;
 
 /**
  * @group titles
- * @group admins
  */
 class IntroduceTitleSuccessConditionsTest extends TestCase
 {

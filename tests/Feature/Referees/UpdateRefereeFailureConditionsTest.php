@@ -122,7 +122,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     public function a_referee_last_name_must_be_a_string()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $referee = RefereeFactory::new()->create($this->oldAttributes());
+        $referee = RefereeFactory::new()->create(['last_name' => 'Gates']);
 
         $response = $this->updateRequest($referee, $this->validParams(['last_name' => ['not-a-string']]));
 
@@ -137,7 +137,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     public function a_referee_started_at_date_is_required_if_employment_start_date_is_set()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $referee = RefereeFactory::new()->bookable()->create($this->oldAttributes());
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => '']));
 
@@ -152,7 +152,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     public function a_referee_started_at_date_if_filled_must_be_before_or_equal_to_referee_employment_started_at_date_is_set()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $referee = RefereeFactory::new()->bookable()->create($this->oldAttributes());
+        $referee = RefereeFactory::new()->bookable()->create();
         $referee->currentEmployment()->update(['started_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateTimeString()]));
@@ -183,7 +183,7 @@ class UpdateRefereeFailureConditionsTest extends TestCase
     public function a_referee_started_at_date_must_be_in_datetime_format_if_filled()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $referee = RefereeFactory::new()->bookable()->create($this->oldAttributes());
+        $referee = RefereeFactory::new()->bookable()->create();
 
         $response = $this->updateRequest($referee, $this->validParams(['started_at' => now()->toDateString()]));
 

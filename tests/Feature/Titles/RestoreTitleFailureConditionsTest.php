@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +9,6 @@ use Tests\Factories\TitleFactory;
 
 /**
  * @group titles
- * @group users
  */
 class RestoreTitleFailureConditionsTest extends TestCase
 {
@@ -29,7 +28,7 @@ class RestoreTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_restore_a_deleted_title()
     {
-        $title = factory(Title::class)->create(['deleted_at' => now()->toDateTimeString()]);
+        $title = TitleFactory::new()->softDeleted()->create();
 
         $response = $this->restoreRequest($title);
 

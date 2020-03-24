@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use App\Exceptions\CannotBeUnretiredException;
@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 /**
  * @group titles
- * @group users
  */
 class UnretireTitleFailureConditionsTest extends TestCase
 {

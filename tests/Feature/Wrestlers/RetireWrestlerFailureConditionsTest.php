@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Factories\WrestlerFactory;
+use App\Exceptions\CannotBeRetiredException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers
- * @group users
  * @group roster
  */
 class RetireWrestlerFailureConditionsTest extends TestCase

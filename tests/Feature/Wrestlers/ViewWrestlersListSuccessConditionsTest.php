@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use App\Models\Wrestler;
@@ -10,7 +10,6 @@ use Tests\Factories\WrestlerFactory;
 
 /**
  * @group wrestlers
- * @group admins
  * @group roster
  */
 class ViewWrestlersListSuccessConditionsTest extends TestCase

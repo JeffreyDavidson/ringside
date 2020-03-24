@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +9,6 @@ use Tests\Factories\TitleFactory;
 
 /**
  * @group titles
- * @group admins
  */
 class ViewTitlePageSuccessConditionsTest extends TestCase
 {

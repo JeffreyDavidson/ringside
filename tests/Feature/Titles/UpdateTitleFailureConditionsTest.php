@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Tests\Factories\TitleFactory;
+use Tests\TestCase;
 
 /**
  * @group titles
- * @group users
  */
 class UpdateTitleFailureConditionsTest extends TestCase
 {
@@ -54,7 +54,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_form_for_editing_a_title()
     {
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
         $response = $this->editRequest($title);
 
@@ -64,7 +64,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_update_a_title()
     {
-        $title = factory(Title::class)->create();
+        $title = TitleFactory::new()->create();
 
         $response = $this->updateRequest($title, $this->validParams());
 
@@ -75,7 +75,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_name_is_required()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes());
+        $title = TitleFactory::new()->create(['name' => 'Old Title Name']);
 
         $response = $this->updateRequest($title, $this->validParams(['name' => '']));
 
@@ -90,7 +90,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_name_must_contain_at_least_3_characters()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes());
+        $title = TitleFactory::new()->create(['name' => 'Old Title Name']);
 
         $response = $this->updateRequest($title, $this->validParams(['name' => 'ab']));
 
@@ -105,7 +105,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_name_must_end_with_title_or_titles()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes());
+        $title = TitleFactory::new()->create(['name' => 'Old Title Name']);
 
         $response = $this->updateRequest($title, $this->validParams(['name' => 'Example Name']));
 
@@ -120,7 +120,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_name_must_be_unique()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes(['name' => 'Example One Title']));
+        $title = TitleFactory::new()->create(['name' => 'Example One Title']);
         TitleFactory::new()->create(['name' => 'Example Two Title']);
 
         $response = $this->updateRequest($title, $this->validParams(['name' => 'Example Two Title']));
@@ -136,7 +136,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_introduced_at_date_is_required()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes());
+        $title = TitleFactory::new()->create();
         TitleFactory::new()->create();
 
         $response = $this->updateRequest($title, $this->validParams(['introduced_at' => '']));
@@ -152,7 +152,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_introduced_at_must_be_in_datetime_format()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes());
+        $title = TitleFactory::new()->create();
 
         $response = $this->updateRequest($title, $this->validParams(['introduced_at' => now()->toDateString()]));
 
@@ -167,7 +167,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_introduced_at_must_be_a_datetime_format()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create($this->oldAttributes());
+        $title = TitleFactory::new()->create();
 
         $response = $this->updateRequest($title, $this->validParams(['introduced_at' => 'not-a-datetime']));
 
@@ -182,7 +182,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     public function a_title_that_has_been_introduced_in_the_past_must_be_introduced_before_or_on_same_day()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = factory(Title::class)->create($this->oldAttributes(['introduced_at' => Carbon::yesterday()->toDateTimeString()]));
+        $title = TitleFactory::new()->create(['introduced_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest(
             $title,

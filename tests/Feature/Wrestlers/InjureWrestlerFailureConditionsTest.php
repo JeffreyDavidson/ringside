@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Generic\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use App\Exceptions\CannotBeInjuredException;
@@ -10,7 +10,6 @@ use Tests\Factories\WrestlerFactory;
 
 /**
  * @group wrestlers
- * @group generics
  * @group roster
  */
 class InjureWrestlerFailureConditionsTest extends TestCase

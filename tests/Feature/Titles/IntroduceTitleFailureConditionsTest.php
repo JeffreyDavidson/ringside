@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use App\Exceptions\CannotBeIntroducedException;
@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group titles
- * @group users
  */
 class IntroduceTitleFailureConditionsTest extends TestCase
 {

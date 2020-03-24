@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +9,6 @@ use Tests\Factories\WrestlerFactory;
 
 /**
  * @group wrestlers
- * @group admins
  * @group roster
  */
 class DeleteWrestlerSuccessConditionsTest extends TestCase

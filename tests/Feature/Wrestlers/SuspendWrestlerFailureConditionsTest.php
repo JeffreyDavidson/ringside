@@ -1,16 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\WrestlerFactory;
 use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group users
  * @group roster
  */
 class SuspendWrestlerFailureConditionsTest extends TestCase

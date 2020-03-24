@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group users
  * @group roster
  */
 class ViewWrestlersListFailureConditionsTest extends TestCase

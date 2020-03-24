@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 /**
  * @group titles
- * @group users
  */
 class ViewTitlesListFailureConditionsTest extends TestCase
 {

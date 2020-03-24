@@ -1,16 +1,14 @@
 <?php
 
-namespace Tests\Feature\Admin\Wrestlers;
+namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\WrestlerFactory;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\WrestlerFactory;
+use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group admins
  * @group roster
  */
 class ReinstateWrestlerSuccessConditionsTest extends TestCase
