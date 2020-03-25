@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Venues;
+namespace Tests\Feature\Venues;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 /**
  * @group venues
- * @group users
  */
 class ViewVenuesListFailureConditionsTest extends TestCase
 {
@@ -22,5 +21,13 @@ class ViewVenuesListFailureConditionsTest extends TestCase
         $response = $this->indexRequest('venues');
 
         $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_view_venues_page()
+    {
+        $response = $this->indexRequest('venues');
+
+        $response->assertRedirect(route('login'));
     }
 }

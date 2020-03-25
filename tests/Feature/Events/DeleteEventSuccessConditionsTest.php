@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Admin\Events;
+namespace Tests\Feature\Events;
 
-use Tests\TestCase;
 use App\Models\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events

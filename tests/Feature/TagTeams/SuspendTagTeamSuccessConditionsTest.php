@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
 use Carbon\Carbon;
@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group admins
  * @group roster
  */
 class SuspendTagTeamSuccessConditionsTest extends TestCase

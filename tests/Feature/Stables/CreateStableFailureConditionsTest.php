@@ -1,19 +1,18 @@
 <?php
 
-namespace Tests\Feature\User\Stables;
+namespace Tests\Feature\Stables;
 
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamFactory;
 use Tests\Factories\WrestlerFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group stables
- * @group users
  * @group roster
  */
 class CreateStableFailureConditionsTest extends TestCase
@@ -82,7 +81,7 @@ class CreateStableFailureConditionsTest extends TestCase
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
-                            'name' => ''
+                            'name' => '',
                         ]));
 
         $response->assertStatus(302);
@@ -98,7 +97,7 @@ class CreateStableFailureConditionsTest extends TestCase
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
-                            'name' => ['not-a-string']
+                            'name' => ['not-a-string'],
                         ]));
 
         $response->assertStatus(302);
@@ -115,7 +114,7 @@ class CreateStableFailureConditionsTest extends TestCase
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
-                            'name' => 'Example Stable Name'
+                            'name' => 'Example Stable Name',
                         ]));
 
         $response->assertStatus(302);
@@ -131,7 +130,7 @@ class CreateStableFailureConditionsTest extends TestCase
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
-                            'started_at' => ['not-a-string']
+                            'started_at' => ['not-a-string'],
                         ]));
 
         $response->assertStatus(302);
@@ -147,7 +146,7 @@ class CreateStableFailureConditionsTest extends TestCase
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
-                            'started_at' => now()->toDateString()
+                            'started_at' => now()->toDateString(),
                         ]));
 
         $response->assertStatus(302);

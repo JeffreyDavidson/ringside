@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;

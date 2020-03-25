@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Stables;
+namespace Tests\Feature\Stables;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 /**
  * @group stables
- * @group admins
  * @group roster
  */
 class UpdateStableSuccessConditionsTest extends TestCase

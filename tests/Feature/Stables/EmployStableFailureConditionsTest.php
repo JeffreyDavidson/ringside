@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Feature\Generic\Stables;
+namespace Tests\Feature\Stables;
 
-use Tests\TestCase;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group stables
- * @group generics
  * @group roster
  */
 class EmployStableFailureConditionsTest extends TestCase

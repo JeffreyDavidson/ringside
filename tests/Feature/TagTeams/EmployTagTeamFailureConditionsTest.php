@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeEmployedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group users
  * @group roster
  */
 class EmployTagTeamFailureConditionsTest extends TestCase

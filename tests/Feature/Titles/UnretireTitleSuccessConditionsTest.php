@@ -9,7 +9,6 @@ use Tests\Factories\TitleFactory;
 
 /**
  * @group titles
- * @group admins
  */
 class UnretireTitleSuccessConditionsTest extends TestCase
 {

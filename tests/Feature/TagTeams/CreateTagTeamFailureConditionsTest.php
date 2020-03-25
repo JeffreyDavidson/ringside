@@ -1,18 +1,17 @@
 <?php
 
-namespace Tests\Feature\User\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\TagTeam;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EmploymentFactory;
 use Tests\Factories\TagTeamFactory;
 use Tests\Factories\WrestlerFactory;
-use Tests\Factories\EmploymentFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group users
  * @group roster
  */
 class CreateTagTeamFailureConditionsTest extends TestCase

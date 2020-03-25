@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Feature\User\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;

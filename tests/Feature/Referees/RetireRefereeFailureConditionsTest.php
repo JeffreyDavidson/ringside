@@ -3,10 +3,10 @@
 namespace Tests\Feature\Referees;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\RefereeFactory;
 use App\Exceptions\CannotBeRetiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\RefereeFactory;
+use Tests\TestCase;
 
 /**
  * @group referees

@@ -1,6 +1,6 @@
 <div class="form-group">
     <label>Title Name:</label>
-    <x-inputs.text name="" value="{{ $title->name ?? old('name') }}" />
+    {{-- <x-inputs.text name="" value="{{ $title->name ?? old('name') }}" /> --}}
     <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Enter title name" value="{{ $title->name ?? old('name') }}">
     @if ($errors->has('name'))
         <div id="name-error" class="error invalid-feedback">{{ $errors->first('name') }}</div>

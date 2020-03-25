@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Referees;
 
-use Carbon\Carbon;
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\Referee;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group referees

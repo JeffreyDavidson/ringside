@@ -3,10 +3,10 @@
 namespace Tests\Feature\Managers;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\ManagerFactory;
-use TRegx\DataProvider\DataProviders;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\ManagerFactory;
+use Tests\TestCase;
+use TRegx\DataProvider\DataProviders;
 
 /**
  * @group managers
@@ -74,7 +74,7 @@ class RestoreManagerFailureConditionsTest extends TestCase
             ['pendingEmployment'],
             ['retired'],
             ['injured'],
-            ['suspended']
+            ['suspended'],
         ];
     }
 }

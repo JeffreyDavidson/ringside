@@ -3,11 +3,11 @@
 namespace Tests\Feature\Managers;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\ManagerFactory;
-use TRegx\DataProvider\DataProviders;
 use App\Exceptions\CannotBeInjuredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\ManagerFactory;
+use Tests\TestCase;
+use TRegx\DataProvider\DataProviders;
 
 /**
  * @group managers

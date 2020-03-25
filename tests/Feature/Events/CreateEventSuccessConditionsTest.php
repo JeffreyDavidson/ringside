@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Events;
+namespace Tests\Feature\Events;
 
 use App\Models\Event;
 use App\Models\Venue;

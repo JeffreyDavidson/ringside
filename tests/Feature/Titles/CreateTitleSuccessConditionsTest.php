@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Titles;
+namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
 use App\Models\Title;

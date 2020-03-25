@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Stables;
+namespace Tests\Feature\Stables;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group stables
- * @group users
  * @group roster
  */
 class ViewStableBioPageFailureConditionsTest extends TestCase

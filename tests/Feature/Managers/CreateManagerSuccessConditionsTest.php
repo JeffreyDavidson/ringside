@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Managers;
 
-use Carbon\Carbon;
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\Manager;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group managers

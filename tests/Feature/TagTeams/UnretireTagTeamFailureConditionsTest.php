@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\User\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
+use Tests\Factories\TagTeamFactory;
+use App\Exceptions\CannotBeUnretiredException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams
- * @group users
  * @group roster
  */
 class UnretireTagTeamFailureConditionsTest extends TestCase

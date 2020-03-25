@@ -25,24 +25,6 @@ class ViewVenuesListTest extends TestCase
     }
 
     /** @test */
-    public function a_basic_user_cannot_view_venues_page()
-    {
-        $this->actAs(Role::BASIC);
-
-        $response = $this->indexRequest('venues');
-
-        $response->assertStatus(403);
-    }
-
-    /** @test */
-    public function a_guest_cannot_view_venues_page()
-    {
-        $response = $this->indexRequest('venues');
-
-        $response->assertRedirect(route('login'));
-    }
-
-    /** @test */
     public function an_super_administrator_can_view_venues_page()
     {
         $this->actAs(Role::SUPER_ADMINISTRATOR);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\User\Venues;
+namespace Tests\Feature\Venues;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 /**
  * @group venues
- * @group users
  */
 class CreateVenueFailureConditionsTest extends TestCase
 {

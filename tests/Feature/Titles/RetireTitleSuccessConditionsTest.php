@@ -3,10 +3,9 @@
 namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TitleFactory;
+use Tests\TestCase;
 
 /**
  * @group titles

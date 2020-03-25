@@ -1,16 +1,14 @@
 <?php
 
-namespace Tests\Feature\User\Stables;
+namespace Tests\Feature\Stables;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\Stable;
-use Tests\Factories\StableFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StableFactory;
+use Tests\TestCase;
 
 /**
  * @group stables
- * @group users
  * @group roster
  */
 class ActivateStableFailureConditionsTest extends TestCase

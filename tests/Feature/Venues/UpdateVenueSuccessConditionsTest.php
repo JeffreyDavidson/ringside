@@ -3,15 +3,15 @@
 namespace Tests\Feature\Venues;
 
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\Venue;
-use Tests\Factories\VenueFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\VenueFactory;
+use Tests\TestCase;
 
 /**
  * @group venues
  */
-class UpdateVenueTest extends TestCase
+class UpdateVenueSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 

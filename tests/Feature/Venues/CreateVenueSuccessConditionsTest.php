@@ -10,7 +10,7 @@ use Tests\TestCase;
 /**
  * @group venues
  */
-class CreateVenueTest extends TestCase
+class CreateVenueSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -43,24 +43,6 @@ class CreateVenueTest extends TestCase
     }
 
     /** @test */
-    public function a_basic_user_cannot_view_the_form_for_creating_a_venue()
-    {
-        $this->actAs(Role::BASIC);
-
-        $response = $this->createRequest('venues');
-
-        $response->assertStatus(403);
-    }
-
-    /** @test */
-    public function a_guest_cannot_view_the_form_for_creating_a_venue()
-    {
-        $response = $this->createRequest('venues');
-
-        $response->assertRedirect(route('login'));
-    }
-
-    /** @test */
     public function an_administrator_can_create_a_venue()
     {
         $this->actAs(Role::ADMINISTRATOR);
@@ -86,23 +68,5 @@ class CreateVenueTest extends TestCase
         $response = $this->storeRequest('venues', $this->validParams(['address2' => null]));
 
         $response->assertSessionHasNoErrors();
-    }
-
-    /** @test */
-    public function a_basic_user_cannot_create_a_venue()
-    {
-        $this->actAs(Role::BASIC);
-
-        $response = $this->post(route('venues.store'), $this->validParams());
-
-        $response->assertStatus(403);
-    }
-
-    /** @test */
-    public function a_guest_cannot_create_a_venue()
-    {
-        $response = $this->storeRequest('venues', $this->validParams());
-
-        $response->assertRedirect(route('login'));
     }
 }

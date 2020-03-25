@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\Admin\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
+use App\Exceptions\CannotBeReinstatedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group admins
  * @group roster
  */
 class ReinstateTagTeamSuccessConditionsTest extends TestCase
