@@ -31,7 +31,8 @@ class TagTeamTest extends TestCase
     /** @test */
     public function a_tag_team_has_a_status()
     {
-        $tagTeam = new TagTeam(['status' => 'example']);
+        $tagTeam = new TagTeam();
+        $tagTeam->setRawAttributes(['status' => 'example'], true);
 
         $this->assertEquals('example', $tagTeam->getRawOriginal('status'));
     }

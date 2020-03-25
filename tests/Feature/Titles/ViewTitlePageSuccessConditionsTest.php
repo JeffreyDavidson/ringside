@@ -25,15 +25,4 @@ class ViewTitlePageSuccessConditionsTest extends TestCase
         $response->assertViewIs('titles.show');
         $this->assertTrue($response->data('title')->is($title));
     }
-
-    /** @test */
-    public function a_titles_data_can_be_seen_on_the_title_page()
-    {
-        $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create(['name' => 'Title 1']);
-
-        $response = $this->showRequest($title);
-
-        $response->assertSee('Title 1');
-    }
 }

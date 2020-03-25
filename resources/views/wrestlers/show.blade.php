@@ -57,10 +57,7 @@
                     </div>
                 </div>
 
-                <!--end::Widget -->
-                </div>
             </div>
-
             <!--end:: Widgets/Applications/User/Profile1-->
         </div>
     </div>

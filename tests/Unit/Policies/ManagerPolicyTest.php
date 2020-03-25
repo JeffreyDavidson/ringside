@@ -3,11 +3,12 @@
 namespace Tests\Unit\Policies;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Manager;
+use App\Models\User;
 use App\Policies\ManagerPolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\UserFactory;
+use Tests\TestCase;
 
 /**
  * @group managers
@@ -28,7 +29,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_create_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->create($user));
     }
@@ -36,7 +37,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->create($user));
     }
@@ -44,7 +45,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_create_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->create($user));
     }
@@ -52,7 +53,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_update_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->update($user));
     }
@@ -60,7 +61,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->update($user));
     }
@@ -68,7 +69,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_update_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->update($user));
     }
@@ -76,7 +77,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_delete_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->delete($user));
     }
@@ -84,7 +85,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->delete($user));
     }
@@ -92,7 +93,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_delete_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->delete($user));
     }
@@ -100,7 +101,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_restore_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->restore($user));
     }
@@ -108,7 +109,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_restore_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->restore($user));
     }
@@ -116,7 +117,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_restore_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->restore($user));
     }
@@ -124,7 +125,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_list_of_managers()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->viewList($user));
     }
@@ -132,7 +133,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_view_list_of_managers()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->viewList($user));
     }
@@ -140,7 +141,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_list_of_managers()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->viewList($user));
     }
@@ -148,7 +149,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_employ_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->employ($user));
     }
@@ -156,7 +157,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_employ_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->employ($user));
     }
@@ -164,7 +165,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_employ_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->employ($user));
     }
@@ -172,7 +173,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_injure_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->injure($user));
     }
@@ -180,7 +181,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_injure_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->injure($user));
     }
@@ -188,7 +189,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_injure_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->injure($user));
     }
@@ -196,7 +197,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_clear_a_manager_from_an_injury()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->clearFromInjury($user));
     }
@@ -204,7 +205,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_clear_a_manager_from_injury()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->clearFromInjury($user));
     }
@@ -212,7 +213,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_clear_a_manager_from_injury()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->clearFromInjury($user));
     }
@@ -220,7 +221,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_suspend_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->suspend($user));
     }
@@ -228,7 +229,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_suspend_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
         $manager = factory(Manager::class)->create();
 
         $this->assertTrue($this->policy->suspend($user));
@@ -237,7 +238,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_suspend_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->suspend($user));
     }
@@ -245,7 +246,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_reinstate_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->reinstate($user));
     }
@@ -253,7 +254,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_reinstate_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->reinstate($user));
     }
@@ -261,7 +262,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_reinstate_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->reinstate($user));
     }
@@ -269,7 +270,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_retire_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->retire($user));
     }
@@ -277,7 +278,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->retire($user));
     }
@@ -285,7 +286,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_retire_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->retire($user));
     }
@@ -293,7 +294,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_unretire_a_manager()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
 
         $this->assertFalse($this->policy->unretire($user));
     }
@@ -301,7 +302,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_unretire_a_manager()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->unretire($user));
     }
@@ -309,7 +310,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_unretire_a_manager()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->unretire($user));
     }
@@ -317,7 +318,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_a_manager_profile_not_owned_by_user()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
         $manager = factory(Manager::class)->create();
 
         $this->assertFalse($this->policy->view($user, $manager));
@@ -326,7 +327,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_view_a_manager_profile()
     {
-        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
+        $user = UserFactory::new()->withRole(Role::ADMINISTRATOR)->create();
         $manager = factory(Manager::class)->create();
 
         $this->assertTrue($this->policy->view($user, $manager));
@@ -335,7 +336,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_super_administrator_can_view_a_manager_profile()
     {
-        $user = factory(User::class)->states('super-administrator')->create();
+        $user = UserFactory::new()->withRole(Role::SUPER_ADMINISTRATOR)->create();
         $manager = factory(Manager::class)->create();
 
         $this->assertTrue($this->policy->view($user, $manager));
@@ -344,7 +345,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function a_basic_user_cannot_view_a_manager_profile_owned_by_user()
     {
-        $user = factory(User::class)->states('basic-user')->create();
+        $user = UserFactory::new()->withRole(Role::BASIC)->create();
         $manager = factory(Manager::class)->create(['user_id' => $user]);
 
         $this->assertTrue($this->policy->view($user, $manager));

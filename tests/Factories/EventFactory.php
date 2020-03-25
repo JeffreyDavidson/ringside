@@ -10,6 +10,8 @@ use Tests\Factories\VenueFactory;
 
 class EventFactory extends BaseFactory
 {
+    /** @var VenueFactory|null */
+    public $venueFactory;
     public $softDeleted = false;
 
     public function scheduled()
@@ -41,6 +43,14 @@ class EventFactory extends BaseFactory
 
             return $event;
         }, $attributes);
+    }
+
+    public function atVenue(VenueFactory $venueFactory = null)
+    {
+        $clone = clone $this;
+        $clone->attributes['venue_id'] = $venueFactory ?? VenueFactory::new();
+
+        return $clone;
     }
 
     protected function defaultAttributes(Generator $faker)

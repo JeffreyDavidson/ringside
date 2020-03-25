@@ -3,10 +3,10 @@
 namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
-use Tests\TestCase;
-use Tests\Factories\TagTeamFactory;
 use App\Exceptions\CannotBeUnretiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\TagTeamFactory;
+use Tests\TestCase;
 
 /**
  * @group tagteams

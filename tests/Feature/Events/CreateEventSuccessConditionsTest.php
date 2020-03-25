@@ -3,10 +3,10 @@
 namespace Tests\Feature\Events;
 
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group events

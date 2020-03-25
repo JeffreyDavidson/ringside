@@ -69,6 +69,7 @@ class SuspensionFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->wrestlers = $wrestlers;
+        $clone->tagTeams = [];
 
         return $clone;
     }

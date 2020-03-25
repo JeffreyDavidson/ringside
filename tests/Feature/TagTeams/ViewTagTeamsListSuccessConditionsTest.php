@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group admins
  * @group roster
  */
 class ViewTagTeamsListSuccessConditionsTest extends TestCase

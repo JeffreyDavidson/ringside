@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\TagTeams;
+namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +10,6 @@ use Tests\Factories\WrestlerFactory;
 
 /**
  * @group tagteams
- * @group admins
  * @group roster
  */
 class UpdateTagTeamSuccessConditionsTest extends TestCase

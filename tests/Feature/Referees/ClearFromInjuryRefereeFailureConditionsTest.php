@@ -28,7 +28,7 @@ class ClearFromInjuryRefereeFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_cannot_recover_an_injured_referee()
+    public function a_guest_cannot_clear_an_injured_referee()
     {
         $referee = RefereeFactory::new()->injured()->create();
 

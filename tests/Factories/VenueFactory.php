@@ -12,13 +12,13 @@ class VenueFactory extends BaseFactory
     public function create($attributes = [])
     {
         return $this->make(function ($attributes) {
-            $event = Venue::create($this->resolveAttributes($attributes));
+            $venue = Venue::create($this->resolveAttributes($attributes));
 
             if ($this->softDeleted) {
-                $event->delete();
+                $venue->delete();
             }
 
-            return $event;
+            return $venue;
         }, $attributes);
     }
 
