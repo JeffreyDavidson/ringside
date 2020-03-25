@@ -39,7 +39,7 @@ class RetireStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_stable_cannot_be_retired()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('stables.retire', $stable));
@@ -50,7 +50,7 @@ class RetireStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_stable_cannot_be_retired()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('retired')->create();
 
         $response = $this->put(route('stables.retire', $stable));

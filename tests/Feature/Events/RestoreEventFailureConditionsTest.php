@@ -3,14 +3,12 @@
 namespace Tests\Feature\Events;
 
 use App\Enums\Role;
-use App\Models\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\EventFactory;
 use Tests\TestCase;
 
 /**
  * @group events
- * @group users
  */
 class RestoreEventFailureConditionsTest extends TestCase
 {
@@ -22,7 +20,7 @@ class RestoreEventFailureConditionsTest extends TestCase
         $this->actAs(Role::BASIC);
         $event = EventFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('events.restore', $event));
+        $response = $this->restoreRequest($event);
 
         $response->assertForbidden();
     }
@@ -30,31 +28,20 @@ class RestoreEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_restore_a_event()
     {
-        $event = factory(Event::class)->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $event = EventFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('events.restore', $event));
+        $response = $this->restoreRequest($event);
 
         $response->assertRedirect(route('login'));
     }
 
     /** @test */
-    public function a_scheduled_event_cannot_be_restored()
+    public function a_non_soft_deleted_event_cannot_be_restored()
     {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $event = EventFactory::new()->create(['deleted_at' => null]);
 
-        $response = $this->put(route('events.restore', $event));
-
-        $response->assertNotFound();
-    }
-
-    /** @test */
-    public function a_past_event_cannot_be_restored()
-    {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('past')->create();
-
-        $response = $this->put(route('events.restore', $event));
+        $response = $this->restoreRequest($event);
 
         $response->assertNotFound();
     }

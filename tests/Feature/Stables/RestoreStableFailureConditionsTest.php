@@ -39,7 +39,7 @@ class RestoreStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_stable_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('bookable')->create();
 
         $response = $this->put(route('stables.restore', $stable));
@@ -50,7 +50,7 @@ class RestoreStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_stable_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('stables.restore', $stable));
@@ -61,7 +61,7 @@ class RestoreStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_retired_stable_cannot_be_restored()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('retired')->create();
 
         $response = $this->put(route('stables.restore', $stable));

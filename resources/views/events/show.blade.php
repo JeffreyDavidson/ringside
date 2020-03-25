@@ -1,4 +1,4 @@
 {{ $event->name }}
-{{ $event->date }}
+{{ $event->formatted_date }}
 {{ $event->venue->name }}
 <p>{{ $event->preview }}</p>

@@ -70,7 +70,7 @@ class CreateStableSuccessConditionsTest extends TestCase
         $now = now()->subDays(3);
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $createdWrestlers = factory(Wrestler::class, 3)->states('bookable')->create();
 
         $this->post(route('stables.store'), $this->validParams([
@@ -87,7 +87,7 @@ class CreateStableSuccessConditionsTest extends TestCase
     /** @test */
     public function tag_teams_are_added_to_stable_if_present()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $createdTagTeams = factory(TagTeam::class, 3)->states('bookable')->create();
 
         $this->post(route('stables.store'), $this->validParams([
@@ -106,7 +106,7 @@ class CreateStableSuccessConditionsTest extends TestCase
         $now = now()->subDays(3);
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->post(route('stables.store'), $this->validParams([
             'started_at' => $now->toDateTimeString()
@@ -136,7 +136,7 @@ class CreateStableSuccessConditionsTest extends TestCase
         $now = now();
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $this->post(route('stables.store'), $this->validParams([
             'started_at' => ''

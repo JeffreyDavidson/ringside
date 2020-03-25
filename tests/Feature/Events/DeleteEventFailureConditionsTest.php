@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 /**
  * @group events
- * @group users
  */
 class DeleteEventFailureConditionsTest extends TestCase
 {
@@ -29,9 +28,9 @@ class DeleteEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_guest_cannot_delete_an_event()
     {
-        $event = factory(Event::class)->create();
+        $event = EventFactory::new()->create();
 
-        $response = $this->delete(route('events.destroy', $event));
+        $response = $this->deleteRequest($event);
 
         $response->assertRedirect(route('login'));
     }

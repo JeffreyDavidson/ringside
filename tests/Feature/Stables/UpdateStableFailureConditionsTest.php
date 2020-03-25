@@ -81,7 +81,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_name_must_be_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -96,7 +96,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_name_must_be_unique()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         factory(Stable::class)->create(['name' => 'Example Stable Name']);
         $stableB = factory(Stable::class)->create();
 
@@ -112,7 +112,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_started_at_date_is_required_if_they_have_been_introduced_before_the_current_day()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('bookable')->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -127,7 +127,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_started_at_must_be_in_datetime_format()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -142,7 +142,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_started_at_must_be_a_datetime_format()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -157,7 +157,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function wrestlers_are_required_if_there_is_only_one_tag_team_included()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
@@ -174,7 +174,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function wrestlers_must_be_an_array()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -189,7 +189,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function each_wrestler_must_be_an_integer()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -204,7 +204,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function each_wrestler_must_exist()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -219,7 +219,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_cannot_be_hired_in_the_pending_introduction_to_be_added_to_a_stable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
 
@@ -235,7 +235,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_wrestler_cannot_be_added_to_a_stable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $wrestler = factory(Wrestler::class)->states('pending-introduction')->create();
 
@@ -251,7 +251,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_wrestler_cannot_be_apart_of_multiple_active_stables_at_the_same_time()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $otherStable = factory(Stable::class)->states('bookable')->create();
         $stable = factory(Stable::class)->states('bookable')->create();
 
@@ -267,7 +267,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function tag_teams_must_be_an_array()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -282,7 +282,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function tag_teams_are_required_if_there_is_only_two_wrestlers_included()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $wrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
 
@@ -299,7 +299,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function each_tag_team_must_be_an_integer()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -314,7 +314,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function each_tag_team_must_exist()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
 
         $response = $this->from(route('stables.edit', $stable))
@@ -329,7 +329,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_cannot_be_hired_in_the_pending_introduction_to_be_added_to_a_stable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $tagTeam = factory(TagTeam::class)->states('pending-introduction')->create();
 
@@ -345,7 +345,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_must_be_active_to_be_added_to_a_stable()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $tagTeam = factory(TagTeam::class)->states('pending-introduction')->create();
 
@@ -361,7 +361,7 @@ class UpdateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_tag_team_cannot_be_apart_of_multiple_active_stables_at_the_same_time()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $otherStable = factory(Stable::class)->states('bookable')->create();
         $stable = factory(Stable::class)->states('bookable')->create();
 

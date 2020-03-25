@@ -41,7 +41,6 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->createRequest('wrestler');
-        dd($response);
 
         $response->assertViewIs('wrestlers.create');
         $response->assertViewHas('wrestler', new Wrestler);

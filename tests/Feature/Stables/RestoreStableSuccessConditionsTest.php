@@ -30,7 +30,7 @@ class RestoreStableSuccessConditionsTest extends TestCase
     /** @test */
     public function retiring_a_stable_also_retires_its_members()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('bookable')->create();
 
         $response = $this->put(route('stables.retire', $stable));

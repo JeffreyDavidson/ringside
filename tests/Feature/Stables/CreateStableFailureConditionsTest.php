@@ -77,7 +77,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
@@ -93,7 +93,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
@@ -109,7 +109,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_name_must_be_unique()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         factory(Stable::class)->create(['name' => 'Example Stable Name']);
 
         $response = $this->from(route('stables.create'))
@@ -126,7 +126,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_started_at_date_is_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
@@ -142,7 +142,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_started_at_must_be_in_datetime_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('stables.create'))
                         ->post(route('stables.store'), $this->validParams([
@@ -158,7 +158,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_with_one_wrestler_requires_a_tag_team()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
 
         $response = $this->from(route('stables.create'))
@@ -176,7 +176,7 @@ class CreateStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_stable_with_one_tag_team_requires_a_wrestler()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = factory(TagTeam::class)->states('bookable')->create();
 
         $response = $this->from(route('stables.create'))

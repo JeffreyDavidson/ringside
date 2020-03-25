@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Events;
 
-use App\Models\Event;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
 use Tests\TestCase;
 
 /**
  * @group events
- * @group admins
  */
 class RestoreEventSuccessConditionsTest extends TestCase
 {
@@ -17,10 +17,10 @@ class RestoreEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_restore_a_deleted_event()
     {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create(['deleted_at' => today()->subDays(3)->toDateTimeString()]);
+        $this->actAs(Role::ADMINISTRATOR);
+        $event = EventFactory::new()->softDeleted()->create();
 
-        $response = $this->put(route('events.restore', $event));
+        $response = $this->restoreRequest($event);
 
         $response->assertRedirect(route('events.index'));
         $this->assertNull($event->fresh()->deleted_at);

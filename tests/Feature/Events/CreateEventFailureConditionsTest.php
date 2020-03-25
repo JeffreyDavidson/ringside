@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 /**
  * @group events
- * @group users
  */
 class CreateEventFailureConditionsTest extends TestCase
 {
@@ -70,7 +69,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_name_is_required()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
@@ -84,7 +83,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_name_must_be_a_string()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
@@ -98,7 +97,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_name_must_be_unique()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         factory(Event::class)->create(['name' => 'Example Event Name']);
 
         $response = $this->from(route('events.create'))
@@ -113,7 +112,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_date_must_be_a_string_if_present()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
@@ -127,7 +126,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_date_must_be_in_datetime_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
@@ -141,7 +140,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_venue_id_must_be_an_integer_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([
@@ -155,7 +154,7 @@ class CreateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_venue_id_must_exist()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams([

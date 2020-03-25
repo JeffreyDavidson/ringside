@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group events
- * @group users
  */
 class UpdateEventFailureConditionsTest extends TestCase
 {
@@ -77,7 +76,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_past_event_cannot_be_edited()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('past')->create();
 
         $response = $this->get(route('events.edit', $event));
@@ -88,7 +87,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function a_past_event_cannot_be_updated()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('past')->create();
 
         $response = $this->patch(route('events.update', $event), $this->validParams());
@@ -99,7 +98,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_name_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->from(route('events.edit', $event))
@@ -114,7 +113,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_name_must_be_unique()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
         factory(Event::class)->states('past')->create(['name' => 'Example Event Name']);
 
@@ -130,7 +129,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_date_must_be_a_string_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->from(route('events.edit', $event))
@@ -145,7 +144,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_date_must_be_in_datetime_format_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->from(route('events.edit', $event))
@@ -160,7 +159,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_venue_id_must_be_an_integer_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->from(route('events.edit', $event))
@@ -175,7 +174,7 @@ class UpdateEventFailureConditionsTest extends TestCase
     /** @test */
     public function an_event_venue_id_must_exist_if_filled()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->from(route('events.edit', $event))

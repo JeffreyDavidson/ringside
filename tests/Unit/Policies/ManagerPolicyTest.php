@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Policies;
 
+use App\Enums\Role;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Manager;
@@ -35,7 +36,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_create_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->create($user));
     }
@@ -59,7 +60,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->update($user));
     }
@@ -83,7 +84,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->delete($user));
     }
@@ -107,7 +108,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_restore_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->restore($user));
     }
@@ -131,7 +132,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_view_list_of_managers()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->viewList($user));
     }
@@ -155,7 +156,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_employ_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->employ($user));
     }
@@ -179,7 +180,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_injure_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->injure($user));
     }
@@ -203,7 +204,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_clear_a_manager_from_injury()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->clearFromInjury($user));
     }
@@ -227,7 +228,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_suspend_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
         $manager = factory(Manager::class)->create();
 
         $this->assertTrue($this->policy->suspend($user));
@@ -252,7 +253,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_reinstate_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->reinstate($user));
     }
@@ -276,7 +277,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->retire($user));
     }
@@ -300,7 +301,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_unretire_a_manager()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
 
         $this->assertTrue($this->policy->unretire($user));
     }
@@ -325,7 +326,7 @@ class ManagerPolicyTest extends TestCase
     /** @test */
     public function an_administrator_can_view_a_manager_profile()
     {
-        $user = factory(User::class)->states('administrator')->create();
+        $user = factory(User::class)->states(Role::ADMINISTRATOR)->create();
         $manager = factory(Manager::class)->create();
 
         $this->assertTrue($this->policy->view($user, $manager));

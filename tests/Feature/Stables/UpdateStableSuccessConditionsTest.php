@@ -68,7 +68,7 @@ class UpdateStableSuccessConditionsTest extends TestCase
         $now = now()->subDays(3);
         Carbon::setTestNow($now);
 
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $wrestler = factory(Wrestler::class)->states('bookable')->create();
         $stable->wrestlerHistory()->attach($wrestler->getKey(), ['left_at' => now()]);
@@ -87,7 +87,7 @@ class UpdateStableSuccessConditionsTest extends TestCase
     /** @test */
     public function wrestlers_of_stable_are_synced_when_stable_is_updated()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $newStableWrestlers = factory(Wrestler::class, 2)->states('bookable')->create();
 
@@ -105,7 +105,7 @@ class UpdateStableSuccessConditionsTest extends TestCase
     /** @test */
     public function wrestlers_in_a_stable_that_are_not_included_request_are_marked_as_left()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('pending-introduction')->create();
         $formerWrestlers = $stable->currentWrestlers;
 
@@ -127,7 +127,7 @@ class UpdateStableSuccessConditionsTest extends TestCase
     /** @test */
     public function tag_teams_in_a_stable_that_are_not_included_request_are_marked_as_left()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('pending-introduction')->create();
         $formerTagTeams = $stable->currentTagTeams;
         $tagTeams = factory(TagTeam::class, 2)->states('bookable')->create();
@@ -146,7 +146,7 @@ class UpdateStableSuccessConditionsTest extends TestCase
     /** @test */
     public function tag_teams_of_stable_are_synced_when_stable_is_updated()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create();
         $tagTeams = factory(TagTeam::class, 2)->states('bookable')->create();
 

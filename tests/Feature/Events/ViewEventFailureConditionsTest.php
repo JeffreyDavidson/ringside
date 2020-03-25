@@ -9,14 +9,13 @@ use Tests\TestCase;
 
 /**
  * @group events
- * @group users
  */
 class ViewEventFailureConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_basic_user_cannot_view_an_event()
+    public function a_basic_user_cannot_view_an_event_page()
     {
         $this->actAs(Role::BASIC);
         $event = EventFactory::new()->create();
@@ -27,11 +26,11 @@ class ViewEventFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_cannot_view_an_event()
+    public function a_guest_cannot_view_an_event_page()
     {
-        $event = factory(Event::class)->create();
+        $event = EventFactory::new()->create();
 
-        $response = $this->get(route('events.show', $event));
+        $response = $this->showRequest($event);
 
         $response->assertRedirect(route('login'));
     }

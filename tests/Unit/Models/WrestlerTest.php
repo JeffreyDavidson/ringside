@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use App\Enums\WrestlerStatus;
 use App\Models\SingleRosterMember;
-use App\Models\User;
 use App\Models\Wrestler;
 use Tests\TestCase;
 
@@ -69,15 +68,6 @@ class WrestlerTest extends TestCase
         $wrestler = new Wrestler();
 
         $this->assertInstanceOf(WrestlerStatus::class, $wrestler->status);
-    }
-
-    /** @test */
-    public function a_wrestler_can_be_managed_to_a_user()
-    {
-        $this->markTestIncomplete();
-        $wrestler = new Wrestler(['user_id' => new User()]);
-
-        $this->assertInstanceOf(User::class, $wrestler->user);
     }
 
     /** @test */

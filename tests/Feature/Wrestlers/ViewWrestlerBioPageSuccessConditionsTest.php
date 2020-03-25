@@ -54,7 +54,7 @@ class ViewWrestlerBioPageSuccessConditionsTest extends TestCase
         $response = $this->showRequest($wrestler);
 
         $response->assertSee('Wrestler 1');
-        $response->assertSee(e('6\'6"'));
+        $response->assertSee('6\'6"');
         $response->assertSee('220 lbs');
         $response->assertSee('Laraville, FL');
         $response->assertSee('The Finisher');

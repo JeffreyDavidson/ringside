@@ -75,4 +75,9 @@ class Event extends Model
     {
         return $this->date->isPast();
     }
+
+    public function getFormattedDateAttribute()
+    {
+        return $this->date->format('F j, Y');
+    }
 }

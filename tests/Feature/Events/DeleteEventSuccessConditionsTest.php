@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Events;
 
-use App\Models\Event;
+use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventFactory;
 use Tests\TestCase;
 
 /**
  * @group events
- * @group admins
  */
 class DeleteEventSuccessConditionsTest extends TestCase
 {
@@ -17,22 +17,22 @@ class DeleteEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_scheduled_event()
     {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('scheduled')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $event = EventFactory::new()->scheduled()->create();
 
-        $this->delete(route('events.destroy', $event));
+        $this->deleteRequest($event);
 
-        $this->assertSoftDeleted('events', ['name' => $event->name]);
+        $this->assertSoftDeleted($event);
     }
 
     /** @test */
     public function an_administrator_can_delete_a_past_event()
     {
-        $this->actAs('administrator');
-        $event = factory(Event::class)->states('past')->create();
+        $this->actAs(Role::ADMINISTRATOR);
+        $event = EventFactory::new()->past()->create();
 
-        $this->delete(route('events.destroy', $event));
+        $this->deleteRequest($event);
 
-        $this->assertSoftDeleted('events', ['name' => $event->name]);
+        $this->assertSoftDeleted($event->name);
     }
 }

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Events;
 
+use App\Enums\Role;
+use Tests\TestCase;
 use App\Models\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 /**
  * @group events
@@ -41,7 +42,7 @@ class ViewEventsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_events_page()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->get(route('events.index'));
 
@@ -52,7 +53,7 @@ class ViewEventsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_all_events()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('events.index'));
 
@@ -65,7 +66,7 @@ class ViewEventsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_scheduled_events()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('events.index', ['status' => 'scheduled']));
 
@@ -78,7 +79,7 @@ class ViewEventsListSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_past_events()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $responseAjax = $this->ajaxJson(route('events.index', ['status' => 'past']));
 

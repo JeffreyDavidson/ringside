@@ -41,7 +41,7 @@ class ViewStableBioPageSuccessConditionsTest extends TestCase
     /** @test */
     public function a_stables_name_can_be_seen_on_their_profile()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->create(['name' => 'Example Stable Name']);
 
         $response = $this->get(route('stables.show', $stable));

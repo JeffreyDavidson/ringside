@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Events;
 
+use App\Enums\Role;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,7 +35,7 @@ class UpdateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_editing_a_scheduled_event()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->get(route('events.edit', $event));
@@ -46,7 +47,7 @@ class UpdateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_update_a_scheduled_event()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $event = factory(Event::class)->states('scheduled')->create();
 
         $response = $this->patch(route('events.update', $event), $this->validParams());

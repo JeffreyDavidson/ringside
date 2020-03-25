@@ -24,7 +24,7 @@ class SuspendRequest extends FormRequest
             throw new CannotBeSuspendedException();
         }
 
-        return false;
+        return true;
     }
 
     /**

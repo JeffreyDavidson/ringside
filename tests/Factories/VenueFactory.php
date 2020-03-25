@@ -25,8 +25,8 @@ class VenueFactory extends BaseFactory
     protected function defaultAttributes(Generator $faker)
     {
         return [
-            'name' => $faker->word,
-            'address1' => $faker->streetAddress,
+            'name' => $faker->sentence,
+            'address1' => $faker->buildingNumber. ' '. $faker->streetName,
             'address2' => $faker->optional()->secondaryAddress,
             'city' => $faker->city,
             'state' => $faker->state,

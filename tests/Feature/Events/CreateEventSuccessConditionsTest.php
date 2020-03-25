@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Events;
 
+use App\Enums\Role;
+use Tests\TestCase;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 /**
  * @group events
- * @group admins
  */
 class CreateEventSuccessConditionsTest extends TestCase
 {
@@ -34,9 +34,9 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_view_the_form_for_creating_an_event()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->get(route('events.create'));
+        $response = $this->createRequest('events');
 
         $response->assertViewIs('events.create');
         $response->assertViewHas('event', new Event);
@@ -45,7 +45,7 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_create_an_event()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->from(route('events.create'))
                         ->post(route('events.store'), $this->validParams());
@@ -62,7 +62,7 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_event_date_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->post(route('events.store'), $this->validParams([
             'date' => '',
@@ -74,7 +74,7 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_event_venue_id_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->post(route('events.store'), $this->validParams([
             'venue_id' => '',
@@ -86,7 +86,7 @@ class CreateEventSuccessConditionsTest extends TestCase
     /** @test */
     public function an_event_preview_is_optional()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
 
         $response = $this->post(route('events.store'), $this->validParams([
             'preview' => '',

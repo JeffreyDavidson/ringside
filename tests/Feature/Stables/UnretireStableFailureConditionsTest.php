@@ -39,7 +39,7 @@ class UnretireStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_bookable_stable_cannot_be_unretired()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('bookable')->create();
 
         $response = $this->put(route('stables.unretire', $stable));
@@ -50,7 +50,7 @@ class UnretireStableFailureConditionsTest extends TestCase
     /** @test */
     public function a_pending_introduction_stable_cannot_be_unretired()
     {
-        $this->actAs('administrator');
+        $this->actAs(Role::ADMINISTRATOR);
         $stable = factory(Stable::class)->states('pending-introduction')->create();
 
         $response = $this->put(route('stables.unretire', $stable));
