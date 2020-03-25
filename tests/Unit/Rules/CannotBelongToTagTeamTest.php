@@ -6,7 +6,6 @@ use App\Rules\CannotBelongToTagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
-use Tests\Factories\WrestlerFactory;
 
 class CannotBelongToTagTeamTest extends TestCase
 {
