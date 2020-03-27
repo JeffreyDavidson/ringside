@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group users
  * @group roster
  */
 class RetireTagTeamFailureConditionsTest extends TestCase

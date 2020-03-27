@@ -5,7 +5,6 @@ namespace Tests\Feature\TagTeams;
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamFactory;
-use Tests\Factories\WrestlerFactory;
 use Tests\TestCase;
 
 /**

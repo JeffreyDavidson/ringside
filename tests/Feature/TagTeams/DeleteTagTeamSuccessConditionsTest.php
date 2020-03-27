@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 /**
  * @group tagteams
- * @group admins
  * @group roster
  */
 class DeleteTagTeamSuccessConditionsTest extends TestCase
