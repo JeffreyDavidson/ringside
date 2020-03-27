@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\Models\TagTeam;
 use App\Http\Controllers\Controller;
-use App\Exceptions\CannotBeUnretiredException;
+use App\Http\Requests\TagTeams\UnretireRequest;
+use App\Models\TagTeam;
 
 class UnretireController extends Controller
 {
@@ -12,16 +12,11 @@ class UnretireController extends Controller
      * Unretire a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     * @param  \App\Http\Requests\TagTeams\UnretireRequest  $request
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam)
+    public function __invoke(TagTeam $tagTeam, UnretireRequest $request)
     {
-        $this->authorize('unretire', $tagTeam);
-
-        if (! $tagTeam->canBeUnretired()) {
-            throw new CannotBeUnretiredException();
-        }
-
         $tagTeam->unretire();
 
         return redirect()->route('tag-teams.index');

@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TagTeams\EmployRequest;
 use App\Models\TagTeam;
 
 class EmployController extends Controller
 {
     /**
-     * Employ a pending introduced tag team.
+     * Employ a tag team.
      *
      * @param  App\Models\TagTeam  $tagTeam
+     * @param  App\Http\Requests\TagTeams\EmployReqeust  $request
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam)
+    public function __invoke(TagTeam $tagTeam, EmployRequest $request)
     {
-        $this->authorize('employ', $tagTeam);
-
-        if (! $tagTeam->canBeEmployed()) {
-            throw new CannotBeEmployedException();
-        }
-
         $tagTeam->employ();
 
         return redirect()->route('tag-teams.index');

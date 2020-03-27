@@ -254,9 +254,8 @@ class CreateTagTeamFailureConditionsTest extends TestCase
         ]));
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('tag-teams.create'));
-        $response->assertSessionHasErrors('wrestlers.*');
-        $this->assertEquals(0, TagTeam::count());
+        $response->assertRedirect(route('tag-teams.index'));
+        $response->assertSessionDoesntHaveErrors('wrestlers.*');
     }
 
     /** @test */
