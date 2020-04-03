@@ -244,9 +244,11 @@ class TagTeam extends Model
      */
     public function suspend()
     {
-        $this->suspensions()->create(['started_at' => now()]);
+        $now = now();
 
-        $this->currentWrestlers->each->suspend();
+        $this->suspensions()->create(['started_at' => $now]);
+
+        $this->currentWrestlers->each->suspend($now);
 
         return $this->touch();
     }
@@ -276,11 +278,11 @@ class TagTeam extends Model
      */
     public function reinstate()
     {
-        $dateRetired = $this->currentSuspension->started_at;
+        $now = now();
 
-        $this->currentSuspension()->update(['ended_at' => now()]);
+        $this->currentSuspension()->update(['ended_at' => $now]);
 
-        $this->currentWrestlers()->each->reinstate();
+        $this->currentWrestlers->each->reinstate($now);
 
         return $this->touch();
     }

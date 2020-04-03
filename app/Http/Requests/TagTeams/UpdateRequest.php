@@ -32,7 +32,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
             'signature_move' => ['nullable', 'string'],
-            'started_at' => [new ConditionalEmploymentStartDateRule($this->route('tag-team'))],
+            'started_at' => [new ConditionalEmploymentStartDateRule($this->route('tag_team'))],
             'wrestlers' => ['bail', 'required_with:started_at', 'array', 'max:2'],
             'wrestlers.*' => [
                 'bail',

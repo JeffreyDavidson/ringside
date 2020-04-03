@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\TagTeams;
 
+use Carbon\Carbon;
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\TagTeamFactory;
 use Tests\TestCase;
+use Tests\Factories\TagTeamFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group tagteams
@@ -18,13 +19,16 @@ class RetireTagTeamSuccessConditionsTest extends TestCase
     /** @test */
     public function an_administrator_can_retire_a_bookable_tag_team()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
 
         $response = $this->retireRequest($tagTeam);
 
         $response->assertRedirect(route('tag-teams.index'));
-        $this->assertEquals(now()->toDateTimeString(), $tagTeam->fresh()->currentRetirement->started_at);
+        $this->assertEquals($now->toDateTimeString(), $tagTeam->fresh()->currentRetirement->started_at);
     }
 
     /** @test */

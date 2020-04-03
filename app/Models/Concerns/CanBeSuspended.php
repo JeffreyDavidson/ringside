@@ -101,9 +101,9 @@ trait CanBeSuspended
      *
      * @return bool
      */
-    public function reinstate()
+    public function reinstate($dateToReinstate = null)
     {
-        $this->currentSuspension()->update(['ended_at' => now()]);
+        $this->currentSuspension()->update(['ended_at' => $dateToReinstate ?: now()]);
 
         return $this->touch();
     }

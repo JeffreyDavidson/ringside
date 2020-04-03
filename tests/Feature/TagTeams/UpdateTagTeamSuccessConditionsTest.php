@@ -61,18 +61,22 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
         });
     }
 
-    /** @test */
+
     public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated()
     {
         $this->actAs(Role::ADMINISTRATOR);
         $tagTeam = TagTeamFactory::new()->bookable()->create();
         $wrestlers = WrestlerFactory::new()->count(2)->bookable()->create();
 
-        $this->updateRequest($tagTeam, $this->validParams([
+        // $this->updateRequest($tagTeam, $this->validParams([
+        $response = $this->updateRequest($tagTeam, $this->validParams([
             'wrestlers' => $wrestlers->modelKeys(),
         ]));
 
-        tap($tagTeam->fresh()->currentWrestlers, function ($tagTeamWrestlers) use ($wrestlers) {
+        // dd($response);
+        $response->assertRedirect(route('tag-teams.index'));
+
+        tap($tagTeam->currentWrestlers->fresh(), function ($tagTeamWrestlers) use ($wrestlers) {
             $this->assertCount(2, $tagTeamWrestlers);
             $this->assertEquals($tagTeamWrestlers->modelKeys(), $wrestlers->modelKeys());
         });

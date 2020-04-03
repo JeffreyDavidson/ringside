@@ -3,10 +3,11 @@
 namespace Tests\Feature\TagTeams;
 
 use App\Enums\Role;
+use Tests\TestCase;
+use Tests\Factories\TagTeamFactory;
+use Tests\Factories\WrestlerFactory;
 use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\TagTeamFactory;
-use Tests\TestCase;
 
 /**
  * @group tagteams
@@ -42,7 +43,7 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
     public function a_basic_user_cannot_suspend_a_retired_tag_team()
     {
         $this->actAs(Role::BASIC);
-        $tagTeam = TagTeamFactory::new()->pendingEmployment()->create();
+        $tagTeam = TagTeamFactory::new()->retired()->create();
 
         $response = $this->suspendRequest($tagTeam);
 
@@ -77,7 +78,9 @@ class SuspendTagTeamFailureConditionsTest extends TestCase
         $this->expectException(CannotBeSuspendedException::class);
 
         $this->actAs(Role::ADMINISTRATOR);
-        $tagTeam = TagTeamFactory::new()->suspended()->create();
+        $tagTeam = TagTeamFactory::new()->suspended()->withWrestlers(
+            WrestlerFactory::new()->count(2)->suspended()
+        )->create();
 
         $response = $this->suspendRequest($tagTeam);
 

@@ -14,7 +14,7 @@ class SuspendRequest extends FormRequest
      */
     public function authorize()
     {
-        $tagTeam = $this->route('tagTeam');
+        $tagTeam = $this->route('tag_team');
 
         if (! $this->user()->can('suspend', $tagTeam)) {
             return false;
