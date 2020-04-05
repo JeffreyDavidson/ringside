@@ -50,13 +50,16 @@ class TagTeamsController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $tagTeam = TagTeam::create($request->except(['wrestlers', 'started_at']));
+        $tagTeam = TagTeam::create($request->except(['wrestler1', 'wrestler2', 'started_at']));
 
         if ($request->filled('started_at')) {
             $tagTeam->employ($request->input('started_at'));
         }
 
-        $tagTeam->addWrestlers($request->input('wrestlers'));
+        $tagTeam->addWrestlers(
+            [$request->input('wrestler1'), $request->input('wrestler2')],
+            $request->filled('started_at') ? $request->input('started_at') : now()
+        );
 
         return redirect()->route('tag-teams.index');
     }

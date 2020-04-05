@@ -3,10 +3,8 @@
 namespace App\Http\Requests\TagTeams;
 
 use App\Models\TagTeam;
-use App\Rules\CannotBeEmployedAfterDate;
-use App\Rules\CannotBeHindered;
-use App\Rules\CannotBelongToTagTeam;
 use App\Rules\ConditionalEmploymentStartDateRule;
+use App\Rules\WrestlerCanJoinTagTeamRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -33,15 +31,8 @@ class UpdateRequest extends FormRequest
             'name' => ['required', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
             'signature_move' => ['nullable', 'string'],
             'started_at' => [new ConditionalEmploymentStartDateRule($this->route('tag_team'))],
-            'wrestlers' => ['bail', 'required_with:started_at', 'array', 'max:2'],
-            'wrestlers.*' => [
-                'bail',
-                'integer',
-                'exists:wrestlers,id',
-                new CannotBeEmployedAfterDate($this->input('started_at')),
-                new CannotBeHindered,
-                new CannotBelongToTagTeam,
-            ],
+            'wrestler1' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ],
+            'wrestler2' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ]
         ];
     }
 }

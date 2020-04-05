@@ -25,13 +25,7 @@
 @endsection
 
 @section('content')
-<div class="kt-portlet kt-portlet--mobile">
-    <div class="kt-portlet__body p-0">
-
-        <!--begin: Datatable -->
-        <table id="stables_table" data-table="stables.index" class="table table-hover"></table>
-
-        <!--end: Datatable -->
-    </div>
-</div>
+<x-portlet title="Active Stables">
+    <table id="stables_table" data-table="stables.index" class="table table-hover"></table>
+</x-portlet>
 @endsection

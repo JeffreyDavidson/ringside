@@ -135,7 +135,8 @@ trait CanBeEmployed
      */
     public function scopeEmployed($query)
     {
-        return $query->whereHas('currentEmployment');;
+        return $query->whereHas('currentEmployment');
+        ;
     }
 
     /**
@@ -147,6 +148,7 @@ trait CanBeEmployed
     public function employ($startedAt = null)
     {
         $startDate = $startedAt ?? now();
+
         $this->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startDate]);
 
         return $this->touch();
@@ -215,7 +217,11 @@ trait CanBeEmployed
      */
     public function canBeEmployed()
     {
-        return ! $this->isCurrentlyEmployed();
+        if ($this->hasFutureEmployment() || $this->isUnemployed()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

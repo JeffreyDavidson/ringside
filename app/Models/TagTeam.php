@@ -118,11 +118,12 @@ class TagTeam extends Model
      * Add multiple wrestlers to a tag team.
      *
      * @param  array  $wrestlers
+     * @param  string $dateJoined
      * @return $this
      */
-    public function addWrestlers($wrestlerIds)
+    public function addWrestlers($wrestlerIds, $dateJoined)
     {
-        $this->currentWrestlers()->sync($wrestlerIds);
+        $this->currentWrestlers()->sync($wrestlerIds, ['joined_at' => $dateJoined]);
 
         return $this;
     }

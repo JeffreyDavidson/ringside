@@ -6,9 +6,12 @@ use App\Models\Stable;
 use Illuminate\Http\Request;
 use App\Filters\StableFilters;
 use Yajra\DataTables\DataTables;
+use App\ViewModels\StableViewModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStableRequest;
 use App\Http\Requests\UpdateStableRequest;
+use App\Http\Requests\Stables\StoreRequest;
+use App\Http\Requests\Stables\UpdateRequest;
 
 class StablesController extends Controller
 {
@@ -50,7 +53,7 @@ class StablesController extends Controller
     {
         $this->authorize('create', Stable::class);
 
-        return view('stables.create');
+        return view('stables.create', new StableViewModel());
     }
 
     /**
@@ -59,7 +62,7 @@ class StablesController extends Controller
      * @param  \App\Http\Requests\StoreStableRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreStableRequest $request)
+    public function store(StoreRequest $request)
     {
         $stable = Stable::create($request->except(['wrestlers', 'tagteams', 'started_at']));
 
@@ -101,7 +104,7 @@ class StablesController extends Controller
     {
         $this->authorize('update', $stable);
 
-        return view('stables.edit', compact('stable'));
+        return view('stables.edit', new StableViewModel($stable));
     }
 
     /**
@@ -111,7 +114,7 @@ class StablesController extends Controller
      * @param  \App\Models\Stable  $stable
      * @return \lluminate\Http\RedirectResponse
      */
-    public function update(UpdateStableRequest $request, Stable $stable)
+    public function update(UpdateRequest $request, Stable $stable)
     {
         $stable->update($request->except('wrestlers', 'tagteams', 'started_at'));
 

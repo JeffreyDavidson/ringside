@@ -25,14 +25,8 @@
 @endsection
 
 @section('content')
-<div class="kt-portlet kt-portlet--mobile">
-    <div class="kt-portlet__body p-0">
-
-        <!--begin: Datatable -->
-        <table id="tagteams_table" data-table="tagteams.index" class="table table-hover"></table>
-
-        <!--end: Datatable -->
-    </div>
-</div>
+<x-portlet title="Employed Tag Teams">
+    <table id="tagteams_table" data-table="tagteams.index" class="table table-hover"></table>
+</x-portlet>
 @endsection
 

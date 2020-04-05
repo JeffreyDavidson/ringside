@@ -25,9 +25,9 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     {
         return array_replace([
             'name' => 'Example Wrestler Name',
-            'feet' => '6',
-            'inches' => '4',
-            'weight' => '240',
+            'feet' => 6,
+            'inches' => 4,
+            'weight' => 240,
             'hometown' => 'Laraville, FL',
             'signature_move' => 'The Finisher',
             'started_at' => now()->toDateTimeString(),
@@ -110,7 +110,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_feet_is_required()
+    public function a_wrestler_height_in_feet_is_required()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
@@ -123,11 +123,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_feet_must_be_numeric()
+    public function a_wrestler_height_in_feet_must_an_integer()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => 'not-numeric']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => 'not-an-integer']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -136,11 +136,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_feet_must_be_a_minimum_of_five()
+    public function a_wrestler_height_in_feet_must_be_a_minimum_of_five()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '4']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => 4]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -149,11 +149,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_feet_must_be_a_maximum_of_seven()
+    public function a_wrestler_height_in_feet_must_be_a_maximum_of_seven()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => '8']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['feet' => 8]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -162,7 +162,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_inches_is_required()
+    public function a_wrestler_height_in_inches_is_required()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
@@ -175,11 +175,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_inches_is_must_be_numeric()
+    public function a_wrestler_height_in_inches_is_must_be_an_integer()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => 'not-numeric']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => 'not-an-integer']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -188,11 +188,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_inches_must_be_less_than_twelve()
+    public function a_wrestler_height_in_inches_must_be_less_than_twelve()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => '12']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['inches' => 12]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -214,11 +214,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_weight_must_be_numeric()
+    public function a_wrestler_weight_must_be_an_integer()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['weight' => 'not-numeric']));
+        $response = $this->storeRequest('wrestler', $this->validParams(['weight' => 'not-an-integer']));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -266,11 +266,11 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_started_at_must_be_a_string_if_filled()
+    public function a_wrestler_started_at_date_must_be_a_string_if_filled()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => ['not-a-date-format']]));
+        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => ['not-a-string']]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('wrestlers.create'));
@@ -279,7 +279,7 @@ class CreateWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_startd_at_must_be_in_date_format_if_filled()
+    public function a_wrestler_startd_at_date_must_be_in_a_date_format_if_filled()
     {
         $this->actAs(Role::ADMINISTRATOR);
 

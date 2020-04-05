@@ -3,8 +3,8 @@
 namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
+use App\Enums\WrestlerStatus;
 use App\Models\Wrestler;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,9 +26,9 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     {
         return array_replace([
             'name' => 'Example Wrestler Name',
-            'feet' => '6',
-            'inches' => '4',
-            'weight' => '240',
+            'feet' => 6,
+            'inches' => 4,
+            'weight' => 240,
             'hometown' => 'Laraville, FL',
             'signature_move' => 'The Finisher',
             'started_at' => now()->toDateTimeString(),
@@ -94,17 +94,14 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_wrestler_can_be_employed_during_creation()
+    public function a_wrestler_can_be_employed_during_creation_with_a_valid_started_at_date()
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $this->actAs(Role::ADMINISTRATOR);
 
-        $this->storeRequest('wrestler', $this->validParams(['started_at' => $now->toDateTimeString()]));
+        $this->storeRequest('wrestler', $this->validParams(['started_at' => now()->toDateTimeString()]));
 
         tap(Wrestler::first(), function ($wrestler) {
-            $this->assertTrue($wrestler->isCurrentlyEmployed());
+            $this->assertCount(1, $wrestler->employments);
         });
     }
 
@@ -116,7 +113,49 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $this->storeRequest('wrestler', $this->validParams(['started_at' => null]));
 
         tap(Wrestler::first(), function ($wrestler) {
-            $this->assertFalse($wrestler->isCurrentlyEmployed());
+            $this->assertCount(0, $wrestler->employments);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_without_an_employment_has_a_status_of_pending_employment()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $this->storeRequest('wrestler', $this->validParams([
+            'started_at' => null
+        ]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertEquals(WrestlerStatus::PENDING_EMPLOYMENT, $wrestler->status);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_employed_in_the_future_has_a_status_of_pending_employment()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $this->storeRequest('wrestler', $this->validParams([
+            'started_at' => today()->addDay()->toDateTimeString()
+        ]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertEquals(WrestlerStatus::PENDING_EMPLOYMENT, $wrestler->status);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_employed_in_the_past_has_a_status_of_bookable()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $this->storeRequest('wrestler', $this->validParams([
+            'started_at' => today()->subDay()->toDateTimeString()
+        ]));
+
+        tap(Wrestler::first(), function ($wrestler) {
+            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
         });
     }
 }

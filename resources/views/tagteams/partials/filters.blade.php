@@ -1,7 +1,7 @@
-@filter
+<x-filters>
     <div class="kt-nav__item">
         <div class="form-group m-3">
-            <select-field
+            <x-form.inputs.select
                 name="status"
                 label="Status"
                 :options="\App\Enums\TagTeamStatus::labels()"
@@ -10,10 +10,10 @@
     </div>
     <div class="kt-nav__item">
         <div class="form-group m-3">
-            <date-range
+            <x-form.inputs.date-range
                 name="started_at"
                 label="Started At"
             />
         </div>
     </div>
-@endfilter
+</x-filters>

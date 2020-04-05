@@ -1,6 +1,12 @@
 <?php
 
+namespace Tests\Integration;
+
 use Tests\TestCase;
+use Tests\Factories\TagTeamFactory;
+use Tests\Factories\WrestlerFactory;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TagTeamTest extends TestCase
 {
@@ -14,7 +20,7 @@ class TagTeamTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Event::fake();
+        \Event::fake();
     }
 
     /** @test */
@@ -37,7 +43,7 @@ class TagTeamTest extends TestCase
     /** @test */
     public function a_tag_team_can_add_wrestlers()
     {
-        $tagTeam = TagTeamFactory::new()->bookable()->create();
+        $tagTeam = TagTeamFactory::new()->employed()->create();
 
         $formerTagTeamPartner = $tagTeam->currentWrestlers->last();
         $stayingTagTeamPartner = $tagTeam->currentWrestlers->first();
@@ -47,7 +53,7 @@ class TagTeamTest extends TestCase
         $tagTeam->addWrestlers([
             $stayingTagTeamPartner->getKey(),
             $newTagTeamPartner->getKey(),
-        ]);
+        ] $tagTeam);
 
         $this->assertTrue($tagTeam->currentWrestlers->contains($stayingTagTeamPartner));
         $this->assertTrue($tagTeam->currentWrestlers->contains($newTagTeamPartner));

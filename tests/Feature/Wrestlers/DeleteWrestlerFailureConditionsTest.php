@@ -37,7 +37,7 @@ class DeleteWrestlerFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_already_deleted_wrestler_cannot_be_deleted()
+    public function a_soft_deleted_wrestler_cannot_be_deleted()
     {
         $this->actAs(Role::ADMINISTRATOR);
         $wrestler = WrestlerFactory::new()->softDeleted()->create();

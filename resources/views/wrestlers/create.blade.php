@@ -6,11 +6,9 @@
 
 @section('content')
 <x-portlet title="Create Wrestler Form">
-    <x-form class="kt-form" method="post" :action="route('wrestlers.store')">
+    <x-form.form class="kt-form" method="post" :action="route('wrestlers.store')">
         <div class="kt-portlet__body">
-            <div class="kt-section kt-section--first">
-                @include('wrestlers.partials.form')
-            </div>
+            @include('wrestlers.partials.form')
         </div>
     </x-form>
 </x-portlet>

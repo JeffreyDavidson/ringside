@@ -1,4 +1,4 @@
-<field-label :for="$name" :label="$label ?? ''" />
+<label for="{{ $name }}">{{ $label }}:</label>
 
 <input
     type="number"
@@ -7,9 +7,9 @@
     max="{{ $max ?? '' }}"
     name="{{ $name }}"
     placeholder="Enter {{ $label }}"
-    value="{{ old($name, $model->$name) }}"
+    value="{{ $value }}"
 >
 
 @error($name)
-    <form-error name="{{ $name }} />
+    <x-form.validation-error name="{{ $name }}" :message="$message" />
 @enderror

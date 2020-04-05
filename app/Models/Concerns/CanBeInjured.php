@@ -126,7 +126,7 @@ trait CanBeInjured
      */
     public function canBeInjured()
     {
-        if (! $this->isCurrentlyEmployed()) {
+        if ($this->isUnemployed()) {
             return false;
         }
 

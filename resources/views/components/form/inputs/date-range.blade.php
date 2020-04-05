@@ -1,8 +1,13 @@
-
-<field-label :for="$name" :label="$label" />
+<label for="{{ $name }}">{{ $label }}:</label>
 
 <div class="input-group flatpickr kt-input-icon kt-input-icon--right">
     <div class="kt-input-icon kt-input-icon--right">
+        {{-- <x-form.inputs.text
+            id="{{$name}}_start"
+            name="{$name}.start"
+            data-datetimepicker
+            data-input
+        /> --}}
         <input
             type="text"
             class="form-control @error("{$name}.start") is-invalid @enderror"
@@ -16,7 +21,7 @@
             <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
         </span>
         @error("{$name}.start")
-            <form-error name="{{ $name }}['start']" />
+            <x-form.validation-error name="{{ $name }}['start']" :message="$message" />
         @enderror
     </div>
 </div>
@@ -36,7 +41,7 @@
             <span><i class="flaticon-calendar-with-a-clock-time-tools"></i></span>
         </span>
         @error("{$name}.end")
-            <form-error name="{{ $name }}['end']" />
+            <x-form.validation-error name="{{ $name }}['end']" :message="$message" />
         @enderror
     </div>
 </div>

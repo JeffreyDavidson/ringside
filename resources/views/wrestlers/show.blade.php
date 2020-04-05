@@ -1,18 +1,10 @@
 @extends('layouts.app')
 
 @section('content-head')
-<!-- begin:: Content Head -->
-<div class="kt-subheader kt-grid__item" id="kt_subheader">
-    <div class="kt-subheader__main">
-        <h3 class="kt-subheader__title">{{ $wrestler->name }}</h3>
-    </div>
-</div>
-
-<!-- end:: Content Head -->
+<x-subheader title="{{ $wrestler->name }}" :link="route('wrestlers.index')" />
 @endsection
 
 @section('content')
-<!--begin:: Widgets/Applications/User/Profile1-->
 <div class="row">
     <div class="col-lg-3">
         <div class="kt-portlet kt-portlet--height-fluid-">
@@ -56,7 +48,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!--end:: Widgets/Applications/User/Profile1-->
         </div>

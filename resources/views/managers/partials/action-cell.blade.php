@@ -5,65 +5,56 @@
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
             @can('view', $model)
-                @viewbutton(['route' => route('managers.show', $model)])
-                @endviewbutton
+                <x-buttons.view :route="route('managers.show', $model)" />
             @endcan
 
             @can('update', $model)
-                @editbutton(['route' => route('managers.edit', $model)])
-                @endeditbutton
+                <x-buttons.edit :route="route('managers.edit', $model)" />
             @endcan
 
             @can('delete', $model)
-                @deletebutton(['route' => route('managers.destroy', $model)])
-                @enddeletebutton
+                <x-buttons.delete :route="route('managers.destroy', $model)" />
             @endcan
 
             @can('retire', $model)
                 @if($model->canBeRetired())
-                    @retirebutton(['route' => route('managers.retire', $model)])
-                    @endretirebutton
+                    <x-buttons.retire :route="route('managers.retire', $model)" />
                 @endif
             @endcan
 
             @can('unretire', $model)
                 @if($model->canBeUnretired())
-                    <unretire :route="route('managers.unretire', $model)" />
+                    <x-buttons.unretire :route="route('managers.unretire', $model)" />
                 @endif
             @endcan
 
             @can('employ', $model)
                 @if($model->canBeEmployed())
-                    @employbutton(['route' => route('managers.employ', $model)])
-                    @endemploybutton
+                    <x-buttons.employ :route="route('managers.employ', $model)" />
                 @endif
             @endcan
 
             @can('suspend', $model)
                 @if($model->canBeSuspended())
-                    @suspendbutton(['route' => route('managers.suspend', $model)])
-                    @endsuspendbutton
+                    <x-buttons.suspend :route="route('managers.suspend', $model)" />
                 @endif
             @endcan
 
             @can('reinstate', $model)
                 @if($model->canBeReinstated())
-                    @reinstatebutton(['route' => route('managers.reinstate', $model)])
-                    @endreinstatebutton
+                    <x-buttons.reinstate :route="route('managers.reinstate', $model)" />
                 @endif
             @endcan
 
             @can('injure', $model)
                 @if($model->canBeInjured())
-                    @injurebutton(['route' => route('managers.injure', $model)])
-                    @endinjurebutton
+                    <x-buttons.injure :route="route('managers.injure', $model)" />
                 @endif
             @endcan
 
             @can('recover', $model)
-                @if($model->canBeMarkedAsHealed())
-                    @recoverbutton(['route' => route('managers.recover', $model)])
-                    @endrecoverbutton
+                @if($model->canBeClearedFromInjury())
+                    <x-buttons.recover :route="route('managers.recover', $model)" />
                 @endif
             @endcan
         </ul>
