@@ -54,12 +54,17 @@ class TagTeamsController extends Controller
 
         if ($request->filled('started_at')) {
             $tagTeam->employ($request->input('started_at'));
-        }
 
-        $tagTeam->addWrestlers(
-            [$request->input('wrestler1'), $request->input('wrestler2')],
-            $request->filled('started_at') ? $request->input('started_at') : now()
-        );
+            $tagTeam->addWrestlers(
+                [$request->input('wrestler1'), $request->input('wrestler2')],
+                $request->input('started_at')
+            );
+
+        } else {
+            $tagTeam->addWrestlers(
+                [$request->input('wrestler1'), $request->input('wrestler2')]
+            );
+        }
 
         return redirect()->route('tag-teams.index');
     }

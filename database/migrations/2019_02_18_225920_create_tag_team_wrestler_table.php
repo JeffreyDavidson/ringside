@@ -17,7 +17,7 @@ class CreateTagTeamWrestlerTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('tag_team_id');
             $table->unsignedInteger('wrestler_id');
-            $table->datetime('joined_at');
+            $table->datetime('joined_at')->nullable();
             $table->datetime('left_at')->nullable();
             $table->timestamps();
         });
