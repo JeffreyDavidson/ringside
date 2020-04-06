@@ -99,11 +99,14 @@ class TagTeamsController extends Controller
      */
     public function update(UpdateRequest $request, TagTeam $tagTeam)
     {
-        $tagTeam->update($request->except(['wrestlers', 'started_at']));
+        $tagTeam->update($request->except(['wrestler1', 'wrestler2', 'started_at']));
 
         $tagTeam->employ($request->input('started_at'));
 
-        $tagTeam->wrestlerHistory()->sync($request->input('wrestlers'));
+        $tagTeam->wrestlerHistory()->sync(
+            [$request->input('wrestler1'), $request->input('wrestler2')],
+            ['joined_at' => $request->input('started_at')]
+        );
 
         return redirect()->route('tag-teams.index');
     }

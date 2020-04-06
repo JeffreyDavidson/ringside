@@ -40,20 +40,35 @@ class EmploymentStartDateCanBeChanged implements Rule
          */
         $currentEmployment = $this->model->currentEmployment;
         $futureEmployment = $this->model->futureEmployment;
+        $formDate = Carbon::parse($value);
 
         if ($currentEmployment) {
+            if ($formDate === null) {
+                return false;
+            }
+
+            if ($formDate->eq($currentEmployment->started_at)) {
+                return true;
+            }
+
             return false;
         }
 
-        if (! $futureEmployment) {
-            return true;
+        if ($futureEmployment) {
+            if ($formDate === null) {
+                return true;
+            }
+
+            if ($formDate->isFuture()) {
+                return true;
+            }
+
+            if ($formDate->lte($futureEmployment->started_at)) {
+                return true;
+            }
         }
 
-        if ($futureEmployment && $value === null) {
-            return true;
-        }
-
-        if (Carbon::parse($value)->lt($futureEmployment->started_at)) {
+        if ((! $futureEmployment) && (! $currentEmployment)) {
             return true;
         }
 

@@ -1,7 +1,7 @@
 <label for="{{ $name }}">{{ $label }}:</label>
 
 <select
-    class="form-control"
+    class="form-control @error($name) is-invalid @enderror"
     name="{{ $name }}"
     id="{{ $name }}-dropdown"
 >
