@@ -9,6 +9,11 @@ class ConditionalEmploymentStartDateRule extends CompositeRule
 {
     protected $model;
 
+    /**
+     * @var string validation error message from particular underlying validator.
+     */
+    private $message;
+
     public function __construct($model)
     {
         $this->model = $model;
@@ -54,5 +59,10 @@ class ConditionalEmploymentStartDateRule extends CompositeRule
             'string' => 'Only string is allowed.',
             'date_format' => ':attribute is too short.',
         ];
+    }
+
+    public function message()
+    {
+        return $this->message;
     }
 }

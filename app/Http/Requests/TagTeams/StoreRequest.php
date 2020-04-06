@@ -34,4 +34,17 @@ class StoreRequest extends FormRequest
             'wrestler2' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ]
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'wrestler1' => 'tag team partner 1',
+            'wrestler2' => 'tag team partner 2',
+        ];
+    }
 }
