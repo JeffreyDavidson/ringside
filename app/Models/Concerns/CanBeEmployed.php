@@ -155,17 +155,13 @@ trait CanBeEmployed
     }
 
     /**
-     * Fire a model.
+     * Release a model.
      *
-     * @param  Carbon|string $startedAt
+     * @param  Carbon|string $releasedAt
      * @return bool
      */
-    public function fire($firedAt = null)
+    public function release($releasedAt = null)
     {
-        if ($this->isPendingEmployment() || $this->isRetired()) {
-            throw new CannotBeFiredException;
-        }
-
         if ($this->isSuspended()) {
             $this->reinstate();
         }
@@ -174,8 +170,8 @@ trait CanBeEmployed
             $this->clearFromInjury();
         }
 
-        $fireDate = $firedAt ?? now();
-        $this->currentEmployment()->update(['ended_at' => $fireDate]);
+        $releaseDate = $releasedAt ?? now();
+        $this->currentEmployment()->update(['ended_at' => $releaseDate]);
 
         return $this->touch();
     }
@@ -197,7 +193,7 @@ trait CanBeEmployed
      */
     public function isUnemployed()
     {
-        return $this->currentEmployment()->doesntExist() && $this->futureEmployment()->doesntExist();
+        return $this->employments()->doesntExist();
     }
 
     /**
@@ -211,17 +207,57 @@ trait CanBeEmployed
     }
 
     /**
+     * Check to see if the model has been released.
+     *
+     * @return bool
+     */
+    public function isReleased()
+    {
+        return $this->employments()->whereNull('ended_at')->doesntExist();
+    }
+
+    /**
      * Determine if the model can be employed.
      *
      * @return bool
      */
     public function canBeEmployed()
     {
-        if ($this->hasFutureEmployment() || $this->isUnemployed()) {
-            return true;
+        if ($this->isCurrentlyEmployed()) {
+            return false;
         }
 
-        return false;
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be released.
+     *
+     * @return bool
+     */
+    public function canBeReleased()
+    {
+        if ($this->isUnemployed()) {
+            return false;
+        }
+
+        if ($this->hasFutureEmployment()) {
+            return false;
+        }
+
+        if ($this->isReleased()) {
+            return false;
+        }
+
+        if ($this->isRetired()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

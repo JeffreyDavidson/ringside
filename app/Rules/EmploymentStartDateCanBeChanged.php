@@ -47,7 +47,7 @@ class EmploymentStartDateCanBeChanged implements Rule
                 return false;
             }
 
-            if ($formDate->eq($currentEmployment->started_at)) {
+            if ($formDate->lte($currentEmployment->started_at)) {
                 return true;
             }
 
@@ -77,6 +77,6 @@ class EmploymentStartDateCanBeChanged implements Rule
 
     public function message()
     {
-        return 'The started at field cannot be changed';
+        return 'The started at field cannot be changed.';
     }
 }

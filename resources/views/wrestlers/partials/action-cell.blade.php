@@ -34,6 +34,12 @@
                 @endif
             @endcan
 
+            @can('release', $model)
+                @if($model->canBeReleased())
+                    <x-buttons.release :route="route('wrestlers.release', $model)" />
+                @endif
+            @endcan
+
             @can('suspend', $model)
                 @if($model->canBeSuspended())
                     <x-buttons.suspend :route="route('wrestlers.suspend', $model)" />
@@ -52,9 +58,9 @@
                 @endif
             @endcan
 
-            @can('recover', $model)
+            @can('clearFromInjury', $model)
                 @if($model->canBeClearedFromInjury())
-                    <x-buttons.recover :route="route('wrestlers.recover', $model)" />
+                    <x-buttons.recover :route="route('wrestlers.clear-from-injury', $model)" />
                 @endif
             @endcan
         </ul>

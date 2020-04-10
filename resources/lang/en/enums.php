@@ -20,6 +20,7 @@ return [
         WrestlerStatus::RETIRED => 'Retired',
         WrestlerStatus::SUSPENDED => 'Suspended',
         WrestlerStatus::INJURED => 'Injured',
+        WrestlerStatus::RELEASED => 'Released',
     ],
     TagTeamStatus::class => [
         TagTeamStatus::BOOKABLE => 'Bookable',

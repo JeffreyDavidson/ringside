@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Wrestler;
 use Illuminate\Database\Seeder;
+use Tests\Factories\EmploymentFactory;
+use Tests\Factories\WrestlerFactory;
 
 class WrestlersTableSeeder extends Seeder
 {
@@ -13,23 +14,45 @@ class WrestlersTableSeeder extends Seeder
     public function run()
     {
         for ($w = 1; $w <= 50; $w++) {
-            factory(Wrestler::class)->create([
-                'name' => 'Wrestler '.$w,
-            ])->employments()->create([
-                'started_at' => now()->subYear(1)
-            ]);
+            WrestlerFactory::new()
+                ->employed(
+                    EmploymentFactory::new()->started(now()->subYears(1))
+                )
+                ->bookable()
+                ->create(['name' => 'Wrestler '.$w]);
         }
 
         $eNum = 51;
         for ($i = 1; $i <= 12; $i++) {
             for ($j = 1; $j <= 5; $j++) {
-                factory(Wrestler::class)->create([
-                    'name' => 'Wrestler '. $eNum,
-                ])->employments()->create([
-                    'started_at' => now()->subYear(1)->addMonth($i)
-                ]);
+                WrestlerFactory::new()
+                ->pendingEmployment(
+                    EmploymentFactory::new()->started(now()->subYears(1)->addMonth($i))
+                )
+                ->create(['name' => 'Wrestler '.$eNum]);
+
                 $eNum ++;
             }
+        }
+
+        for ($i = 1; $i <= 3; $i++) {
+            for ($j = 1; $j <= 5; $j++) {
+                WrestlerFactory::new()
+                    ->pendingEmployment(
+                        EmploymentFactory::new()->started(now()->addMonth($i))
+                    )
+                    ->create(['name' => 'Wrestler '.$eNum]);
+
+                $eNum ++;
+            }
+        }
+
+        for ($i = 1; $i <= 10; $i++) {
+            WrestlerFactory::new()
+                ->unemployed()
+                ->create(['name' => 'Wrestler '.$eNum]);
+
+            $eNum ++;
         }
     }
 }

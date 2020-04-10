@@ -132,6 +132,18 @@ class WrestlerPolicy
     }
 
     /**
+     * Determine whether the user can release a wrestler.
+     *
+     * @param  App\Models\User  $user
+     * @return bool
+     */
+    public function release(User $user)
+    {
+        return $user->isSuperAdministrator() || $user->isAdministrator();
+    }
+
+
+    /**
      * Determine whether the user can view a list of wrestlers.
      *
      * @param  App\Models\User  $user

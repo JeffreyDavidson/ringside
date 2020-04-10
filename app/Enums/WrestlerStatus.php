@@ -10,6 +10,7 @@ use MadWeb\Enum\Enum;
  * @method static WrestlerStatus INJURED()
  * @method static WrestlerStatus SUSPENDED()
  * @method static WrestlerStatus RETIRED()
+ * @method static WrestlerStatus RELEASED()
  */
 final class WrestlerStatus extends Enum
 {
@@ -20,4 +21,5 @@ final class WrestlerStatus extends Enum
     const INJURED = 'injured';
     const SUSPENDED = 'suspended';
     const RETIRED = 'retired';
+    const RELEASED = 'released';
 }

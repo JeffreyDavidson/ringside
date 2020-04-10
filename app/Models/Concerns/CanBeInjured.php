@@ -130,6 +130,14 @@ trait CanBeInjured
             return false;
         }
 
+        if ($this->isReleased()) {
+            return false;
+        }
+
+        if ($this->hasFutureEmployment()) {
+            return false;
+        }
+
         if ($this->isInjured()) {
             return false;
         }

@@ -96,7 +96,9 @@ class RefereesController extends Controller
     {
         $referee->update($request->except('started_at'));
 
-        $referee->employ($request->input('started_at'));
+        if ($request->filled('started_at')) {
+            $referee->employ($request->input('started_at'));
+        }
 
         return redirect()->route('referees.index');
     }

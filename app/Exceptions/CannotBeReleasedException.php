@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CannotBeFiredException extends Exception
+class CannotBeReleasedException extends Exception
 {
     //
 }

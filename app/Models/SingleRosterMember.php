@@ -24,7 +24,9 @@ abstract class SingleRosterMember extends Model
             $this->clearFromInjury();
         }
 
-        $this->retirements()->create(['started_at' => now()]);
+        $now = now();
+        $this->currentEmployment()->update(['ended_at' => $now]);
+        $this->retirements()->create(['started_at' => $now]);
 
         return $this->touch();
     }

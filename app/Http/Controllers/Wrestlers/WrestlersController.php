@@ -96,7 +96,9 @@ class WrestlersController extends Controller
     {
         $wrestler->update($request->except('started_at'));
 
-        $wrestler->employ($request->input('started_at'));
+        if ($request->filled('started_at')) {
+            $wrestler->employ($request->input('started_at'));
+        }
 
         return redirect()->route('wrestlers.index');
     }

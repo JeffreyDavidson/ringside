@@ -123,7 +123,15 @@ trait CanBeSuspended
      */
     public function canBeSuspended()
     {
-        if (! $this->isCurrentlyEmployed()) {
+        if ($this->isUnemployed()) {
+            return false;
+        }
+
+        if ($this->isReleased()) {
+            return false;
+        }
+
+        if ($this->hasFutureEmployment()) {
             return false;
         }
 
