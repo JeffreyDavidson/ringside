@@ -49,7 +49,7 @@ class WrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::whereHas('employments');
+        $query = Wrestler::whereHas('currentEmployment');
 
         $this->wrestlerFilters->apply($query);
 

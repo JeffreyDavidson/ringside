@@ -2,9 +2,9 @@
 
 namespace App\Models\Concerns;
 
-use App\Exceptions\CannotBeFiredException;
 use App\Models\Employment;
 use App\Traits\HasCachedAttributes;
+use Illuminate\Database\Eloquent\Builder;
 
 trait CanBeEmployed
 {
@@ -136,7 +136,18 @@ trait CanBeEmployed
     public function scopeEmployed($query)
     {
         return $query->whereHas('currentEmployment');
-        ;
+    }
+
+    /**
+     * Scope a query to only include employed models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeReleased($query)
+    {
+        return $query->whereDoesntHave('employments', function (Builder $query) {
+            $query->whereNull('ended_at');
+        })->whereDoesntHave('currentRetirement');
     }
 
     /**

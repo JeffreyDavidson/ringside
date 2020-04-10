@@ -22,4 +22,14 @@ final class WrestlerStatus extends Enum
     const SUSPENDED = 'suspended';
     const RETIRED = 'retired';
     const RELEASED = 'released';
+
+    public static function employed()
+    {
+        return [
+            self::BOOKABLE()->getValue() => self::BOOKABLE()->label(),
+            self::PENDING_EMPLOYMENT()->getValue() => self::PENDING_EMPLOYMENT()->label(),
+            self::INJURED()->getValue() => self::INJURED()->label(),
+            self::SUSPENDED()->getValue() => self::SUSPENDED()->label()
+        ];
+    }
 }

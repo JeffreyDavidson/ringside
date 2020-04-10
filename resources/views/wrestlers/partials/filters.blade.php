@@ -4,7 +4,7 @@
             <x-form.inputs.select
                 name="status"
                 label="Status"
-                :options="\App\Enums\WrestlerStatus::labels()"
+                :options="\App\Enums\WrestlerStatus::employed()"
             />
         </div>
     </div>
