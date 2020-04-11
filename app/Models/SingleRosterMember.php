@@ -14,7 +14,7 @@ abstract class SingleRosterMember extends Model
         Concerns\CanBeEmployed,
         Concerns\CanBeBooked;
 
-    public function retire()
+    public function retire($retiredAt = null)
     {
         if ($this->isSuspended()) {
             $this->reinstate();
@@ -24,9 +24,9 @@ abstract class SingleRosterMember extends Model
             $this->clearFromInjury();
         }
 
-        $now = now();
-        $this->currentEmployment()->update(['ended_at' => $now]);
-        $this->retirements()->create(['started_at' => $now]);
+        $retiredDate = $retiredAt ?: now();
+        $this->currentEmployment()->update(['ended_at' => $retiredDate]);
+        $this->retirements()->create(['started_at' => $retiredDate]);
 
         return $this->touch();
     }

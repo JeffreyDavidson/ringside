@@ -1,6 +1,8 @@
 "use strict";
 
-const table = $('[data-table="wrestlers.index"]');
+const employedWrestlersTable = $('[data-table="employed_wrestlers.index"]');
+const releasedWrestlersTable = $('[data-table="released_wrestlers.index"]');
+const retiredWrestlersTable = $('[data-table="retired_wrestlers.index"]');
 const rowCounter = $("#kt_subheader_total");
 const searchInput = $("#generalSearch");
 const statusDropdown = $("#status-dropdown");
@@ -22,7 +24,17 @@ const updateFilters = () => {
         filterData.started_at = null;
     }
 
-    table
+    employedWrestlersTable
+        .dataTable()
+        .api()
+        .draw();
+
+    releasedWrestlersTable
+        .dataTable()
+        .api()
+        .draw();
+
+    retiredWrestlersTable
         .dataTable()
         .api()
         .draw();
@@ -40,11 +52,11 @@ const clearFilters = () => {
         .draw();
 };
 
-// begin first table
-table.DataTable({
+employedWrestlersTable.DataTable({
     ajax: {
         url: window.location.href,
         data(params) {
+            params.type = 'employed';
             params.status = filterData.status;
             params.started_at = filterData.started_at;
         },
@@ -81,15 +93,79 @@ table.DataTable({
     }
 });
 
+releasedWrestlersTable.DataTable({
+    ajax: {
+        url: window.location.href + '/released',
+        error: function(xhr, error, code) {
+            console.log(JSON.parse(xhr.responseText.errors));
+            console.log(xhr);
+            console.log(error);
+            new Noty({
+                type: "error",
+                layout: "topRight",
+                text: JSON.parse(xhr.responseText.errors)
+            }).show();
+        }
+    },
+    columns: [
+        { data: "id", title: "Wrestler ID" },
+        { data: "name", title: "Name" },
+        { data: "hometown", title: "Hometown" },
+        {
+            data: "released_at",
+            title: "Date Released",
+            searchable: false
+        },
+        {
+            data: "action",
+            title: "Action",
+            orderable: false,
+            responsivePriority: -1
+        }
+    ]
+});
+
+retiredWrestlersTable.DataTable({
+    ajax: {
+        url: window.location.href + "/retired",
+        error: function(xhr, error, code) {
+            console.log(JSON.parse(xhr.responseText.errors));
+            console.log(xhr);
+            console.log(error);
+            new Noty({
+                type: "error",
+                layout: "topRight",
+                text: JSON.parse(xhr.responseText.errors)
+            }).show();
+        }
+    },
+    columns: [
+        { data: "id", title: "Wrestler ID" },
+        { data: "name", title: "Name" },
+        { data: "hometown", title: "Hometown" },
+        {
+            data: "retired_at",
+            title: "Date Retired",
+            searchable: false
+        },
+        {
+            data: "action",
+            title: "Action",
+            orderable: false,
+            responsivePriority: -1
+        }
+    ]
+});
+
 searchInput.on("keyup", () =>
-    table
+    employedWrestlesTable
         .DataTable()
         .search(searchInput.val())
         .draw()
 );
 
-table.on("draw.dt", (e, settings) => {
-    const searchTerm = table.DataTable().search();
+employedWrestlersTable.on("draw.dt", (e, settings) => {
+    const searchTerm = employedWrestlersTable.DataTable().search();
     if (!searchTerm) {
         rowCounter.html(`${settings.fnRecordsTotal()} Total`);
     } else {

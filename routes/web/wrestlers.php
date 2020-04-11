@@ -3,15 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Wrestlers\ClearInjuryController;
 use App\Http\Controllers\Wrestlers\EmployController;
-use App\Http\Controllers\Wrestlers\ReleaseController;
 use App\Http\Controllers\Wrestlers\InjureController;
-use App\Http\Controllers\Wrestlers\ReinstateController;
-use App\Http\Controllers\Wrestlers\RestoreController;
 use App\Http\Controllers\Wrestlers\RetireController;
+use App\Http\Controllers\Wrestlers\ReleaseController;
+use App\Http\Controllers\Wrestlers\RestoreController;
 use App\Http\Controllers\Wrestlers\SuspendController;
 use App\Http\Controllers\Wrestlers\UnretireController;
+use App\Http\Controllers\Wrestlers\ReinstateController;
+use App\Http\Controllers\Wrestlers\ReleasedWrestlersController;
+use App\Http\Controllers\Wrestlers\RetiredWrestlersController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 
+Route::get('/wrestlers/released', ReleasedWrestlersController::class)->name('wrestlers.released');
+Route::get('/wrestlers/retired', RetiredWrestlersController::class)->name('wrestlers.retired');
 Route::resource('wrestlers', WrestlersController::class);
 Route::put('/wrestlers/{wrestler}/restore', RestoreController::class)->name('wrestlers.restore');
 Route::put('/wrestlers/{wrestler}/employ', EmployController::class)->name('wrestlers.employ');

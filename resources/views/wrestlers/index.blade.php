@@ -10,7 +10,7 @@
     <div class="kt-subheader__main">
         <h3 class="kt-subheader__title">Wrestlers</h3>
         <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-        @include('partials.search')
+        <x-search />
         @include('wrestlers.partials.filters')
     </div>
     <div class="kt-subheader__toolbar">
@@ -26,6 +26,14 @@
 
 @section('content')
 <x-portlet title="Employed Wrestlers">
-    <table id="wrestlers_table" data-table="wrestlers.index" class="table table-hover"></table>
+    <x-table id="employed_table" dataTable="employed_wrestlers.index" />
+</x-portlet>
+
+<x-portlet title="Released Wrestlers">
+    <x-table id="released_wrestlers_table" dataTable="released_wrestlers.index" />
+</x-portlet>
+
+<x-portlet title="Retired Wrestlers">
+    <x-table id="retired_wrestlers_table" dataTable="retired_wrestlers.index" />
 </x-portlet>
 @endsection

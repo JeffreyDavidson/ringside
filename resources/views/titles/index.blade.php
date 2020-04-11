@@ -11,7 +11,7 @@
     <div class="kt-subheader__main">
         <h3 class="kt-subheader__title">Titles</h3>
         <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-        @include('partials.search')
+        <x-search />
         @include('titles.partials.filters')
     </div>
     <div class="kt-subheader__toolbar">

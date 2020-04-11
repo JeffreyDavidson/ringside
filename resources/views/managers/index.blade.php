@@ -10,7 +10,7 @@
     <div class="kt-subheader__main">
         <h3 class="kt-subheader__title">Managers</h3>
         <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-        @include('partials.search')
+        <x-search />
         @include('managers.partials.filters')
     </div>
     <div class="kt-subheader__toolbar">

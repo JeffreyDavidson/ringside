@@ -3,21 +3,9 @@
 namespace App\Models\Concerns;
 
 use App\Models\Injury;
-use App\Traits\HasCachedAttributes;
 
 trait CanBeInjured
 {
-    public static function bootCanBeInjured()
-    {
-        if (config('app.debug')) {
-            $traits = class_uses_recursive(static::class);
-
-            if (! in_array(HasCachedAttributes::class, $traits)) {
-                throw new \LogicException('CanBeInjured trait used without HasCachedAttributes trait');
-            }
-        }
-    }
-
     /**
      * Get the injuries of the model.
      *
@@ -36,7 +24,6 @@ trait CanBeInjured
     public function currentInjury()
     {
         return $this->morphOne(Injury::class, 'injurable')
-                    ->where('started_at', '<=', now())
                     ->whereNull('ended_at');
     }
 
@@ -58,20 +45,9 @@ trait CanBeInjured
      */
     public function previousInjury()
     {
-        return $this->injuries()
-                    ->whereNotNull('ended_at')
+        return $this->previousInjuries()
                     ->latest('ended_at')
                     ->limit(1);
-    }
-
-    /**
-     * Determine if a model is injured.
-     *
-     * @return bool
-     */
-    public function getIsInjuredCachedAttribute()
-    {
-        return $this->status === 'injured';
     }
 
     /**
@@ -82,17 +58,20 @@ trait CanBeInjured
      */
     public function scopeInjured($query)
     {
-        return $query->where('status', 'injured');
+        return $query->whereHas('currentInjury');
     }
 
     /**
      * Injure a model.
      *
+     * @param  string|null $injuredAt
      * @return \App\Models\Injury
      */
-    public function injure()
+    public function injure($injuredAt = null)
     {
-        $this->injuries()->create(['started_at' => now()]);
+        $injuredDate = $injuredAt ?? now();
+
+        $this->injuries()->create(['started_at' => $injuredDate]);
 
         return $this->touch();
     }
@@ -100,11 +79,14 @@ trait CanBeInjured
     /**
      * Recover a model.
      *
+     * @param  string|null $recoveredAt
      * @return bool
      */
-    public function clearFromInjury()
+    public function clearFromInjury($recoveredAt = null)
     {
-        $this->currentInjury()->update(['ended_at' => now()]);
+        $recoveryDate = $recoveredAt ?? now();
+
+        $this->currentInjury()->update(['ended_at' => $recoveryDate]);
 
         return $this->touch();
     }
@@ -116,7 +98,7 @@ trait CanBeInjured
      */
     public function isInjured()
     {
-        return $this->currentInjury()->exists();
+        return $this->currentInjury instanceof Injury;
     }
 
     /**
@@ -165,33 +147,5 @@ trait CanBeInjured
         }
 
         return true;
-    }
-
-    /**
-     * Get the current injury of the model.
-     *
-     * @return App\Models\Injury
-     */
-    public function getCurrentInjuryAttribute()
-    {
-        if (! $this->relationLoaded('currentInjury')) {
-            $this->setRelation('currentInjury', $this->currentInjury()->get());
-        }
-
-        return $this->getRelation('currentInjury')->first();
-    }
-
-    /**
-     * Get the previous injury of the model.
-     *
-     * @return App\Models\Injury
-     */
-    public function getPreviousInjuryAttribute()
-    {
-        if (! $this->relationLoaded('previousInjury')) {
-            $this->setRelation('previousInjury', $this->previousInjury()->get());
-        }
-
-        return $this->getRelation('previousInjury')->first();
     }
 }

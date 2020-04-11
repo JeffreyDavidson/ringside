@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Wrestlers;
 
 use App\Filters\WrestlerFilters;
 use App\Models\Wrestler;
 use Yajra\DataTables\Services\DataTable;
 
-class WrestlersDataTable extends DataTable
+class EmployedWrestlersDataTable extends DataTable
 {
     /** @var $wrestlerFilters */
     private $wrestlerFilters;
@@ -49,7 +49,23 @@ class WrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::whereHas('currentEmployment');
+        if (request()->has('type')) {
+            $type = request()->type;
+        }
+
+        $query = Wrestler::query()
+            ->$type()
+            ->with(
+                'employments',
+                'currentEmployment',
+                'futureEmployment',
+                'suspensions',
+                'currentSuspension',
+                'injuries',
+                'currentInjury',
+                'retirements',
+                'currentRetirement'
+            );
 
         $this->wrestlerFilters->apply($query);
 

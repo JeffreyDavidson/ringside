@@ -3,27 +3,9 @@
 namespace App\Models\Concerns;
 
 use App\Models\Employment;
-use App\Traits\HasCachedAttributes;
-use Illuminate\Database\Eloquent\Builder;
 
 trait CanBeEmployed
 {
-    /**
-     * Undocumented function.
-     *
-     * @return void
-     */
-    public static function bootCanBeEmployed()
-    {
-        if (config('app.debug')) {
-            $traits = class_uses_recursive(static::class);
-
-            if (! in_array(HasCachedAttributes::class, $traits)) {
-                throw new \LogicException('CanBeEmployed trait used without HasCachedAttributes trait');
-            }
-        }
-    }
-
     /**
      * Get all of the employments of the model.
      *
@@ -42,20 +24,18 @@ trait CanBeEmployed
     public function currentEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
-                    ->where('started_at', '<=', now())
                     ->whereNull('ended_at');
     }
 
     /**
-     * Get the pending employment of the model.
+     * Get the future employment of the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function futureEmployment()
     {
-        return $this->morphOne(Employment::class, 'employable')
-            ->where('started_at', '>', now())
-            ->whereNull('ended_at');
+        return $this->currentEmployment()
+                    ->where('started_at', '>', now());
     }
 
     /**
@@ -76,56 +56,19 @@ trait CanBeEmployed
      */
     public function previousEmployment()
     {
-        return $this->employments()
-                    ->whereNotNull('ended_at')
+        return $this->previousEmployments()
                     ->latest('ended_at')
                     ->limit(1);
     }
 
     /**
-     * Determine if a model is employed.
-     *
-     * @return bool
-     */
-    public function getIsCurrentlyEmployedCachedAttribute()
-    {
-        return $this->isCurrentlyEmployed();
-    }
-
-    /**
-     * Determine if a model is employed.
-     *
-     * @return bool
-     */
-    public function getIsUnemployedCachedAttribute()
-    {
-        return ! $this->isCurrentlyEmployed();
-    }
-
-    /**
      * Scope a query to only include pending employment models.
-     * These model have not been employed.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     */
-    public function getHasPendingEmploymentCachedAttribute()
-    {
-        if (! $this->currentEmployment) {
-            return true;
-        }
-
-        return $this->whereHas('pendingEmployment');
-    }
-
-    /**
-     * Scope a query to only include pending employment models.
-     * These model have not been employed.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopePendingEmployment($query)
     {
-        return $query->where('status', 'pending-employment');
+        return $query->whereHas('futureEmployment');
     }
 
     /**
@@ -139,15 +82,24 @@ trait CanBeEmployed
     }
 
     /**
-     * Scope a query to only include employed models.
+     * Scope a query to only include released models.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeReleased($query)
     {
-        return $query->whereDoesntHave('employments', function (Builder $query) {
-            $query->whereNull('ended_at');
-        })->whereDoesntHave('currentRetirement');
+        return $query->whereHas('previousEmployment')
+                     ->whereDoesntHave('currentRetirement');
+    }
+
+    /**
+     * Scope a query to only include unemployed models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeUnemployed($query)
+    {
+        return $query->whereDoesntHave('employments');
     }
 
     /**
@@ -194,7 +146,7 @@ trait CanBeEmployed
      */
     public function isCurrentlyEmployed()
     {
-        return $this->currentEmployment()->exists();
+        return $this->currentEmployment instanceof Employment;
     }
 
     /**
@@ -204,7 +156,7 @@ trait CanBeEmployed
      */
     public function isUnemployed()
     {
-        return $this->employments()->doesntExist();
+        return $this->employments->isEmpty();
     }
 
     /**
@@ -214,7 +166,7 @@ trait CanBeEmployed
      */
     public function hasFutureEmployment()
     {
-        return $this->futureEmployment()->exists();
+        return $this->futureEmployment instanceof Employment;
     }
 
     /**
@@ -224,7 +176,7 @@ trait CanBeEmployed
      */
     public function isReleased()
     {
-        return $this->employments()->whereNull('ended_at')->doesntExist();
+        return $this->employments->whereNull('ended_at')->isEmpty();
     }
 
     /**
@@ -281,7 +233,7 @@ trait CanBeEmployed
         return optional($this->employments->first())->started_at;
     }
 
-    /**
+     /**
      * Get the current employment of the model.
      *
      * @return App\Models\Employment

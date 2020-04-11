@@ -3,21 +3,9 @@
 namespace App\Models\Concerns;
 
 use App\Models\Suspension;
-use App\Traits\HasCachedAttributes;
 
 trait CanBeSuspended
 {
-    public static function bootCanBeSuspended()
-    {
-        if (config('app.debug')) {
-            $traits = class_uses_recursive(static::class);
-
-            if (! in_array(HasCachedAttributes::class, $traits)) {
-                throw new \LogicException('CanBeSuspended trait used without HasCachedAttributes trait');
-            }
-        }
-    }
-
     /**
      * Get the suspensions of the model.
      *
@@ -46,7 +34,7 @@ trait CanBeSuspended
      */
     public function previousSuspensions()
     {
-        return $this->morphMany(Suspension::class, 'suspendable')
+        return $this->suspensions()
                     ->whereNotNull('ended_at');
     }
 
@@ -57,20 +45,9 @@ trait CanBeSuspended
      */
     public function previousSuspension()
     {
-        return $this->morphMany(Suspension::class, 'suspendable')
-                    ->whereNotNull('ended_at')
+        return $this->previousSuspensions()
                     ->latest('ended_at')
                     ->limit(1);
-    }
-
-    /**
-     * Determine if a model is suspended.
-     *
-     * @return bool
-     */
-    public function getIsSuspendedCachedAttribute()
-    {
-        return $this->status === 'suspended';
     }
 
     /**
@@ -81,17 +58,20 @@ trait CanBeSuspended
      */
     public function scopeSuspended($query)
     {
-        return $query->where('status', 'suspended');
+        return $this->whereHas('currentSuspension');
     }
 
     /**
      * Suspend a model.
      *
+     * @param  string|null $suspendedAt
      * @return \App\Models\Suspension
      */
-    public function suspend()
+    public function suspend($suspendedAt = null)
     {
-        $this->suspensions()->create(['started_at' => now()]);
+        $suspensionDate = $suspendedAt ?? now();
+
+        $this->suspensions()->create(['started_at' => $suspensionDate]);
 
         return $this->touch();
     }
@@ -99,11 +79,14 @@ trait CanBeSuspended
     /**
      * Reinstate a model.
      *
+     * @param  string|null $reinstatedAt
      * @return bool
      */
-    public function reinstate($dateToReinstate = null)
+    public function reinstate($reinstatedAt = null)
     {
-        $this->currentSuspension()->update(['ended_at' => $dateToReinstate ?: now()]);
+        $reinstatedDate = $reinstatedAt ?: now();
+
+        $this->currentSuspension()->update(['ended_at' => $reinstatedDate]);
 
         return $this->touch();
     }
@@ -113,7 +96,7 @@ trait CanBeSuspended
      */
     public function isSuspended()
     {
-        return $this->currentSuspension()->exists();
+        return $this->currentSuspension instanceof Suspension;
     }
 
     /**
@@ -162,33 +145,5 @@ trait CanBeSuspended
         }
 
         return true;
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @return void
-     */
-    public function getCurrentSuspensionAttribute()
-    {
-        if (! $this->relationLoaded('currentSuspension')) {
-            $this->setRelation('currentSuspension', $this->currentSuspension()->get());
-        }
-
-        return $this->getRelation('currentSuspension')->first();
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @return void
-     */
-    public function getPreviousSuspensionAttribute()
-    {
-        if (! $this->relationLoaded('previousSuspension')) {
-            $this->setRelation('previousSuspension', $this->previousSuspension()->get());
-        }
-
-        return $this->getRelation('previousSuspension')->first();
     }
 }
