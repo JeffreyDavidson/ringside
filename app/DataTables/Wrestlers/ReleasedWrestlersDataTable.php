@@ -17,7 +17,6 @@ class ReleasedWrestlersDataTable extends DataTable
     {
         return datatables($query)
             ->editColumn('released_at', function (Wrestler $wrestler) {
-                dd($wrestler->previousEmployment);
                 return $wrestler->previousEmployment()->ended_at->toDateString();
             })
             ->filterColumn('id', function ($query, $keyword) {

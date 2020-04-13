@@ -16,52 +16,68 @@
                 <x-buttons.delete :route="route('wrestlers.destroy', $model)" />
             @endcan
 
-            @if($model->canBeRetired())
-                @can('retire', $model)
-                    <x-buttons.retire :route="route('wrestlers.retire', $model)" />
-                @endcan
+            @if ($actions->contains('retire'))
+                @if($model->canBeRetired())
+                    @can('retire', $model)
+                        <x-buttons.retire :route="route('wrestlers.retire', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeUnretired())
-                @can('unretire', $model)
-                    <x-buttons.unretire :route="route('wrestlers.unretire', $model)" />
-                @endcan
+            @if ($actions->contains('unretire'))
+                @if($model->canBeUnretired())
+                    @can('unretire', $model)
+                        <x-buttons.unretire :route="route('wrestlers.unretire', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeEmployed())
-                @can('employ', $model)
-                    <x-buttons.employ :route="route('wrestlers.employ', $model)" />
-                @endcan
+            @if ($actions->contains('employ'))
+                @if($model->canBeEmployed())
+                    @can('employ', $model)
+                        <x-buttons.employ :route="route('wrestlers.employ', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeReleased())
-                @can('release', $model)
-                    <x-buttons.release :route="route('wrestlers.release', $model)" />
-                @endcan
+            @if ($actions->contains('release'))
+                @if($model->canBeReleased())
+                    @can('release', $model)
+                        <x-buttons.release :route="route('wrestlers.release', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeSuspended())
-                @can('suspend', $model)
-                    <x-buttons.suspend :route="route('wrestlers.suspend', $model)" />
-                @endcan
+            @if ($actions->contains('suspend'))
+                @if($model->canBeSuspended())
+                    @can('suspend', $model)
+                        <x-buttons.suspend :route="route('wrestlers.suspend', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeReinstated())
-                @can('reinstate', $model)
-                    <x-buttons.reinstate :route="route('wrestlers.reinstate', $model)" />
-                @endcan
+            @if ($actions->contains('reinstate'))
+                @if($model->canBeReinstated())
+                    @can('reinstate', $model)
+                        <x-buttons.reinstate :route="route('wrestlers.reinstate', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeInjured())
-                @can('injure', $model)
-                    <x-buttons.injure :route="route('wrestlers.injure', $model)" />
-                @endcan
+            @if ($actions->contains('injure'))
+                @if($model->canBeInjured())
+                    @can('injure', $model)
+                        <x-buttons.injure :route="route('wrestlers.injure', $model)" />
+                    @endcan
+                @endif
             @endif
 
-            @if($model->canBeClearedFromInjury())
-                @can('clearFromInjury', $model)
-                    <x-buttons.recover :route="route('wrestlers.clear-from-injury', $model)" />
-                @endcan
+            @if ($actions->contains('clearInjury'))
+                @if($model->canBeClearedFromInjury())
+                    @can('clearFromInjury', $model)
+                        <x-buttons.recover :route="route('wrestlers.clear-from-injury', $model)" />
+                    @endcan
+                @endif
             @endif
         </ul>
     </div>

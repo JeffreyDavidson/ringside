@@ -29,7 +29,7 @@ class EmployedWrestlersDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables($query)
+        return datatables()
             ->editColumn('started_at', function (Wrestler $wrestler) {
                 return $wrestler->started_at->toDateString();
             })
@@ -49,12 +49,8 @@ class EmployedWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        if (request()->has('type')) {
-            $type = request()->type;
-        }
-
         $query = Wrestler::query()
-            ->$type()
+            ->employed()
             ->with(
                 'employments',
                 'currentEmployment',

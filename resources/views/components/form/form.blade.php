@@ -1,7 +1,6 @@
 @props(['method', 'action'])
 
-<form method="POST" action="{!! $action !!}" {{ $attributes }}>
-
+<form class="kt-form" method="POST" action="{!! $action !!}" {{ $attributes }}>
     @csrf
     @method($method)
 
@@ -13,5 +12,4 @@
             <button type="reset" class="btn btn-secondary">Cancel</button>
         </div>
     </div>
-
 </form>

@@ -24,7 +24,8 @@ trait CanBeEmployed
     public function currentEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
-                    ->whereNull('ended_at');
+                    ->whereNull('ended_at')
+                    ->limit(1);
     }
 
     /**
@@ -35,7 +36,8 @@ trait CanBeEmployed
     public function futureEmployment()
     {
         return $this->currentEmployment()
-                    ->where('started_at', '>', now());
+                    ->where('started_at', '>', now())
+                    ->limit(1);
     }
 
     /**
@@ -146,7 +148,7 @@ trait CanBeEmployed
      */
     public function isCurrentlyEmployed()
     {
-        return $this->currentEmployment instanceof Employment;
+        return $this->currentEmployment()->exists();
     }
 
     /**
@@ -166,7 +168,7 @@ trait CanBeEmployed
      */
     public function hasFutureEmployment()
     {
-        return $this->futureEmployment instanceof Employment;
+        return $this->futureEmployment()->exists();
     }
 
     /**
@@ -233,11 +235,11 @@ trait CanBeEmployed
         return optional($this->employments->first())->started_at;
     }
 
-     /**
-     * Get the current employment of the model.
-     *
-     * @return App\Models\Employment
-     */
+    /**
+    * Get the current employment of the model.
+    *
+    * @return App\Models\Employment
+    */
     public function getCurrentEmploymentAttribute()
     {
         if (! $this->relationLoaded('currentEmployment')) {
