@@ -10,7 +10,7 @@ use Tests\TestCase;
 /**
  * @group venues
  */
-class ViewVenuesListTest extends TestCase
+class ViewVenuesListSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
