@@ -44,13 +44,10 @@
                 <button class="kt-aside-close " id="kt_aside_close_btn"><i class="la la-close"></i></button>
                 <x-aside />
 
-                <!-- end:: Aside -->
                 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
 
-                    <!-- begin:: Header -->
                     <div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed ">
 
-                        <!-- begin:: Header Menu -->
                         <button class="kt-header-menu-wrapper-close"
                                 id="kt_header_menu_mobile_close_btn"><i
                                 class="la la-close">
@@ -65,7 +62,7 @@
 
                     </div>
 
-                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+                    <div id="kt_content" class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
                         {{ $slot }}
                     </div>
 

@@ -11,9 +11,9 @@
             @include($filters)
         @endif
     </div>
-    <div class="kt-subheader__toolbar">
-        <a href="{{ $link }}" class="btn btn-label-brand btn-bold">
-            {{ $linkText }}
-        </a>
-    </div>
+    @isset($actions)
+        <div class="kt-subheader__toolbar">
+            {{ $actions }}
+        </div>
+    @endisset
 </div>

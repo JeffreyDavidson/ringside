@@ -9,21 +9,17 @@ class SubHeader extends Component
     public $title;
     public $search;
     public $filters;
-    public $link;
-    public $linkText;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($title, $search = false, $filters = null, $link, $linkText)
+    public function __construct($title, $search = false, $filters = null)
     {
         $this->title = $title;
         $this->search = $search;
         $this->filters = $filters;
-        $this->link = $link;
-        $this->linkText = $linkText;
     }
 
     /**

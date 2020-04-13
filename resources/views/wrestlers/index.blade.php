@@ -3,9 +3,13 @@
         search="true"
         filters="wrestlers.partials.filters"
         title="Wrestlers"
-        :link="route('wrestlers.create')"
-        linkText="Create Wrestler"
-    />
+    >
+        <x-slot name="actions">
+            <a href="{{ route('wrestlers.create') }}" class="btn btn-label-brand btn-bold">
+                Create Wrestlers
+            </a>
+        </x-slot>
+    </x-subheader>
     <x-content>
         <x-portlet title="Employed Wrestlers">
             <x-table id="employed_table" dataTable="employed_wrestlers.index" />
