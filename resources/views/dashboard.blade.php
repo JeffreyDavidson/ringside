@@ -1,5 +1,4 @@
 <x-layouts.app>
-    <x-content>
-        Dashboard
-    </x-content>
+    <x-subheader title="Dashboard" />
+    <x-content></x-content>
 </x-layouts.app>
