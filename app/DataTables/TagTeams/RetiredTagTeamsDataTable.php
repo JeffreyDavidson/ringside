@@ -1,11 +1,11 @@
 <?php
 
-namespace App\DataTables\Wrestlers;
+namespace App\DataTables\TagTeams;
 
-use App\Models\Wrestler;
+use App\Models\TagTeam;
 use Yajra\DataTables\Services\DataTable;
 
-class RetiredWrestlersDataTable extends DataTable
+class RetiredTagTeamsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -16,18 +16,18 @@ class RetiredWrestlersDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('retired_at', function (Wrestler $wrestler) {
-                return $wrestler->retired_at->toDateString();
+            ->editColumn('retired_at', function (TagTeam $tagTeam) {
+                return $tagTeam->retired_at->toDateString();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->addColumn('action', function ($wrestler) {
+            ->addColumn('action', function ($tagTeam) {
                 return view(
-                    'wrestlers.partials.action-cell',
+                    'tagteams.partials.action-cell',
                     [
                         'actions' => collect(['unretire']),
-                        'model' => $wrestler
+                        'model' => $tagTeam
                     ]
                 );
             });
@@ -40,7 +40,7 @@ class RetiredWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::retired()->withRetiredAtDate();
+        $query = TagTeam::retired()->withRetiredAtDate();
 
         return $query;
     }

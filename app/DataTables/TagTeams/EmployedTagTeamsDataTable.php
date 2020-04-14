@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\TagTeams;
 
 use App\Filters\TagTeamFilters;
 use App\Models\TagTeam;
 use Yajra\DataTables\Services\DataTable;
 
-class TagTeamsDataTable extends DataTable
+class EmployedTagTeamsDataTable extends DataTable
 {
     /** @var $tagTeamFilters */
     private $tagTeamFilters;
@@ -39,7 +39,15 @@ class TagTeamsDataTable extends DataTable
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->addColumn('action', 'tagteams.partials.action-cell');
+            ->addColumn('action', function ($tagTeam) {
+                return view(
+                    'tagteams.partials.action-cell',
+                    [
+                        'actions' => collect(['retire', 'employ', 'release', 'suspend', 'reinstate']),
+                        'model' => $tagTeam
+                    ]
+                );
+            });
     }
 
     /**
@@ -49,7 +57,7 @@ class TagTeamsDataTable extends DataTable
      */
     public function query()
     {
-        $query = TagTeam::whereHas('employments');
+        $query = TagTeam::employed()->withEmployedAtDate();
 
         $this->tagTeamFilters->apply($query);
 

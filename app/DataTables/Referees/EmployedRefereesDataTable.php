@@ -1,18 +1,18 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Referees;
 
 use App\Filters\RefereeFilters;
 use App\Models\Referee;
 use Yajra\DataTables\Services\DataTable;
 
-class RefereesDataTable extends DataTable
+class EmployedRefereesDataTable extends DataTable
 {
     /** @var $refereeFilters */
     private $refereeFilters;
 
     /**
-     * RefereeDataTable constructor.
+     * RefereesDataTable constructor.
      *
      * @param RefereeFilters $refereeFilters
      */
@@ -33,8 +33,8 @@ class RefereesDataTable extends DataTable
             ->editColumn('name', function (Referee $referee) {
                 return $referee->full_name;
             })
-            ->editColumn('started_at', function (Referee $referee) {
-                return $referee->started_at->toDateString();
+            ->editColumn('employed_at', function (Referee $referee) {
+                return $referee->employed_at->toDateString();
             })
             ->editColumn('status', function (Referee $referee) {
                 return $referee->status->label();
@@ -46,7 +46,15 @@ class RefereesDataTable extends DataTable
                 $sql = "CONCAT(referees.first_name, ' ', referees.last_name)  like ?";
                 $query->whereRaw($sql, ["%{$keyword}%"]);
             })
-            ->addColumn('action', 'referees.partials.action-cell');
+            ->addColumn('action', function ($referee) {
+                return view(
+                    'referees.partials.action-cell',
+                    [
+                        'actions' => collect(['retire', 'employ', 'release', 'suspend', 'reinstate', 'injure', 'clearInjury']),
+                        'model' => $referee
+                    ]
+                );
+            });
     }
 
     /**
@@ -56,7 +64,7 @@ class RefereesDataTable extends DataTable
      */
     public function query()
     {
-        $query = Referee::whereHas('employments');
+        $query = Referee::employed()->withEmployedAtDate();
 
         $this->refereeFilters->apply($query);
 

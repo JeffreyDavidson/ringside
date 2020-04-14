@@ -23,8 +23,6 @@ class WrestlersController extends Controller
     {
         $this->authorize('viewList', Wrestler::class);
 
-        return $dataTable->render('wrestlers.index');
-
         if ($request->ajax()) {
             return $dataTable->ajax();
         }

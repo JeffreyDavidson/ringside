@@ -1,26 +1,13 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Titles;
 
-use App\Models\Title;
 use App\Filters\TitleFilters;
+use App\Models\Title;
 use Yajra\DataTables\Services\DataTable;
 
-class TitlesDataTable extends DataTable
+class RetiredTitlesDataTable extends DataTable
 {
-    /** @var $titleFilters */
-    private $titleFilters;
-
-    /**
-     * TitleDataTable constructor.
-     *
-     * @param TitleFilters $titleFilters
-     */
-    public function __construct(TitleFilters $titleFilters)
-    {
-        $this->titleFilters = $titleFilters;
-    }
-
     /**
      * Build DataTable class.
      *
@@ -36,17 +23,18 @@ class TitlesDataTable extends DataTable
             ->editColumn('introduced_at', function (Title $title) {
                 return $title->introduced_at->toDateString();
             })
-            ->editColumn('status', function (Title $title) {
-                return $title->status->label();
-            })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->filterColumn('name', function ($query, $keyword) {
-                $sql = "CONCAT(titles.first_name, ' ', titles.last_name)  like ?";
-                $query->whereRaw($sql, ["%{$keyword}%"]);
-            })
-            ->addColumn('action', 'titles.partials.action-cell');
+            ->addColumn('action', function ($title) {
+                return view(
+                    'titles.partials.action-cell',
+                    [
+                        'actions' => collect(['unretire']),
+                        'model' => $title
+                    ]
+                );
+            });
     }
 
     /**
@@ -56,9 +44,7 @@ class TitlesDataTable extends DataTable
      */
     public function query()
     {
-        $query = Title::whereNotNull('introduced_at');
-
-        $this->titleFilters->apply($query);
+        $query = Title::retired();
 
         return $query;
     }

@@ -56,7 +56,6 @@ employedWrestlersTable.DataTable({
     ajax: {
         url: window.location.href,
         data(params) {
-            params.type = 'employed';
             params.status = filterData.status;
             params.started_at = filterData.started_at;
         },
@@ -76,8 +75,8 @@ employedWrestlersTable.DataTable({
         { data: "name", title: "Name" },
         { data: "hometown", title: "Hometown" },
         {
-            data: "started_at",
-            title: "Date Started",
+            data: "employed_at",
+            title: "Date Employed",
             searchable: false
         },
         { data: "status", title: "Status", searchable: false },

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Managers;
 
-use App\Models\Manager;
 use App\Filters\ManagerFilters;
+use App\Models\Manager;
 use Yajra\DataTables\Services\DataTable;
 
-class ManagersDataTable extends DataTable
+class EmployedManagersDataTable extends DataTable
 {
     /** @var $managerFilters */
     private $managerFilters;
@@ -33,8 +33,8 @@ class ManagersDataTable extends DataTable
             ->editColumn('name', function (Manager $manager) {
                 return $manager->full_name;
             })
-            ->editColumn('started_at', function (Manager $manager) {
-                return $manager->started_at->toDateString();
+            ->editColumn('employed_at', function (Manager $manager) {
+                return $manager->employed_at->toDateString();
             })
             ->editColumn('status', function (Manager $manager) {
                 return $manager->status->label();
@@ -46,7 +46,15 @@ class ManagersDataTable extends DataTable
                 $sql = "CONCAT(managers.first_name, ' ', managers.last_name)  like ?";
                 $query->whereRaw($sql, ["%{$keyword}%"]);
             })
-            ->addColumn('action', 'managers.partials.action-cell');
+            ->addColumn('action', function ($manager) {
+                return view(
+                    'managers.partials.action-cell',
+                    [
+                        'actions' => collect(['retire', 'employ', 'release', 'suspend', 'reinstate', 'injure', 'clearInjury']),
+                        'model' => $manager
+                    ]
+                );
+            });
     }
 
     /**
@@ -56,7 +64,7 @@ class ManagersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Manager::whereHas('employments');
+        $query = Manager::employed()->withEmployedAtDate();
 
         $this->managerFilters->apply($query);
 

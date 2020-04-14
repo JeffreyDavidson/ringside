@@ -1,11 +1,11 @@
 <?php
 
-namespace App\DataTables\Wrestlers;
+namespace App\DataTables\Managers;
 
-use App\Models\Wrestler;
+use App\Models\Manager;
 use Yajra\DataTables\Services\DataTable;
 
-class RetiredWrestlersDataTable extends DataTable
+class RetiredManagersDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -16,18 +16,25 @@ class RetiredWrestlersDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('retired_at', function (Wrestler $wrestler) {
-                return $wrestler->retired_at->toDateString();
+            ->editColumn('name', function (Manager $manager) {
+                return $manager->full_name;
+            })
+            ->editColumn('retired_at', function (Manager $manager) {
+                return $manager->retired_at->toDateString();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->addColumn('action', function ($wrestler) {
+            ->filterColumn('name', function ($query, $keyword) {
+                $sql = "CONCAT(managers.first_name, ' ', managers.last_name)  like ?";
+                $query->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->addColumn('action', function ($manager) {
                 return view(
-                    'wrestlers.partials.action-cell',
+                    'managers.partials.action-cell',
                     [
                         'actions' => collect(['unretire']),
-                        'model' => $wrestler
+                        'model' => $manager
                     ]
                 );
             });
@@ -40,7 +47,7 @@ class RetiredWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::retired()->withRetiredAtDate();
+        $query = Manager::retired()->withRetiredAtDate();
 
         return $query;
     }

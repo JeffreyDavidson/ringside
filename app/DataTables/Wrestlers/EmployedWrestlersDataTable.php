@@ -30,8 +30,8 @@ class EmployedWrestlersDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('started_at', function (Wrestler $wrestler) {
-                return $wrestler->started_at->toDateString();
+            ->editColumn('employed_at', function (Wrestler $wrestler) {
+                return $wrestler->employed_at->toDateString();
             })
             ->editColumn('status', function (Wrestler $wrestler) {
                 return $wrestler->status->label();
@@ -57,9 +57,11 @@ class EmployedWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::employed()->with('currentEmployment');
+        $query = Wrestler::employed()->withEmployedAtDate();
 
         $this->wrestlerFilters->apply($query);
+
+        // dd($query->get());
 
         return $query;
     }

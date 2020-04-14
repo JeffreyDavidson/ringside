@@ -62,6 +62,21 @@ trait CanBeRetired
     }
 
     /**
+     * Scope a query to only include unemployed models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeWithRetiredAtDate($query)
+    {
+        return $query->addSelect(['retired_at' => Retirement::select('started_at')
+            ->where('retiree_id', $this->getTable($this).'.id')
+            ->where('retiree_type', $this->getMorphClass())
+            ->orderBy('started_at', 'desc')
+            ->limit(1)
+        ]);
+    }
+
+    /**
      * Retire a model.
      *
      * @return bool

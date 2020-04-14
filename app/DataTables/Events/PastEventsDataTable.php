@@ -1,26 +1,12 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Events;
 
-use App\Filters\EventFilters;
 use App\Models\Event;
 use Yajra\DataTables\Services\DataTable;
 
-class EventsDataTable extends DataTable
+class RetiredEventsDataTable extends DataTable
 {
-    /** @var $eventFilters */
-    private $eventFilters;
-
-    /**
-     * EventDataTable constructor.
-     *
-     * @param EventFilters $eventFilters
-     */
-    public function __construct(EventFilters $eventFilters)
-    {
-        $this->eventFilters = $eventFilters;
-    }
-
     /**
      * Build DataTable class.
      *
@@ -30,11 +16,11 @@ class EventsDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('date', function (Event $event) {
-                return $event->date->toDateTimeString();
+            ->editColumn('name', function (Event $event) {
+                return $event->name;
             })
-            ->editColumn('status', function (Event $event) {
-                return $event->status->label();
+            ->editColumn('date', function (Event $event) {
+                return $event->date->toDateString();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
@@ -49,9 +35,7 @@ class EventsDataTable extends DataTable
      */
     public function query()
     {
-        $query = Event::whereNotNull('date');
-
-        $this->eventFilters->apply($query);
+        $query = Event::past();
 
         return $query;
     }
