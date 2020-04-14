@@ -17,12 +17,20 @@ class RetiredWrestlersDataTable extends DataTable
     {
         return datatables($query)
             ->editColumn('retired_at', function (Wrestler $wrestler) {
-                return $wrestler->currentRetirement()->started_at->toDateString();
+                return $wrestler->currentRetirement->started_at->toDateString();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->addColumn('action', 'wrestlers.partials.action-cell');
+            ->addColumn('action', function ($wrestler) {
+                return view(
+                    'wrestlers.partials.action-cell',
+                    [
+                        'actions' => collect(['unretire']),
+                        'model' => $wrestler
+                    ]
+                );
+            });
     }
 
     /**
@@ -32,19 +40,7 @@ class RetiredWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::query()
-            ->retired()
-            ->with(
-                'employments',
-                'currentEmployment',
-                'futureEmployment',
-                'suspensions',
-                'currentSuspension',
-                'injuries',
-                'currentInjury',
-                'retirements',
-                'currentRetirement'
-            );
+        $query = Wrestler::retired()->with('currentRetirement');
 
         return $query;
     }

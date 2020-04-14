@@ -98,7 +98,7 @@ trait CanBeInjured
      */
     public function isInjured()
     {
-        return $this->currentInjury instanceof Injury;
+        return $this->currentInjury()->exists();
     }
 
     /**

@@ -96,7 +96,7 @@ trait CanBeSuspended
      */
     public function isSuspended()
     {
-        return $this->currentSuspension instanceof Suspension;
+        return $this->currentSuspension()->exists();
     }
 
     /**

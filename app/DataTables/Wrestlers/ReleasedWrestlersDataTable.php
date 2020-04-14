@@ -17,12 +17,20 @@ class ReleasedWrestlersDataTable extends DataTable
     {
         return datatables($query)
             ->editColumn('released_at', function (Wrestler $wrestler) {
-                return $wrestler->previousEmployment()->ended_at->toDateString();
+                return $wrestler->previousEmployment->ended_at->toDateString();
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->addColumn('action', 'wrestlers.partials.action-cell');
+            ->addColumn('action', function ($wrestler) {
+                return view(
+                    'wrestlers.partials.action-cell',
+                    [
+                        'actions' => collect(['employ']),
+                        'model' => $wrestler
+                    ]
+                );
+            });
     }
 
     /**
@@ -32,19 +40,7 @@ class ReleasedWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::query()
-            ->released()
-            ->with(
-                'employments',
-                'currentEmployment',
-                'futureEmployment',
-                'suspensions',
-                'currentSuspension',
-                'injuries',
-                'currentInjury',
-                'retirements',
-                'currentRetirement'
-            );
+        $query = Wrestler::released()->with('previousEmployment');
 
         return $query;
     }

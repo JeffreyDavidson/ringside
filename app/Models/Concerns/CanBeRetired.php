@@ -79,6 +79,7 @@ trait CanBeRetired
         $unretiredDate = $unretiredAt ?: now();
 
         $this->currentRetirement()->update(['ended_at' => $unretiredDate]);
+        $this->employ($unretiredAt);
 
         return $this->touch();
     }
@@ -90,7 +91,7 @@ trait CanBeRetired
      */
     public function isRetired()
     {
-        return $this->currentRetirement instanceof Retirement;
+        return $this->currentRetirement()->exists();
     }
 
     /**

@@ -39,7 +39,15 @@ class EmployedWrestlersDataTable extends DataTable
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
             })
-            ->addColumn('action', 'wrestlers.partials.action-cell');
+            ->addColumn('action', function ($wrestler) {
+                return view(
+                    'wrestlers.partials.action-cell',
+                    [
+                        'actions' => collect(['retire', 'employ', 'release', 'suspend', 'reinstate', 'injure', 'clearInjury']),
+                        'model' => $wrestler
+                    ]
+                );
+            });
     }
 
     /**
@@ -49,19 +57,7 @@ class EmployedWrestlersDataTable extends DataTable
      */
     public function query()
     {
-        $query = Wrestler::query()
-            ->employed()
-            ->with(
-                'employments',
-                'currentEmployment',
-                'futureEmployment',
-                'suspensions',
-                'currentSuspension',
-                'injuries',
-                'currentInjury',
-                'retirements',
-                'currentRetirement'
-            );
+        $query = Wrestler::employed()->with('currentEmployment');
 
         $this->wrestlerFilters->apply($query);
 

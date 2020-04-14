@@ -91,7 +91,8 @@ trait CanBeEmployed
     public function scopeReleased($query)
     {
         return $query->whereHas('previousEmployment')
-                     ->whereDoesntHave('currentRetirement');
+                    ->whereDoesntHave('currentEmployment')
+                    ->whereDoesntHave('currentRetirement');
     }
 
     /**
@@ -232,7 +233,7 @@ trait CanBeEmployed
      */
     public function getStartedAtAttribute()
     {
-        return optional($this->employments->first())->started_at;
+        return optional($this->employments->last())->started_at;
     }
 
     /**
