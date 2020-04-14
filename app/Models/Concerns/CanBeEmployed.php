@@ -117,7 +117,7 @@ trait CanBeEmployed
             ->where('employable_type', $this->getMorphClass())
             ->orderBy('started_at', 'desc')
             ->limit(1)
-        ]);
+        ])->withCasts(['employed_at' => 'datetime']);
     }
 
     /**
@@ -132,7 +132,7 @@ trait CanBeEmployed
             ->where('employable_type', $this->getMorphClass())
             ->orderBy('ended_at', 'desc')
             ->limit(1)
-        ]);
+        ])->withCasts(['released_at' => 'datetime']);
     }
 
     /**

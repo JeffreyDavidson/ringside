@@ -5,7 +5,7 @@ namespace App\DataTables\Events;
 use App\Models\Event;
 use Yajra\DataTables\Services\DataTable;
 
-class RetiredEventsDataTable extends DataTable
+class PastEventsDataTable extends DataTable
 {
     /**
      * Build DataTable class.

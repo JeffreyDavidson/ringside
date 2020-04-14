@@ -29,9 +29,6 @@ class Wrestler extends SingleRosterMember
      */
     protected $casts = [
         'status' => WrestlerStatus::class,
-        'employed_at' => 'datetime',
-        'released_at' => 'datetime',
-        'retired_at' => 'datetime'
     ];
 
     /**

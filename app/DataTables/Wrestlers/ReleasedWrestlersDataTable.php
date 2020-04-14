@@ -42,8 +42,6 @@ class ReleasedWrestlersDataTable extends DataTable
     {
         $query = Wrestler::released()->withReleasedAtDate();
 
-        // dd($query->get());
-
         return $query;
     }
 }

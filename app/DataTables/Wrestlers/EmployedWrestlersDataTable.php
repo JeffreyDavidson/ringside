@@ -61,8 +61,6 @@ class EmployedWrestlersDataTable extends DataTable
 
         $this->wrestlerFilters->apply($query);
 
-        // dd($query->get());
-
         return $query;
     }
 }
