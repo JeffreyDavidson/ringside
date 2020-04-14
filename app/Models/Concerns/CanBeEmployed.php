@@ -179,7 +179,9 @@ trait CanBeEmployed
      */
     public function isReleased()
     {
-        return $this->employments->whereNull('ended_at')->isEmpty();
+        return $this->previousEmployment()->exists() &&
+                $this->currentEmployment()->doesntExist() &&
+                $this->currentRetirement()->doesntExist();
     }
 
     /**
