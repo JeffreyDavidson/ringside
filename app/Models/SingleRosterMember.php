@@ -26,9 +26,9 @@ abstract class SingleRosterMember extends Model
 
         $retiredDate = $retiredAt ?: now();
         $this->currentEmployment()->update(['ended_at' => $retiredDate]);
-        $this->retire($retiredDate);
 
-        dd('testing');
+        $this->retirements()->create(['started_at' => $retiredDate]);
+
         return $this->touch();
     }
 }

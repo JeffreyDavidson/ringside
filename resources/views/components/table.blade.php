@@ -1,1 +1,3 @@
-<table id="{{ $id }}" data-table="{{ $dataTable }}" class="table table-hover"></table>
+<table {{ $attributes->merge(['class' => 'table table-hover table-bordered']) }}>
+    {{ $slot }}
+</table>

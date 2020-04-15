@@ -38,15 +38,6 @@ class EmployedWrestlersDataTable extends DataTable
             })
             ->filterColumn('id', function ($query, $keyword) {
                 $query->where($query->qualifyColumn('id'), $keyword);
-            })
-            ->addColumn('action', function ($wrestler) {
-                return view(
-                    'wrestlers.partials.action-cell',
-                    [
-                        'actions' => collect(['retire', 'employ', 'release', 'suspend', 'reinstate', 'injure', 'clearInjury']),
-                        'model' => $wrestler
-                    ]
-                );
             });
     }
 

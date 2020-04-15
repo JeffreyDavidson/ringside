@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
-use App\DataTables\Wrestlers\EmployedWrestlersDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Wrestlers\IndexRequest;
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
 use App\Models\Wrestler;
@@ -15,17 +13,11 @@ class WrestlersController extends Controller
     /**
      * View a list of employed wrestlers.
      *
-     * @param  App\Http\Requests\Wrestlers\IndexRequest  $request
-     * @param  App\DataTables\Wrestlers\EmployedWrestlersDataTable  $dataTable
-     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View
      */
-    public function index(IndexRequest $request, EmployedWrestlersDataTable $dataTable)
+    public function index()
     {
         $this->authorize('viewList', Wrestler::class);
-
-        if ($request->ajax()) {
-            return $dataTable->ajax();
-        }
 
         return view('wrestlers.index');
     }

@@ -4,78 +4,78 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
-            @can('view', $model)
-                <x-buttons.view :route="route('wrestlers.show', $model)" />
+            @can('view', $wrestler)
+                <x-buttons.view :route="route('wrestlers.show', $wrestler)" />
             @endcan
 
-            @can('update', $model)
-                <x-buttons.edit :route="route('wrestlers.edit', $model)" />
+            @can('update', $wrestler)
+                <x-buttons.edit :route="route('wrestlers.edit', $wrestler)" />
             @endcan
 
-            @can('delete', $model)
-                <x-buttons.delete :route="route('wrestlers.destroy', $model)" />
+            @can('delete', $wrestler)
+                <x-buttons.delete :route="route('wrestlers.destroy', $wrestler)" />
             @endcan
 
             @if ($actions->contains('retire'))
-                @if($model->canBeRetired())
-                    @can('retire', $model)
-                        <x-buttons.retire :route="route('wrestlers.retire', $model)" />
+                @if($wrestler->canBeRetired())
+                    @can('retire', $wrestler)
+                        <x-buttons.retire :route="route('wrestlers.retire', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('unretire'))
-                @if($model->canBeUnretired())
-                    @can('unretire', $model)
-                        <x-buttons.unretire :route="route('wrestlers.unretire', $model)" />
+                @if($wrestler->canBeUnretired())
+                    @can('unretire', $wrestler)
+                        <x-buttons.unretire :route="route('wrestlers.unretire', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('employ'))
-                @if($model->canBeEmployed())
-                    @can('employ', $model)
-                        <x-buttons.employ :route="route('wrestlers.employ', $model)" />
+                @if($wrestler->canBeEmployed())
+                    @can('employ', $wrestler)
+                        <x-buttons.employ :route="route('wrestlers.employ', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('release'))
-                @if($model->canBeReleased())
-                    @can('release', $model)
-                        <x-buttons.release :route="route('wrestlers.release', $model)" />
+                @if($wrestler->canBeReleased())
+                    @can('release', $wrestler)
+                        <x-buttons.release :route="route('wrestlers.release', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('suspend'))
-                @if($model->canBeSuspended())
-                    @can('suspend', $model)
-                        <x-buttons.suspend :route="route('wrestlers.suspend', $model)" />
+                @if($wrestler->canBeSuspended())
+                    @can('suspend', $wrestler)
+                        <x-buttons.suspend :route="route('wrestlers.suspend', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('reinstate'))
-                @if($model->canBeReinstated())
-                    @can('reinstate', $model)
-                        <x-buttons.reinstate :route="route('wrestlers.reinstate', $model)" />
+                @if($wrestler->canBeReinstated())
+                    @can('reinstate', $wrestler)
+                        <x-buttons.reinstate :route="route('wrestlers.reinstate', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('injure'))
-                @if($model->canBeInjured())
-                    @can('injure', $model)
-                        <x-buttons.injure :route="route('wrestlers.injure', $model)" />
+                @if($wrestler->canBeInjured())
+                    @can('injure', $wrestler)
+                        <x-buttons.injure :route="route('wrestlers.injure', $wrestler)" />
                     @endcan
                 @endif
             @endif
 
             @if ($actions->contains('clearInjury'))
-                @if($model->canBeClearedFromInjury())
-                    @can('clearFromInjury', $model)
-                        <x-buttons.recover :route="route('wrestlers.clear-from-injury', $model)" />
+                @if($wrestler->canBeClearedFromInjury())
+                    @can('clearFromInjury', $wrestler)
+                        <x-buttons.recover :route="route('wrestlers.clear-from-injury', $wrestler)" />
                     @endcan
                 @endif
             @endif

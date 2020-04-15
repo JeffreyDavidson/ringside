@@ -113,7 +113,7 @@ trait CanBeEmployed
     public function scopeWithEmployedAtDate($query)
     {
         return $query->addSelect(['employed_at' => Employment::select('started_at')
-            ->where('employable_id', $this->getTable($this).'.id')
+            ->whereColumn('employable_id', $this->getTable().'.id')
             ->where('employable_type', $this->getMorphClass())
             ->orderBy('started_at', 'desc')
             ->limit(1)
@@ -128,7 +128,7 @@ trait CanBeEmployed
     public function scopeWithReleasedAtDate($query)
     {
         return $query->addSelect(['released_at' => Employment::select('ended_at')
-            ->where('employable_id', $this->getTable($this).'.id')
+            ->whereColumn('employable_id', $this->getTable().'.id')
             ->where('employable_type', $this->getMorphClass())
             ->orderBy('ended_at', 'desc')
             ->limit(1)
@@ -256,16 +256,6 @@ trait CanBeEmployed
         }
 
         return true;
-    }
-
-    /**
-     * Get the model's first employment date.
-     *
-     * @return string|null
-     */
-    public function getStartedAtAttribute()
-    {
-        // return optional($this->employments->last())->started_at;
     }
 
     /**

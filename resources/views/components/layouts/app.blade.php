@@ -31,6 +31,8 @@
         <link href="{{ asset('css/vendors.css') }}" rel="stylesheet" type="text/css" />
 
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" type="text/css" />
+
+        <livewire:styles>
     </head>
 
     <body
@@ -93,7 +95,7 @@
                     }
                 };
         </script>
-
+        <livewire:scripts>
         <script src="{{ asset('js/manifest.js') }}"></script>
         <script src="{{ asset('js/vendor.js') }}"></script>
         @stack('scripts-before')

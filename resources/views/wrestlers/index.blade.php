@@ -12,15 +12,21 @@
     </x-subheader>
     <x-content>
         <x-portlet title="Employed Wrestlers">
-            <x-table id="employed_table" dataTable="employed_wrestlers.index" />
+            <div class="kt-portlet__body">
+                <livewire:wrestlers.employed-wrestlers>
+            </div>
         </x-portlet>
 
         <x-portlet title="Released Wrestlers">
-            <x-table id="released_wrestlers_table" dataTable="released_wrestlers.index" />
+            <div class="kt-portlet__body">
+                <livewire:wrestlers.released-wrestlers>
+            </div>
         </x-portlet>
 
         <x-portlet title="Retired Wrestlers">
-            <x-table id="retired_wrestlers_table" dataTable="retired_wrestlers.index" />
+            <div class="kt-portlet__body">
+                <livewire:wrestlers.retired-wrestlers>
+            </div>
         </x-portlet>
     </x-content>
     @push('scripts-after')

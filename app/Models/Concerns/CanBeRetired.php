@@ -69,11 +69,11 @@ trait CanBeRetired
     public function scopeWithRetiredAtDate($query)
     {
         return $query->addSelect(['retired_at' => Retirement::select('started_at')
-            ->where('retiree_id', $this->getTable($this).'.id')
+            ->whereColumn('retiree_id', $this->getTable().'.id')
             ->where('retiree_type', $this->getMorphClass())
             ->orderBy('started_at', 'desc')
             ->limit(1)
-        ]);
+        ])->withCasts(['retired_at' => 'datetime']);
     }
 
     /**
