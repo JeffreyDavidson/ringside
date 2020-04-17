@@ -1,4 +1,4 @@
-<x-table>
+<x-datatable :collection="$retiredWrestlers">
     <thead>
         <th>Id</th>
         <th>Wrestler Name</th>
@@ -24,6 +24,4 @@
             </tr>
         @endforeach
     </tbody>
-</x-table>
-
-{{ $retiredWrestlers->links() }}
+</x-datatable>

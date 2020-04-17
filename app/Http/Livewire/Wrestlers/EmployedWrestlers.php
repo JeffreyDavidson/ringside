@@ -12,10 +12,10 @@ class EmployedWrestlers extends Component
 
     public $perPage = 10;
 
-    // public function paginationView()
-    // {
-    //     return 'pagination';
-    // }
+    public function paginationView()
+    {
+        return 'pagination.datatables';
+    }
 
     public function render()
     {

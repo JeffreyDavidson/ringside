@@ -1,4 +1,4 @@
-<x-table>
+<x-datatable :collection="$releasedWrestlers">
     <thead>
         <th>Id</th>
         <th>Wrestler Name</th>
@@ -24,4 +24,4 @@
             </tr>
         @endforeach
     </tbody>
-</x-table>
+</x-datatable>

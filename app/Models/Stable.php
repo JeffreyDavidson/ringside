@@ -12,7 +12,6 @@ class Stable extends Model
     use SoftDeletes,
         HasCachedAttributes,
         HasCustomRelationships,
-        Concerns\MemberHistory,
         Concerns\CanBeEmployed;
 
     /**
@@ -30,6 +29,17 @@ class Stable extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope a query to only include suspended models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $this->whereHas('currentSuspension');
     }
 
     public function disassemble()

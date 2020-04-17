@@ -46,6 +46,14 @@ class TagTeamFactory extends BaseFactory
         return $clone;
     }
 
+    public function unemployed()
+    {
+        $clone = clone $this;
+        $clone->employmentFactory = null;
+
+        return $clone;
+    }
+
     public function bookable(EmploymentFactory $employmentFactory = null, WrestlerFactory $wrestlerFactory = null)
     {
         $clone = clone $this;

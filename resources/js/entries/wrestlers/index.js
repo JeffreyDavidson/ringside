@@ -71,7 +71,7 @@ employedWrestlersTable.DataTable({
         }
     },
     columns: [
-        { data: "id", title: "Wrestler ID" },
+        { data: "id", title: "ID" },
         { data: "name", title: "Name" },
         { data: "hometown", title: "Hometown" },
         {
@@ -107,7 +107,7 @@ releasedWrestlersTable.DataTable({
         }
     },
     columns: [
-        { data: "id", title: "Wrestler ID" },
+        { data: "id", title: "ID" },
         { data: "name", title: "Name" },
         { data: "hometown", title: "Hometown" },
         {
@@ -139,7 +139,7 @@ retiredWrestlersTable.DataTable({
         }
     },
     columns: [
-        { data: "id", title: "Wrestler ID" },
+        { data: "id", title: "ID" },
         { data: "name", title: "Name" },
         { data: "hometown", title: "Hometown" },
         {

@@ -8,15 +8,9 @@
     </x-subheader>
     <x-content>
         <x-portlet title="Employed Wrestlers">
-            <x-datatable id="employed_table" dataTable="employed_wrestlers.index" />
-        </x-portlet>
-
-        <x-portlet title="Released Wrestlers">
-            <x-datatable id="released_wrestlers_table" dataTable="released_wrestlers.index" />
-        </x-portlet>
-
-        <x-portlet title="Retired Wrestlers">
-                <x-datatable id="retired_wrestlers_table" dataTable="retired_wrestlers.index" />
+            <div class="kt-portlet__body">
+                <x-table id="employed_wrestlers_table" dataTable="employed_wrestlers.index" class="dataTable" />
+            </div>
         </x-portlet>
     </x-content>
     @push('scripts-after')

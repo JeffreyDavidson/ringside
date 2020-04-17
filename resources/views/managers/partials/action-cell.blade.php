@@ -16,17 +16,17 @@
                 <x-buttons.delete :route="route('managers.destroy', $model)" />
             @endcan
 
-            @can('retire', $model)
-                @if($model->canBeRetired())
-                    <x-buttons.retire :route="route('managers.retire', $model)" />
-                @endif
-            @endcan
+            @if($model->canBeRetired())
+                @can('retire', $model)
+                    <x-buttons.retire :route="route('managers.retire', $model)" />\
+                @endcan
+            @endif
 
-            @can('unretire', $model)
-                @if($model->canBeUnretired())
+            @if($model->canBeUnretired())
+                @can('unretire', $model)
                     <x-buttons.unretire :route="route('managers.unretire', $model)" />
-                @endif
-            @endcan
+                @endcan
+            @endif
 
             @can('employ', $model)
                 @if($model->canBeEmployed())

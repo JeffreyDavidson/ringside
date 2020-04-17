@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
-use App\DataTables\ManagersDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Managers\IndexRequest;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Manager;
@@ -15,17 +13,11 @@ class ManagersController extends Controller
     /**
      * View a list of managers.
      *
-     * @param  App\Http\Requests\Managers\IndexRequest  $request
-     * @param  App\DataTables\ManagersDataTable  $dataTable
-     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View
      */
-    public function index(IndexRequest $request, ManagersDataTable $dataTable)
+    public function index()
     {
         $this->authorize('viewList', Manager::class);
-
-        if ($request->ajax()) {
-            return $dataTable->ajax();
-        }
 
         return view('managers.index');
     }

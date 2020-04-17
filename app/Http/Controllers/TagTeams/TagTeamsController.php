@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\TagTeams;
 
-use App\DataTables\TagTeamsDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TagTeams\IndexRequest;
 use App\Http\Requests\TagTeams\StoreRequest;
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\TagTeam;
@@ -15,17 +13,11 @@ class TagTeamsController extends Controller
     /**
      * View a list of tag teams.
      *
-     * @param  App\Http\Requests\TagTeams\IndexRequest  $request
-     * @param  App\DataTables\TagTeamsDataTable  $dataTable
-     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View
      */
-    public function index(IndexRequest $request, TagTeamsDataTable $dataTable)
+    public function index()
     {
         $this->authorize('viewList', TagTeam::class);
-
-        if ($request->ajax()) {
-            return $dataTable->ajax();
-        }
 
         return view('tagteams.index');
     }

@@ -1,5 +1,6 @@
 <x-layouts.app>
     <x-subheader
+        displayRecordsCount="true"
         search="true"
         filters="wrestlers.partials.filters"
         title="Wrestlers"
@@ -29,7 +30,4 @@
             </div>
         </x-portlet>
     </x-content>
-    @push('scripts-after')
-        <script src="{{ mix('js/wrestlers/index.js') }}"></script>
-    @endpush
 </x-layouts.app>

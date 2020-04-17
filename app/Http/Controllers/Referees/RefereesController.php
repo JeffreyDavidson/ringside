@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Referees;
 
-use App\DataTables\RefereesDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Referees\IndexRequest;
 use App\Http\Requests\Referees\StoreRequest;
 use App\Http\Requests\Referees\UpdateRequest;
 use App\Models\Referee;
@@ -15,17 +13,11 @@ class RefereesController extends Controller
     /**
      * View a list of referees.
      *
-     * @param  App\Http\Requests\Referees\IndexRequest  $request
-     * @param  App\DataTables\RefereesDataTable  $dataTable
-     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View
      */
-    public function index(IndexRequest $request, RefereesDataTable $dataTable)
+    public function index()
     {
         $this->authorize('viewList', Referee::class);
-
-        if ($request->ajax()) {
-            return $dataTable->ajax();
-        }
 
         return view('referees.index');
     }

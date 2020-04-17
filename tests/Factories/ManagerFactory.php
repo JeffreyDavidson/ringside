@@ -53,6 +53,14 @@ class ManagerFactory extends BaseFactory
         return $clone;
     }
 
+    public function unemployed()
+    {
+        $clone = clone $this;
+        $clone->employmentFactory = null;
+
+        return $clone;
+    }
+
     public function available(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;

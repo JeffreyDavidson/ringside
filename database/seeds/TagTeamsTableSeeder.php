@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\TagTeam;
 use Illuminate\Database\Seeder;
+use Tests\Factories\TagTeamFactory;
+use Tests\Factories\EmploymentFactory;
 
 class TagTeamsTableSeeder extends Seeder
 {
@@ -12,7 +13,7 @@ class TagTeamsTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($w = 1; $w <= 50; $w++) {
+        for ($w = 1; $w <= 20; $w++) {
             TagTeamFactory::new()
                 ->employed(
                     EmploymentFactory::new()->started(now()->subYears(1))
@@ -21,17 +22,37 @@ class TagTeamsTableSeeder extends Seeder
                 ->create(['name' => 'Tag Team '.$w]);
         }
 
-        $eNum = 51;
-        for ($i = 1; $i <= 15; $i++) {
-            for ($j = 1; $j <= 5; $j++) {
+        $eNum = 21;
+        for ($i = 1; $i <= 12; $i++) {
+            for ($j = 1; $j <= 2; $j++) {
                 TagTeamFactory::new()
-                    ->employed(
+                    ->pendingEmployment(
                         EmploymentFactory::new()->started(now()->subYears(1)->addMonth($i))
                     )
                     ->create(['name' => 'Tag Team '.$eNum]);
 
-                $eNum++;
+                $eNum ++;
             }
+        }
+
+        for ($i = 1; $i <= 3; $i++) {
+            for ($j = 1; $j <= 2; $j++) {
+                TagTeamFactory::new()
+                    ->pendingEmployment(
+                        EmploymentFactory::new()->started(now()->addMonth($i))
+                    )
+                    ->create(['name' => 'Tag Team '.$eNum]);
+
+                $eNum ++;
+            }
+        }
+
+        for ($i = 1; $i <= 10; $i++) {
+            TagTeamFactory::new()
+                ->unemployed()
+                ->create(['name' => 'Tag Team '.$eNum]);
+
+            $eNum ++;
         }
     }
 }
