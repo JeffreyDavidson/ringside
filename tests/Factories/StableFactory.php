@@ -8,26 +8,46 @@ use Faker\Generator;
 
 class StableFactory extends BaseFactory
 {
+    /** @var ActivationFactory|null */
+    public $activationFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
+    /** @var WrestlerFactory|null */
+    public $wrestlerFactory;
+    /** @var TagTeamFactory|null */
+    public $tagTeamFactory;
+    public $softDeleted = false;
     protected $factoriesToClone = [
+        'activationFactory',
         'retirementFactory',
+        'wrestlerFactory'
     ];
 
-    public function pendingIntroduction()
+    public function pendingActivation(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
         $clone->attributes['status'] = StableStatus::PENDING_INTRODUCTION;
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(2));
         $clone->retirementFactory = null;
 
         return $clone;
     }
 
-    public function active()
+    public function active(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
         $clone->attributes['status'] = StableStatus::ACTIVE;
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new();
         $clone->retirementFactory = null;
+
+        return $clone;
+    }
+
+    public function inactive()
+    {
+        $clone = clone $this;
+        $clone->attributes['status'] = StableStatus::INACTIVE;
+        $clone->activationFactory = null;
 
         return $clone;
     }
@@ -59,21 +79,31 @@ class StableFactory extends BaseFactory
 
     public function create($attributes = [])
     {
-        $stable = Stable::create($this->resolveAttributes($attributes));
+        return $this->make(function ($attributes) {
+            $stable = Stable::create($this->resolveAttributes($attributes));
 
-        if ($this->retirementFactory) {
-            $this->retirementFactory->forStable($stable)->create();
-        }
+            if ($this->activationFactory) {
+                $this->activationFactory->forStable($stable)->create();
+            }
 
-        if ($this->wrestlerFactory) {
-            $this->wrestlerFactory->forStable($stable)->create();
-        }
+            if ($this->retirementFactory) {
+                $this->retirementFactory->forStable($stable)->create();
+            }
 
-        if ($this->tagTeamFactory) {
-            $this->tagTeamFactory->forStable($stable)->create();
-        }
+            if ($this->wrestlerFactory) {
+                $this->wrestlerFactory->forStable($stable)->create();
+            }
 
-        return $stable;
+            if ($this->tagTeamFactory) {
+                $this->tagTeamFactory->forStable($stable)->create();
+            }
+
+            if ($this->softDeleted) {
+                $stable->delete();
+            }
+
+            return $stable;
+        }, $attributes);
     }
 
     protected function defaultAttributes(Generator $faker)

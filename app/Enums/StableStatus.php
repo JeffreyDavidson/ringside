@@ -14,6 +14,7 @@ final class StableStatus extends Enum
     const __default = self::PENDING_INTRODUCTION;
 
     const ACTIVE = 'active';
+    const INACTIVE = 'inactive';
     const PENDING_INTRODUCTION = 'pending-introduction';
     const RETIRED = 'retired';
 }

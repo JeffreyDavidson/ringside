@@ -193,8 +193,6 @@ class TagTeam extends Model
 
         $this->currentWrestlers->each->retire();
 
-        $this->currentWrestlers->each->touch();
-
         return $this->touch();
     }
 

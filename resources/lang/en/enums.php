@@ -44,6 +44,9 @@ return [
     ],
     StableStatus::class => [
         StableStatus::ACTIVE => 'Active',
+        StableStatus::INACTIVE => 'Inactive',
+        StableStatus::PENDING_INTRODUCTION => 'Pending Introduction',
+        StableStatus::RETIRED => 'Retired',
     ],
     EventStatus::class => [
         EventStatus::SCHEDULED => 'Scheduled',
