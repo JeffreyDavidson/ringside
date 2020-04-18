@@ -8,7 +8,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($employedWrestlers as $wrestler)
+        @forelse($employedWrestlers as $wrestler)
             <tr>
                 <td>{{ $wrestler->id }}</td>
                 <td>{{ $wrestler->name }}</td>
@@ -16,15 +16,19 @@
                 <td>{{ $wrestler->employed_at->toDateString() }}</td>
                 <td>{{ $wrestler->status->label() }}</td>
                 <td>
-                    {{-- @include('wrestlers.partials.action-cell', [
+                    @include('wrestlers.partials.action-cell', [
                         'wrestler' => $wrestler,
                         'actions' => collect([
                             'retire', 'employ', 'release', 'suspend', 'reinstate', 'injure', 'clearInjury'
                         ])
-                    ]) --}}
+                    ])
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="6">No matching records found</td>
+            </tr>
+        @endforelse
     </tbody>
 </x-datatable>
 

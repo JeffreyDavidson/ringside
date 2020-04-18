@@ -9,7 +9,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($venues as $venue)
+        @forelse($venues as $venue)
             <tr>
                 <td>{{ $venue->id }}</td>
                 <td>{{ $venue->name }}</td>
@@ -18,15 +18,19 @@
                 <td>{{ $venue->state }}</td>
                 <td>{{ $venue->zip }}</td>
                 <td>
-                    {{-- @include('venues.partials.action-cell', [
+                    @include('venues.partials.action-cell', [
                         'venue' => $venue,
                         'actions' => collect([
 
                         ])
-                    ]) --}}
+                    ])
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="7">No matching records found</td>
+            </tr>
+        @endforelse
     </tbody>
 </x-datatable>
 

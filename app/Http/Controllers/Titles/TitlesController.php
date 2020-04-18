@@ -42,7 +42,11 @@ class TitlesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Title::create($request->all());
+        $title = Title::create($request->except(['introduced_at']));
+
+        if ($request->filled('introduced_at')) {
+            $title->activate($request->input('introduced_at'));
+        }
 
         return redirect()->route('titles.index');
     }

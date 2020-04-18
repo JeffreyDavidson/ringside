@@ -93,7 +93,19 @@ class TitlePolicy
      * @param  \App\Models\Title  $title
      * @return bool
      */
-    public function introduce(User $user)
+    public function activate(User $user)
+    {
+        return $user->isSuperAdministrator() || $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can deactivate a title.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Title  $title
+     * @return bool
+     */
+    public function deactivate(User $user)
     {
         return $user->isSuperAdministrator() || $user->isAdministrator();
     }

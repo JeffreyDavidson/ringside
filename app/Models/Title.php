@@ -14,7 +14,8 @@ class Title extends Model
         HasCachedAttributes,
         Concerns\CanBeRetired,
         Concerns\CanBeCompeted,
-        Concerns\CanBeActivated;
+        Concerns\CanBeActivated,
+        Concerns\CanBeRetired;
 
     /**
      * The attributes that aren't mass assignable.
@@ -32,13 +33,22 @@ class Title extends Model
         'status' => TitleStatus::class,
     ];
 
-    public function retire()
+    public function retire($retiredAt = null)
     {
-        if (! $this->isIntroduced() || $this->isRetired()) {
-            throw new CannotBeRetiredException;
-        }
+        $retiredDate = $retiredAt ?: now();
+        $this->currentActivation()->update(['ended_at' => $retiredDate]);
 
-        $this->retirements()->create(['started_at' => now()]);
+        $this->retirements()->create(['started_at' => $retiredDate]);
+
+        return $this->touch();
+    }
+
+    public function unretire($unretiredAt = null)
+    {
+        $unretiredDate = $unretiredAt ?: now();
+
+        $this->currentRetirement()->update(['ended_at' => $unretiredDate]);
+        $this->activate($unretiredDate);
 
         return $this->touch();
     }
@@ -50,7 +60,11 @@ class Title extends Model
      */
     public function canBeRetired()
     {
-        if (! $this->isIntroduced()) {
+        if ($this->isUnactivated()) {
+            return false;
+        }
+
+        if ($this->hasFutureActivation()) {
             return false;
         }
 
@@ -60,15 +74,4 @@ class Title extends Model
 
         return true;
     }
-
-    /**
-     * Determine if a model is introduced.
-     *
-     * @return bool
-     */
-    public function getIsCurrentlyIntroducedCachedAttribute()
-    {
-        return $this->isCurrentlyIntroduced();
-    }
-
 }

@@ -14,30 +14,30 @@ class TitlesTableSeeder extends Seeder
     {
         $eNum = 1;
 
-        // for ($w = 1; $w <= 5; $w++) {
-        //     TitleFactory::new()->active()->create([
-        //         'name' => 'Title '.$eNum,
-        //     ]);
+        for ($w = 1; $w <= 5; $w++) {
+            TitleFactory::new()
+                ->active()
+                ->create(['name' => 'Title '.$eNum]);
 
-        //     $eNum ++;
-        // }
+            $eNum ++;
+        }
 
-        TitleFactory::new()->pendingActivation()->create([
-            'name' => 'Title '. $eNum,
-        ]);
+        TitleFactory::new()
+            ->pendingActivation()
+            ->create(['name' => 'Title '. $eNum]);
 
         $eNum ++;
 
-        // TitleFactory::new()->retired()->create([
-        //     'name' => 'Title '. $eNum,
-        // ]);
+        TitleFactory::new()
+            ->retired()
+            ->create(['name' => 'Title '. $eNum]);
 
-        // $eNum ++;
+        $eNum ++;
 
-        // TitleFactory::new()->inactive()->create([
-        //     'name' => 'Title '. $eNum,
-        // ]);
+        TitleFactory::new()
+            ->inactive()
+            ->create(['name' => 'Title '. $eNum]);
 
-        // $eNum ++;
+        $eNum ++;
     }
 }

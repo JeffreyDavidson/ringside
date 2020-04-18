@@ -24,6 +24,7 @@ trait CanBeEmployed
     public function currentEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
+                    ->where('started_at', '<=', now())
                     ->whereNull('ended_at')
                     ->limit(1);
     }
@@ -35,8 +36,9 @@ trait CanBeEmployed
      */
     public function futureEmployment()
     {
-        return $this->currentEmployment()
+        return $this->morphOne(Employment::class, 'employable')
                     ->where('started_at', '>', now())
+                    ->whereNull('ended_at')
                     ->limit(1);
     }
 

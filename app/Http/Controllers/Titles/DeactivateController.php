@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Titles;
 
-use App\Exceptions\CannotBeIntroducedException;
+use App\Exceptions\CannotBeDeactivatedException;
 use App\Models\Title;
 use App\Http\Controllers\Controller;
 
-class IntroduceController extends Controller
+class DeactivateController extends Controller
 {
     /**
-     * Introduce a title.
+     * Deactivate a title.
      *
      * @param  \App\Models\Title  $title
      * @return \lluminate\Http\RedirectResponse
      */
     public function __invoke(Title $title)
     {
-        $this->authorize('introduce', $title);
+        $this->authorize('deactivate', $title);
 
-        if (! $title->canBeIntroduced()) {
-            throw new CannotBeIntroducedException();
+        if (! $title->canBeDeactivated()) {
+            throw new CannotBeDeactivatedException();
         }
 
-        $title->introduce();
+        $title->deactivate();
 
         return redirect()->route('titles.index');
     }

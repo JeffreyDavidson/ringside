@@ -24,6 +24,7 @@ trait CanBeActivated
     public function currentActivation()
     {
         return $this->morphOne(Activation::class, 'activatable')
+                    ->where('started_at', '<=', now())
                     ->whereNull('ended_at')
                     ->limit(1);
     }
@@ -35,8 +36,9 @@ trait CanBeActivated
      */
     public function futureActivation()
     {
-        return $this->currentActivation()
+        return $this->morphOne(Activation::class, 'activatable')
                     ->where('started_at', '>', now())
+                    ->whereNull('ended_at')
                     ->limit(1);
     }
 
@@ -158,15 +160,8 @@ trait CanBeActivated
      */
     public function deactivate($deactivatedAt = null)
     {
-        if ($this->isSuspended()) {
-            $this->reinstate();
-        }
-
-        if ($this->isInjured()) {
-            $this->clearFromInjury();
-        }
-
         $deactivatedate = $deactivatedAt ?? now();
+
         $this->currentActivation()->update(['ended_at' => $deactivatedate]);
 
         return $this->touch();

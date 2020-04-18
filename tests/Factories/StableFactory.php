@@ -20,13 +20,14 @@ class StableFactory extends BaseFactory
     protected $factoriesToClone = [
         'activationFactory',
         'retirementFactory',
-        'wrestlerFactory'
+        'wrestlerFactory',
+        'tagTeamFactory,'
     ];
 
     public function pendingActivation(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
-        $clone->attributes['status'] = StableStatus::PENDING_INTRODUCTION;
+        $clone->attributes['status'] = StableStatus::PENDING_ACTIVATION;
         $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(2));
         $clone->retirementFactory = null;
 
@@ -56,8 +57,8 @@ class StableFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->attributes['status'] = StableStatus::RETIRED;
-        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started(now()->subMonths(3))->ended(now()->subDay(1));
-        $clone->active($activationFactory ?? $this->activationFactory);
+        $clone->activationFactory = ActivationFactory::new()->started(now()->subMonths(1))->ended(now()->subDays(3));
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started(now()->subDays(3));
 
         return $clone;
     }
@@ -98,6 +99,8 @@ class StableFactory extends BaseFactory
             if ($this->tagTeamFactory) {
                 $this->tagTeamFactory->forStable($stable)->create();
             }
+
+            $stable->save();
 
             if ($this->softDeleted) {
                 $stable->delete();

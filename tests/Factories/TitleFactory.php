@@ -32,7 +32,8 @@ class TitleFactory extends BaseFactory
     public function active(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
-        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(2));
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now());
+        $clone->retirementFactory = null;
 
         return $clone;
     }
@@ -42,6 +43,7 @@ class TitleFactory extends BaseFactory
         $clone = clone $this;
         $clone->attributes['status'] = TitleStatus::INACTIVE;
         $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->subMonths(3))->ended(now()->subDay(1));
+        $clone->retirementFactory = null;
 
         return $clone;
     }
@@ -50,7 +52,8 @@ class TitleFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->attributes['status'] = TitleStatus::RETIRED;
-        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
+        $clone->activationFactory = ActivationFactory::new()->started(now()->subMonths(1))->ended(now()->subDays(3));
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started(now()->subDays(3));
 
         return $clone;
     }

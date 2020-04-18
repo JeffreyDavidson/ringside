@@ -6,7 +6,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($retiredManagers as $manager)
+        @forelse($retiredManagers as $manager)
             <tr>
                 <td>{{ $manager->id }}</td>
                 <td>{{ $manager->full_name }}</td>
@@ -20,6 +20,10 @@
                     ])
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="4">No matching records found</td>
+            </tr>
+        @endforelse
     </tbody>
 </x-datatable>

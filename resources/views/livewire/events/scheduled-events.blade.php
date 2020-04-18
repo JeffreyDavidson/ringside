@@ -7,22 +7,25 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($scheduledEvents as $event)
+        @forelse($scheduledEvents as $event)
             <tr>
                 <td>{{ $event->id }}</td>
                 <td>{{ $event->name }}</td>
                 <td>{{ $event->date->toDateString() }}</td>
-                <td>{{ $event->status->label() }}</td>
                 <td>
-                    {{-- @include('events.partials.action-cell', [
+                    @include('events.partials.action-cell', [
                         'event' => $event,
                         'actions' => collect([
 
                         ])
-                    ]) --}}
+                    ])
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="4">No matching records found</td>
+            </tr>
+        @endforelse
     </tbody>
 </x-datatable>
 

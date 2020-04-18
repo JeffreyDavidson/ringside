@@ -7,22 +7,26 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($employedManagers as $manager)
+        @forelse($employedManagers as $manager)
             <tr>
                 <td>{{ $manager->id }}</td>
                 <td>{{ $manager->full_name }}</td>
                 <td>{{ $manager->employed_at->toDateString() }}</td>
                 <td>{{ $manager->status->label() }}</td>
                 <td>
-                    {{-- @include('managers.partials.action-cell', [
+                    @include('managers.partials.action-cell', [
                         'manager' => $manager,
                         'actions' => collect([
                             'retire', 'employ', 'release', 'suspend', 'reinstate', 'injure', 'clearInjury'
                         ])
-                    ]) --}}
+                    ])
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="5">No matching records found</td>
+            </tr>
+        @endforelse
     </tbody>
 </x-datatable>
 

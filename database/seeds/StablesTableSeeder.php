@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Tests\Factories\ActivationFactory;
-use Tests\Factories\RetirementFactory;
 use Tests\Factories\StableFactory;
 
 class StablesTableSeeder extends Seeder
@@ -25,9 +23,7 @@ class StablesTableSeeder extends Seeder
         }
 
         StableFactory::new()
-            ->pendingActivation(
-                ActivationFactory::new()->started(now()->addMonth(1))
-            )
+            ->pendingActivation()
             ->create(['name' => 'Stable '.$eNum]);
 
         $eNum ++;

@@ -6,7 +6,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($releasedTagTeams as $tagTeam)
+        @forelse($releasedTagTeams as $tagTeam)
             <tr>
                 <td>{{ $tagTeam->id }}</td>
                 <td>{{ $tagTeam->name }}</td>
@@ -20,6 +20,10 @@
                     ])
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="4">No matching records found</td>
+            </tr>
+        @endforelse
     </tbody>
 </x-datatable>

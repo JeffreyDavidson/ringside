@@ -4,70 +4,49 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
-            @can('view', $model)
-                <li class="kt-nav__item">
-                    <a href="{{ route('titles.show', $model) }}" class="kt-nav__link">
-                        <i class="kt-nav__link-icon flaticon2-expand"></i>
-                        <span class="kt-nav__link-text">View</span>
-                    </a>
-                </li>
+            @can('view', $title)
+                <x-buttons.view :route="route('titles.show', $title)" />
             @endcan
-            @can('update', $model)
-                <li class="kt-nav__item">
-                    <a href="{{ route('titles.edit', $model) }}" class="kt-nav__link">
-                        <i class="kt-nav__link-icon flaticon2-contract"></i>
-                        <span class="kt-nav__link-text">Edit</span>
-                    </a>
-                </li>
+
+            @can('update', $title)
+                <x-buttons.edit :route="route('titles.edit', $title)" />
             @endcan
-            @can('delete', $model)
-                <li class="kt-nav__item">
-                    <form action="{{ route('titles.destroy', $model) }}" method="post" class="kt-nav__link">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-trash"></i>
-                            <span class="kt-nav__link-text">Delete</span>
-                        </button>
-                    </form>
-                </li>
+
+            @can('delete', $title)
+                <x-buttons.delete :route="route('titles.destroy', $title)" />
             @endcan
-            @can('retire', $model)
-                <li class="kt-nav__item">
-                    <form action="{{ route('titles.retire', $model) }}" method="post" class="kt-nav__link">
-                        @csrf
-                        @method('PUT')
-                        <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-time"></i>
-                            <span class="kt-nav__link-text">Retire</span>
-                        </button>
-                    </form>
-                </li>
-            @endcan
-            @can('unretire', $model)
-                <li class="kt-nav__item">
-                    <form action="{{ route('titles.unretire', $model) }}" method="post" class="kt-nav__link">
-                        @csrf
-                        @method('PUT')
-                        <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-reload"></i>
-                            <span class="kt-nav__link-text">Unretire</span>
-                        </button>
-                    </form>
-                </li>
-            @endcan
-            @can('employ', $model)
-                <li class="kt-nav__item">
-                    <form action="{{ route('titles.employ', $model) }}" method="post" class="kt-nav__link">
-                        @csrf
-                        @method('PUT')
-                        <button class="btn w-100 text-left p-0">
-                            <i class="kt-nav__link-icon flaticon2-power"></i>
-                            <span class="kt-nav__link-text">Employ</span>
-                        </button>
-                    </form>
-                </li>
-            @endcan
+
+            @if ($actions->contains('retire'))
+                @if($title->canBeRetired())
+                    @can('retire', $title)
+                        <x-buttons.retire :route="route('titles.retire', $title)" />
+                    @endcan
+                @endif
+            @endif
+
+            @if ($actions->contains('unretire'))
+                @if($title->canBeUnretired())
+                    @can('unretire', $title)
+                        <x-buttons.unretire :route="route('titles.unretire', $title)" />
+                    @endcan
+                @endif
+            @endif
+
+            @if ($actions->contains('activate'))
+                @if($title->canBeActivated())
+                    @can('activate', $title)
+                        <x-buttons.activate :route="route('titles.activate', $title)" />
+                    @endcan
+                @endif
+            @endif
+
+            @if ($actions->contains('deactivate'))
+                @if($title->canBeDeactivated())
+                    @can('deactivate', $title)
+                        <x-buttons.deactivate :route="route('titles.deactivate', $title)" />
+                    @endcan
+                @endif
+            @endif
         </ul>
     </div>
 </div>

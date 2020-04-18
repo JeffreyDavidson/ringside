@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CannotBeIntroducedException extends Exception
+class CannotBeDeactivatedException extends Exception
 {
     //
 }
