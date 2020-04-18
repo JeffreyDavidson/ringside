@@ -4,43 +4,44 @@ namespace Tests\Factories;
 
 use App\Enums\TitleStatus;
 use App\Models\Title;
-use Carbon\Carbon;
 use Faker\Generator;
 use Illuminate\Support\Str;
 
 class TitleFactory extends BaseFactory
 {
+    /** @var ActivationFactory|null */
+    public $activationFactory;
     /** @var RetirementFactory|null */
     public $retirementFactory;
     public $softDeleted = false;
     protected $factoriesToClone = [
+        'activationFactory',
         'retirementFactory',
     ];
 
-    public function pendingIntroduction()
+    public function pendingActivation(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
-        $clone->attributes['status'] = TitleStatus::PENDING_INTRODUCTION;
-        $clone->attributes['introduced_at'] = Carbon::tomorrow()->toDateTimeString();
+        $clone->attributes['status'] = TitleStatus::PENDING_ACTIVATION;
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(2));
         $clone->retirementFactory = null;
 
         return $clone;
     }
 
-    public function introduced()
+    public function active(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
-        $clone->attributes['introduced_at'] = Carbon::yesterday()->toDateTimeString();
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(2));
 
         return $clone;
     }
 
-    public function competable()
+    public function inactive(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
-        $clone->attributes['status'] = TitleStatus::COMPETABLE;
-        $clone = $clone->introduced();
-        $clone->retirementFactory = null;
+        $clone->attributes['status'] = TitleStatus::INACTIVE;
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->subMonths(3))->ended(now()->subDay(1));
 
         return $clone;
     }
@@ -49,7 +50,6 @@ class TitleFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->attributes['status'] = TitleStatus::RETIRED;
-        $clone = $clone->introduced();
         $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
 
         return $clone;
@@ -59,6 +59,10 @@ class TitleFactory extends BaseFactory
     {
         return $this->make(function ($attributes) {
             $title = Title::create($this->resolveAttributes($attributes));
+
+            if ($this->activationFactory) {
+                $this->activationFactory->forTitle($title)->create();
+            }
 
             if ($this->retirementFactory) {
                 $this->retirementFactory->forTitle($title)->create();
@@ -78,7 +82,6 @@ class TitleFactory extends BaseFactory
     {
         return [
             'name' => Str::title($faker->words(2, true)),
-            'introduced_at' => now()->toDateTimeString(),
             'status' => TitleStatus::__default,
         ];
     }

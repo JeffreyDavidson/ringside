@@ -4,6 +4,7 @@ namespace Tests\Factories;
 
 use Carbon\Carbon;
 use App\Models\Title;
+use App\Models\Stable;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
@@ -25,6 +26,8 @@ class RetirementFactory extends BaseFactory
     public $managers;
     /** @var Referee[] */
     public $referees;
+    /** @var Stable[] */
+    public $stables;
     /** @var Title[] */
     public $titles;
 
@@ -103,6 +106,19 @@ class RetirementFactory extends BaseFactory
         return $clone;
     }
 
+    public function forStable(Stable $stable)
+    {
+        return $this->forStables([$stable]);
+    }
+
+    public function forStables($stables)
+    {
+        $clone = clone $this;
+        $clone->stables = $stables;
+
+        return $clone;
+    }
+
     public function forTitle(Title $title)
     {
         return $this->forTitles([$title]);
@@ -122,6 +138,7 @@ class RetirementFactory extends BaseFactory
             ->merge($this->tagTeams)
             ->merge($this->wrestlers)
             ->merge($this->referees)
+            ->merge($this->stables)
             ->merge($this->managers)
             ->merge($this->titles)
             ->flatten(1);
@@ -143,6 +160,14 @@ class RetirementFactory extends BaseFactory
             $retirements->push($retirement);
             if ($retiree instanceof TagTeam && $retiree->currentWrestlers->isNotEmpty()) {
                 $this->forWrestlers($retiree->currentWrestlers)->create();
+            }
+
+            if ($retiree instanceof Stable && $retiree->currentWrestlers->isNotEmpty()) {
+                $this->forWrestlers($retiree->currentWrestlers)->create();
+            }
+
+            if ($retiree instanceof Stable && $retiree->currentTagTeams->isNotEmpty()) {
+                $this->forTagTeams($retiree->currentTagTeams)->create();
             }
         }
 

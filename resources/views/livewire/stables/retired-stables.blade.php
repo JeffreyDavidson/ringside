@@ -12,12 +12,12 @@
                 <td>{{ $stable->name }}</td>
                 <td>{{ $stable->retired_at->toDateString() }}</td>
                 <td>
-                    @include('stables.partials.action-cell', [
+                    {{-- @include('stables.partials.action-cell', [
                         'stable' => $stable,
                         'actions' => collect([
                             'unretire'
                         ])
-                    ])
+                    ]) --}}
                 </td>
             </tr>
         @endforeach

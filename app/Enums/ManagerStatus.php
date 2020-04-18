@@ -6,6 +6,7 @@ use MadWeb\Enum\Enum;
 
 /**
  * @method static ManagerStatus AVAILABLE()
+ * @method static ManagerStatus RELEASED()
  * @method static ManagerStatus PENDING_EMPLOYMENT()
  * @method static ManagerStatus INJURED()
  * @method static ManagerStatus SUSPENDED()
@@ -16,6 +17,7 @@ final class ManagerStatus extends Enum
     const __default = self::PENDING_EMPLOYMENT;
 
     const AVAILABLE = 'available';
+    const RELEASED = 'released';
     const PENDING_EMPLOYMENT = 'pending-employment';
     const INJURED = 'injured';
     const SUSPENDED = 'suspended';

@@ -73,7 +73,6 @@ class UpdateTagTeamSuccessConditionsTest extends TestCase
             'wrestlers' => $wrestlers->modelKeys(),
         ]));
 
-        // dd($response);
         $response->assertRedirect(route('tag-teams.index'));
 
         tap($tagTeam->currentWrestlers->fresh(), function ($tagTeamWrestlers) use ($wrestlers) {

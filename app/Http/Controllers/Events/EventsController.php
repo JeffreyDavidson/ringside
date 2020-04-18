@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Events;
 
-use App\DataTables\EventsDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Events\IndexRequest;
 use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
 use App\Models\Event;
@@ -14,17 +12,11 @@ class EventsController extends Controller
     /**
      * View a list of events.
      *
-     * @param  App\Http\Requests\Events\IndexRequest  $request
-     * @param  App\DataTables\EventsDataTable  $dataTable
      * @return \Illuminate\View\View
      */
-    public function index(IndexRequest $request, EventsDataTable $dataTable)
+    public function index()
     {
         $this->authorize('viewList', Event::class);
-
-        if ($request->ajax()) {
-            return $dataTable->ajax();
-        }
 
         return view('events.index');
     }

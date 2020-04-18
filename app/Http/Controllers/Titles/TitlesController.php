@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Titles;
 
-use App\DataTables\TitlesDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Titles\StoreRequest;
 use App\Http\Requests\Titles\UpdateRequest;
 use App\Models\Title;
-use Illuminate\Http\Request;
 
 class TitlesController extends Controller
 {
@@ -17,13 +15,9 @@ class TitlesController extends Controller
      * @param  string  $state
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, TitlesDataTable $dataTable)
+    public function index()
     {
         $this->authorize('viewList', Title::class);
-
-        if ($request->ajax()) {
-            return $dataTable->ajax();
-        }
 
         return view('titles.index');
     }

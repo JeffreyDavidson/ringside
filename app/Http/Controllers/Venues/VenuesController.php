@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Venues;
 
-use App\Models\Venue;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenueRequest;
 use App\Http\Requests\UpdateVenueRequest;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Venue;
 
 class VenuesController extends Controller
 {
@@ -17,20 +14,9 @@ class VenuesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, DataTables $table)
+    public function index()
     {
         $this->authorize('viewList', Venue::class);
-
-        if ($request->ajax()) {
-            $query = Venue::query();
-
-            return $table->eloquent($query)
-                ->filterColumn('address', function (Builder $query, $keyword) {
-                    $query->whereRaw('CONCAT(venues.address1, venues.address2)  LIKE ?', ["%{$keyword}%"]);
-                })
-                ->addColumn('action', 'venues.partials.action-cell')
-                ->toJson();
-        }
 
         return view('venues.index');
     }

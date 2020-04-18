@@ -12,11 +12,11 @@
                 <td>{{ $stable->name }}</td>
                 <td>{{ $stable->deactivated_at->toDateString() }}</td>
                 <td>
-                    @include('stables.partials.action-cell', [
+                    {{-- @include('stables.partials.action-cell', [
                         'stable' => $stable,
                         'actions' => collect([
                         ])
-                    ])
+                    ]) --}}
                 </td>
             </tr>
         @endforeach

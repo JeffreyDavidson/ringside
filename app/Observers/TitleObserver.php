@@ -15,12 +15,18 @@ class TitleObserver
      */
     public function saving(Title $title)
     {
+        // dd($title->isCurrentlyActivated());
         if ($title->isRetired()) {
             $title->status = TitleStatus::RETIRED;
-        } elseif ($title->isCompetable()) {
-            $title->status = TitleStatus::COMPETABLE;
+        } elseif ($title->isCurrentlyActivated()) {
+            // dd('testing');
+            $title->status = TitleStatus::ACTIVE;
+        } elseif ($title->isDeactivated()) {
+            // dd('deactivated');
+            $title->status = TitleStatus::INACTIVE;
         } else {
-            $title->status = TitleStatus::PENDING_INTRODUCTION;
+            // dd('pending activation');
+            $title->status = TitleStatus::PENDING_ACTIVATION;
         }
     }
 }

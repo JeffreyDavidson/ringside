@@ -10,8 +10,9 @@ use App\Enums\WrestlerStatus;
 
 return [
     TitleStatus::class => [
-        TitleStatus::COMPETABLE => 'Competable',
-        TitleStatus::PENDING_INTRODUCTION => 'Pending Introduction',
+        TitleStatus::ACTIVE => 'Active',
+        TitleStatus::INACTIVE => 'Inactive',
+        TitleStatus::PENDING_ACTIVATION => 'Pending Activation',
         TitleStatus::RETIRED => 'Retired',
     ],
     WrestlerStatus::class => [
@@ -45,7 +46,7 @@ return [
     StableStatus::class => [
         StableStatus::ACTIVE => 'Active',
         StableStatus::INACTIVE => 'Inactive',
-        StableStatus::PENDING_INTRODUCTION => 'Pending Introduction',
+        StableStatus::PENDING_ACTIVATION => 'Pending Activation',
         StableStatus::RETIRED => 'Retired',
     ],
     EventStatus::class => [

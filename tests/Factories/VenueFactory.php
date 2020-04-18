@@ -2,8 +2,9 @@
 
 namespace Tests\Factories;
 
-use App\Models\Venue;
 use Faker\Generator;
+use App\Models\Venue;
+use Illuminate\Support\Str;
 
 class VenueFactory extends BaseFactory
 {
@@ -30,7 +31,7 @@ class VenueFactory extends BaseFactory
             'address2' => $faker->optional()->secondaryAddress,
             'city' => $faker->city,
             'state' => $faker->state,
-            'zip' => $faker->postcode,
+            'zip' => Str::substr($faker->postcode, 0, 5),
         ];
     }
 }

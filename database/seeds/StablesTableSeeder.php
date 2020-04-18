@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Tests\Factories\ActivationFactory;
+use Tests\Factories\RetirementFactory;
 use Tests\Factories\StableFactory;
 
 class StablesTableSeeder extends Seeder
@@ -15,7 +16,6 @@ class StablesTableSeeder extends Seeder
     {
         $eNum = 1;
 
-        /** Initially create 3 active stables started a year ago. */
         for ($w = 1; $w <= 3; $w++) {
             StableFactory::new()
                 ->active()
@@ -24,10 +24,6 @@ class StablesTableSeeder extends Seeder
                 $eNum ++;
         }
 
-        /**
-         * For each month of the previous year create
-         * one new stables that are bookable.
-         */
         StableFactory::new()
             ->pendingActivation(
                 ActivationFactory::new()->started(now()->addMonth(1))
@@ -37,11 +33,13 @@ class StablesTableSeeder extends Seeder
         $eNum ++;
 
         StableFactory::new()
-            ->inactive(
-                ActivationFactory::new()->started(now()->subMonths(4))
-            )
+            ->inactive()
             ->create(['name' => 'Stable '.$eNum]);
 
         $eNum ++;
+
+        StableFactory::new()
+            ->retired()
+            ->create(['name' => 'Stable '.$eNum]);
     }
 }

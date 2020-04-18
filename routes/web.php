@@ -1,18 +1,8 @@
 <?php
 
-Auth::loginUsingId(1);
+// Auth::loginUsingId(1);
 
-use App\DataTables\Wrestlers\EmployedWrestlersDataTable;
 use App\Http\Controllers\DashboardController;
-use App\Http\Requests\Wrestlers\IndexRequest;
-
-Route::get('testing', function (IndexRequest $request, EmployedWrestlersDataTable $dataTable) {
-    if ($request->ajax()) {
-        return $dataTable->ajax();
-    }
-
-    return view('test');
-});
 
 /*
 |--------------------------------------------------------------------------

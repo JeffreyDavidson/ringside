@@ -43,20 +43,21 @@ class StableFactory extends BaseFactory
         return $clone;
     }
 
-    public function inactive()
+    public function inactive(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
         $clone->attributes['status'] = StableStatus::INACTIVE;
-        $clone->activationFactory = null;
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->subMonths(3))->ended(now()->subDay(1));
 
         return $clone;
     }
 
-    public function retired(RetirementFactory $retirementFactory = null)
+    public function retired(RetirementFactory $retirementFactory = null, ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
         $clone->attributes['status'] = StableStatus::RETIRED;
-        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new();
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started(now()->subMonths(3))->ended(now()->subDay(1));
+        $clone->active($activationFactory ?? $this->activationFactory);
 
         return $clone;
     }

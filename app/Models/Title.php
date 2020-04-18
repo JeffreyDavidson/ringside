@@ -14,7 +14,7 @@ class Title extends Model
         HasCachedAttributes,
         Concerns\CanBeRetired,
         Concerns\CanBeCompeted,
-        Concerns\CanBeIntroduced;
+        Concerns\CanBeActivated;
 
     /**
      * The attributes that aren't mass assignable.
@@ -31,13 +31,6 @@ class Title extends Model
     protected $casts = [
         'status' => TitleStatus::class,
     ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['introduced_at'];
 
     public function retire()
     {

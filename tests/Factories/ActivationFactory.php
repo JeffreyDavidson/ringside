@@ -2,9 +2,10 @@
 
 namespace Tests\Factories;
 
-use App\Models\Activation;
-use App\Models\Stable;
 use Carbon\Carbon;
+use App\Models\Title;
+use App\Models\Stable;
+use App\Models\Activation;
 use Illuminate\Support\Collection;
 
 class ActivationFactory extends BaseFactory
@@ -15,6 +16,8 @@ class ActivationFactory extends BaseFactory
     public $endDate;
     /** @var Stable[] */
     public $stables;
+    /** @var Title[] */
+    public $titles;
 
     /**
      * @param string|Carbon $startDate
@@ -51,10 +54,24 @@ class ActivationFactory extends BaseFactory
         return $clone;
     }
 
+    public function forTitle(Title $title)
+    {
+        return $this->forTitles([$title]);
+    }
+
+    public function forTitles($titles)
+    {
+        $clone = clone $this;
+        $clone->titles = $titles;
+
+        return $clone;
+    }
+
     public function create($attributes = [])
     {
         $activators = collect()
             ->merge($this->stables)
+            ->merge($this->titles)
             ->flatten(1);
 
         $this->startDate = $this->startDate ?? now();

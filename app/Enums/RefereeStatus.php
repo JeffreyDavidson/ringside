@@ -6,6 +6,7 @@ use MadWeb\Enum\Enum;
 
 /**
  * @method static RefereeStatus BOOKABLE()
+ * @method static RefereeStatus RELEASED()
  * @method static RefereeStatus PENDING_EMPLOYMENT()
  * @method static RefereeStatus INJURED()
  * @method static RefereeStatus SUSPENDED()
@@ -16,6 +17,7 @@ final class RefereeStatus extends Enum
     const __default = self::PENDING_EMPLOYMENT;
 
     const BOOKABLE = 'bookable';
+    const RELEASED = 'released';
     const PENDING_EMPLOYMENT = 'pending-employment';
     const INJURED = 'injured';
     const SUSPENDED = 'suspended';
