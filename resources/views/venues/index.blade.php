@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-subheader displayRecordsCount="true" search="true" filters="venues.partials.filters" title="Venues">
+    <x-subheader displayRecordsCount="true" search="true" title="Venues">
         <x-slot name="actions">
             <a href="{{ route('venues.create') }}" class="btn btn-label-brand btn-bold">
                 Create Venues

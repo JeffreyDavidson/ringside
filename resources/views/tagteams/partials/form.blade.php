@@ -1,6 +1,5 @@
 <x-kt-section title="General Information">
     <div class="form-group">
-        <!-- Name -->
         <x-form.inputs.text
             name="name"
             label="Name"
@@ -9,7 +8,6 @@
     </div>
     <div class="form-group row">
         <div class="col-lg-6">
-            <!-- Date Started -->
             <x-form.inputs.date
                 name="started_at"
                 label="Started At"
@@ -17,7 +15,6 @@
             />
         </div>
         <div class="col-lg-6">
-            <!-- Signature Move -->
             <x-form.inputs.text
                 name="signature_move"
                 label="Signature Move"
@@ -30,7 +27,6 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="form-group">
-                <!-- Tag Team Partner 1 -->
                 <x-form.inputs.select
                     name="wrestler1"
                     label="Tag Team Partner"
@@ -41,7 +37,6 @@
         </div>
         <div class="col-lg-6">
             <div class="form-group">
-                <!-- Tag Team Partner 2 -->
                 <x-form.inputs.select
                     name="wrestler2"
                     label="Tag Team Partner"

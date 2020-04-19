@@ -12,7 +12,7 @@
                 <div class="kt-portlet__body">
                     @include('managers.partials.form')
                 </div>
-                </x-form>
+            </x-form>
         </x-portlet>
     </x-content>
 </x-layouts.app>
