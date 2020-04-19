@@ -188,6 +188,16 @@ trait CanBeActivated
     }
 
     /**
+     * Check to see if the model is activated.
+     *
+     * @return bool
+     */
+    public function hasPreviouslyBeenActivated()
+    {
+        return $this->activations->isNotEmpty();
+    }
+
+    /**
      * Check to see if the model has a future scheduled activation.
      *
      * @return bool
@@ -251,6 +261,16 @@ trait CanBeActivated
         }
 
         return true;
+    }
+
+    /**
+     * Retrieve a introduced at date timestamp.
+     *
+     * @return string
+     */
+    public function getActivatedAtAttribute()
+    {
+        return $this->activations()->first()->started_at;
     }
 
     /**

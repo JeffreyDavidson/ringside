@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Venues;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreVenueRequest;
-use App\Http\Requests\UpdateVenueRequest;
+use App\Http\Requests\Venues\StoreRequest;
+use App\Http\Requests\Venues\UpdateRequest;
 use App\Models\Venue;
+use App\ViewModels\VenueViewModel;
 
 class VenuesController extends Controller
 {
@@ -30,16 +31,16 @@ class VenuesController extends Controller
     {
         $this->authorize('create', Venue::class);
 
-        return view('venues.create');
+        return view('venues.create', new VenueViewModel());
     }
 
     /**
      * Create a new venue.
      *
-     * @param  \App\Http\Requests\StoreVenueRequest  $request
+     * @param  \App\Http\Requests\Venues\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreVenueRequest $request)
+    public function store(StoreRequest $request)
     {
         Venue::create($request->all());
 
@@ -69,17 +70,17 @@ class VenuesController extends Controller
     {
         $this->authorize('update', Venue::class);
 
-        return view('venues.edit', compact('venue'));
+        return view('venues.edit', new VenueViewModel($venue));
     }
 
     /**
      * Update a given venue.
      *
-     * @param  \App\Http\Requests\UpdateVenueRequest  $request
+     * @param  \App\Http\Requests\Venues\UpdateRequest  $request
      * @param  \App\Models\Venue  $venue
      * @return \lluminate\Http\RedirectResponse
      */
-    public function update(UpdateVenueRequest $request, Venue $venue)
+    public function update(UpdateRequest $request, Venue $venue)
     {
         $venue->update($request->all());
 

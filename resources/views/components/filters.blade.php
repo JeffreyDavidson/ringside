@@ -12,7 +12,7 @@
              {{ $slot }}
             <div class="kt-nav__separator"></div>
             <div class="kt-nav__foot">
-                <a class="btn btn-label-brand btn-bold btn-sm" href="#" id="applyFilters">Apply Filters</a>
+                <a class="btn btn-label-brand btn-bold btn-sm" href="#" wire:submit.prevent="filter" id="applyFilters">Apply Filters</a>
                 <a class="btn btn-clean btn-bold btn-sm" href="#" id="clearFilters">Clear Filters</a>
             </div>
         </form>

@@ -9,7 +9,7 @@
     <x-content>
         <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
             <div id="kt_profile_aside" class="kt-grid__item kt-app__toggle kt-app__aside">
-                <x-portlet title="Biography" headBorder="false">
+                <x-portlet title="Information" headBorder="false">
                     <div class="kt-portlet__head kt-portlet__head--noborder">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title"></h3>
@@ -30,7 +30,22 @@
                             </div>
                             <div class="kt-widget__body">
                                 <div class="kt-widget__content">
-
+                                    <div class="kt-widget__info">
+                                        <span class="kt-widget__label">Address:</span>
+                                        <span class="kt-widget__data">{{ $venue->address1 }} {{ $venue->address2 }}</span>
+                                    </div>
+                                    <div class="kt-widget__info">
+                                        <span class="kt-widget__label">City:</span>
+                                        <span class="kt-widget__data">{{ $venue->city }}</span>
+                                    </div>
+                                    <div class="kt-widget__info">
+                                        <span class="kt-widget__label">State:</span>
+                                        <span class="kt-widget__data">{{ $venue->state }}</span>
+                                    </div>
+                                    <div class="kt-widget__info">
+                                        <span class="kt-widget__label">Zip:</span>
+                                        <span class="kt-widget__data">{{ $venue->zip }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -23,4 +23,9 @@ class ActiveTitles extends Component
             'activeTitles' => Title::active()->withActivatedAtDate()->paginate($this->perPage)
         ]);
     }
+
+    public function filter()
+    {
+        dd('testing');
+    }
 }

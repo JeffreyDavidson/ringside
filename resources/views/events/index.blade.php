@@ -1,5 +1,11 @@
 <x-layouts.app>
-    <x-subheader displayRecordsCount="true" search="true" filters="events.partials.filters" title="Events">
+    <x-subheader title="Events">
+        <x-slot name="filters">
+            @include('events.partials.filters')
+        </x-slot>
+        <x-slot name="search">
+            <livewire:events.search-events />
+        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('events.create') }}" class="btn btn-label-brand btn-bold">
                 Create Events

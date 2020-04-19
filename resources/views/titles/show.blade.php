@@ -7,9 +7,14 @@
         </x-slot>
     </x-subheader>
     <x-content>
+        @if($title->isUnActivated())
+            <div class="alert alert-warning" role="alert">
+                <strong>Warning!</strong>&nbsp;This title has not been activated yet!
+            </div>
+        @endif
         <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
             <div id="kt_profile_aside" class="kt-grid__item kt-app__toggle kt-app__aside">
-                <x-portlet title="Biography" headBorder="false">
+                <x-portlet title="Information" headBorder="false">
                     <div class="kt-portlet__head kt-portlet__head--noborder">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title"></h3>
@@ -30,6 +35,12 @@
                             </div>
                             <div class="kt-widget__body">
                                 <div class="kt-widget__content">
+                                    <div class="kt-widget__info">
+                                        @if($title->hasPreviouslyBeenActivated())
+                                            <span class="kt-widget__label">Date Introduced:</span>
+                                            <span class="kt-widget__data">{{ $title->activatedAt->toDateString() }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -6,7 +6,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @foreach($pastEvents as $event)
+        @forelse($pastEvents as $event)
             <tr>
                 <td>{{ $event->id }}</td>
                 <td>{{ $event->name }}</td>

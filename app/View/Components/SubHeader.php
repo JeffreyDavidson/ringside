@@ -7,7 +7,6 @@ use Illuminate\View\Component;
 class SubHeader extends Component
 {
     public $title;
-    public $displayRecordsCount;
     public $search;
     public $filters;
 
@@ -16,10 +15,9 @@ class SubHeader extends Component
      *
      * @return void
      */
-    public function __construct($title, $displayRecordsCount = false, $search = false, $filters = null)
+    public function __construct($title, $search = false, $filters = null)
     {
         $this->title = $title;
-        $this->displayRecordsCount = $displayRecordsCount;
         $this->search = $search;
         $this->filters = $filters;
     }

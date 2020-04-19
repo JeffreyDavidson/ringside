@@ -1,5 +1,8 @@
 <x-layouts.app>
-    <x-subheader displayRecordsCount="true" search="true" title="Venues">
+    <x-subheader title="Venues">
+        <x-slot name="search">
+            <livewire:venues.search-venues />
+        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('venues.create') }}" class="btn btn-label-brand btn-bold">
                 Create Venues

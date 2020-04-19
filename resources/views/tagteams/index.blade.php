@@ -1,5 +1,11 @@
 <x-layouts.app>
-    <x-subheader displayRecordsCount="true" search="true" filters="tagteams.partials.filters" title="Tag Teams">
+    <x-subheader title="Tag Teams">
+        <x-slot name="filters">
+            @include('tagteams.partials.filters')
+        </x-slot>
+        <x-slot name="search">
+            <livewire:tag-teams.search-tag-teams />
+        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('tag-teams.create') }}" class="btn btn-label-brand btn-bold">
                 Create Tag Teams

@@ -10,7 +10,7 @@
     <div class="col-lg-8">
         <div class="form-group">
             <x-form.inputs.text
-                name="name"
+                name="address1"
                 label="Street Address"
                 :value="old('address1', $venue->address1)"
             />

@@ -1,5 +1,11 @@
 <x-layouts.app>
-    <x-subheader displayRecordsCount="true" search="true" filters="titles.partials.filters" title="Titles">
+    <x-subheader title="Titles">
+        <x-slot name="filters">
+            @include('titles.partials.filters')
+        </x-slot>
+        <x-slot name="search">
+            <livewire:titles.search-titles />
+        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('titles.create') }}" class="btn btn-label-brand btn-bold">
                 Create Titles
