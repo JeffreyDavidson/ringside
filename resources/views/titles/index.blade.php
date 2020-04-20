@@ -1,11 +1,5 @@
 <x-layouts.app>
     <x-subheader title="Titles">
-        <x-slot name="filters">
-            @include('titles.partials.filters')
-        </x-slot>
-        <x-slot name="search">
-            <livewire:titles.search-titles />
-        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('titles.create') }}" class="btn btn-label-brand btn-bold">
                 Create Titles
@@ -16,6 +10,12 @@
         <x-portlet title="Active Titles">
             <div class="kt-portlet__body">
                 <livewire:titles.active-titles>
+            </div>
+        </x-portlet>
+
+        <x-portlet title="Pending And Unactivated Titles">
+            <div class="kt-portlet__body">
+                <livewire:titles.pending-and-unactivated-titles>
             </div>
         </x-portlet>
 

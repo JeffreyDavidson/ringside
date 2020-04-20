@@ -1,11 +1,5 @@
 <x-layouts.app>
     <x-subheader title="Stables">
-        <x-slot name="filters">
-            @include('stables.partials.filters')
-        </x-slot>
-        <x-slot name="search">
-            <livewire:stables.search-stables />
-        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('stables.create') }}" class="btn btn-label-brand btn-bold">
                 Create Stables

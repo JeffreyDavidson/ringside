@@ -4,6 +4,7 @@ namespace App\Http\Requests\Titles;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\ConditionalActivationStartDateRule;
 
 class UpdateRequest extends FormRequest
 {
@@ -26,21 +27,15 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name' => [
                 'required',
                 'min:3',
                 'ends_with:Title, Titles',
                 Rule::unique('titles')->ignore($this->title->id)
             ],
-            'introduced_at' => ['required', 'date_format:Y-m-d H:i:s'],
+            'introduced_at' => [new ConditionalActivationStartDateRule($this->route('title'))],
         ];
-
-        if ($this->title->introduced_at && $this->title->introduced_at->isPast()) {
-            $rules['introduced_at'][] = 'before_or_equal:' . $this->title->introduced_at->toDateTimeString();
-        }
-
-        return $rules;
     }
 
     /**

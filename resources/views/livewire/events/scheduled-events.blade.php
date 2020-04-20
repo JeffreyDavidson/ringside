@@ -3,7 +3,6 @@
         <th>Id</th>
         <th>Event Name</th>
         <th>Date</th>
-        <th>Status</th>
         <th>Actions</th>
     </thead>
     <tbody>

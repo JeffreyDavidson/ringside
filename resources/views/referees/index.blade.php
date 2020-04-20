@@ -1,11 +1,5 @@
 <x-layouts.app>
     <x-subheader title="Referees">
-        <x-slot name="filters">
-            @include('referees.partials.filters')
-        </x-slot>
-        <x-slot name="search">
-            <livewire:referees.search-referees />
-        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('referees.create') }}" class="btn btn-label-brand btn-bold">
                 Create Referees

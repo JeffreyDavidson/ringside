@@ -1,11 +1,5 @@
 <x-layouts.app>
     <x-subheader title="Managers">
-        <x-slot name="filters">
-            @include('managers.partials.filters')
-        </x-slot>
-        <x-slot name="search">
-            <livewire:managers.search-managers />
-        </x-slot>
         <x-slot name="actions">
             <a href="{{ route('managers.create') }}" class="btn btn-label-brand btn-bold">
                 Create Managers

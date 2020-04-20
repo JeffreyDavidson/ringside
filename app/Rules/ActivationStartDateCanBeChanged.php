@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 
-class EmploymentStartDateCanBeChanged implements Rule
+class ActivationStartDateCanBeChanged implements Rule
 {
     /** @var $model */
     protected $model;
@@ -14,11 +14,11 @@ class EmploymentStartDateCanBeChanged implements Rule
     /**
      * Undocumented function.
      *
-     * @param Model $employable
+     * @param Model $activatable
      */
-    public function __construct(Model $employable)
+    public function __construct(Model $activatable)
     {
-        $this->model = $employable;
+        $this->model = $activatable;
     }
 
     /**
@@ -31,30 +31,30 @@ class EmploymentStartDateCanBeChanged implements Rule
     public function passes($attribute, $value = null)
     {
         /**
-         *  Times when employment date can/cannot be changed.
+         *  Times when activation date can/cannot be changed.
          *
-         * * If model has a current employment then it cannot be changed.
-         * * If model has a future employment and the value is null then it can be changed.
-         * * If model has a future employment and value is before future employment
+         * * If model has a current activation then it cannot be changed.
+         * * If model has a future activation and the value is null then it can be changed.
+         * * If model has a future activation and value is before future activation
          * *   start date then start date can be changed.
          */
-        $currentEmployment = $this->model->currentEmployment;
-        $futureEmployment = $this->model->futureEmployment;
+        $currentActivation = $this->model->currentActivation;
+        $futureActivation = $this->model->futureActivation;
         $formDate = Carbon::parse($value);
 
-        if ($currentEmployment) {
+        if ($currentActivation) {
             if ($formDate === null) {
                 return false;
             }
 
-            if ($formDate->lte($currentEmployment->started_at)) {
+            if ($formDate->lte($currentActivation->started_at)) {
                 return true;
             }
 
             return false;
         }
 
-        if ($futureEmployment) {
+        if ($futureActivation) {
             if ($formDate === null) {
                 return true;
             }
@@ -63,12 +63,12 @@ class EmploymentStartDateCanBeChanged implements Rule
                 return true;
             }
 
-            if ($formDate->lte($futureEmployment->started_at)) {
+            if ($formDate->lte($futureActivation->started_at)) {
                 return true;
             }
         }
 
-        if ((! $futureEmployment) && (! $currentEmployment)) {
+        if ((! $futureActivation) && (! $currentActivation)) {
             return true;
         }
 
@@ -77,6 +77,6 @@ class EmploymentStartDateCanBeChanged implements Rule
 
     public function message()
     {
-        return 'The :attribute field cannot be changed to a date after its been employed.';
+        return 'The :attribute field cannot be changed to a date after its been introduced.';
     }
 }
