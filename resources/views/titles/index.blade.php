@@ -13,7 +13,7 @@
             </div>
         </x-portlet>
 
-        <x-portlet title="Pending And Unactivated Titles">
+        {{-- <x-portlet title="Pending And Unactivated Titles">
             <div class="kt-portlet__body">
                 <livewire:titles.pending-and-unactivated-titles>
             </div>
@@ -29,6 +29,6 @@
             <div class="kt-portlet__body">
                 <livewire:titles.retired-titles>
             </div>
-        </x-portlet>
+        </x-portlet> --}}
     </x-content>
 </x-layouts.app>

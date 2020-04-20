@@ -270,7 +270,7 @@ trait CanBeActivated
      */
     public function getActivatedAtAttribute()
     {
-        return optional($this->activations()->first())->started_at;
+        return optional($this->activations->first())->started_at;
     }
 
     /**
