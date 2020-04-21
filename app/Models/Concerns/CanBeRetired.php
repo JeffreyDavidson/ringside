@@ -3,9 +3,21 @@
 namespace App\Models\Concerns;
 
 use App\Models\Retirement;
+use App\Traits\HasCachedAttributes;
 
 trait CanBeRetired
 {
+    public static function bootCanBeRetired()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get the retirements of the model.
      *
@@ -59,6 +71,16 @@ trait CanBeRetired
     public function scopeRetired($query)
     {
         return $this->whereHas('currentRetirement');
+    }
+
+    /**
+     * Determine if a model is retired.
+     *
+     * @return bool
+     */
+    public function getIsRetiredCachedAttribute()
+    {
+        return $this->status === 'retired';
     }
 
     /**
@@ -147,5 +169,33 @@ trait CanBeRetired
         }
 
         return true;
+    }
+
+    /**
+     * Get the current retirement of the model.
+     *
+     * @return App\Models\Retirement
+     */
+    public function getCurrentRetirementAttribute()
+    {
+        if (!$this->relationLoaded('currentRetirement')) {
+            $this->setRelation('currentRetirement', $this->currentRetirement()->get());
+        }
+
+        return $this->getRelation('currentRetirement')->first();
+    }
+
+    /**
+     * Get the previous retirement of the model.
+     *
+     * @return App\Models\Retirement
+     */
+    public function getPreviousRetirementAttribute()
+    {
+        if (!$this->relationLoaded('previousRetirement')) {
+            $this->setRelation('previousRetirement', $this->previousRetirement()->get());
+        }
+
+        return $this->getRelation('previousRetirement')->first();
     }
 }

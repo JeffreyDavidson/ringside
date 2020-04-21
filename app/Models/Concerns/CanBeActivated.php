@@ -3,9 +3,21 @@
 namespace App\Models\Concerns;
 
 use App\Models\Activation;
+use App\Traits\HasCachedAttributes;
 
 trait CanBeActivated
 {
+    public static function bootCanBeActivated()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get all of the activations of the model.
      *
@@ -178,6 +190,16 @@ trait CanBeActivated
     }
 
     /**
+     * Determine if a model is retired.
+     *
+     * @return bool
+     */
+    public function getIsCurrentlyActivatedCachedAttribute()
+    {
+        return $this->status === 'active';
+    }
+
+    /**
      * Check to see if the model is activated.
      *
      * @return bool
@@ -204,7 +226,7 @@ trait CanBeActivated
      */
     public function hasFutureActivation()
     {
-        return $this->futureActivation()->exists();
+        return $this->futureActivation->exists();
     }
 
     /**
@@ -214,9 +236,9 @@ trait CanBeActivated
      */
     public function isDeactivated()
     {
-        return $this->previousActivation()->exists() &&
-                $this->currentActivation()->doesntExist() &&
-                $this->currentRetirement()->doesntExist();
+        return $this->previousActivation->exists() &&
+                $this->currentActivation->doesntExist() &&
+                $this->currentRetirement->doesntExist();
     }
 
     /**
