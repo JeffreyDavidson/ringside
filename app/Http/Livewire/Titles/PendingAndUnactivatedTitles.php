@@ -18,7 +18,6 @@ class PendingAndUnactivatedTitles extends Component
             ->pendingActivation()
             ->orWhere
             ->unactivated()
-            ->withActivatedAtDate()
             ->paginate();
 
         return view('livewire.titles.pending-and-unactivated-titles', [

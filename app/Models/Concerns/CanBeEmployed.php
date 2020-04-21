@@ -3,9 +3,21 @@
 namespace App\Models\Concerns;
 
 use App\Models\Employment;
+use App\Traits\HasCachedAttributes;
 
 trait CanBeEmployed
 {
+    public static function bootCanBeEmployed()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get all of the employments of the model.
      *

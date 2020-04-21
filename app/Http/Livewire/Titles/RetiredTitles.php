@@ -15,7 +15,7 @@ class RetiredTitles extends Component
     public function render()
     {
         return view('livewire.titles.retired-titles', [
-            'retiredTitles' => Title::retired()->withRetiredAtDate()->paginate($this->perPage)
+            'retiredTitles' => Title::retired()->paginate($this->perPage)
         ]);
     }
 }

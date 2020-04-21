@@ -20,7 +20,7 @@ class ActiveTitles extends Component
     public function render()
     {
         return view('livewire.titles.active-titles', [
-            'activeTitles' => Title::active()->withActivatedAtDate()->paginate($this->perPage)
+            'activeTitles' => Title::active()->paginate($this->perPage)
         ]);
     }
 }

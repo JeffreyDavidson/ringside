@@ -3,9 +3,21 @@
 namespace App\Models\Concerns;
 
 use App\Models\Suspension;
+use App\Traits\HasCachedAttributes;
 
 trait CanBeSuspended
 {
+    public static function bootCanBeSuspended()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get the suspensions of the model.
      *
@@ -145,5 +157,33 @@ trait CanBeSuspended
         }
 
         return true;
+    }
+
+    /**
+    * Get the current suspension of the model.
+    *
+    * @return App\Models\Suspension
+    */
+    public function getCurrentSuspensionAttribute()
+    {
+        if (! $this->relationLoaded('currentSuspension')) {
+            $this->setRelation('currentSuspension', $this->currentSuspension()->get());
+        }
+
+        return $this->getRelation('currentSuspension')->first();
+    }
+
+    /**
+     * Get the previous suspension of the model.
+     *
+     * @return App\Models\Suspension
+     */
+    public function getPreviousSuspensionAttribute()
+    {
+        if (! $this->relationLoaded('previousSuspension')) {
+            $this->setRelation('previousSuspension', $this->previousSuspension()->get());
+        }
+
+        return $this->getRelation('previousSuspension')->first();
     }
 }

@@ -70,7 +70,7 @@ trait CanBeRetired
      */
     public function scopeRetired($query)
     {
-        return $this->whereHas('currentRetirement');
+        return $this->whereHas('currentRetirement')->with('retirements')->withRetiredAtDate();
     }
 
     /**

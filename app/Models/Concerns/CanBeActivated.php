@@ -84,7 +84,9 @@ trait CanBeActivated
      */
     public function scopePendingActivation($query)
     {
-        return $query->whereHas('futureActivation');
+        return $query->whereHas('futureActivation')
+            ->with('activations')
+            ->withActivatedAtDate();
     }
 
     /**
@@ -94,7 +96,9 @@ trait CanBeActivated
      */
     public function scopeActive($query)
     {
-        return $query->whereHas('currentActivation');
+        return $query->whereHas('currentActivation')
+            ->with('activations')
+            ->withActivatedAtDate();
     }
 
     /**
@@ -106,7 +110,9 @@ trait CanBeActivated
     {
         return $query->whereHas('previousActivation')
                     ->whereDoesntHave('currentActivation')
-                    ->whereDoesntHave('currentRetirement');
+                    ->whereDoesntHave('currentRetirement')
+                    ->with('activations')
+                    ->withDeactivatedAtDate();
     }
 
     /**
@@ -226,7 +232,7 @@ trait CanBeActivated
      */
     public function hasFutureActivation()
     {
-        return $this->futureActivation->exists();
+        return $this->futureActivation()->exists();
     }
 
     /**
@@ -236,9 +242,9 @@ trait CanBeActivated
      */
     public function isDeactivated()
     {
-        return $this->previousActivation->exists() &&
-                $this->currentActivation->doesntExist() &&
-                $this->currentRetirement->doesntExist();
+        return $this->previousActivation()->exists() &&
+                $this->currentActivation()->doesntExist() &&
+                $this->currentRetirement()->doesntExist();
     }
 
     /**

@@ -14,12 +14,19 @@
                 <td>{{ $title->activated_at->toDateString() }}</td>
                 <td>{{ $title->status->label() }}</td>
                 <td>
-                    @include('titles.partials.action-cell', [
+                    {{-- @include('titles.partials.action-cell', [
                         'title' => $title,
                         'actions' => collect([
                             'deactivate', 'retire'
                         ])
-                    ])
+                    ]) --}}
+                    <x-actions-dropdown>
+                        <x-buttons.view :route="route('titles.show', $title)" />
+                        <x-buttons.edit :route="route('titles.edit', $title)" />
+                        <x-buttons.delete :route="route('titles.destroy', $title)" />
+                        <x-buttons.retire :route="route('titles.retire', $title)" />
+                        <x-buttons.deactivate :route="route('titles.deactivate', $title)" />
+                    </x-actions-dropdown>
                 </td>
             </tr>
         @empty

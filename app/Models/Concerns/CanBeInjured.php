@@ -3,9 +3,21 @@
 namespace App\Models\Concerns;
 
 use App\Models\Injury;
+use App\Traits\HasCachedAttributes;
 
 trait CanBeInjured
 {
+    public static function bootCanBeInjured()
+    {
+        if (config('app.debug')) {
+            $traits = class_uses_recursive(static::class);
+
+            if (!in_array(HasCachedAttributes::class, $traits)) {
+                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+            }
+        }
+    }
+
     /**
      * Get the injuries of the model.
      *
@@ -147,5 +159,33 @@ trait CanBeInjured
         }
 
         return true;
+    }
+
+    /**
+    * Get the current injury of the model.
+    *
+    * @return App\Models\Injury
+    */
+    public function getCurrentInjuryAttribute()
+    {
+        if (! $this->relationLoaded('currentInjury')) {
+            $this->setRelation('currentInjury', $this->currentInjury()->get());
+        }
+
+        return $this->getRelation('currentInjury')->first();
+    }
+
+    /**
+     * Get the previous injury of the model.
+     *
+     * @return App\Models\Injury
+     */
+    public function getPreviousInjuryAttribute()
+    {
+        if (! $this->relationLoaded('previousInjury')) {
+            $this->setRelation('previousInjury', $this->previousInjury()->get());
+        }
+
+        return $this->getRelation('previousInjury')->first();
     }
 }
