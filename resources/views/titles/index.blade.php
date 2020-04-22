@@ -29,6 +29,6 @@
             <div class="kt-portlet__body">
                 <livewire:titles.retired-titles>
             </div>
-        </x-portlet> --}}
+        </x-portlet>
     </x-content>
 </x-layouts.app>

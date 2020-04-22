@@ -12,12 +12,12 @@
                 <td>{{ $title->name }}</td>
                 <td>{{ $title->retired_at->toDateString() }}</td>
                 <td>
-                    @include('titles.partials.action-cell', [
+                    {{-- @include('titles.partials.action-cell', [
                         'title' => $title,
                         'actions' => collect([
                             'unretire'
                         ])
-                    ])
+                    ]) --}}
                     <x-actions-dropdown>
                         <x-buttons.view :route="route('titles.show', $title)" />
                         <x-buttons.edit :route="route('titles.edit', $title)" />

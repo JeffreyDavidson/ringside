@@ -84,7 +84,9 @@ trait CanBeEmployed
      */
     public function scopePendingEmployment($query)
     {
-        return $query->whereHas('futureEmployment');
+        return $query->whereHas('futureEmployment')
+            ->with('employments')
+            ->withEmployedAtDate();
     }
 
     /**
@@ -94,7 +96,9 @@ trait CanBeEmployed
      */
     public function scopeEmployed($query)
     {
-        return $query->whereHas('currentEmployment');
+        return $query->whereHas('currentEmployment')
+            ->with('employments')
+            ->withEmployedAtDate();
     }
 
     /**

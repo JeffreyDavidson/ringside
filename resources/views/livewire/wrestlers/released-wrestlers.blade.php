@@ -14,12 +14,18 @@
                 <td>{{ $wrestler->hometown }}</td>
                 <td>{{ $wrestler->released_at->toDateString() }}</td>
                 <td>
-                    @include('wrestlers.partials.action-cell', [
+                    {{-- @include('wrestlers.partials.action-cell', [
                         'wrestler' => $wrestler,
                         'actions' => collect([
                             'employ'
                         ])
-                    ])
+                    ]) --}}
+                    <x-actions-dropdown>
+                        <x-buttons.view :route="route('wrestlers.show', $wrestler)" />
+                        <x-buttons.edit :route="route('wrestlers.edit', $wrestler)" />
+                        <x-buttons.delete :route="route('wrestlers.destroy', $wrestler)" />
+                        <x-buttons.employ :route="route('wrestlers.employ', $wrestler)" />
+                    </x-actions-dropdown>
                 </td>
             </tr>
         @empty

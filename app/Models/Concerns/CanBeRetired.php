@@ -36,7 +36,9 @@ trait CanBeRetired
     public function currentRetirement()
     {
         return $this->morphOne(Retirement::class, 'retiree')
-                    ->whereNull('ended_at');
+                    ->where('started_at', '<=', now())
+                    ->whereNull('ended_at')
+                    ->limit(1);
     }
 
     /**
@@ -70,7 +72,9 @@ trait CanBeRetired
      */
     public function scopeRetired($query)
     {
-        return $this->whereHas('currentRetirement')->with('retirements')->withRetiredAtDate();
+        return $this->whereHas('currentRetirement')
+                    ->with('retirements')
+                    ->withRetiredAtDate();
     }
 
     /**

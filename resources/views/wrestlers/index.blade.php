@@ -13,6 +13,12 @@
             </div>
         </x-portlet>
 
+        <x-portlet title="Pending and Unemployed Wrestlers">
+            <div class="kt-portlet__body">
+                <livewire:wrestlers.pending-and-unemployed-wrestlers>
+            </div>
+        </x-portlet>
+
         <x-portlet title="Released Wrestlers">
             <div class="kt-portlet__body">
                 <livewire:wrestlers.released-wrestlers>

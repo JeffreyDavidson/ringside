@@ -2,10 +2,11 @@
 
 namespace Tests\Factories;
 
-use App\Enums\TagTeamStatus;
-use App\Models\TagTeam;
 use Faker\Generator;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Illuminate\Support\Str;
+use App\Enums\TagTeamStatus;
 
 class TagTeamFactory extends BaseFactory
 {
@@ -113,7 +114,8 @@ class TagTeamFactory extends BaseFactory
             $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
 
             if ($this->wrestlerFactory) {
-                $this->wrestlerFactory->forTagTeam($tagTeam)->create();
+                $wrestlerCount = Wrestler::max('id') + 1;
+                $this->wrestlerFactory->forTagTeam($tagTeam)->create(['name' => 'Wrestler '. $wrestlerCount]);
             }
 
             if ($this->employmentFactory) {

@@ -17,7 +17,9 @@
                     {{-- @include('titles.partials.action-cell', [
                         'title' => $title,
                         'actions' => collect([
-                            'deactivate', 'retire'
+                            // 'deactivate' // 33 20
+                            // 'deactivate', 'retire' // 53 20
+                            // 'retire' // 23 20
                         ])
                     ]) --}}
                     <x-actions-dropdown>

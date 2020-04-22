@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TagTeamsTableSeeder::class);
         $this->call(ManagersTableSeeder::class);
         $this->call(RefereesTableSeeder::class);
-        $this->call(StablesTableSeeder::class);
-        $this->call(EventsTableSeeder::class);
+        // $this->call(StablesTableSeeder::class);
+        // $this->call(EventsTableSeeder::class);
     }
 }

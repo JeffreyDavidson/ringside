@@ -20,7 +20,7 @@ class EmployedWrestlers extends Component
     public function render()
     {
         return view('livewire.wrestlers.employed-wrestlers', [
-            'employedWrestlers' => Wrestler::employed()->withEmployedAtDate()->paginate($this->perPage)
+            'employedWrestlers' => Wrestler::employed()->paginate($this->perPage)
         ]);
     }
 }
