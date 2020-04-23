@@ -15,10 +15,9 @@ class RefereesTableSeeder extends Seeder
     {
         for ($w = 1; $w <= 50; $w++) {
             RefereeFactory::new()
-                ->employed(
+                ->bookable(
                     EmploymentFactory::new()->started(now()->subYears(1))
                 )
-                ->bookable()
                 ->create(['first_name' => 'Referee', 'last_name' => $w]);
         }
 

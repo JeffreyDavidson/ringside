@@ -13,16 +13,18 @@ class TagTeamsTableSeeder extends Seeder
      */
     public function run()
     {
+        $eNum = 1;
+
         for ($w = 1; $w <= 20; $w++) {
             TagTeamFactory::new()
-                ->employed(
+                ->bookable(
                     EmploymentFactory::new()->started(now()->subYears(1))
                 )
-                ->bookable()
                 ->create(['name' => 'Tag Team '.$w]);
+
+            $eNum ++;
         }
 
-        $eNum = 21;
         for ($i = 1; $i <= 12; $i++) {
             for ($j = 1; $j <= 2; $j++) {
                 TagTeamFactory::new()

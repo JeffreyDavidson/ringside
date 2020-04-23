@@ -14,7 +14,7 @@ class TitlesTableSeeder extends Seeder
     {
         $eNum = 1;
 
-        for ($w = 1; $w <= 5; $w++) {
+        for ($w = $eNum; $w <= 5; $w++) {
             TitleFactory::new()
                 ->active()
                 ->create(['name' => 'Title '.$eNum]);

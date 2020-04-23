@@ -52,6 +52,19 @@ class WrestlerFactory extends BaseFactory
         return $clone;
     }
 
+    public function released(EmploymentFactory $employmentFactory = null)
+    {
+        $clone = clone $this;
+        $clone->attributes['status'] = WrestlerStatus::RELEASED;
+        // We set these to null since we can't be pending employment if they're set
+        $clone->employmentFactory = $employmentFactory ?? EmploymentFactory::new()->started(now()->subDays(7))->ended(now()->subDays(1));
+        $clone->suspensionFactory = null;
+        $clone->injuryFactory = null;
+        $clone->retirementFactory = null;
+
+        return $clone;
+    }
+
     public function pendingEmployment(EmploymentFactory $employmentFactory = null)
     {
         $clone = clone $this;
@@ -69,7 +82,7 @@ class WrestlerFactory extends BaseFactory
     {
         $clone = clone $this;
         $clone->attributes['status'] = WrestlerStatus::BOOKABLE;
-        $clone->employed($employmentFactory ?? $this->employmentFactory);
+        $clone = $clone->employed($employmentFactory ?? $this->employmentFactory);
         // We set these to null since a TagTeam cannot be bookable if any of these exist
         $clone->suspensionFactory = null;
         $clone->injuryFactory = null;

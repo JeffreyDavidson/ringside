@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Venue;
 use Illuminate\Database\Seeder;
 use Tests\Factories\VenueFactory;
 

@@ -113,11 +113,6 @@ class TagTeamFactory extends BaseFactory
         return $this->make(function ($attributes) {
             $tagTeam = TagTeam::create($this->resolveAttributes($attributes));
 
-            if ($this->wrestlerFactory) {
-                $wrestlerCount = Wrestler::max('id') + 1;
-                $this->wrestlerFactory->forTagTeam($tagTeam)->create(['name' => 'Wrestler '. $wrestlerCount]);
-            }
-
             if ($this->employmentFactory) {
                 $this->employmentFactory->forTagTeam($tagTeam)->create();
             }
@@ -128,6 +123,16 @@ class TagTeamFactory extends BaseFactory
 
             if ($this->retirementFactory) {
                 $this->retirementFactory->forTagTeam($tagTeam)->create();
+            }
+
+            if ($this->wrestlerFactory) {
+                for ($i = 1; $i <= $this->wrestlerFactory->count; $i++) {
+                    $wrestlerCount = Wrestler::max('id') + 1;
+                    WrestlerFactory::new()
+                        ->forTagTeam($tagTeam)
+                        ->employed($this->employmentFactory)
+                        ->create(['name' => 'Wrestler '. $wrestlerCount]);
+                }
             }
 
             $tagTeam->save();
