@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Stables;
 use App\Models\Stable;
 use App\Http\Controllers\Controller;
 
-class EmployController extends Controller
+class ActivateController extends Controller
 {
     /**
      * Activate a stable.

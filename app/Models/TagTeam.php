@@ -183,15 +183,22 @@ class TagTeam extends Model
      *
      * @return \App\Models\Retirement
      */
-    public function retire()
+    public function retire($retiredAt = null)
     {
+        $retiredDate = $retiredAt ?: now();
+
         if ($this->is_suspended) {
-            $this->reinstate();
+            $this->reinstate($retiredAt);
+            $this->currentWrestlers->each->reinstate($retiredAt);
         }
 
-        $this->retirements()->create(['started_at' => now()]);
+        $this->currentEmployment()->update(['ended_at' => $retiredDate]);
+        $this->currentWrestlers()->each(function ($wrestler) use ($retiredDate) {
+            $wrestler->currentEmployment()->update(['ended_at' => $retiredDate]);
+        });
 
-        $this->currentWrestlers->each->retire();
+        $this->retirements()->create(['started_at' => $retiredDate]);
+        $this->currentWrestlers->each->retire($retiredDate);
 
         return $this->touch();
     }
@@ -241,13 +248,12 @@ class TagTeam extends Model
      *
      * @return \App\Models\Suspension
      */
-    public function suspend()
+    public function suspend($suspendedAt = null)
     {
-        $now = now();
+        $suspendedDate = $suspendedAt ?: now();
 
-        $this->suspensions()->create(['started_at' => $now]);
-
-        $this->currentWrestlers->each->suspend($now);
+        $this->suspensions()->create(['started_at' => $suspendedDate]);
+        $this->currentWrestlers->each->suspend($suspendedDate);
 
         return $this->touch();
     }
@@ -275,13 +281,12 @@ class TagTeam extends Model
      *
      * @return bool
      */
-    public function reinstate()
+    public function reinstate($reinstatedAt = null)
     {
-        $now = now();
+        $reinstatedDate = $reinstatedAt ?: now();
 
-        $this->currentSuspension()->update(['ended_at' => $now]);
-
-        $this->currentWrestlers->each->reinstate($now);
+        $this->currentSuspension()->update(['ended_at' => $reinstatedDate]);
+        $this->currentWrestlers->each->reinstate($reinstatedDate);
 
         return $this->touch();
     }

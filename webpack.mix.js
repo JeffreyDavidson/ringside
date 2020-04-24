@@ -1,7 +1,4 @@
 const mix = require("laravel-mix");
-const endsWith = require("lodash.endswith");
-const glob = require("glob");
-const output = require("friendly-errors-webpack-plugin/src/output");
 
 /*
  |--------------------------------------------------------------------------

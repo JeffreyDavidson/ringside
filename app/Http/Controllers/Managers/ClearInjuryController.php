@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Managers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\ClearInjuryRequest;
 use App\Models\Manager;
+use Tests\TestCase;
 
 class ClearInjuryController extends Controller
 {

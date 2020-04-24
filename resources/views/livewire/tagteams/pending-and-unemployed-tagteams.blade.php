@@ -1,18 +1,25 @@
-<x-datatable :collection="$employedTagTeams">
+<x-datatable :collection="$pendingAndUnemployedTagTeams">
     <thead>
         <th>Id</th>
         <th>Tag Team Name</th>
         <th>Date Employed</th>
-        <th>Status</th>
         <th>Actions</th>
     </thead>
     <tbody>
-        @forelse($employedTagTeams as $tagTeam)
+        @forelse($pendingAndUnemployedTagTeams as $tagTeam)
             <tr>
                 <td>{{ $tagTeam->id }}</td>
                 <td>{{ $tagTeam->name }}</td>
                 <td>{{ $tagTeam->employed_at->toDateString() }}</td>
-                <td>{{ $tagTeam->status->label() }}</td>
+                <td>
+                    @if($tagTeam->hasFutureEmployment())
+                        @if($tagTeam->employed_at)
+                        {{ $tagTeam->employed_at->toDateString() }}
+                        @endif
+                    @else
+                        TBD
+                    @endif
+                </td>
                 <td>
                     <!-- @include('tagTeams.partials.action-cell', [
                         'tagTeam' => $tagTeam,

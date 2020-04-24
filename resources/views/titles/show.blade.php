@@ -9,7 +9,7 @@
     <x-content>
         @if($title->isUnActivated())
             <div class="alert alert-warning" role="alert">
-                <strong>Warning!</strong>&nbsp;This title has not been activated yet!
+                <strong>Warning!</strong>&nbsp;This title is not activated!
             </div>
         @endif
         <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">

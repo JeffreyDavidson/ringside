@@ -7,6 +7,11 @@
         </x-slot>
     </x-subheader>
     <x-content>
+        @if($manager->isUnemployed())
+            <div class="alert alert-warning" role="alert">
+                <strong>Warning!</strong>&nbsp;This manager is not employed!
+            </div>
+        @endif
         <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
             <div id="kt_profile_aside" class="kt-grid__item kt-app__toggle kt-app__aside">
                 <x-portlet title="Biography" headBorder="false">

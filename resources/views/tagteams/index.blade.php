@@ -13,6 +13,12 @@
             </div>
         </x-portlet>
 
+        <x-portlet title="Pending and Unemployed Tag Teams">
+            <div class="kt-portlet__body">
+                <livewire:tag-teams.pending-and-unemployed-tag-teams>
+            </div>
+        </x-portlet>
+
         <x-portlet title="Released Tag Teams">
             <div class="kt-portlet__body">
                 <livewire:tag-teams.released-tag-teams>
