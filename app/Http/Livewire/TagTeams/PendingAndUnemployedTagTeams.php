@@ -24,7 +24,6 @@ class PendingAndUnemployedTagTeams extends Component
             ->orWhere
             ->unemployed()
             ->paginate();
-        dd($pendingAndUnemployedTagTeams);
 
         return view('livewire.tagteams.pending-and-unemployed-tagteams', [
             'pendingAndUnemployedTagTeams' => $pendingAndUnemployedTagTeams
