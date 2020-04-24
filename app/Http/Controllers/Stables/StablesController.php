@@ -2,44 +2,22 @@
 
 namespace App\Http\Controllers\Stables;
 
-use App\Models\Stable;
-use Illuminate\Http\Request;
-use App\Filters\StableFilters;
-use Yajra\DataTables\DataTables;
-use App\ViewModels\StableViewModel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreStableRequest;
-use App\Http\Requests\UpdateStableRequest;
 use App\Http\Requests\Stables\StoreRequest;
 use App\Http\Requests\Stables\UpdateRequest;
+use App\Models\Stable;
+use App\ViewModels\StableViewModel;
 
 class StablesController extends Controller
 {
     /**
      * View a list of stables.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Yajra\DataTables\DataTables  $table
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, DataTables $table, StableFilters $requestFilter)
+    public function index()
     {
         $this->authorize('viewList', Stable::class);
-
-        if ($request->ajax()) {
-            $query = Stable::query();
-            $requestFilter->apply($query);
-
-            return $table->eloquent($query)
-                ->addColumn('action', 'stables.partials.action-cell')
-                ->editColumn('started_at', function (Stable $stable) {
-                    return $stable->currentEmployment->started_at ?? null;
-                })
-                ->filterColumn('id', function ($query, $keyword) {
-                    $query->where($query->qualifyColumn('id'), $keyword);
-                })
-                ->toJson();
-        }
 
         return view('stables.index');
     }
@@ -59,7 +37,7 @@ class StablesController extends Controller
     /**
      * Create a new stable.
      *
-     * @param  \App\Http\Requests\StoreStableRequest  $request
+     * @param  App\Http\Requests\StoreStableRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request)
@@ -84,7 +62,7 @@ class StablesController extends Controller
     /**
      * Show the profile of a tag team.
      *
-     * @param  \App\Models\Stable  $stable
+     * @param  App\Models\Stable  $stable
      * @return \Illuminate\Http\Response
      */
     public function show(Stable $stable)
@@ -97,7 +75,7 @@ class StablesController extends Controller
     /**
      * Show the form for editing a stable.
      *
-     * @param  \App\Models\Stable  $stable
+     * @param  App\Models\Stable  $stable
      * @return \lluminate\Http\Response
      */
     public function edit(Stable $stable)
@@ -110,8 +88,8 @@ class StablesController extends Controller
     /**
      * Update a given stable.
      *
-     * @param  \App\Http\Requests\UpdateStableRequest  $request
-     * @param  \App\Models\Stable  $stable
+     * @param  App\Http\Requests\UpdateStableRequest  $request
+     * @param  App\Models\Stable  $stable
      * @return \lluminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Stable $stable)

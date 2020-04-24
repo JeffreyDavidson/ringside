@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Titles;
 
-use App\Models\Title;
 use App\Http\Controllers\Controller;
+use App\Models\Title;
 
 class RestoreController extends Controller
 {

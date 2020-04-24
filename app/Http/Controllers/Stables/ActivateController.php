@@ -8,16 +8,16 @@ use App\Http\Controllers\Controller;
 class EmployController extends Controller
 {
     /**
-     * Employ a stable.
+     * Activate a stable.
      *
      * @param  App\Models\Stable  $stable
      * @return \lluminate\Http\RedirectResponse
      */
     public function __invoke(Stable $stable)
     {
-        $this->authorize('employ', $stable);
+        $this->authorize('activate', $stable);
 
-        $stable->employ();
+        $stable->activate();
 
         return redirect()->route('stables.index');
     }

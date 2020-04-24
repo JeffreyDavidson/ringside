@@ -54,7 +54,7 @@ class WrestlersController extends Controller
     /**
      * Show the profile of a wrestler.
      *
-     * @param  \App\Models\Wrestler  $wrestler
+     * @param  App\Models\Wrestler  $wrestler
      * @return \Illuminate\View\View
      */
     public function show(Wrestler $wrestler)

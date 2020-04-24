@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Titles;
 
 use App\Exceptions\CannotBeDeactivatedException;
-use App\Models\Title;
 use App\Http\Controllers\Controller;
+use App\Models\Title;
 
 class DeactivateController extends Controller
 {
