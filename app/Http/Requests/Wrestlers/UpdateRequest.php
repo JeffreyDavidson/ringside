@@ -28,9 +28,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
-            'feet' => ['required', 'numeric', 'min:5', 'max:7'],
-            'inches' => ['required', 'numeric', 'max:11'],
-            'weight' => ['required', 'numeric'],
+            'feet' => ['required', 'integer', 'min:5', 'max:7'],
+            'inches' => ['required', 'integer', 'max:11'],
+            'weight' => ['required', 'integer'],
             'hometown' => ['required', 'string'],
             'signature_move' => ['nullable', 'string'],
             'started_at' => [new ConditionalEmploymentStartDateRule($this->route('wrestler'))],

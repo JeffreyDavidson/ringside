@@ -26,7 +26,7 @@ class TagTeamViewModel extends ViewModel
     {
         $this->tagTeam = $tagTeam ?? new TagTeam;
         $this->tagTeam->started_at = optional($this->tagTeam->started_at)->toDateTimeString();
-        $this->wrestlers = Wrestler::all()->pluck('name', 'id');
+        $this->wrestlers = Wrestler::employed()->orWhere->pendingEmployment()->pluck('name', 'id');
         $this->tagTeamPartner1 = old('wrestler1', optional($this->tagTeam->currentWrestlers->first())->id);
         $this->tagTeamPartner2 = old('wrestler2', optional($this->tagTeam->currentWrestlers->last())->id);
     }

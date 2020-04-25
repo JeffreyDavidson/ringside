@@ -30,21 +30,35 @@ class StoreRequest extends FormRequest
             'name' => ['required', 'string', Rule::unique('tag_teams')],
             'signature_move' => ['nullable', 'string'],
             'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'wrestler1' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ],
-            'wrestler2' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ]
+            'wrestler1' => [
+                'nullable',
+                'bail',
+                'integer',
+                'different:wrestler2',
+                'exists:wrestlers,id',
+                new WrestlerCanJoinTagTeamRule($this->input('started_at'))
+            ],
+            'wrestler2' => [
+                'nullable',
+                'bail',
+                'integer',
+                'different:wrestler1',
+                'exists:wrestlers,id',
+                new WrestlerCanJoinTagTeamRule($this->input('started_at'))
+             ]
         ];
     }
 
     /**
-     * Get custom attributes for validator errors.
+     * Get the error messages for the defined validation rules.
      *
      * @return array
      */
-    public function attributes()
+    public function messages()
     {
         return [
-            'wrestler1' => 'tag team partner 1',
-            'wrestler2' => 'tag team partner 2',
+            'wrestler1.different' => 'Tag team partners cannot be the same wrestler.',
+            'wrestler2.different' => 'Tag team partners cannot be the same wrestler.',
         ];
     }
 }

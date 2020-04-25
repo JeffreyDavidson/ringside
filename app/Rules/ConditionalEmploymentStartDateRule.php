@@ -53,13 +53,13 @@ class ConditionalEmploymentStartDateRule extends CompositeRule
         return true;
     }
 
-    protected function messages(): array
-    {
-        return [
-            'string' => 'Only string is allowed.',
-            'date_format' => ':attribute is too short.',
-        ];
-    }
+    // protected function messages(): array
+    // {
+    //     return [
+    //         'string' => 'Only string is allowed.',
+    //         'date_format' => ':attribute is not in the correct date format.',
+    //     ];
+    // }
 
     public function message()
     {

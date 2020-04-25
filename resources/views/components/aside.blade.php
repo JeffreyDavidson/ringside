@@ -1,6 +1,4 @@
 <div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
-
-    <!-- begin:: Aside -->
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo"></div>
         <div class="kt-aside__brand-tools">
@@ -33,7 +31,15 @@
                     <h4 class="kt-menu__section-text">Administrator</h4>
                     <i class="kt-menu__section-icon flaticon-more-v2"></i>
                 </li>
-                <li class="kt-menu__item kt-menu__item--submenu kt-menu__item kt-menu__item--submenu {{ set_open(['wrestlers.index', 'tag-teams.index', 'managers.index', 'referees.index', 'stables.index']) }}" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                <li class="kt-menu__item kt-menu__item--submenu kt-menu__item kt-menu__item--submenu
+                    {{ set_open([
+                        'wrestlers.index', 'wrestlers.create', 'wrestlers.edit',
+                        'tag-teams.index', 'tag-teams.create', 'tag-teams.edit',
+                        'managers.index', 'managers.create', 'managers.edit',
+                        'referees.index', 'referees.create', 'referees.edit',
+                        'stables.index', 'stables.create', 'stables.edit'
+                    ]) }}"
+                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                     <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                         <i class="kt-menu__link-icon flaticon-users-1"></i>
                         <span class="kt-menu__link-text">Roster</span>
@@ -47,31 +53,50 @@
                                     <span class="kt-menu__link-text">Roster</span>
                                 </span>
                             </li>
-                            <li class="kt-menu__item {{ set_active('wrestlers.index') }}" aria-haspopup="true">
+                            <li class="kt-menu__item
+                                {{ set_active([
+                                    'wrestlers.index', 'wrestlers.create', 'wrestlers.edit'
+                                ]) }}"
+                                aria-haspopup="true">
                                 <a href="{{ route('wrestlers.index') }}" class="kt-menu__link">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                     <span class="kt-menu__link-text">Wrestlers</span>
                                 </a>
                             </li>
-                            <li class="kt-menu__item {{ set_active('tag-teams.index') }}" aria-haspopup="true">
+                            <li class="kt-menu__item
+                                {{ set_active([
+                                    'tag-teams.index', 'tag-teams.create', 'tag-teams.edit'
+                                ]) }}" aria-haspopup="true">
                                 <a href="{{ route('tag-teams.index') }}" class="kt-menu__link">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                     <span class="kt-menu__link-text">Tag Teams</span>
                                 </a>
                             </li>
-                            <li class="kt-menu__item {{ set_active('managers.index') }}" aria-haspopup="true">
+                            <li class="kt-menu__item
+                                {{ set_active([
+                                    'managers.index', 'managers.create', 'managers.edit'
+                                ]) }}"
+                                aria-haspopup="true">
                                 <a href="{{ route('managers.index') }}" class="kt-menu__link">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span>
                                     </i><span class="kt-menu__link-text">Managers</span>
                                 </a>
                             </li>
-                            <li class="kt-menu__item {{ set_active('referees.index') }}" aria-haspopup="true">
+                            <li class="kt-menu__item
+                                {{ set_active([
+                                    'referees.index', 'referees.create', 'referees.edit'
+                                ]) }}"
+                                aria-haspopup="true">
                                 <a href="{{ route('referees.index') }}" class="kt-menu__link">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                     <span class="kt-menu__link-text">Referees</span>
                                 </a>
                             </li>
-                            <li class="kt-menu__item {{ set_active('stables.index') }}" aria-haspopup="true">
+                            <li class="kt-menu__item
+                                {{ set_active([
+                                    'stables.index', 'stables.create', 'stables.edit'
+                                ]) }}"
+                                aria-haspopup="true">
                                 <a href="{{ route('stables.index') }}" class="kt-menu__link">
                                     <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                     <span class="kt-menu__link-text">Stables</span>
@@ -80,13 +105,21 @@
                         </ul>
                     </div>
                 </li>
-                <li class="kt-menu__item {{ set_active('titles.index') }}" aria-haspopup="true">
+                <li class="kt-menu__item
+                    {{ set_active([
+                        'titles.index', 'titles.create', 'titles.edit'
+                    ]) }}"
+                    aria-haspopup="true">
                     <a href="{{ route('titles.index') }}" class="kt-menu__link">
                         <i class="kt-menu__link-icon flaticon-trophy"></i>
                         <span class="kt-menu__link-text">Titles</span>
                     </a>
                 </li>
-                <li class="kt-menu__item {{ set_active('venues.index') }}" aria-haspopup="true">
+                <li class="kt-menu__item
+                    {{ set_active([
+                        'venues.index', 'venues.create', 'venues.edit'
+                    ]) }}"
+                    aria-haspopup="true">
                     <a href="{{ route('venues.index') }}" class="kt-menu__link">
                         <i class="kt-menu__link-icon flaticon2-architecture-and-city"></i>
                         <span class="kt-menu__link-text">Venues</span>

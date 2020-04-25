@@ -19,9 +19,6 @@ class WrestlerCanJoinTagTeamRule extends CompositeRule
     protected function rules(): array
     {
         return [
-            'required',
-            'integer',
-            'exists:wrestlers,id',
             new CannotBeEmployedAfterDate(request('started_at')),
             new CannotBeHindered,
             new CannotBelongToTagTeam,

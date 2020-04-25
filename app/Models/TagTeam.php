@@ -47,31 +47,34 @@ class TagTeam extends Model
     /**
      * Get the wrestlers belonging to the tag team.
      *
-     * @return App\Eloquent\Relationships\LeaveableBelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function wrestlerHistory()
     {
-        return $this->leaveableBelongsToMany(Wrestler::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id');
+        return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id')->withTimestamps();
     }
 
     /**
      * Get all current wrestlers that are members of the tag team.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function currentWrestlers()
     {
-        return $this->wrestlerHistory()->current();
+        return $this->wrestlerHistory()
+                    ->whereNull('left_at')
+                    ->limit(2);
     }
 
     /**
      * Get all current wrestlers that are members of the tag team.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function previousWrestlers()
     {
-        return $this->wrestlerHistory()->detached();
+        return $this->wrestlerHistory()
+                    ->whereNotNull('left_at');
     }
 
     /**
@@ -123,7 +126,10 @@ class TagTeam extends Model
      */
     public function addWrestlers($wrestlerIds, $dateJoined = null)
     {
-        $this->wrestlerHistory()->sync($wrestlerIds, ['joined_at' => $dateJoined]);
+        $this->wrestlerHistory()->sync([
+            $wrestlerIds[0] => ['joined_at' => $dateJoined],
+            $wrestlerIds[1] => ['joined_at' => $dateJoined]
+        ]);
 
         return $this;
     }
