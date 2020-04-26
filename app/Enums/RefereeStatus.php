@@ -6,20 +6,21 @@ use MadWeb\Enum\Enum;
 
 /**
  * @method static RefereeStatus BOOKABLE()
- * @method static RefereeStatus RELEASED()
- * @method static RefereeStatus PENDING_EMPLOYMENT()
  * @method static RefereeStatus INJURED()
- * @method static RefereeStatus SUSPENDED()
+ * @method static RefereeStatus PENDING_EMPLOYMENT()
+ * @method static RefereeStatus RELEASED()
  * @method static RefereeStatus RETIRED()
+ * @method static RefereeStatus SUSPENDED()
  */
 final class RefereeStatus extends Enum
 {
-    const __default = self::PENDING_EMPLOYMENT;
+    const __default = self::UNEMPLOYED;
 
     const BOOKABLE = 'bookable';
-    const RELEASED = 'released';
-    const PENDING_EMPLOYMENT = 'pending-employment';
     const INJURED = 'injured';
-    const SUSPENDED = 'suspended';
+    const PENDING_EMPLOYMENT = 'pending-employment';
+    const RELEASED = 'released';
     const RETIRED = 'retired';
+    const SUSPENDED = 'suspended';
+    const UNEMPLOYED = 'unemployed';
 }

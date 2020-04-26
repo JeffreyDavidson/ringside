@@ -13,7 +13,7 @@ trait CanBeActivated
             $traits = class_uses_recursive(static::class);
 
             if (!in_array(HasCachedAttributes::class, $traits)) {
-                throw new \LogicException('CanBeRetired trait used without HasCachedAttributes trait');
+                throw new \LogicException('CanBeActivated trait used without HasCachedAttributes trait');
             }
         }
     }
@@ -86,7 +86,8 @@ trait CanBeActivated
     {
         return $query->whereHas('futureActivation')
             ->with('activations')
-            ->withActivatedAtDate();
+            ->withActivatedAtDate()
+            ->orderByActivationDate('asc');
     }
 
     /**
@@ -98,7 +99,8 @@ trait CanBeActivated
     {
         return $query->whereHas('currentActivation')
             ->with('activations')
-            ->withActivatedAtDate();
+            ->withActivatedAtDate()
+            ->orderByActivationDate();
     }
 
     /**
@@ -153,6 +155,16 @@ trait CanBeActivated
             ->orderBy('ended_at', 'desc')
             ->limit(1)
         ])->withCasts(['deactivated_at' => 'datetime']);
+    }
+
+    /**
+     * Scope a query to order by the moels activation date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeOrderByActivationDate($query, $direction = 'desc')
+    {
+        return $query->orderBy('activated_at', $direction);
     }
 
     /**

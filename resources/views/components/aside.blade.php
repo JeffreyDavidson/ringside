@@ -21,7 +21,11 @@
                     <h4 class="kt-menu__section-text">Booking</h4>
                     <i class="kt-menu__section-icon flaticon-more-v2"></i>
                 </li>
-                <li class="kt-menu__item {{ set_active('events.index') }}" aria-haspopup="true">
+                <li class="kt-menu__item
+                    {{ set_active([
+                        'events.index', 'events.create', 'events.edit'
+                    ]) }}"
+                    aria-haspopup="true">
                     <a href="{{ route('events.index') }}" class="kt-menu__link">
                         <i class="kt-menu__link-icon flaticon-event-calendar-symbol"></i>
                         <span class="kt-menu__link-text">Events</span>

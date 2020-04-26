@@ -1,7 +1,7 @@
 <div class="form-group">
     <x-form.inputs.text
         name="name"
-        label="Title Name"
+        label="Name"
         :value="old('name', $title->name)"
     />
 </div>
