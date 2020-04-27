@@ -5,13 +5,13 @@ namespace Tests;
 use App\Enums\Role;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Testing\TestResponse;
-use JMac\Testing\Traits\HttpTestAssertions;
+use JMac\Testing\Traits\AdditionalAssertions;
 use Tests\Factories\UserFactory;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication,
-        HttpTestAssertions,
+        AdditionalAssertions,
         Traits\HasRequests;
 
     /**

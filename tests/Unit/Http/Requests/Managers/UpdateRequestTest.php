@@ -3,7 +3,7 @@
 namespace Tests\Unit\Http\Requests\Managers;
 
 use App\Http\Requests\Managers\UpdateRequest;
-use JMac\Testing\Traits\HttpTestAssertions;
+use JMac\Testing\Traits\AdditionalAssertions;
 use Tests\TestCase;
 
 /*
@@ -12,7 +12,7 @@ use Tests\TestCase;
  */
 class UpdateRequestTest extends TestCase
 {
-    use HttpTestAssertions;
+    use AdditionalAssertions;
 
     /** @var UpdateRequest */
     private $subject;

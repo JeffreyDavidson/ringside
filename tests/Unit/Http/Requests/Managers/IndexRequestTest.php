@@ -4,7 +4,7 @@ namespace Tests\Unit\Http\Requests\Managers;
 
 use App\Enums\ManagerStatus;
 use App\Http\Requests\Managers\IndexRequest;
-use JMac\Testing\Traits\HttpTestAssertions;
+use JMac\Testing\Traits\AdditionalAssertions;
 use Tests\TestCase;
 
 /*
@@ -13,7 +13,7 @@ use Tests\TestCase;
  */
 class IndexRequestTest extends TestCase
 {
-    use HttpTestAssertions;
+    use AdditionalAssertions;
 
     /** @var IndexRequest */
     private $subject;
