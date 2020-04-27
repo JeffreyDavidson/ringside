@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Requests\CustomDataTablesRequest;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +32,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Validator::replacer('ends_with', function ($message, $attribute, $rule, $parameters) {
+
+            $values = array_pop($parameters);
+
+            if (count($parameters)) {
+                $values = implode(', ', $parameters) . ' or ' . $values;
+            }
+
+            return str_replace(':values', $values, $message);
+        });
     }
 }
