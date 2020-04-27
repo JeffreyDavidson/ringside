@@ -12,36 +12,26 @@ class TitlesTableSeeder extends Seeder
      */
     public function run()
     {
-        $eNum = 1;
-
-        for ($w = $eNum; $w <= 5; $w++) {
+        for ($w = 0; $w < 5; $w++) {
             TitleFactory::new()
                 ->active()
-                ->create(['name' => 'Title '.$eNum]);
-
-            $eNum ++;
+                ->create();
         }
 
         TitleFactory::new()
             ->pendingActivation()
-            ->create(['name' => 'Title '. $eNum]);
-
-        $eNum ++;
+            ->create();
 
         TitleFactory::new()
             ->retired()
-            ->create(['name' => 'Title '. $eNum]);
-
-        $eNum ++;
+            ->create();
 
         TitleFactory::new()
             ->inactive()
-            ->create(['name' => 'Title '. $eNum]);
-
-        $eNum ++;
+            ->create();
 
         TitleFactory::new()
             ->unactivated()
-            ->create(['name' => 'Title '. $eNum]);
+            ->create();
     }
 }
