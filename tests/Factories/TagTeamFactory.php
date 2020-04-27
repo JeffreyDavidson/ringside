@@ -50,6 +50,7 @@ class TagTeamFactory extends BaseFactory
     public function unemployed()
     {
         $clone = clone $this;
+        $clone->attributes['status'] = TagTeamStatus::UNEMPLOYED;
         $clone->employmentFactory = null;
 
         return $clone;

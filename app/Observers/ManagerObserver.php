@@ -23,8 +23,10 @@ class ManagerObserver
             $manager->status = ManagerStatus::SUSPENDED;
         } elseif ($manager->isAvailable()) {
             $manager->status = ManagerStatus::AVAILABLE;
-        } else {
+        } elseif ($manager->isPendingEmployment()) {
             $manager->status = ManagerStatus::PENDING_EMPLOYMENT;
+        } else {
+            $manager->status = ManagerStatus::UNEMPLOYED;
         }
     }
 }

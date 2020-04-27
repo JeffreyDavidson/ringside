@@ -25,8 +25,10 @@ class WrestlerObserver
             $wrestler->status = WrestlerStatus::BOOKABLE;
         } elseif ($wrestler->isReleased()) {
             $wrestler->status = WrestlerStatus::RELEASED;
-        } else {
+        } elseif ($wrestler->isPendingEmployment()) {
             $wrestler->status = WrestlerStatus::PENDING_EMPLOYMENT;
+        } else {
+            $wrestler->status = WrestlerStatus::UNEMPLOYED;
         }
     }
 }

@@ -47,6 +47,7 @@ class WrestlerFactory extends BaseFactory
     public function unemployed()
     {
         $clone = clone $this;
+        $clone->attributes['status'] = WrestlerStatus::UNEMPLOYED;
         $clone->employmentFactory = null;
 
         return $clone;

@@ -99,8 +99,7 @@ trait CanBeActivated
     {
         return $query->whereHas('currentActivation')
             ->with('activations')
-            ->withActivatedAtDate()
-            ->orderByActivationDate();
+            ->withActivatedAtDate();
     }
 
     /**
@@ -205,6 +204,16 @@ trait CanBeActivated
     public function isCurrentlyActivated()
     {
         return $this->currentActivation()->exists();
+    }
+
+    /**
+     * Check to see if the model is activated.
+     *
+     * @return bool
+     */
+    public function isPendingActivation()
+    {
+        return $this->futureActivation()->exists();
     }
 
     /**

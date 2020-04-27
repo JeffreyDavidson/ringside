@@ -48,6 +48,7 @@ class RefereeFactory extends BaseFactory
     public function unemployed()
     {
         $clone = clone $this;
+        $clone->attributes['status'] = RefereeStatus::UNEMPLOYED;
         $clone->employmentFactory = null;
 
         return $clone;

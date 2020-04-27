@@ -21,8 +21,10 @@ class TagTeamObserver
             $tagTeam->status = TagTeamStatus::SUSPENDED;
         } elseif ($tagTeam->isBookable()) {
             $tagTeam->status = TagTeamStatus::BOOKABLE;
-        } else {
+        } elseif ($tagTeam->isPendingEmployment()) {
             $tagTeam->status = TagTeamStatus::PENDING_EMPLOYMENT;
+        } else {
+            $tagTeam->status = TagTeamStatus::UNEMPLOYED;
         }
     }
 }

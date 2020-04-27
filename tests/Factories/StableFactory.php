@@ -34,6 +34,15 @@ class StableFactory extends BaseFactory
         return $clone;
     }
 
+    public function unactivated()
+    {
+        $clone = clone $this;
+        $clone->attributes['status'] = StableStatus::UNACTIVATED;
+        $clone->employmentFactory = null;
+
+        return $clone;
+    }
+
     public function active(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;

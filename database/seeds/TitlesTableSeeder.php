@@ -39,5 +39,9 @@ class TitlesTableSeeder extends Seeder
             ->create(['name' => 'Title '. $eNum]);
 
         $eNum ++;
+
+        TitleFactory::new()
+            ->unactivated()
+            ->create(['name' => 'Title '. $eNum]);
     }
 }

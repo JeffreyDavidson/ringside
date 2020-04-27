@@ -56,6 +56,7 @@ class ManagerFactory extends BaseFactory
     public function unemployed()
     {
         $clone = clone $this;
+        $clone->attributes['status'] = ManagerStatus::UNEMPLOYED;
         $clone->employmentFactory = null;
 
         return $clone;

@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $dateToStart = Carbon::now()->subYears(2);
+        $dateToStart = Carbon::now()->subYears(5);
         // dd($dateToStart);
 
         // $this->call(MatchTypesTableSeeder::class);
