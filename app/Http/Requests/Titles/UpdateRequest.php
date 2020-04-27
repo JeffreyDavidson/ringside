@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Titles;
 
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ConditionalActivationStartDateRule;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -31,22 +31,12 @@ class UpdateRequest extends FormRequest
             'name' => [
                 'required',
                 'min:3',
-                'ends_with:Title, Titles',
+                'ends_with:Title,Titles',
                 Rule::unique('titles')->ignore($this->title->id)
             ],
-            'introduced_at' => [new ConditionalActivationStartDateRule($this->route('title'))],
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.ends_with' => 'A name must end with either Title or Titles',
+            'introduced_at' => [
+                new ConditionalActivationStartDateRule($this->route('title'))
+            ],
         ];
     }
 }

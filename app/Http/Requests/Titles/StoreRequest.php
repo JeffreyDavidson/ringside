@@ -34,12 +34,10 @@ class StoreRequest extends FormRequest
      * Get the error messages for the defined validation rules.
      *
      * @return array
-     * TODO: Find out if values can be concatenated with 'or' instead of a comma.
      */
     public function messages()
     {
         return [
-            'name.ends_with' => 'The :attribute must end with :values.',
             'introduced_at.date_format' => 'The :attribute must be in the format of YYYY-MM-DD HH::MM:SS',
         ];
     }
