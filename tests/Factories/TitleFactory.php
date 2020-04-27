@@ -93,7 +93,7 @@ class TitleFactory extends BaseFactory
     protected function defaultAttributes(Generator $faker)
     {
         return [
-            'name' => Str::title($faker->words(2, true)),
+            'name' => Str::title($faker->words(2, true). ' Title'),
             'status' => TitleStatus::__default,
         ];
     }
