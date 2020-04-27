@@ -53,7 +53,7 @@ class TagTeamTest extends TestCase
         $tagTeam->addWrestlers([
             $stayingTagTeamPartner->getKey(),
             $newTagTeamPartner->getKey(),
-        ] $tagTeam);
+        ], $tagTeam);
 
         $this->assertTrue($tagTeam->currentWrestlers->contains($stayingTagTeamPartner));
         $this->assertTrue($tagTeam->currentWrestlers->contains($newTagTeamPartner));
