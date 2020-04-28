@@ -50,7 +50,7 @@ class UpdateRequest extends FormRequest
             'wrestlers.*' => [
                 'bail ',
                 'integer',
-                'exists:wrestlers,id',
+                Rule::exists('wrestlers', 'id'),
                 new WrestlerCanJoinStable($this->route('stable'))
             ],
             'tagteams' => [
@@ -59,7 +59,7 @@ class UpdateRequest extends FormRequest
             'tagteams.*' => [
                 'bail',
                 'integer',
-                'exists:tag_teams,id',
+                Rule::exists('tag_teams', 'id'),
                 new TagTeamCanJoinStable($this->route('stable'))
             ],
         ];

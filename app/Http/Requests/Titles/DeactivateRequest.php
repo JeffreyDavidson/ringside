@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Wrestlers;
+namespace App\Http\Requests\Titles;
 
-use App\Exceptions\CannotBeReleasedException;
+use App\Exceptions\CannotBeDeactivatedException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReleaseRequest extends FormRequest
+class DeactivateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,14 +14,14 @@ class ReleaseRequest extends FormRequest
      */
     public function authorize()
     {
-        $wrestler = $this->route('wrestler');
+        $title = $this->route('title');
 
-        if (! $this->user()->can('release', $wrestler)) {
+        if (! $this->user->can('deactivate', $title)) {
             return false;
         }
 
-        if (! $wrestler->canBeReleased()) {
-            throw new CannotBeReleasedException();
+        if (! $title->canBeDeactivated()) {
+            throw new CannotBeDeactivatedException();
         }
 
         return true;

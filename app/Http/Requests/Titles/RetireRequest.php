@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Wrestlers;
+namespace App\Http\Requests\Titles;
 
-use App\Exceptions\CannotBeReleasedException;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Exceptions\CannotBeRetiredException;
 
-class ReleaseRequest extends FormRequest
+class RetireRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,14 +14,14 @@ class ReleaseRequest extends FormRequest
      */
     public function authorize()
     {
-        $wrestler = $this->route('wrestler');
+        $title = $this->route('title');
 
-        if (! $this->user()->can('release', $wrestler)) {
+        if (! $this->user->can('retire', $title)) {
             return false;
         }
 
-        if (! $wrestler->canBeReleased()) {
-            throw new CannotBeReleasedException();
+        if (! $title->canBeRetired()) {
+            throw new CannotBeRetiredException();
         }
 
         return true;

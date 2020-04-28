@@ -26,9 +26,19 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'min:3'],
-            'last_name' => ['required', 'string', 'min:3'],
-            'started_at' => [new ConditionalEmploymentStartDateRule($this->route('manager'))],
+            'first_name' => [
+                'required',
+                'string',
+                'min:3'
+            ],
+            'last_name' => [
+                'required',
+                'string',
+                'min:3'
+            ],
+            'started_at' => [
+                new ConditionalEmploymentStartDateRule($this->route('manager'))
+            ],
         ];
     }
 

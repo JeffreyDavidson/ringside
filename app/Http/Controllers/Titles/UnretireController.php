@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Titles;
 
-use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Titles\UnretireRequest;
 use App\Models\Title;
 
 class UnretireController extends Controller
@@ -11,17 +11,12 @@ class UnretireController extends Controller
     /**
      * Unretire a title.
      *
-     * @param  \App\Models\Title  $title
+     * @param  App\Models\Title  $title
+     * @param  App\Http\Requests\Titles\UnretireRequest $request
      * @return \lluminate\Http\RedirectResponse
      */
-    public function __invoke(Title $title)
+    public function __invoke(Title $title, UnretireRequest $request)
     {
-        $this->authorize('unretire', $title);
-
-        if (! $title->isRetired()) {
-            throw new CannotBeUnretiredException();
-        }
-
         $title->unretire();
 
         return redirect()->route('titles.index');

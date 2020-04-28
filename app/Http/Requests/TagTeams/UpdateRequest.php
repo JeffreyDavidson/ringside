@@ -28,11 +28,24 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', Rule::unique('tag_teams')->ignore($this->tag_team->id)],
-            'signature_move' => ['nullable', 'string'],
-            'started_at' => [new ConditionalEmploymentStartDateRule($this->route('tag_team'))],
-            'wrestler1' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ],
-            'wrestler2' => [ new WrestlerCanJoinTagTeamRule($this->input('started_at')) ]
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('tag_teams')->ignore($this->tag_team->id)
+            ],
+            'signature_move' => [
+                'nullable',
+                'string'
+            ],
+            'started_at' => [
+                new ConditionalEmploymentStartDateRule($this->route('tag_team'))
+            ],
+            'wrestler1' => [
+                new WrestlerCanJoinTagTeamRule($this->input('started_at'))
+            ],
+            'wrestler2' => [
+                new WrestlerCanJoinTagTeamRule($this->input('started_at'))
+            ]
         ];
     }
 }

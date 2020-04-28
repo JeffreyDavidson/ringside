@@ -27,15 +27,26 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', Rule::unique('tag_teams')],
-            'signature_move' => ['nullable', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('tag_teams')
+            ],
+            'signature_move' => [
+                'nullable',
+                'string'
+            ],
+            'started_at' => [
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s'
+            ],
             'wrestler1' => [
                 'nullable',
                 'bail',
                 'integer',
                 'different:wrestler2',
-                'exists:wrestlers,id',
+                Rule::exists('wrestlers', 'id'),
                 new WrestlerCanJoinTagTeamRule($this->input('started_at'))
             ],
             'wrestler2' => [
@@ -43,7 +54,7 @@ class StoreRequest extends FormRequest
                 'bail',
                 'integer',
                 'different:wrestler1',
-                'exists:wrestlers,id',
+                Rule::exists('wrestlers', 'id'),
                 new WrestlerCanJoinTagTeamRule($this->input('started_at'))
              ]
         ];

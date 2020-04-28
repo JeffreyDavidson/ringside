@@ -26,13 +26,38 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3'],
-            'feet' => ['required', 'integer', 'min:5', 'max:7'],
-            'inches' => ['required', 'integer', 'max:11'],
-            'weight' => ['required', 'integer'],
-            'hometown' => ['required', 'string'],
-            'signature_move' => ['nullable', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+            'name' => [
+                'required',
+                'string',
+                'min:3'
+            ],
+            'feet' => [
+                'required',
+                'integer',
+                'min:5',
+                'max:7'
+            ],
+            'inches' => [
+                'required',
+                'integer',
+                'max:11'
+            ],
+            'weight' => [
+                'required',
+                'integer'],
+            'hometown' => [
+                'required',
+                'string'
+            ],
+            'signature_move' => [
+                'nullable',
+                'string'
+            ],
+            'started_at' => [
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s'
+            ],
         ];
     }
 

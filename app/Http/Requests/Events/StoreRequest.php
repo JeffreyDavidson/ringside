@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Events;
 
 use App\Models\Event;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -25,10 +26,24 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'unique:events'],
-            'date' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'venue_id' => ['nullable', 'integer', 'exists:venues,id'],
-            'preview' => ['nullable'],
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('events', 'name')
+            ],
+            'date' => [
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s'
+            ],
+            'venue_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('venues', 'id')
+            ],
+            'preview' => [
+                'nullable'
+            ],
         ];
     }
 }
