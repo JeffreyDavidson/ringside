@@ -10,11 +10,6 @@ use App\ViewModels\TitleViewModel;
 
 class TitlesController extends Controller
 {
-    /**
-     * Retrieve titles of a specific state.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $this->authorize('viewList', Title::class);
@@ -22,11 +17,6 @@ class TitlesController extends Controller
         return view('titles.index');
     }
 
-    /**
-     * Show the form for creating a new title.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $this->authorize('create', Title::class);
@@ -34,12 +24,6 @@ class TitlesController extends Controller
         return view('titles.create', new TitleViewModel());
     }
 
-    /**
-     * Create a new title.
-     *
-     * @param  App\Http\Requests\Titls\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(StoreRequest $request)
     {
         $title = Title::create($request->except(['introduced_at']));
@@ -51,12 +35,6 @@ class TitlesController extends Controller
         return redirect()->route('titles.index');
     }
 
-    /**
-     * Show the title.
-     *
-     * @param  App\Models\Title  $title
-     * @return \Illuminate\Http\Response
-     */
     public function show(Title $title)
     {
         $this->authorize('view', Title::class);
@@ -64,12 +42,6 @@ class TitlesController extends Controller
         return view('titles.show', compact('title'));
     }
 
-    /**
-     * Show the form for editing a title.
-     *
-     * @param  App\Models\Title $title
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Title $title)
     {
         $this->authorize('update', Title::class);
@@ -77,13 +49,6 @@ class TitlesController extends Controller
         return view('titles.edit', new TitleViewModel($title));
     }
 
-    /**
-     * Update an existing title.
-     *
-     * @param  App\Http\Requests\UpdateRequest  $request
-     * @param  App\Models\Title  $title
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function update(UpdateRequest $request, Title $title)
     {
         $title->update($request->except('introduced_at'));
@@ -95,12 +60,6 @@ class TitlesController extends Controller
         return redirect()->route('titles.index');
     }
 
-    /**
-     * Delete a title.
-     *
-     * @param  App\Models\Title  $title
-     * @return \lluminate\Http\RedirectResponse
-     */
     public function destroy(Title $title)
     {
         $this->authorize('delete', $title);

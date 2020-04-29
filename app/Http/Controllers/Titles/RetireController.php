@@ -8,13 +8,6 @@ use App\Models\Title;
 
 class RetireController extends Controller
 {
-    /**
-     * Retire a title.
-     *
-     * @param  App\Models\Title  $title
-     * @param  App\Http\Requests\Titles\RetireRequest  $request
-     * @return \lluminate\Http\RedirectResponse
-     */
     public function __invoke(Title $title, RetireRequest $request)
     {
         $title->retire();

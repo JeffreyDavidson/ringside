@@ -7,12 +7,6 @@ use App\Enums\TitleStatus;
 
 class TitleObserver
 {
-    /**
-     * Handle the Title "saving" event.
-     *
-     * @param  App\Models\Title  $title
-     * @return void
-     */
     public function saving(Title $title)
     {
         if ($title->isRetired()) {

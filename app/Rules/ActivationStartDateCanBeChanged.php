@@ -8,26 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivationStartDateCanBeChanged implements Rule
 {
-    /** @var $model */
     protected $model;
 
-    /**
-     * Undocumented function.
-     *
-     * @param Model $activatable
-     */
     public function __construct(Model $activatable)
     {
         $this->model = $activatable;
     }
 
-    /**
-     * Undocumented function.
-     *
-     * @param [type] $attribute
-     * @param [type] $value
-     * @return void
-     */
     public function passes($attribute, $value = null)
     {
         /**
