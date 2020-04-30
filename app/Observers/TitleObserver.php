@@ -15,8 +15,8 @@ class TitleObserver
             $title->status = TitleStatus::ACTIVE;
         } elseif ($title->isDeactivated()) {
             $title->status = TitleStatus::INACTIVE;
-        } elseif ($title->isPendingActivation()) {
-            $title->status = TitleStatus::PENDING_ACTIVATION;
+        } elseif ($title->hasFutureActivation()) {
+            $title->status = TitleStatus::FUTURE_ACTIVATION;
         } else {
             $title->status = TitleStatus::UNACTIVATED;
         }

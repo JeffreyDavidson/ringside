@@ -17,25 +17,6 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     /** @var \Illuminate\Support\Collection */
     protected $titles;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $competable = TitleFactory::new()->count(3)->competable()->create();
-        $pendingIntroduction = TitleFactory::new()->count(3)->pendingIntroduction()->create();
-        $retired = TitleFactory::new()->count(3)->retired()->create();
-
-        $this->titles = collect([
-            'competable'           => $competable,
-            'pending-introduction' => $pendingIntroduction,
-            'retired'              => $retired,
-            'all'                  => collect()
-                                ->concat($competable)
-                                ->concat($pendingIntroduction)
-                                ->concat($retired),
-        ]);
-    }
-
     /** @test */
     public function an_administrator_can_view_titles_page()
     {
@@ -61,23 +42,23 @@ class ViewTitlesListSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_view_all_competable_titles()
+    public function an_administrator_can_view_all_active_titles()
     {
         $this->actAs(Role::ADMINISTRATOR);
 
-        $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'competable']));
+        $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'active']));
 
         $responseAjax->assertJson([
-            'recordsTotal' => $this->titles->get('competable')->count(),
-            'data'         => $this->titles->get('competable')->only(['id'])->toArray(),
+            'recordsTotal' => $this->titles->get('active')->count(),
+            'data'         => $this->titles->get('active')->only(['id'])->toArray(),
         ]);
     }
 
     /** @test */
-    public function an_administrator_can_view_all_pending_introduction_titles()
+    public function an_administrator_can_view_all_future_activation_titles()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'pending-introduction']));
+        $responseAjax = $this->ajaxJson(route('titles.index', ['status' => 'future-activation']));
 
         $responseAjax->assertJson([
             'recordsTotal' => $this->titles->get('pending-introduction')->count(),

@@ -19,7 +19,7 @@ class TitlesTableSeeder extends Seeder
         }
 
         TitleFactory::new()
-            ->pendingActivation()
+            ->futureActivation()
             ->create();
 
         TitleFactory::new()

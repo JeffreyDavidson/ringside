@@ -19,11 +19,11 @@ class TitleFactory extends BaseFactory
         'retirementFactory',
     ];
 
-    public function pendingActivation(ActivationFactory $activationFactory = null)
+    public function futureActivation(ActivationFactory $activationFactory = null)
     {
         $clone = clone $this;
-        $clone->attributes['status'] = TitleStatus::PENDING_ACTIVATION;
-        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(2));
+        $clone->attributes['status'] = TitleStatus::FUTURE_ACTIVATION;
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDay());
         $clone->retirementFactory = null;
 
         return $clone;

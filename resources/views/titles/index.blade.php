@@ -13,9 +13,9 @@
             </div>
         </x-portlet>
 
-        <x-portlet title="Pending And Unactivated Titles">
+        <x-portlet title="Future Activation And Unactivated Titles">
             <div class="kt-portlet__body">
-                <livewire:titles.pending-and-unactivated-titles>
+                <livewire:titles.future-activation-and-unactivated-titles>
             </div>
         </x-portlet>
 

@@ -8,9 +8,9 @@
 
 <div class="form-group">
     <x-form.inputs.date
-        name="introduced_at"
-        label="Introduced At"
-        :value="old('introduced_at', $title->introduced_at)"
+        name="activated_at"
+        label="Activation Date"
+        :value="old('activated_at', $title->activated_at)"
     />
 </div>
 

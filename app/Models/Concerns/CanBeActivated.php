@@ -82,7 +82,7 @@ trait CanBeActivated
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopePendingActivation($query)
+    public function scopeFutureActivation($query)
     {
         return $query->whereHas('futureActivation')
             ->with('activations')
@@ -204,16 +204,6 @@ trait CanBeActivated
     public function isCurrentlyActivated()
     {
         return $this->currentActivation()->exists();
-    }
-
-    /**
-     * Check to see if the model is activated.
-     *
-     * @return bool
-     */
-    public function isPendingActivation()
-    {
-        return $this->futureActivation()->exists();
     }
 
     /**

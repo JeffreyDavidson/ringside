@@ -7,7 +7,7 @@ use MadWeb\Enum\Enum;
 /**
  * @method static TitleStatus ACTIVE()
  * @method static TitleStatus INACTIVE()
- * @method static TitleStatus PENDING_ACTIVATION()
+ * @method static TitleStatus FUTURE_ACTIVATION()
  * @method static TitleStatus RETIRED()
  * @method static TitleStatus UNACTIVATED()
  */
@@ -17,7 +17,7 @@ final class TitleStatus extends Enum
 
     const ACTIVE = 'active';
     const INACTIVE = 'inactive';
-    const PENDING_ACTIVATION = 'pending-activation';
+    const FUTURE_ACTIVATION = 'future-activation';
     const RETIRED = 'retired';
     const UNACTIVATED = 'unactivated';
 }

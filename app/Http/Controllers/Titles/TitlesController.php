@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Titles\StoreRequest;
 use App\Http\Requests\Titles\UpdateRequest;
 use App\Models\Title;
-use App\ViewModels\TitleViewModel;
 
 class TitlesController extends Controller
 {
@@ -21,7 +20,7 @@ class TitlesController extends Controller
     {
         $this->authorize('create', Title::class);
 
-        return view('titles.create', new TitleViewModel());
+        return view('titles.create');
     }
 
     public function store(StoreRequest $request)
@@ -46,7 +45,7 @@ class TitlesController extends Controller
     {
         $this->authorize('update', Title::class);
 
-        return view('titles.edit', new TitleViewModel($title));
+        return view('titles.edit', compact('title'));
     }
 
     public function update(UpdateRequest $request, Title $title)

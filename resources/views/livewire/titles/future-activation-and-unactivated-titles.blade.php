@@ -1,4 +1,4 @@
-<x-datatable :collection="$pendingAndUnactivatedTitles">
+<x-datatable :collection="$futureActivationAndUnactivatedTitles">
     <thead>
         <th>Id</th>
         <th>Title Name</th>
@@ -6,7 +6,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        @forelse($pendingAndUnactivatedTitles as $title)
+        @forelse($futureActivationAndUnactivatedTitles as $title)
             <tr>
                 <td>{{ $title->id }}</td>
                 <td>{{ $title->name }}</td>
