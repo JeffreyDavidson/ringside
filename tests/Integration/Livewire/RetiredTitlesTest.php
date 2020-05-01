@@ -2,14 +2,14 @@
 
 namespace Tests\Integration\Livewire\Titles;
 
-use App\Http\Livewire\Titles\FutureActivationAndUnactivatedTitles;
+use App\Http\Livewire\Titles\RetiredTitles;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\Factories\TitleFactory;
 use Tests\TestCase;
 
-class FutureActivationAndUnactivatedTitlesTest extends TestCase
+class RetiredTitlesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -42,32 +42,28 @@ class FutureActivationAndUnactivatedTitlesTest extends TestCase
     }
 
     /** @test */
-    public function future_activations_and_unactivated_titles_component_should_return_correct_view()
+    public function retired_titles_component_should_return_correct_view()
     {
-        $component = Livewire::test(FutureActivationAndUnactivatedTitles::class);
+        $component = Livewire::test(RetiredTitles::class);
 
         $this->assertEquals(
-            'livewire.titles.future-activation-and-unactivated-titles',
+            'livewire.titles.retired-titles',
             $component->lastRenderedView->getName()
         );
     }
 
     /** @test */
-    public function future_activations_and_unactivated_titles_component_should_pass_correct_data()
+    public function retired_titles_component_should_pass_correct_data()
     {
-        $component = Livewire::test(FutureActivationAndUnactivatedTitles::class);
+        $component = Livewire::test(RetiredTitles::class);
 
-        $futureActivationAndUnactivatedTitles = Title::query()
-            ->futureActivation()
-            ->orWhere
-            ->unactivated()
-            ->get();
+        $retiredTitles = Title::retired()->get();
 
-        $component->assertViewHas('futureActivationAndUnactivatedTitles');
-        $this->assertCount(6, $futureActivationAndUnactivatedTitles);
+        $component->assertViewHas('retiredTitles');
+        $this->assertCount(3, $retiredTitles);
         $this->assertEquals(
-            $this->titles->only(['future-activation', 'unactivated'])->flatten()->pluck('id')->toArray(),
-            $futureActivationAndUnactivatedTitles->pluck('id')->sort()->values()->toArray()
+            $this->titles->get('retired')->pluck('id')->toArray(),
+            $retiredTitles->pluck('id')->sort()->values()->toArray()
         );
     }
 }

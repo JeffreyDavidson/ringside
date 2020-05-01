@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Event;
 use Tests\Factories\TitleFactory;
 use Tests\TestCase;
 
+/**
+ * @group titles
+ */
 class TitleTest extends TestCase
 {
     use RefreshDatabase;
