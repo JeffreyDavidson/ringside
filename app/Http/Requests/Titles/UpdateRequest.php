@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
                 'ends_with:Title,Titles',
                 Rule::unique('titles')->ignore($this->title->id)
             ],
-            'introduced_at' => [
+            'activated_at' => [
                 new ConditionalActivationStartDateRule($this->route('title'))
             ],
         ];

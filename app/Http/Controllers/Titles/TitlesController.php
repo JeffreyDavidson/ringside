@@ -16,19 +16,19 @@ class TitlesController extends Controller
         return view('titles.index');
     }
 
-    public function create()
+    public function create(Title $title)
     {
         $this->authorize('create', Title::class);
 
-        return view('titles.create');
+        return view('titles.create', compact('title'));
     }
 
     public function store(StoreRequest $request)
     {
-        $title = Title::create($request->except(['introduced_at']));
+        $title = Title::create($request->except(['activated_at']));
 
-        if ($request->filled('introduced_at')) {
-            $title->activate($request->input('introduced_at'));
+        if ($request->filled('activated_at')) {
+            $title->activate($request->input('activated_at'));
         }
 
         return redirect()->route('titles.index');
@@ -50,10 +50,10 @@ class TitlesController extends Controller
 
     public function update(UpdateRequest $request, Title $title)
     {
-        $title->update($request->except('introduced_at'));
+        $title->update($request->except('activated_at'));
 
-        if ($request->filled('introduced_at')) {
-            $title->activate($request->input('introduced_at'));
+        if ($request->filled('activated_at')) {
+            $title->activate($request->input('activated_at'));
         }
 
         return redirect()->route('titles.index');

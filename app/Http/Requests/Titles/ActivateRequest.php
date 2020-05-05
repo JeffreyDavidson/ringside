@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Titles;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Exceptions\CannotBeActivatedException;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ActivateRequest extends FormRequest
 {
@@ -11,7 +11,7 @@ class ActivateRequest extends FormRequest
     {
         $title = $this->route('title');
 
-        if (! $this->user->can('deactivate', $title)) {
+        if ($this->user()->cannot('activate', $title)) {
             return false;
         }
 

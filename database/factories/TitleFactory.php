@@ -12,13 +12,13 @@ $factory->define(Title::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Title::class, 'competable', function ($faker) {
+$factory->state(Title::class, 'active', function ($faker) {
     return [
         'status' => TitleStatus::COMPETABLE,
     ];
 });
 
-$factory->afterCreatingState(Title::class, 'competable', function ($title) {
+$factory->afterCreatingState(Title::class, 'active', function ($title) {
     $title->introduce();
 });
 

@@ -24,7 +24,7 @@ class UpdateTitleSuccessConditionsTest extends TestCase
     {
         return array_replace([
             'name' => 'Example Name Title',
-            'introduced_at' => now()->toDateTimeString(),
+            'activated_at' => now()->toDateTimeString(),
         ], $overrides);
     }
 
@@ -52,5 +52,17 @@ class UpdateTitleSuccessConditionsTest extends TestCase
         tap($title->fresh(), function ($title) {
             $this->assertEquals('Example Name Title', $title->name);
         });
+    }
+
+    /** @test */
+    public function a_title_activated_at_date_can_be_nullable()
+    {
+        $this->markTestIncomplete();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->create();
+        TitleFactory::new()->create();
+
+        $response = $this->updateRequest($title, $this->validParams(['activated_at' => '']));
+
     }
 }

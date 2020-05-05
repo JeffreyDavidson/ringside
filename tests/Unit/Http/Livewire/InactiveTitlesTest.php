@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Livewire\Titles;
+namespace Tests\Unit\Http\Livewire;
 
 use Mockery;
 use Tests\TestCase;

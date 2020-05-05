@@ -25,7 +25,7 @@ class UpdateTitleFailureConditionsTest extends TestCase
     {
         return array_replace([
             'name' => 'Example Name Title',
-            'introduced_at' => now()->toDateTimeString(),
+            'activated_at' => now()->toDateTimeString(),
         ], $overrides);
     }
 
@@ -133,66 +133,54 @@ class UpdateTitleFailureConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_title_introduced_at_date_is_required()
+    public function a_title_activated_at_must_be_in_datetime_format()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->create();
-        TitleFactory::new()->create();
 
-        $response = $this->updateRequest($title, $this->validParams(['introduced_at' => '']));
+        $response = $this->updateRequest($title, $this->validParams(['activated_at' => $now->toDateString()]));
 
         $response->assertRedirect(route('titles.edit', $title));
-        $response->assertSessionHasErrors('introduced_at');
-        tap($title->fresh(), function ($title) {
-            $this->assertEquals(now()->toDateTimeString(), $title->introduced_at->toDateTimeString());
+        $response->assertSessionHasErrors('activated_at');
+        tap($title->fresh(), function ($title) use ($now) {
+            dd($title->activated_at);
+            $this->assertEquals($now->toDateTimeString(), $title->activated_at->toDateTimeString());
         });
     }
 
     /** @test */
-    public function a_title_introduced_at_must_be_in_datetime_format()
+    public function a_title_activated_at_must_be_a_datetime_format()
     {
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->create();
 
-        $response = $this->updateRequest($title, $this->validParams(['introduced_at' => now()->toDateString()]));
+        $response = $this->updateRequest($title, $this->validParams(['activated_at' => 'not-a-datetime']));
 
         $response->assertRedirect(route('titles.edit', $title));
-        $response->assertSessionHasErrors('introduced_at');
+        $response->assertSessionHasErrors('activated_at');
         tap($title->fresh(), function ($title) {
-            $this->assertEquals(now()->toDateTimeString(), $title->introduced_at->toDateTimeString());
+            $this->assertEquals(today()->toDateString(), $title->activated_at->toDateString());
         });
     }
 
     /** @test */
-    public function a_title_introduced_at_must_be_a_datetime_format()
+    public function a_title_that_has_been_activated_in_the_past_must_be_activated_before_or_on_same_day()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create();
-
-        $response = $this->updateRequest($title, $this->validParams(['introduced_at' => 'not-a-datetime']));
-
-        $response->assertRedirect(route('titles.edit', $title));
-        $response->assertSessionHasErrors('introduced_at');
-        tap($title->fresh(), function ($title) {
-            $this->assertEquals(today()->toDateString(), $title->introduced_at->toDateString());
-        });
-    }
-
-    /** @test */
-    public function a_title_that_has_been_introduced_in_the_past_must_be_introduced_before_or_on_same_day()
-    {
-        $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->create(['introduced_at' => Carbon::yesterday()->toDateTimeString()]);
+        $title = TitleFactory::new()->create(['activated_at' => Carbon::yesterday()->toDateTimeString()]);
 
         $response = $this->updateRequest(
             $title,
-            $this->validParams(['introduced_at' => now()->addDays(3)->toDateTimeString()])
+            $this->validParams(['activated_at' => now()->addDays(3)->toDateTimeString()])
         );
 
         $response->assertRedirect(route('titles.edit', $title));
-        $response->assertSessionHasErrors('introduced_at');
+        $response->assertSessionHasErrors('activated_at');
         tap($title->fresh(), function ($title) {
-            $this->assertEquals(Carbon::yesterday()->toDateTimeString(), $title->introduced_at->toDateTimeString());
+            $this->assertEquals(Carbon::yesterday()->toDateTimeString(), $title->activated_at->toDateTimeString());
         });
     }
 }

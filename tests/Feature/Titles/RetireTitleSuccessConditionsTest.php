@@ -15,10 +15,10 @@ class RetireTitleSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_retire_a_competable_title()
+    public function an_administrator_can_retire_a_active_title()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->competable()->create();
+        $title = TitleFactory::new()->active()->create();
 
         $response = $this->retireRequest($title);
 

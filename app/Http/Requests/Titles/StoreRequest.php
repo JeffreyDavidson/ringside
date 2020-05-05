@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
                 'ends_with:Title,Titles',
                 Rule::unique('titles', 'name')
             ],
-            'introduced_at' => [
+            'activated_at' => [
                 'nullable',
                 'string',
                 'date_format:Y-m-d H:i:s'
@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'introduced_at.date_format' => 'The :attribute must be in the format of YYYY-MM-DD HH::MM:SS',
+            'activated_at.date_format' => 'The :attribute must be in the format of YYYY-MM-DD HH::MM:SS',
         ];
     }
 }

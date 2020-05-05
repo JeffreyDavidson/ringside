@@ -169,11 +169,11 @@ trait HasRequests
      * @param  \Illuminate\Database\Eloquent\Model  $entity
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function introduceRequest(Model $entity)
+    public function activateRequest(Model $entity)
     {
         $entityName = Str::replaceFirst('_', '-', $entity->getTable());
 
-        return $this->put(route("{$entityName}.introduce", $entity));
+        return $this->put(route("{$entityName}.activate", $entity));
     }
 
     /**

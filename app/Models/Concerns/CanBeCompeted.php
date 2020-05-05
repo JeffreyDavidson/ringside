@@ -27,7 +27,7 @@ trait CanBeCompeted
      */
     public function getIsCompetableCachedAttribute()
     {
-        return $this->status === 'competable';
+        return $this->status === 'active';
     }
 
     /**
@@ -38,7 +38,7 @@ trait CanBeCompeted
      */
     public function scopeCompetable($query)
     {
-        return $query->where('status', 'competable');
+        return $query->where('status', 'active');
     }
 
     /**
@@ -48,6 +48,6 @@ trait CanBeCompeted
      */
     public function isCompetable()
     {
-        return !is_null($this->introduced_at) && $this->introduced_at->isPast();
+        return !is_null($this->activated_at) && $this->activated_at->isPast();
     }
 }

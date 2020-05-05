@@ -15,10 +15,10 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_delete_a_competable_title()
+    public function an_administrator_can_delete_an_active_title()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->competable()->create();
+        $title = TitleFactory::new()->active()->create();
 
         $response = $this->deleteRequest($title);
 
@@ -27,10 +27,10 @@ class DeleteTitleSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function an_administrator_can_delete_a_pending_introduction_title()
+    public function an_administrator_can_delete_a_future_activation_title()
     {
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->pendingIntroduction()->create();
+        $title = TitleFactory::new()->futureActivation()->create();
 
         $response = $this->delete(route('titles.destroy', $title));
 

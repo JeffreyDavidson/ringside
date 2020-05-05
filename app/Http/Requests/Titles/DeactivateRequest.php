@@ -11,7 +11,7 @@ class DeactivateRequest extends FormRequest
     {
         $title = $this->route('title');
 
-        if (! $this->user->can('deactivate', $title)) {
+        if ($this->user()->cannot('deactivate', $title)) {
             return false;
         }
 

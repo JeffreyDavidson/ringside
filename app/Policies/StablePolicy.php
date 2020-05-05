@@ -55,7 +55,7 @@ class StablePolicy
     }
 
     /**
-     * Determine whether the user can employ a stable that is pending introduction.
+     * Determine whether the user can employ a stable that is pending activation.
      *
      * @param  App\Models\User  $user
      * @param  App\Models\Stable  $stable

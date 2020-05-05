@@ -11,7 +11,7 @@ class UnretireRequest extends FormRequest
     {
         $title = $this->route('title');
 
-        if (! $this->user->can('unretire', $title)) {
+        if ($this->user()->cannot('unretire', $title)) {
             return false;
         }
 
