@@ -9,7 +9,6 @@ use App\Models\Title;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use JMac\Testing\Traits\AdditionalAssertions;
-use Mockery;
 use Tests\TestCase;
 
 /**
@@ -29,7 +28,6 @@ class CreateTitleTest extends TestCase
     {
         return array_replace([
             'name' => 'Example Name Title',
-            'activated_at' => now()->toDateTimeString(),
         ], $overrides);
     }
 
@@ -57,32 +55,33 @@ class CreateTitleTest extends TestCase
         $response->assertRedirect(route('titles.index'));
         tap(Title::first(), function ($title) use ($now) {
             $this->assertEquals('Example Name Title', $title->name);
-            $this->assertEquals($now->toDateTimeString(), $title->activated_at->toDateTimeString());
         });
     }
 
     /** @test */
-    public function a_title_activated_today_or_before_is_activated()
+    public function a_title_created_without_an_activated_at_filled_does_not_have_an_activation()
     {
-        $title = Mockery::mock(Title::class);
-        $activatedAt = today()->toDateTimeString();
+        $this->actAs(Role::ADMINISTRATOR);
+
+        $this->storeRequest('title', $this->validParams(['activated_at' => null]));
+
+        tap(Title::first(), function ($title) {
+            $this->assertCount(0, $title->activations);
+        });
+    }
+
+    /** @test */
+    public function a_title_created_when_activated_at_is_filled_has_an_activation()
+    {
+        $activatedAt = now()->toDateTimeString();
 
         $this->actAs(Role::ADMINISTRATOR);
 
         $this->storeRequest('titles', $this->validParams(['activated_at' => $activatedAt]));
 
-        $title->shouldHaveReceived('activate', ['activated_at' => $activatedAt]);
-    }
-
-    /** @test */
-    public function a_title_activated_after_today_has_future_activation()
-    {
-        $this->actAs(Role::ADMINISTRATOR);
-
-        $this->storeRequest('titles', $this->validParams(['activated_at' => Carbon::tomorrow()->toDateTimeString()]));
-
-        tap(Title::first(), function ($title) {
-            $this->assertTrue($title->hasFutureActivation());
+        tap(Title::first(), function ($title) use ($activatedAt) {
+            $this->assertCount(1, $title->activations);
+            $this->assertEquals($activatedAt, $title->activations->first()->started_at->toDateTimeString());
         });
     }
 

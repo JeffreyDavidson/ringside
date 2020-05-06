@@ -13,7 +13,6 @@ class InactiveTitlesTest extends TestCase
     public function testing_mockery()
     {
         $component = Mockery::mock(InactiveTitles::class);
-        dd($component);
 
         $component->shouldReceive('inactive')
                 ->shouldReceive('paginate');
