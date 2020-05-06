@@ -10,9 +10,21 @@ use Tests\Factories\TitleFactory;
 /**
  * @group titles
  */
-class RestoreTitleFailureConditionsTest extends TestCase
+class RestoreTitleSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_restore_a_deleted_title()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->softDeleted()->create();
+
+        $response = $this->restoreRequest($title);
+
+        $response->assertRedirect(route('titles.index'));
+        $this->assertNull($title->fresh()->deleted_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_title()

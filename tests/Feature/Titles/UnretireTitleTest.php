@@ -5,15 +5,27 @@ namespace Tests\Feature\Titles;
 use App\Enums\Role;
 use App\Exceptions\CannotBeUnretiredException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\TitleFactory;
 use Tests\TestCase;
+use Tests\Factories\TitleFactory;
 
 /**
  * @group titles
  */
-class UnretireTitleFailureConditionsTest extends TestCase
+class UnretireTitleSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_unretire_a_retired_title()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->retired()->create();
+
+        $response = $this->unretireRequest($title);
+
+        $response->assertRedirect(route('titles.index'));
+        $this->assertEquals(now()->toDateTimeString(), $title->fresh()->retirements()->latest()->first()->ended_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_unretire_a_retired_title()

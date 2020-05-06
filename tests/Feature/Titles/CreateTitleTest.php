@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Titles;
 
-use Mockery;
-use Carbon\Carbon;
 use App\Enums\Role;
-use Tests\TestCase;
-use App\Models\Title;
-use App\Http\Requests\Titles\StoreRequest;
-use JMac\Testing\Traits\AdditionalAssertions;
 use App\Http\Controllers\Titles\TitlesController;
+use App\Http\Requests\Titles\StoreRequest;
+use App\Models\Title;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use JMac\Testing\Traits\AdditionalAssertions;
+use Mockery;
+use Tests\TestCase;
 
 /**
  * @group titles

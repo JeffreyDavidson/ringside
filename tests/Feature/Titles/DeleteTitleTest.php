@@ -10,7 +10,7 @@ use Tests\Factories\TitleFactory;
 /**
  * @group titles
  */
-class DeleteTitleSuccessConditionsTest extends TestCase
+class DeleteTitleTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -48,5 +48,26 @@ class DeleteTitleSuccessConditionsTest extends TestCase
 
         $response->assertRedirect(route('titles.index'));
         $this->assertSoftDeleted($title);
+    }
+
+    /** @test */
+    public function a_basic_user_cannot_delete_a_title()
+    {
+        $this->actAs(Role::BASIC);
+        $title = TitleFactory::new()->create();
+
+        $response = $this->deleteRequest($title);
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_delete_a_title()
+    {
+        $title = TitleFactory::new()->create();
+
+        $response = $this->deleteRequest($title);
+
+        $response->assertRedirect(route('login'));
     }
 }

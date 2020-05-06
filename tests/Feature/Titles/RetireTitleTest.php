@@ -11,9 +11,21 @@ use Tests\Factories\TitleFactory;
 /**
  * @group titles
  */
-class RetireTitleFailureConditionsTest extends TestCase
+class RetireTitleTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_retire_a_active_title()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->active()->create();
+
+        $response = $this->retireRequest($title);
+
+        $response->assertRedirect(route('titles.index'));
+        $this->assertEquals(now()->toDateTimeString(), $title->fresh()->currentRetirement->started_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_retire_an_active_title()

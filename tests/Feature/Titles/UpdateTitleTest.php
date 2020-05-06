@@ -3,15 +3,14 @@
 namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\TitleFactory;
 use Tests\TestCase;
+use Tests\Factories\TitleFactory;
 
 /**
  * @group titles
  */
-class UpdateTitleFailureConditionsTest extends TestCase
+class UpdateTitleTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -27,6 +26,43 @@ class UpdateTitleFailureConditionsTest extends TestCase
             'name' => 'Example Name Title',
             'activated_at' => now()->toDateTimeString(),
         ], $overrides);
+    }
+
+    /** @test */
+    public function an_administrator_can_view_the_form_for_editing_a_title()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->create();
+
+        $response = $this->editRequest($title);
+
+        $response->assertViewIs('titles.edit');
+        $this->assertTrue($response->data('title')->is($title));
+    }
+
+    /** @test */
+    public function an_administrator_can_update_a_title()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->create();
+
+        $response = $this->updateRequest($title, $this->validParams());
+
+        $response->assertRedirect(route('titles.index'));
+        tap($title->fresh(), function ($title) {
+            $this->assertEquals('Example Name Title', $title->name);
+        });
+    }
+
+    /** @test */
+    public function a_title_activated_at_date_can_be_nullable()
+    {
+        $this->markTestIncomplete();
+        $this->actAs(Role::ADMINISTRATOR);
+        $title = TitleFactory::new()->create();
+        TitleFactory::new()->create();
+
+        $response = $this->updateRequest($title, $this->validParams(['activated_at' => '']));
     }
 
     /** @test */
