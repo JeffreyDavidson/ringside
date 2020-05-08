@@ -3,6 +3,8 @@
 namespace Tests\Feature\Venues;
 
 use App\Enums\Role;
+use App\Http\Controllers\Venues\VenuesController;
+use App\Http\Requests\Venues\StoreRequest;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,7 +12,7 @@ use Tests\TestCase;
 /**
  * @group venues
  */
-class CreateVenueSuccessConditionsTest extends TestCase
+class CreateVenueTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -61,12 +63,48 @@ class CreateVenueSuccessConditionsTest extends TestCase
     }
 
     /** @test */
-    public function a_venue_address2_is_optional()
+    public function a_basic_user_cannot_view_the_form_for_creating_a_venue()
     {
-        $this->actAs(Role::ADMINISTRATOR);
+        $this->actAs(Role::BASIC);
 
-        $response = $this->storeRequest('venues', $this->validParams(['address2' => null]));
+        $response = $this->createRequest('venue');
 
-        $response->assertSessionHasNoErrors();
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_basic_user_cannot_create_a_venue()
+    {
+        $this->actAs(Role::BASIC);
+
+        $response = $this->storeRequest('venue', $this->validParams());
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_view_the_form_for_creating_a_venue()
+    {
+        $response = $this->createRequest('venue');
+
+        $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_guest_cannot_create_a_venue()
+    {
+        $response = $this->storeRequest('venue', $this->validParams());
+
+        $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function store_validates_using_a_form_request()
+    {
+        $this->assertActionUsesFormRequest(
+            VenuesController::class,
+            'store',
+            StoreRequest::class
+        );
     }
 }

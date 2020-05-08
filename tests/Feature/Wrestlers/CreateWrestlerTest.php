@@ -4,6 +4,8 @@ namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
 use App\Enums\WrestlerStatus;
+use App\Http\Controllers\Wrestlers\WrestlersController;
+use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -12,7 +14,7 @@ use Tests\TestCase;
  * @group wrestlers
  * @group roster
  */
-class CreateWrestlerSuccessConditionsTest extends TestCase
+class CreateWrestlerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -54,26 +56,6 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         $response = $this->storeRequest('wrestler', $this->validParams());
 
         $response->assertRedirect(route('wrestlers.index'));
-    }
-
-    /** @test */
-    public function a_wrestler_signature_move_is_optional()
-    {
-        $this->actAs(Role::ADMINISTRATOR);
-
-        $response = $this->storeRequest('wrestler', $this->validParams(['signature_move' => null]));
-
-        $response->assertSessionDoesntHaveErrors('signature_move');
-    }
-
-    /** @test */
-    public function a_wrestler_started_at_date_is_optional()
-    {
-        $this->actAs(Role::ADMINISTRATOR);
-
-        $response = $this->storeRequest('wrestler', $this->validParams(['started_at' => null]));
-
-        $response->assertSessionDoesntHaveErrors('started_at');
     }
 
     /** @test */
@@ -157,5 +139,51 @@ class CreateWrestlerSuccessConditionsTest extends TestCase
         tap(Wrestler::first(), function ($wrestler) {
             $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
         });
+    }
+
+    /** @test */
+    public function a_basic_user_cannot_view_the_form_for_creating_a_wrestler()
+    {
+        $this->actAs(Role::BASIC);
+
+        $response = $this->createRequest('wrestler');
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_basic_user_cannot_create_a_wrestler()
+    {
+        $this->actAs(Role::BASIC);
+
+        $response = $this->storeRequest('wrestler', $this->validParams());
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_view_the_form_for_creating_a_wrestler()
+    {
+        $response = $this->createRequest('wrestler');
+
+        $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_guest_cannot_create_a_wrestler()
+    {
+        $response = $this->storeRequest('wrestler', $this->validParams());
+
+        $response->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function store_validates_using_a_form_request()
+    {
+        $this->assertActionUsesFormRequest(
+            WrestlersController::class,
+            'store',
+            StoreRequest::class
+        );
     }
 }

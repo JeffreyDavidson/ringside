@@ -44,7 +44,8 @@ class StoreRequest extends FormRequest
             ],
             'weight' => [
                 'required',
-                'integer'],
+                'integer'
+            ],
             'hometown' => [
                 'required',
                 'string'

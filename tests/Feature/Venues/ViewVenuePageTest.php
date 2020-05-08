@@ -10,9 +10,21 @@ use Tests\TestCase;
 /**
  * @group venues
  */
-class ViewVenuePageFailureConditionsTest extends TestCase
+class ViewVenuePageTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_view_a_venue()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $venue = VenueFactory::new()->create();
+
+        $response = $this->showRequest($venue);
+
+        $response->assertViewIs('venues.show');
+        $this->assertTrue($response->data('venue')->is($venue));
+    }
 
     /** @test */
     public function a_basic_user_cannot_view_a_venue()

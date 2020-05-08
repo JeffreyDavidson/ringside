@@ -2,21 +2,37 @@
 
 namespace Tests\Feature\Wrestlers;
 
+use Carbon\Carbon;
 use App\Enums\Role;
-use App\Exceptions\CannotBeClearedFromInjuryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\WrestlerFactory;
 use Tests\TestCase;
+use Tests\Factories\WrestlerFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 
 /**
  * @group wrestlers
  * @group roster
  */
-class ClearFromInjuryWrestlerFailureConditionsTest extends TestCase
+class ClearFromInjuryWrestlerSuccessConditionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
+    public function an_administrator_can_recover_an_injured_wrestler()
+    {
+        $now = now();
+        Carbon::setTestNow($now);
+
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->injured()->create();
+
+        $response = $this->clearInjuryRequest($wrestler);
+
+        $response->assertRedirect(route('wrestlers.index'));
+        $this->assertEquals($now->toDateTimeString(), $wrestler->fresh()->injuries()->latest()->first()->ended_at);
+    }
+
+     /** @test */
     public function a_basic_user_cannot_recover_an_injured_wrestler()
     {
         $this->actAs(Role::BASIC);

@@ -10,7 +10,7 @@ use Tests\TestCase;
 /**
  * @group venues
  */
-class ViewVenuesListSuccessConditionsTest extends TestCase
+class ViewVenuesListTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -70,5 +70,23 @@ class ViewVenuesListSuccessConditionsTest extends TestCase
             'recordsTotal' => $this->venues->count(),
             'data'         => $this->venues->toArray(),
         ]);
+    }
+
+    /** @test */
+    public function a_basic_user_cannot_view_venues_page()
+    {
+        $this->actAs(Role::BASIC);
+
+        $response = $this->indexRequest('venues');
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_view_venues_page()
+    {
+        $response = $this->indexRequest('venues');
+
+        $response->assertRedirect(route('login'));
     }
 }

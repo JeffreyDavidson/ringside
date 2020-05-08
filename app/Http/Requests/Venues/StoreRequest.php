@@ -39,10 +39,12 @@ class StoreRequest extends FormRequest
             ],
             'city' => [
                 'required',
-                'string'],
+                'string'
+            ],
             'state' => [
                 'required',
-                'string'],
+                'string'
+            ],
             'zip' => [
                 'required',
                 'integer',
