@@ -4,7 +4,8 @@ namespace Tests\Factories;
 
 use App\Enums\StableStatus;
 use App\Models\Stable;
-use Faker\Generator;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
+use Faker\Generator as Faker;
 
 class StableFactory extends BaseFactory
 {
@@ -119,7 +120,7 @@ class StableFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Generator $faker)
+    public function getDefaults(Faker $faker)
     {
         return [
             'name' => $faker->name,

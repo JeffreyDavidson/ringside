@@ -12,7 +12,7 @@ use Tests\Factories\WrestlerFactory;
  * @group wrestlers
  * @group roster
  */
-class ViewWrestlersListSuccessConditionsTest extends TestCase
+class ViewWrestlersListTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -140,5 +140,23 @@ class ViewWrestlersListSuccessConditionsTest extends TestCase
             'recordsTotal' => $this->wrestlers->get('injured')->count(),
             'data'         => $this->wrestlers->get('injured')->only(['id'])->toArray(),
         ]);
+    }
+
+    /** @test */
+    public function a_basic_user_cannot_view_wrestlers_page()
+    {
+        $this->actAs(Role::BASIC);
+
+        $response = $this->indexRequest('wrestlers');
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function a_guest_cannot_view_wrestlers_page()
+    {
+        $response = $this->indexRequest('wrestler');
+
+        $response->assertRedirect(route('login'));
     }
 }

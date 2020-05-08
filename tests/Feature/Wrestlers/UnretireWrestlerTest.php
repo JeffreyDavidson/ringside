@@ -3,18 +3,29 @@
 namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
-use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\WrestlerFactory;
 use Tests\TestCase;
+use Tests\Factories\WrestlerFactory;
 
 /**
  * @group wrestlers
  * @group roster
  */
-class UnretireWrestlerFailureConditionsTest extends TestCase
+class UnretireWrestlerTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function a_administrator_can_unretire_a_retired_wrestler()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->retired()->create();
+
+        $response = $this->unretireRequest($wrestler);
+
+        $response->assertRedirect(route('wrestlers.index'));
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->retirements()->latest()->first()->ended_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_unretire_a_wrestler()

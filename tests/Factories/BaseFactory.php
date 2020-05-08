@@ -2,7 +2,7 @@
 
 namespace Tests\Factories;
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Collection;
 
 abstract class BaseFactory
@@ -66,7 +66,7 @@ abstract class BaseFactory
         return array_replace($this->defaultAttributes($faker), $this->attributes, $overrides);
     }
 
-    protected function defaultAttributes(Generator $faker)
+    public function getDefaults(Faker $faker)
     {
         return [];
     }

@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\Wrestlers;
 
-use App\Enums\Role;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\WrestlerFactory;
+use App\Enums\Role;
 use Tests\TestCase;
+use Tests\Factories\WrestlerFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group wrestlers
  * @group roster
  */
-class UpdateWrestlerFailureConditionsTest extends TestCase
+class UpdateWrestlerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -50,6 +50,51 @@ class UpdateWrestlerFailureConditionsTest extends TestCase
             'signature_move' => 'The Finisher',
             'started_at' => now()->toDateTimeString(),
         ], $overrides);
+    }
+
+    /** @test */
+    public function an_administrator_can_view_the_form_for_editing_a_wrestler()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
+
+        $response = $this->editRequest($wrestler);
+
+        $response->assertViewIs('wrestlers.edit');
+        $this->assertTrue($response->data('wrestler')->is($wrestler));
+    }
+
+    /** @test */
+    public function an_administrator_can_update_a_wrestler()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
+
+        $response = $this->updateRequest($wrestler, $this->validParams());
+
+        $response->assertRedirect(route('wrestlers.index'));
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertEquals('Example Wrestler Name', $wrestler->name);
+            $this->assertEquals(76, $wrestler->height);
+            $this->assertEquals(240, $wrestler->weight);
+            $this->assertEquals('Laraville, FL', $wrestler->hometown);
+            $this->assertEquals('The Finisher', $wrestler->signature_move);
+        });
+    }
+
+    /** @test */
+    public function a_wrestler_signature_move_is_optional()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->create();
+
+        $response = $this->updateRequest($wrestler, $this->validParams(['signature_move' => '']));
+
+        $response->assertSessionDoesntHaveErrors('signature_move');
+        $response->assertRedirect(route('wrestlers.index'));
+        tap($wrestler->first(), function ($wrestler) {
+            $this->assertNull($wrestler->signature_move);
+        });
     }
 
     /** @test */

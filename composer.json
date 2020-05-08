@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
+        "christophrumpel/laravel-factories-reloaded": "^1.0",
         "fideloper/proxy": "^4.0",
         "illuminatech/validation-composite": "^1.1",
         "laravel/framework": "^7.0",

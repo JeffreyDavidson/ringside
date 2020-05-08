@@ -58,6 +58,7 @@ class ActivateTitleTest extends TestCase
 
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->active()->create();
+        dd($title);
 
         $this->activateRequest($title);
     }

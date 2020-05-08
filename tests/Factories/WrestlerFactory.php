@@ -5,7 +5,8 @@ namespace Tests\Factories;
 use App\Enums\WrestlerStatus;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Faker\Generator;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
+use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 class WrestlerFactory extends BaseFactory
@@ -157,7 +158,7 @@ class WrestlerFactory extends BaseFactory
         }, $attributes);
     }
 
-    protected function defaultAttributes(Generator $faker)
+    public function getDefaults(Faker $faker)
     {
         return [
             'name' => $faker->name,

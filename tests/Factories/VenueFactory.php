@@ -2,28 +2,26 @@
 
 namespace Tests\Factories;
 
-use Faker\Generator;
 use App\Models\Venue;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
+use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 class VenueFactory extends BaseFactory
 {
-    public $softDeleted = false;
+    protected string $modelClass = Venue::class;
 
-    public function create($attributes = [])
+    public function create(array $extra = []): Venue
     {
-        return $this->make(function ($attributes) {
-            $venue = Venue::create($this->resolveAttributes($attributes));
-
-            if ($this->softDeleted) {
-                $venue->delete();
-            }
-
-            return $venue;
-        }, $attributes);
+        return parent::build($extra);
     }
 
-    protected function defaultAttributes(Generator $faker)
+    public function make(array $extra = []): Venue
+    {
+        return parent::build($extra, 'make');
+    }
+
+    public function getDefaults(Faker $faker): array
     {
         return [
             'name' => $faker->sentence,
@@ -35,3 +33,4 @@ class VenueFactory extends BaseFactory
         ];
     }
 }
+

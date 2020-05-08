@@ -13,7 +13,7 @@ use App\Exceptions\CannotBeClearedFromInjuryException;
  * @group wrestlers
  * @group roster
  */
-class ClearFromInjuryWrestlerSuccessConditionsTest extends TestCase
+class ClearFromInjuryWrestlerTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -2,12 +2,13 @@
 
 namespace Tests\Factories;
 
-use Carbon\Carbon;
 use App\Models\Manager;
 use App\Models\Referee;
+use App\Models\Suspension;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Models\Suspension;
+use Carbon\Carbon;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
 use Illuminate\Support\Collection;
 
 class SuspensionFactory extends BaseFactory

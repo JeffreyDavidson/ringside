@@ -11,9 +11,21 @@ use Tests\Factories\WrestlerFactory;
  * @group wrestlers
  * @group roster
  */
-class RestoreWrestlerFailureConditionsTest extends TestCase
+class RestoreWrestlerTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_restore_a_deleted_wrestler()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->softDeleted()->create();
+
+        $response = $this->restoreRequest($wrestler);
+
+        $response->assertRedirect(route('wrestlers.index'));
+        $this->assertNull($wrestler->fresh()->deleted_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_restore_a_deleted_wrestler()

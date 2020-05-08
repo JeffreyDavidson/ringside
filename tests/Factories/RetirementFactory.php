@@ -2,7 +2,6 @@
 
 namespace Tests\Factories;
 
-use Carbon\Carbon;
 use App\Models\Title;
 use App\Models\Stable;
 use App\Models\Manager;
@@ -10,6 +9,8 @@ use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Models\Retirement;
+use Carbon\Carbon;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
 use Illuminate\Support\Collection;
 
 class RetirementFactory extends BaseFactory

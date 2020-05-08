@@ -8,6 +8,7 @@ use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Carbon\Carbon;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
 use Illuminate\Support\Collection;
 
 class EmploymentFactory extends BaseFactory

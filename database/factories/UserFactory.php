@@ -28,14 +28,20 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(User::class, 'super-administrator', [
-    'role' => Role::SUPER_ADMINISTRATOR,
-]);
+$factory->state(User::class, 'super-administrator', function ($faker) {
+    return [
+       'role' => Role::SUPER_ADMINISTRATOR,
+    ];
+});
 
-$factory->state(User::class, 'administrator', [
-    'role' => Role::ADMINISTRATOR,
-]);
+$factory->state(User::class, 'administrator', function ($faker) {
+    return [
+        'role' => Role::ADMINISTRATOR,
+    ];
+});
 
-$factory->state(User::class, 'basic-user', [
-    'role' => Role::BASIC,
-]);
+$factory->state(User::class, 'basic-user', function ($faker) {
+    return [
+        'role' => Role::BASIC,
+    ];
+});

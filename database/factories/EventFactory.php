@@ -16,10 +16,14 @@ $factory->define(Event::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Event::class, 'scheduled', [
-    'date' => Carbon::tomorrow()->toDateTimeString(),
-]);
+$factory->state(Event::class, 'scheduled', function ($faker) {
+    return [
+        'date' => Carbon::tomorrow()->toDateTimeString(),
+    ];
+});
 
-$factory->state(Event::class, 'past', [
-    'date' => Carbon::yesterday()->toDateTimeString(),
-]);
+$factory->state(Event::class, 'past', function ($faker) {
+    return [
+        'date' => Carbon::yesterday()->toDateTimeString(),
+    ];
+});

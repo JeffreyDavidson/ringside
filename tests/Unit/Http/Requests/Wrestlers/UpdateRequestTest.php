@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Http\Requests\Venues;
+namespace Tests\Unit\Http\Requests\Wrestlers;
 
 use App\Http\Requests\Venues\UpdateRequest;
 use Tests\TestCase;

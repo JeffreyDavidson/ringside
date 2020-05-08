@@ -3,18 +3,30 @@
 namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
+use Tests\TestCase;
+use Tests\Factories\WrestlerFactory;
 use App\Exceptions\CannotBeSuspendedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\WrestlerFactory;
-use Tests\TestCase;
 
 /**
  * @group wrestlers
  * @group roster
  */
-class SuspendWrestlerFailureConditionsTest extends TestCase
+class SuspendWrestlerTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_suspend_a_bookable_wrestler()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->bookable()->create();
+
+        $response = $this->suspendRequest($wrestler);
+
+        $response->assertRedirect(route('wrestlers.index'));
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->currentSuspension->started_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_suspend_a_wrestler()

@@ -3,18 +3,30 @@
 namespace Tests\Feature\Wrestlers;
 
 use App\Enums\Role;
+use Tests\TestCase;
+use Tests\Factories\WrestlerFactory;
 use App\Exceptions\CannotBeReinstatedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\WrestlerFactory;
-use Tests\TestCase;
 
 /**
  * @group wrestlers
  * @group roster
  */
-class ReinstateWrestlerFailureConditionsTest extends TestCase
+class ReinstateWrestlerTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function an_administrator_can_reinstate_a_suspended_wrestler()
+    {
+        $this->actAs(Role::ADMINISTRATOR);
+        $wrestler = WrestlerFactory::new()->suspended()->create();
+
+        $response = $this->reinstateRequest($wrestler);
+
+        $response->assertRedirect(route('wrestlers.index'));
+        $this->assertEquals(now()->toDateTimeString(), $wrestler->fresh()->suspensions()->latest()->first()->ended_at);
+    }
 
     /** @test */
     public function a_basic_user_cannot_reinstate_a_suspended_wrestler()

@@ -12,7 +12,7 @@ use Tests\Factories\WrestlerFactory;
  * @group wrestlers
  * @group roster
  */
-class EmployWrestlerSuccessConditionsTest extends TestCase
+class EmployWrestlerTest extends TestCase
 {
     use RefreshDatabase;
 
