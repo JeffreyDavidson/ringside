@@ -3,10 +3,12 @@
 namespace Tests\Feature\Titles;
 
 use App\Enums\Role;
-use App\Exceptions\CannotBeActivatedException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Factories\TitleFactory;
+use App\Http\Requests\Titles\ActivateRequest;
+use App\Exceptions\CannotBeActivatedException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Http\Controllers\Titles\ActivateController;
 
 /**
  * @group titles
@@ -54,12 +56,22 @@ class ActivateTitleTest extends TestCase
     public function an_active_title_cannot_be_activated()
     {
         $this->withoutExceptionHandling();
-        $this->expectException(CannotBeActivatedException::class);
 
         $this->actAs(Role::ADMINISTRATOR);
         $title = TitleFactory::new()->active()->create();
-        dd($title);
+
+        $this->expectException(CannotBeActivatedException::class);
 
         $this->activateRequest($title);
+    }
+
+    /** @test */
+    public function invoke_validates_using_a_form_request()
+    {
+        $this->assertActionUsesFormRequest(
+            ActivateController::class,
+            '__invoke',
+            ActivateRequest::class
+        );
     }
 }

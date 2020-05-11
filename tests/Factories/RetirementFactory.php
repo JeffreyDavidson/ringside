@@ -2,35 +2,48 @@
 
 namespace Tests\Factories;
 
-use App\Models\Title;
-use App\Models\Stable;
 use App\Models\Manager;
 use App\Models\Referee;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
 use App\Models\Retirement;
+use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Title;
+use App\Models\Wrestler;
 use Carbon\Carbon;
 use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
+use Faker\Generator as Faker;
 use Illuminate\Support\Collection;
 
 class RetirementFactory extends BaseFactory
 {
     /** @var \Carbon\Carbon|null */
     public $startDate;
+
     /** @var \Carbon\Carbon|null */
     public $endDate;
+
     /** @var TagTeam[] */
     public $tagTeams;
+
     /** @var Wrestler[] */
     public $wrestlers;
+
     /** @var Manager[] */
     public $managers;
+
     /** @var Referee[] */
     public $referees;
+
     /** @var Stable[] */
     public $stables;
+
     /** @var Title[] */
     public $titles;
+
+    public function getDefaults(Faker $faker): array
+    {
+        return [];
+    }
 
     /**
      * @param string|Carbon $startDate
@@ -174,4 +187,6 @@ class RetirementFactory extends BaseFactory
 
         return $retirements->count() === 1 ? $retirements->first() : $retirements;
     }
+
+
 }

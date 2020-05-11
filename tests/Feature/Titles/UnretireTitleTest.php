@@ -11,7 +11,7 @@ use Tests\Factories\TitleFactory;
 /**
  * @group titles
  */
-class UnretireTitleSuccessConditionsTest extends TestCase
+class UnretireTitleTest extends TestCase
 {
     use RefreshDatabase;
 

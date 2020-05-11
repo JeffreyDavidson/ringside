@@ -9,15 +9,41 @@ use Faker\Generator as Faker;
 
 class TitleFactory extends BaseFactory
 {
+    /** @var ActivationFactory|null */
+    public $activationFactory;
+
+    /** @var RetirementFactory|null */
+    public $retirementFactory;
+
+    /** @var $softDeleted */
+    public $softDeleted = false;
+
     protected string $modelClass = Title::class;
 
     public function create(array $extra = []): Title
     {
-        return parent::build($extra);
+        $title = parent::build($extra);
+
+        if ($this->activationFactory) {
+            $this->activationFactory->forTitle($title)->create();
+        }
+
+        if ($this->retirementFactory) {
+            $this->retirementFactory->forTitle($title)->create();
+        }
+
+        $title->save();
+
+        if ($this->softDeleted) {
+            $title->delete();
+        }
+
+        return $title;
     }
 
     public function make(array $extra = []): Title
     {
+        dd(parent::build($extra, 'make'));
         return parent::build($extra, 'make');
     }
 
@@ -31,9 +57,15 @@ class TitleFactory extends BaseFactory
 
     public function active(): TitleFactory
     {
-        return tap(clone $this)->overwriteDefaults([
+        $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::ACTIVE,
         ]);
+
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now());
+
+        $clone->retirementFactory = null;
+
+        return $clone;
     }
 
     public function inactive(): TitleFactory
@@ -52,9 +84,15 @@ class TitleFactory extends BaseFactory
 
     public function retired(): TitleFactory
     {
-        return tap(clone $this)->overwriteDefaults([
+        $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::RETIRED,
         ]);
+
+        $clone->activationFactory = ActivationFactory::new()->started(now()->subMonths(1))->ended(now()->subDays(3));
+
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started(now());
+
+        return $clone;
     }
 
     public function unactivated(): TitleFactory
@@ -63,5 +101,12 @@ class TitleFactory extends BaseFactory
             'status' => TitleStatus::UNACTIVATED,
         ]);
     }
-}
 
+    public function softDeleted($delete = true)
+    {
+        $clone = clone $this;
+        $clone->softDeleted = $delete;
+
+        return $clone;
+    }
+}

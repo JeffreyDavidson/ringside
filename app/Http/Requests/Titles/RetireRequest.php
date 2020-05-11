@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests\Titles;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Exceptions\CannotBeRetiredException;
+use Illuminate\Foundation\Http\FormRequest;
 
 class RetireRequest extends FormRequest
 {

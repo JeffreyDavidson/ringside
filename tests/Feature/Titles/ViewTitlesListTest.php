@@ -25,7 +25,7 @@ class ViewTitlesListTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('titles.index');
-        dd($response->original->getFactory()->getFinder(\Livewire\LivewireComponentsFinder::class));
+        // dd($response->original->getFactory()->getFinder(\Livewire\LivewireComponentsFinder::class));
     }
 
     /** @test */

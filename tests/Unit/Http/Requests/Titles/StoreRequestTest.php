@@ -6,6 +6,9 @@ use App\Http\Requests\Titles\StoreRequest;
 use Illuminate\Validation\Rule;
 use Tests\TestCase;
 
+/**
+ * @group titles
+ */
 class StoreRequestTest extends TestCase
 {
     /** @var StoreRequest */

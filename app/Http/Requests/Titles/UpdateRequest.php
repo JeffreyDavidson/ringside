@@ -2,17 +2,27 @@
 
 namespace App\Http\Requests\Titles;
 
+use App\Policies\TitlePolicy;
 use App\Rules\ConditionalActivationStartDateRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
     public function authorize()
     {
-        $title = $this->route('title');
+        /**
+         *
+         */
+        if (! Auth::check()) {
+            return false;
+        }
 
-        return $this->user()->can('update', $title);
+        /**
+         * Confirms user can update the title through the Titles Policy
+         */
+        return Auth::user()->can('update', TitlePolicy::class);
     }
 
     public function rules()
