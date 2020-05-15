@@ -13,14 +13,8 @@ class Wrestler extends SingleRosterMember
         Concerns\HasAHeight,
         Concerns\CanBeStableMember,
         Concerns\CanBeTagTeamPartner,
-        Concerns\CanBeBooked;
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+        Concerns\CanBeBooked,
+        Concerns\Unguarded;
 
     /**
      * The attributes that should be cast to native types.

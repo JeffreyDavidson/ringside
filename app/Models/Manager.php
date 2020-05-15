@@ -11,14 +11,8 @@ class Manager extends SingleRosterMember
     use SoftDeletes,
         HasCustomRelationships,
         Concerns\HasFullName,
-        Concerns\CanBeStableMember;
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+        Concerns\CanBeStableMember,
+        Concerns\Unguarded;
 
     /**
      * The attributes that should be cast to native types.

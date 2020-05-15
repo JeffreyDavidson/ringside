@@ -8,14 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use SoftDeletes;
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+    use SoftDeletes,
+        Concerns\Unguarded;
 
     /**
      * The attributes that should be mutated to dates.

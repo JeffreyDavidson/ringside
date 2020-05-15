@@ -14,7 +14,8 @@ class Stable extends Model
         HasCachedAttributes,
         HasCustomRelationships,
         Concerns\CanBeRetired,
-        Concerns\CanBeActivated;
+        Concerns\CanBeActivated,
+        Concerns\Unguarded;
 
     /**
      * The attributes that aren't mass assignable.

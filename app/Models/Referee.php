@@ -9,14 +9,8 @@ class Referee extends SingleRosterMember
 {
     use SoftDeletes,
         Concerns\HasFullName,
-        Concerns\CanBeBooked;
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+        Concerns\CanBeBooked,
+        Concerns\Unguarded;
 
     /**
      * The attributes that should be cast to native types.

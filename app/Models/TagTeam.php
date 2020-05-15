@@ -16,7 +16,8 @@ class TagTeam extends Model
         Concerns\CanBeRetired,
         Concerns\CanBeSuspended,
         Concerns\CanBeEmployed,
-        Concerns\CanBeBooked;
+        Concerns\CanBeBooked,
+        Concerns\Unguarded;
 
     /**
      * The attributes that aren't mass assignable.

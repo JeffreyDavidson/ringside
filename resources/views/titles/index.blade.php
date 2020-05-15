@@ -13,22 +13,22 @@
             </div>
         </x-portlet>
 
-        <x-portlet title="Future Activation And Unactivated Titles">
+        <!-- <x-portlet title="Future Activation And Unactivated Titles">
             <div class="kt-portlet__body">
                 <livewire:titles.future-activation-and-unactivated-titles>
             </div>
-        </x-portlet>
+        </x-portlet> -->
 
-        <x-portlet title="Inactive Titles">
+        <!-- <x-portlet title="Inactive Titles">
             <div class="kt-portlet__body">
                 <livewire:titles.inactive-titles>
             </div>
-        </x-portlet>
+        </x-portlet> -->
 
-        <x-portlet title="Retired Titles">
+        <!-- <x-portlet title="Retired Titles">
             <div class="kt-portlet__body">
                 <livewire:titles.retired-titles>
             </div>
-        </x-portlet>
+        </x-portlet> -->
     </x-content>
 </x-layouts.app>
