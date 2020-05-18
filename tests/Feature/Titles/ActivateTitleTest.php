@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Titles;
 
+use Carbon\Carbon;
 use App\Enums\Role;
 use Tests\TestCase;
+use App\Enums\TitleStatus;
 use Tests\Factories\TitleFactory;
+use Tests\Factories\ActivationFactory;
 use App\Http\Requests\Titles\ActivateRequest;
-use App\Exceptions\CannotBeActivatedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Controllers\Titles\ActivateController;
 
@@ -20,14 +22,23 @@ class ActivateTitleTest extends TestCase
     /** @test */
     public function an_administrator_can_activate_a_future_activation_title()
     {
+        $now = now();
+        Carbon::setTestNow($now);
+
         $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->futureActivation()->create();
+        $title = TitleFactory::new()
+            ->futureActivation(
+                ActivationFactory::new()->started($now->addDays(2))
+            )
+            ->create();
 
         $response = $this->activateRequest($title);
 
         $response->assertRedirect(route('titles.index'));
-        tap($title->fresh(), function ($title) {
-            $this->assertTrue($title->isCurrentlyActivated());
+        tap($title->fresh(), function ($title) use ($now) {
+            $this->assertEquals(TitleStatus::ACTIVE, $title->status);
+            $this->assertCount(1, $title->activations);
+            $this->assertEquals($now->toDateTimeString(), $title->activations->first()->started_at->toDateTimeString());
         });
     }
 
@@ -50,19 +61,6 @@ class ActivateTitleTest extends TestCase
         $response = $this->activateRequest($title);
 
         $response->assertRedirect(route('login'));
-    }
-
-    /** @test */
-    public function an_active_title_cannot_be_activated()
-    {
-        $this->withoutExceptionHandling();
-
-        $this->actAs(Role::ADMINISTRATOR);
-        $title = TitleFactory::new()->active()->create();
-
-        $this->expectException(CannotBeActivatedException::class);
-
-        $this->activateRequest($title);
     }
 
     /** @test */

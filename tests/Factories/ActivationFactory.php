@@ -68,16 +68,15 @@ class ActivationFactory extends BaseFactory
 
     public function started($startDate = 'now')
     {
-        return tap(clone $this)->overwriteDefaults([
-            'started_at' => $startDate instanceof Carbon ? $startDate : new Carbon($startDate),
-        ]);
+        $clone = clone $this;
+        $clone->startDate = $startDate instanceof Carbon ? $startDate : new Carbon($startDate);
+
+        return $clone;
     }
 
     public function ended($endDate = 'now')
     {
-        return tap(clone $this)->overwriteDefaults([
-            'ended_at' => $endDate instanceof Carbon ? $endDate : new Carbon($endDate),
-        ]);
+        return tap(clone $this)->endDate = $endDate instanceof Carbon ? $endDate : new Carbon($endDate);
     }
 
     public function forTitle(Title $title)
@@ -93,4 +92,3 @@ class ActivationFactory extends BaseFactory
         return $clone;
     }
 }
-

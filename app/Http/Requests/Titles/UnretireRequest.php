@@ -15,7 +15,7 @@ class UnretireRequest extends FormRequest
             return false;
         }
 
-        if (! $title->isRetired()) {
+        if (! $title->canBeUnretired()) {
             throw new CannotBeUnretiredException();
         }
 

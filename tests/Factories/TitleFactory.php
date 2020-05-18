@@ -55,7 +55,7 @@ class TitleFactory extends BaseFactory
         ];
     }
 
-    public function active(): TitleFactory
+    public function active(ActivationFactory $activationFactory = null): TitleFactory
     {
         $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::ACTIVE,
@@ -77,9 +77,13 @@ class TitleFactory extends BaseFactory
 
     public function futureActivation(): TitleFactory
     {
-        return tap(clone $this)->overwriteDefaults([
+        $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::FUTURE_ACTIVATION,
         ]);
+
+        $clone->activationFactory = ActivationFactory::new()->started(now()->addDays(4));
+
+        return $clone;
     }
 
     public function retired(): TitleFactory

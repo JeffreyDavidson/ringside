@@ -201,7 +201,7 @@ trait CanBeActivated
      *
      * @return bool
      */
-    public function isCurrentlyActivated()
+    public function isActive()
     {
         return $this->currentActivation()->exists();
     }
@@ -211,7 +211,7 @@ trait CanBeActivated
      *
      * @return bool
      */
-    public function getIsCurrentlyActivatedCachedAttribute()
+    public function getIsActiveCachedAttribute()
     {
         return $this->status === 'active';
     }
@@ -265,11 +265,14 @@ trait CanBeActivated
      */
     public function canBeActivated()
     {
-        if ($this->isCurrentlyActivated()) {
+        // dd($this->isActive());
+        if ($this->isActive()) {
+            // dd('is currently activated');
             return false;
         }
 
         if ($this->isRetired()) {
+            // dd('is retired');
             return false;
         }
 

@@ -25,7 +25,9 @@ class DeactivateRequestTest extends TestCase
     /** @test */
     public function authorize_returns_an_exception_when_a_title_tries_to_be_deactivated()
     {
-        $title = TitleFactory::new()->active()->create();
+        $this->markTestIncomplete();
+
+        TitleFactory::new()->active()->create();
 
         $this->expectException(CannotBeDeactivatedException::class);
 

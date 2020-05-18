@@ -3,10 +3,11 @@
 namespace Tests\Integration;
 
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
-use Tests\Factories\TitleFactory;
 use Tests\TestCase;
+use Tests\Factories\TitleFactory;
+use Illuminate\Support\Facades\Event;
+use App\Exceptions\CannotBeActivatedException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * @group titles
@@ -156,5 +157,17 @@ class TitleTest extends TestCase
 
         $this->assertEquals($yesterday->toDateTimeString(), $title->currentActivation->started_at->toDateTimeString());
         $this->assertEquals($yesterday->toDateTimeString(), $title->previousRetirement->ended_at->toDateTimeString());
+    }
+
+    /** @test */
+    public function an_active_title_cannot_be_activated()
+    {
+        $this->withoutExceptionHandling();
+
+        $title = TitleFactory::new()->active()->create();
+
+        $this->expectException(CannotBeActivatedException::class);
+
+        $this->activateRequest($title);
     }
 }

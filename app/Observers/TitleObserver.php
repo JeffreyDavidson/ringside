@@ -11,7 +11,7 @@ class TitleObserver
     {
         if ($title->isRetired()) {
             $title->status = TitleStatus::RETIRED;
-        } elseif ($title->isCurrentlyActivated()) {
+        } elseif ($title->isActive()) {
             $title->status = TitleStatus::ACTIVE;
         } elseif ($title->isDeactivated()) {
             $title->status = TitleStatus::INACTIVE;
