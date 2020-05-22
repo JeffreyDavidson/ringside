@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Titles;
 
-use Carbon\Carbon;
 use App\Enums\Role;
-use Tests\TestCase;
 use App\Enums\TitleStatus;
-use Tests\Factories\TitleFactory;
-use Tests\Factories\ActivationFactory;
-use App\Http\Requests\Titles\ActivateRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Controllers\Titles\ActivateController;
+use App\Http\Requests\Titles\ActivateRequest;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\ActivationFactory;
+use Tests\Factories\TitleFactory;
+use Tests\TestCase;
 
 /**
  * @group titles
@@ -20,7 +20,7 @@ class ActivateTitleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_administrator_can_activate_a_future_activation_title()
+    public function invoke_method_activates_a_future_activation_title()
     {
         $now = now();
         Carbon::setTestNow($now);

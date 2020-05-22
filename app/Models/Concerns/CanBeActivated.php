@@ -189,9 +189,9 @@ trait CanBeActivated
      */
     public function deactivate($deactivatedAt = null)
     {
-        $deactivatedate = $deactivatedAt ?? now();
+        $deactivatedDate = $deactivatedAt ?? now();
 
-        $this->currentActivation()->update(['ended_at' => $deactivatedate]);
+        $this->currentActivation()->update(['ended_at' => $deactivatedDate]);
 
         return $this->touch();
     }

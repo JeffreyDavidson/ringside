@@ -2,14 +2,14 @@
 
 namespace Tests\Factories;
 
-use App\Enums\ManagerStatus;
 use App\Models\Manager;
-use Carbon\Carbon;
-use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
+use App\Models\TagTeam;
+use App\Enums\ManagerStatus;
 use Faker\Generator as Faker;
+use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
+
 class ManagerFactory extends BaseFactory
 {
-
     protected string $modelClass = Manager::class;
 
     public function create(array $extra = []): Manager
@@ -29,7 +29,6 @@ class ManagerFactory extends BaseFactory
             'last_name' => $faker->lastName,
             'status' => ManagerStatus::PENDING_EMPLOYMENT,
         ];
-
     }
 
     public function available(): ManagerFactory
@@ -66,5 +65,12 @@ class ManagerFactory extends BaseFactory
             'status' => ManagerStatus::INJURED,
         ]);
     }
-}
 
+    public function forTagTeam(TagTeam $tagTeam)
+    {
+        $clone = clone $this;
+        $clone->tagTeam = $tagTeam;
+
+        return $clone;
+    }
+}

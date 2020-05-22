@@ -3,6 +3,7 @@
 namespace Tests\Unit\Http\Requests\Managers;
 
 use App\Http\Requests\Managers\UpdateRequest;
+use App\Rules\ConditionalEmploymentStartDateRule;
 use JMac\Testing\Traits\AdditionalAssertions;
 use Tests\TestCase;
 
@@ -28,7 +29,8 @@ class UpdateRequestTest extends TestCase
         $this->assertValidationRules([
             'first_name' => ['required', 'string', 'min:3'],
             'last_name' => ['required', 'string', 'min:3'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
         ], $this->subject->rules());
+
+        // $this->assertValidationRuleContains('started_at', ConditionalEmploymentStartDateRule::class);
     }
 }
