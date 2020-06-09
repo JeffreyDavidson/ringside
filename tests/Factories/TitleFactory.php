@@ -68,33 +68,42 @@ class TitleFactory extends BaseFactory
         return $clone;
     }
 
-    public function inactive(): TitleFactory
+    public function inactive(ActivationFactory $activationFactory = null): TitleFactory
     {
-        return tap(clone $this)->overwriteDefaults([
+        $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::INACTIVE,
         ]);
+
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->subDays(4))->ended(now()->subDays(1));
+
+        $clone->retirementFactory = null;
+
+        return $clone;
     }
 
-    public function futureActivation(): TitleFactory
+    public function futureActivation(ActivationFactory $activationFactory = null): TitleFactory
     {
         $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::FUTURE_ACTIVATION,
         ]);
 
-        $clone->activationFactory = ActivationFactory::new()->started(now()->addDays(4));
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started(now()->addDays(4));
 
         return $clone;
     }
 
-    public function retired(): TitleFactory
+    public function retired(ActivationFactory $activationFactory = null, RetirementFactory $retirementFactory = null): TitleFactory
     {
         $clone = tap(clone $this)->overwriteDefaults([
             'status' => TitleStatus::RETIRED,
         ]);
 
-        $clone->activationFactory = ActivationFactory::new()->started(now()->subMonths(1))->ended(now()->subDays(3));
+        $start = now()->subMonths(1);
+        $end = now()->subDays(3);
 
-        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started(now());
+        $clone->activationFactory = $activationFactory ?? ActivationFactory::new()->started($start)->ended($end);
+
+        $clone->retirementFactory = $retirementFactory ?? RetirementFactory::new()->started($end);
 
         return $clone;
     }

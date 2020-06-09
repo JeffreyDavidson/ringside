@@ -10,14 +10,8 @@
             <tr>
                 <td>{{ $title->id }}</td>
                 <td>{{ $title->name }}</td>
-                <td>{{ $title->deactivated_at->toDateString() }}</td>
+                <td>{{ $title->current_deactivated_at->toDateString() }}</td>
                 <td>
-                    {{-- @include('titles.partials.action-cell', [
-                        'title' => $title,
-                        'actions' => collect([
-                            'activate'
-                        ])
-                    ]) --}}
                     <x-actions-dropdown>
                         <x-buttons.view :route="route('titles.show', $title)" />
                         <x-buttons.edit :route="route('titles.edit', $title)" />

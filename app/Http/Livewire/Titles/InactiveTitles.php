@@ -14,8 +14,15 @@ class InactiveTitles extends Component
 
     public function render()
     {
+        $inactiveTitles = Title::query()
+            ->inactive()
+            ->withCurrentDeactivatedAtDate()
+            ->orderByCurrentDeactivatedAtDate()
+            ->orderBy('name')
+            ->paginate($this->perPage);
+
         return view('livewire.titles.inactive-titles', [
-            'inactiveTitles' => Title::inactive()->paginate($this->perPage)
+            'inactiveTitles' => $inactiveTitles
         ]);
     }
 }

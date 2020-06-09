@@ -69,6 +69,7 @@ class ActivationFactory extends BaseFactory
     public function started($startDate = 'now')
     {
         $clone = clone $this;
+
         $clone->startDate = $startDate instanceof Carbon ? $startDate : new Carbon($startDate);
 
         return $clone;
@@ -76,7 +77,11 @@ class ActivationFactory extends BaseFactory
 
     public function ended($endDate = 'now')
     {
-        return tap(clone $this)->endDate = $endDate instanceof Carbon ? $endDate : new Carbon($endDate);
+        $clone = clone $this;
+
+        $clone->endDate = $endDate instanceof Carbon ? $endDate : new Carbon($endDate);
+
+        return $clone;
     }
 
     public function forTitle(Title $title)

@@ -42,6 +42,18 @@ trait CanBeActivated
     }
 
     /**
+     * Get the first activation of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function firstActivation()
+    {
+        return $this->morphOne(Activation::class, 'activatable')
+                    ->oldest('started_at')
+                    ->limit(1);
+    }
+
+    /**
      * Get the future activation of the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
@@ -84,10 +96,7 @@ trait CanBeActivated
      */
     public function scopeFutureActivation($query)
     {
-        return $query->whereHas('futureActivation')
-            ->with('activations')
-            ->withActivatedAtDate()
-            ->orderByActivationDate('asc');
+        return $query->whereHas('futureActivation');
     }
 
     /**
@@ -97,9 +106,7 @@ trait CanBeActivated
      */
     public function scopeActive($query)
     {
-        return $query->whereHas('currentActivation')
-            ->with('activations')
-            ->withActivatedAtDate();
+        return $query->whereHas('currentActivation');
     }
 
     /**
@@ -111,9 +118,7 @@ trait CanBeActivated
     {
         return $query->whereHas('previousActivation')
                     ->whereDoesntHave('currentActivation')
-                    ->whereDoesntHave('currentRetirement')
-                    ->with('activations')
-                    ->withDeactivatedAtDate();
+                    ->whereDoesntHave('currentRetirement');
     }
 
     /**
@@ -131,14 +136,14 @@ trait CanBeActivated
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeWithActivatedAtDate($query)
+    public function scopeWithFirstActivatedAtDate($query)
     {
-        return $query->addSelect(['activated_at' => Activation::select('started_at')
+        return $query->addSelect(['first_activated_at' => Activation::select('started_at')
             ->whereColumn('activatable_id', $this->getTable().'.id')
             ->where('activatable_type', $this->getMorphClass())
-            ->orderBy('started_at', 'desc')
+            ->oldest('started_at')
             ->limit(1)
-        ])->withCasts(['activated_at' => 'datetime']);
+        ])->withCasts(['first_activated_at' => 'datetime']);
     }
 
     /**
@@ -146,24 +151,34 @@ trait CanBeActivated
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeWithDeactivatedAtDate($query)
+    public function scopeWithCurrentDeactivatedAtDate($query)
     {
-        return $query->addSelect(['deactivated_at' => Activation::select('ended_at')
+        return $query->addSelect(['current_deactivated_at' => Activation::select('ended_at')
             ->whereColumn('activatable_id', $this->getTable().'.id')
             ->where('activatable_type', $this->getMorphClass())
             ->orderBy('ended_at', 'desc')
             ->limit(1)
-        ])->withCasts(['deactivated_at' => 'datetime']);
+        ])->withCasts(['current_deactivated_at' => 'datetime']);
     }
 
     /**
-     * Scope a query to order by the moels activation date.
+     * Scope a query to order by the models first activation date.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeOrderByActivationDate($query, $direction = 'desc')
+    public function scopeOrderByFirstActivatedAtDate($query, $direction = 'asc')
     {
-        return $query->orderBy('activated_at', $direction);
+        return $query->orderBy('first_activated_at', $direction);
+    }
+
+    /**
+     * Scope a query to order by the models current deactivation date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeOrderByCurrentDeactivatedAtDate($query, $direction = 'asc')
+    {
+        return $query->orderBy('current_deactivated_at', $direction);
     }
 
     /**

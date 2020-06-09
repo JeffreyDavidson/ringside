@@ -11,19 +11,13 @@
                 <td>{{ $title->id }}</td>
                 <td>{{ $title->name }}</td>
                 <td>
-                    @if($title->hasFutureActivation())
-                        {{ $title->activated_at->toDateString() }}
+                    @isset($title->first_activated_at)
+                        {{ $title->first_activated_at->toDateString() }}
                     @else
                         TBD
-                    @endif
+                    @endisset
                 </td>
                 <td>
-                    {{-- @include('titles.partials.action-cell', [
-                        'title' => $title,
-                        'actions' => collect([
-                            'activate'
-                        ])
-                    ]) --}}
                     <x-actions-dropdown>
                         <x-buttons.view :route="route('titles.show', $title)" />
                         <x-buttons.edit :route="route('titles.edit', $title)" />

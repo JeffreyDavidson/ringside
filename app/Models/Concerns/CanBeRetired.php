@@ -72,9 +72,7 @@ trait CanBeRetired
      */
     public function scopeRetired($query)
     {
-        return $this->whereHas('currentRetirement')
-                    ->with('retirements')
-                    ->withRetiredAtDate();
+        return $this->whereHas('currentRetirement');
     }
 
     /**
@@ -92,14 +90,24 @@ trait CanBeRetired
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeWithRetiredAtDate($query)
+    public function scopeWithCurrentRetiredAtDate($query)
     {
-        return $query->addSelect(['retired_at' => Retirement::select('started_at')
+        return $query->addSelect(['current_retired_at' => Retirement::select('started_at')
             ->whereColumn('retiree_id', $this->getTable().'.id')
             ->where('retiree_type', $this->getMorphClass())
-            ->orderBy('started_at', 'desc')
+            ->oldest('started_at')
             ->limit(1)
-        ])->withCasts(['retired_at' => 'datetime']);
+        ])->withCasts(['current_retired_at' => 'datetime']);
+    }
+
+    /**
+     * Scope a query to order by the models activation date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeOrderByCurrentRetiredAtDate($query, $direction = 'asc')
+    {
+        return $query->orderBy('current_retired_at', $direction);
     }
 
     /**

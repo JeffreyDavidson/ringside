@@ -18,6 +18,9 @@ class FutureActivationAndUnactivatedTitles extends Component
             ->futureActivation()
             ->orWhere
             ->unactivated()
+            ->withFirstActivatedAtDate()
+            ->orderByNullsLast('first_activated_at')
+            ->orderBy('name')
             ->paginate();
 
         return view('livewire.titles.future-activation-and-unactivated-titles', [
