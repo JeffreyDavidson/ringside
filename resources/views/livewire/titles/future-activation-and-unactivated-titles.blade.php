@@ -27,7 +27,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="5">No matching records found</td></tr>
+            <tr><td colspan="4">No matching records found</td></tr>
         @endforelse
     </tbody>
 </x-datatable>

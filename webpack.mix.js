@@ -50,6 +50,8 @@ mix.copyDirectory("resources/vendors/line-awesome/fonts", "public/css/font");
 mix.disableSuccessNotifications();
 mix.sourceMaps(false, "inline-source-map");
 
+mix.js("resources/js/entries/app.js", "public/js/app.js");
+
 /************************************************************************
  * Extract all the vendor files, these are anything that appear in more
  * than ~3 of our entries. These all end up in vendor.js

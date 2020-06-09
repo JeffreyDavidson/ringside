@@ -25,7 +25,7 @@ class TitlesController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $title = Title::create($request->except(['activated_at']));
+        $title = Title::create($request->only(['name']));
 
         if ($request->filled('activated_at')) {
             $title->activate($request->input('activated_at'));
