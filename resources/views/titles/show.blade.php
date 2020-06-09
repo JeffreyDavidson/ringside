@@ -7,11 +7,11 @@
         </x-slot>
     </x-subheader>
     <x-content>
-        @if($title->isUnActivated())
+        @empty($title->first_activated_at)
             <div class="alert alert-warning" role="alert">
                 <strong>Warning!</strong>&nbsp;This title is not activated!
             </div>
-        @endif
+        @endempty
         <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
             <div id="kt_profile_aside" class="kt-grid__item kt-app__toggle kt-app__aside">
                 <x-portlet title="Information" headBorder="false">
@@ -36,10 +36,10 @@
                             <div class="kt-widget__body">
                                 <div class="kt-widget__content">
                                     <div class="kt-widget__info">
-                                        @if($title->hasPreviouslyBeenActivated())
+                                        @isset($title->first_activated_at)
                                             <span class="kt-widget__label">Date Introduced:</span>
-                                            <span class="kt-widget__data">{{ $title->activatedAt->toDateString() }}</span>
-                                        @endif
+                                            <span class="kt-widget__data">{{ $title->first_activated_at->toDateString() }}</span>
+                                        @endisset
                                     </div>
                                 </div>
                             </div>

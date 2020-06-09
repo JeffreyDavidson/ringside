@@ -371,4 +371,18 @@ trait CanBeActivated
 
         return $this->getRelation('futureActivation')->first();
     }
+
+    /**
+     * Get the previous activation of the model.
+     *
+     * @return App\Models\Activation
+     */
+    public function getFirstActivatedAtAttribute()
+    {
+        if (! $this->relationLoaded('currentActivation')) {
+            $this->setRelation('currentActivation', $this->currentActivation()->get());
+        }
+
+        return $this->getRelation('currentActivation')->first()->started_at;
+    }
 }
