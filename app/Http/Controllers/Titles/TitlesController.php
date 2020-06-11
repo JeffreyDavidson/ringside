@@ -25,7 +25,7 @@ class TitlesController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $title = Title::create($request->only(['name']));
+        $title = Title::create($request->validatedExcept('activated_at'));
 
         if ($request->filled('activated_at')) {
             $title->activate($request->input('activated_at'));
@@ -50,7 +50,7 @@ class TitlesController extends Controller
 
     public function update(UpdateRequest $request, Title $title)
     {
-        $title->update($request->except('activated_at'));
+        $title->update($request->validatedExcept('activated_at'));
 
         if ($request->filled('activated_at')) {
             $title->activate($request->input('activated_at'));

@@ -23,6 +23,7 @@ class ActiveTitles extends Component
             ->active()
             ->withFirstActivatedAtDate()
             ->orderByFirstActivatedAtDate()
+            ->orderBy('name')
             ->paginate($this->perPage);
         
         return view('livewire.titles.active-titles', [

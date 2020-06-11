@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,6 +34,16 @@ class AppServiceProvider extends ServiceProvider
             $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
 
             return $this->orderByRaw("$column IS NULL $direction, $column $direction");
+        });
+
+        Request::macro('validatedExcept', function ($keys) {
+            $keys = is_array($keys) ? $keys : func_get_args();
+
+            $results = $this->validated();
+
+            Arr::forget($results, $keys);
+
+            return $results;
         });
     }
 }

@@ -27,11 +27,11 @@ class VenuesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Venue $venue)
     {
         $this->authorize('create', Venue::class);
 
-        return view('venues.create', new VenueViewModel());
+        return view('venues.create', compact('venue'));
     }
 
     /**
@@ -42,7 +42,7 @@ class VenuesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Venue::create($request->all());
+        Venue::create($request->validated());
 
         return redirect()->route('venues.index');
     }
@@ -70,7 +70,7 @@ class VenuesController extends Controller
     {
         $this->authorize('update', Venue::class);
 
-        return view('venues.edit', new VenueViewModel($venue));
+        return view('venues.edit', compact('venue'));
     }
 
     /**

@@ -16,10 +16,7 @@ class UpdateRequest extends FormRequest
             return false;
         }
 
-        /**
-         * Confirms user can update the title through the Titles Policy
-         */
-        return Auth::user()->can('update', TitlePolicy::class);
+        return $this->user()->can('update', Title::class);
     }
 
     public function rules()

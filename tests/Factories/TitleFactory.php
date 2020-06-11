@@ -6,6 +6,7 @@ use App\Enums\TitleStatus;
 use App\Models\Title;
 use Christophrumpel\LaravelFactoriesReloaded\BaseFactory;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 class TitleFactory extends BaseFactory
 {
@@ -50,7 +51,7 @@ class TitleFactory extends BaseFactory
     public function getDefaults(Faker $faker): array
     {
         return [
-            'name' => $faker->sentence,
+            'name' => Str::title($faker->unique()->words(2, true)). ' Title',
             'status' => TitleStatus::__default,
         ];
     }

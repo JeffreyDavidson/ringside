@@ -139,7 +139,7 @@ trait CanBeActivated
     public function scopeWithFirstActivatedAtDate($query)
     {
         return $query->addSelect(['first_activated_at' => Activation::select('started_at')
-            ->whereColumn('activatable_id', $this->getTable().'.id')
+            ->whereColumn('activatable_id', $query->qualifyColumn('id'))
             ->where('activatable_type', $this->getMorphClass())
             ->oldest('started_at')
             ->limit(1)
@@ -154,7 +154,7 @@ trait CanBeActivated
     public function scopeWithCurrentDeactivatedAtDate($query)
     {
         return $query->addSelect(['current_deactivated_at' => Activation::select('ended_at')
-            ->whereColumn('activatable_id', $this->getTable().'.id')
+            ->whereColumn('activatable_id', $query->qualifyColumn('id'))
             ->where('activatable_type', $this->getMorphClass())
             ->orderBy('ended_at', 'desc')
             ->limit(1)
@@ -168,7 +168,7 @@ trait CanBeActivated
      */
     public function scopeOrderByFirstActivatedAtDate($query, $direction = 'asc')
     {
-        return $query->orderBy('first_activated_at', $direction);
+        return $query->orderByRaw("DATE(first_activated_at) $direction");
     }
 
     /**
@@ -178,7 +178,7 @@ trait CanBeActivated
      */
     public function scopeOrderByCurrentDeactivatedAtDate($query, $direction = 'asc')
     {
-        return $query->orderBy('current_deactivated_at', $direction);
+        return $query->orderByRaw("DATE(current_deactivated_at) $direction");
     }
 
     /**
@@ -280,14 +280,11 @@ trait CanBeActivated
      */
     public function canBeActivated()
     {
-        // dd($this->isActive());
         if ($this->isActive()) {
-            // dd('is currently activated');
             return false;
         }
 
         if ($this->isRetired()) {
-            // dd('is retired');
             return false;
         }
 
@@ -370,19 +367,5 @@ trait CanBeActivated
         }
 
         return $this->getRelation('futureActivation')->first();
-    }
-
-    /**
-     * Get the previous activation of the model.
-     *
-     * @return App\Models\Activation
-     */
-    public function getFirstActivatedAtAttribute()
-    {
-        if (! $this->relationLoaded('currentActivation')) {
-            $this->setRelation('currentActivation', $this->currentActivation()->get());
-        }
-
-        return $this->getRelation('currentActivation')->first()->started_at;
     }
 }

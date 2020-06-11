@@ -101,13 +101,13 @@ trait CanBeRetired
     }
 
     /**
-     * Scope a query to order by the models activation date.
+     * Scope a query to order by the models current retirement date.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeOrderByCurrentRetiredAtDate($query, $direction = 'asc')
     {
-        return $query->orderBy('current_retired_at', $direction);
+        return $query->orderByRaw("DATE(current_retired_at) $direction");
     }
 
     /**

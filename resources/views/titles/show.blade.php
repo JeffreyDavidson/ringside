@@ -7,7 +7,7 @@
         </x-slot>
     </x-subheader>
     <x-content>
-        @empty($title->first_activated_at)
+        @empty($title->activated_at)
             <div class="alert alert-warning" role="alert">
                 <strong>Warning!</strong>&nbsp;This title is not activated!
             </div>
@@ -36,9 +36,9 @@
                             <div class="kt-widget__body">
                                 <div class="kt-widget__content">
                                     <div class="kt-widget__info">
-                                        @isset($title->first_activated_at)
+                                        @isset($title->activated_at)
                                             <span class="kt-widget__label">Date Introduced:</span>
-                                            <span class="kt-widget__data">{{ $title->first_activated_at->toDateString() }}</span>
+                                            <span class="kt-widget__data">{{ $title->activated_at->toDateString() }}</span>
                                         @endisset
                                     </div>
                                 </div>

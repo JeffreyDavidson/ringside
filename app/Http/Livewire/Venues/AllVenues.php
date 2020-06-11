@@ -19,8 +19,12 @@ class AllVenues extends Component
 
     public function render()
     {
+        $venues = Venue::query()
+            ->orderBy('name')
+            ->paginate($this->perPage);
+
         return view('livewire.venues.all-venues', [
-            'venues' => Venue::paginate($this->perPage)
+            'venues' => $venues
         ]);
     }
 }
