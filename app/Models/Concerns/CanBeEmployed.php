@@ -219,16 +219,6 @@ trait CanBeEmployed
     }
 
     /**
-     * Check to see if the model is activated.
-     *
-     * @return bool
-     */
-    public function isPendingEmployment()
-    {
-        return $this->futureEmployment()->exists();
-    }
-
-    /**
      * Check to see if the model is employed.
      *
      * @return bool
