@@ -37,7 +37,7 @@ class TagTeamFactoryTest extends TestCase
     }
 
     /** @test */
-    public function existing_wrestlers_can_be_a_tag_team()
+    public function existing_wrestlers_can_form_a_tag_team()
     {
         $wrestlers = WrestlerFactory::new()->times(2)->create();
 
@@ -46,14 +46,6 @@ class TagTeamFactoryTest extends TestCase
         $this->assertCount(2, $tagTeam->wrestlers);
         $this->assertTrue($tagTeam->wrestlers->contains($wrestlers[0]));
         $this->assertTrue($tagTeam->wrestlers->contains($wrestlers[1]));
-    }
-
-    /** @test */
-    public function wrestlers_can_be_added_by_a_tag_team()
-    {
-        $tagTeam = TagTeamFactory::new()->withWrestlers()->create();
-
-        $this->assertCount(2, $tagTeam->wrestlers);
     }
 
     /** @test */
