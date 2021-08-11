@@ -11,6 +11,13 @@ class Injury extends Model
         Concerns\Unguarded;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'injuries';
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array

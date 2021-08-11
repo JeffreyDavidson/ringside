@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\TagTeamStatus;
 use App\Models\TagTeam;
+use App\Models\User;
 use Tests\TestCase;
 
 /**
@@ -52,5 +53,13 @@ class TagTeamTest extends TestCase
         $tagTeam = new TagTeam();
 
         $this->assertInstanceOf(TagTeamStatus::class, $tagTeam->status);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_can_be_associated_to_a_user()
+    {
+        $this->assertInstanceOf(User::class, (new TagTeam)->user);
     }
 }

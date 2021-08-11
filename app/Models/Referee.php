@@ -26,6 +26,13 @@ class Referee extends SingleRosterMember
     }
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'referees';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

@@ -36,17 +36,17 @@ class TitleUnretireStrategy extends BaseUnretireStrategy implements UnretireStra
     /**
      * Unretire an unretirable model.
      *
-     * @param  string|null $unretireDate
+     * @param  string|null $unretiredDate
      * @return void
      */
-    public function unretire(string $unretireDate = null)
+    public function unretire(string $unretiredDate = null)
     {
         throw_unless($this->unretirable->canBeUnretired(), new CannotBeUnretiredException);
 
-        $unretireDate = $unretireDate ?: now();
+        $unretiredDate ??= now()->toDateTimeString();
 
-        $this->titleRepository->unretire($this->unretirable, $unretireDate);
-        $this->titleRepository->activate($this->unretirable, $unretireDate);
+        $this->titleRepository->unretire($this->unretirable, $unretiredDate);
+        $this->titleRepository->activate($this->unretirable, $unretiredDate);
         $this->unretirable->updateStatusAndSave();
     }
 }

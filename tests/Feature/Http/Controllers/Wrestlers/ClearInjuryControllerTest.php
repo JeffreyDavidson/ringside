@@ -44,6 +44,7 @@ class ClearInjuryControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
+
         app(WrestlerService::class)->injure($wrestler);
         $wrestler->currentTagTeam->updateStatusAndSave();
 

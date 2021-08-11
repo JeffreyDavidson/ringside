@@ -61,12 +61,12 @@ class ManagerRepository
      * Employ a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $startDate
+     * @param  string $employmentDate
      * @return \App\Models\Manager $manager
      */
-    public function employ(Manager $manager, string $startDate)
+    public function employ(Manager $manager, string $employmentDate)
     {
-        return $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $startDate]);
+        return $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate]);
     }
 
     /**
@@ -109,12 +109,12 @@ class ManagerRepository
      * Retire a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $retireDate
+     * @param  string $retirementDate
      * @return \App\Models\Manager $manager
      */
-    public function retire(Manager $manager, string $retireDate)
+    public function retire(Manager $manager, string $retirementDate)
     {
-        return $manager->retirements()->create(['started_at' => $retireDate]);
+        return $manager->retirements()->create(['started_at' => $retirementDate]);
     }
 
     /**

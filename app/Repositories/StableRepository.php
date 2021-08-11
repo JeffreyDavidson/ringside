@@ -38,7 +38,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
     }
 
     /**
-     * Delete a stable.
+     * Delete a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @return void
@@ -49,7 +49,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
     }
 
     /**
-     * Restore a stable.
+     * Restore a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @return void

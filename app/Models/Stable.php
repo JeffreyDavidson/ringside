@@ -33,6 +33,13 @@ class Stable extends Model implements Activatable, CanBeDisbanded, Deactivatable
     }
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'stables';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

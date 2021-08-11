@@ -5,8 +5,6 @@ namespace App\Strategies\Retirement;
 use App\Exceptions\CannotBeRetiredException;
 use App\Models\Contracts\Retirable;
 use App\Repositories\WrestlerRepository;
-use App\Strategies\ClearInjury\WrestlerClearInjuryStrategy;
-use App\Strategies\Reinstate\WrestlerReinstateStrategy;
 
 class WrestlerRetirementStrategy extends BaseRetirementStrategy implements RetirementStrategyInterface
 {
@@ -45,7 +43,7 @@ class WrestlerRetirementStrategy extends BaseRetirementStrategy implements Retir
     {
         throw_unless($this->retirable->canBeRetired(), new CannotBeRetiredException);
 
-        $retirementDate = $retirementDate ?: now()->toDateTimeString();
+        $retirementDate ??= now()->toDateTimeString();
 
         if ($this->retirable->isSuspended()) {
             $this->wrestlerRepository->reinstate($this->retirable, $retirementDate);
@@ -57,6 +55,7 @@ class WrestlerRetirementStrategy extends BaseRetirementStrategy implements Retir
 
         $this->wrestlerRepository->release($this->retirable, $retirementDate);
         $this->wrestlerRepository->retire($this->retirable, $retirementDate);
+
         $this->retirable->updateStatusAndSave();
 
         if ($this->retirable->currentTagTeam) {

@@ -5,8 +5,6 @@ namespace App\Strategies\Release;
 use App\Exceptions\CannotBeReleasedException;
 use App\Models\Contracts\Releasable;
 use App\Repositories\WrestlerRepository;
-use App\Strategies\ClearInjury\WrestlerClearInjuryStrategy;
-use App\Strategies\Reinstate\WrestlerReinstateStrategy;
 
 class WrestlerReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrategyInterface
 {

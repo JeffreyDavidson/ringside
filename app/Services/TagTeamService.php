@@ -34,7 +34,7 @@ class TagTeamService
     }
 
     /**
-     * Create a tag team.
+     * Create a tag team with given data.
      *
      * @param  array $data
      * @return \App\Models\TagTeam $tagTeam
@@ -53,7 +53,7 @@ class TagTeamService
     }
 
     /**
-     * Update a tag team.
+     * Update a given tag team with given data.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  array $data
@@ -73,7 +73,7 @@ class TagTeamService
     }
 
     /**
-     * Delete a tag team.
+     * Delete a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -84,7 +84,7 @@ class TagTeamService
     }
 
     /**
-     * Restore a tag team.
+     * Restore a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -95,13 +95,13 @@ class TagTeamService
     }
 
     /**
-     * Add tag team partners to a tag team.
+     * Add given wrestlers to a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  array $wrestlerIds
      * @return \App\Models\TagTeam
      */
-    public function addTagTeamPartners(TagTeam $tagTeam, array $wrestlerIds): TagTeam
+    public function addTagTeamPartners(TagTeam $tagTeam, array $wrestlerIds)
     {
         if ($wrestlerIds) {
             $tagTeam->addWrestlers($wrestlerIds, now());
@@ -111,40 +111,40 @@ class TagTeamService
     }
 
     /**
-     * Add wrestlers to a tag team.
+     * Add given wrestlers to a given tag team on a given join date.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  array  $wrestlers
-     * @param  string|null $dateJoined
+     * @param  string|null $joinDate
      *
      * @throws Exception
      *
      * @return $this
      */
-    public function addWrestlers($tagTeam, $wrestlerIds, $dateJoined = null)
+    public function addWrestlers($tagTeam, $wrestlerIds, $joinDate = null)
     {
         if (count($wrestlerIds) !== self::MAX_WRESTLERS_COUNT) {
             throw NotEnoughMembersException::forTagTeam();
         }
 
-        $dateJoined ?? now();
+        $joinDate ??= now()->toDateTimeString();
 
         $tagTeam->wrestlers()->sync([
-            $wrestlerIds[0] => ['joined_at' => $dateJoined],
-            $wrestlerIds[1] => ['joined_at' => $dateJoined],
+            $wrestlerIds[0] => ['joined_at' => $joinDate],
+            $wrestlerIds[1] => ['joined_at' => $joinDate],
         ]);
 
         return $this;
     }
 
     /**
-     * Update a tag team with tag team partners.
+     * Update a given tag team with given wrestlers.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  array $wrestlerIds
-     * @return \App\Models\TagTeam
+     * @return \App\Models\TagTeam $tagTeam
      */
-    public function updateTagTeamPartners(TagTeam $tagTeam, array $wrestlerIds): TagTeam
+    public function updateTagTeamPartners(TagTeam $tagTeam, array $wrestlerIds)
     {
         if ($tagTeam->currentWrestlers->isEmpty()) {
             if ($wrestlerIds) {
@@ -176,7 +176,7 @@ class TagTeamService
     }
 
     /**
-     * Employ a tag team.
+     * Employ a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -193,7 +193,7 @@ class TagTeamService
     }
 
     /**
-     * Release a tag team.
+     * Release a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -204,7 +204,7 @@ class TagTeamService
     }
 
     /**
-     * Suspend a tag team.
+     * Suspend a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -215,7 +215,7 @@ class TagTeamService
     }
 
     /**
-     * Reinstate a tag team.
+     * Reinstate a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -226,7 +226,7 @@ class TagTeamService
     }
 
     /**
-     * Retire a tag team.
+     * Retire a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
@@ -237,7 +237,7 @@ class TagTeamService
     }
 
     /**
-     * Unretire a tag team.
+     * Unretire a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @return void

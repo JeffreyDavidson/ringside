@@ -103,9 +103,7 @@ abstract class SingleRosterMember extends Model implements Employable, Injurable
      */
     public function scopeEmployed($query)
     {
-        return $query->whereHas('currentEmployment')
-                    ->whereDoesntHave('currentSuspension')
-                    ->whereDoesntHave('currentInjury');
+        return $query->whereHas('currentEmployment');
     }
 
     /**

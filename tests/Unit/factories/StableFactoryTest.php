@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\StableStatus;
-use App\Models\Activation;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,6 +23,12 @@ class StableFactoryTest extends TestCase
 
         $this->assertCount(1, $stable->tagTeams);
         $this->assertCount(1, $stable->wrestlers);
+        $this->assertTrue($stable->tagTeams->every(function ($tagTeam, $key) {
+            return ! is_null($tagTeam->pivot->joined_at);
+        }));
+        $this->assertTrue($stable->wrestlers->every(function ($wrestler, $key) {
+            return ! is_null($wrestler->pivot->joined_at);
+        }));
     }
 
     /**
@@ -43,8 +48,9 @@ class StableFactoryTest extends TestCase
     {
         $stable = Stable::factory()->unactivated()->create();
 
-        $this->assertEquals(StableStatus::UNACTIVATED, $stable->status);
         $this->assertCount(0, $stable->activations);
+        $this->assertCount(1, $stable->tagTeams);
+        $this->assertCount(1, $stable->wrestlers);
     }
 
     /**
@@ -70,18 +76,20 @@ class StableFactoryTest extends TestCase
     {
         $stable = Stable::factory()->inactive()->create();
 
+        $this->assertCount(1, $stable->wrestlers);
+        $this->assertCount(1, $stable->tagTeams);
         $this->assertTrue($stable->wrestlers->every(function ($wrestler, $key) {
-            return $wrestler->pivot->left_at->isPast();
+            return ! is_null($wrestler->pivot->left_at);
         }));
         $this->assertTrue($stable->tagTeams->every(function ($tagTeam, $key) {
-            return $tagTeam->pivot->left_at->isPast();
+            return ! is_null($tagTeam->pivot->left_at);
         }));
     }
 
     /**
      * @test
      */
-    public function a_future_employed_stable_has_an_mployment()
+    public function a_future_employed_stable_has_an_employment()
     {
         $stable = Stable::factory()->withFutureActivation()->create();
 

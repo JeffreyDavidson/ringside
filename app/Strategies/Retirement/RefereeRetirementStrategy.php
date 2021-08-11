@@ -43,7 +43,7 @@ class RefereeRetirementStrategy extends BaseRetirementStrategy implements Retire
     {
         throw_unless($this->retirable->canBeRetired(), new CannotBeRetiredException);
 
-        $retirementDate = $retirementDate ?: now()->toDateTimeString();
+        $retirementDate ??= now()->toDateTimeString();
 
         if ($this->retirable->isSuspended()) {
             $this->refereeRepository->reinstate($this->retirable, $retirementDate);

@@ -20,7 +20,7 @@ class EventTest extends TestCase
      */
     public function a_event_has_a_name()
     {
-        $event = Event::factory()->create(['name' => 'Example Event Name']);
+        $event = new Event(['name' => 'Example Event Name']);
 
         $this->assertEquals('Example Event Name', $event->name);
     }

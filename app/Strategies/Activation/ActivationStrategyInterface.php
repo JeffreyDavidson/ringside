@@ -7,8 +7,8 @@ interface ActivationStrategyInterface
     /**
      * Activate an activatable model.
      *
-     * @param  string|null $activatedAtDate
+     * @param  string|null $activationDate
      * @return void
      */
-    public function activate(string $activatedAtDate = null);
+    public function activate(string $activationDate = null);
 }

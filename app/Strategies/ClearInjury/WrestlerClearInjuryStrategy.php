@@ -43,7 +43,7 @@ class WrestlerClearInjuryStrategy extends BaseClearInjuryStrategy implements Cle
     {
         throw_unless($this->injurable->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
-        $recoveryDate = $recoveryDate ?? now()->toDateTimeString();
+        $recoveryDate ??= now()->toDateTimeString();
 
         $this->wrestlerRepository->clearInjury($this->injurable, $recoveryDate);
         $this->injurable->updateStatusAndSave();

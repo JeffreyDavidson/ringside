@@ -12,7 +12,6 @@ use App\Strategies\Release\ManagerReleaseStrategy;
 use App\Strategies\Retirement\ManagerRetirementStrategy;
 use App\Strategies\Suspend\ManagerSuspendStrategy;
 use App\Strategies\Unretire\ManagerUnretireStrategy;
-use Carbon\Carbon;
 
 class ManagerService
 {
@@ -24,7 +23,7 @@ class ManagerService
     protected $managerRepository;
 
     /**
-     * Create a new manger service instance.
+     * Create a new manager service instance.
      *
      * @param \App\Repositories\ManagerRepository $managerRepository
      */
@@ -34,7 +33,7 @@ class ManagerService
     }
 
     /**
-     * Create a manager.
+     * Create a manager with given data.
      *
      * @param  array $data
      * @return \App\Models\Manager $manager
@@ -43,7 +42,7 @@ class ManagerService
     {
         $manager = $this->managerRepository->create($data);
 
-        if ($data['started_at']) {
+        if (isset($data['started_at'])) {
             (new ManagerEmploymentStrategy($manager))->employ($data['started_at']);
         }
 
@@ -51,7 +50,7 @@ class ManagerService
     }
 
     /**
-     * Update a manager.
+     * Update a given manager with given data.
      *
      * @param  \App\Models\Manager $manager
      * @param  array $data
@@ -68,6 +67,13 @@ class ManagerService
         return $manager;
     }
 
+    /**
+     * Employ a given manager or update the given manager's employment date.
+     *
+     * @param  \App\Models\Manager $manager
+     * @param  string $employmentDate
+     * @return void
+     */
     public function employOrUpdateEmployment(Manager $manager, $employmentDate)
     {
         if ($manager->isNotInEmployment()) {
@@ -91,7 +97,7 @@ class ManagerService
     }
 
     /**
-     * Delete a given manager.
+     * Restore a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -102,7 +108,7 @@ class ManagerService
     }
 
     /**
-     * Clear an injury of a manager.
+     * Clear an injury of a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -113,7 +119,7 @@ class ManagerService
     }
 
     /**
-     * Injure a manager.
+     * Injure a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -124,7 +130,7 @@ class ManagerService
     }
 
     /**
-     * Employ a manager.
+     * Employ a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -135,7 +141,7 @@ class ManagerService
     }
 
     /**
-     * Employ a manager.
+     * Reinstate a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -146,7 +152,7 @@ class ManagerService
     }
 
     /**
-     * Unretire a manager.
+     * Unretire a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -157,7 +163,7 @@ class ManagerService
     }
 
     /**
-     * Unretire a manager.
+     * Suspend a manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -168,7 +174,7 @@ class ManagerService
     }
 
     /**
-     * Retire a manager.
+     * Retire a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void
@@ -179,7 +185,7 @@ class ManagerService
     }
 
     /**
-     * Release a manager.
+     * Release a given manager.
      *
      * @param  \App\Models\Manager $manager
      * @return void

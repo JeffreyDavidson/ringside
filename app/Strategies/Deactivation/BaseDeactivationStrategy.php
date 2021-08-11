@@ -44,7 +44,7 @@ class BaseDeactivationStrategy implements DeactivationStrategyInterface
     {
         throw_unless($this->deactivatable->canBeDeactivated(), new CannotBeDeactivatedException);
 
-        $deactivationDate = $deactivationDate ?? now()->toDateTimeString();
+        $deactivationDate ??= now()->toDateTimeString();
 
         $this->repository->deactivate($this->deactivatable, $deactivationDate);
         $this->deactivatable->updateStatusAndSave();

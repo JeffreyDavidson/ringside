@@ -187,50 +187,6 @@ class CanBeEmployedTest extends TestCase
      * @test
      * @dataProvider modelClassDataProvider
      */
-    public function it_can_get_future_employment_models($modelClass)
-    {
-        $pendingEmploymentModel = factory($modelClass)->states('future-employment')->create();
-        $bookableModel = factory($modelClass)->states('bookable')->create();
-        $injuredModel = factory($modelClass)->states('injured')->create();
-        $suspendedModel = factory($modelClass)->states('suspended')->create();
-        $retiredModel = factory($modelClass)->states('retired')->create();
-
-        $pendingEmploymentModels = $modelClass::pendingEmployment()->get();
-
-        $this->assertCount(1, $pendingEmploymentModels);
-        $this->assertTrue($pendingEmploymentModels->contains($pendingEmploymentModel));
-        $this->assertFalse($pendingEmploymentModels->contains($bookableModel));
-        $this->assertFalse($pendingEmploymentModels->contains($injuredModel));
-        $this->assertFalse($pendingEmploymentModels->contains($suspendedModel));
-        $this->assertFalse($pendingEmploymentModels->contains($retiredModel));
-    }
-
-    /**
-     * @test
-     * @dataProvider modelClassDataProvider
-     */
-    public function it_can_get_employed_models($modelClass)
-    {
-        $pendingEmploymentModel = factory($modelClass)->states('future-employment')->create();
-        $bookableModel = factory($modelClass)->states('bookable')->create();
-        $injuredModel = factory($modelClass)->states('injured')->create();
-        $suspendedModel = factory($modelClass)->states('suspended')->create();
-        $retiredModel = factory($modelClass)->states('retired')->create();
-
-        $employedModels = $modelClass::employed()->get();
-
-        $this->assertCount(4, $employedModels);
-        $this->assertFalse($employedModels->contains($pendingEmploymentModel));
-        $this->assertTrue($employedModels->contains($bookableModel));
-        $this->assertTrue($employedModels->contains($injuredModel));
-        $this->assertTrue($employedModels->contains($suspendedModel));
-        $this->assertTrue($employedModels->contains($retiredModel));
-    }
-
-    /**
-     * @test
-     * @dataProvider modelClassDataProvider
-     */
     public function a_single_roster_member_without_an_employment_is_future_employment($modelClass)
     {
         $model = factory($modelClass)->create();

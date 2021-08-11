@@ -43,7 +43,7 @@ class ManagerReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
     {
         throw_unless($this->releasable->canBeReleased(), new CannotBeReleasedException);
 
-        $releaseDate = $releaseDate ?? now()->toDateTimeString();
+        $releaseDate ??= now()->toDateTimeString();
 
         if ($this->releasable->isSuspended()) {
             $this->managerRepository->reinstate($this->releasable, $releaseDate);

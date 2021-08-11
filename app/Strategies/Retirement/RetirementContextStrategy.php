@@ -40,11 +40,11 @@ class RetirementContextStrategy
     /**
      * Process the retire of the model.
      *
-     * @param  string|null $retiredAt
+     * @param  string|null $retirementDate
      * @return void
      */
-    public function process(string $retiredAt = null)
+    public function process(string $retirementDate = null)
     {
-        $this->strategy->retire($retiredAt);
+        $this->strategy->retire($retirementDate);
     }
 }

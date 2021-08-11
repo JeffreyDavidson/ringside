@@ -36,16 +36,16 @@ class ManagerReinstateStrategy extends BaseReinstateStrategy implements Reinstat
     /**
      * Reinstate a reinstatable model.
      *
-     * @param  string|null $reinstatedDate
+     * @param  string|null $reinstatementDate
      * @return void
      */
-    public function reinstate(string $reinstatedDate = null)
+    public function reinstate(string $reinstatementDate = null)
     {
         throw_unless($this->reinstatable->canBeReinstated(), new CannotBeReinstatedException);
 
-        $reinstatedDate = $reinstatedDate ?: now()->toDateTimeString();
+        $reinstatementDate ??= now()->toDateTimeString();
 
-        $this->managerRepository->reinstate($this->reinstatable, $reinstatedDate);
+        $this->managerRepository->reinstate($this->reinstatable, $reinstatementDate);
         $this->reinstatable->updateStatusAndSave();
     }
 }

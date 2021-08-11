@@ -29,6 +29,13 @@ class Manager extends SingleRosterMember implements CanJoinStable
     }
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'managers';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

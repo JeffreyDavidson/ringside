@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\TagTeamStatus;
+use App\Enums\WrestlerStatus;
 use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,9 +20,12 @@ class TagTeamFactoryTest extends TestCase
      */
     public function a_tag_team_has_two_wrestlers_by_default()
     {
-        $stable = TagTeam::factory()->create();
+        $tagTeam = TagTeam::factory()->create();
 
-        $this->assertCount(2, $stable->wrestlers);
+        $this->assertCount(2, $tagTeam->wrestlers);
+        $this->assertTrue($tagTeam->wrestlers->every(function ($wrestler, $key) {
+            return ! is_null($wrestler->pivot->joined_at);
+        }));
     }
 
     /**
@@ -32,6 +36,9 @@ class TagTeamFactoryTest extends TestCase
         $tagTeam = TagTeam::factory()->create();
 
         $this->assertEquals(TagTeamStatus::UNEMPLOYED, $tagTeam->status);
+        $this->assertTrue($tagTeam->wrestlers->every(function ($wrestler, $key) {
+            return $wrestler->status == WrestlerStatus::UNEMPLOYED;
+        }));
     }
 
     /**
@@ -41,7 +48,6 @@ class TagTeamFactoryTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
-        $this->assertEquals(TagTeamStatus::UNEMPLOYED, $tagTeam->status);
         $this->assertCount(0, $tagTeam->employments);
     }
 
@@ -64,7 +70,7 @@ class TagTeamFactoryTest extends TestCase
     /**
      * @test
      */
-    public function a_future_employed_tag_team_has_an_mployment()
+    public function a_future_employed_tag_team_has_an_employment()
     {
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
 
@@ -86,6 +92,7 @@ class TagTeamFactoryTest extends TestCase
 
         $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
         $this->assertCount(1, $tagTeam->employments);
+        $this->assertCount(2, $tagTeam->wrestlers);
 
         $employment = $tagTeam->employments->first();
 

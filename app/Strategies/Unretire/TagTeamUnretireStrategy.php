@@ -43,7 +43,7 @@ class TagTeamUnretireStrategy extends BaseUnretireStrategy implements UnretireSt
     {
         throw_unless($this->unretirable->canBeUnretired(), new CannotBeUnretiredException);
 
-        $unretiredDate = $unretiredDate ?: now();
+        $unretiredDate ??= now()->toDateTimeString();
 
         $this->tagTeamRepository->unretire($this->unretirable, $unretiredDate);
         $this->unretirable->currentWrestlers->each->unretire($unretiredDate);

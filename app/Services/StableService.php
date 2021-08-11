@@ -30,7 +30,7 @@ class StableService
     }
 
     /**
-     * Create a stable.
+     * Create a stable with given data.
      *
      * @param  array $data
      * @return \App\Models\Stable $stable
@@ -49,7 +49,7 @@ class StableService
     }
 
     /**
-     * Update a stable.
+     * Update a given stable with given data.
      *
      * @param  \App\Models\Stable $stable
      * @param  array $data
@@ -89,17 +89,17 @@ class StableService
     }
 
     /**
-     * Add members to a stable.
+     * Add members to a given stable.
      *
      * @param  \App\Models\Stable $stable
-     * @param  array $wrestlerIds
-     * @param  array $tagTeamIds
-     * @param  string $joinedDate
-     * @return \App\Models\Stable
+     * @param  array|null $wrestlerIds
+     * @param  array|null $tagTeamIds
+     * @param  string|null $joinedDate
+     * @return \App\Models\Stable $stable
      */
-    public function addMembers(Stable $stable, array $wrestlerIds, array $tagTeamIds, $joinedDate = null): Stable
+    public function addMembers(Stable $stable, array $wrestlerIds = null, array $tagTeamIds = null, string $joinedDate = null)
     {
-        $joinedDate = $joinedDate ?? now();
+        $joinedDate ??= now();
 
         if ($wrestlerIds) {
             $stable->addWrestlers($wrestlerIds, $joinedDate);
@@ -113,14 +113,14 @@ class StableService
     }
 
     /**
-     * Update the members of a stable.
+     * Update the members of a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @param  array $wrestlerIds
      * @param  array $tagTeamIds
-     * @return \App\Models\Stable
+     * @return \App\Models\Stable $stable
      */
-    public function updateMembers(Stable $stable, array $wrestlerIds, array $tagTeamIds): Stable
+    public function updateMembers(Stable $stable, array $wrestlerIds, array $tagTeamIds)
     {
         if ($stable->currentWrestlers->isEmpty()) {
             if ($wrestlerIds) {
@@ -172,19 +172,19 @@ class StableService
     }
 
     /**
-     * Update the activation start date for a stable.
+     * Update the activation start date of a given stable.
      *
      * @param  \App\Models\Stable $stable
-     * @param  string $startDate
-     * @return \App\Models\Stable
+     * @param  string $activationDate
+     * @return \App\Models\Stable $stable
      */
-    public function updateActivation(Stable $stable, string $startDate): Stable
+    public function updateActivation(Stable $stable, string $activationDate)
     {
-        if ($startDate) {
-            if ($stable->currentEmployment && $stable->currentEmployment->started_at != $startDate) {
-                $stable->currentActivation()->update(['started_at' => $startDate]);
-            } elseif (! $stable->currentEmployment) {
-                $stable->activations()->create(['started_at' => $startDate]);
+        if ($activationDate) {
+            if ($stable->currentActivation && $stable->currentActivation->started_at != $activationDate) {
+                $stable->currentActivation()->update(['started_at' => $activationDate]);
+            } elseif (! $stable->currentActivation) {
+                $stable->activations()->create(['started_at' => $activationDate]);
             }
         }
 
@@ -192,7 +192,7 @@ class StableService
     }
 
     /**
-     * Disband the stable.
+     * Disband the given stable.
      *
      * @param  \App\Models\Stable $stable
      * @param  string|null $disbandedDate
@@ -202,7 +202,7 @@ class StableService
     {
         throw_unless($stable->canBeDisbanded(), new CannotBeDisbandedException);
 
-        $disbandedDate = $disbandedDate ?: now();
+        $disbandedDate ??= now()->toDateTimeString();
 
         $stable->currentActivation()->update(['ended_at' => $disbandedDate]);
         $stable->currentWrestlers()->detach();
@@ -210,13 +210,29 @@ class StableService
         $stable->updateStatusAndSave();
     }
 
-    public function addWrestlers($stable, $wrestlerIds, $joinedDate)
+    /**
+     * Add given wrestlers to a given stable on a given join date.
+     *
+     * @param  \App\Models\Stable $stable
+     * @param  array $wrestlerIds
+     * @param  string $joinedDate
+     * @return void
+     */
+    public function addWrestlers(Stable $stable, $wrestlerIds, $joinedDate)
     {
         foreach ($wrestlerIds as $wrestlerId) {
             $stable->wrestlers()->attach($wrestlerId, ['joined_at' => $joinedDate]);
         }
     }
 
+    /**
+     * Add given tag teams to a given stable on a given join date.
+     *
+     * @param  \App\Models\Stable $stable
+     * @param  array $tagTeamIds
+     * @param  string $joinedDate
+     * @return void
+     */
     public function addTagTeams($stable, $tagTeamIds, $joinedDate)
     {
         foreach ($tagTeamIds as $tagTeamId) {
@@ -225,7 +241,7 @@ class StableService
     }
 
     /**
-     * Activate a stable.
+     * Activate a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @return void
@@ -236,7 +252,7 @@ class StableService
     }
 
     /**
-     * Deactivate a stable.
+     * Deactivate a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @return void
@@ -247,7 +263,7 @@ class StableService
     }
 
     /**
-     * Retire a stable.
+     * Retire a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @return void
@@ -258,7 +274,7 @@ class StableService
     }
 
     /**
-     * Unretire a stable.
+     * Unretire a given stable.
      *
      * @param  \App\Models\Stable $stable
      * @return void

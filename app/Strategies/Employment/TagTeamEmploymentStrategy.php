@@ -43,7 +43,7 @@ class TagTeamEmploymentStrategy extends BaseEmploymentStrategy implements Employ
     {
         throw_unless($this->employable->canBeEmployed(), new CannotBeEmployedException);
 
-        $employmentDate = $employmentDate ?? now()->toDateTimeString();
+        $employmentDate ??= now()->toDateTimeString();
 
         $this->tagTeamRepository->employ($this->employable, $employmentDate);
         $this->employable->updateStatusAndSave();

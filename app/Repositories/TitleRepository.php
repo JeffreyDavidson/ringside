@@ -99,11 +99,11 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * Unretire a given title on a given date.
      *
      * @param  \App\Models\Title $title
-     * @param  string $unretiredDate
+     * @param  string $unretireDate
      * @return \App\Models\Title $title
      */
-    public function unretire(Title $title, string $unretiredDate)
+    public function unretire(Title $title, string $unretireDate)
     {
-        return $title->currentRetirement()->update(['ended_at' => $unretiredDate]);
+        return $title->currentRetirement()->update(['ended_at' => $unretireDate]);
     }
 }

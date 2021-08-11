@@ -43,7 +43,7 @@ class WrestlerReinstateStrategy extends BaseReinstateStrategy implements Reinsta
     {
         throw_unless($this->reinstatable->canBeReinstated(), new CannotBeReinstatedException);
 
-        $reinstatementDate = $reinstatementDate ?: now()->toDateTimeString();
+        $reinstatementDate ??= now()->toDateTimeString();
 
         $this->wrestlerRepository->reinstate($this->reinstatable, $reinstatementDate);
         $this->reinstatable->updateStatusAndSave();

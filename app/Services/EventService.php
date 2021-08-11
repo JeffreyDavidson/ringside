@@ -26,7 +26,7 @@ class EventService
     }
 
     /**
-     * Create an event.
+     * Create an event with given data.
      *
      * @param  array $data
      * @return \App\Models\Event
@@ -37,7 +37,7 @@ class EventService
     }
 
     /**
-     * Update an event.
+     * Update a given event.
      *
      * @param  \App\Models\Event $event
      * @param  array $data

@@ -12,7 +12,6 @@ use App\Strategies\Release\RefereeReleaseStrategy;
 use App\Strategies\Retirement\RefereeRetirementStrategy;
 use App\Strategies\Suspend\RefereeSuspendStrategy;
 use App\Strategies\Unretire\RefereeUnretireStrategy;
-use Carbon\Carbon;
 
 class RefereeService
 {
@@ -34,7 +33,7 @@ class RefereeService
     }
 
     /**
-     * Create a referee.
+     * Create a referee with given data.
      *
      * @param  array $data
      * @return \App\Models\Referee $referee
@@ -51,7 +50,7 @@ class RefereeService
     }
 
     /**
-     * Update a referee.
+     * Update a given referee with given data.
      *
      * @param  \App\Models\Referee $referee
      * @param  array $data
@@ -68,6 +67,13 @@ class RefereeService
         return $referee;
     }
 
+    /**
+     * Employ a given referee or update the given referee's employment date.
+     *
+     * @param  \App\Models\Referee $referee
+     * @param  string $employmentDate
+     * @return void
+     */
     public function employOrUpdateEmployment(Referee $referee, $employmentDate)
     {
         if ($referee->isNotInEmployment()) {
@@ -80,7 +86,7 @@ class RefereeService
     }
 
     /**
-     * Delete a referee.
+     * Delete a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -91,7 +97,7 @@ class RefereeService
     }
 
     /**
-     * Restore a referee.
+     * Restore a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -102,7 +108,7 @@ class RefereeService
     }
 
     /**
-     * Clear an injury of a referee.
+     * Clear an injury of a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -113,7 +119,7 @@ class RefereeService
     }
 
     /**
-     * Injure a referee.
+     * Injure a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -124,7 +130,7 @@ class RefereeService
     }
 
     /**
-     * Employ a referee.
+     * Employ a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -146,7 +152,7 @@ class RefereeService
     }
 
     /**
-     * Suspend a referee.
+     * Suspend a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -157,7 +163,7 @@ class RefereeService
     }
 
     /**
-     * Reinstate a referee.
+     * Reinstate a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -168,7 +174,7 @@ class RefereeService
     }
 
     /**
-     * Retire a referee.
+     * Retire a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
@@ -179,7 +185,7 @@ class RefereeService
     }
 
     /**
-     * Unretire a referee.
+     * Unretire a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void

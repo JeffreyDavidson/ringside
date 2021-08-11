@@ -33,6 +33,13 @@ class Title extends Model implements Activatable, Deactivatable, Retirable, Unre
     }
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'titles';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

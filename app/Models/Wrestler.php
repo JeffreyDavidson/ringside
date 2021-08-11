@@ -29,6 +29,13 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
     }
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'wrestlers';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -45,7 +52,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
      */
     public function tagTeams()
     {
-        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler');
+        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')->withPivot(['joined_at', 'left_at']);
     }
 
     /**
@@ -55,7 +62,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
      */
     public function currentTagTeam()
     {
-        return $this->belongsTo(TagTeam::class);
+        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id')->wherePivotNotNull('left_at')->limit(1);
     }
 
     /**
@@ -65,8 +72,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
      */
     public function previousTagTeams()
     {
-        return $this->tagTeams()
-                    ->whereNotNull('ended_at');
+        return $this->tagTeams()->whereNotNull('ended_at');
     }
 
     /**

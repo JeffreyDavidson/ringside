@@ -43,7 +43,7 @@ class WrestlerUnretireStrategy extends BaseUnretireStrategy
     {
         throw_unless($this->unretirable->canBeUnretired(), new CannotBeUnretiredException);
 
-        $unretiredDate = $unretiredDate ?: now()->toDateTimeString();
+        $unretiredDate ??= now()->toDateTimeString();
 
         $this->wrestlerRepository->unretire($this->unretirable, $unretiredDate);
         $this->wrestlerRepository->employ($this->unretirable, $unretiredDate);

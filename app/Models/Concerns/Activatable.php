@@ -77,12 +77,12 @@ trait Activatable
     }
 
     /**
-     * Scope a query to only include activated models.
+     * Scope a query to only include active models.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActivated($query)
+    public function scopeActive($query)
     {
         return $query->whereHas('currentActivation');
     }
@@ -93,7 +93,7 @@ trait Activatable
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFutureActivation($query)
+    public function scopeWithFutureActivation($query)
     {
         return $query->whereHas('futureActivation');
     }

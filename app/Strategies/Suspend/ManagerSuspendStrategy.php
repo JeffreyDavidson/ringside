@@ -43,7 +43,7 @@ class ManagerSuspendStrategy extends BaseSuspendStrategy implements SuspendStrat
     {
         throw_unless($this->suspendable->canBeSuspended(), new CannotBeSuspendedException);
 
-        $suspensionDate = $suspensionDate ?? now()->toDateTimeString();
+        $suspensionDate ??= now()->toDateTimeString();
 
         $this->managerRepository->suspend($this->suspendable, $suspensionDate);
         $this->suspendable->updateStatusAndSave();

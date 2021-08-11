@@ -41,6 +41,21 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider administrators
+     */
+    public function employing_a_bookable_referee_throws_an_exception($administrators)
+    {
+        $this->expectException(CannotBeEmployedException::class);
+        $this->withoutExceptionHandling();
+
+        $referee = Referee::factory()->bookable()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('referees.employ', $referee));
+    }
+
+    /**
+     * @test
      */
     public function invoke_validates_using_a_form_request()
     {
@@ -68,15 +83,5 @@ class EmployControllerTest extends TestCase
 
         $this->patch(route('referees.employ', $referee))
             ->assertRedirect(route('login'));
-    }
-
-    public function employableReferees()
-    {
-        return [
-            // 'released' => ['testing'],
-            'released' => [Referee::factory()->released()->create()],
-            // 'has_future_employment' => [Referee::factory()->withFutureEmployment()->create()],
-            // 'unemployed' => [Referee::factory()->unemployed()->create()],
-        ];
     }
 }

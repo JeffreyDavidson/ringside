@@ -31,7 +31,9 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_a_bookable_wrestler_and_redirects($administrators)
     {
+        $this->withoutExceptionHandling();
         $wrestler = Wrestler::factory()->bookable()->create();
+        dd($wrestler->currentTagTeam);
 
         $this->actAs($administrators)
             ->patch(route('wrestlers.retire', $wrestler))
@@ -86,14 +88,14 @@ class RetireControllerTest extends TestCase
     public function retiring_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable($administrators)
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
-        $wrestler = $tagTeam->currentWrestlers()->first();
-
-        $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
+        $wrestler = $tagTeam->wrestlers()->first();
 
         $this->actAs($administrators)
             ->patch(route('wrestlers.retire', $wrestler));
 
-        $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->refresh()->status);
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->status);
+        });
     }
 
     /**

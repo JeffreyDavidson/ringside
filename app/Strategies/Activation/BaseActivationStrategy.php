@@ -37,16 +37,16 @@ class BaseActivationStrategy implements ActivationStrategyInterface
     /**
      * Activate an activatable model.
      *
-     * @param  string|null $activatedAtDate
+     * @param  string|null $activationDate
      * @return void
      */
-    public function activate(string $activatedAtDate = null)
+    public function activate(string $activationDate = null)
     {
         throw_unless($this->activatable->canBeActivated(), new CannotBeActivatedException);
 
-        $activatedAtDate = $activatedAtDate ?? now()->toDateTimeString();
+        $activationDate ??= now()->toDateTimeString();
 
-        $this->repository->activate($this->activatable, $activatedAtDate);
+        $this->repository->activate($this->activatable, $activationDate);
         $this->activatable->updateStatusAndSave();
     }
 }

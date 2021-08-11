@@ -43,7 +43,7 @@ class RefereeClearInjuryStrategy extends BaseClearInjuryStrategy implements Clea
     {
         throw_unless($this->injurable->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
-        $recoveryDate = $recoveryDate ?? now()->toDateTimeString();
+        $recoveryDate ??= now()->toDateTimeString();
 
         $this->refereeRepository->clearInjury($this->injurable, $recoveryDate);
         $this->injurable->updateStatusAndSave();

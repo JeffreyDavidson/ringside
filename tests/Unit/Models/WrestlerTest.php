@@ -2,7 +2,12 @@
 
 namespace Tests\Unit\Models;
 
+use App\Casts\HeightCast;
 use App\Enums\WrestlerStatus;
+use App\Models\Contracts\Bookable;
+use App\Models\Contracts\CanJoinStable;
+use App\Models\SingleRosterMember;
+use App\Models\User;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -21,7 +26,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_has_a_name()
     {
-        $wrestler = Wrestler::factory()->create(['name' => 'Example Wrestler Name']);
+        $wrestler = new Wrestler(['name' => 'Example Wrestler Name']);
 
         $this->assertEquals('Example Wrestler Name', $wrestler->name);
     }
@@ -31,7 +36,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_has_a_height()
     {
-        $wrestler = Wrestler::factory()->create(['height' => 70]);
+        $wrestler = new Wrestler(['height' => 70]);
 
         $this->assertEquals('70', $wrestler->height);
     }
@@ -41,7 +46,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_has_a_weight()
     {
-        $wrestler = Wrestler::factory()->create(['weight' => 210]);
+        $wrestler = new Wrestler(['weight' => 210]);
 
         $this->assertEquals(210, $wrestler->weight);
     }
@@ -51,7 +56,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_has_a_hometown()
     {
-        $wrestler = Wrestler::factory()->create(['hometown' => 'Los Angeles, California']);
+        $wrestler = new Wrestler(['hometown' => 'Los Angeles, California']);
 
         $this->assertEquals('Los Angeles, California', $wrestler->hometown);
     }
@@ -61,7 +66,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_can_have_a_signature_move()
     {
-        $wrestler = Wrestler::factory()->create(['signature_move' => 'Example Signature Move']);
+        $wrestler = new Wrestler(['signature_move' => 'Example Signature Move']);
 
         $this->assertEquals('Example Signature Move', $wrestler->signature_move);
     }
@@ -71,7 +76,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_has_a_status()
     {
-        $wrestler = Wrestler::factory()->create();
+        $wrestler = new Wrestler();
         $wrestler->setRawAttributes(['status' => 'example'], true);
 
         $this->assertEquals('example', $wrestler->getRawOriginal('status'));
@@ -82,7 +87,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_status_gets_cast_as_a_wrestler_status_enum()
     {
-        $wrestler = Wrestler::factory()->create();
+        $wrestler = new Wrestler();
 
         $this->assertInstanceOf(WrestlerStatus::class, $wrestler->status);
     }
@@ -90,9 +95,27 @@ class WrestlerTest extends TestCase
     /**
      * @test
      */
-    public function a_wrestler_uses_can_be_stable_member_trait()
+    public function a_wrestler_height_gets_cast_as_a_height_enum()
     {
-        $this->assertUsesTrait('App\Models\Concerns\CanBeStableMember', Wrestler::class);
+        $wrestler = new Wrestler();
+
+        $this->assertInstanceOf(HeightCast::class, $wrestler->height);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_is_a_single_roster_member()
+    {
+        $this->assertEquals(SingleRosterMember::class, get_parent_class(Wrestler::class));
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_uses_has_a_unguarded_trait()
+    {
+        $this->assertUsesTrait('App\Models\Concerns\Unguarded', Wrestler::class);
     }
 
     /**
@@ -105,51 +128,33 @@ class WrestlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider unclearableWrestlers
      */
-    public function clearing_an_injury_from_an_unemployed_wrestler_throws_an_exception($unclearableWrestlers)
+    public function a_wrestler_uses_can_be_stable_member_trait()
     {
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-        $this->withoutExceptionHandling();
-
-        $unclearableWrestlers->clearFromInjury();
+        $this->assertUsesTrait('App\Models\Concerns\CanJoinStable', Wrestler::class);
     }
 
     /**
      * @test
-     * @dataProvider unemployableWrestlers
      */
-    public function employing_a_bookable_wrestler_throws_an_exception($unemployableWrestlers)
+    public function a_wrestler_implements_bookable_interface()
     {
-        $this->expectException(CannotBeEmployedException::class);
-        $this->withoutExceptionHandling();
-
-        $wrestler = Wrestler::factory()->bookable()->create();
-
-        $wrestler->employ();
+        $this->assertContains(Bookable::class, class_implements(Wrestler::class));
     }
 
-    public function unclearableWrestlers()
+    /**
+     * @test
+     */
+    public function a_wrestler_implements_can_join_stable_interface()
     {
-        return [
-            [Wrestler::factory()->released()->create()],
-            [Wrestler::factory()->retired()->create()],
-            [Wrestler::factory()->suspended()->create()],
-            [Wrestler::factory()->withFutureEmployment()->create()],
-            [Wrestler::factory()->bookable()->create()],
-            [Wrestler::factory()->unemployed()->create()],
-        ];
+        $this->assertContains(CanJoinStable::class, class_implements(Wrestler::class));
     }
 
-    public function unemployableWrestlers()
+    /**
+     * @test
+     */
+    public function a_wrestler_can_be_associated_to_a_user()
     {
-        return [
-            [Wrestler::factory()->released()->create()],
-            [Wrestler::factory()->retired()->create()],
-            [Wrestler::factory()->suspended()->create()],
-            [Wrestler::factory()->withFutureEmployment()->create()],
-            [Wrestler::factory()->bookable()->create()],
-            [Wrestler::factory()->unemployed()->create()],
-        ];
+        $this->assertInstanceOf(User::class, (new Wrestler)->user);
     }
 }

@@ -34,11 +34,11 @@ class ActivationContextStrategy
     /**
      * Process the activation of the model.
      *
-     * @param  string|null $activatedAtDate
+     * @param  string|null $activationDate
      * @return void
      */
-    public function process($activatedAtDate = null)
+    public function process($activationDate = null)
     {
-        $this->strategy->activate($activatedAtDate);
+        $this->strategy->activate($activationDate);
     }
 }

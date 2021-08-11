@@ -25,7 +25,7 @@ class VenueService
     }
 
     /**
-     * Create a new venue.
+     * Create a new venue with given data.
      *
      * @param  array $data
      * @return \App\Models\Venue $venue

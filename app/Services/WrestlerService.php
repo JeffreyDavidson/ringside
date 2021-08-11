@@ -33,7 +33,7 @@ class WrestlerService
     }
 
     /**
-     * Create a new wrestler.
+     * Create a new wrestler with given data.
      *
      * @param  array $data
      * @return \App\Models\Wrestler $wrestler
@@ -50,7 +50,7 @@ class WrestlerService
     }
 
     /**
-     * Update a wrestler.
+     * Update a given wrestler with given data.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  array $data
@@ -68,7 +68,7 @@ class WrestlerService
     }
 
     /**
-     * Undocumented function.
+     * Employ a given wrestler or update the given wrestler's employment date.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  string $employmentDate
@@ -86,7 +86,7 @@ class WrestlerService
     }
 
     /**
-     * Clear an injury of a wrestler.
+     * Clear an injury of a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -97,7 +97,7 @@ class WrestlerService
     }
 
     /**
-     * Injure a wrestler.
+     * Injure a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -108,7 +108,7 @@ class WrestlerService
     }
 
     /**
-     * Employ a wrestler.
+     * Employ a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -119,7 +119,7 @@ class WrestlerService
     }
 
     /**
-     * Unretire a wrestler.
+     * Unretire a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -130,7 +130,7 @@ class WrestlerService
     }
 
     /**
-     * Reinstate a wrestler.
+     * Reinstate a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -141,7 +141,7 @@ class WrestlerService
     }
 
     /**
-     * Retire a wrestler.
+     * Retire a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -152,7 +152,7 @@ class WrestlerService
     }
 
     /**
-     * Unretire a wrestler.
+     * Unretire a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
@@ -163,7 +163,7 @@ class WrestlerService
     }
 
     /**
-     * Release a wrestler.
+     * Release a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void

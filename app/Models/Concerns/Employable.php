@@ -23,7 +23,7 @@ trait Employable
      */
     public function firstEmployment()
     {
-        return $this->morphOne(Employment::class, 'activatable')
+        return $this->morphOne(Employment::class, 'employable')
                     ->oldestOfMany('started_at');
     }
 
@@ -96,9 +96,7 @@ trait Employable
      */
     public function scopeEmployed($query)
     {
-        return $query->whereHas('currentEmployment')
-                    ->whereDoesntHave('currentSuspension')
-                    ->whereDoesntHave('currentInjury');
+        return $query->whereHas('currentEmployment');
     }
 
     /**

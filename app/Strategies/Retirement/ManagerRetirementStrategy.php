@@ -43,7 +43,7 @@ class ManagerRetirementStrategy extends BaseRetirementStrategy implements Retire
     {
         throw_unless($this->retirable->canBeRetired(), new CannotBeRetiredException);
 
-        $retirementDate = $retirementDate ?: now()->toDateTimeString();
+        $retirementDate ??= now()->toDateTimeString();
 
         if ($this->retirable->isSuspended()) {
             $this->managerRepository->reinstate($this->retirable, $retirementDate);

@@ -33,28 +33,6 @@ class CanBeRetiredTest extends TestCase
      * @test
      * @dataProvider modelClassDataProvider
      */
-    public function it_can_get_retired_models($modelClass)
-    {
-        $retiredModel = factory($modelClass)->states('retired')->create();
-        $pendingEmploymentModel = factory($modelClass)->states('future-employment')->create();
-        $bookableModel = factory($modelClass)->states('bookable')->create();
-        $injuredModel = factory($modelClass)->states('injured')->create();
-        $suspendedModel = factory($modelClass)->states('suspended')->create();
-
-        $retiredModels = $modelClass::retired()->get();
-
-        $this->assertCount(1, $retiredModels);
-        $this->assertTrue($retiredModels->contains($retiredModel));
-        $this->assertFalse($retiredModels->contains($pendingEmploymentModel));
-        $this->assertFalse($retiredModels->contains($bookableModel));
-        $this->assertFalse($retiredModels->contains($injuredModel));
-        $this->assertFalse($retiredModels->contains($suspendedModel));
-    }
-
-    /**
-     * @test
-     * @dataProvider modelClassDataProvider
-     */
     public function a_bookable_single_roster_member_can_be_retired($modelClass)
     {
         $now = Carbon::now();

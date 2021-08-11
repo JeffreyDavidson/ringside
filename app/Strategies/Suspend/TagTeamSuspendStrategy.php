@@ -43,7 +43,7 @@ class TagTeamSuspendStrategy extends BaseSuspendStrategy implements SuspendStrat
     {
         throw_unless($this->suspendable->canBeSuspended(), new CannotBeSuspendedException);
 
-        $suspensionDate = $suspensionDate ?: now();
+        $suspensionDate ??= now()->toDateTimeString();
 
         $this->tagTeamRepository->suspend($this->suspendable, $suspensionDate);
 

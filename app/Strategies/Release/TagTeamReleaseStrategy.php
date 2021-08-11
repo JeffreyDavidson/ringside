@@ -36,10 +36,10 @@ class TagTeamReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
     /**
      * Release a releasable model.
      *
-     * @param  string|null $releasedAt
+     * @param  string|null $releaseDate
      * @return void
      */
-    public function release(string $releasedAt = null)
+    public function release(string $releaseDate = null)
     {
         throw_unless($this->releasable->canBeSuspended(), new CannotBeSuspendedException());
     }

@@ -43,7 +43,7 @@ class ManagerEmploymentStrategy extends BaseEmploymentStrategy implements Employ
     {
         throw_unless($this->employable->canBeEmployed(), new CannotBeEmployedException);
 
-        $employmentDate = $employmentDate ?? now()->toDateTimeString();
+        $employmentDate ??= now()->toDateTimeString();
 
         $this->managerRepository->employ($this->employable, $employmentDate);
         $this->employable->updateStatusAndSave();

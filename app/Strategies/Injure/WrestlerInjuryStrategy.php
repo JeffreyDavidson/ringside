@@ -43,7 +43,7 @@ class WrestlerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrateg
     {
         throw_unless($this->injurable->canBeInjured(), new CannotBeInjuredException);
 
-        $injureDate = $injureDate ?? now()->toDateTimeString();
+        $injureDate ??= now()->toDateTimeString();
 
         $this->wrestlerRepository->injure($this->injurable, $injureDate);
         $this->injurable->updateStatusAndSave();

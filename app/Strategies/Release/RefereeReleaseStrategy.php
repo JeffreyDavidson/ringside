@@ -5,8 +5,6 @@ namespace App\Strategies\Release;
 use App\Exceptions\CannotBeReleasedException;
 use App\Models\Contracts\Releasable;
 use App\Repositories\RefereeRepository;
-use App\Strategies\ClearInjury\RefereeClearInjuryStrategy;
-use App\Strategies\Reinstate\RefereeReinstateStrategy;
 
 class RefereeReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrategyInterface
 {
@@ -45,7 +43,7 @@ class RefereeReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
     {
         throw_unless($this->releasable->canBeReleased(), new CannotBeReleasedException);
 
-        $releaseDate = $releasedAt ?? now()->toDateTimeString();
+        $releaseDate ??= now()->toDateTimeString();
 
         if ($this->releasable->isSuspended()) {
             $this->refereeRepository->reinstate($this->releasable, $releaseDate);

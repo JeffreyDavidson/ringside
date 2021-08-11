@@ -29,7 +29,7 @@ class TitleService
     }
 
     /**
-     * Create a title.
+     * Create a title with given data.
      *
      * @param  array $data
      * @return \App\Models\Title
@@ -46,7 +46,7 @@ class TitleService
     }
 
     /**
-     * Update a title.
+     * Update a given title with given data.
      *
      * @param  \App\Models\Title $title
      * @param  array $data
@@ -64,10 +64,10 @@ class TitleService
     }
 
     /**
-     * Update the activation date for a title.
+     * Activate a given manager or update the given title's activation date.
      *
      * @param  \App\Models\Title $title
-     * @param  string $startDate
+     * @param  string $activationDate
      * @return \App\Models\Stable
      */
     public function activateOrUpdateActivation(Title $title, string $activationDate)
@@ -82,7 +82,7 @@ class TitleService
     }
 
     /**
-     * Delete a title.
+     * Delete a given title.
      *
      * @param  \App\Models\Title $title
      * @return void
@@ -93,7 +93,7 @@ class TitleService
     }
 
     /**
-     * Restore a title.
+     * Restore a given title.
      *
      * @param  \App\Models\Title $title
      * @return void
@@ -104,7 +104,7 @@ class TitleService
     }
 
     /**
-     * Activate a title.
+     * Activate a given title.
      *
      * @param  \App\Models\Title $title
      * @return void
@@ -115,7 +115,7 @@ class TitleService
     }
 
     /**
-     * Deactivate a title.
+     * Deactivate a given title.
      *
      * @param  \App\Models\Title $title
      * @return void
@@ -126,7 +126,7 @@ class TitleService
     }
 
     /**
-     * Retire a title.
+     * Retire a given title.
      *
      * @param  \App\Models\Title $title
      * @return void
@@ -137,7 +137,7 @@ class TitleService
     }
 
     /**
-     * Unretire a title.
+     * Unretire a given title.
      *
      * @param  \App\Models\Title $title
      * @return void

@@ -43,7 +43,7 @@ class RefereeReinstateStrategy extends BaseReinstateStrategy implements Reinstat
     {
         throw_unless($this->reinstatable->canBeReinstated(), new CannotBeReinstatedException);
 
-        $reinstatementDate = $reinstatementDate ?: now()->toDateTimeString();
+        $reinstatementDate ??= now()->toDateTimeString();
 
         $this->refereeRepository->reinstate($this->reinstatable, $reinstatementDate);
         $this->reinstatable->updateStatusAndSave();

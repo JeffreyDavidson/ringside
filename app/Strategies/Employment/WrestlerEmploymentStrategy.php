@@ -43,7 +43,7 @@ class WrestlerEmploymentStrategy extends BaseEmploymentStrategy implements Emplo
     {
         throw_unless($this->employable->canBeEmployed(), new CannotBeEmployedException);
 
-        $employmentDate = $employmentDate ?? now()->toDateTimeString();
+        $employmentDate ??= now()->toDateTimeString();
 
         $this->wrestlerRepository->employ($this->employable, $employmentDate);
         $this->employable->updateStatusAndSave();

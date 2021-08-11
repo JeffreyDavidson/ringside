@@ -43,7 +43,7 @@ class RefereeUnretireStrategy extends BaseUnretireStrategy implements UnretireSt
     {
         throw_unless($this->unretirable->canBeUnretired(), new CannotBeUnretiredException);
 
-        $unretiredDate = $unretiredDate ?: now()->toDateTimeString();
+        $unretiredDate ??= now()->toDateTimeString();
 
         $this->refereeRepository->unretire($this->unretirable, $unretiredDate);
         $this->refereeRepository->employ($this->unretirable, $unretiredDate);

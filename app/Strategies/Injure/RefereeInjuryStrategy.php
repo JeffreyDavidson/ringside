@@ -43,7 +43,7 @@ class RefereeInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategy
     {
         throw_unless($this->injurable->canBeInjured(), new CannotBeInjuredException);
 
-        $injureDate = $injureDate ?? now()->toDateTimeString();
+        $injureDate ??= now()->toDateTimeString();
 
         $this->refereeRepository->injure($this->injurable, $injureDate);
         $this->injurable->updateStatusAndSave();

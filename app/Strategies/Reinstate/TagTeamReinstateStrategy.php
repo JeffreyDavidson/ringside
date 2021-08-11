@@ -43,7 +43,7 @@ class TagTeamReinstateStrategy extends BaseReinstateStrategy implements Reinstat
     {
         throw_unless($this->reinstatable->canBeReinstated(), new CannotBeReinstatedException);
 
-        $reinstatementDate = $reinstatementDate ?: now();
+        $reinstatementDate ??= now()->toDateTimeString();
 
         $this->tagTeamRepository->reinstate($this->reinstatable, $reinstatementDate);
         $this->reinstatable->currentWrestlers->each->reinstate($reinstatementDate);

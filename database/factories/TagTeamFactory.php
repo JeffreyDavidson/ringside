@@ -42,8 +42,14 @@ class TagTeamFactory extends Factory
      */
     public function configure()
     {
-        return $this;
-            // ->hasAttached(Wrestler::factory()->count(2), ['joined_at' => now()]);
+        return $this->afterCreating(function (TagTeam $tagTeam) {
+            if ($tagTeam->wrestlers->isEmpty()) {
+                $wrestlers = Wrestler::factory()->count(2)->create();
+                foreach ($wrestlers as $wrestler) {
+                    $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => now()->toDateTimeString()]);
+                }
+            }
+        });
     }
 
     public function bookable()
@@ -54,15 +60,10 @@ class TagTeamFactory extends Factory
             return ['status' => TagTeamStatus::BOOKABLE];
         })
         ->has(Employment::factory()->started($start))
-        ->hasAttached(
-            Wrestler::factory()
-                ->count(2)
-                ->has(Employment::factory()->started($start))
-                ->bookable(),
-            ['joined_at' => $start])
+        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable(), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
             $tagTeam->currentWrestlers->each->updateStatusAndSave();
+            $tagTeam->updateStatusAndSave();
         });
     }
 
@@ -74,11 +75,7 @@ class TagTeamFactory extends Factory
             return ['status' => TagTeamStatus::UNBOOKABLE];
         })
         ->has(Employment::factory()->started($start))
-        ->hasAttached(
-            Wrestler::factory()
-                ->count(2)
-                ->has(Employment::factory()->started($start))->unbookable(),
-            ['joined_at' => Carbon::yesterday()])
+        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->unbookable(), ['joined_at' => Carbon::yesterday()])
         ->afterCreating(function (TagTeam $tagTeam) {
             $tagTeam->updateStatusAndSave();
         });
@@ -87,6 +84,7 @@ class TagTeamFactory extends Factory
     public function withFutureEmployment()
     {
         $start = Carbon::tomorrow();
+
         return $this->state(function (array $attributes) {
             return ['status' => TagTeamStatus::FUTURE_EMPLOYMENT];
         })
@@ -152,7 +150,7 @@ class TagTeamFactory extends Factory
             return ['status' => TagTeamStatus::RELEASED];
         })
         ->has(Employment::factory()->started($start)->ended($end))
-        ->hasAttached(Wrestler::factory()->count(2)->hasEmployments(1, ['started_at' => $start, 'ended_at' => $end]), ['joined_at' => $start])
+        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)->ended($end)), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
             $tagTeam->updateStatusAndSave();
         });

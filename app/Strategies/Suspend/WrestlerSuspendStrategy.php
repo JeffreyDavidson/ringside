@@ -43,7 +43,7 @@ class WrestlerSuspendStrategy extends BaseSuspendStrategy implements SuspendStra
     {
         throw_unless($this->suspendable->canBeSuspended(), new CannotBeSuspendedException);
 
-        $suspensionDate = $suspensionDate ?? now()->toDateTimeString();
+        $suspensionDate ??= now()->toDateTimeString();
 
         $this->wrestlerRepository->suspend($this->suspendable, $suspensionDate);
         $this->suspendable->updateStatusAndSave();

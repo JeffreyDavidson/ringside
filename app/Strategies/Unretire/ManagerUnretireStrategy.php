@@ -43,7 +43,7 @@ class ManagerUnretireStrategy extends BaseUnretireStrategy implements UnretireSt
     {
         throw_unless($this->unretirable->canBeUnretired(), new CannotBeUnretiredException);
 
-        $unretiredDate = $unretiredDate ?: now()->toDateTimeString();
+        $unretiredDate ??= now()->toDateTimeString();
 
         $this->managerRepository->unretire($this->unretirable, $unretiredDate);
         $this->managerRepository->employ($this->unretirable, $unretiredDate);

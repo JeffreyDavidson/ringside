@@ -43,7 +43,7 @@ class TitleRetirementStrategy extends BaseRetirementStrategy implements Retireme
     {
         throw_unless($this->retirable->canBeRetired(), new CannotBeRetiredException);
 
-        $retirementDate = $retirementDate ?: now();
+        $retirementDate ??= now()->toDateTimeString();
 
         $this->titleRepository->deactivate($this->retirable, $retirementDate);
         $this->titleRepository->retire($this->retirable, $retirementDate);

@@ -97,12 +97,12 @@ class TagTeamRepository
      * Unretire a given tag team on a given date.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  string $unretiredDate
+     * @param  string $unretireDate
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function unretire(TagTeam $tagTeam, string $unretiredDate)
+    public function unretire(TagTeam $tagTeam, string $unretireDate)
     {
-        return $tagTeam->currentRetirement()->update(['ended_at' => $unretiredDate]);
+        return $tagTeam->currentRetirement()->update(['ended_at' => $unretireDate]);
     }
 
     /**

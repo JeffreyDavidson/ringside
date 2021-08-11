@@ -43,7 +43,7 @@ class TagTeamRetirementStrategy extends BaseRetirementStrategy implements Retire
     {
         throw_unless($this->retirable->canBeRetired(), new CannotBeRetiredException);
 
-        $retirementDate = $retirementDate ?: now();
+        $retirementDate ??= now()->toDateTimeString();
 
         if ($this->retirable->isSuspended()) {
             $this->tagTeamRepository->reinstate($this->retirable, $retirementDate);

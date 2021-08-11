@@ -51,14 +51,14 @@ interface Activatable
      *
      * @return void
      */
-    public function scopeActivated($query);
+    public function scopeActive($query);
 
     /**
      * Get the column name for the "remember me" token.
      *
      * @return string
      */
-    public function scopeFutureActivation($scope);
+    public function scopeWithFutureActivation($scope);
 
     /**
      * Get the column name for the "remember me" token.

@@ -20,7 +20,7 @@ use Tests\TestCase;
  * @group roster
  * @group feature-roster
  */
-class ClearFromInjuryControllerTest extends TestCase
+class ClearInjuryControllerTest extends TestCase
 {
     use RefreshDatabase;
 

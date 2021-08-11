@@ -43,7 +43,7 @@ class StableRetirementStrategy extends BaseRetirementStrategy implements Retirem
     {
         throw_unless($this->retirable->canBeRetired(), new CannotBeRetiredException);
 
-        $retirementDate = $retirementDate ?: now();
+        $retirementDate ??= now()->toDateTimeString();
 
         $this->stableRepository->deactivate($this->retirable, $retirementDate);
         $this->stableRepository->retire($this->retirable, $retirementDate);

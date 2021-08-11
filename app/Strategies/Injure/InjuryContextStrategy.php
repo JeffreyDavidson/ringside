@@ -42,6 +42,6 @@ class InjuryContextStrategy
      */
     public function process(string $injureDate = null)
     {
-        $this->strategy->injure($injuredAt);
+        $this->strategy->injure($injureDate);
     }
 }
