@@ -52,11 +52,53 @@ class ManagerServiceTest extends TestCase
             'last_name' => 'Smith',
         ];
         $managerRepositoryMock = $this->mock(ManagerRepository::class);
+        $managerEmploymentStrategyMock = $this->mock(ManagerEmploymentStrategy::class);
         $service = new ManagerService($managerRepositoryMock);
 
         $managerRepositoryMock->expects()->create($data)->once();
+        $managerEmploymentStrategyMock->shouldNotReceive('employ');
 
         $service->create($data);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_a_manager()
+    {
+        $data = [
+            'first_name' => 'Joe',
+            'last_name' => 'Smith',
+        ];
+        $manager = Manager::factory()->make();
+        $managerRepositoryMock = $this->mock(ManagerRepository::class);
+        $managerEmploymentStrategyMock = $this->mock(ManagerEmploymentStrategy::class);
+        $service = new ManagerService($managerRepositoryMock);
+
+        $managerRepositoryMock->expects()->update($manager, $data)->once()->andReturns($manager);
+        $managerEmploymentStrategyMock->shouldNotReceive('employOrUpdateEmployment');
+
+        $service->update($manager, $data);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_a_manager_and_employment_date()
+    {
+        $data = [
+            'first_name' => 'Joe',
+            'last_name' => 'Smith',
+            'started_at' => $employmentDate = Carbon::now()->toDateTimeString(),
+        ];
+        $manager = Manager::factory()->make();
+        $managerRepositoryMock = $this->mock(ManagerRepository::class);
+        $service = new ManagerService($managerRepositoryMock);
+
+        $managerRepositoryMock->expects()->update($manager, $data)->once()->andReturns($manager);
+        $service->expects()->employOrUpdateEmployment($manager, $employmentDate);
+
+        $service->update($manager, $data);
     }
 
     /**
