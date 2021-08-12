@@ -22,15 +22,25 @@ class ManagerClearInjuryStrategy extends BaseClearInjuryStrategy implements Clea
      */
     private ManagerRepository $managerRepository;
 
-    /**
+    /**d
      * Create a new manager clear injury strategy instance.
-     *
-     * @param \App\Models\Contracts\Injurable $injurable
      */
-    public function __construct(Injurable $injurable)
+    public function __construct()
+    {
+        $this->managerRepository = new ManagerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Injurable $injurable
+     * @return $this
+     */
+    public function setInjurable(Injurable $injurable)
     {
         $this->injurable = $injurable;
-        $this->managerRepository = new ManagerRepository;
+
+        return $this;
     }
 
     /**
@@ -41,11 +51,11 @@ class ManagerClearInjuryStrategy extends BaseClearInjuryStrategy implements Clea
      */
     public function clearInjury(string $recoveryDate = null)
     {
-        throw_unless($this->injurable->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
+        throw_unless($this->injurabe->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
         $recoveryDate ??= now()->toDateTimeString();
 
         $this->managerRepository->clearInjury($this->injurable, $recoveryDate);
-        $this->injurable->updateStatusAndSave();
+        $this->injurabe->updateStatusAndSave();
     }
 }

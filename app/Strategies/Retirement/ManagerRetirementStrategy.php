@@ -24,13 +24,23 @@ class ManagerRetirementStrategy extends BaseRetirementStrategy implements Retire
 
     /**
      * Create a new manager retirement strategy instance.
-     *
-     * @param \App\Models\Contracts\Retirable $retirable
      */
-    public function __construct(Retirable $retirable)
+    public function __construct()
     {
-        $this->retirable = $retirable;
         $this->managerRepository = new ManagerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Retirable $retirable
+     * @return $this
+     */
+    public function setRetirable(Retirable $retirable)
+    {
+        $this->retirable = $$retirable;
+
+        return $this;
     }
 
     /**

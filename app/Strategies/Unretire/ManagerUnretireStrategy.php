@@ -24,13 +24,23 @@ class ManagerUnretireStrategy extends BaseUnretireStrategy implements UnretireSt
 
     /**
      * Create a new manager unretire strategy instance.
-     *
-     * @param \App\Models\Contracts\Unretirable $unretirable
      */
-    public function __construct(Unretirable $unretirable)
+    public function __construct()
+    {
+        $this->managerRepository = new ManagerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Unretirable $unretirable
+     * @return $this
+     */
+    public function setUnretirable(Unretirable $unretirable)
     {
         $this->unretirable = $unretirable;
-        $this->managerRepository = new ManagerRepository;
+
+        return $this;
     }
 
     /**

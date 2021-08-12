@@ -24,13 +24,23 @@ class ManagerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategy
 
     /**
      * Create a new manager injury strategy instance.
-     *
-     * @param \App\Models\Contracts\Injurable $injurable
      */
-    public function __construct(Injurable $injurable)
+    public function __construct()
+    {
+        $this->managerRepository = new ManagerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Injurable $injurable
+     * @return $this
+     */
+    public function setInjurable(Injurable $injurable)
     {
         $this->injurable = $injurable;
-        $this->managerRepository = new ManagerRepository;
+
+        return $this;
     }
 
     /**

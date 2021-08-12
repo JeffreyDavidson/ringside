@@ -24,13 +24,23 @@ class ManagerReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
 
     /**
      * Create a new manager releasable strategy instance.
-     *
-     * @param \App\Models\Contracts\Releasable $releasable
      */
-    public function __construct(Releasable $releasable)
+    public function __construct()
+    {
+        $this->managerRepository = new ManagerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Releasable $releasable
+     * @return $this
+     */
+    public function setReleasable(Releasable $releasable)
     {
         $this->releasable = $releasable;
-        $this->managerRepository = new ManagerRepository;
+
+        return $this;
     }
 
     /**
