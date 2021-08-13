@@ -2,9 +2,11 @@
 
 namespace Tests\Unit\Strategies\ClearInjury;
 
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Manager;
 use App\Strategies\ClearInjury\ManagerClearInjuryStrategy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class ManagerClearInjuryStrategyTest extends TestCase
@@ -16,12 +18,13 @@ class ManagerClearInjuryStrategyTest extends TestCase
      */
     public function an_uninjurable_manager_throws_an_exception()
     {
-        $strategy = new ManagerClearInjuryStrategy;
-        $managerMock = $this->mock(Manager::factory()->make());
+        $managerMock = $this->mock(Manager::class);
+        $strategy = $this->partialMock(ManagerClearInjuryStrategy::class, function (MockInterface $mock) use ($managerMock) {
+            $mock->shouldReceive('setInjurable')->with($managerMock)->once()->andReturn($mock);
+        });
         $repositoryMock = $this->mock(ManagerRepository::class);
 
-        $strategy->setInjurable($managerMock);
-        $managerMock->expects()->canBeClearedFromInjury()->andReturns(false)->andThrow(CannotBeClearedFromInjuryException::class);
+        $managerMock->expects()->canBeClearedFromInjury()->andReturns(false)->andThrow(new CannotBeClearedFromInjuryException);
         $repositoryMock->expects()->shouldNotReceive('clearInjury');
 
         $strategy->clearInjury();

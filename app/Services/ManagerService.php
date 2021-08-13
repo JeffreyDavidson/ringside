@@ -18,7 +18,7 @@ class ManagerService
     /**
      * The repository implementation.
      *
-     * @var \App\Repositories\ManagerRepository|Mockery\MockInterface
+     * @var \App\Repositories\ManagerRepository
      */
     protected $managerRepository;
 
