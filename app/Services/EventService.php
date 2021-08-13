@@ -45,13 +45,7 @@ class EventService
      */
     public function update(Event $event, array $data)
     {
-        $this->eventRepository->update($event, $data);
-
-        if ($data['started_at']) {
-            $this->employOrUpdateEmployment($event, Carbon::parse($data['started_at']));
-        }
-
-        return $event;
+        return $this->eventRepository->update($event, $data);
     }
 
     /**

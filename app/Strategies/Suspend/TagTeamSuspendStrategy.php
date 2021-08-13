@@ -24,13 +24,23 @@ class TagTeamSuspendStrategy extends BaseSuspendStrategy implements SuspendStrat
 
     /**
      * Create a new tag team suspend strategy instance.
-     *
-     * @param \App\Models\Contracts\Suspendable $suspendable
      */
-    public function __construct(Suspendable $suspendable)
+    public function __construct()
+    {
+        $this->tagTeamRepository = new TagTeamRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Suspendable $suspendable
+     * @return $this
+     */
+    public function setSuspendable(Suspendable $suspendable)
     {
         $this->suspendable = $suspendable;
-        $this->tagTeamRepository = new TagTeamRepository;
+
+        return $this;
     }
 
     /**

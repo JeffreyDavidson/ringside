@@ -24,13 +24,23 @@ class RefereeReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
 
     /**
      * Create a new referee releasable strategy instance.
-     *
-     * @param \App\Models\Contracts\Releasable $releasable
      */
-    public function __construct(Releasable $releasable)
+    public function __construct()
+    {
+        $this->refereeRepository = new RefereeRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Releasable $releasable
+     * @return $this
+     */
+    public function setReleasable(Releasable $releasable)
     {
         $this->releasable = $releasable;
-        $this->refereeRepository = new RefereeRepository;
+
+        return $this;
     }
 
     /**

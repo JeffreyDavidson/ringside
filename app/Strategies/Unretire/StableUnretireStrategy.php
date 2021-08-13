@@ -24,13 +24,23 @@ class StableUnretireStrategy extends BaseUnretireStrategy implements UnretireStr
 
     /**
      * Create a new stable unretire strategy instance.
-     *
-     * @param \App\Models\Contracts\Unretirable $unretirable
      */
-    public function __construct(Unretirable $unretirable)
+    public function __construct()
+    {
+        $this->stableRepository = new StableRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Unretirable $unretirable
+     * @return $this
+     */
+    public function setUnretirable(Unretirable $unretirable)
     {
         $this->unretirable = $unretirable;
-        $this->stableRepository = new StableRepository;
+
+        return $this;
     }
 
     /**

@@ -39,8 +39,8 @@ class StableService
     {
         $stable = $this->stableRepository->create($data);
 
-        if ($data['started_at']) {
-            (new StableActivationStrategy($stable))->activate($data['started_at']);
+        if (isset($data['started_at'])) {
+            app()->make(StableActivationStrategy::class)->setDeactivatable($stable)->activate($data['started_at']);
         }
 
         $this->addMembers($stable, $data['wrestlers'], $data['tag_teams']);
@@ -248,7 +248,7 @@ class StableService
      */
     public function activate(Stable $stable)
     {
-        (new StableActivationStrategy($stable))->activate();
+        app()->make(StableActivationStrategy::class)->setActivatable($stable)->activate();
     }
 
     /**
@@ -259,7 +259,7 @@ class StableService
      */
     public function deactivate(Stable $stable)
     {
-        (new StableDeactivationStrategy($stable))->deactivate();
+        app()->make(StableDeactivationStrategy::class)->setDeactivatable($stable)->deactivate();
     }
 
     /**
@@ -270,7 +270,7 @@ class StableService
      */
     public function retire(Stable $stable)
     {
-        (new StableRetirementStrategy($stable))->retire();
+        app()->make(StableRetirementStrategy::class)->setRetirable($stable)->retire();
     }
 
     /**
@@ -281,6 +281,6 @@ class StableService
      */
     public function unretire(Stable $stable)
     {
-        (new StableUnretireStrategy($stable))->unretire();
+        app()->make(StableUnretireStrategy::class)->setUnretirable($stable)->unretire();
     }
 }

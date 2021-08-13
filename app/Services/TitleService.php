@@ -38,8 +38,8 @@ class TitleService
     {
         $title = $this->titleRepository->create($data);
 
-        if ($data['activated_at']) {
-            (new TitleActivationStrategy($title))->activate($data['activated_at']);
+        if (isset($data['activated_at'])) {
+            app()->make(TitleActivationStrategy::class)->setActivatable($title)->activate($data['activated_at']);
         }
 
         return $title;
@@ -56,7 +56,7 @@ class TitleService
     {
         $this->titleRepository->update($title, $data);
 
-        if ($data['activated_at']) {
+        if (isset($data['activated_at'])) {
             $this->activateOrUpdateActivation($title, $data['activated_at']);
         }
 
@@ -73,11 +73,11 @@ class TitleService
     public function activateOrUpdateActivation(Title $title, string $activationDate)
     {
         if ($title->isNotInActivation()) {
-            return (new TitleActivationStrategy($title))->activate($activationDate);
+            return app()->make(TitleActivationStrategy::class)->setActivatable($title)->activate($activationDate);
         }
 
-        if ($title->hasFutureActivation() && $title->futureActivation->started_at->ne($activationDate)) {
-            return $title->futureActivation()->update(['started_at' => $activationDate]);
+        if ($title->hasFutureActivation() && ! $title->activatedOn($activationDate)) {
+            return $this->titleRepository->updateActivation($title, $activationDate);
         }
     }
 
@@ -111,7 +111,7 @@ class TitleService
      */
     public function activate(Title $title)
     {
-        (new TitleActivationStrategy($title))->activate();
+        app()->make(TitleActivationStrategy::class)->setActivatable($title)->activate();
     }
 
     /**
@@ -122,7 +122,7 @@ class TitleService
      */
     public function deactivate(Title $title)
     {
-        (new TitleDeactivationStrategy($title))->deactivate();
+        app()->make(TitleDeactivationStrategy::class)->setDeactivatable($title)->deactivate();
     }
 
     /**
@@ -133,7 +133,7 @@ class TitleService
      */
     public function retire(Title $title)
     {
-        (new TitleRetirementStrategy($title))->retire();
+        app()->make(TitleRetirementStrategy::class)->setRetirable($title)->retire();
     }
 
     /**
@@ -144,6 +144,6 @@ class TitleService
      */
     public function unretire(Title $title)
     {
-        (new TitleUnretireStrategy($title))->unretire();
+        app()->make(TitleUnretireStrategy::class)->setUnretirable($title)->unretire();
     }
 }

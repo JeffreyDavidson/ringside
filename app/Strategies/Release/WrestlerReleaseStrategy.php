@@ -27,10 +27,22 @@ class WrestlerReleaseStrategy extends BaseReleaseStrategy implements ReleaseStra
      *
      * @param \App\Models\Contracts\Releasable $releasable
      */
-    public function __construct(Releasable $releasable)
+    public function __construct()
+    {
+        $this->wrestlerRepository = new WrestlerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Releasable $releasable
+     * @return $this
+     */
+    public function setReleasable(Releasable $releasable)
     {
         $this->releasable = $releasable;
-        $this->wrestlerRepository = new WrestlerRepository;
+
+        return $this;
     }
 
     /**

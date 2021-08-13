@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\NotEnoughMembersException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
 use App\Strategies\Employment\TagTeamEmploymentStrategy;
@@ -12,7 +11,6 @@ use App\Strategies\Release\TagTeamReleaseStrategy;
 use App\Strategies\Retirement\TagTeamRetirementStrategy;
 use App\Strategies\Suspend\TagTeamSuspendStrategy;
 use App\Strategies\Unretire\TagTeamUnretireStrategy;
-use Exception;
 
 class TagTeamService
 {
@@ -43,10 +41,14 @@ class TagTeamService
     {
         $tagTeam = $this->tagTeamRepository->create($data);
 
-        $this->addTagTeamPartners($tagTeam, $data['wrestlers']);
+        if (isset($data['started_at'])) {
+            app()->make(TagTeamEmploymentStrategy::class)->setEmployable($tagTeam)->employ($data['started_at']);
 
-        if ($data['started_at']) {
-            (new TagTeamEmploymentStrategy($tagTeam))->employ($data['started_at']);
+            $this->tagTeamRepository->addWrestlers($tagTeam, $data['wrestlers'], $data['started_at']);
+        } else {
+            if (isset($data['wrestlers'])) {
+                $this->tagTeamRepository->addWrestlers($tagTeam, $data['wrestlers']);
+            }
         }
 
         return $tagTeam;
@@ -63,13 +65,33 @@ class TagTeamService
     {
         $this->tagTeamRepository->update($tagTeam, $data);
 
-        $this->updateTagTeamPartners($tagTeam, $data['wrestlers']);
-
-        if ($data['started_at'] && ! $tagTeam->isCurrentlyEmployed()) {
-            $tagTeam->employ($data['started_at']);
+        if (isset($data['started_at'])) {
+            $this->employOrUpdateEmployment($tagTeam, $data['started_at']);
+        } else {
+            if (isset($data['wrestlers'])) {
+                $this->updateTagTeamPartners($tagTeam, $data['wrestlers']);
+            }
         }
 
         return $tagTeam;
+    }
+
+    /**
+     * Employ a given tag team or update the given tag team's employment date.
+     *
+     * @param  \App\Models\TagTeam $tagTeam
+     * @param  string $employmentDate
+     * @return \App\Models\TagTeam $tagTeam
+     */
+    public function employOrUpdateEmployment(TagTeam $tagTeam, string $employmentDate)
+    {
+        if ($tagTeam->isNotInEmployment()) {
+            return app()->make(TagTeamEmploymentStrategy::class)->setEmployable($tagTeam)->employ($employmentDate);
+        }
+
+        if ($tagTeam->hasFutureActivation() && ! $tagTeam->employedOn($employmentDate)) {
+            return $this->tagTeamRepository->updateEmployment($tagTeam, $employmentDate);
+        }
     }
 
     /**
@@ -95,49 +117,6 @@ class TagTeamService
     }
 
     /**
-     * Add given wrestlers to a given tag team.
-     *
-     * @param  \App\Models\TagTeam $tagTeam
-     * @param  array $wrestlerIds
-     * @return \App\Models\TagTeam
-     */
-    public function addTagTeamPartners(TagTeam $tagTeam, array $wrestlerIds)
-    {
-        if ($wrestlerIds) {
-            $tagTeam->addWrestlers($wrestlerIds, now());
-        }
-
-        return $tagTeam;
-    }
-
-    /**
-     * Add given wrestlers to a given tag team on a given join date.
-     *
-     * @param  \App\Models\TagTeam $tagTeam
-     * @param  array  $wrestlers
-     * @param  string|null $joinDate
-     *
-     * @throws Exception
-     *
-     * @return $this
-     */
-    public function addWrestlers($tagTeam, $wrestlerIds, $joinDate = null)
-    {
-        if (count($wrestlerIds) !== self::MAX_WRESTLERS_COUNT) {
-            throw NotEnoughMembersException::forTagTeam();
-        }
-
-        $joinDate ??= now()->toDateTimeString();
-
-        $tagTeam->wrestlers()->sync([
-            $wrestlerIds[0] => ['joined_at' => $joinDate],
-            $wrestlerIds[1] => ['joined_at' => $joinDate],
-        ]);
-
-        return $this;
-    }
-
-    /**
      * Update a given tag team with given wrestlers.
      *
      * @param  \App\Models\TagTeam $tagTeam
@@ -148,9 +127,7 @@ class TagTeamService
     {
         if ($tagTeam->currentWrestlers->isEmpty()) {
             if ($wrestlerIds) {
-                foreach ($wrestlerIds as $wrestlerId) {
-                    $tagTeam->currentWrestlers()->attach($wrestlerId, ['joined_at' => now()]);
-                }
+                $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlerIds);
             }
         } else {
             $currentTagTeamPartners = collect($tagTeam->currentWrestlers->modelKeys());
@@ -158,18 +135,7 @@ class TagTeamService
             $formerTagTeamPartners = $currentTagTeamPartners->diff($suggestedTagTeamPartners);
             $newTagTeamPartners = $suggestedTagTeamPartners->diff($currentTagTeamPartners);
 
-            $now = now();
-
-            foreach ($formerTagTeamPartners as $tagTeamPartner) {
-                $tagTeam->currentWrestlers()->updateExistingPivot($tagTeamPartner, ['left_at' => $now]);
-            }
-
-            foreach ($newTagTeamPartners as $newTagTeamPartner) {
-                $tagTeam->currentWrestlers()->attach(
-                    $newTagTeamPartner,
-                    ['joined_at' => $now]
-                );
-            }
+            $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
         }
 
         return $tagTeam;
@@ -183,11 +149,11 @@ class TagTeamService
      */
     public function employ(TagTeam $tagTeam)
     {
-        (new TagTeamEmploymentStrategy($tagTeam))->employ();
+        app()->make(TagTeamEmploymentStrategy::class)->setEmployable($tagTeam)->employ();
 
         if ($tagTeam->currentWrestlers->every->isNotInEmployment()) {
             foreach ($tagTeam->currentWrestlers as $wrestler) {
-                (new WrestlerEmploymentStrategy($wrestler))->employ($tagTeam->currentEmployment->started_at);
+                app()->make(WrestlerEmploymentStrategy::class)->setEmployable($wrestler)->employ($tagTeam->currentEmployment->started_at);
             }
         }
     }
@@ -200,7 +166,7 @@ class TagTeamService
      */
     public function release(TagTeam $tagTeam)
     {
-        (new TagTeamReleaseStrategy($tagTeam))->release();
+        app()->make(TagTeamReleaseStrategy::class)->setReleasable($tagTeam)->release();
     }
 
     /**
@@ -211,7 +177,7 @@ class TagTeamService
      */
     public function suspend(TagTeam $tagTeam)
     {
-        (new TagTeamSuspendStrategy($tagTeam))->suspend();
+        app()->make(TagTeamSuspendStrategy::class)->setSuspendable($tagTeam)->suspend();
     }
 
     /**
@@ -222,7 +188,7 @@ class TagTeamService
      */
     public function reinstate(TagTeam $tagTeam)
     {
-        (new TagTeamReinstateStrategy($tagTeam))->reinstate();
+        app()->make(TagTeamReinstateStrategy::class)->setReinstatable($tagTeam)->reinstate();
     }
 
     /**
@@ -233,7 +199,7 @@ class TagTeamService
      */
     public function retire(TagTeam $tagTeam)
     {
-        (new TagTeamRetirementStrategy($tagTeam))->retire();
+        app()->make(TagTeamRetirementStrategy::class)->setRetirable($tagTeam)->retire();
     }
 
     /**
@@ -244,6 +210,6 @@ class TagTeamService
      */
     public function unretire(TagTeam $tagTeam)
     {
-        (new TagTeamUnretireStrategy($tagTeam))->unretire();
+        app()->make(TagTeamUnretireStrategy::class)->setUnretirable($tagTeam)->unretire();
     }
 }

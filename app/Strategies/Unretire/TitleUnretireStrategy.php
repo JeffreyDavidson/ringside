@@ -24,13 +24,23 @@ class TitleUnretireStrategy extends BaseUnretireStrategy implements UnretireStra
 
     /**
      * Create a new title unretire strategy instance.
-     *
-     * @param \App\Models\Contracts\Unretirable $unretirable
      */
-    public function __construct(Unretirable $unretirable)
+    public function __construct()
+    {
+        $this->titleRepository = new TitleRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Unretirable $unretirable
+     * @return $this
+     */
+    public function setUnretirable(Unretirable $unretirable)
     {
         $this->unretirable = $unretirable;
-        $this->titleRepository = new TitleRepository;
+
+        return $this;
     }
 
     /**

@@ -42,8 +42,8 @@ class WrestlerService
     {
         $wrestler = $this->wrestlerRepository->create($data);
 
-        if ($data['started_at']) {
-            (new WrestlerEmploymentStrategy($wrestler))->employ($data['started_at']);
+        if (isset($data['started_at'])) {
+            app()->make(WrestlerEmploymentStrategy::class)->setEmployable($wrestler)->employ($data['started_at']);
         }
 
         return $wrestler;
@@ -60,7 +60,7 @@ class WrestlerService
     {
         $this->wrestlerRepository->update($wrestler, $data);
 
-        if ($data['started_at']) {
+        if (isset($data['started_at'])) {
             $this->employOrUpdateEmployment($wrestler, $data['started_at']);
         }
 
@@ -77,34 +77,34 @@ class WrestlerService
     public function employOrUpdateEmployment(Wrestler $wrestler, string $employmentDate)
     {
         if ($wrestler->isNotInEmployment()) {
-            return (new WrestlerEmploymentStrategy($wrestler))->employ($employmentDate);
+            return app()->make(WrestlerEmploymentStrategy::class)->setEmployable($wrestler)->employ($employmentDate);
         }
 
-        if ($wrestler->hasFutureEmployment() && $wrestler->futureEmployment->started_at->ne($employmentDate)) {
-            return $wrestler->futureEmployment()->update(['started_at' => $employmentDate]);
+        if ($wrestler->hasFutureEmployment() && ! $wrestler->employedOn($employmentDate)) {
+            return $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
         }
     }
 
     /**
-     * Clear an injury of a given wrestler.
+     * Delete a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
      */
-    public function clearFromInjury(Wrestler $wrestler)
+    public function delete(Wrestler $wrestler)
     {
-        (new WrestlerClearInjuryStrategy($wrestler))->clearInjury();
+        $this->wrestlerRepository->delete($wrestler);
     }
 
     /**
-     * Injure a given wrestler.
+     * Restore a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
      * @return void
      */
-    public function injure(Wrestler $wrestler)
+    public function restore(Wrestler $wrestler)
     {
-        (new WrestlerInjuryStrategy($wrestler))->injure();
+        $this->wrestlerRepository->restore($wrestler);
     }
 
     /**
@@ -115,51 +115,7 @@ class WrestlerService
      */
     public function employ(Wrestler $wrestler)
     {
-        (new WrestlerEmploymentStrategy($wrestler))->employ();
-    }
-
-    /**
-     * Unretire a given wrestler.
-     *
-     * @param  \App\Models\Wrestler $wrestler
-     * @return void
-     */
-    public function suspend(Wrestler $wrestler)
-    {
-        (new WrestlerSuspendStrategy($wrestler))->suspend();
-    }
-
-    /**
-     * Reinstate a given wrestler.
-     *
-     * @param  \App\Models\Wrestler $wrestler
-     * @return void
-     */
-    public function reinstate(Wrestler $wrestler)
-    {
-        (new WrestlerReinstateStrategy($wrestler))->reinstate();
-    }
-
-    /**
-     * Retire a given wrestler.
-     *
-     * @param  \App\Models\Wrestler $wrestler
-     * @return void
-     */
-    public function retire(Wrestler $wrestler)
-    {
-        (new WrestlerRetirementStrategy($wrestler))->retire();
-    }
-
-    /**
-     * Unretire a given wrestler.
-     *
-     * @param  \App\Models\Wrestler $wrestler
-     * @return void
-     */
-    public function unretire(Wrestler $wrestler)
-    {
-        (new WrestlerUnretireStrategy($wrestler))->unretire();
+        app()->make(WrestlerEmploymentStrategy::class)->setEmployable($wrestler)->employ();
     }
 
     /**
@@ -170,6 +126,72 @@ class WrestlerService
      */
     public function release(Wrestler $wrestler)
     {
-        (new WrestlerReleaseStrategy($wrestler))->release();
+        app()->make(WrestlerReleaseStrategy::class)->setReleasable($wrestler)->release();
+    }
+
+    /**
+     * Injure a given wrestler.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @return void
+     */
+    public function injure(Wrestler $wrestler)
+    {
+        app()->make(WrestlerInjuryStrategy::class)->setInjurable($wrestler)->injure();
+    }
+
+    /**
+     * Clear an injury of a given wrestler.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @return void
+     */
+    public function clearFromInjury(Wrestler $wrestler)
+    {
+        app()->make(WrestlerClearInjuryStrategy::class)->setInjurable($wrestler)->clearInjury();
+    }
+
+    /**
+     * Unretire a given wrestler.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @return void
+     */
+    public function suspend(Wrestler $wrestler)
+    {
+        app()->make(WrestlerSuspendStrategy::class)->setSuspendable($wrestler)->suspend();
+    }
+
+    /**
+     * Reinstate a given wrestler.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @return void
+     */
+    public function reinstate(Wrestler $wrestler)
+    {
+        app()->make(WrestlerReinstateStrategy::class)->setReinstatable($wrestler)->reinstate();
+    }
+
+    /**
+     * Retire a given wrestler.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @return void
+     */
+    public function retire(Wrestler $wrestler)
+    {
+        app()->make(WrestlerRetirementStrategy::class)->setRetirable($wrestler)->retire();
+    }
+
+    /**
+     * Unretire a given wrestler.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @return void
+     */
+    public function unretire(Wrestler $wrestler)
+    {
+        app()->make(WrestlerUnretireStrategy::class)->setUnretirable($wrestler)->unretire();
     }
 }

@@ -128,4 +128,58 @@ class TagTeamRepository
     {
         return $tagTeam->currentSuspension()->update(['ended_at' => $reinstateDate]);
     }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @param  \App\Models\TagTeam $tagTeam
+     * @param  string $employmentDate
+     * @return \App\Models\TagTeam $tagTeam
+     */
+    public function updateEmployment(TagTeam $tagTeam, string $employmentDate)
+    {
+        return $tagTeam->futureEmployment()->update(['started_at' => $employmentDate]);
+    }
+
+    /**
+     * Add wrestlers to a tag team.
+     *
+     * @param  \App\Models\TagTeam $tagTeam
+     * @param  array $wrestlerIds
+     * @param  string|null $joinDate
+     * @return \App\Models\TagTeam $tagTeam
+     */
+    public function addWrestlers(TagTeam $tagTeam, array $wrestlerIds, string $joinDate = null)
+    {
+        $joinDate ??= now()->toDateTimeString();
+
+        foreach ($wrestlerIds as $wrestlerId) {
+            $tagTeam->wrestlers()->attach($wrestlerId, ['joined_at' => $joinDate]);
+        }
+    }
+
+    /**
+     * Add wrestlers to a tag team.
+     *
+     * @param  \App\Models\TagTeam $tagTeam
+     * @param  array $formerTagTeamPartners
+     * @param  array $newTagTeamPartners
+     * @param  string|null $date
+     * @return \App\Models\TagTeam $tagTeam
+     */
+    public function syncTagTeamPartners(TagTeam $tagTeam, array $formerTagTeamPartners, array $newTagTeamPartners, string $date = null)
+    {
+        $date ??= now()->toDateTimeString();
+
+        foreach ($formerTagTeamPartners as $tagTeamPartner) {
+            $tagTeam->currentWrestlers()->updateExistingPivot($tagTeamPartner, ['left_at' => $date]);
+        }
+
+        foreach ($newTagTeamPartners as $newTagTeamPartner) {
+            $tagTeam->currentWrestlers()->attach(
+                $newTagTeamPartner,
+                ['joined_at' => $date]
+            );
+        }
+    }
 }

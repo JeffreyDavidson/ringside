@@ -24,13 +24,23 @@ class RefereeInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategy
 
     /**
      * Create a new referee injury strategy instance.
-     *
-     * @param \App\Models\Contracts\Injurable $injurable
      */
-    public function __construct(Injurable $injurable)
+    public function __construct()
+    {
+        $this->refereeRepository = new RefereeRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Injurable $injurable
+     * @return $this
+     */
+    public function setInjurable(Injurable $injurable)
     {
         $this->injurable = $injurable;
-        $this->refereeRepository = new RefereeRepository;
+
+        return $this;
     }
 
     /**

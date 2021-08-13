@@ -24,13 +24,23 @@ class WrestlerSuspendStrategy extends BaseSuspendStrategy implements SuspendStra
 
     /**
      * Create a new wrestler suspend strategy instance.
-     *
-     * @param \App\Models\Contracts\Suspendable $suspendable
      */
-    public function __construct(Suspendable $suspendable)
+    public function __construct()
+    {
+        $this->wrestlerRepository = new WrestlerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Suspendable $suspendable
+     * @return $this
+     */
+    public function setSuspendable(Suspendable $suspendable)
     {
         $this->suspendable = $suspendable;
-        $this->wrestlerRepository = new WrestlerRepository;
+
+        return $this;
     }
 
     /**

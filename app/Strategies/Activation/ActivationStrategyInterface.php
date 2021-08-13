@@ -2,6 +2,8 @@
 
 namespace App\Strategies\Activation;
 
+use App\Models\Contracts\Activatable;
+
 interface ActivationStrategyInterface
 {
     /**
@@ -11,4 +13,11 @@ interface ActivationStrategyInterface
      * @return void
      */
     public function activate(string $activationDate = null);
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Activatable $activatable
+     */
+    public function setActivatable(Activatable $activatable);
 }

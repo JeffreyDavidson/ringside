@@ -24,13 +24,23 @@ class WrestlerClearInjuryStrategy extends BaseClearInjuryStrategy implements Cle
 
     /**
      * Create a new wrestler clear injury strategy instance.
-     *
-     * @param \App\Models\Contracts\Injurable $injurable
      */
-    public function __construct(Injurable $injurable)
+    public function __construct()
+    {
+        $this->wrestlerRepository = new WrestlerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Injurable $injurable
+     * @return $this
+     */
+    public function setInjurable(Injurable $injurable)
     {
         $this->injurable = $injurable;
-        $this->wrestlerRepository = new WrestlerRepository;
+
+        return $this;
     }
 
     /**

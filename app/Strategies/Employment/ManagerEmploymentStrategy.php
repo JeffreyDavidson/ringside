@@ -24,12 +24,9 @@ class ManagerEmploymentStrategy extends BaseEmploymentStrategy implements Employ
 
     /**
      * Create a new manager employment strategy instance.
-     *
-     * @param \App\Models\Contracts\Employable $employable
      */
-    public function __construct(Employable $employable)
+    public function __construct()
     {
-        $this->employable = $employable;
         $this->managerRepository = new ManagerRepository;
     }
 

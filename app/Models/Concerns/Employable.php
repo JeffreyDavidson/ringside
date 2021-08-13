@@ -284,4 +284,15 @@ trait Employable
     {
         return optional($this->employments->first())->started_at;
     }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @param  string $employmentDate
+     * @return bool
+     */
+    public function employedOn(string $employmentDate)
+    {
+        return $this->employments->last()->started_at->ne($employmentDate);
+    }
 }

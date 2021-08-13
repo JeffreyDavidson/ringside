@@ -24,13 +24,23 @@ class ManagerReinstateStrategy extends BaseReinstateStrategy implements Reinstat
 
     /**
      * Create a new manager reinstate strategy instance.
-     *
-     * @param \App\Models\Contracts\Reinstatable $reinstatable
      */
-    public function __construct(Reinstatable $reinstatable)
+    public function __construct()
+    {
+        $this->managerRepository = new ManagerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Reinstatable $reinstatable
+     * @return $this
+     */
+    public function setReinstatable(Reinstatable $reinstatable)
     {
         $this->reinstatable = $reinstatable;
-        $this->managerRepository = new ManagerRepository;
+
+        return $this;
     }
 
     /**

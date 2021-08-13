@@ -24,13 +24,23 @@ class WrestlerReinstateStrategy extends BaseReinstateStrategy implements Reinsta
 
     /**
      * Create a new wrestler reinstate strategy instance.
-     *
-     * @param \App\Models\Contracts\Reinstatable $reinstatable
      */
-    public function __construct(Reinstatable $reinstatable)
+    public function __construct()
+    {
+        $this->wrestlerRepository = new WrestlerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Reinstatable $reinstatable
+     * @return $this
+     */
+    public function setReinstatable(Reinstatable $reinstatable)
     {
         $this->reinstatable = $reinstatable;
-        $this->wrestlerRepository = new WrestlerRepository;
+
+        return $this;
     }
 
     /**

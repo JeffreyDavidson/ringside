@@ -24,13 +24,23 @@ class WrestlerUnretireStrategy extends BaseUnretireStrategy
 
     /**
      * Create a new wrestler unretire strategy instance.
-     *
-     * @param \App\Models\Contracts\Unretirable $unretirable
      */
-    public function __construct(Unretirable $unretirable)
+    public function __construct()
+    {
+        $this->wrestlerRepository = new WrestlerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Unretirable $unretirable
+     * @return $this
+     */
+    public function setUnretirable(Unretirable $unretirable)
     {
         $this->unretirable = $unretirable;
-        $this->wrestlerRepository = new WrestlerRepository;
+
+        return $this;
     }
 
     /**

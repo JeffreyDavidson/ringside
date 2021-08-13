@@ -24,13 +24,23 @@ class StableRetirementStrategy extends BaseRetirementStrategy implements Retirem
 
     /**
      * Create a new stable retirement strategy instance.
-     *
-     * @param \App\Models\Contracts\Retirable $retirable
      */
-    public function __construct(Retirable $retirable)
+    public function __construct()
     {
-        $this->retirable = $retirable;
         $this->stableRepository = new StableRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Retirable $retirable
+     * @return $this
+     */
+    public function setRetirable(Retirable $retirable)
+    {
+        $this->retirable = $$retirable;
+
+        return $this;
     }
 
     /**

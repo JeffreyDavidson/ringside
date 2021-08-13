@@ -24,13 +24,23 @@ class RefereeUnretireStrategy extends BaseUnretireStrategy implements UnretireSt
 
     /**
      * Create a new referee unretire strategy instance.
-     *
-     * @param \App\Models\Contracts\Unretirable $unretirable
      */
-    public function __construct(Unretirable $unretirable)
+    public function __construct()
+    {
+        $this->refereeRepository = new RefereeRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Unretirable $unretirable
+     * @return $this
+     */
+    public function setUnretirable(Unretirable $unretirable)
     {
         $this->unretirable = $unretirable;
-        $this->refereeRepository = new RefereeRepository;
+
+        return $this;
     }
 
     /**

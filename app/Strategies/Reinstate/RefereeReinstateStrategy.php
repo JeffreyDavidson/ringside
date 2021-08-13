@@ -24,13 +24,23 @@ class RefereeReinstateStrategy extends BaseReinstateStrategy implements Reinstat
 
     /**
      * Create a new referee reinstate strategy instance.
-     *
-     * @param \App\Models\Contracts\Reinstatable $reinstatable
      */
-    public function __construct(Reinstatable $reinstatable)
+    public function __construct()
+    {
+        $this->refereeRepository = new RefereeRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Reinstatable $reinstatable
+     * @return $this
+     */
+    public function setReinstatable(Reinstatable $reinstatable)
     {
         $this->reinstatable = $reinstatable;
-        $this->refereeRepository = new RefereeRepository;
+
+        return $this;
     }
 
     /**

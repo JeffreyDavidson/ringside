@@ -42,8 +42,8 @@ class RefereeService
     {
         $referee = $this->refereeRepository->create($data);
 
-        if ($data['started_at']) {
-            (new RefereeEmploymentStrategy($referee))->employ($data['started_at']);
+        if (isset($data['started_at'])) {
+            app()->make(RefereeEmploymentStrategy::class)->setEmployable($referee)->employ($data['started_at']);
         }
 
         return $referee;
@@ -60,7 +60,7 @@ class RefereeService
     {
         $this->refereeRepository->update($referee, $data);
 
-        if ($data['started_at']) {
+        if (isset($data['started_at'])) {
             $this->employOrUpdateEmployment($referee, $data['started_at']);
         }
 
@@ -74,14 +74,14 @@ class RefereeService
      * @param  string $employmentDate
      * @return void
      */
-    public function employOrUpdateEmployment(Referee $referee, $employmentDate)
+    public function employOrUpdateEmployment(Referee $referee, string $employmentDate)
     {
         if ($referee->isNotInEmployment()) {
-            (new RefereeEmploymentStrategy($referee))->employ($employmentDate);
+            return app()->make(RefereeEmploymentStrategy::class)->setEmployable($referee)->employ($employmentDate);
         }
 
-        if ($referee->hasFutureEmployment() && $referee->futureEmployment->started_at->ne($employmentDate)) {
-            return $referee->futureEmployment()->update(['started_at' => $employmentDate]);
+        if ($referee->hasFutureEmployment() && ! $referee->employedOn($employmentDate)) {
+            return $this->refereeRepository->updateEmployment($referee, $employmentDate);
         }
     }
 
@@ -108,14 +108,25 @@ class RefereeService
     }
 
     /**
-     * Clear an injury of a given referee.
+     * Employ a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
      */
-    public function clearFromInjury(Referee $referee)
+    public function employ(Referee $referee)
     {
-        (new RefereeClearInjuryStrategy($referee))->clearInjury();
+        app()->make(RefereeEmploymentStrategy::class)->setEmployable($referee)->employ();
+    }
+
+    /**
+     * Release a given referee.
+     *
+     * @param  \App\Models\Referee $referee
+     * @return void
+     */
+    public function release(Referee $referee)
+    {
+        app()->make(RefereeReleaseStrategy::class)->setReleasable($referee)->release();
     }
 
     /**
@@ -126,29 +137,18 @@ class RefereeService
      */
     public function injure(Referee $referee)
     {
-        (new RefereeInjuryStrategy($referee))->injure();
+        app()->make(RefereeInjuryStrategy::class)->setInjurable($referee)->injure();
     }
 
     /**
-     * Employ a given referee.
+     * Clear an injury of a given referee.
      *
      * @param  \App\Models\Referee $referee
      * @return void
      */
-    public function employ(Referee $referee)
+    public function clearFromInjury(Referee $referee)
     {
-        (new RefereeEmploymentStrategy($referee))->employ();
-    }
-
-    /**
-     * Release a referee.
-     *
-     * @param  \App\Models\Referee $referee
-     * @return void
-     */
-    public function release(Referee $referee)
-    {
-        (new RefereeReleaseStrategy($referee))->release();
+        app()->make(RefereeClearInjuryStrategy::class)->setInjurable($referee)->clearInjury();
     }
 
     /**
@@ -159,7 +159,7 @@ class RefereeService
      */
     public function suspend(Referee $referee)
     {
-        (new RefereeSuspendStrategy($referee))->suspend();
+        app()->make(RefereeSuspendStrategy::class)->setSuspendable($referee)->suspend();
     }
 
     /**
@@ -170,7 +170,7 @@ class RefereeService
      */
     public function reinstate(Referee $referee)
     {
-        (new RefereeReinstateStrategy($referee))->reinstate();
+        app()->make(RefereeReinstateStrategy::class)->setReinstatable($referee)->reinstate();
     }
 
     /**
@@ -181,7 +181,7 @@ class RefereeService
      */
     public function retire(Referee $referee)
     {
-        (new RefereeRetirementStrategy($referee))->retire();
+        app()->make(RefereeRetirementStrategy::class)->setRetirable($referee)->retire();
     }
 
     /**
@@ -192,6 +192,6 @@ class RefereeService
      */
     public function unretire(Referee $referee)
     {
-        (new RefereeUnretireStrategy($referee))->unretire();
+        app()->make(RefereeUnretireStrategy::class)->setUnretirable($referee)->unretire();
     }
 }

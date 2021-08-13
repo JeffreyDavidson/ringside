@@ -24,13 +24,23 @@ class TitleRetirementStrategy extends BaseRetirementStrategy implements Retireme
 
     /**
      * Create a new title retirement strategy instance.
-     *
-     * @param \App\Models\Contracts\Retirable $retirable
      */
-    public function __construct(Retirable $retirable)
+    public function __construct()
     {
-        $this->retirable = $retirable;
         $this->titleRepository = new TitleRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Retirable $retirable
+     * @return $this
+     */
+    public function setRetirable(Retirable $retirable)
+    {
+        $this->retirable = $$retirable;
+
+        return $this;
     }
 
     /**

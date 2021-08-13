@@ -27,10 +27,22 @@ class TagTeamReinstateStrategy extends BaseReinstateStrategy implements Reinstat
      *
      * @param \App\Models\Contracts\Reinstatable $reinstatable
      */
-    public function __construct(Reinstatable $reinstatable)
+    public function __construct()
+    {
+        $this->tagTeamRepository = new TagTeamRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Reinstatable $reinstatable
+     * @return $this
+     */
+    public function setReinstatable(Reinstatable $reinstatable)
     {
         $this->reinstatable = $reinstatable;
-        $this->tagTeamRepository = new TagTeamRepository;
+
+        return $this;
     }
 
     /**

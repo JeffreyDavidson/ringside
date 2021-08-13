@@ -51,11 +51,11 @@ class ManagerClearInjuryStrategy extends BaseClearInjuryStrategy implements Clea
      */
     public function clearInjury(string $recoveryDate = null)
     {
-        throw_unless($this->injurabe->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
+        throw_unless($this->injurable->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
         $recoveryDate ??= now()->toDateTimeString();
 
         $this->managerRepository->clearInjury($this->injurable, $recoveryDate);
-        $this->injurabe->updateStatusAndSave();
+        $this->injurable->updateStatusAndSave();
     }
 }

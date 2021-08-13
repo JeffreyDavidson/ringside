@@ -18,7 +18,7 @@ class ManagerService
     /**
      * The repository implementation.
      *
-     * @var \App\Repositories\ManagerRepository
+     * @var \App\Repositories\ManagerRepository|Mockery\MockInterface
      */
     protected $managerRepository;
 
@@ -74,14 +74,14 @@ class ManagerService
      * @param  string $employmentDate
      * @return void
      */
-    public function employOrUpdateEmployment(Manager $manager, $employmentDate)
+    public function employOrUpdateEmployment(Manager $manager, string $employmentDate)
     {
         if ($manager->isNotInEmployment()) {
-            app()->make(ManagerEmploymentStrategy::class)->setEmployable($manager)->employ($employmentDate);
+            return app()->make(ManagerEmploymentStrategy::class)->setEmployable($manager)->employ($employmentDate);
         }
 
-        if ($manager->hasFutureEmployment() && $manager->futureEmployment->started_at->ne($employmentDate)) {
-            return $manager->futureEmployment()->update(['started_at' => $employmentDate]);
+        if ($manager->hasFutureEmployment() && ! $manager->employedOn($employmentDate)) {
+            return $this->managerRepository->updateEmployment($manager, $employmentDate);
         }
     }
 
@@ -170,7 +170,7 @@ class ManagerService
      */
     public function reinstate(Manager $manager)
     {
-        app()->make(ManagerReinstateStrategy::class)->setSuspendable($manager)->reinstate();
+        app()->make(ManagerReinstateStrategy::class)->setReinstatable($manager)->reinstate();
     }
 
     /**
@@ -192,6 +192,6 @@ class ManagerService
      */
     public function unretire(Manager $manager)
     {
-        app()->make(ManagerUnretireStrategy::class)->setRetirable($manager)->unretire();
+        app()->make(ManagerUnretireStrategy::class)->setUnretirable($manager)->unretire();
     }
 }

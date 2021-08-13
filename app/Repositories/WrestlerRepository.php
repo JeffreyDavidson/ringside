@@ -136,4 +136,16 @@ class WrestlerRepository
     {
         return $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate]);
     }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @param  string $employmentDate
+     * @return \App\Models\Wrestler $wrestler
+     */
+    public function updateEmployment(Wrestler $wrestler, string $employmentDate)
+    {
+        return $wrestler->futureEmployment()->update(['started_at' => $employmentDate]);
+    }
 }

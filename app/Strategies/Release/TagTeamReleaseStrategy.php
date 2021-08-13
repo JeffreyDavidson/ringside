@@ -27,10 +27,22 @@ class TagTeamReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
      *
      * @param \App\Models\Contracts\Releasable $releasable
      */
-    public function __construct(Releasable $releasable)
+    public function __construct()
+    {
+        $this->tagTeamRepository = new TagTeamRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Releasable $releasable
+     * @return $this
+     */
+    public function setReleasable(Releasable $releasable)
     {
         $this->releasable = $releasable;
-        $this->tagTeamRepository = new TagTeamRepository;
+
+        return $this;
     }
 
     /**

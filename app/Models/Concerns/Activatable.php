@@ -231,4 +231,15 @@ trait Activatable
     {
         return $this->isNotActivated() || $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @param  string $activationDate
+     * @return bool
+     */
+    public function activatedOn(string $activationDate)
+    {
+        return $this->activations->last()->started_at->ne($activationDate);
+    }
 }

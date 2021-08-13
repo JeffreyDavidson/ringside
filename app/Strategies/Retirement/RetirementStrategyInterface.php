@@ -2,6 +2,8 @@
 
 namespace App\Strategies\Retirement;
 
+use App\Models\Contracts\Retirable;
+
 interface RetirementStrategyInterface
 {
     /**
@@ -11,4 +13,12 @@ interface RetirementStrategyInterface
      * @return void
      */
     public function retire(string $retirementDate = null);
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Retirable $retirable
+     * @return $this
+     */
+    public function setRetirable(Retirable $retirable);
 }

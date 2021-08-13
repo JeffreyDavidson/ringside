@@ -27,10 +27,22 @@ class WrestlerEmploymentStrategy extends BaseEmploymentStrategy implements Emplo
      *
      * @param \App\Models\Contracts\Employable $employable
      */
-    public function __construct(Employable $employable)
+    public function __construct()
+    {
+        $this->wrestlerRepository = new WrestlerRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Employable $employable
+     * @return $this
+     */
+    public function setEmployable(Employable $employable)
     {
         $this->employable = $employable;
-        $this->wrestlerRepository = new WrestlerRepository;
+
+        return $this;
     }
 
     /**

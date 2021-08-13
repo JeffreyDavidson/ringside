@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Strategies\ClearInjury;
 
-use App\Enums\ManagerStatus;
 use App\Models\Manager;
+use App\Strategies\ClearInjury\ManagerClearInjuryStrategy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class ManagerClearInjuryStrategyTest extends TestCase
 {
@@ -14,49 +14,17 @@ class ManagerClearInjuryStrategyTest extends TestCase
     /**
      * @test
      */
-    public function an_available_manager_cannot_be_cleared_from_an_injury()
+    public function an_uninjurable_manager_throws_an_exception()
     {
-        $this->expectException(CannotBeClearedFromInjuryException::class);
+        $strategy = new ManagerClearInjuryStrategy;
+        $managerMock = $this->mock(Manager::factory()->make());
+        $repositoryMock = $this->mock(ManagerRepository::class);
 
-        $manager = Manager::factory()->available()->create();
+        $strategy->setInjurable($managerMock);
+        $managerMock->expects()->canBeClearedFromInjury()->andReturns(false)->andThrow(CannotBeClearedFromInjuryException::class);
+        $repositoryMock->expects()->shouldNotReceive('clearInjury');
 
-        $manager->clearFromInjury();
-    }
-
-    /**
-     * @test
-     */
-    public function a_future_employment_manager_cannot_be_cleared_from_an_injury()
-    {
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $manager = Manager::factory()->withFutureEmployment()->create();
-
-        $manager->clearFromInjury();
-    }
-
-    /**
-     * @test
-     */
-    public function a_suspended_manager_cannot_be_cleared_from_an_injury()
-    {
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $manager = Manager::factory()->suspended()->create();
-
-        $manager->clearFromInjury();
-    }
-
-    /**
-     * @test
-     */
-    public function a_retired_manager_cannot_be_cleared_from_injury()
-    {
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $manager = Manager::factory()->retired()->create();
-
-        $manager->clearFromInjury();
+        $strategy->clearInjury();
     }
 
     /**
@@ -64,11 +32,14 @@ class ManagerClearInjuryStrategyTest extends TestCase
      */
     public function an_injured_manager_can_be_cleared_from_an_injury()
     {
-        $manager = Manager::factory()->injured()->create();
+        $strategy = new ManagerClearInjuryStrategy;
+        $managerMock = $this->mock(Manager::factory()->make());
+        $repositoryMock = $this->mock(ManagerRepository::class);
 
-        $manager->clearFromInjury();
+        $strategy->setInjurable($managerMock); // Needs to be actual manager object
+        $managerMock->expects()->canBeClearedFromInjury()->andReturns(true);
+        $repositoryMock->expects()->clearInjury($manager)->once()->andReturns($manager);
 
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-        $this->assertNotNull($manager->previousInjury->ended_at);
+        $strategy->clearInjury();
     }
 }
