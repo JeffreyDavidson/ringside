@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Strategies\Suspend;
+namespace App\Strategies\Suspension;
 
 use App\Exceptions\CannotBeSuspendedException;
 use App\Models\Contracts\Suspendable;
 use App\Repositories\WrestlerRepository;
 
-class WrestlerSuspendStrategy extends BaseSuspendStrategy implements SuspendStrategyInterface
+class WrestlerSuspensionStrategy extends BaseSuspensionStrategy implements SuspensionStrategyInterface
 {
     /**
      * The interface implementation.

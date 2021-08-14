@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Strategies\Suspend;
+namespace App\Strategies\Suspension;
 
 use App\Exceptions\CannotBeSuspendedException;
 use App\Models\Contracts\Suspendable;
 use App\Repositories\TagTeamRepository;
 
-class TagTeamSuspendStrategy extends BaseSuspendStrategy implements SuspendStrategyInterface
+class TagTeamSuspensionStrategy extends BaseSuspensionStrategy implements SuspensionStrategyInterface
 {
     /**
      * The interface implementation.

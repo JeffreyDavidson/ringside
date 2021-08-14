@@ -5,44 +5,61 @@ namespace Tests\Unit\Strategies\ClearInjury;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Manager;
 use App\Strategies\ClearInjury\ManagerClearInjuryStrategy;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery\MockInterface;
 use Tests\TestCase;
 
+/**
+ * @group managers
+ * @group strategies
+ */
 class ManagerClearInjuryStrategyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function an_uninjurable_manager_throws_an_exception()
     {
+        $recoveryDate = null;
         $managerMock = $this->mock(Manager::class);
-        $strategy = $this->partialMock(ManagerClearInjuryStrategy::class, function (MockInterface $mock) use ($managerMock) {
-            $mock->shouldReceive('setInjurable')->with($managerMock)->once()->andReturn($mock);
-        });
         $repositoryMock = $this->mock(ManagerRepository::class);
+        $strategy = new ManagerClearInjuryStrategy($repositoryMock);
 
-        $managerMock->expects()->canBeClearedFromInjury()->andReturns(false)->andThrow(new CannotBeClearedFromInjuryException);
-        $repositoryMock->expects()->shouldNotReceive('clearInjury');
+        $managerMock->expects()->canBeClearedFromInjury()->andReturns(false);
+        $repositoryMock->shouldNotReceive('clearInjury');
 
-        $strategy->clearInjury();
+        $this->expectException(CannotBeClearedFromInjuryException::class);
+
+        $strategy->setInjurable($managerMock)->clearInjury($recoveryDate);
     }
 
     /**
      * @test
      */
-    public function an_injured_manager_can_be_cleared_from_an_injury()
+    public function an_injured_manager_can_be_cleared_from_an_injury_without_a_date_passed_in()
     {
-        $strategy = new ManagerClearInjuryStrategy;
-        $managerMock = $this->mock(Manager::factory()->make());
+        $recoveryDate = null;
+        $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
+        $strategy = new ManagerClearInjuryStrategy($repositoryMock);
 
-        $strategy->setInjurable($managerMock); // Needs to be actual manager object
         $managerMock->expects()->canBeClearedFromInjury()->andReturns(true);
-        $repositoryMock->expects()->clearInjury($manager)->once()->andReturns($manager);
+        $repositoryMock->expects()->clearInjury($managerMock, $recoveryDate)->once();
 
-        $strategy->clearInjury();
+        $strategy->setInjurable($managerMock)->clearInjury($recoveryDate);
+    }
+
+    /**
+     * @test
+     */
+    public function an_injured_manager_can_be_cleared_from_an_injury_with_a_date()
+    {
+        $recoveryDate = now()->toDateTimeString();
+        $managerMock = $this->mock(Manager::class);
+        $repositoryMock = $this->mock(ManagerRepository::class);
+        $strategy = new ManagerClearInjuryStrategy($repositoryMock);
+
+        $managerMock->expects()->canBeClearedFromInjury()->andReturns(true);
+        $repositoryMock->expects()->clearInjury($managerMock, $recoveryDate)->once()->andReturns();
+
+        $strategy->setInjurable($managerMock)->clearInjury($recoveryDate);
     }
 }

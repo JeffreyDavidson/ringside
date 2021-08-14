@@ -6,11 +6,11 @@ use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
 use App\Strategies\ClearInjury\WrestlerClearInjuryStrategy;
 use App\Strategies\Employment\WrestlerEmploymentStrategy;
-use App\Strategies\Injure\WrestlerInjuryStrategy;
+use App\Strategies\Injury\WrestlerInjuryStrategy;
 use App\Strategies\Reinstate\WrestlerReinstateStrategy;
 use App\Strategies\Release\WrestlerReleaseStrategy;
 use App\Strategies\Retirement\WrestlerRetirementStrategy;
-use App\Strategies\Suspend\WrestlerSuspendStrategy;
+use App\Strategies\Suspension\WrestlerSuspensionStrategy;
 use App\Strategies\Unretire\WrestlerUnretireStrategy;
 
 class WrestlerService
@@ -159,7 +159,7 @@ class WrestlerService
      */
     public function suspend(Wrestler $wrestler)
     {
-        app()->make(WrestlerSuspendStrategy::class)->setSuspendable($wrestler)->suspend();
+        app()->make(WrestlerSuspensionStrategy::class)->setSuspendable($wrestler)->suspend();
     }
 
     /**

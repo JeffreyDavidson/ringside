@@ -38,7 +38,7 @@ class StableRetirementStrategy extends BaseRetirementStrategy implements Retirem
      */
     public function setRetirable(Retirable $retirable)
     {
-        $this->retirable = $$retirable;
+        $this->retirable = $retirable;
 
         return $this;
     }

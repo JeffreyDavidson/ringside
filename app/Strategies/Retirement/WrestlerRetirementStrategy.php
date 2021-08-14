@@ -38,7 +38,7 @@ class WrestlerRetirementStrategy extends BaseRetirementStrategy implements Retir
      */
     public function setRetirable(Retirable $retirable)
     {
-        $this->retirable = $$retirable;
+        $this->retirable = $retirable;
 
         return $this;
     }

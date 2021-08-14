@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Strategies\Suspend;
+namespace App\Strategies\Suspension;
 
 use App\Models\Contracts\Suspendable;
 
-interface SuspendStrategyInterface
+interface SuspensionStrategyInterface
 {
     /**
      * Suspend a suspendable model.

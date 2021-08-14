@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Strategies\Injure;
+namespace App\Strategies\Injury;
 
 class BaseInjuryStrategy
 {

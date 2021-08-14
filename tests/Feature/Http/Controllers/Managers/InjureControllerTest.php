@@ -30,6 +30,7 @@ class InjureControllerTest extends TestCase
      */
     public function invoke_injures_an_available_manager_and_redirects($administrators)
     {
+        $this->withoutExceptionHandling();
         $now = now();
         Carbon::setTestNow($now);
 

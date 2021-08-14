@@ -38,7 +38,7 @@ class TitleRetirementStrategy extends BaseRetirementStrategy implements Retireme
      */
     public function setRetirable(Retirable $retirable)
     {
-        $this->retirable = $$retirable;
+        $this->retirable = $retirable;
 
         return $this;
     }

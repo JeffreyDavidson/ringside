@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Strategies\Injure;
+namespace App\Strategies\Injury;
 
 use App\Exceptions\CannotBeInjuredException;
 use App\Models\Contracts\Injurable;
-use App\Repositories\RefereeRepository;
+use App\Repositories\ManagerRepository;
 
-class RefereeInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategyInterface
+class ManagerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategyInterface
 {
     /**
      * The interface implementation.
@@ -18,16 +18,16 @@ class RefereeInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategy
     /**
      * The repository implementation.
      *
-     * @var \App\Repositories\RefereeRepository
+     * @var \App\Repositories\ManagerRepository
      */
-    private RefereeRepository $refereeRepository;
+    private ManagerRepository $managerRepository;
 
     /**
-     * Create a new referee injury strategy instance.
+     * Create a new manager injury strategy instance.
      */
     public function __construct()
     {
-        $this->refereeRepository = new RefereeRepository;
+        $this->managerRepository = new ManagerRepository;
     }
 
     /**
@@ -55,7 +55,7 @@ class RefereeInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategy
 
         $injureDate ??= now()->toDateTimeString();
 
-        $this->refereeRepository->injure($this->injurable, $injureDate);
+        $this->managerRepository->injure($this->injurable, $injureDate);
         $this->injurable->updateStatusAndSave();
     }
 }

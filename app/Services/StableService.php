@@ -59,7 +59,9 @@ class StableService
     {
         $this->stableRepository->update($stable, $data);
 
-        $this->updateActivation($stable, $data['started_at']);
+        if (isset($data['started_at'])) {
+            $this->updateActivation($stable, $data['started_at']);
+        }
 
         $this->updateMembers($stable, $data['wrestlers'], $data['tag_teams']);
 

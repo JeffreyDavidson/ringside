@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Strategies\Injure;
+namespace App\Strategies\Injury;
 
 use App\Models\Manager;
 use App\Models\Referee;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Strategies\Suspend;
+namespace App\Strategies\Suspension;
 
 use App\Models\Manager;
 use App\Models\Referee;
@@ -8,14 +8,14 @@ use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Model;
 
-class SuspendContextStrategy
+class SuspensionContextStrategy
 {
     /**
      * The strategy to be used for the given model.
      *
-     * @var \App\Strategies\Suspend\SuspendStrategyInterface
+     * @var \App\Strategies\Suspend\SuspensionStrategyInterface
      */
-    private SuspendStrategyInterface $strategy;
+    private SuspensionStrategyInterface $strategy;
 
     /**
      * Create a new suspend context strategy instance.
@@ -25,13 +25,13 @@ class SuspendContextStrategy
     public function __construct(Model $model)
     {
         if ($model instanceof Manager) {
-            $this->strategy = new ManagerSuspendStrategy($model);
+            $this->strategy = new ManagerSuspensionStrategy($model);
         } elseif ($model instanceof Referee) {
-            $this->strategy = new RefereeSuspendStrategy($model);
+            $this->strategy = new RefereeSuspensionStrategy($model);
         } elseif ($model instanceof TagTeam) {
-            $this->strategy = new TagTeamSuspendStrategy($model);
+            $this->strategy = new TagTeamSuspensionStrategy($model);
         } elseif ($model instanceof Wrestler) {
-            $this->strategy = new WrestlerSuspendStrategy($model);
+            $this->strategy = new WrestlerSuspensionStrategy($model);
         }
 
         throw new \InvalidArgumentException('Could not find strategy for: '.$model::class);

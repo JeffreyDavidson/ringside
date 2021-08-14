@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Strategies\Injure;
+namespace App\Strategies\Injury;
 
 use App\Exceptions\CannotBeInjuredException;
 use App\Models\Contracts\Injurable;
-use App\Repositories\WrestlerRepository;
+use App\Repositories\RefereeRepository;
 
-class WrestlerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategyInterface
+class RefereeInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategyInterface
 {
     /**
      * The interface implementation.
@@ -18,16 +18,16 @@ class WrestlerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrateg
     /**
      * The repository implementation.
      *
-     * @var \App\Repositories\WrestlerRepository
+     * @var \App\Repositories\RefereeRepository
      */
-    private WrestlerRepository $wrestlerRepository;
+    private RefereeRepository $refereeRepository;
 
     /**
-     * Create a new wrestler injury strategy instance.
+     * Create a new referee injury strategy instance.
      */
     public function __construct()
     {
-        $this->wrestlerRepository = new WrestlerRepository;
+        $this->refereeRepository = new RefereeRepository;
     }
 
     /**
@@ -55,11 +55,7 @@ class WrestlerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrateg
 
         $injureDate ??= now()->toDateTimeString();
 
-        $this->wrestlerRepository->injure($this->injurable, $injureDate);
+        $this->refereeRepository->injure($this->injurable, $injureDate);
         $this->injurable->updateStatusAndSave();
-
-        if ($this->injurable->currentTagTeam) {
-            $this->injurable->currentTagTeam->updateStatusAndSave();
-        }
     }
 }

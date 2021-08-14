@@ -38,7 +38,7 @@ class RefereeRetirementStrategy extends BaseRetirementStrategy implements Retire
      */
     public function setRetirable(Retirable $retirable)
     {
-        $this->retirable = $$retirable;
+        $this->retirable = $retirable;
 
         return $this;
     }

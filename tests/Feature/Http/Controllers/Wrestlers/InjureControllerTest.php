@@ -29,6 +29,7 @@ class InjureControllerTest extends TestCase
      */
     public function invoke_injures_a_bookable_wrestler_and_redirects($administrators)
     {
+        $this->withoutExceptionHandling();
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this->actAs($administrators)
