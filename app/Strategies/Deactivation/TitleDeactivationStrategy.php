@@ -2,20 +2,63 @@
 
 namespace App\Strategies\Deactivation;
 
+use App\Exceptions\CannotBeDeactivatedException;
 use App\Models\Contracts\Deactivatable;
-use App\Repositories\Contracts\DeactivationRepositoryInterface;
 use App\Repositories\TitleRepository;
+use App\Strategies\Deactivation\BaseDeactivationStrategy;
 
-class TitleDeactivationStrategy extends BaseDeactivationStrategy
+class TitleDeactivationStrategy extends BaseDeactivationStrategy implements DeactivationStrategyInterface
 {
     /**
-     * Create a new title deactivation strategy instance.
+     * The interface implementation.
      *
-     * @param \App\Models\Contracts\Deactivatable $deactivatable
-     * @param \App\Repositories\Contracts\DeactivationRepositoryInterface|null $repository
+     * @var \App\Models\Contracts\Deactivatable
      */
-    public function __construct(Deactivatable $deactivatable, DeactivationRepositoryInterface $repository = null)
+    private Deactivatable $deactivatable;
+
+    /**
+     * The repository implementation.
+     *
+     * @var \App\Repositories\TitleRepository
+     */
+    private TitleRepository $titleRepository;
+
+    /**
+     * Create a new title activation strategy instance.
+     *
+     * @param \App\Repositories\TitleRepository $titleRepository
+     */
+    public function __construct()
     {
-        parent::__construct($deactivatable, $repository ?? new TitleRepository());
+        $this->titleRepository = new TitleRepository;
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Contracts\Deactivatable $deactivatable
+     * @return $this
+     */
+    public function setDeactivatable(Deactivatable $deactivatable)
+    {
+        $this->deactivatable = $deactivatable;
+
+        return $this;
+    }
+
+    /**
+     * Deactivate a deactivatable model.
+     *
+     * @param  string|null $deactivationDate
+     * @return void
+     */
+    public function deactivate(string $deactivationDate = null)
+    {
+        throw_unless($this->deactivatable->canBeDeactivated(), new CannotBeDeactivatedException());
+
+        $deactivationDate ??= now()->toDateTimeString();
+
+        $this->titleRepository->deactivate($this->deactivatable, $deactivationDate);
+        $this->deactivatable->updateStatusAndSave();
     }
 }

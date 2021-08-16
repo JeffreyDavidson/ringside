@@ -31,7 +31,7 @@ class TagTeamRetirementStrategy extends BaseRetirementStrategy implements Retire
     }
 
     /**
-     * Undocumented function.
+     * Set the retirable model to be retired.
      *
      * @param  \App\Models\Contracts\Retirable $retirable
      * @return $this

@@ -33,7 +33,7 @@ class StableDisbandStrategy extends BaseDisbandStrategy implements DisbandStrate
     }
 
     /**
-     * Undocumented function.
+     * Set the disbandable model to be disbanded.
      *
      * @param  \App\Models\Contracts\Disbandable $disbandable
      * @return $this
@@ -46,7 +46,7 @@ class StableDisbandStrategy extends BaseDisbandStrategy implements DisbandStrate
     }
 
     /**
-     * Activate an activatable model.
+     * Disband a disbandable model.
      *
      * @param  string|null $disbandDate
      * @return void
@@ -57,7 +57,7 @@ class StableDisbandStrategy extends BaseDisbandStrategy implements DisbandStrate
 
         $disbandDate ??= now()->toDateTimeString();
 
-        $this->stableRepository->disband($this->activatable, $disbandDate);
+        $this->stableRepository->disband($this->disbandable, $disbandDate);
         $this->disbandable->updateStatusAndSave();
     }
 }

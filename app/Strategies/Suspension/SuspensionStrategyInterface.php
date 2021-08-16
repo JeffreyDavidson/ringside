@@ -15,7 +15,7 @@ interface SuspensionStrategyInterface
     public function suspend(string $suspensionDate = null);
 
     /**
-     * Undocumented function.
+     * Set the suspendable model to be suspended.
      *
      * @param  \App\Models\Contracts\Suspendable $suspendable
      */

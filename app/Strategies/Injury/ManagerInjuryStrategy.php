@@ -31,7 +31,7 @@ class ManagerInjuryStrategy extends BaseInjuryStrategy implements InjuryStrategy
     }
 
     /**
-     * Undocumented function.
+     * Set the injurable model to be injured.
      *
      * @param  \App\Models\Contracts\Injurable $injurable
      * @return $this

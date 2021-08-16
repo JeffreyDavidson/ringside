@@ -15,7 +15,7 @@ interface EmploymentStrategyInterface
     public function employ(string $employmentDate = null);
 
     /**
-     * Clear an injury of an employable model.
+     * Set the employable model to be employed.
      *
      * @param  \App\Models\Contracts\Employable $employable
      * @return void

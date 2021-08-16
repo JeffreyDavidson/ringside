@@ -15,7 +15,7 @@ interface ReinstateStrategyInterface
     public function reinstate(string $reinstatementDate = null);
 
     /**
-     * Undocumented function.
+     * Set the reinstatable model to be reinstated.
      *
      * @param  \App\Models\Contracts\Reinstatable $reinstatable
      */

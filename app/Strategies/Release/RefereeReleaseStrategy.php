@@ -31,7 +31,7 @@ class RefereeReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
     }
 
     /**
-     * Undocumented function.
+     * Set the releasable model to be released.
      *
      * @param  \App\Models\Contracts\Releasable $releasable
      * @return $this

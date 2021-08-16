@@ -33,7 +33,7 @@ class WrestlerReleaseStrategy extends BaseReleaseStrategy implements ReleaseStra
     }
 
     /**
-     * Undocumented function.
+     * Set the releasable model to be released.
      *
      * @param  \App\Models\Contracts\Releasable $releasable
      * @return $this

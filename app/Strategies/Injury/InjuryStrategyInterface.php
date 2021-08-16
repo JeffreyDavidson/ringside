@@ -14,7 +14,7 @@ interface InjuryStrategyInterface
     public function injure(string $injureDate = null);
 
     /**
-     * Undocumented function.
+     * Set the injurable model to be injured.
      *
      * @param  \App\Models\Contracts\Injurable $injurable
      */

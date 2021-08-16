@@ -31,7 +31,7 @@ class ManagerEmploymentStrategy extends BaseEmploymentStrategy implements Employ
     }
 
     /**
-     * Undocumented function.
+     * Set the employable model to be employed.
      *
      * @param  \App\Models\Contracts\Employable $employable
      * @return $this

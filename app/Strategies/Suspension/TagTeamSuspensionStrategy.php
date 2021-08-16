@@ -31,7 +31,7 @@ class TagTeamSuspensionStrategy extends BaseSuspensionStrategy implements Suspen
     }
 
     /**
-     * Undocumented function.
+     * Set the suspendable model to be suspended.
      *
      * @param  \App\Models\Contracts\Suspendable $suspendable
      * @return $this

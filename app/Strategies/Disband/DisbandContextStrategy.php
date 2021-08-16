@@ -15,7 +15,7 @@ class DisbandContextStrategy
     private DisbandStrategyInterface $strategy;
 
     /**
-     * Create a new activation context strategy instance.
+     * Create a new disband context strategy instance.
      *
      * @param  \Illuminate\Database\Eloquent\Model $model
      */
@@ -29,13 +29,13 @@ class DisbandContextStrategy
     }
 
     /**
-     * Process the activation of the model.
+     * Process the disbanding of the model.
      *
      * @param  string|null $disbandDate
      * @return void
      */
     public function process($disbandDate = null)
     {
-        $this->strategy->activate($disbandDate);
+        $this->strategy->disband($disbandDate);
     }
 }

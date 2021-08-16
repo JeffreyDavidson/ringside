@@ -2,7 +2,7 @@
 
 namespace App\Strategies\Release;
 
-use App\Exceptions\CannotBeSuspendedException;
+use App\Exceptions\CannotBeReleasedException;
 use App\Models\Contracts\Releasable;
 use App\Repositories\TagTeamRepository;
 
@@ -33,7 +33,7 @@ class TagTeamReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
     }
 
     /**
-     * Undocumented function.
+     * Set the releasable model to be released.
      *
      * @param  \App\Models\Contracts\Releasable $releasable
      * @return $this
@@ -53,6 +53,6 @@ class TagTeamReleaseStrategy extends BaseReleaseStrategy implements ReleaseStrat
      */
     public function release(string $releaseDate = null)
     {
-        throw_unless($this->releasable->canBeSuspended(), new CannotBeSuspendedException());
+        throw_unless($this->releasable->canBeReleased(), new CannotBeReleasedException());
     }
 }

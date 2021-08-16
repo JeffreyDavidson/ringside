@@ -62,41 +62,4 @@ class WrestlerClearInjuryStrategy extends BaseClearInjuryStrategy implements Cle
             $this->injurable->currentTagTeam->updateStatusAndSave();
         }
     }
-
-    /**
-     * Updates a wrestler's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
-    }
-
-    /**
-     * Update the status for the wrestler.
-     *
-     * @return void
-     */
-    public function updateStatus()
-    {
-        if ($this->isCurrentlyEmployed()) {
-            if ($this->isInjured()) {
-                $this->status = WrestlerStatus::INJURED;
-            } elseif ($this->isSuspended()) {
-                $this->status = WrestlerStatus::SUSPENDED;
-            } elseif ($this->isBookable()) {
-                $this->status = WrestlerStatus::BOOKABLE;
-            }
-        } elseif ($this->hasFutureEmployment()) {
-            $this->status = WrestlerStatus::FUTURE_EMPLOYMENT;
-        } elseif ($this->isReleased()) {
-            $this->status = WrestlerStatus::RELEASED;
-        } elseif ($this->isRetired()) {
-            $this->status = WrestlerStatus::RETIRED;
-        } else {
-            $this->status = WrestlerStatus::UNEMPLOYED;
-        }
-    }
 }

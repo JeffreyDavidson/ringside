@@ -31,7 +31,7 @@ class RefereeReinstateStrategy extends BaseReinstateStrategy implements Reinstat
     }
 
     /**
-     * Undocumented function.
+     * Set the reinstatable model to be reinstated.
      *
      * @param  \App\Models\Contracts\Reinstatable $reinstatable
      * @return $this

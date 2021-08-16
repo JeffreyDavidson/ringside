@@ -33,7 +33,7 @@ class WrestlerEmploymentStrategy extends BaseEmploymentStrategy implements Emplo
     }
 
     /**
-     * Undocumented function.
+     * Set the employable model to be employed.
      *
      * @param  \App\Models\Contracts\Employable $employable
      * @return $this

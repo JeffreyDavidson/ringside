@@ -31,7 +31,7 @@ class StableRetirementStrategy extends BaseRetirementStrategy implements Retirem
     }
 
     /**
-     * Undocumented function.
+     * Set the retirable model to be retired.
      *
      * @param  \App\Models\Contracts\Retirable $retirable
      * @return $this

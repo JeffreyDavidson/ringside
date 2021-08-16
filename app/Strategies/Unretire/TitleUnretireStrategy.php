@@ -31,7 +31,7 @@ class TitleUnretireStrategy extends BaseUnretireStrategy implements UnretireStra
     }
 
     /**
-     * Undocumented function.
+     * Set the unretirable model to be unretired.
      *
      * @param  \App\Models\Contracts\Unretirable $unretirable
      * @return $this

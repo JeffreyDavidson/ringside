@@ -7,7 +7,7 @@ interface DeactivationStrategyInterface
     /**
      * Deactivate a deactivatable model.
      *
-     * @param  string|null $endedAt
+     * @param  string|null $deactivationDate
      */
-    public function deactivate(string $endedAt = null);
+    public function deactivate(string $deactivationDate = null);
 }

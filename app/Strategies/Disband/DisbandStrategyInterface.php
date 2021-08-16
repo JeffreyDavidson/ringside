@@ -15,7 +15,7 @@ interface DisbandStrategyInterface
     public function disband(string $disbandDate = null);
 
     /**
-     * Undocumented function.
+     * Set the disbandable model to be disbanded.
      *
      * @param  \App\Models\Contracts\Disbandable $disbandable
      */

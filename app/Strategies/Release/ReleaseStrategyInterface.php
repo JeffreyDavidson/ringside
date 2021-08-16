@@ -15,7 +15,7 @@ interface ReleaseStrategyInterface
     public function release(string $releaseDate = null);
 
     /**
-     * Undocumented function.
+     * Set the releasable model to be released.
      *
      * @param  \App\Models\Contracts\Releasable $releasable
      */

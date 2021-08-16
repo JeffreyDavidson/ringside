@@ -15,7 +15,7 @@ interface RetirementStrategyInterface
     public function retire(string $retirementDate = null);
 
     /**
-     * Undocumented function.
+     * Set the retirable model to be retired.
      *
      * @param  \App\Models\Contracts\Retirable $retirable
      * @return $this
