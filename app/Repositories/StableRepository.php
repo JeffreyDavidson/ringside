@@ -106,32 +106,4 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
     {
         return $stable->currentRetirement()->update(['ended_at' => $unretireDate]);
     }
-
-    /**
-     * Disband a given stable on a given date.
-     *
-     * @param  \App\Models\Stable $stable
-     * @param  string $disbandDate
-     * @return \App\Models\Stable $stable
-     */
-    public function disband(Stable $stable, string $disbandDate)
-    {
-        foreach ($stable->currentWrestlers as $currentWrestler) {
-            $stable->currentWrestlers()->updateExistingPivot($currentWrestler->id, [
-                'left_at' => $disbandDate,
-            ]);
-        }
-
-        foreach ($stable->currentTagTeams as $currentTagTeam) {
-            $stable->currentTagTeams()->updateExistingPivot($currentTagTeam->id, [
-                'left_at' => $disbandDate,
-            ]);
-        }
-
-        foreach ($stable->currentManagers as $currentManager) {
-            $stable->currentManagers()->updateExistingPivot($currentManager->id, [
-                'left_at' => $disbandDate,
-            ]);
-        }
-    }
 }
