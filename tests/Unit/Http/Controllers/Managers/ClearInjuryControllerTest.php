@@ -7,8 +7,6 @@ use App\Http\Controllers\Managers\ClearInjuryController;
 use App\Http\Requests\Managers\ClearInjuryRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use App\Strategies\ClearInjury\ManagerClearInjuryStrategy;
-use Mockery;
 use Tests\TestCase;
 
 /**

@@ -7,7 +7,6 @@ use App\Http\Controllers\Stables\UnretireController;
 use App\Http\Requests\Stables\UnretireRequest;
 use App\Models\Stable;
 use App\Repositories\StableRepository;
-use App\Strategies\Unretire\StableUnretireStrategy;
 use Tests\TestCase;
 
 /**

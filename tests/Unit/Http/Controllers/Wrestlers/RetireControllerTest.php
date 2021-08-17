@@ -7,7 +7,6 @@ use App\Http\Controllers\Wrestlers\RetireController;
 use App\Http\Requests\Wrestlers\RetireRequest;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use App\Strategies\Retirement\WrestlerRetirementStrategy;
 use Tests\TestCase;
 
 /**

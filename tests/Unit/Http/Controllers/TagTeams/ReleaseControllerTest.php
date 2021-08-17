@@ -7,7 +7,6 @@ use App\Http\Controllers\TagTeams\ReleaseController;
 use App\Http\Requests\TagTeams\ReleaseRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use App\Strategies\Release\TagTeamReleaseStrategy;
 use Tests\TestCase;
 
 /**

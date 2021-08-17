@@ -4,7 +4,6 @@ namespace Tests\Unit\Http\Controllers\Managers;
 
 use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Managers\InjureController;
-use App\Http\Requests\Managers\EmployRequest;
 use App\Http\Requests\Managers\InjureRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;

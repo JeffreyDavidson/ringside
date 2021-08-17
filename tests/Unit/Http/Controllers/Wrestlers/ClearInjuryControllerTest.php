@@ -7,7 +7,6 @@ use App\Http\Controllers\Wrestlers\ClearInjuryController;
 use App\Http\Requests\Wrestlers\ClearInjuryRequest;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use App\Strategies\ClearInjury\WrestlerClearInjuryStrategy;
 use Tests\TestCase;
 
 /**

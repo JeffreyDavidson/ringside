@@ -7,7 +7,6 @@ use App\Http\Controllers\Wrestlers\EmployController;
 use App\Http\Requests\Wrestlers\EmployRequest;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use App\Strategies\Employment\WrestlerEmploymentStrategy;
 use Tests\TestCase;
 
 /**

@@ -7,7 +7,6 @@ use App\Http\Controllers\TagTeams\SuspendController;
 use App\Http\Requests\TagTeams\SuspendRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use App\Strategies\Suspension\TagTeamSuspensionStrategy;
 use Tests\TestCase;
 
 /**

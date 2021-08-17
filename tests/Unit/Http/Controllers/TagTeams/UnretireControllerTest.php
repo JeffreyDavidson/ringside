@@ -7,7 +7,6 @@ use App\Http\Controllers\TagTeams\UnretireController;
 use App\Http\Requests\TagTeams\UnretireRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use App\Strategies\Unretire\TagTeamUnretireStrategy;
 use Tests\TestCase;
 
 /**

@@ -7,7 +7,6 @@ use App\Http\Controllers\TagTeams\RetireController;
 use App\Http\Requests\TagTeams\RetireRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use App\Strategies\Retirement\TagTeamRetirementStrategy;
 use Tests\TestCase;
 
 /**

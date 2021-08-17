@@ -7,7 +7,6 @@ use App\Http\Controllers\Wrestlers\UnretireController;
 use App\Http\Requests\Wrestlers\UnretireRequest;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use App\Strategies\Unretire\WrestlerUnretireStrategy;
 use Tests\TestCase;
 
 /**

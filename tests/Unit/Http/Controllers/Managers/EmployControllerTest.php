@@ -7,7 +7,6 @@ use App\Http\Controllers\Managers\EmployController;
 use App\Http\Requests\Managers\EmployRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use App\Strategies\Employment\ManagerEmploymentStrategy;
 use Tests\TestCase;
 
 /**

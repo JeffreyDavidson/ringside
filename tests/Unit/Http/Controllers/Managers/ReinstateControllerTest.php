@@ -7,7 +7,6 @@ use App\Http\Controllers\Managers\ReinstateController;
 use App\Http\Requests\Managers\ReinstateRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use App\Strategies\Reinstate\ManagerReinstateStrategy;
 use Tests\TestCase;
 
 /**

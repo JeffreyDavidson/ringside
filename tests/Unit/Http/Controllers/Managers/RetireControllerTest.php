@@ -3,12 +3,10 @@
 namespace Tests\Unit\Http\Controllers\Managers;
 
 use App\Exceptions\CannotBeRetiredException;
-use App\Http\Controllers\Managers\ReleaseController;
 use App\Http\Controllers\Managers\RetireController;
 use App\Http\Requests\Managers\RetireRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use App\Strategies\Retirement\ManagerRetirementStrategy;
 use Tests\TestCase;
 
 /**

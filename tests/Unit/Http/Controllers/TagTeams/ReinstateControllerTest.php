@@ -7,7 +7,6 @@ use App\Http\Controllers\TagTeams\ReinstateController;
 use App\Http\Requests\TagTeams\ReinstateRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use App\Strategies\Reinstate\TagTeamReinstateStrategy;
 use Tests\TestCase;
 
 /**
