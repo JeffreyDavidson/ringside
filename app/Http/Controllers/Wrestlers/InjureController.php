@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
+use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wrestlers\InjureRequest;
 use App\Models\Wrestler;
-use App\Services\WrestlerService;
+use App\Repositories\WrestlerRepository;
 
 class InjureController extends Controller
 {
@@ -14,12 +15,18 @@ class InjureController extends Controller
      *
      * @param  \App\Models\Wrestler  $wrestler
      * @param  \App\Http\Requests\Wrestlers\InjureRequest  $request
-     * @param  \App\Services\WrestlerService $wrestlerService
+     * @param  \App\Repositories\WrestlerRepository $wrestlerRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler, InjureRequest $request, WrestlerService $wrestlerService)
+    public function __invoke(Wrestler $wrestler, InjureRequest $request, WrestlerRepository $wrestlerRepository)
     {
-        $wrestlerService->injure($wrestler);
+        throw_unless($wrestler->canBeInjured(), new CannotBeInjuredException);
+
+        $injureDate = now()->toDateTimeString();
+
+        $wrestlerRepository->injure($wrestler, $injureDate);
+        $wrestler->updateStatusAndSave();
+        $wrestler->currentTagTeam?->updateStatusAndSave();
 
         return redirect()->route('wrestlers.index');
     }

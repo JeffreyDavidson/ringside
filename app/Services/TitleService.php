@@ -102,48 +102,4 @@ class TitleService
     {
         $this->titleRepository->restore($title);
     }
-
-    /**
-     * Activate a given title.
-     *
-     * @param  \App\Models\Title $title
-     * @return void
-     */
-    public function activate(Title $title)
-    {
-        app()->make(TitleActivationStrategy::class)->setActivatable($title)->activate();
-    }
-
-    /**
-     * Deactivate a given title.
-     *
-     * @param  \App\Models\Title $title
-     * @return void
-     */
-    public function deactivate(Title $title)
-    {
-        app()->make(TitleDeactivationStrategy::class)->setDeactivatable($title)->deactivate();
-    }
-
-    /**
-     * Retire a given title.
-     *
-     * @param  \App\Models\Title $title
-     * @return void
-     */
-    public function retire(Title $title)
-    {
-        app()->make(TitleRetirementStrategy::class)->setRetirable($title)->retire();
-    }
-
-    /**
-     * Unretire a given title.
-     *
-     * @param  \App\Models\Title $title
-     * @return void
-     */
-    public function unretire(Title $title)
-    {
-        app()->make(TitleUnretireStrategy::class)->setUnretirable($title)->unretire();
-    }
 }

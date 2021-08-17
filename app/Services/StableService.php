@@ -2,13 +2,8 @@
 
 namespace App\Services;
 
-use App\Exceptions\CannotBeDisbandedException;
 use App\Models\Stable;
 use App\Repositories\StableRepository;
-use App\Strategies\Activation\StableActivationStrategy;
-use App\Strategies\Deactivation\StableDeactivationStrategy;
-use App\Strategies\Retirement\StableRetirementStrategy;
-use App\Strategies\Unretire\StableUnretireStrategy;
 
 class StableService
 {
@@ -40,7 +35,7 @@ class StableService
         $stable = $this->stableRepository->create($data);
 
         if (isset($data['started_at'])) {
-            app()->make(StableActivationStrategy::class)->setDeactivatable($stable)->activate($data['started_at']);
+            $this->stableRepository->activate($stable, $data['started_at']);
         }
 
         $this->addMembers($stable, $data['wrestlers'], $data['tag_teams']);
@@ -194,25 +189,6 @@ class StableService
     }
 
     /**
-     * Disband the given stable.
-     *
-     * @param  \App\Models\Stable $stable
-     * @param  string|null $disbandedDate
-     * @return void
-     */
-    public function disband($stable, $disbandedDate = null)
-    {
-        throw_unless($stable->canBeDisbanded(), new CannotBeDisbandedException);
-
-        $disbandedDate ??= now()->toDateTimeString();
-
-        $stable->currentActivation()->update(['ended_at' => $disbandedDate]);
-        $stable->currentWrestlers()->detach();
-        $stable->currentTagTeams()->detach();
-        $stable->updateStatusAndSave();
-    }
-
-    /**
      * Add given wrestlers to a given stable on a given join date.
      *
      * @param  \App\Models\Stable $stable
@@ -240,49 +216,5 @@ class StableService
         foreach ($tagTeamIds as $tagTeamId) {
             $stable->tagTeams()->attach($tagTeamId, ['joined_at' => $joinedDate]);
         }
-    }
-
-    /**
-     * Activate a given stable.
-     *
-     * @param  \App\Models\Stable $stable
-     * @return void
-     */
-    public function activate(Stable $stable)
-    {
-        app()->make(StableActivationStrategy::class)->setActivatable($stable)->activate();
-    }
-
-    /**
-     * Deactivate a given stable.
-     *
-     * @param  \App\Models\Stable $stable
-     * @return void
-     */
-    public function deactivate(Stable $stable)
-    {
-        app()->make(StableDeactivationStrategy::class)->setDeactivatable($stable)->deactivate();
-    }
-
-    /**
-     * Retire a given stable.
-     *
-     * @param  \App\Models\Stable $stable
-     * @return void
-     */
-    public function retire(Stable $stable)
-    {
-        app()->make(StableRetirementStrategy::class)->setRetirable($stable)->retire();
-    }
-
-    /**
-     * Unretire a given stable.
-     *
-     * @param  \App\Models\Stable $stable
-     * @return void
-     */
-    public function unretire(Stable $stable)
-    {
-        app()->make(StableUnretireStrategy::class)->setUnretirable($stable)->unretire();
     }
 }

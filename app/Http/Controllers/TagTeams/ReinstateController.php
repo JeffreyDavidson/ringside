@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\TagTeams;
 
+use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\ReinstateRequest;
 use App\Models\TagTeam;
-use App\Services\TagTeamService;
+use App\Repositories\TagTeamRepository;
 
 class ReinstateController extends Controller
 {
@@ -14,12 +15,18 @@ class ReinstateController extends Controller
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\Http\Requests\TagTeams\ReinstateRequest  $request
-     * @param  \App\Services\TagTeamService $tagTeamService
+     * @param  \App\Repositories\TagTeamRepository $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, ReinstateRequest $request, TagTeamService $tagTeamService)
+    public function __invoke(TagTeam $tagTeam, ReinstateRequest $request, TagTeamRepository $tagTeamRepository)
     {
-        $tagTeamService->reinstate($tagTeam);
+        throw_unless($tagTeam->canBeReinstated(), new CannotBeReinstatedException);
+
+        $reinstatementDate = now()->toDateTimeString();
+
+        $tagTeamRepository->reinstate($tagTeam, $reinstatementDate);
+        // $tagTeam->currentWrestlers->each->reinstate($reinstatementDate);
+        $tagTeam->updateStatusAndSave();
 
         return redirect()->route('tag-teams.index');
     }

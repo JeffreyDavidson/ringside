@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Event;
 use App\Repositories\EventRepository;
-use Carbon\Carbon;
 
 class EventService
 {

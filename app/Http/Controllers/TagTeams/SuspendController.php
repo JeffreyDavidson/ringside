@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\TagTeams;
 
+use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\SuspendRequest;
 use App\Models\TagTeam;
-use App\Services\TagTeamService;
+use App\Repositories\TagTeamRepository;
 
 class SuspendController extends Controller
 {
@@ -14,12 +15,19 @@ class SuspendController extends Controller
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\Http\Requests\TagTeams\SuspendRequest  $request
-     * @param  \App\Services\TagTeamService $tagTeamService
+     * @param  \App\Repositories\TagTeamRepository $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, SuspendRequest $request, TagTeamService $tagTeamService)
+    public function __invoke(TagTeam $tagTeam, SuspendRequest $request, TagTeamRepository $tagTeamRepository)
     {
-        $tagTeamService->suspend($tagTeam);
+        throw_unless($tagTeam->canBeSuspended(), new CannotBeSuspendedException);
+
+        $suspensionDate = now()->toDateTimeString();
+
+        $tagTeamRepository->suspend($tagTeam, $suspensionDate);
+
+        $tagTeam->currentWrestlers->each->suspend($suspensionDate);
+        $tagTeam->updateStatusAndSave();
 
         return redirect()->route('tag-teams.index');
     }

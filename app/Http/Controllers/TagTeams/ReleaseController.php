@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\TagTeams;
 
+use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\ReleaseRequest;
 use App\Models\TagTeam;
-use App\Services\TagTeamService;
+use App\Repositories\TagTeamRepository;
 
 class ReleaseController extends Controller
 {
@@ -14,13 +15,18 @@ class ReleaseController extends Controller
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\Http\Requests\TagTeams\ReleaseRequest  $request
-     * @param  \App\Services\TagTeamService $tagTeamService
+     * @param  \App\Repositories\TagTeamRepository $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, ReleaseRequest $request, TagTeamService $tagTeamService)
+    public function __invoke(TagTeam $tagTeam, ReleaseRequest $request, TagTeamRepository $tagTeamRepository)
     {
-        $tagTeamService->release($tagTeam);
+        throw_unless($tagTeam->canBeReleased(), new CannotBeReleasedException);
 
-        return redirect()->route('tagTeams.index');
+        $releaseDate = now()->toDateTimeString();
+
+        $tagTeamRepository->release($tagTeam, $releaseDate);
+        $tagTeam->updateStatusAndSave();
+
+        return redirect()->route('tag-teams.index');
     }
 }

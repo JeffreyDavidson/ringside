@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Stables;
 
+use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Stables\DeactivateRequest;
 use App\Models\Stable;
-use App\Services\StableService;
+use App\Repositories\StableRepository;
 
 class DeactivateController extends Controller
 {
@@ -13,13 +14,18 @@ class DeactivateController extends Controller
      * Deactivates a stable.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \App\Http\Requests\Stables\DeactivateRequest $request
-     * @param  \App\Services\StableService $stableService
+     * @param  \App\Http\Requests\Stables\DeactivateRequest  $request
+     * @param  \App\Repositories\StableRepository  $stableRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, DeactivateRequest $request, StableService $stableService)
+    public function __invoke(Stable $stable, DeactivateRequest $request, StableRepository $stableRepository)
     {
-        $stableService->deactivate($stable);
+        throw_unless($stable->canBeDeactivated(), new CannotBeDeactivatedException);
+
+        $deactivationDate = now()->toDateTimeString();
+
+        $stableRepository->deactivate($stable, $deactivationDate);
+        $stable->updateStatusAndSave();
 
         return redirect()->route('stables.index');
     }
