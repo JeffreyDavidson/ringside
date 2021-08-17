@@ -25,9 +25,10 @@ class SuspendController extends Controller
         $suspensionDate = now()->toDateTimeString();
 
         $tagTeamRepository->suspend($tagTeam, $suspensionDate);
+        $tagTeam->updateStatusAndSave();
 
         $tagTeam->currentWrestlers->each->suspend($suspensionDate);
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->currentWrestlers->each->updateStatusAndSave();
 
         return redirect()->route('tag-teams.index');
     }

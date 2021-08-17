@@ -7,6 +7,7 @@ use App\Http\Controllers\Managers\ReleaseController;
 use App\Http\Requests\Managers\ReleaseRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Tests\TestCase;
 
 /**
@@ -24,6 +25,10 @@ class ReleaseControllerTest extends TestCase
         $repositoryMock = $this->mock(ManagerRepository::class);
         $controller = new ReleaseController;
 
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
         $managerMock->expects()->canBeReleased()->andReturns(true);
         $managerMock->expects()->isSuspended()->andReturns(false);
         $managerMock->expects()->isInjured()->andReturns(false);
@@ -40,8 +45,11 @@ class ReleaseControllerTest extends TestCase
     {
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
         $controller = new ReleaseController;
 
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
         $managerMock->expects()->canBeReleased()->andReturns(true);
         $managerMock->expects()->isSuspended()->andReturns(true);
         $managerMock->expects()->isInjured()->andReturns(false);
@@ -61,12 +69,41 @@ class ReleaseControllerTest extends TestCase
         $repositoryMock = $this->mock(ManagerRepository::class);
         $controller = new ReleaseController;
 
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
         $managerMock->expects()->canBeReleased()->andReturns(true);
         $managerMock->expects()->isSuspended()->andReturns(false);
         $managerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
         $managerMock->expects()->updateStatusAndSave()->once();
+
+        $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
+    }
+
+    /**
+     * @test
+     */
+    public function a_releasable_manager_that_has_a_tag_team_can_be_released()
+    {
+        $managerMock = $this->mock(Manager::class);
+        $repositoryMock = $this->mock(ManagerRepository::class);
+        $controller = new ReleaseController;
+
+        $tagTeamMock = $this->mock(TagTeam::class);
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(true);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
+        $managerMock->expects()->canBeReleased()->andReturns(true);
+        $managerMock->expects()->isSuspended()->andReturns(false);
+        $managerMock->expects()->isInjured()->andReturns(true);
+        $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
+        $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
+        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->removeFromCurrentTagTeam();
 
         $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
     }

@@ -26,6 +26,7 @@ class RetireController extends Controller
 
         if ($tagTeam->isSuspended()) {
             $tagTeamRepository->reinstate($tagTeam, $retirementDate);
+            $tagTeam->currentWrestlers->each->reinstate();
         }
 
         $tagTeamRepository->release($tagTeam, $retirementDate);

@@ -36,7 +36,10 @@ class RetireController extends Controller
         $wrestlerRepository->retire($wrestler, $retirementDate);
 
         $wrestler->updateStatusAndSave();
-        $wrestler->currentTagTeam?->updateStatusAndSave();
+
+        if ($wrestler->currentTagTeam->exists()) {
+            $wrestler->removeFromCurrentTagTeam();
+        }
 
         return redirect()->route('wrestlers.index');
     }

@@ -26,7 +26,6 @@ class InjureController extends Controller
 
         $wrestlerRepository->injure($wrestler, $injureDate);
         $wrestler->updateStatusAndSave();
-        $wrestler->currentTagTeam?->updateStatusAndSave();
 
         return redirect()->route('wrestlers.index');
     }

@@ -26,7 +26,6 @@ class SuspendController extends Controller
 
         $managerRepository->suspend($manager, $suspensionDate);
         $manager->updateStatusAndSave();
-        $manager->currentTagTeam?->updateStatusAndSave();
 
         return redirect()->route('managers.index');
     }

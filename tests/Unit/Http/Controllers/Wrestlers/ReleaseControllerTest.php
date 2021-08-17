@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Http\Controllers\Wrestlers;
 
-use App\Exceptions\CannotBeReleasedException;
-use App\Http\Controllers\Wrestlers\ReleaseController;
-use App\Http\Requests\Wrestlers\ReleaseRequest;
+use Tests\TestCase;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use Tests\TestCase;
+use App\Exceptions\CannotBeReleasedException;
+use App\Http\Requests\Wrestlers\ReleaseRequest;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Http\Controllers\Wrestlers\ReleaseController;
 
 /**
  * @group wrestlers
@@ -23,6 +24,10 @@ class ReleaseControllerTest extends TestCase
         $wrestlerMock = $this->mock(Wrestler::class);
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new ReleaseController;
+
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $wrestlerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
 
         $wrestlerMock->expects()->canBeReleased()->andReturns(true);
         $wrestlerMock->expects()->isSuspended()->andReturns(false);
@@ -41,6 +46,10 @@ class ReleaseControllerTest extends TestCase
         $wrestlerMock = $this->mock(Wrestler::class);
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new ReleaseController;
+
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $wrestlerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
 
         $wrestlerMock->expects()->canBeReleased()->andReturns(true);
         $wrestlerMock->expects()->isSuspended()->andReturns(true);
@@ -61,12 +70,41 @@ class ReleaseControllerTest extends TestCase
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new ReleaseController;
 
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $wrestlerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
         $wrestlerMock->expects()->canBeReleased()->andReturns(true);
         $wrestlerMock->expects()->isSuspended()->andReturns(false);
         $wrestlerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
         $wrestlerMock->expects()->updateStatusAndSave()->once();
+
+        $controller->__invoke($wrestlerMock, new ReleaseRequest, $repositoryMock);
+    }
+
+    /**
+     * @test
+     */
+    public function a_releasable_wrestler_that_has_a_tag_team_can_be_released()
+    {
+        $wrestlerMock = $this->mock(Wrestler::class);
+        $repositoryMock = $this->mock(WrestlerRepository::class);
+        $controller = new ReleaseController;
+
+        $tagTeamMock = $this->mock(TagTeam::class);
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(true);
+        $wrestlerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
+        $wrestlerMock->expects()->canBeReleased()->andReturns(true);
+        $wrestlerMock->expects()->isSuspended()->andReturns(false);
+        $wrestlerMock->expects()->isInjured()->andReturns(true);
+        $repositoryMock->expects()->clearInjury($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
+        $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
+        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->removeFromCurrentTagTeam();
 
         $controller->__invoke($wrestlerMock, new ReleaseRequest, $repositoryMock);
     }

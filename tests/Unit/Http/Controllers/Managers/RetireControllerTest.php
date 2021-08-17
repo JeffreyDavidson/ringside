@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Http\Controllers\Managers;
 
-use App\Exceptions\CannotBeRetiredException;
-use App\Http\Controllers\Managers\RetireController;
-use App\Http\Requests\Managers\RetireRequest;
+use Tests\TestCase;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use Tests\TestCase;
+use App\Exceptions\CannotBeRetiredException;
+use App\Http\Requests\Managers\RetireRequest;
+use App\Http\Controllers\Managers\RetireController;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * @group managers
@@ -23,6 +24,10 @@ class RetireControllerTest extends TestCase
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $controller = new RetireController;
+
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
 
         $managerMock->expects()->canBeRetired()->andReturns(true);
         $managerMock->expects()->isSuspended()->andReturns(false);
@@ -42,6 +47,10 @@ class RetireControllerTest extends TestCase
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $controller = new RetireController;
+
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
 
         $managerMock->expects()->canBeRetired()->andReturns(true);
         $managerMock->expects()->isSuspended()->andReturns(true);
@@ -63,6 +72,10 @@ class RetireControllerTest extends TestCase
         $repositoryMock = $this->mock(ManagerRepository::class);
         $controller = new RetireController;
 
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(false);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
         $managerMock->expects()->canBeRetired()->andReturns(true);
         $managerMock->expects()->isSuspended()->andReturns(false);
         $managerMock->expects()->isInjured()->andReturns(true);
@@ -77,9 +90,34 @@ class RetireControllerTest extends TestCase
     /**
      * @test
      */
+    public function a_retirable_manager_that_has_a_tag_team_can_be_retired()
+    {
+        $managerMock = $this->mock(Manager::class);
+        $repositoryMock = $this->mock(ManagerRepository::class);
+        $controller = new RetireController;
+
+        $tagTeamMock = $this->mock(TagTeam::class);
+        $currentTagTeamRelationMock = $this->mock(Relation::class);
+        $currentTagTeamRelationMock->expects()->exists()->andReturns(true);
+        $managerMock->expects()->getAttribute('currentTagTeam')->andReturns($currentTagTeamRelationMock);
+
+        $managerMock->expects()->canBeRetired()->andReturns(true);
+        $managerMock->expects()->isSuspended()->andReturns(false);
+        $managerMock->expects()->isInjured()->andReturns(true);
+        $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
+        $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
+        $repositoryMock->expects()->retire($managerMock, now()->toDateTimeString())->once()->andReturns();
+        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->removeFromCurrentTagTeam();
+
+        $controller->__invoke($managerMock, new RetireRequest, $repositoryMock);
+    }
+
+    /**
+     * @test
+     */
     public function a_retirable_manager_that_cannot_be_retired_throws_an_exception()
     {
-        $retirementDate = null;
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $controller = new RetireController;

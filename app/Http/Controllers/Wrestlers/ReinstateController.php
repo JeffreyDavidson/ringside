@@ -26,7 +26,6 @@ class ReinstateController extends Controller
 
         $wrestlerRepository->reinstate($wrestler, $reinstatementDate);
         $wrestler->updateStatusAndSave();
-        $wrestler->currentTagTeam?->updateStatusAndSave();
 
         return redirect()->route('wrestlers.index');
     }

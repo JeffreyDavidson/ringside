@@ -36,7 +36,7 @@ class ReleaseController extends Controller
         $manager->updateStatusAndSave();
 
         if ($manager->currentTagTeam->exists()) {
-            $manager->removeFromTagTeam($manager->currentTagTeam, $releaseDate);
+            $manager->removeFromCurrentTagTeam();
         }
 
         return redirect()->route('managers.index');

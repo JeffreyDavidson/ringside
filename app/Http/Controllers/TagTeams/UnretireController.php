@@ -25,11 +25,14 @@ class UnretireController extends Controller
         $unretiredDate = now()->toDateTimeString();
 
         $tagTeamRepository->unretire($tagTeam, $unretiredDate);
-        $tagTeam->currentWrestlers->each->unretire($unretiredDate);
         $tagTeam->updateStatusAndSave();
+        $tagTeam->currentWrestlers->each->unretire($unretiredDate);
+        $tagTeam->currentWrestlers->each->upddateStatusAndSave();
 
         $tagTeamRepository->employ($tagTeam, $unretiredDate);
         $tagTeam->updateStatusAndSave();
+        $tagTeam->currentWrestlers->each->employ($unretiredDate);
+        $tagTeam->currentWrestlers->each->upddateStatusAndSave();
 
         return redirect()->route('tag-teams.index');
     }

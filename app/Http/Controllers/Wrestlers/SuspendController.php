@@ -26,7 +26,10 @@ class SuspendController extends Controller
 
         $wrestlerRepository->suspend($wrestler, $suspensionDate);
         $wrestler->updateStatusAndSave();
-        $wrestler->currentTagTeam?->updateStatusAndSave();
+
+        if ($wrestler->currentTagTeam->exists()) {
+            $wrestler->currentTagTeam->updateStatusAndSave();
+        }
 
         return redirect()->route('wrestlers.index');
     }
