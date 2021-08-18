@@ -29,16 +29,12 @@ class RetireController extends Controller
         $stableRepository->deactivate($stable, $retirementDate);
         $stableRepository->retire($stable, $retirementDate);
 
-        if ($stable->currentWrestlers->every->isNotInEmployment()) {
-            foreach ($stable->currentWrestlers as $wrestler) {
-                (new WrestlerRepository)->retire($wrestler, $stable->currentEmployment->started_at);
-            }
+        if ($stable->currentTagTeams->isNotEmpty()) {
+            $stable->currentTagTeams->each->retire($retirementDate);
         }
 
-        if ($stable->currentTagTeams->every->isNotInEmployment()) {
-            foreach ($stable->currentTagTeams as $tagTeam) {
-                (new TagTeamRepository)->retire($tagTeam, $stable->currentEmployment->started_at);
-            }
+        if ($stable->currentWrestlers->isNotEmpty()) {
+            $stable->currentWrestlers->each->retire($retirementDate);
         }
 
         $stable->updateStatusAndSave();
