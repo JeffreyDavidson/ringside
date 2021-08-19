@@ -17,10 +17,24 @@ class RefereeServiceTest extends TestCase
     /**
      * @test
      */
+    public function it_can_create_a_referee_without_an_employment()
+    {
+        $data = [];
+        $repositoryMock = $this->mock(RefereeRepository::class);
+        $service = new RefereeService($repositoryMock);
+
+        $repositoryMock->expects()->create($data)->once();
+        $repositoryMock->shouldNotHaveReceived('employ');
+
+        $service->create($data);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_create_a_referee_with_an_employment()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith', 'started_at' => now()->toDateTimeString()];
-
+        $data = ['started_at' => now()->toDateTimeString()];
         $refereeMock = $this->mock(Referee::class);
         $repositoryMock = $this->mock(RefereeRepository::class);
         $service = new RefereeService($repositoryMock);
@@ -34,26 +48,9 @@ class RefereeServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_a_referee_without_an_employment()
-    {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith'];
-
-        $repositoryMock = $this->mock(RefereeRepository::class);
-        $service = new RefereeService($repositoryMock);
-
-        $repositoryMock->expects()->create($data)->once();
-        $repositoryMock->shouldNotHaveReceived('employ');
-
-        $service->create($data);
-    }
-
-    /**
-     * @test
-     */
     public function it_can_update_a_referee_without_an_employment_start_date()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith'];
-
+        $data = [];
         $refereeMock = $this->mock(Referee::class);
         $repositoryMock = $this->mock(RefereeRepository::class);
         $service = new RefereeService($repositoryMock);
@@ -68,8 +65,7 @@ class RefereeServiceTest extends TestCase
      */
     public function it_can_update_a_referee_and_employ_if_started_at_is_filled()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith', 'started_at' => now()->toDateTimeString()];
-
+        $data = ['started_at' => now()->toDateTimeString()];
         $refereeMock = $this->mock(Referee::class);
         $repositoryMock = $this->mock(RefereeRepository::class);
         $service = new RefereeService($repositoryMock);

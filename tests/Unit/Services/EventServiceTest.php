@@ -18,8 +18,7 @@ class EventServiceTest extends TestCase
      */
     public function it_can_create_a_event()
     {
-        $data = ['name' => 'Example Event', 'date' => now()->toDateTimeString(), 'venue_id' => 1, 'preview' => 'Example preview to be seen.'];
-
+        $data = [];
         $eventMock = $this->mock(Event::class);
         $repositoryMock = $this->mock(EventRepository::class);
         $service = new EventService($repositoryMock);
@@ -34,8 +33,7 @@ class EventServiceTest extends TestCase
      */
     public function it_can_update_a_event()
     {
-        $data = ['name' => 'Example Event', 'date' => now()->toDateTimeString(), 'venue_id' => 1, 'preview' => 'Example preview to be seen.'];
-
+        $data = [];
         $eventMock = $this->mock(Event::class);
         $repositoryMock = $this->mock(EventRepository::class);
         $service = new EventService($repositoryMock);

@@ -19,8 +19,7 @@ class ManagerServiceTest extends TestCase
      */
     public function it_can_create_a_manager_with_an_employment()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith', 'started_at' => now()->toDateTimeString()];
-
+        $data = [];
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $service = new ManagerService($repositoryMock);
@@ -36,8 +35,7 @@ class ManagerServiceTest extends TestCase
      */
     public function it_can_create_a_manager_without_an_employment()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith'];
-
+        $data = [];
         $repositoryMock = $this->mock(ManagerRepository::class);
         $service = new ManagerService($repositoryMock);
 
@@ -52,8 +50,7 @@ class ManagerServiceTest extends TestCase
      */
     public function it_can_update_a_manager_without_an_employment_start_date()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith'];
-
+        $data = [];
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $service = new ManagerService($repositoryMock);
@@ -68,8 +65,7 @@ class ManagerServiceTest extends TestCase
      */
     public function it_can_update_a_manager_and_employ_if_started_at_is_filled()
     {
-        $data = ['first_name' => 'Joe', 'last_name' => 'Smith', 'started_at' => now()->toDateTimeString()];
-
+        $data = [];
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $service = new ManagerService($repositoryMock);

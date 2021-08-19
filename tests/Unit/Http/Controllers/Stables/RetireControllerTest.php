@@ -73,6 +73,8 @@ class RetireControllerTest extends TestCase
     {
         $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
+        $collectionMock = $this->mock(HigherOrderCollectionProxy::class);
+        $collectionMock->expects()->__call('each')->andReturns($mockEach);
         $controller = new RetireController;
 
         $currentTagTeamsRelationMock = $this->mock(Relation::class);
@@ -87,7 +89,8 @@ class RetireControllerTest extends TestCase
         $repositoryMock->expects()->deactivate($stableMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($stableMock, now()->toDateTimeString())->once()->andReturns();
         $stableMock->expects()->updateStatusAndSave()->once();
-        $stableMock->expects()->getAttribute('currentWrestlers')->retire(now()->toDateTimeString());
+        // $stableMock->expects()->getAttribute('currentWrestlers')->retire(now()->toDateTimeString());
+        $stableMock->expects()->currentWrestlers->each->retire(now()->toDateTimeString())->times(1);
 
         $controller->__invoke($stableMock, new RetireRequest, $repositoryMock);
     }

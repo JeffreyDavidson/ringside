@@ -55,7 +55,7 @@ class StableService
         $this->stableRepository->update($stable, $data);
 
         if (isset($data['started_at'])) {
-            $this->updateActivation($stable, $data['started_at']);
+            $this->activateOrUpdateActivation($stable, $data['started_at']);
         }
 
         $this->updateMembers($stable, $data['wrestlers'], $data['tag_teams']);
@@ -94,7 +94,7 @@ class StableService
      * @param  string|null $joinedDate
      * @return \App\Models\Stable $stable
      */
-    public function addMembers(Stable $stable, array $wrestlerIds = null, array $tagTeamIds = null, string $joinedDate = null)
+    private function addMembers(Stable $stable, array $wrestlerIds = null, array $tagTeamIds = null, string $joinedDate = null)
     {
         $joinedDate ??= now();
 
@@ -117,7 +117,7 @@ class StableService
      * @param  array $tagTeamIds
      * @return \App\Models\Stable $stable
      */
-    public function updateMembers(Stable $stable, array $wrestlerIds, array $tagTeamIds)
+    private function updateMembers(Stable $stable, array $wrestlerIds, array $tagTeamIds)
     {
         if ($stable->currentWrestlers->isEmpty()) {
             if ($wrestlerIds) {
@@ -175,14 +175,14 @@ class StableService
      * @param  string $activationDate
      * @return \App\Models\Stable $stable
      */
-    public function updateActivation(Stable $stable, string $activationDate)
+    public function activateOrUpdateActivation(Stable $stable, string $activationDate)
     {
-        if ($activationDate) {
-            if ($stable->currentActivation && $stable->currentActivation->started_at != $activationDate) {
-                $stable->currentActivation()->update(['started_at' => $activationDate]);
-            } elseif (! $stable->currentActivation) {
-                $stable->activations()->create(['started_at' => $activationDate]);
-            }
+        if ($stable->isNotInActivation()) {
+            return $this->stableRepository->activate($stable, $activationDate);
+        }
+
+        if ($stable->hasFutureActivation() && ! $stable->activatedOn($activationDate)) {
+            return $this->stableRepository->updateActivation($stable, $activationDate);
         }
 
         return $stable;

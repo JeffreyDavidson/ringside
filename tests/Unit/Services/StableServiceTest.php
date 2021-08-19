@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Services;
+namespace Tests\Unit\Services;
 
 use App\Models\Stable;
 use App\Repositories\StableRepository;
@@ -19,15 +19,13 @@ class StableServiceTest extends TestCase
      */
     public function it_can_create_a_stable_with_an_activation()
     {
-        $data = ['name' => 'Example Stable', 'activated_at' => now()->toDateTimeString()];
-
         $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->create($data)->once()->andReturns($stableMock);
+        $repositoryMock->expects()->create(typeOf('array'))->once()->andReturns($stableMock);
 
-        $service->create($data);
+        $service->create([]);
     }
 
     /**
@@ -35,7 +33,6 @@ class StableServiceTest extends TestCase
      */
     public function it_can_create_a_stable_without_an_activation()
     {
-        $data = ['name' => 'Example Stable'];
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
@@ -50,36 +47,29 @@ class StableServiceTest extends TestCase
      */
     public function it_can_update_a_stable_without_an_activation_start_date()
     {
-        $data = [
-            'name' => 'Example Name',
-        ];
-        $stable = Stable::factory()->make();
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->update($stable, $data)->once()->andReturns($stable);
+        $repositoryMock->expects()->update($stableMock, $data)->once()->andReturns($stableMock);
         // Expect a call to not be made to employOrUpdateActivation
 
-        $service->update($stable, $data);
+        $service->update($stableMock, $data);
     }
 
     /**
      * @test
      */
-    public function it_can_update_a_stable_and_employ_if_started_at_is_filled()
+    public function it_can_update_a_stable_and_activate_if_started_at_is_filled()
     {
-        $data = [
-            'name' => 'Example Stable',
-            'activated_at' => $activationDate = Carbon::now()->toDateTimeString(),
-        ];
-        $stable = Stable::factory()->make();
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->update($stable, $data)->once()->andReturns($stable);
+        $repositoryMock->expects()->update($stableMock, $data)->once()->andReturns($stableMock);
         // Expect a call to employOrUpdateActivation with $activationDate
 
-        $service->update($stable, $data);
+        $service->update($stableMock, $data);
     }
 
     /**
@@ -87,17 +77,14 @@ class StableServiceTest extends TestCase
      */
     public function it_can_activate_a_stable_that_is_not_in_activation()
     {
-        $stable = Stable::factory()->make();
-        $activationDate = Carbon::now()->addWeek()->toDateTimeString();
-        Activation::factory()->make(['activatable_id' => 1, ['started_at' => $activationDate]]);
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
-        $serviceMock = $this->mock(StableActivationStrategy::class);
         $service = new StableService($repositoryMock);
 
-        $serviceMock->expects()->setActivatable($stable)->once()->andReturns($serviceMock);
-        $serviceMock->expects()->activate($activationDate)->once()->andReturns($serviceMock);
+        $stableMock->expects()->isNotInActivation()->once()->andReturns(true);
+        $repositoryMock->expects()->activate($stableMock, now()->toDateTimeString())->once()->andReturns($stableMock);
 
-        $service->activateOrUpdateActivation($stable, $activationDate);
+        $service->activateOrUpdateActivation($stableMock, now()->toDateTimeString());
     }
 
     /**
@@ -105,17 +92,16 @@ class StableServiceTest extends TestCase
      */
     public function it_can_update_a_stable_activation_date_when_stable_has_future_activation()
     {
-        $stable = Stable::factory()->make();
-        $activationDate = Carbon::now()->addWeek()->toDateTimeString();
-        Activation::factory()->make(['activatable_id' => 1, ['started_at' => $activationDate]]);
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
-        $serviceMock = $this->mock(StableActivationStrategy::class);
         $service = new StableService($repositoryMock);
 
-        $serviceMock->expects()->setActivatable($stable)->once()->andReturns($serviceMock);
-        $serviceMock->expects()->activate($activationDate)->once()->andReturns($serviceMock);
+        $stableMock->expects()->isNotInActivation()->once()->andReturns(false);
+        $stableMock->expects()->hasFutureActivation()->once()->andReturns(true);
+        $stableMock->expects()->activatedOn(now()->toDateTimeString())->once()->andReturns(false);
+        $repositoryMock->expects()->updateActivation($stableMock, now()->toDateTimeString())->once()->andReturns($stableMock);
 
-        $service->activateOrUpdateActivation($stable, $activationDate);
+        $service->activateOrUpdateActivation($stableMock, now()->toDateTimeString());
     }
 
     /**
@@ -123,13 +109,13 @@ class StableServiceTest extends TestCase
      */
     public function it_can_delete_a_stable()
     {
-        $stable = Stable::factory()->make();
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->delete($stable)->once();
+        $repositoryMock->expects()->delete($stableMock)->once();
 
-        $service->delete($stable);
+        $service->delete($stableMock);
     }
 
     /**
@@ -137,12 +123,12 @@ class StableServiceTest extends TestCase
      */
     public function it_can_restore_a_stable()
     {
-        $stable = new Stable;
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->restore($stable)->once();
+        $repositoryMock->expects()->restore($stableMock)->once();
 
-        $service->restore($stable);
+        $service->restore($stableMock);
     }
 }

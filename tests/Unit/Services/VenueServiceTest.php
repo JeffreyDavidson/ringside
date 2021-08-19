@@ -15,26 +15,16 @@ use Tests\TestCase;
  */
 class VenueServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function it_can_create_a_venue()
     {
-        $data = [
-            'name' => 'Example Venue',
-            'address1' => '123 Main Street',
-            'address2' => 'Suite 456',
-            'city' => 'Laraville',
-            'state' => 'California',
-            'zip' => '12345',
-        ];
-        $venue = Venue::factory()->make(['name' => 'Example Venue', 'address1' => '123 Main Street', 'address2' => 'Suite 123', 'city' => 'Laraville', 'state' => 'California', 'zip' => '12345']);
+        $venueMock = $this->mock(Venue::class);
         $repositoryMock = $this->mock(VenueRepository::class);
         $service = new VenueService($repositoryMock);
 
-        $repositoryMock->expects()->create($data)->once()->andReturns($venue);
+        $repositoryMock->expects()->create($data)->once()->andReturns($venueMock);
 
         $service->create($data);
     }
