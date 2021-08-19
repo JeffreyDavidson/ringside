@@ -9,7 +9,8 @@ use App\Models\Contracts\CanJoinStable;
 use App\Models\SingleRosterMember;
 use App\Models\User;
 use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 /**
@@ -19,7 +20,7 @@ use Tests\TestCase;
  */
 class WrestlerTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     /**
      * @test
@@ -153,8 +154,8 @@ class WrestlerTest extends TestCase
     /**
      * @test
      */
-    public function a_wrestler_can_be_associated_to_a_user()
+    public function a_wrestler_belongs_to_a_user()
     {
-        $this->assertInstanceOf(User::class, (new Wrestler)->user);
+        $this->assertInstanceOf(BelongsTo::class, (new Wrestler)->user);
     }
 }

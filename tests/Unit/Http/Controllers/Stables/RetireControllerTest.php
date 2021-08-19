@@ -87,7 +87,7 @@ class RetireControllerTest extends TestCase
         $repositoryMock->expects()->deactivate($stableMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($stableMock, now()->toDateTimeString())->once()->andReturns();
         $stableMock->expects()->updateStatusAndSave()->once();
-        $stableMock->expects()->currentWrestlers()->retire(now()->toDateTimeString())->times(1);
+        $stableMock->expects()->getAttribute('currentWrestlers')->retire(now()->toDateTimeString());
 
         $controller->__invoke($stableMock, new RetireRequest, $repositoryMock);
     }

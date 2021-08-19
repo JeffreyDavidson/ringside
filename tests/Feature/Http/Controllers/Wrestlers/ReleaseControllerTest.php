@@ -14,8 +14,6 @@ use Tests\TestCase;
 /**
  * @group wrestlers
  * @group feature-wrestlers
- * @group srm
- * @group feature-srm
  * @group roster
  * @group feature-rosters
  */

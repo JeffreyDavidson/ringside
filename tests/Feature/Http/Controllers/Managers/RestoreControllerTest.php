@@ -10,8 +10,6 @@ use Tests\TestCase;
 /**
  * @group managers
  * @group feature-managers
- * @group srm
- * @group feature-srm
  * @group roster
  * @group feature-roster
  */

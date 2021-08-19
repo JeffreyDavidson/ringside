@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 /**
  * @group wrestlers
- * @group strategies
+ * @group controllers
  */
 class ReinstateControllerTest extends TestCase
 {

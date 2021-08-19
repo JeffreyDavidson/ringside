@@ -4,10 +4,6 @@ namespace App\Services;
 
 use App\Models\Title;
 use App\Repositories\TitleRepository;
-use App\Strategies\Activation\TitleActivationStrategy;
-use App\Strategies\Deactivation\TitleDeactivationStrategy;
-use App\Strategies\Retirement\TitleRetirementStrategy;
-use App\Strategies\Unretire\TitleUnretireStrategy;
 
 class TitleService
 {
@@ -39,7 +35,7 @@ class TitleService
         $title = $this->titleRepository->create($data);
 
         if (isset($data['activated_at'])) {
-            app()->make(TitleActivationStrategy::class)->setActivatable($title)->activate($data['activated_at']);
+            $this->titleRepository->activate($title, $data['activated_at']);
         }
 
         return $title;
@@ -73,7 +69,7 @@ class TitleService
     public function activateOrUpdateActivation(Title $title, string $activationDate)
     {
         if ($title->isNotInActivation()) {
-            return app()->make(TitleActivationStrategy::class)->setActivatable($title)->activate($activationDate);
+            return $this->titleRepository->activate($title, $activationDate);
         }
 
         if ($title->hasFutureActivation() && ! $title->activatedOn($activationDate)) {

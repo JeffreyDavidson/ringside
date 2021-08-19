@@ -14,8 +14,6 @@ use Tests\TestCase;
 /**
  * @group wrestlers
  * @group feature-wrestlers
- * @group srm
- * @group feature-srm
  * @group roster
  * @group feature-roster
  */
@@ -27,7 +25,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_marks_an_injured_wrestler_as_being_recovered_and_redirects($administrators)
+    public function invoke_marks_an_injured_wrestler_as_being_cleared_from_injury_and_redirects($administrators)
     {
         $wrestler = Wrestler::factory()->injured()->create();
 

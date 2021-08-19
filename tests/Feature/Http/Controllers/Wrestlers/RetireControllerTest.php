@@ -16,8 +16,6 @@ use Tests\TestCase;
 /**
  * @group wrestlers
  * @group feature-wrestlers
- * @group srm
- * @group feature-srm
  * @group roster
  * @group feature-roster
  */
@@ -31,9 +29,7 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_a_bookable_wrestler_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
         $wrestler = Wrestler::factory()->bookable()->create();
-        dd($wrestler->currentTagTeam);
 
         $this->actAs($administrators)
             ->patch(route('wrestlers.retire', $wrestler))

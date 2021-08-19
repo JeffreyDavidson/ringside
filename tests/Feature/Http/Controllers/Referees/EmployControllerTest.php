@@ -13,8 +13,6 @@ use Tests\TestCase;
 /**
  * @group referees
  * @group feature-referees
- * @group srm
- * @group feature-srm
  * @group roster
  * @group feature-roster
  */
