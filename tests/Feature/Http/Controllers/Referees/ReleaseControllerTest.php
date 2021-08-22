@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Referees\ReleaseController;
 use App\Http\Requests\Referees\ReleaseRequest;
 use App\Models\Referee;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,18 +27,15 @@ class ReleaseControllerTest extends TestCase
      */
     public function invoke_releases_a_bookable_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->bookable()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.release', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($referee->fresh(), function ($referee) {
+            $this->assertNotNull($referee->employments->last()->ended_at);
             $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
-            $this->assertEquals($now->toDateTimeString(), $referee->employments->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -49,19 +45,16 @@ class ReleaseControllerTest extends TestCase
      */
     public function invoke_releases_an_injured_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->injured()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.release', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($referee->fresh(), function ($referee) {
+            $this->assertNotNull($referee->injuries->last()->ended_at);
+            $this->assertNotNull($referee->employments->last()->ended_at);
             $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
-            $this->assertEquals($now->toDateTimeString(), $referee->employments->first()->ended_at->toDateTimeString());
-            $this->assertEquals($now->toDateTimeString(), $referee->injuries->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -71,19 +64,16 @@ class ReleaseControllerTest extends TestCase
      */
     public function invoke_releases_a_suspended_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->suspended()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.release', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($referee->fresh(), function ($referee) {
+            $this->assertNotNull($referee->suspensions->last()->ended_at);
+            $this->assertNotNull($referee->employments->last()->ended_at);
             $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
-            $this->assertEquals($now->toDateTimeString(), $referee->employments->first()->ended_at->toDateTimeString());
-            $this->assertEquals($now->toDateTimeString(), $referee->suspensions->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -122,7 +112,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_an_unemployed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_an_unemployed_referee($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -137,7 +127,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_future_employed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_a_future_employed_referee($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -152,7 +142,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_released_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_a_released_referee($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -167,7 +157,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_retired_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_a_retired_referee($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();

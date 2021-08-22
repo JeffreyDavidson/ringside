@@ -23,7 +23,7 @@ trait CanJoinStable
      */
     public function currentStable()
     {
-        return $this->hasOne(Stable::class)->latestOfMany()->withPivot(['joined_at', 'left_at']);
+        return $this->morphOne(Stable::class, 'members')->withPivot(['joined_at', 'left_at'])->latestOfMany();
     }
 
     /**

@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Titles;
 
 use App\Enums\Role;
+use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Titles\RetireController;
 use App\Http\Requests\Titles\RetireRequest;
 use App\Models\Title;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,18 +25,15 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_an_active_title_and_redirects($administrators)
     {
-        Carbon::setTestNow($now = now());
-
         $title = Title::factory()->active()->create();
 
         $this->actAs($administrators)
             ->patch(route('titles.retire', $title))
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertTrue($title->hasRetirements());
-            $this->assertTrue($title->isRetired());
-            $this->assertEquals($now->toDateTimeString(), $title->retirements->first()->started_at->toDateTimeString());
+        tap($title->fresh(), function ($title) {
+            $this->assertCount(1, $title->retirements);
+            $this->assertEquals(TitleStatus::RETIRED, $title->status);
         });
     }
 

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Stables\DeactivateRequest;
 use App\Models\Stable;
 use App\Repositories\StableRepository;
+use App\Repositories\TagTeamRepository;
+use App\Repositories\WrestlerRepository;
 
 class DeactivateController extends Controller
 {
@@ -18,13 +20,19 @@ class DeactivateController extends Controller
      * @param  \App\Repositories\StableRepository  $stableRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, DeactivateRequest $request, StableRepository $stableRepository)
-    {
+    public function __invoke(
+        Stable $stable,
+        DeactivateRequest $request,
+        StableRepository $stableRepository,
+        WrestlerRepository $wrestlerRepository,
+        TagTeamRepository $tagTeamRepository
+    ) {
         throw_unless($stable->canBeDeactivated(), new CannotBeDeactivatedException);
 
         $deactivationDate = now()->toDateTimeString();
 
         $stableRepository->deactivate($stable, $deactivationDate);
+        $stableRepository->disassemble($stable, $deactivationDate);
         $stable->updateStatusAndSave();
 
         return redirect()->route('stables.index');

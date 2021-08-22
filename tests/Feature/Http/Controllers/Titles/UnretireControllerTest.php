@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Titles;
 
 use App\Enums\Role;
+use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Titles\UnretireController;
 use App\Http\Requests\Titles\UnretireRequest;
 use App\Models\Title;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,17 +25,15 @@ class UnretireControllerTest extends TestCase
      */
     public function invoke_unretires_a_retired_title_and_redirects($administrators)
     {
-        Carbon::setTestNow($now = now());
-
         $title = Title::factory()->retired()->create();
 
         $this->actAs($administrators)
             ->patch(route('titles.unretire', $title))
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertTrue($title->isCurrentlyActivated());
-            $this->assertEquals($now->toDateTimeString(), $title->fresh()->retirements()->latest()->first()->ended_at);
+        tap($title->fresh(), function ($title) {
+            $this->assertNotNull($title->retirements->last()->ended_at);
+            $this->assertEquals(TitleStatus::ACTIVE, $title->status);
         });
     }
 
@@ -74,7 +72,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_active_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_active_title($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -89,7 +87,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_inactive_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_inactive_title($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -104,7 +102,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_future_activated_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_future_activated_title($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -119,7 +117,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_unactivated_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_unactivated_title($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();

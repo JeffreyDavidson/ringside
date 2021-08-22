@@ -115,6 +115,7 @@ class StableControllerTest extends TestCase
      */
     public function store_creates_a_stable_and_redirects($administrators)
     {
+        $this->withoutExceptionHandling();
         $this->actAs($administrators)
             ->from(route('stables.create'))
             ->post(route('stables.store'), $this->validParams())

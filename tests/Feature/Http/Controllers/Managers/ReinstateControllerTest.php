@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Managers\ReinstateController;
 use App\Http\Requests\Managers\ReinstateRequest;
 use App\Models\Manager;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,19 +27,17 @@ class ReinstateControllerTest extends TestCase
      */
     public function invoke_reinstates_a_suspended_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->suspended()->create();
+
+        $this->assertNull($manager->currentSuspension->ended_at);
 
         $this->actAs($administrators)
             ->patch(route('managers.reinstate', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
+        tap($manager->fresh(), function ($manager) {
+            $this->assertNotNull($manager->suspensions->last()->ended_at);
             $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-            $this->assertCount(1, $manager->suspensions);
-            $this->assertEquals($now->toDateTimeString(), $manager->suspensions->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -79,7 +76,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_available_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_available_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -94,7 +91,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_an_unemployed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_an_unemployed_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -109,7 +106,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_an_injured_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_an_injured_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -124,7 +121,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_released_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_released_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +136,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_future_employed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_future_employed_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -154,7 +151,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_retired_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_retired_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();

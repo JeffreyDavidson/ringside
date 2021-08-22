@@ -8,7 +8,8 @@ use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Managers\ReleaseController;
 use App\Http\Requests\Managers\ReleaseRequest;
 use App\Models\Manager;
-use Carbon\Carbon;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,18 +29,15 @@ class ReleaseControllerTest extends TestCase
      */
     public function invoke_releases_an_available_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->available()->create();
 
         $this->actAs($administrators)
             ->patch(route('managers.release', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
+        tap($manager->fresh(), function ($manager) {
+            $this->assertNotNull($manager->employments->last()->ended_at);
             $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
-            $this->assertEquals($now->toDateTimeString(), $manager->employments->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -49,19 +47,16 @@ class ReleaseControllerTest extends TestCase
      */
     public function invoke_releases_an_injured_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->injured()->create();
 
         $this->actAs($administrators)
             ->patch(route('managers.release', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
+        tap($manager->fresh(), function ($manager) {
+            $this->assertNotNull($manager->injuries->last()->ended_at);
+            $this->assertNotNull($manager->employments->last()->ended_at);
             $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
-            $this->assertEquals($now->toDateTimeString(), $manager->employments->first()->ended_at->toDateTimeString());
-            $this->assertEquals($now->toDateTimeString(), $manager->injuries->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -71,19 +66,41 @@ class ReleaseControllerTest extends TestCase
      */
     public function invoke_releases_a_suspended_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->suspended()->create();
 
         $this->actAs($administrators)
             ->patch(route('managers.release', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
+        tap($manager->fresh(), function ($manager) {
+            $this->assertNotNull($manager->suspensions->last()->ended_at);
+            $this->assertNotNull($manager->employments->last()->ended_at);
             $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
-            $this->assertEquals($now->toDateTimeString(), $manager->employments->first()->ended_at->toDateTimeString());
-            $this->assertEquals($now->toDateTimeString(), $manager->suspensions->first()->ended_at->toDateTimeString());
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_releases_a_manager_leaving_their_current_tag_teams_and_wrestlers_and_redirects($administrators)
+    {
+        $tagTeam = TagTeam::factory()->bookable()->create();
+        $wrestler = Wrestler::factory()->bookable()->create();
+
+        $manager = Manager::factory()
+            ->available()
+            ->hasAttached($tagTeam, ['hired_at' => now()->toDateTimeString()])
+            ->hasAttached($wrestler, ['hired_at' => now()->toDateTimeString()])
+            ->create();
+
+        $this->actAs($administrators)
+            ->patch(route('managers.release', $manager))
+            ->assertRedirect(route('managers.index'));
+
+        tap($manager->fresh(), function ($manager) use ($tagTeam, $wrestler) {
+            $this->assertNotNull($manager->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at);
+            $this->assertNotNull($manager->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at);
         });
     }
 

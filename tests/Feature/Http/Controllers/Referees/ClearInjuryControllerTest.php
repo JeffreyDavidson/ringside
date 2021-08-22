@@ -28,19 +28,17 @@ class ClearInjuryControllerTest extends TestCase
      */
     public function invoke_marks_an_injured_referee_as_being_recovered_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->injured()->create();
+
+        $this->assertNull($referee->injuries->last()->ended_at);
 
         $this->actAs($administrators)
             ->patch(route('referees.clear-from-injury', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($referee->fresh(), function ($referee) {
+            $this->assertNotNull($referee->injuries->last()->ended_at);
             $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-            $this->assertCount(1, $referee->injuries);
-            $this->assertEquals($now->toDateTimeString(), $referee->injuries->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -79,7 +77,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_an_unemployed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_clearing_an_injury_from_an_unemployed_referee($administrators)
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();
@@ -94,7 +92,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_a_bookable_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_clearing_an_injury_from_a_bookable_referee($administrators)
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();
@@ -109,7 +107,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_a_future_employed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_clearing_an_injury_from_a_future_employed_referee($administrators)
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();
@@ -124,7 +122,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_a_suspended_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_clearing_an_injury_from_a_suspended_referee($administrators)
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +137,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_a_retired_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_clearing_an_injury_from_a_retired_referee($administrators)
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();
@@ -154,7 +152,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_a_released_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_clearing_an_injury_from_a_released_referee($administrators)
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();

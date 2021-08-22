@@ -27,6 +27,10 @@ class InjureController extends Controller
         $wrestlerRepository->injure($wrestler, $injureDate);
         $wrestler->updateStatusAndSave();
 
+        if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
+            $wrestler->currentTagTeam->updateStatusAndSave();
+        }
+
         return redirect()->route('wrestlers.index');
     }
 }

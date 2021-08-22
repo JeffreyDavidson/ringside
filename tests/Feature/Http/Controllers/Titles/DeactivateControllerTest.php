@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Titles;
 
 use App\Enums\Role;
+use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Titles\DeactivateController;
 use App\Http\Requests\Titles\DeactivateRequest;
 use App\Models\Title;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,18 +25,15 @@ class DeactivateControllerTest extends TestCase
      */
     public function invoke_deactivates_an_active_title_and_redirects($administrators)
     {
-        Carbon::setTestNow($now = now());
-
         $title = Title::factory()->active()->create();
 
         $this->actAs($administrators)
             ->patch(route('titles.deactivate', $title))
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertTrue($title->isDeactivated());
-            $this->assertCount(1, $title->activations);
-            $this->assertEquals($now->toDateTimeString(), $title->activations->first()->ended_at->toDateTimeString());
+        tap($title->fresh(), function ($title) {
+            $this->assertNotNull($title->activations->last()->ended_at);
+            $this->assertEquals(TitleStatus::INACTIVE, $title->status);
         });
     }
 
@@ -75,7 +72,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_an_unactivated_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_an_unactivated_title($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -90,7 +87,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_a_future_activated_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_a_future_activated_title($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -105,7 +102,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_an_inactive_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_an_inactive_title($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -120,7 +117,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_a_retired_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_a_retired_title($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();

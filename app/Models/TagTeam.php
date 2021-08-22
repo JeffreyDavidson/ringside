@@ -196,6 +196,10 @@ class TagTeam extends Model implements Bookable, CanJoinStable, Employable, Rele
             throw new CannotBeEmployedException;
         }
 
+        if ($this->isRetired()) {
+            throw new CannotBeEmployedException;
+        }
+
         if ($this->currentWrestlers->count() !== self::MAX_WRESTLERS_COUNT) {
             throw NotEnoughMembersException::forTagTeam();
         }
@@ -377,7 +381,7 @@ class TagTeam extends Model implements Bookable, CanJoinStable, Employable, Rele
     public function canBeReleased()
     {
         if ($this->isNotInEmployment()) {
-            throw new CannotBeEmployedException;
+            return false;
         }
 
         return true;
@@ -423,9 +427,9 @@ class TagTeam extends Model implements Bookable, CanJoinStable, Employable, Rele
             return false;
         }
 
-        if (! $this->partnersAreBookable()) {
-            return false;
-        }
+        // if (! $this->partnersAreBookable()) {
+        //     return false;
+        // }
 
         return true;
     }
@@ -437,7 +441,7 @@ class TagTeam extends Model implements Bookable, CanJoinStable, Employable, Rele
      */
     public function isUnbookable()
     {
-        return ! $this->isBookable();
+        return ! $this->partnersAreBookable();
     }
 
     /**
@@ -491,5 +495,23 @@ class TagTeam extends Model implements Bookable, CanJoinStable, Employable, Rele
     {
         $this->updateStatus();
         $this->save();
+    }
+
+    /**
+     * Determine if the model can be suspended.
+     *
+     * @return bool
+     */
+    public function canBeSuspended()
+    {
+        if ($this->isNotInEmployment()) {
+            return false;
+        }
+
+        if ($this->isSuspended()) {
+            return false;
+        }
+
+        return true;
     }
 }

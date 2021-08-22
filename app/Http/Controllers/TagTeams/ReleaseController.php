@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\ReleaseRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use App\Repositories\WrestlerRepository;
 
 class ReleaseController extends Controller
 {
@@ -18,14 +19,30 @@ class ReleaseController extends Controller
      * @param  \App\Repositories\TagTeamRepository $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, ReleaseRequest $request, TagTeamRepository $tagTeamRepository)
-    {
+    public function __invoke(
+        TagTeam $tagTeam,
+        ReleaseRequest $request,
+        TagTeamRepository $tagTeamRepository,
+        WrestlerRepository $wrestlerRepository
+    ) {
         throw_unless($tagTeam->canBeReleased(), new CannotBeReleasedException);
 
         $releaseDate = now()->toDateTimeString();
 
+        if ($tagTeam->isSuspended()) {
+            $tagTeamRepository->reinstate($tagTeam, $releaseDate);
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
+                $wrestlerRepository->reinstate($wrestler, $releaseDate);
+            }
+        }
+
         $tagTeamRepository->release($tagTeam, $releaseDate);
         $tagTeam->updateStatusAndSave();
+
+        foreach ($tagTeam->currentWrestlers as $wrestler) {
+            $wrestlerRepository->release($wrestler, $releaseDate);
+            $wrestler->updateStatusAndSave();
+        }
 
         return redirect()->route('tag-teams.index');
     }

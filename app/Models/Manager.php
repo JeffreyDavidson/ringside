@@ -113,14 +113,62 @@ class Manager extends SingleRosterMember implements CanJoinStable
     }
 
     /**
+     * Get all of the posts that are assigned this tag.
+     */
+    public function wrestlers()
+    {
+        return $this->morphedByMany(Wrestler::class, 'manageable')->withPivot(['hired_at', 'left_at']);
+    }
+
+    /**
+     * Get all of the posts that are assigned this tag.
+     */
+    public function currentWrestlers()
+    {
+        return $this->morphedByMany(Wrestler::class, 'manageable')->wherePivotNull('left_at');
+    }
+
+    /**
+     * Get all of the videos that are assigned this tag.
+     */
+    public function tagTeams()
+    {
+        return $this->morphedByMany(TagTeam::class, 'manageable')->withPivot(['hired_at', 'left_at']);
+    }
+
+    /**
+     * Get all of the videos that are assigned this tag.
+     */
+    public function currentTagTeams()
+    {
+        return $this->morphedByMany(TagTeam::class, 'manageable')->withPivot(['hired_at', 'left_at'])->wherePivotNull('left_at');
+    }
+
+    /**
      * Updates a manager's status and saves.
      *
      * @return void
      */
-    public function removeFromCurrentTagTeam()
+    public function removeFromCurrentTagTeams()
     {
-        $this->tagTeams()->updateExistingPivot($this->currentTagTeam->id, [
-            'left_at' => now()
-        ]);
+        foreach ($this->currentTagTeams as $tagTeam) {
+            $this->currentTagTeams()->updateExistingPivot($tagTeam->id, [
+                'left_at' => now(),
+            ]);
+        }
+    }
+
+    /**
+     * Updates a manager's status and saves.
+     *
+     * @return void
+     */
+    public function removeFromCurrentWrestlers()
+    {
+        foreach ($this->currentWrestlers as $wrestler) {
+            $this->currentWrestlers()->updateExistingPivot($wrestler->id, [
+                'left_at' => now(),
+            ]);
+        }
     }
 }

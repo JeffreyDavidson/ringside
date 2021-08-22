@@ -6,7 +6,6 @@ use App\Models\TagTeam;
 use App\Rules\CannotBeEmployedAfterDate;
 use App\Rules\CannotBeHindered;
 use App\Rules\CannotBelongToMultipleEmployedTagTeams;
-use App\Rules\CannotBelongToTagTeam;
 use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

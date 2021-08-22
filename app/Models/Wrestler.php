@@ -58,11 +58,15 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
     /**
      * Get the current tag team of the wrestler.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function currentTagTeam()
+    public function getCurrentTagTeamAttribute()
     {
-        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id')->wherePivotNotNull('left_at')->limit(1);
+        return $this->tagTeams->last();
+        // return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id')
+        //     ->withPivot(['joined_at', 'left_at'])
+        //     ->wherePivotNull('left_at')
+        //     ->last();
     }
 
     /**
@@ -157,7 +161,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
     public function removeFromCurrentTagTeam()
     {
         $this->tagTeams()->updateExistingPivot($this->currentTagTeam->id, [
-            'left_at' => now()
+            'left_at' => now(),
         ]);
     }
 }

@@ -9,7 +9,6 @@ use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\TagTeams\RetireController;
 use App\Http\Requests\TagTeams\RetireRequest;
 use App\Models\TagTeam;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -29,23 +28,20 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_a_bookable_tag_team_and_its_wrestlers_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $tagTeam = TagTeam::factory()->bookable()->create();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.retire', $tagTeam))
             ->assertRedirect(route('tag-teams.index'));
 
-        tap($tagTeam->fresh(), function ($tagTeam) use ($now) {
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertCount(1, $tagTeam->retirements);
             $this->assertEquals(TagTeamStatus::RETIRED, $tagTeam->status);
-            $this->assertEquals($now->toDateTimeString(), $tagTeam->retirements->first()->started_at->toDateTimeString());
 
-            $tagTeam->currentWrestlers->each(function ($wrestler) use ($now) {
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
+                $this->assertCount(1, $wrestler->retirements);
                 $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-                $this->assertEquals($now->toDateTimeString(), $wrestler->retirements->first()->started_at->toDateTimeString());
-            });
+            }
         });
     }
 
@@ -55,26 +51,19 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_a_suspended_tag_team_and_its_wrestlers_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $tagTeam = TagTeam::factory()->suspended()->create();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.retire', $tagTeam))
             ->assertRedirect(route('tag-teams.index'));
 
-        tap($tagTeam->fresh(), function ($tagTeam) use ($now) {
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertCount(1, $tagTeam->retirements);
             $this->assertEquals(TagTeamStatus::RETIRED, $tagTeam->status);
-            $this->assertEquals($now->toDateTimeString(), $tagTeam->retirements->first()->started_at->toDateTimeString());
 
-            $tagTeam->currentWrestlers->each(function ($wrestler) use ($now) {
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
                 $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-                $this->assertEquals(
-                    $now->toDateTimeString(),
-                    $wrestler->retirements->first()->started_at->toDateTimeString()
-                );
-            });
+            }
         });
     }
 
@@ -84,26 +73,18 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_an_unbookable_tag_team_and_its_wrestlers_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $tagTeam = TagTeam::factory()->unbookable()->create();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.retire', $tagTeam))
             ->assertRedirect(route('tag-teams.index'));
 
-        tap($tagTeam->fresh(), function ($tagTeam) use ($now) {
+        tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertEquals(TagTeamStatus::RETIRED, $tagTeam->status);
-            $this->assertEquals($now->toDateTimeString(), $tagTeam->retirements->first()->started_at->toDateTimeString());
 
-            $tagTeam->currentWrestlers->each(function ($wrestler) use ($now) {
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
                 $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-                $this->assertEquals(
-                    $now->toDateTimeString(),
-                    $wrestler->retirements->first()->started_at->toDateTimeString()
-                );
-            });
+            }
         });
     }
 
@@ -142,7 +123,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_retired_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_a_retired_tag_team($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -157,7 +138,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_future_employed_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_a_future_employed_tag_team($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -172,7 +153,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_released_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_a_released_tag_team($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -187,7 +168,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_an_unemployed_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_an_unemployed_tag_team($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();

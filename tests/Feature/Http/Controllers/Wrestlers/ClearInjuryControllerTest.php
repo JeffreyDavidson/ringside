@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Wrestlers;
 
 use App\Enums\Role;
+use App\Enums\WrestlerStatus;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Wrestlers\ClearInjuryController;
 use App\Http\Requests\Wrestlers\ClearInjuryRequest;
-use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Services\WrestlerService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -29,28 +29,15 @@ class ClearInjuryControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->injured()->create();
 
+        $this->assertNull($wrestler->injuries->last()->ended_at);
+
         $this->actAs($administrators)
             ->patch(route('wrestlers.clear-from-injury', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function clearing_an_injured_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable($administrators)
-    {
-        $tagTeam = TagTeam::factory()->bookable()->create();
-        $wrestler = $tagTeam->currentWrestlers()->first();
-
-        app(WrestlerService::class)->injure($wrestler);
-        $wrestler->currentTagTeam->updateStatusAndSave();
-
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->isBookable());
+            $this->assertNotNull($wrestler->injuries->last()->ended_at);
+            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
         });
     }
 
@@ -89,13 +76,74 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function clearing_an_injury_from_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_an_unemployed_wrestler($administrators)
     {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeClearedFromInjuryException::class);
+
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler))
-            ->assertRedirect()
-            ->assertSessionHasErrors('message');
+            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_future_employed_wrestler($administrators)
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeClearedFromInjuryException::class);
+
+        $wrestler = Wrestler::factory()->withFutureEmployment()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_bookable_wrestler($administrators)
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeClearedFromInjuryException::class);
+
+        $wrestler = Wrestler::factory()->bookable()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_retired_wrestler($administrators)
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeClearedFromInjuryException::class);
+
+        $wrestler = Wrestler::factory()->retired()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_suspended_wrestler($administrators)
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(CannotBeClearedFromInjuryException::class);
+
+        $wrestler = Wrestler::factory()->suspended()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.clear-from-injury', $wrestler));
     }
 }

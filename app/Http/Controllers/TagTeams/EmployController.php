@@ -20,20 +20,22 @@ class EmployController extends Controller
      * @param  \App\Repositories\WrestlerRepository  $wrestlerRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, EmployRequest $request, TagTeamRepository $tagTeamRepository)
+    public function __invoke(TagTeam $tagTeam, EmployRequest $request, TagTeamRepository $tagTeamRepository, WrestlerRepository $wrestlerRepository)
     {
         throw_unless($tagTeam->canBeEmployed(), new CannotBeEmployedException);
 
         $employmentDate = now()->toDateTimeString();
 
         $tagTeamRepository->employ($tagTeam, $employmentDate);
-        $tagTeam->updateStatusAndSave();
 
-        // if ($tagTeam->currentWrestlers->every->isNotInEmployment()) {
-        //     foreach ($tagTeam->currentWrestlers as $wrestler) {
-        //         (new WrestlerRepository)->employ($wrestler, $tagTeam->currentEmployment->started_at);
-        //     }
-        // }
+        if ($tagTeam->currentWrestlers->every->isNotInEmployment()) {
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
+                $wrestlerRepository->employ($wrestler, $tagTeam->currentEmployment->started_at);
+                $wrestler->updateStatusAndSave();
+            }
+        }
+
+        $tagTeam->updateStatusAndSave();
 
         return redirect()->route('tag-teams.index');
     }

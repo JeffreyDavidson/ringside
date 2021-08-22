@@ -35,8 +35,12 @@ class ReleaseController extends Controller
         $managerRepository->release($manager, $releaseDate);
         $manager->updateStatusAndSave();
 
-        if ($manager->currentTagTeam->exists()) {
-            $manager->removeFromCurrentTagTeam();
+        if ($manager->has('currentTagTeams')) {
+            $manager->removeFromCurrentTagTeams();
+        }
+
+        if ($manager->has('currentWrestlers')) {
+            $manager->removeFromCurrentWrestlers();
         }
 
         return redirect()->route('managers.index');

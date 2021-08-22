@@ -4,11 +4,12 @@ namespace Tests\Feature\Http\Controllers\Stables;
 
 use App\Enums\Role;
 use App\Enums\StableStatus;
+use App\Enums\TagTeamStatus;
+use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Stables\DeactivateController;
 use App\Http\Requests\Stables\DeactivateRequest;
 use App\Models\Stable;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,20 +27,25 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_deactivates_an_active_stable_and_its_members_and_redirectsP($administrators)
+    public function invoke_deactivates_an_active_stable_and_its_members_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $stable = Stable::factory()->active()->create();
 
         $this->actAs($administrators)
             ->patch(route('stables.deactivate', $stable))
             ->assertRedirect(route('stables.index'));
 
-        tap($stable->fresh(), function ($stable) use ($now) {
+        tap($stable->fresh(), function ($stable) {
+            $this->assertNotNull($stable->activations->last()->ended_at);
             $this->assertEquals(StableStatus::INACTIVE, $stable->status);
-            $this->assertEquals($now->toDateTimeString(), $stable->activations->last()->ended_at->toDateTimeString());
+
+            foreach ($stable->currentWrestlers as $wrestler) {
+                $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
+            }
+
+            foreach ($stable->currentTagTeams as $tagTeam) {
+                $this->assertEquals(TagTeamStatus::RELEASED, $tagTeam->status);
+            }
         });
     }
 
@@ -78,7 +84,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_an_inactive_stable_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_an_inactive_stable($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -93,7 +99,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_an_retired_stable_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_an_retired_stable($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -108,7 +114,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_an_unactivated_stable_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_an_unactivated_stable($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -123,7 +129,7 @@ class DeactivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function deactivating_a_future_activated_stable_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_deactivating_a_future_activated_stable($administrators)
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();

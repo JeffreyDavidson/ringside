@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Titles;
 
 use App\Enums\Role;
+use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeActivatedException;
 use App\Http\Controllers\Titles\ActivateController;
 use App\Http\Requests\Titles\ActivateRequest;
 use App\Models\Title;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,19 +25,17 @@ class ActivateControllerTest extends TestCase
      */
     public function invoke_activates_an_unactivated_title_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
-        Carbon::setTestNow($now = now());
-
         $title = Title::factory()->unactivated()->create();
+
+        $this->assertEquals(TitleStatus::UNACTIVATED, $title->status);
 
         $this->actAs($administrators)
             ->patch(route('titles.activate', $title))
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertTrue($title->hasActivations());
-            $this->assertTrue($title->isCurrentlyActivated());
-            $this->assertEquals($now->toDateTimeString(), $title->activations->first()->started_at->toDateTimeString());
+        tap($title->fresh(), function ($title) {
+            $this->assertCount(1, $title->activations);
+            $this->assertEquals(TitleStatus::ACTIVE, $title->status);
         });
     }
 
@@ -47,18 +45,16 @@ class ActivateControllerTest extends TestCase
      */
     public function invoke_activates_a_future_activated_title_and_redirects($administrators)
     {
-        Carbon::setTestNow($now = now());
-
         $title = Title::factory()->withFutureActivation()->create();
+        $startedAt = $title->activations->last()->started_at;
 
         $this->actAs($administrators)
             ->patch(route('titles.activate', $title))
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertTrue($title->hasActivations());
-            $this->assertTrue($title->isCurrentlyActivated());
-            $this->assertEquals($now->toDateTimeString(), $title->activations->first()->started_at->toDateTimeString());
+        tap($title->fresh(), function ($title) use ($startedAt) {
+            $this->assertTrue($title->currentActivation->started_at->lt($startedAt));
+            $this->assertEquals(TitleStatus::ACTIVE, $title->status);
         });
     }
 
@@ -68,18 +64,14 @@ class ActivateControllerTest extends TestCase
      */
     public function invoke_activates_an_inactive_title_and_redirects($administrators)
     {
-        Carbon::setTestNow($now = now());
-
         $title = Title::factory()->inactive()->create();
 
         $this->actAs($administrators)
             ->patch(route('titles.activate', $title))
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertTrue($title->isCurrentlyActivated());
-            $this->assertCount(2, $title->activations);
-            $this->assertEquals($now->toDateTimeString(), $title->activations->last()->started_at->toDateTimeString());
+        tap($title->fresh(), function ($title) {
+            $this->assertEquals(TitleStatus::ACTIVE, $title->status);
         });
     }
 
@@ -118,7 +110,7 @@ class ActivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function activating_an_active_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_activating_an_active_title($administrators)
     {
         $this->expectException(CannotBeActivatedException::class);
         $this->withoutExceptionHandling();
@@ -133,7 +125,7 @@ class ActivateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function activating_a_retired_title_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_activating_a_retired_title($administrators)
     {
         $this->expectException(CannotBeActivatedException::class);
         $this->withoutExceptionHandling();

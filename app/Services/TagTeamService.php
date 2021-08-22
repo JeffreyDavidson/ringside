@@ -4,13 +4,6 @@ namespace App\Services;
 
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use App\Strategies\Employment\TagTeamEmploymentStrategy;
-use App\Strategies\Employment\WrestlerEmploymentStrategy;
-use App\Strategies\Reinstate\TagTeamReinstateStrategy;
-use App\Strategies\Release\TagTeamReleaseStrategy;
-use App\Strategies\Retirement\TagTeamRetirementStrategy;
-use App\Strategies\Suspend\TagTeamSuspendStrategy;
-use App\Strategies\Unretire\TagTeamUnretireStrategy;
 
 class TagTeamService
 {
@@ -42,8 +35,7 @@ class TagTeamService
         $tagTeam = $this->tagTeamRepository->create($data);
 
         if (isset($data['started_at'])) {
-            app()->make(TagTeamEmploymentStrategy::class)->setEmployable($tagTeam)->employ($data['started_at']);
-
+            $this->tagTeamRepository->employ($tagTeam, $data['started_at']);
             $this->tagTeamRepository->addWrestlers($tagTeam, $data['wrestlers'], $data['started_at']);
         } else {
             if (isset($data['wrestlers'])) {
@@ -86,10 +78,10 @@ class TagTeamService
     public function employOrUpdateEmployment(TagTeam $tagTeam, string $employmentDate)
     {
         if ($tagTeam->isNotInEmployment()) {
-            return app()->make(TagTeamEmploymentStrategy::class)->setEmployable($tagTeam)->employ($employmentDate);
+            $this->tagTeamRepository->employ($tagTeam, $employmentDate);
         }
 
-        if ($tagTeam->hasFutureActivation() && ! $tagTeam->employedOn($employmentDate)) {
+        if ($tagTeam->hasFutureEmployment() && ! $tagTeam->employedOn($employmentDate)) {
             return $this->tagTeamRepository->updateEmployment($tagTeam, $employmentDate);
         }
     }
@@ -149,6 +141,6 @@ class TagTeamService
      */
     public function employ(TagTeam $tagTeam)
     {
-        app()->make(TagTeamEmploymentStrategy::class)->setEmployable($tagTeam)->employ();
+        $this->tagTeamRepository->employ($tagTeam, now()->toDateTimeString());
     }
 }

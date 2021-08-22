@@ -36,8 +36,8 @@ class SuspendControllerTest extends TestCase
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertEquals(WrestlerStatus::SUSPENDED, $wrestler->status);
             $this->assertCount(1, $wrestler->suspensions);
+            $this->assertEquals(WrestlerStatus::SUSPENDED, $wrestler->status);
         });
     }
 
@@ -93,7 +93,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_an_unemployed_wrestler($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -108,7 +108,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_future_employed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_future_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -123,7 +123,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_an_injured_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_an_injured_wrestler($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -138,7 +138,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_released_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_released_wrestler($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -153,7 +153,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_retired_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_retired_wrestler($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -168,7 +168,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_suspended_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_suspended_wrestler($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();

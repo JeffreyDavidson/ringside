@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Referees\RetireController;
 use App\Http\Requests\Referees\RetireRequest;
 use App\Models\Referee;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,19 +27,15 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_a_bookable_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->bookable()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.retire', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
-            $this->assertEquals(RefereeStatus::RETIRED, $referee->status);
+        tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->retirements);
-            $this->assertEquals($now->toDateTimeString(), $referee->retirements->first()->started_at->toDateTimeString());
+            $this->assertEquals(RefereeStatus::RETIRED, $referee->status);
         });
     }
 
@@ -50,19 +45,15 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_an_injured_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->injured()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.retire', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
-            $this->assertEquals(RefereeStatus::RETIRED, $referee->status);
+        tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->retirements);
-            $this->assertEquals($now->toDateTimeString(), $referee->retirements->first()->started_at->toDateTimeString());
+            $this->assertEquals(RefereeStatus::RETIRED, $referee->status);
         });
     }
 
@@ -72,19 +63,15 @@ class RetireControllerTest extends TestCase
      */
     public function invoke_retires_a_suspended_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->suspended()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.retire', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
-            $this->assertEquals(RefereeStatus::RETIRED, $referee->status);
+        tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->retirements);
-            $this->assertEquals($now->toDateTimeString(), $referee->retirements->first()->started_at->toDateTimeString());
+            $this->assertEquals(RefereeStatus::RETIRED, $referee->status);
         });
     }
 
@@ -123,7 +110,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_retired_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_a_retired_referee($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -138,7 +125,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_future_employed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_a_future_employed_referee($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -153,7 +140,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_an_released_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_an_released_referee($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -168,7 +155,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_an_unemployed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_retiring_an_unemployed_referee($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();

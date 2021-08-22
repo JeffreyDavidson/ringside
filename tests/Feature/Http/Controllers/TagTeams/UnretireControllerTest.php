@@ -4,11 +4,11 @@ namespace Tests\Feature\Http\Controllers\TagTeams;
 
 use App\Enums\Role;
 use App\Enums\TagTeamStatus;
+use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\TagTeams\UnretireController;
 use App\Http\Requests\TagTeams\UnretireRequest;
 use App\Models\TagTeam;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,21 +26,22 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_unretires_a_retired_tag_team_and_redirects($administrators)
+    public function invoke_unretires_a_retired_tag_team_and_its_last_tag_team_partners_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $tagTeam = TagTeam::factory()->retired()->create();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.unretire', $tagTeam))
             ->assertRedirect(route('tag-teams.index'));
 
-        tap($tagTeam->fresh(), function ($tagTeam) use ($now) {
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertNotNull($tagTeam->retirements->last()->ended_at);
             $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
-            $this->assertCount(1, $tagTeam->retirements);
-            $this->assertEquals($now->toDateTimeString(), $tagTeam->retirements->first()->ended_at->toDateTimeString());
+
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
+                $this->assertNotNull($wrestler->retirements->last()->ended_at);
+                $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+            }
         });
     }
 
@@ -79,7 +80,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_bookable_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_bookable_tag_team($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -94,7 +95,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_future_employed_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_future_employed_tag_team($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -109,7 +110,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_released_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_released_tag_team($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -124,7 +125,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_suspended_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_suspended_tag_team($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +140,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_unemployed_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_unemployed_tag_team($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();

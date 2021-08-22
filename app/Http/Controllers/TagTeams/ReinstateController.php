@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\ReinstateRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use App\Repositories\WrestlerRepository;
 
 class ReinstateController extends Controller
 {
@@ -18,14 +19,23 @@ class ReinstateController extends Controller
      * @param  \App\Repositories\TagTeamRepository $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, ReinstateRequest $request, TagTeamRepository $tagTeamRepository)
-    {
+    public function __invoke(
+        TagTeam $tagTeam,
+        ReinstateRequest $request,
+        TagTeamRepository $tagTeamRepository,
+        WrestlerRepository $wrestlerRepository
+    ) {
         throw_unless($tagTeam->canBeReinstated(), new CannotBeReinstatedException);
 
         $reinstatementDate = now()->toDateTimeString();
 
+        foreach ($tagTeam->currentWrestlers as $wrestler) {
+            $wrestlerRepository->reinstate($wrestler, $reinstatementDate);
+            $wrestlerRepository->employ($wrestler, $reinstatementDate);
+            $wrestler->updateStatusAndSave();
+        }
+
         $tagTeamRepository->reinstate($tagTeam, $reinstatementDate);
-        // $tagTeam->currentWrestlers->each->reinstate($reinstatementDate);
         $tagTeam->updateStatusAndSave();
 
         return redirect()->route('tag-teams.index');

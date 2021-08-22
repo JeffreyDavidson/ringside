@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Referees\UnretireController;
 use App\Http\Requests\Referees\UnretireRequest;
 use App\Models\Referee;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,19 +27,15 @@ class UnretireControllerTest extends TestCase
      */
     public function invoke_unretires_a_referee_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $referee = Referee::factory()->retired()->create();
 
         $this->actAs($administrators)
             ->patch(route('referees.unretire', $referee))
             ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($referee->fresh(), function ($referee) {
+            $this->assertNotNull($referee->retirements->last()->ended_at);
             $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-            $this->assertCount(1, $referee->retirements);
-            $this->assertEquals($now->toDateTimeString(), $referee->retirements->first()->ended_at->toDateTimeString());
         });
     }
 
@@ -79,7 +74,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_bookable_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_bookable_referee($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -94,7 +89,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_future_employed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_future_employed_referee($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -109,7 +104,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_injured_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_injured_referee($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -124,7 +119,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_released_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_released_referee($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +134,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_suspended_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_suspended_referee($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -154,7 +149,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_unemployed_referee_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_unemployed_referee($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();

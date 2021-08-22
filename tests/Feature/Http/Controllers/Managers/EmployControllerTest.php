@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Managers\EmployController;
 use App\Http\Requests\Managers\EmployRequest;
 use App\Models\Manager;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,21 +25,20 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_employs_a_future_employed_manager_and_redirects($administrators)
+    public function invoke_employs_an_unemployed_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
+        $manager = Manager::factory()->unemployed()->create();
 
-        $manager = Manager::factory()->withFutureEmployment()->create();
+        $this->assertCount(0, $manager->employments);
+        $this->assertEquals(ManagerStatus::UNEMPLOYED, $manager->status);
 
         $this->actAs($administrators)
             ->patch(route('managers.employ', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
+        tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->employments);
-            $this->assertEquals($now->toDateTimeString(), $manager->employments->first()->started_at->toDateTimeString());
+            $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
         });
     }
 
@@ -48,21 +46,21 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_employs_an_unemployed_manager_and_redirects($administrators)
+    public function invoke_employs_a_future_employed_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
+        $manager = Manager::factory()->withFutureEmployment()->create();
+        $startedAt = $manager->employments->last()->started_at;
 
-        $manager = Manager::factory()->unemployed()->create();
+        $this->assertTrue(now()->lt($startedAt));
+        $this->assertEquals(ManagerStatus::FUTURE_EMPLOYMENT, $manager->status);
 
         $this->actAs($administrators)
             ->patch(route('managers.employ', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
+        tap($manager->fresh(), function ($manager) use ($startedAt) {
+            $this->assertTrue($manager->currentEmployment->started_at->lt($startedAt));
             $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-            $this->assertCount(1, $manager->employments);
-            $this->assertEquals($now->toDateTimeString(), $manager->employments->first()->started_at->toDateTimeString());
         });
     }
 
@@ -72,19 +70,17 @@ class EmployControllerTest extends TestCase
      */
     public function invoke_employs_a_released_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->released()->create();
+
+        $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
 
         $this->actAs($administrators)
             ->patch(route('managers.employ', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
+        tap($manager->fresh(), function ($manager) {
             $this->assertCount(2, $manager->employments);
-            $this->assertEquals($now->toDateTimeString(), $manager->employments->last()->started_at->toDateTimeString());
+            $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
         });
     }
 

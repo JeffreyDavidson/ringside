@@ -35,10 +35,10 @@ class RetireControllerTest extends TestCase
             ->patch(route('wrestlers.retire', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
 
-        $wrestler->refresh();
-
-        $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-        $this->assertCount(1, $wrestler->retirements);
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertCount(1, $wrestler->retirements);
+            $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
+        });
     }
 
     /**
@@ -53,10 +53,10 @@ class RetireControllerTest extends TestCase
             ->patch(route('wrestlers.retire', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
 
-        $wrestler->refresh();
-
-        $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-        $this->assertCount(1, $wrestler->retirements);
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertCount(1, $wrestler->retirements);
+            $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
+        });
     }
 
     /**
@@ -71,10 +71,10 @@ class RetireControllerTest extends TestCase
             ->patch(route('wrestlers.retire', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
 
-        $wrestler->refresh();
-
-        $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-        $this->assertCount(1, $wrestler->retirements);
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertCount(1, $wrestler->retirements);
+            $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
+        });
     }
 
     /**
@@ -129,7 +129,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_retired_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_retiring_a_retired_wrestler($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -144,7 +144,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_future_employed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_retiring_a_future_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -159,7 +159,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_a_released_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_retiring_a_released_wrestler($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -174,7 +174,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function retiring_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_retiring_an_unemployed_wrestler($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();

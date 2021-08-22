@@ -36,7 +36,7 @@ trait Employable
     {
         return $this->morphOne(Employment::class, 'employable')
                     ->where('started_at', '<=', now())
-                    ->where('ended_at', '=', null)
+                    ->whereNull('ended_at', '=', null)
                     ->latestOfMany();
     }
 

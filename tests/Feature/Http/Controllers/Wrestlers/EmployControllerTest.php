@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Wrestlers;
 
 use App\Enums\Role;
+use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Wrestlers\EmployController;
 use App\Http\Requests\Wrestlers\EmployRequest;
@@ -28,9 +29,59 @@ class EmployControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->unemployed()->create();
 
+        $this->assertCount(0, $wrestler->employments);
+        $this->assertEquals(WrestlerStatus::UNEMPLOYED, $wrestler->status);
+
         $this->actAs($administrators)
             ->patch(route('wrestlers.employ', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
+
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertCount(1, $wrestler->employments);
+            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_employs_a_future_employed_wrestler_and_redirects($administrators)
+    {
+        $wrestler = Wrestler::factory()->withFutureEmployment()->create();
+        $startedAt = $wrestler->employments->last()->started_at;
+
+        $this->assertTrue(now()->lt($startedAt));
+        $this->assertEquals(WrestlerStatus::FUTURE_EMPLOYMENT, $wrestler->status);
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.employ', $wrestler))
+            ->assertRedirect(route('wrestlers.index'));
+
+        tap($wrestler->fresh(), function ($wrestler) use ($startedAt) {
+            $this->assertTrue($wrestler->currentEmployment->started_at->lt($startedAt));
+            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_employs_a_released_wrestler_and_redirects($administrators)
+    {
+        $wrestler = Wrestler::factory()->released()->create();
+
+        $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.employ', $wrestler))
+            ->assertRedirect(route('wrestlers.index'));
+
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertCount(2, $wrestler->employments);
+            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+        });
     }
 
     /**
@@ -68,12 +119,27 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employed_wrestler_and_redirects($administrators)
+    public function invoke_throws_exception_for_employing_an_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
 
         $wrestler = Wrestler::factory()->employed()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.employ', $wrestler));
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function invoke_throws_exception_for_employing_an_retired_wrestler($administrators)
+    {
+        $this->expectException(CannotBeEmployedException::class);
+        $this->withoutExceptionHandling();
+
+        $wrestler = Wrestler::factory()->retired()->create();
 
         $this->actAs($administrators)
             ->patch(route('wrestlers.employ', $wrestler));

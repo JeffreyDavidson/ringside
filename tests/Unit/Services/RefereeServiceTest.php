@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Services;
+namespace Tests\Unit\Services;
 
 use App\Models\Referee;
 use App\Repositories\RefereeRepository;

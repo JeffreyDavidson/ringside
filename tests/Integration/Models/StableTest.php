@@ -9,7 +9,7 @@ use Tests\TestCase;
 /**
  * @group stables
  */
-class StableIntegrationTest extends TestCase
+class StableTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -25,7 +25,7 @@ trait Activatable
     {
         return $this->morphOne(Activation::class, 'activatable')
                         ->where('started_at', '<=', now())
-                        ->whereNull('ended_at')
+                        ->where('ended_at', '=', null)
                         ->latestOfMany();
     }
 
@@ -107,6 +107,7 @@ trait Activatable
     public function scopeInactive($query)
     {
         return $query->whereHas('previousActivation')
+                    ->whereDoesntHave('futureActivation')
                     ->whereDoesntHave('currentActivation')
                     ->whereDoesntHave('currentRetirement');
     }

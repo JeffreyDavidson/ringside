@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Managers\InjureController;
 use App\Http\Requests\Managers\InjureRequest;
 use App\Models\Manager;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,20 +27,15 @@ class InjureControllerTest extends TestCase
      */
     public function invoke_injures_an_available_manager_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->available()->create();
 
         $this->actAs($administrators)
             ->patch(route('managers.injure', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertEquals(ManagerStatus::INJURED, $manager->status);
+        tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->injuries);
-            $this->assertEquals($now->toDateTimeString(), $manager->injuries->first()->started_at->toDateTimeString());
+            $this->assertEquals(ManagerStatus::INJURED, $manager->status);
         });
     }
 
@@ -80,7 +74,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_an_unemployed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_an_unemployed_manager($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -95,7 +89,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_suspended_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_suspended_manager($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -110,7 +104,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_released_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_released_manager($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -125,7 +119,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_future_employed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_future_employed_manager($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -140,7 +134,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_retired_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_retired_manager($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -155,7 +149,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_an_injured_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_an_injured_manager($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();

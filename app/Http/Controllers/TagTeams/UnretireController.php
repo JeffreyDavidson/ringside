@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\UnretireRequest;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use App\Repositories\WrestlerRepository;
 
 class UnretireController extends Controller
 {
@@ -18,21 +19,26 @@ class UnretireController extends Controller
      * @param  \App\Repositories\TagTeamRepository  $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, UnretireRequest $request, TagTeamRepository $tagTeamRepository)
-    {
+    public function __invoke(
+        TagTeam $tagTeam,
+        UnretireRequest $request,
+        TagTeamRepository $tagTeamRepository,
+        WrestlerRepository $wrestlerRepository
+    ) {
         throw_unless($tagTeam->canBeUnretired(), new CannotBeUnretiredException);
 
         $unretiredDate = now()->toDateTimeString();
 
         $tagTeamRepository->unretire($tagTeam, $unretiredDate);
-        $tagTeam->updateStatusAndSave();
-        $tagTeam->currentWrestlers->each->unretire($unretiredDate);
-        $tagTeam->currentWrestlers->each->upddateStatusAndSave();
+
+        foreach ($tagTeam->currentWrestlers as $wrestler) {
+            $wrestlerRepository->unretire($wrestler, $unretiredDate);
+            $wrestlerRepository->employ($wrestler, $unretiredDate);
+            $wrestler->updateStatusAndSave();
+        }
 
         $tagTeamRepository->employ($tagTeam, $unretiredDate);
         $tagTeam->updateStatusAndSave();
-        $tagTeam->currentWrestlers->each->employ($unretiredDate);
-        $tagTeam->currentWrestlers->each->upddateStatusAndSave();
 
         return redirect()->route('tag-teams.index');
     }

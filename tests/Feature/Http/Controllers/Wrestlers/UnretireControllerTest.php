@@ -34,8 +34,8 @@ class UnretireControllerTest extends TestCase
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertNotNull($wrestler->retirements->last()->ended_at);
             $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-            $this->assertCount(1, $wrestler->retirements);
         });
     }
 
@@ -74,7 +74,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_bookable_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_bookable_wrestler($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -89,7 +89,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_future_employed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_future_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -104,7 +104,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_injured_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_injured_wrestler($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -119,7 +119,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_released_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_released_wrestler($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -134,7 +134,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_a_suspended_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_a_suspended_wrestler($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -149,7 +149,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function unretiring_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_unretiring_an_unemployed_wrestler($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();

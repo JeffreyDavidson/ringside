@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers\Wrestlers;
 
 use App\Enums\Role;
+use App\Enums\TagTeamStatus;
+use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Wrestlers\InjureController;
 use App\Http\Requests\Wrestlers\InjureRequest;
@@ -27,16 +29,17 @@ class InjureControllerTest extends TestCase
      */
     public function invoke_injures_a_bookable_wrestler_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
         $wrestler = Wrestler::factory()->bookable()->create();
+
+        $this->assertCount(0, $wrestler->injuries);
 
         $this->actAs($administrators)
             ->patch(route('wrestlers.injure', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->hasInjuries());
-            $this->assertTrue($wrestler->isInjured());
+            $this->assertCount(1, $wrestler->injuries);
+            $this->assertEquals(WrestlerStatus::INJURED, $wrestler->status);
         });
     }
 
@@ -49,11 +52,13 @@ class InjureControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
 
+        $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
+
         $this->actAs($administrators)
             ->patch(route('wrestlers.injure', $wrestler));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
-            $this->assertTrue($tagTeam->isUnbookable());
+            $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->status);
         });
     }
 
@@ -92,7 +97,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_an_unemployed_wrestler($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -107,7 +112,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_suspended_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_suspended_wrestler($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -122,7 +127,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_released_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_released_wrestler($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -137,7 +142,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_future_employed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_a_future_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -152,7 +157,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_a_retired_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_injuring_a_retired_wrestler_throws($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -167,7 +172,7 @@ class InjureControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function injuring_an_injured_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_injuring_an_injured_wrestler($administrators)
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();

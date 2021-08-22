@@ -4,7 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\ManagerStatus;
 use App\Models\Manager;
-use Carbon\Carbon;
+use App\Models\SingleRosterMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -88,82 +88,5 @@ class ManagerTest extends TestCase
     public function a_manager_uses_has_a_full_name_trait()
     {
         $this->assertUsesTrait('App\Models\Concerns\HasFullName', Manager::class);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_a_suspension_is_suspended()
-    {
-        $manager = Manager::factory()->suspended()->create();
-
-        $this->assertTrue($manager->isSuspended());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_can_be_suspended_multiple_times()
-    {
-        $manager = Manager::factory()->suspended()->create();
-
-        $manager->reinstate();
-        $manager->suspend();
-
-        $this->assertCount(1, $manager->previousSuspensions);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_a_retirement_is_retired()
-    {
-        $manager = Manager::factory()->retired()->create();
-
-        $this->assertTrue($manager->isRetired());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_an_injury_is_injured()
-    {
-        $manager = Manager::factory()->injured()->create();
-
-        $this->assertTrue($manager->isInjured());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_can_be_injured_multiple_times()
-    {
-        $manager = Manager::factory()->injured()->create();
-
-        $manager->clearFromInjury();
-        $manager->injure();
-
-        $this->assertCount(1, $manager->previousInjuries);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_an_employment_now_or_in_the_past_is_employed()
-    {
-        $manager = Manager::factory()->create();
-        $manager->employments()->create(['started_at' => Carbon::now()]);
-
-        $this->assertTrue($manager->isCurrentlyEmployed());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_without_an_employment_is_unemployed()
-    {
-        $manager = Manager::factory()->create();
-
-        $this->assertTrue($manager->isUnemployed());
     }
 }

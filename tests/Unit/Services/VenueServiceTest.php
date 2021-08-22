@@ -1,12 +1,10 @@
 <?php
 
-namespace Tests\Integration\Services;
+namespace Tests\Unit\Services;
 
 use App\Models\Venue;
 use App\Repositories\VenueRepository;
 use App\Services\VenueService;
-use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**

@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers\Wrestlers;
 
 use App\Enums\Role;
+use App\Enums\TagTeamStatus;
+use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Wrestlers\ReleaseController;
 use App\Http\Requests\Wrestlers\ReleaseRequest;
@@ -34,7 +36,8 @@ class ReleaseControllerTest extends TestCase
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->isReleased());
+            $this->assertNotNull($wrestler->employments->last()->ended_at);
+            $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
         });
     }
 
@@ -51,7 +54,9 @@ class ReleaseControllerTest extends TestCase
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->isReleased());
+            $this->assertNotNull($wrestler->injuries->last()->ended_at);
+            $this->assertNotNull($wrestler->employments->last()->ended_at);
+            $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
         });
     }
 
@@ -68,7 +73,9 @@ class ReleaseControllerTest extends TestCase
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->isReleased());
+            $this->assertNotNull($wrestler->suspensions->last()->ended_at);
+            $this->assertNotNull($wrestler->employments->last()->ended_at);
+            $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
         });
     }
 
@@ -85,7 +92,7 @@ class ReleaseControllerTest extends TestCase
             ->patch(route('wrestlers.release', $wrestler));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
-            $this->assertTrue($tagTeam->isUnbookable());
+            $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->status);
         });
     }
 
@@ -124,7 +131,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_releasing_an_unemployed_wrestler($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +146,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_future_employed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_future_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -154,7 +161,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_released_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_released_wrestler($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -169,7 +176,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_retired_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_retired_wrestler($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();

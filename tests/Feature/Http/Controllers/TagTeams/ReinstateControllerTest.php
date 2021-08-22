@@ -30,21 +30,21 @@ class ReinstateControllerTest extends TestCase
      */
     public function invoke_reinstates_a_suspended_tag_team_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
+        $this->withoutExceptionHandling();
         $tagTeam = TagTeam::factory()->suspended()->create();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.reinstate', $tagTeam))
             ->assertRedirect(route('tag-teams.index'));
 
-        tap($tagTeam->fresh(), function ($tagTeam) use ($now) {
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertNotNull($tagTeam->suspensions->last()->ended_at);
             $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
-            $this->assertEquals($now->toDateTimeString(), $tagTeam->fresh()->suspensions()->latest()->first()->ended_at->toDateTimeString());
-            $tagTeam->currentWrestlers->each(
-                fn (Wrestler $wrestler) => $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status)
-            );
+
+            foreach ($tagTeam->currentWrestlers as $wrestler) {
+                $this->assertNotNull($wrestler->suspensions->last()->ended_at);
+                $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+            }
         });
     }
 
@@ -83,7 +83,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_bookable_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_bookable_tag_team($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -98,7 +98,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_future_employed_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_future_employed_tag_team($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -113,7 +113,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_an_unemployed_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_an_unemployed_tag_team($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -128,7 +128,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_released_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_released_tag_team($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -143,30 +143,12 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_retired_tag_team_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_retired_tag_team($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->retired()->create();
-
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.reinstate', $tagTeam));
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function reinstating_a_suspended_tag_team_with_a_non_suspended_wrestler_throws_an_exception($administrators)
-    {
-        $this->expectException(CannotBeReinstatedException::class);
-        $this->withoutExceptionHandling();
-
-        $tagTeam = TagTeam::factory()->suspended()->create();
-        $firstWrestler = $tagTeam->currentWrestlers->first();
-        $firstWrestler->reinstate();
-        $firstWrestler->save();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.reinstate', $tagTeam));

@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controllers\TagTeams;
 
 use App\Enums\Role;
+use App\Enums\TagTeamStatus;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\TagTeams\SuspendController;
 use App\Http\Requests\TagTeams\SuspendRequest;
 use App\Models\TagTeam;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -27,16 +27,16 @@ class SuspendControllerTest extends TestCase
      */
     public function invoke_suspends_a_tag_team_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $tagTeam = TagTeam::factory()->bookable()->create();
 
         $this->actAs($administrators)
             ->patch(route('tag-teams.suspend', $tagTeam))
             ->assertRedirect(route('tag-teams.index'));
 
-        $this->assertEquals($now->toDateTimeString(), $tagTeam->fresh()->currentSuspension->started_at);
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertCount(1, $tagTeam->suspensions);
+            $this->assertEquals(TagTeamStatus::SUSPENDED, $tagTeam->status);
+        });
     }
 
     /**

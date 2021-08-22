@@ -20,22 +20,35 @@ class RetireController extends Controller
      * @param  \App\Repositories\StableRepository  $stableRepository
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, RetireRequest $request, StableRepository $stableRepository)
-    {
+    public function __invoke(
+        Stable $stable,
+        RetireRequest $request,
+        StableRepository $stableRepository,
+        TagTeamRepository $tagTeamRepository,
+        WrestlerRepository $wrestlerRepository
+    ) {
         throw_unless($stable->canBeRetired(), new CannotBeRetiredException);
 
         $retirementDate = now()->toDateTimeString();
 
+        if ($stable->has('currentTagTeams')) {
+            foreach ($stable->currentTagTeams as $tagTeam) {
+                $tagTeamRepository->release($tagTeam, $retirementDate);
+                $tagTeamRepository->retire($tagTeam, $retirementDate);
+                $tagTeam->updateStatusAndSave();
+            }
+        }
+
+        if ($stable->has('currentWrestlers')) {
+            foreach ($stable->currentWrestlers as $wrestler) {
+                $wrestlerRepository->release($wrestler, $retirementDate);
+                $wrestlerRepository->retire($wrestler, $retirementDate);
+                $wrestler->updateStatusAndSave();
+            }
+        }
+
         $stableRepository->deactivate($stable, $retirementDate);
         $stableRepository->retire($stable, $retirementDate);
-
-        if ($stable->currentTagTeams->isNotEmpty()) {
-            $stable->currentTagTeams->each->retire($retirementDate);
-        }
-
-        if ($stable->currentWrestlers->isNotEmpty()) {
-            $stable->currentWrestlers->each->retire($retirementDate);
-        }
 
         $stable->updateStatusAndSave();
 

@@ -3,12 +3,13 @@
 namespace Tests\Feature\Http\Controllers\Wrestlers;
 
 use App\Enums\Role;
+use App\Enums\TagTeamStatus;
+use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Wrestlers\ReinstateController;
 use App\Http\Requests\Wrestlers\ReinstateRequest;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Services\WrestlerService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -30,12 +31,15 @@ class ReinstateControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->suspended()->create();
 
+        $this->assertNull($wrestler->currentSuspension->ended_at);
+
         $this->actAs($administrators)
             ->patch(route('wrestlers.reinstate', $wrestler))
             ->assertRedirect(route('wrestlers.index'));
 
         tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->isBookable());
+            $this->assertNotNull($wrestler->suspensions->last()->ended_at);
+            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
         });
     }
 
@@ -45,16 +49,14 @@ class ReinstateControllerTest extends TestCase
      */
     public function reinstating_a_suspended_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable($administrators)
     {
-        $tagTeam = TagTeam::factory()->bookable()->create();
-        $wrestler = $tagTeam->currentWrestlers()->first();
-        app(WrestlerService::class)->suspend($wrestler);
-        $wrestler->currentTagTeam->updateStatusAndSave();
+        $tagTeam = TagTeam::factory()->withSuspendedWrestler()->create();
+        $wrestler = $tagTeam->currentWrestlers()->suspended()->first();
 
         $this->actAs($administrators)
             ->patch(route('wrestlers.reinstate', $wrestler));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
-            $this->assertTrue($tagTeam->isBookable());
+            $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
         });
     }
 
@@ -93,7 +95,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_bookable_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_bookable_wrestler($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -108,7 +110,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_an_unemployed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_an_unemployed_wrestler($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -123,7 +125,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_an_injured_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_an_injured_wrestler($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -137,7 +139,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_released_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_released_wrestler($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -152,7 +154,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_future_employed_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_future_employed_wrestler($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -167,7 +169,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function reinstating_a_retired_wrestler_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_reinstating_a_retired_wrestler($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();

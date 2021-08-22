@@ -37,8 +37,8 @@ class RetireController extends Controller
 
         $wrestler->updateStatusAndSave();
 
-        if ($wrestler->currentTagTeam->exists()) {
-            $wrestler->removeFromCurrentTagTeam();
+        if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
+            $wrestler->currentTagTeam->updateStatusAndSave();
         }
 
         return redirect()->route('wrestlers.index');

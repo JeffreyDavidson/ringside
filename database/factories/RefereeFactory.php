@@ -56,6 +56,18 @@ class RefereeFactory extends Factory
         });
     }
 
+    public function employed()
+    {
+        return $this->state(function (array $attributes) {
+            return ['status' => RefereeStatus::BOOKABLE];
+        })
+        ->has(Employment::factory()->started(Carbon::yesterday()))
+        ->afterCreating(function (Referee $referee) {
+            $referee->save();
+            $referee->load('employments');
+        });
+    }
+
     public function unemployed()
     {
         return $this->state(function (array $attributes) {

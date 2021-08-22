@@ -8,7 +8,6 @@ use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Manager;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -111,9 +110,6 @@ class ManagerControllerTest extends TestCase
      */
     public function store_creates_a_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $this->actAs($administrators)
             ->from(route('managers.create'))
             ->post(route('managers.store', $this->validParams()))

@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Managers\SuspendController;
 use App\Http\Requests\Managers\SuspendRequest;
 use App\Models\Manager;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,19 +27,15 @@ class SuspendControllerTest extends TestCase
      */
     public function invoke_suspends_an_available_manager_and_redirects($administrators)
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $manager = Manager::factory()->available()->create();
 
         $this->actAs($administrators)
             ->patch(route('managers.suspend', $manager))
             ->assertRedirect(route('managers.index'));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertEquals(ManagerStatus::SUSPENDED, $manager->status);
+        tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->suspensions);
-            $this->assertEquals($now->toDateTimeString(), $manager->suspensions->first()->started_at->toDateTimeString());
+            $this->assertEquals(ManagerStatus::SUSPENDED, $manager->status);
         });
     }
 
@@ -79,7 +74,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_an_unemployed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_an_unemployed_manager($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -94,7 +89,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_future_employed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_future_employed_manager($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -109,7 +104,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_an_injured_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_an_injured_manager($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -124,7 +119,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_released_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_released_manager($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +134,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_retired_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_retired_manager($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -154,7 +149,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function suspending_a_suspended_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_suspending_a_suspended_manager($administrators)
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
