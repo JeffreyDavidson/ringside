@@ -3,8 +3,10 @@
 namespace Tests\Unit\Models;
 
 use App\Enums\TagTeamStatus;
+use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -14,6 +16,8 @@ use Tests\TestCase;
  */
 class TagTeamTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */
@@ -61,5 +65,18 @@ class TagTeamTest extends TestCase
     public function a_wrestler_can_be_associated_to_a_user()
     {
         $this->assertInstanceOf(User::class, (new TagTeam)->user);
+    }
+
+    /**
+     * @test
+     */
+    public function tag_team_stable()
+    {
+        $tagTeam = TagTeam::factory()->create();
+        Stable::factory()
+            ->hasAttached($tagTeam, ['joined_at' => now()->toDateTimeString()])
+            ->create();
+
+        $this->assertInstanceOf(Stable::class, $tagTeam->currentStable);
     }
 }

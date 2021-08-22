@@ -6,6 +6,8 @@ use App\Models\Stable;
 
 trait CanJoinStable
 {
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
+
     /**
      * Get the stables the model has been belonged to.
      *
@@ -23,7 +25,10 @@ trait CanJoinStable
      */
     public function currentStable()
     {
-        return $this->morphOne(Stable::class, 'members')->withPivot(['joined_at', 'left_at'])->latestOfMany();
+        return $this
+            ->hasOneDeep(Stable::class, ['stable_members'])
+            ->latest('stable_members.joined_at')
+            ->wherePivotNull('stable_members.joined_at');
     }
 
     /**

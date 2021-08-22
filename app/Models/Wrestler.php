@@ -6,6 +6,7 @@ use App\Casts\HeightCast;
 use App\Enums\WrestlerStatus;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanJoinStable;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,7 +15,8 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
     use SoftDeletes,
         HasFactory,
         Concerns\CanJoinStable,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        HasRelationships;
 
     /**
      * The "booted" method of the model.
@@ -60,13 +62,10 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function getCurrentTagTeamAttribute()
+    public function currentTagTeam()
     {
-        return $this->tagTeams->last();
-        // return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler', 'tag_team_id', 'wrestler_id')
-        //     ->withPivot(['joined_at', 'left_at'])
-        //     ->wherePivotNull('left_at')
-        //     ->last();
+        return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
+                ->whereNull('tag_team_wrestler.left_at');
     }
 
     /**

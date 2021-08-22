@@ -25,7 +25,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_marks_an_injured_manager_as_being_recovered_and_redirects($administrators)
+    public function invoke_marks_an_injured_manager_as_being_cleared_and_redirects($administrators)
     {
         $manager = Manager::factory()->injured()->create();
 
@@ -52,7 +52,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_basic_user_cannot_mark_an_injured_manager_as_recovered()
+    public function a_basic_user_cannot_mark_an_injured_manager_as_cleared()
     {
         $manager = Manager::factory()->injured()->create();
 
@@ -64,7 +64,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_guest_cannot_mark_an_injured_manager_as_recovered()
+    public function a_guest_cannot_mark_an_injured_manager_as_cleared()
     {
         $manager = Manager::factory()->injured()->create();
 

@@ -113,7 +113,6 @@ class TagTeamControllerTest extends TestCase
      */
     public function store_creates_a_tag_team_and_redirects($administrators)
     {
-        $this->markTestIncomplete();
         $this->actAs($administrators)
             ->from(route('tag-teams.create'))
             ->post(route('tag-teams.store'), $this->validParams())
@@ -131,7 +130,6 @@ class TagTeamControllerTest extends TestCase
      */
     public function an_employment_is_not_created_for_the_tag_team_if_started_at_is_filled_in_request($administrators)
     {
-        $this->markTestIncomplete();
         $this->actAs($administrators)
             ->from(route('tag-teams.create'))
             ->post(route('tag-teams.store'), $this->validParams(['started_at' => null]));
@@ -147,7 +145,6 @@ class TagTeamControllerTest extends TestCase
      */
     public function an_employment_is_created_for_the_tag_team_if_started_at_is_filled_in_request($administrators)
     {
-        $this->markTestIncomplete();
         $startedAt = now()->toDateTimeString();
 
         $this->actAs($administrators)
@@ -197,7 +194,7 @@ class TagTeamControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $response = $this->actAs($administrators)
+        $this->actAs($administrators)
             ->get(route('tag-teams.show', $tagTeam))
             ->assertViewIs('tagteams.show')
             ->assertViewHas('tagTeam', $tagTeam);
@@ -299,9 +296,8 @@ class TagTeamControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated()
+    public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated($administrators)
     {
-        $this->markTestIncomplete();
         $tagTeam = TagTeam::factory()->bookable()->create();
         $formerTagTeamPartners = $tagTeam->currentWrestlers;
 
@@ -309,10 +305,12 @@ class TagTeamControllerTest extends TestCase
 
         $this->assertCount(4, Wrestler::all());
 
-        $this->actAs(Role::ADMINISTRATOR)
+        $response = $this->actAs($administrators)
             ->from(route('tag-teams.edit', $tagTeam))
-            ->put(route('tag-teams.update', $tagTeam), $this->validParams(['wrestlers' => $newTagTeamPartners->pluck('id')->toArray()]))
-            ->assertRedirect(route('tag-teams.index'));
+            ->put(route('tag-teams.update', $tagTeam), $this->validParams(['wrestlers' => $newTagTeamPartners->pluck('id')->toArray()]));
+            // ->assertRedirect(route('tag-teams.index'));
+
+        dd($response);
 
         tap($tagTeam->fresh(), function ($tagTeam) use ($formerTagTeamPartners, $newTagTeamPartners) {
             $this->assertCount(4, $tagTeam->wrestlers);

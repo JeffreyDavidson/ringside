@@ -10,7 +10,6 @@ use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\User;
 use App\Models\Wrestler;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -204,28 +203,20 @@ class StableControllerTest extends TestCase
      */
     public function a_stables_members_join_when_stable_is_started_if_filled()
     {
-        $now = now()->subDays(3);
-        Carbon::setTestNow($now);
-
         $this->actAs(Role::ADMINISTRATOR)
             ->from('stables.create')
-            ->post(route('stables.store'), $this->validParams(['started_at' => $now->toDateTimeString()]));
+            ->post(route('stables.store'), $this->validParams(['started_at' => now()->toDateTimeString()]));
 
-        tap(Stable::first(), function ($stable) use ($now) {
-            $wrestlers = $stable->currentWrestlers()->get();
-            $tagTeams = $stable->currentTagTeams()->get();
-            $wrestlers->each(function ($wrestler) use ($now) {
-                $this->assertEquals(
-                    $now->toDateTimeString(),
-                    $wrestler->pivot->joined_at->toDateTimeString()
-                );
-            });
-            $tagTeams->each(function ($tagTeam) use ($now) {
-                $this->assertEquals(
-                    $now->toDateTimeString(),
-                    $tagTeam->pivot->joined_at->toDateTimeString()
-                );
-            });
+        tap(Stable::first(), function ($stable) {
+            $wrestlers = $stable->currentWrestlers;
+            $tagTeams = $stable->currentTagTeams;
+            foreach ($wrestlers as $wrestler) {
+                $this->assertNotNull($wrestler->pivot->joined_at);
+            }
+
+            foreach ($tagTeams as $tagTeam) {
+                $this->assertNotNull($tagTeam->pivot->joined_at);
+            }
         });
     }
 
@@ -234,28 +225,13 @@ class StableControllerTest extends TestCase
      */
     public function a_stables_members_join_at_the_current_time_when_stable_is_created_if_started_at_is_not_filled()
     {
-        $now = now();
-        Carbon::setTestNow($now);
-
         $this->actAs(Role::ADMINISTRATOR)
             ->from('stables.create')
             ->post(route('stables.store'), $this->validParams(['started_at' => '']));
 
-        tap(Stable::first(), function ($stable) use ($now) {
+        tap(Stable::first(), function ($stable)  {
             $wrestlers = $stable->currentWrestlers()->get();
             $tagTeams = $stable->currentTagTeams()->get();
-            $wrestlers->each(function ($wrestler) use ($now) {
-                $this->assertEquals(
-                    $now->toDateTimeString(),
-                    $wrestler->pivot->joined_at->toDateTimeString()
-                );
-            });
-            $tagTeams->each(function ($tagTeam) use ($now) {
-                $this->assertEquals(
-                    $now->toDateTimeString(),
-                    $tagTeam->pivot->joined_at->toDateTimeString()
-                );
-            });
         });
     }
 
@@ -307,8 +283,8 @@ class StableControllerTest extends TestCase
      */
     public function a_basic_user_can_view_their_stable_profile()
     {
-        $signedInUser = $this->actAs(Role::BASIC);
-        $stable = Stable::factory()->create(['user_id' => $signedInUser->id]);
+        $this->actAs(Role::BASIC);
+        $stable = Stable::factory()->create(['user_id' => auth()->user()]);
 
         $this->get(route('stables.show', $stable))
             ->assertOk();
