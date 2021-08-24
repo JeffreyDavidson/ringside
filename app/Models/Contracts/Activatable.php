@@ -5,121 +5,116 @@ namespace App\Models\Contracts;
 interface Activatable
 {
     /**
-     * Get the name of the unique identifier for the user.
-     *
-     * @return string
+     * Get all of the activations of the model.
      */
     public function activations();
 
     /**
-     * Get the unique identifier for the user.
-     *
-     * @return mixed
+     * Get the current activation of the model.
      */
     public function currentActivation();
 
     /**
-     * Get the unique identifier for the user.
-     *
-     * @return mixed
+     * Get the first activation of the model.
      */
     public function firstActivation();
 
     /**
-     * Get the password for the user.
-     *
-     * @return string
+     * Get the future activation of the model.
      */
     public function futureActivation();
 
     /**
-     * Get the password for the user.
-     *
-     * @return string
+     * Get the previous activation of the model.
      */
     public function previousActivation();
 
     /**
-     * Get the token value for the "remember me" session.
-     *
-     * @return string
+     * Get the previous activations of the model.
      */
     public function previousActivations();
 
     /**
-     * Set the token value for the "remember me" session.
+     * Scope a query to only include active models.
      *
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      */
     public function scopeActive($query);
 
     /**
-     * Get the column name for the "remember me" token.
+     * Scope a query to only include future activated models.
      *
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      */
     public function scopeWithFutureActivation($scope);
 
     /**
-     * Get the column name for the "remember me" token.
+     * Scope a query to only include inactive models.
      *
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      */
     public function scopeInactive($query);
 
     /**
-     * Get the column name for the "remember me" token.
+     * Scope a query to only include unactivated models.
      *
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     */
+    public function scopeUnactivated($query);
+
+    /**
+     * Scope a query to include current activation date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      */
     public function scopeWithFirstActivatedAtDate($query);
 
     /**
-     * Get the column name for the "remember me" token.
+     * Scope a query to order by the models first activation date.
      *
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      */
     public function scopeOrderByFirstActivatedAtDate($query);
 
     /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
+     * Check to see if the model is currently active.
      */
     public function isCurrentlyActivated();
 
     /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
+     * Check to see if the model has been activated.
      */
     public function hasActivations();
 
     /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
+     * Check to see if the model is unactivated.
      */
     public function isNotActivated();
 
     /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
+     * Check to see if the model has a future activation.
      */
     public function hasFutureActivation();
 
     /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
+     * Determine if the model can be activated.
      */
     public function canBeActivated();
 
     /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
+     * Retrieve the model's first activation date.
      */
     public function getActivatedAtAttribute();
+
+    /**
+     * Check to see if the model is not in activation.
+     */
+    public function isNotInActivation();
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @param  string  $activationDate
+     */
+    public function activatedOn(string $activationDate);
 }

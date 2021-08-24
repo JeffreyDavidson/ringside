@@ -98,16 +98,4 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTe
         $this->updateStatus();
         $this->save();
     }
-
-    /**
-     * Updates a manager's status and saves.
-     *
-     * @return void
-     */
-    public function removeFromCurrentTagTeam()
-    {
-        $this->tagTeams()->updateExistingPivot($this->currentTagTeam->id, [
-            'left_at' => now(),
-        ]);
-    }
 }

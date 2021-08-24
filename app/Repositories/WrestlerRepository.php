@@ -148,4 +148,18 @@ class WrestlerRepository
     {
         return $wrestler->futureEmployment()->update(['started_at' => $employmentDate]);
     }
+
+    /**
+     * Remove the given wrestler from their current tag team on a given date.
+     *
+     * @param  \App\Models\Wrestler
+     * @param  string  $removalDate
+     * @return void
+     */
+    public function removeFromCurrentTagTeam(Wrestler $wrestler, string $removalDate)
+    {
+        $wrestler->currentTagTeam()->updateExistingPivot($wrestler->currentTagTeam->id, [
+            'left_at' => $removalDate,
+        ]);
+    }
 }

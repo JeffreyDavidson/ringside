@@ -154,7 +154,7 @@ trait Activatable
     }
 
     /**
-     * Check to see if the model is active.
+     * Check to see if the model is currently active.
      *
      * @return bool
      */
@@ -214,7 +214,7 @@ trait Activatable
     }
 
     /**
-     * Retrieve an activation date.
+     * Retrieve the model's first activation date.
      *
      * @return string|null
      */
