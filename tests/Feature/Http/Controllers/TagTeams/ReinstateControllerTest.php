@@ -28,7 +28,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_reinstates_a_suspended_tag_team_and_redirects($administrators)
+    public function invoke_reinstates_a_suspended_tag_team_and_its_tag_team_partners_and_redirects($administrators)
     {
         $this->withoutExceptionHandling();
         $tagTeam = TagTeam::factory()->suspended()->create();

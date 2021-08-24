@@ -164,4 +164,32 @@ class ManagerRepository
     {
         return $manager->futureEmployment()->update(['started_at' => $employmentDate]);
     }
+
+    /**
+     * Updates a manager's status and saves.
+     *
+     * @return void
+     */
+    public function removeFromCurrentTagTeams($manager)
+    {
+        foreach ($manager->currentTagTeams as $tagTeam) {
+            $manager->currentTagTeams()->updateExistingPivot($tagTeam->id, [
+                'left_at' => now(),
+            ]);
+        }
+    }
+
+    /**
+     * Updates a manager's status and saves.
+     *
+     * @return void
+     */
+    public function removeFromCurrentWrestlers($manager)
+    {
+        foreach ($manager->currentWrestlers as $wrestler) {
+            $manager->currentWrestlers()->updateExistingPivot($wrestler->id, [
+                'left_at' => now(),
+            ]);
+        }
+    }
 }

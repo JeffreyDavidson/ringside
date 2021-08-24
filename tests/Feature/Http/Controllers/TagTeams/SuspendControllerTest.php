@@ -25,7 +25,7 @@ class SuspendControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_suspends_a_tag_team_and_redirects($administrators)
+    public function invoke_suspends_a_tag_team_and_their_tag_team_partners_and_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
 

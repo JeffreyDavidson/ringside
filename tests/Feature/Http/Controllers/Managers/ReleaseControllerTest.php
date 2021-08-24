@@ -139,7 +139,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_an_unemployed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_an_unemployed_manager($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -154,7 +154,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_future_employed_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_a_future_employed_manager($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -169,7 +169,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_released_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_a_released_manager($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -184,7 +184,7 @@ class ReleaseControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function releasing_a_retired_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_releasing_a_retired_manager($administrators)
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();

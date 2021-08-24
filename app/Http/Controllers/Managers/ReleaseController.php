@@ -36,11 +36,11 @@ class ReleaseController extends Controller
         $manager->updateStatusAndSave();
 
         if ($manager->has('currentTagTeams')) {
-            $manager->removeFromCurrentTagTeams();
+            $managerRepository->removeFromCurrentTagTeams($manager);
         }
 
         if ($manager->has('currentWrestlers')) {
-            $manager->removeFromCurrentWrestlers();
+            $managerRepository->removeFromCurrentWrestlers($manager);
         }
 
         return redirect()->route('managers.index');

@@ -52,7 +52,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_basic_user_cannot_mark_an_injured_wrestler_as_recovered()
+    public function a_basic_user_cannot_mark_an_injured_wrestler_as_cleared()
     {
         $wrestler = Wrestler::factory()->injured()->create();
 
@@ -64,7 +64,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_guest_cannot_mark_an_injured_wrestler_as_recovered()
+    public function a_guest_cannot_mark_an_injured_wrestler_as_cleared()
     {
         $wrestler = Wrestler::factory()->injured()->create();
 

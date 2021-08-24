@@ -4,7 +4,6 @@ namespace App\Rules;
 
 use App\Models\Contracts\Employable;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Database\Eloquent\Model;
 
 class EmploymentStartDateCanBeChanged implements Rule
 {
@@ -32,7 +31,7 @@ class EmploymentStartDateCanBeChanged implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($this->model->canBeEmployed()) {
+        if ($this->model->isNotInEmployment()) {
             return true;
         }
 
@@ -40,7 +39,11 @@ class EmploymentStartDateCanBeChanged implements Rule
             return true;
         }
 
-        if ($this->model->started_at->eq($value)) {
+        if ($this->model->currentEmployment && $this->model->currentEmployment->started_at->lt($value)) {
+            return true;
+        }
+
+        if (isset($this->model->started_at) && $this->model->started_at->eq($value)) {
             return true;
         }
 

@@ -119,7 +119,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function employing_an_available_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_employing_an_available_manager($administrators)
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -134,7 +134,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function employing_a_retired_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_employing_a_retired_manager($administrators)
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -149,7 +149,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function employing_a_suspended_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_employing_a_suspended_manager($administrators)
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -164,7 +164,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function employing_an_injured_manager_throws_an_exception($administrators)
+    public function invoke_throws_exception_for_employing_an_injured_manager($administrators)
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();

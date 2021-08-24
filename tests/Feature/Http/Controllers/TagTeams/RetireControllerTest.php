@@ -26,7 +26,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_retires_a_bookable_tag_team_and_its_wrestlers_and_redirects($administrators)
+    public function invoke_retires_a_bookable_tag_team_and_its_tag_team_partners_and_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
 
@@ -49,7 +49,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_retires_a_suspended_tag_team_and_its_wrestlers_and_redirects($administrators)
+    public function invoke_retires_a_suspended_tag_team_and_its_tag_team_partners_and_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->suspended()->create();
 
@@ -71,7 +71,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_retires_an_unbookable_tag_team_and_its_wrestlers_and_redirects($administrators)
+    public function invoke_retires_an_unbookable_tag_team_and_its_tag_team_partners_and_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->unbookable()->create();
 

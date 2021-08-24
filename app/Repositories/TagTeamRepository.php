@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\TagTeam;
+use Illuminate\Support\Collection;
 
 class TagTeamRepository
 {
@@ -167,7 +168,7 @@ class TagTeamRepository
      * @param  string|null $date
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function syncTagTeamPartners(TagTeam $tagTeam, array $formerTagTeamPartners, array $newTagTeamPartners, string $date = null)
+    public function syncTagTeamPartners(TagTeam $tagTeam, Collection $formerTagTeamPartners, Collection $newTagTeamPartners, string $date = null)
     {
         $date ??= now()->toDateTimeString();
 

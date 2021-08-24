@@ -99,11 +99,11 @@ class StableService
         $joinedDate ??= now();
 
         if ($wrestlerIds) {
-            $stable->addWrestlers($wrestlerIds, $joinedDate);
+            $this->stableRepository->addWrestlers($stable, $wrestlerIds, $joinedDate);
         }
 
         if ($tagTeamIds) {
-            $stable->addTagTeams($tagTeamIds, $joinedDate);
+            $this->stableRepository->addTagTeams($stable, $tagTeamIds, $joinedDate);
         }
 
         return $stable;
@@ -115,54 +115,33 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @param  array $wrestlerIds
      * @param  array $tagTeamIds
-     * @return \App\Models\Stable $stable
      */
     private function updateMembers(Stable $stable, array $wrestlerIds, array $tagTeamIds)
     {
+        $now = now()->toDateTimeString();
+
         if ($stable->currentWrestlers->isEmpty()) {
-            if ($wrestlerIds) {
-                foreach ($wrestlerIds as $wrestlerId) {
-                    $stable->currentWrestlers()->attach($wrestlerId, ['joined_at' => now()]);
-                }
-            }
+            $this->stableRepository->addWrestlers($stable, $wrestlerIds, $now);
         } else {
             $currentWrestlerIds = collect($stable->currentWrestlers->modelKeys());
             $suggestedWrestlerIds = collect($wrestlerIds);
-            $formerWrestlerIds = $currentWrestlerIds->diff($suggestedWrestlerIds);
-            $newWrestlerIds = $suggestedWrestlerIds->diff($currentWrestlerIds);
+            $formerWrestlerIds = $currentWrestlerIds->diff($suggestedWrestlerIds)->toArray();
+            $newWrestlerIds = $suggestedWrestlerIds->diff($currentWrestlerIds)->toArray();
 
-            $now = now();
-
-            foreach ($formerWrestlerIds as $formerWrestlerId) {
-                $stable->currentWrestlers()->updateExistingPivot($formerWrestlerId, ['left_at' => $now]);
-            }
-
-            foreach ($newWrestlerIds as $newWrestlerId) {
-                $stable->currentWrestlers()->attach($newWrestlerId, ['joined_at' => $now]);
-            }
+            $this->stableRepository->removeWrestlers($stable, $formerWrestlerIds, $now);
+            $this->stableRepository->addWrestlers($stable, $newWrestlerIds, $now);
         }
 
         if ($stable->currentTagTeams->isEmpty()) {
-            if ($tagTeamIds) {
-                foreach ($tagTeamIds as $tagTeamId) {
-                    $stable->currentTagTeams()->attach($tagTeamId, ['joined_at' => now()]);
-                }
-            }
+            $this->stableRepository->addTagTeams($stable, $tagTeamIds, $now);
         } else {
             $currentTagTeamIds = collect($stable->currentTagTeams->modelKeys());
             $suggestedTagTeamIds = collect($tagTeamIds);
-            $formerTagTeamIds = $currentTagTeamIds->diff($suggestedTagTeamIds);
-            $newTagTeamIds = $suggestedTagTeamIds->diff($currentTagTeamIds);
+            $formerTagTeamIds = $currentTagTeamIds->diff($suggestedTagTeamIds)->toArray();
+            $newTagTeamIds = $suggestedTagTeamIds->diff($currentTagTeamIds)->toArray();
 
-            $now = now();
-
-            foreach ($formerTagTeamIds as $formerTagTeamId) {
-                $stable->currentTagTeams()->updateExistingPivot($formerTagTeamId, ['left_at' => $now]);
-            }
-
-            foreach ($newTagTeamIds as $newTagTeamId) {
-                $stable->currentTagTeams()->attach($newTagTeamId, ['joined_at' => $now]);
-            }
+            $this->stableRepository->removeTagTeams($stable, $formerTagTeamIds, $now);
+            $this->stableRepository->addTagTeams($stable, $newTagTeamIds, $now);
         }
 
         return $stable;
@@ -189,21 +168,6 @@ class StableService
     }
 
     /**
-     * Add given wrestlers to a given stable on a given join date.
-     *
-     * @param  \App\Models\Stable $stable
-     * @param  array $wrestlerIds
-     * @param  string $joinedDate
-     * @return void
-     */
-    public function addWrestlers(Stable $stable, $wrestlerIds, $joinedDate)
-    {
-        foreach ($wrestlerIds as $wrestlerId) {
-            $stable->wrestlers()->attach($wrestlerId, ['joined_at' => $joinedDate]);
-        }
-    }
-
-    /**
      * Add given tag teams to a given stable on a given join date.
      *
      * @param  \App\Models\Stable $stable
@@ -215,6 +179,30 @@ class StableService
     {
         foreach ($tagTeamIds as $tagTeamId) {
             $stable->tagTeams()->attach($tagTeamId, ['joined_at' => $joinedDate]);
+        }
+    }
+
+    /**
+     * Update the wrestlers of the stable.
+     *
+     * @param  \App\Models\Stable  $stable
+     * @param  array  $wrestlerIds
+     * @return void
+     */
+    public function updateWrestlers(Stable $stable, $wrestlerIds)
+    {
+        $now = now()->toDateTimeString();
+
+        if ($stable->currentWrestlers->isEmpty()) {
+            $this->stableRepository->addWrestlers($stable, $wrestlerIds, $now);
+        } else {
+            $currentWrestlerIds = collect($stable->currentWrestlers->modelKeys());
+            $suggestedWrestlerIds = collect($wrestlerIds);
+            $formerWrestlerIds = $currentWrestlerIds->diff($suggestedWrestlerIds)->toArray();
+            $newWrestlerIds = $suggestedWrestlerIds->diff($currentWrestlerIds)->toArray();
+
+            $this->stableRepository->removeCurrentWrestlers($stable, $formerWrestlerIds, $now);
+            $this->stableRepository->addWrestlers($stable, $newWrestlerIds, $now);
         }
     }
 }

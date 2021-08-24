@@ -91,7 +91,7 @@ trait Suspendable
     }
 
     /**
-     * Check to see if the model is suspended.
+     * Check to see if the model has been suspended.
      *
      * @return bool
      */
@@ -101,7 +101,7 @@ trait Suspendable
     }
 
     /**
-     * Check to see if the model has been activated.
+     * Check to see if the model has been suspended.
      *
      * @return bool
      */
@@ -126,20 +126,6 @@ trait Suspendable
         }
 
         if ($this->isInjured()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine if the model can be reinstated.
-     *
-     * @return bool
-     */
-    public function canBeReinstated()
-    {
-        if (! $this->isSuspended()) {
             return false;
         }
 

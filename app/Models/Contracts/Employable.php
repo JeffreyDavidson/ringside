@@ -58,13 +58,6 @@ interface Employable
      *
      * @return void
      */
-    public function scopeReleased($query);
-
-    /**
-     * Set the token value for the "remember me" session.
-     *
-     * @return void
-     */
     public function scopeUnemployed($query);
 
     /**
@@ -80,20 +73,6 @@ interface Employable
      * @return string
      */
     public function scopeOrderByFirstEmployedAtDate($query);
-
-    /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
-     */
-    public function scopeWithReleasedAtDate($query);
-
-    /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
-     */
-    public function scopeOrderByCurrentReleasedAtDate($query);
 
     /**
      * Get the column name for the "remember me" token.
@@ -135,19 +114,5 @@ interface Employable
      *
      * @return string
      */
-    public function isReleased();
-
-    /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
-     */
     public function canBeEmployed();
-
-    /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
-     */
-    public function canBeReleased();
 }

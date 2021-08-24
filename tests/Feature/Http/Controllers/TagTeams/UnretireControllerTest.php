@@ -26,7 +26,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_unretires_a_retired_tag_team_and_its_last_tag_team_partners_and_redirects($administrators)
+    public function invoke_unretires_a_retired_tag_team_and_its_tag_team_partners_and_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->retired()->create();
 

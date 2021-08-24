@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Referees\ClearInjuryController;
 use App\Http\Requests\Referees\ClearInjuryRequest;
 use App\Models\Referee;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,7 +25,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_marks_an_injured_referee_as_being_recovered_and_redirects($administrators)
+    public function invoke_marks_an_injured_referee_as_being_cleared_and_redirects($administrators)
     {
         $referee = Referee::factory()->injured()->create();
 
@@ -53,7 +52,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_basic_user_cannot_mark_an_injured_referee_as_recovered()
+    public function a_basic_user_cannot_mark_an_injured_referee_as_cleared()
     {
         $referee = Referee::factory()->injured()->create();
 
@@ -65,7 +64,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_guest_cannot_mark_an_injured_referee_as_recovered()
+    public function a_guest_cannot_mark_an_injured_referee_as_cleared()
     {
         $referee = Referee::factory()->injured()->create();
 

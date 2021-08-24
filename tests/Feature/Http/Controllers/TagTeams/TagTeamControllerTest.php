@@ -299,6 +299,9 @@ class TagTeamControllerTest extends TestCase
     public function wrestlers_of_tag_team_are_synced_when_tag_team_is_updated($administrators)
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
+
+        $this->assertTrue($tagTeam->isCurrentlyEmployed());
+
         $formerTagTeamPartners = $tagTeam->currentWrestlers;
 
         $newTagTeamPartners = Wrestler::factory()->count(2)->bookable()->create();
@@ -307,10 +310,11 @@ class TagTeamControllerTest extends TestCase
 
         $response = $this->actAs($administrators)
             ->from(route('tag-teams.edit', $tagTeam))
-            ->put(route('tag-teams.update', $tagTeam), $this->validParams(['wrestlers' => $newTagTeamPartners->pluck('id')->toArray()]));
-            // ->assertRedirect(route('tag-teams.index'));
+            ->put(route('tag-teams.update', $tagTeam), $this->validParams([
+                'wrestlers' => $newTagTeamPartners->pluck('id')->toArray(),
+            ]));
 
-        dd($response);
+        $response->assertRedirect(route('tag-teams.index'));
 
         tap($tagTeam->fresh(), function ($tagTeam) use ($formerTagTeamPartners, $newTagTeamPartners) {
             $this->assertCount(4, $tagTeam->wrestlers);

@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use App\Enums\ManagerStatus;
-use App\Models\Contracts\CanJoinStable;
+use App\Models\Contracts\StableMember;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Manager extends SingleRosterMember implements CanJoinStable
+class Manager extends SingleRosterMember implements StableMember
 {
     use SoftDeletes,
         HasFactory,
         Concerns\HasFullName,
         Concerns\CanJoinStable,
+        Concerns\Manageables,
         Concerns\Unguarded;
 
     /**
@@ -110,65 +111,5 @@ class Manager extends SingleRosterMember implements CanJoinStable
     {
         $this->updateStatus();
         $this->save();
-    }
-
-    /**
-     * Get all of the posts that are assigned this tag.
-     */
-    public function wrestlers()
-    {
-        return $this->morphedByMany(Wrestler::class, 'manageable')->withPivot(['hired_at', 'left_at']);
-    }
-
-    /**
-     * Get all of the posts that are assigned this tag.
-     */
-    public function currentWrestlers()
-    {
-        return $this->morphedByMany(Wrestler::class, 'manageable')->wherePivotNull('left_at');
-    }
-
-    /**
-     * Get all of the videos that are assigned this tag.
-     */
-    public function tagTeams()
-    {
-        return $this->morphedByMany(TagTeam::class, 'manageable')->withPivot(['hired_at', 'left_at']);
-    }
-
-    /**
-     * Get all of the videos that are assigned this tag.
-     */
-    public function currentTagTeams()
-    {
-        return $this->morphedByMany(TagTeam::class, 'manageable')->withPivot(['hired_at', 'left_at'])->wherePivotNull('left_at');
-    }
-
-    /**
-     * Updates a manager's status and saves.
-     *
-     * @return void
-     */
-    public function removeFromCurrentTagTeams()
-    {
-        foreach ($this->currentTagTeams as $tagTeam) {
-            $this->currentTagTeams()->updateExistingPivot($tagTeam->id, [
-                'left_at' => now(),
-            ]);
-        }
-    }
-
-    /**
-     * Updates a manager's status and saves.
-     *
-     * @return void
-     */
-    public function removeFromCurrentWrestlers()
-    {
-        foreach ($this->currentWrestlers as $wrestler) {
-            $this->currentWrestlers()->updateExistingPivot($wrestler->id, [
-                'left_at' => now(),
-            ]);
-        }
     }
 }

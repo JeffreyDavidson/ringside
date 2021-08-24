@@ -10,6 +10,7 @@ use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\User;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -163,15 +164,12 @@ class StableControllerTest extends TestCase
      */
     public function wrestlers_are_added_to_stable_if_present()
     {
-        $now = now()->subDays(3);
-        Carbon::setTestNow($now);
-
         $createdWrestlers = Wrestler::factory()->count(3)->bookable()->create();
 
         $this->actAs(Role::ADMINISTRATOR)
             ->from('stables.create')
             ->post(route('stables.store'), $this->validParams([
-                'started_at' => $now->toDateTimeString(),
+                'started_at' => now()->toDateTimeString(),
                 'wrestlers' => $createdWrestlers->modelKeys(),
             ]));
 
@@ -225,13 +223,28 @@ class StableControllerTest extends TestCase
      */
     public function a_stables_members_join_at_the_current_time_when_stable_is_created_if_started_at_is_not_filled()
     {
-        $this->actAs(Role::ADMINISTRATOR)
-            ->from('stables.create')
-            ->post(route('stables.store'), $this->validParams(['started_at' => '']));
+        $wrestler = Wrestler::factory()->create();
+        $tagTeam = TagTeam::factory()->create();
+        $now = now()->toDateTimeString();
+        Carbon::setTestNow($now);
 
-        tap(Stable::first(), function ($stable)  {
-            $wrestlers = $stable->currentWrestlers()->get();
-            $tagTeams = $stable->currentTagTeams()->get();
+        $response = $this->actAs(Role::ADMINISTRATOR)
+            ->from('stables.create')
+            ->post(route('stables.store'), $this->validParams([
+                'wrestlers' => [$wrestler->getKey()],
+                'tag_teams' => [$tagTeam->getKey()],
+                'started_at' => '',
+            ]));
+
+        tap(Stable::first(), function ($stable) use ($wrestler, $tagTeam, $now) {
+            $wrestlers = $stable->currentWrestlers;
+            $tagTeams = $stable->currentTagTeams;
+
+            $this->assertCollectionHas($wrestlers, $wrestler);
+            $this->assertCollectionHas($tagTeams, $tagTeam);
+
+            $this->assertEquals($now, $wrestlers->first()->pivot->joined_at->toDateTimeString());
+            $this->assertEquals($now, $tagTeams->first()->pivot->joined_at->toDateTimeString());
         });
     }
 

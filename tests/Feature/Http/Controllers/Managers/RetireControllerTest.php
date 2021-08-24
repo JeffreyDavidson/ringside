@@ -137,7 +137,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_retiring_a_retired_manager($administrators)
+    public function invoke_throws_exception_for_retiring_a_retired_manager($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -152,7 +152,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_retiring_a_future_employed_manager($administrators)
+    public function invoke_throws_exception_for_retiring_a_future_employed_manager($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -167,7 +167,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_retiring_an_released_manager($administrators)
+    public function invoke_throws_exception_for_retiring_a_released_manager($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -182,7 +182,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_retiring_an_unemployed_manager($administrators)
+    public function invoke_throws_exception_for_retiring_an_unemployed_manager($administrators)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();

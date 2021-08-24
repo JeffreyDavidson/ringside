@@ -59,11 +59,9 @@ class TagTeamService
 
         if (isset($data['started_at'])) {
             $this->employOrUpdateEmployment($tagTeam, $data['started_at']);
-        } else {
-            if (isset($data['wrestlers'])) {
-                $this->updateTagTeamPartners($tagTeam, $data['wrestlers']);
-            }
         }
+
+        $this->updateTagTeamPartners($tagTeam, $data['wrestlers']);
 
         return $tagTeam;
     }
@@ -122,7 +120,7 @@ class TagTeamService
                 $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlerIds);
             }
         } else {
-            $currentTagTeamPartners = collect($tagTeam->currentWrestlers->modelKeys());
+            $currentTagTeamPartners = collect($tagTeam->currentWrestlers->pluck('id'));
             $suggestedTagTeamPartners = collect($wrestlerIds);
             $formerTagTeamPartners = $currentTagTeamPartners->diff($suggestedTagTeamPartners);
             $newTagTeamPartners = $suggestedTagTeamPartners->diff($currentTagTeamPartners);

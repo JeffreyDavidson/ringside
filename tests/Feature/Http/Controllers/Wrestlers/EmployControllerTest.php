@@ -134,7 +134,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_an_retired_wrestler($administrators)
+    public function invoke_throws_exception_for_employing_a_retired_wrestler($administrators)
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();

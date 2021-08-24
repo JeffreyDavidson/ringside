@@ -76,7 +76,7 @@ class ReinstateControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_available_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_an_available_manager($administrators)
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();

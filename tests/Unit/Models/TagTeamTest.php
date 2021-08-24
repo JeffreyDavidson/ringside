@@ -79,4 +79,14 @@ class TagTeamTest extends TestCase
 
         $this->assertInstanceOf(Stable::class, $tagTeam->currentStable);
     }
+
+    /**
+     * @test
+     */
+    public function a_tag_team_can_have_one_current_stable()
+    {
+        $tagTeam = TagTeam::factory()->hasAttached(Stable::factory(), ['joined_at' => now()])->create();
+
+        $this->assertInstanceOf(Stable::class, $tagTeam->currentStable);
+    }
 }

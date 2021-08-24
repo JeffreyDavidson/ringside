@@ -7,6 +7,7 @@ use App\Enums\WrestlerStatus;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanJoinStable;
 use App\Models\SingleRosterMember;
+use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -167,5 +168,15 @@ class WrestlerTest extends TestCase
         $wrestler = Wrestler::factory()->hasAttached(TagTeam::factory(), ['joined_at' => now()])->create();
 
         $this->assertInstanceOf(TagTeam::class, $wrestler->currentTagTeam);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_can_have_one_current_stable()
+    {
+        $wrestler = Wrestler::factory()->hasAttached(Stable::factory(), ['joined_at' => now()])->create();
+
+        $this->assertInstanceOf(Stable::class, $wrestler->currentStable);
     }
 }

@@ -63,31 +63,6 @@ class Title extends Model implements Activatable, Deactivatable, Retirable, Unre
     }
 
     /**
-     * Scope a query to only include competable titles.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeCompetable($query)
-    {
-        return $query->where('status', TitleStatus::ACTIVE);
-    }
-
-    /**
-     * Check to see if the model can be competed for.
-     *
-     * @return bool
-     */
-    public function isCompetable()
-    {
-        if ($this->isNotActivated() || $this->isDeactivated() || $this->isRetired() || $this->hasFutureActivation()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Update the status for the title.
      *
      * @return void
@@ -116,15 +91,5 @@ class Title extends Model implements Activatable, Deactivatable, Retirable, Unre
     {
         $this->updateStatus();
         $this->save();
-    }
-
-    /**
-     * Get all of the activations of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function activations()
-    {
-        return $this->morphMany(Activation::class, 'activatable');
     }
 }

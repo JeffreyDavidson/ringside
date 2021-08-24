@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Enums\RefereeStatus;
+use App\Models\Contracts\Bookable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Referee extends SingleRosterMember
+class Referee extends SingleRosterMember implements Bookable
 {
     use SoftDeletes,
         HasFactory,
+        Concerns\Bookable,
         Concerns\HasFullName,
         Concerns\Unguarded;
 
@@ -40,33 +42,6 @@ class Referee extends SingleRosterMember
     protected $casts = [
         'status' => RefereeStatus::class,
     ];
-
-    /**
-     * Check to see if the referee is bookable.
-     *
-     * @return bool
-     */
-    public function isBookable()
-    {
-        if ($this->isNotInEmployment() || $this->isSuspended() || $this->isInjured()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Scope a query to only include bookable referees.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeBookable($query)
-    {
-        return $query->whereHas('currentEmployment')
-                    ->whereDoesntHave('currentSuspension')
-                    ->whereDoesntHave('currentInjury');
-    }
 
     /**
      * Update the status for the referee.

@@ -74,7 +74,7 @@ class UnretireControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_a_available_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_an_available_manager($administrators)
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();

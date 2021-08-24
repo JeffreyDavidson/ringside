@@ -20,7 +20,7 @@ class RestoreControllerTest extends TestCase
     /**
      * @test
      */
-    public function invoke_restores_a_deleted_referee_and_redirects()
+    public function invoke_restores_a_soft_deleted_referee_and_redirects()
     {
         $referee = Referee::factory()->softDeleted()->create();
 

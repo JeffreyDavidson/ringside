@@ -61,7 +61,7 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include scheduled events.
+     * Scope a query to only include unscheduled events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -111,7 +111,7 @@ class Event extends Model
     }
 
     /**
-     * Checks to see if the event is does not have a scheduled date.
+     * Checks to see if the event has a scheduled date.
      *
      * @return bool
      */
@@ -120,13 +120,18 @@ class Event extends Model
         return $this->date === null;
     }
 
+    /**
+     * Retrieve the formatted event date.
+     *
+     * @return string
+     */
     public function getFormattedDateAttribute()
     {
         return $this->date->format('F j, Y');
     }
 
     /**
-     * Update the status for the wrestler.
+     * Update the status for the event.
      *
      * @return void
      */
@@ -142,7 +147,7 @@ class Event extends Model
     }
 
     /**
-     * Updates a wrestler's status and saves.
+     * Updates an event's status and saves.
      *
      * @return void
      */

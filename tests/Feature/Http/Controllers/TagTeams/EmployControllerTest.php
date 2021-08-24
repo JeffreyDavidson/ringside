@@ -26,9 +26,8 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_employs_an_unemployed_tag_team_and_redirects($administrators)
+    public function invoke_employs_an_unemployed_tag_team_and_their_tag_team_partners_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
         $this->assertCount(0, $tagTeam->employments);
@@ -53,7 +52,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_employs_a_future_employed_tag_team_and_redirects($administrators)
+    public function invoke_employs_a_future_employed_tag_team_and_their_tag_team_partners_and_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
         $startedAt = $tagTeam->employments->last()->started_at;
@@ -80,7 +79,7 @@ class EmployControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function invoke_employs_a_released_tag_team_and_redirects($administrators)
+    public function invoke_employs_a_released_tag_team_and_their_tag_team_partners_redirects($administrators)
     {
         $tagTeam = TagTeam::factory()->released()->create();
 

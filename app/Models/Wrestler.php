@@ -5,16 +5,21 @@ namespace App\Models;
 use App\Casts\HeightCast;
 use App\Enums\WrestlerStatus;
 use App\Models\Contracts\Bookable;
-use App\Models\Contracts\CanJoinStable;
+use App\Models\Contracts\Manageable;
+use App\Models\Contracts\StableMember;
+use App\Models\Contracts\TagTeamMember;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
+class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTeamMember, StableMember
 {
     use SoftDeletes,
         HasFactory,
+        Concerns\Bookable,
         Concerns\CanJoinStable,
+        Concerns\CanJoinTagTeam,
+        Concerns\Manageable,
         Concerns\Unguarded,
         HasRelationships;
 
@@ -48,37 +53,6 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
     ];
 
     /**
-     * Get the tag team history the wrestler has belonged to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tagTeams()
-    {
-        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')->withPivot(['joined_at', 'left_at']);
-    }
-
-    /**
-     * Get the current tag team of the wrestler.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function currentTagTeam()
-    {
-        return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
-                ->whereNull('tag_team_wrestler.left_at');
-    }
-
-    /**
-     * Get the previous tag teams the wrestler has belonged to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function previousTagTeams()
-    {
-        return $this->tagTeams()->whereNotNull('ended_at');
-    }
-
-    /**
      * Get the user assigned to the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -86,33 +60,6 @@ class Wrestler extends SingleRosterMember implements Bookable, CanJoinStable
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Check to see if the wrestler is bookable.
-     *
-     * @return bool
-     */
-    public function isBookable()
-    {
-        if ($this->isNotInEmployment() || $this->isSuspended() || $this->isInjured()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Scope a query to only include bookable wrestlers.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeBookable($query)
-    {
-        return $query->whereHas('currentEmployment')
-                    ->whereDoesntHave('currentSuspension')
-                    ->whereDoesntHave('currentInjury');
     }
 
     /**
