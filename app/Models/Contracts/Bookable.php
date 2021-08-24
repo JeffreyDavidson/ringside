@@ -2,6 +2,8 @@
 
 namespace App\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface Bookable
 {
     /**
@@ -17,5 +19,5 @@ interface Bookable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeBookable($query);
+    public function scopeBookable(Builder $query);
 }

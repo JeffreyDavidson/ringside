@@ -2,6 +2,8 @@
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait Bookable
 {
     /**
@@ -21,10 +23,10 @@ trait Bookable
     /**
      * Scope a query to only include bookable models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBookable($query)
+    public function scopeBookable(Builder $query)
     {
         return $query->whereHas('currentEmployment')
                     ->whereDoesntHave('currentSuspension')

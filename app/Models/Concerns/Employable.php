@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Employment;
+use Illuminate\Database\Eloquent\Builder;
 
 trait Employable
 {
@@ -80,10 +81,10 @@ trait Employable
     /**
      * Scope a query to include employed models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeEmployed($query)
+    public function scopeEmployed(Builder $query)
     {
         return $query->whereHas('currentEmployment');
     }
@@ -91,10 +92,10 @@ trait Employable
     /**
      * Scope a query to only include future employed models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFutureEmployed($query)
+    public function scopeFutureEmployed(Builder $query)
     {
         return $query->whereHas('futureEmployment');
     }
@@ -102,10 +103,10 @@ trait Employable
     /**
      * Scope a query to include unemployed models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUnemployed($query)
+    public function scopeUnemployed(Builder $query)
     {
         return $query->whereDoesntHave('currentEmployment')
                     ->orWhereDoesntHave('previousEmployments');
@@ -114,10 +115,10 @@ trait Employable
     /**
      * Scope a query to include first employment date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithFirstEmployedAtDate($query)
+    public function scopeWithFirstEmployedAtDate(Builder $query)
     {
         return $query->addSelect(['first_employed_at' => Employment::select('started_at')
             ->whereColumn('employable_id', $query->qualifyColumn('id'))
@@ -134,7 +135,7 @@ trait Employable
      * @param  string $direction
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOrderByFirstEmployedAtDate($query, $direction = 'asc')
+    public function scopeOrderByFirstEmployedAtDate(Builder $query, string $direction = 'asc')
     {
         return $query->orderByRaw("DATE(first_employed_at) $direction");
     }

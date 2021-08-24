@@ -3,16 +3,17 @@
 namespace App\Models\Concerns;
 
 use App\Models\Employment;
+use Illuminate\Database\Eloquent\Builder;
 
 trait Releasable
 {
     /**
-     * Scope a query to only include released models.
+     * Scope a query to include released models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeReleased($query)
+    public function scopeReleased(Builder $query)
     {
         return $query->whereHas('previousEmployment')
                     ->whereDoesntHave('currentEmployment')
@@ -22,10 +23,10 @@ trait Releasable
     /**
      * Scope a query to include released date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithReleasedAtDate($query)
+    public function scopeWithReleasedAtDate(Builder $query)
     {
         return $query->addSelect(['released_at' => Employment::select('ended_at')
             ->whereColumn('employable_id', $this->getTable().'.id')
@@ -38,11 +39,11 @@ trait Releasable
     /**
      * Scope a query to order by the model's current released date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $direction
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $direction
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOrderByCurrentReleasedAtDate($query, $direction = 'asc')
+    public function scopeOrderByCurrentReleasedAtDate(Builder $query, string $direction = 'asc')
     {
         return $query->orderByRaw("DATE(current_released_at) $direction");
     }

@@ -102,7 +102,9 @@ class ManagerRepository
      */
     public function clearInjury(Manager $manager, string $recoveryDate)
     {
-        return $manager->currentInjury()->update(['ended_at' => $recoveryDate]);
+        $manager->currentInjury()->update(['ended_at' => $recoveryDate]);
+
+        return $manager;
     }
 
     /**

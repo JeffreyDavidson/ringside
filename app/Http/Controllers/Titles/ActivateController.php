@@ -25,7 +25,6 @@ class ActivateController extends Controller
         $activationDate = now()->toDateTimeString();
 
         $title = $titleRepository->activate($title, $activationDate);
-        dd($title);
         $title->updateStatus()->save();
 
         return redirect()->route('titles.index');

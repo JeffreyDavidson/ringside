@@ -2,6 +2,8 @@
 
 namespace App\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface Competable
 {
     /**
@@ -10,7 +12,7 @@ interface Competable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeCompetable($query);
+    public function scopeCompetable(Builder $query);
 
     /**
      * Check to see if the model can be competed for.

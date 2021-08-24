@@ -133,11 +133,11 @@ class Event extends Model
     /**
      * Update the status for the event.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {
-        $this->status = match($this) {
+        $this->status = match (true) {
             $this->isScheduled() => EventStatus::SCHEDULED,
             $this->isPast() => EventStatus::PAST,
             default => EventStatus::UNSCHEDULED

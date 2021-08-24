@@ -2,28 +2,33 @@
 
 namespace App\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface Releasable
 {
     /**
-     * Scope a query to only include released models.
+     * Scope a query to include released models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param   \Illuminate\Database\Eloquent\Builder  $query
+     * @return  \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeReleased($query);
+    public function scopeReleased(Builder $query);
 
     /**
      * Scope a query to include model's released at date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param   \Illuminate\Database\Eloquent\Builder  $query
+     * @return  \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithReleasedAtDate($query);
+    public function scopeWithReleasedAtDate(Builder $query);
 
     /**
      * Scope a query to order models by current released at date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param   \Illuminate\Database\Eloquent\Builder  $query
+     * @return  \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOrderByCurrentReleasedAtDate($query);
+    public function scopeOrderByCurrentReleasedAtDate(Builder $query);
 
     /**
      * Check to see if the model has been released.

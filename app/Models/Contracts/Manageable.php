@@ -5,17 +5,17 @@ namespace App\Models\Contracts;
 interface Manageable
 {
     /**
-     * Undocumented function
+     * Get all of the managers of the model.
      */
     public function managers();
 
     /**
-     * Undocumented function
+     * Undocumented function.
      */
     public function currentManagers();
 
     /**
-     * Undocumented function
+     * Undocumented function.
      */
     public function previousManagers();
 }

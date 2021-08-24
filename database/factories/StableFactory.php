@@ -55,8 +55,12 @@ class StableFactory extends Factory
         ->hasAttached(Wrestler::factory()->has(Employment::factory()->started(Carbon::tomorrow())), ['joined_at' => now()])
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started(Carbon::tomorrow())), ['joined_at' => now()])
         ->afterCreating(function (Stable $stable) {
-            $stable->wrestlers->each->updateStatus()->save();
-            $stable->tagTeams->each->updateStatus()->save();
+            $stable->currentWrestlers->each(function ($wrestler) {
+                $wrestler->updateStatus()->save();
+            });
+            $stable->currentTagTeams->each(function ($tagTeam) {
+                $tagTeam->updateStatus()->save();
+            });
             $stable->updateStatus()->save();
         });
     }
@@ -81,8 +85,12 @@ class StableFactory extends Factory
         ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($activationDate)), ['joined_at' => $activationDate])
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started($activationDate)), ['joined_at' => $activationDate])
         ->afterCreating(function (Stable $stable) {
-            $stable->wrestlers->each->updateStatus()->save();
-            $stable->tagTeams->each->updateStatus()->save();
+            $stable->currentWrestlers->each(function ($wrestler) {
+                $wrestler->updateStatus()->save();
+            });
+            $stable->currentTagTeams->each(function ($tagTeam) {
+                $tagTeam->updateStatus()->save();
+            });
             $stable->updateStatus()->save();
         });
     }
@@ -100,8 +108,12 @@ class StableFactory extends Factory
         ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start, 'left_at' => $end])
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start, 'left_at' => $end])
         ->afterCreating(function (Stable $stable) {
-            $stable->wrestlers->each->updateStatus()->save();
-            $stable->tagTeams->each->updateStatus()->save();
+            $stable->currentWrestlers->each(function ($wrestler) {
+                $wrestler->updateStatus()->save();
+            });
+            $stable->currentTagTeams->each(function ($tagTeam) {
+                $tagTeam->updateStatus()->save();
+            });
             $stable->updateStatus()->save();
         });
     }
@@ -120,8 +132,12 @@ class StableFactory extends Factory
         ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)->ended($end))->has(Retirement::factory()->started($end)), ['joined_at' => $start])
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started($start)->ended($end))->has(Retirement::factory()->started($end)), ['joined_at' => $start])
         ->afterCreating(function (Stable $stable) {
-            $stable->wrestlers->each->updateStatus()->save();
-            $stable->tagTeams->each->updateStatus()->save();
+            $stable->currentWrestlers->each(function ($wrestler) {
+                $wrestler->updateStatus()->save();
+            });
+            $stable->currentTagTeams->each(function ($tagTeam) {
+                $tagTeam->updateStatus()->save();
+            });
             $stable->updateStatus()->save();
         });
     }

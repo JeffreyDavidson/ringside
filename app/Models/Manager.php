@@ -13,8 +13,8 @@ class Manager extends SingleRosterMember implements StableMember
     use SoftDeletes,
         HasFactory,
         Concerns\HasFullName,
-        Concerns\CanJoinStable,
         Concerns\Manageables,
+        Concerns\StableMember,
         Concerns\Unguarded;
 
     /**
@@ -79,12 +79,12 @@ class Manager extends SingleRosterMember implements StableMember
     /**
      * Update the status for the manager.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {
-        $this->status = match($this) {
-            $this->isCurrentlyEmployed() => match ($this) {
+        $this->status = match (true) {
+            $this->isCurrentlyEmployed() => match (true) {
                 $this->isInjured() => ManagerStatus::INJURED,
                 $this->isSuspended() => ManagerStatus::SUSPENDED,
                 $this->isAvailable() => ManagerStatus::AVAILABLE,

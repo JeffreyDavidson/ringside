@@ -4,7 +4,7 @@ namespace App\Models\Concerns;
 
 use App\Models\Stable;
 
-trait CanJoinStable
+trait StableMember
 {
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -21,7 +21,7 @@ trait CanJoinStable
     /**
      * Get the current stable the member belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
      */
     public function currentStable()
     {
@@ -38,7 +38,7 @@ trait CanJoinStable
     /**
      * Get the previous stables the member has belonged to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function previousStables()
     {

@@ -24,7 +24,8 @@ class ClearInjuryController extends Controller
 
         $recoveryDate = now()->toDateTimeString();
 
-        $managerRepository->clearInjury($manager, $recoveryDate);
+        $manager = $managerRepository->clearInjury($manager, $recoveryDate);
+
         $manager->updateStatus()->save();
 
         return redirect()->route('managers.index');

@@ -2,6 +2,8 @@
 
 namespace App\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface Activatable
 {
     /**
@@ -52,7 +54,7 @@ interface Activatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeActive($query);
+    public function scopeActive(Builder $query);
 
     /**
      * Scope a query to include future activated models.
@@ -60,7 +62,7 @@ interface Activatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeWithFutureActivation($scope);
+    public function scopeWithFutureActivation(Builder $scope);
 
     /**
      * Scope a query to include inactive models.
@@ -68,7 +70,7 @@ interface Activatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeInactive($query);
+    public function scopeInactive(Builder $query);
 
     /**
      * Scope a query to include unactivated models.
@@ -76,7 +78,7 @@ interface Activatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeUnactivated($query);
+    public function scopeUnactivated(Builder $query);
 
     /**
      * Scope a query to include current activation date.
@@ -84,7 +86,7 @@ interface Activatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeWithFirstActivatedAtDate($query);
+    public function scopeWithFirstActivatedAtDate(Builder $query);
 
     /**
      * Scope a query to order by the models first activation date.
@@ -92,7 +94,7 @@ interface Activatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeOrderByFirstActivatedAtDate($query);
+    public function scopeOrderByFirstActivatedAtDate(Builder $query);
 
     /**
      * Check to see if the model is currently active.
@@ -144,7 +146,7 @@ interface Activatable
     public function isNotInActivation();
 
     /**
-     * Get the model's first employment date.
+     * Check to see if the model was activated on a given date.
      *
      * @param  string  $activationDate
      * @return bool

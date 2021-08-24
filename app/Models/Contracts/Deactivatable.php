@@ -2,6 +2,8 @@
 
 namespace App\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface Deactivatable
 {
     /**
@@ -17,7 +19,7 @@ interface Deactivatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeDeactivated($query);
+    public function scopeDeactivated(Builder $query);
 
     /**
      * Scope a query to include the last deactivation date for models.
@@ -25,7 +27,7 @@ interface Deactivatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeWithLastDeactivationDate($query);
+    public function scopeWithLastDeactivationDate(Builder $query);
 
     /**
      * Scope a query to order models by the model's last deactivation date.
@@ -33,5 +35,5 @@ interface Deactivatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeOrderByLastDeactivationDate($query);
+    public function scopeOrderByLastDeactivationDate(Builder $query);
 }

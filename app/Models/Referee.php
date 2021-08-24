@@ -46,12 +46,12 @@ class Referee extends SingleRosterMember implements Bookable
     /**
      * Update the status for the referee.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {
-        $this->status = match($this) {
-            $this->isCurrentlyEmployed() => match ($this) {
+        $this->status = match (true) {
+            $this->isCurrentlyEmployed() => match (true) {
                 $this->isInjured() => RefereeStatus::INJURED,
                 $this->isSuspended() => RefereeStatus::SUSPENDED,
                 $this->isBookable() => RefereeStatus::BOOKABLE,

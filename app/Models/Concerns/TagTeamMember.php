@@ -4,10 +4,8 @@ namespace App\Models\Concerns;
 
 use App\Models\TagTeam;
 
-trait CanJoinTagTeam
+trait TagTeamMember
 {
-    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
-
     /**
      * Get the tag teams the model has been belonged to.
      *
@@ -21,7 +19,7 @@ trait CanJoinTagTeam
     /**
      * Get the current tag team the member belongs to.
      *
-     * @return \\Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
+     * @return \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
      */
     public function currentTagTeam()
     {

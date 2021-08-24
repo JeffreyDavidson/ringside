@@ -21,8 +21,8 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     use SoftDeletes,
         HasFactory,
         HasMorphToOne,
-        Concerns\CanJoinStable,
         Concerns\Retirable,
+        Concerns\StableMember,
         Concerns\Suspendable,
         Concerns\Unguarded;
 
@@ -493,12 +493,12 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     /**
      * Update the status for the tag team.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {
-        $this->status = match($this) {
-            $this->isCurrentlyEmployed() => match ($this) {
+        $this->status = match (true) {
+            $this->isCurrentlyEmployed() => match (true) {
                 $this->isSuspended() => TagTeamStatus::SUSPENDED,
                 $this->isUnbookable() => TagTeamStatus::UNBOOKABLE,
                 $this->isBookable() => TagTeamStatus::BOOKABLE,

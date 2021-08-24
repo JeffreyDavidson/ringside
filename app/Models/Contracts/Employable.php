@@ -2,6 +2,8 @@
 
 namespace App\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface Employable
 {
     /**
@@ -52,15 +54,15 @@ interface Employable
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeEmployed($query);
+    public function scopeEmployed(Builder $query);
 
     /**
-     * Scope a query to only include future employed models.
+     * Scope a query to include future employed models.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFutureEmployed($query);
+    public function scopeFutureEmployed(Builder $query);
 
     /**
      * Scope a query to include unemployed models.
@@ -68,7 +70,7 @@ interface Employable
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUnemployed($query);
+    public function scopeUnemployed(Builder $query);
 
     /**
      * Scope a query to include first employment date.
@@ -76,7 +78,7 @@ interface Employable
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithFirstEmployedAtDate($query);
+    public function scopeWithFirstEmployedAtDate(Builder $query);
 
     /**
      * Scope a query to order by the model's first employment date.
@@ -85,7 +87,7 @@ interface Employable
      * @param  string $direction
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOrderByFirstEmployedAtDate($query, $direction = 'asc');
+    public function scopeOrderByFirstEmployedAtDate(Builder $query, string $direction = 'asc');
 
     /**
      * Check to see if the model is employed.
@@ -137,7 +139,7 @@ interface Employable
     public function getStartedAtAttribute();
 
     /**
-     * Get the model's first employment date.
+     * Check to see if the model was employed on a given date.
      *
      * @param  string $employmentDate
      * @return bool

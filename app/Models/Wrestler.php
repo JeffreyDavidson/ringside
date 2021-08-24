@@ -17,9 +17,9 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTe
     use SoftDeletes,
         HasFactory,
         Concerns\Bookable,
-        Concerns\CanJoinStable,
-        Concerns\CanJoinTagTeam,
         Concerns\Manageable,
+        Concerns\StableMember,
+        Concerns\TagTeamMember,
         Concerns\Unguarded,
         HasRelationships;
 
@@ -69,8 +69,8 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTe
      */
     public function updateStatus()
     {
-        $this->status = match($this) {
-            $this->isCurrentlyActivated() => match ($this) {
+        $this->status = match (true) {
+            $this->isCurrentlyEmployed() => match (true) {
                 $this->isInjured() => WrestlerStatus::INJURED,
                 $this->isSuspended() => WrestlerStatus::SUSPENDED,
                 $this->isBookable() => WrestlerStatus::BOOKABLE,

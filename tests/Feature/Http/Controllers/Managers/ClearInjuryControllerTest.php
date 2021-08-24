@@ -30,6 +30,7 @@ class ClearInjuryControllerTest extends TestCase
         $manager = Manager::factory()->injured()->create();
 
         $this->assertNull($manager->injuries->last()->ended_at);
+        $this->assertEquals(ManagerStatus::INJURED, $manager->status);
 
         $this->actAs($administrators)
             ->patch(route('managers.clear-from-injury', $manager))

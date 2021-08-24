@@ -56,7 +56,7 @@ class ManagerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function a_future_employed_manager_has_an_mployment()
+    public function a_future_employed_manager_has_an_employment()
     {
         $manager = Manager::factory()->withFutureEmployment()->create();
 
@@ -76,8 +76,8 @@ class ManagerFactoryTest extends TestCase
     {
         $manager = Manager::factory()->available()->create();
 
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
         $this->assertCount(1, $manager->employments);
+        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
 
         $employment = $manager->employments->first();
 
