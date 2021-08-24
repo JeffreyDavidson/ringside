@@ -25,7 +25,7 @@ class EmployController extends Controller
         $employmentDate = now()->toDateTimeString();
 
         $wrestlerRepository->employ($wrestler, $employmentDate);
-        $wrestler->updateStatusAndSave();
+        $wrestler->updateStatus()->save();
 
         return redirect()->route('wrestlers.index');
     }

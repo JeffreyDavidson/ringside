@@ -40,12 +40,12 @@ class RetireController extends Controller
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $wrestlerRepository->release($wrestler, $retirementDate);
             $wrestlerRepository->retire($wrestler, $retirementDate);
-            $wrestler->updateStatusAndSave();
+            $wrestler->updateStatus()->save();
         }
 
         $tagTeamRepository->release($tagTeam, $retirementDate);
         $tagTeamRepository->retire($tagTeam, $retirementDate);
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->updateStatus()->save();
 
         return redirect()->route('tag-teams.index');
     }

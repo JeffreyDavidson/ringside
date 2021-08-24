@@ -25,7 +25,7 @@ class ClearInjuryController extends Controller
         $recoveryDate = now()->toDateTimeString();
 
         $wrestlerRepository->clearInjury($wrestler, $recoveryDate);
-        $wrestler->updateStatusAndSave();
+        $wrestler->updateStatus()->save();
 
         return redirect()->route('wrestlers.index');
     }

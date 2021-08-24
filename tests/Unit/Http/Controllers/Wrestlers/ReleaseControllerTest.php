@@ -33,7 +33,7 @@ class ReleaseControllerTest extends TestCase
         $wrestlerMock->expects()->isSuspended()->andReturns(false);
         $wrestlerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -56,7 +56,7 @@ class ReleaseControllerTest extends TestCase
         $wrestlerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->reinstate($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -79,7 +79,7 @@ class ReleaseControllerTest extends TestCase
         $wrestlerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -103,7 +103,7 @@ class ReleaseControllerTest extends TestCase
         $wrestlerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
         $wrestlerMock->expects()->removeFromCurrentTagTeam();
 
         $controller->__invoke($wrestlerMock, new ReleaseRequest, $repositoryMock);

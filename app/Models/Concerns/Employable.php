@@ -17,7 +17,7 @@ trait Employable
     }
 
     /**
-     * Get the first activation of the model.
+     * Get the first employment of the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
@@ -78,6 +78,17 @@ trait Employable
     }
 
     /**
+     * Scope a query to include employed models.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEmployed($query)
+    {
+        return $query->whereHas('currentEmployment');
+    }
+
+    /**
      * Scope a query to only include future employed models.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -89,18 +100,7 @@ trait Employable
     }
 
     /**
-     * Scope a query to only include employed referees.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeEmployed($query)
-    {
-        return $query->whereHas('currentEmployment');
-    }
-
-    /**
-     * Scope a query to only include unemployed models.
+     * Scope a query to include unemployed models.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder

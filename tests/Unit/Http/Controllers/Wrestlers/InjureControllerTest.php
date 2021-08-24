@@ -26,7 +26,7 @@ class InjureControllerTest extends TestCase
 
         $wrestlerMock->expects()->canBeInjured()->andReturns(true);
         $repositoryMock->expects()->injure($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new InjureRequest, $repositoryMock);
     }

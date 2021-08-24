@@ -6,12 +6,11 @@ use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
-use App\Models\Contracts\Unretirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Title extends Model implements Activatable, Deactivatable, Retirable, Unretirable
+class Title extends Model implements Activatable, Deactivatable, Retirable
 {
     use SoftDeletes,
         HasFactory,
@@ -69,27 +68,14 @@ class Title extends Model implements Activatable, Deactivatable, Retirable, Unre
      */
     public function updateStatus()
     {
-        if ($this->isCurrentlyActivated()) {
-            $this->status = TitleStatus::ACTIVE;
-        } elseif ($this->hasFutureActivation()) {
-            $this->status = TitleStatus::FUTURE_ACTIVATION;
-        } elseif ($this->isDeactivated()) {
-            $this->status = TitleStatus::INACTIVE;
-        } elseif ($this->isRetired()) {
-            $this->status = TitleStatus::RETIRED;
-        } else {
-            $this->status = TitleStatus::UNACTIVATED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isCurrentlyActivated() => TitleStatus::ACTIVE,
+            $this->hasFutureActivation() => TitleStatus::FUTURE_ACTIVATION,
+            $this->isDeactivated() => TitleStatus::INACTIVE,
+            $this->isRetired() => TitleStatus::RETIRED,
+            default => TitleStatus::UNACTIVATED
+        };
 
-    /**
-     * Updates a title's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 }

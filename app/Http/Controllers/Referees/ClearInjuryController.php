@@ -25,7 +25,7 @@ class ClearInjuryController extends Controller
         $recoveryDate = now()->toDateTimeString();
 
         $refereeRepository->clearInjury($referee, $recoveryDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

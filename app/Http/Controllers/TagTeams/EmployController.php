@@ -31,11 +31,11 @@ class EmployController extends Controller
         if ($tagTeam->currentWrestlers->every->isNotInEmployment()) {
             foreach ($tagTeam->currentWrestlers as $wrestler) {
                 $wrestlerRepository->employ($wrestler, $tagTeam->currentEmployment->started_at);
-                $wrestler->updateStatusAndSave();
+                $wrestler->updateStatus()->save();
             }
         }
 
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->updateStatus()->save();
 
         return redirect()->route('tag-teams.index');
     }

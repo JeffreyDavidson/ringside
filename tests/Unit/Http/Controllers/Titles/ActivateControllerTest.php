@@ -26,7 +26,7 @@ class ActivateControllerTest extends TestCase
 
         $titleMock->expects()->canBeActivated()->andReturns(true);
         $repositoryMock->expects()->activate($titleMock, now()->toDateTimeString())->once()->andReturns();
-        $titleMock->expects()->updateStatusAndSave()->once();
+        $titleMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($titleMock, new ActivateRequest, $repositoryMock);
     }

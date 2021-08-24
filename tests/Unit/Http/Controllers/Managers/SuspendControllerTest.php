@@ -26,7 +26,7 @@ class SuspendControllerTest extends TestCase
 
         $managerMock->expects()->canBeSuspended()->andReturns(true);
         $repositoryMock->expects()->suspend($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($managerMock, new SuspendRequest, $repositoryMock);
     }

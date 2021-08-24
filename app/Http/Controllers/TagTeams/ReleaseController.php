@@ -37,11 +37,11 @@ class ReleaseController extends Controller
         }
 
         $tagTeamRepository->release($tagTeam, $releaseDate);
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->updateStatus()->save();
 
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $wrestlerRepository->release($wrestler, $releaseDate);
-            $wrestler->updateStatusAndSave();
+            $wrestler->updateStatus()->save();
         }
 
         return redirect()->route('tag-teams.index');

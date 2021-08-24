@@ -25,7 +25,7 @@ class ReinstateController extends Controller
         $reinstatementDate = now()->toDateTimeString();
 
         $managerRepository->reinstate($manager, $reinstatementDate);
-        $manager->updateStatusAndSave();
+        $manager->updateStatus()->save();
 
         return redirect()->route('managers.index');
     }

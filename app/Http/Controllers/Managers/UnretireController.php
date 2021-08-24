@@ -26,7 +26,7 @@ class UnretireController extends Controller
 
         $managerRepository->unretire($manager, $unretiredDate);
         $managerRepository->employ($manager, $unretiredDate);
-        $manager->updateStatusAndSave();
+        $manager->updateStatus()->save();
 
         return redirect()->route('managers.index');
     }

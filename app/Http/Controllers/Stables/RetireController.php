@@ -35,7 +35,7 @@ class RetireController extends Controller
             foreach ($stable->currentTagTeams as $tagTeam) {
                 $tagTeamRepository->release($tagTeam, $retirementDate);
                 $tagTeamRepository->retire($tagTeam, $retirementDate);
-                $tagTeam->updateStatusAndSave();
+                $tagTeam->updateStatus()->save();
             }
         }
 
@@ -43,14 +43,14 @@ class RetireController extends Controller
             foreach ($stable->currentWrestlers as $wrestler) {
                 $wrestlerRepository->release($wrestler, $retirementDate);
                 $wrestlerRepository->retire($wrestler, $retirementDate);
-                $wrestler->updateStatusAndSave();
+                $wrestler->updateStatus()->save();
             }
         }
 
         $stableRepository->deactivate($stable, $retirementDate);
         $stableRepository->retire($stable, $retirementDate);
 
-        $stable->updateStatusAndSave();
+        $stable->updateStatus()->save();
 
         return redirect()->route('stables.index');
     }

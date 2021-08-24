@@ -26,7 +26,7 @@ class UnretireController extends Controller
 
         $refereeRepository->unretire($referee, $unretiredDate);
         $refereeRepository->employ($referee, $unretiredDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

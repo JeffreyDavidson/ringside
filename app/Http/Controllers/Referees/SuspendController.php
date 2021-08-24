@@ -25,7 +25,7 @@ class SuspendController extends Controller
         $suspensionDate = now()->toDateTimeString();
 
         $refereeRepository->suspend($referee, $suspensionDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

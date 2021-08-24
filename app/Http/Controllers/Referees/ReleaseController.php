@@ -33,7 +33,7 @@ class ReleaseController extends Controller
         }
 
         $refereeRepository->release($referee, $releaseDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

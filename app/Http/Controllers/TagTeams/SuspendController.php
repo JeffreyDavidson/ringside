@@ -32,11 +32,11 @@ class SuspendController extends Controller
 
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $wrestlerRepository->suspend($wrestler, $suspensionDate);
-            $wrestler->updateStatusAndSave();
+            $wrestler->updateStatus()->save();
         }
 
         $tagTeamRepository->suspend($tagTeam, $suspensionDate);
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->updateStatus()->save();
 
         return redirect()->route('tag-teams.index');
     }

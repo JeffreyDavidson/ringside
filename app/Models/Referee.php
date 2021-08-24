@@ -50,33 +50,18 @@ class Referee extends SingleRosterMember implements Bookable
      */
     public function updateStatus()
     {
-        if ($this->isCurrentlyEmployed()) {
-            if ($this->isInjured()) {
-                $this->status = RefereeStatus::INJURED;
-            } elseif ($this->isSuspended()) {
-                $this->status = RefereeStatus::SUSPENDED;
-            } elseif ($this->isBookable()) {
-                $this->status = RefereeStatus::BOOKABLE;
-            }
-        } elseif ($this->hasFutureEmployment()) {
-            $this->status = RefereeStatus::FUTURE_EMPLOYMENT;
-        } elseif ($this->isReleased()) {
-            $this->status = RefereeStatus::RELEASED;
-        } elseif ($this->isRetired()) {
-            $this->status = RefereeStatus::RETIRED;
-        } else {
-            $this->status = RefereeStatus::UNEMPLOYED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isCurrentlyEmployed() => match ($this) {
+                $this->isInjured() => RefereeStatus::INJURED,
+                $this->isSuspended() => RefereeStatus::SUSPENDED,
+                $this->isBookable() => RefereeStatus::BOOKABLE,
+            },
+            $this->hasFutureEmployment() => RefereeStatus::FUTURE_EMPLOYMENT,
+            $this->isReleased() => RefereeStatus::RELEASED,
+            $this->isRetired() => RefereeStatus::RETIRED,
+            default => RefereeStatus::UNEMPLOYED
+        };
 
-    /**
-     * Updates a referee's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 }

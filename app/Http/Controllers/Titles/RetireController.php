@@ -26,7 +26,7 @@ class RetireController extends Controller
 
         $titleRepository->deactivate($title, $retirementDate);
         $titleRepository->retire($title, $retirementDate);
-        $title->updateStatusAndSave();
+        $title->updateStatus()->save();
 
         return redirect()->route('titles.index');
     }

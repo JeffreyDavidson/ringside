@@ -34,7 +34,7 @@ class RetireController extends Controller
 
         $refereeRepository->release($referee, $retirementDate);
         $refereeRepository->retire($referee, $retirementDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

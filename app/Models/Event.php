@@ -137,23 +137,12 @@ class Event extends Model
      */
     public function updateStatus()
     {
-        if ($this->isScheduled()) {
-            $this->status = EventStatus::SCHEDULED;
-        } elseif ($this->isPast()) {
-            $this->status = EventStatus::PAST;
-        } else {
-            $this->status = EventStatus::UNSCHEDULED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isScheduled() => EventStatus::SCHEDULED,
+            $this->isPast() => EventStatus::PAST,
+            default => EventStatus::UNSCHEDULED
+        };
 
-    /**
-     * Updates an event's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 }

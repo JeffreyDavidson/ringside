@@ -33,7 +33,7 @@ class ReleaseController extends Controller
         }
 
         $managerRepository->release($manager, $releaseDate);
-        $manager->updateStatusAndSave();
+        $manager->updateStatus()->save();
 
         if ($manager->has('currentTagTeams')) {
             $managerRepository->removeFromCurrentTagTeams($manager);

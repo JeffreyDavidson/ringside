@@ -7,18 +7,16 @@ use App\Exceptions\CannotBeEmployedException;
 use App\Exceptions\NotEnoughMembersException;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\Employable;
-use App\Models\Contracts\Reinstatable;
 use App\Models\Contracts\Releasable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\StableMember;
 use App\Models\Contracts\Suspendable;
-use App\Models\Contracts\Unretirable;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TagTeam extends Model implements Bookable, Employable, Releasable, Reinstatable, Retirable, StableMember, Suspendable, Unretirable
+class TagTeam extends Model implements Bookable, Employable, Releasable, Retirable, StableMember, Suspendable
 {
     use SoftDeletes,
         HasFactory,
@@ -133,6 +131,17 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Reinsta
     public function employments()
     {
         return $this->morphMany(Employment::class, 'employable');
+    }
+
+    /**
+     * Get the first employment of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function firstEmployment()
+    {
+        return $this->morphOne(Employment::class, 'employable')
+                    ->oldestOfMany('started_at');
     }
 
     /**
@@ -388,6 +397,17 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Reinsta
     }
 
     /**
+     * Get the model's first employment date.
+     *
+     * @param  string $employmentDate
+     * @return bool
+     */
+    public function employedOn(string $employmentDate)
+    {
+        return $this->employments->last()->started_at->ne($employmentDate);
+    }
+
+    /**
      * Determine if the tag team can be reinstated.
      *
      * @return bool
@@ -414,6 +434,16 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Reinsta
     public function scopeBookable($query)
     {
         return $query->where('status', 'bookable');
+    }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @return string|null
+     */
+    public function getStartedAtAttribute()
+    {
+        return optional($this->employments->first())->started_at;
     }
 
     /**
@@ -467,34 +497,19 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Reinsta
      */
     public function updateStatus()
     {
-        if ($this->isCurrentlyEmployed()) {
-            if ($this->isSuspended()) {
-                $this->status = TagTeamStatus::SUSPENDED;
-            } elseif ($this->isUnbookable()) {
-                $this->status = TagTeamStatus::UNBOOKABLE;
-            } elseif ($this->isBookable()) {
-                $this->status = TagTeamStatus::BOOKABLE;
-            }
-        } elseif ($this->hasFutureEmployment()) {
-            $this->status = TagTeamStatus::FUTURE_EMPLOYMENT;
-        } elseif ($this->isReleased()) {
-            $this->status = TagTeamStatus::RELEASED;
-        } elseif ($this->isRetired()) {
-            $this->status = TagTeamStatus::RETIRED;
-        } else {
-            $this->status = TagTeamStatus::UNEMPLOYED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isCurrentlyEmployed() => match ($this) {
+                $this->isSuspended() => TagTeamStatus::SUSPENDED,
+                $this->isUnbookable() => TagTeamStatus::UNBOOKABLE,
+                $this->isBookable() => TagTeamStatus::BOOKABLE,
+            },
+            $this->hasFutureEmployment() => TagTeamStatus::FUTURE_EMPLOYMENT,
+            $this->isReleased() => TagTeamStatus::RELEASED,
+            $this->isRetired() => TagTeamStatus::RETIRED,
+            default => TagTeamStatus::UNEMPLOYED
+        };
 
-    /**
-     * Updates a tag team's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 
     /**

@@ -25,7 +25,7 @@ class EmployController extends Controller
         $employmentDate = now()->toDateTimeString();
 
         $refereeRepository->employ($referee, $employmentDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

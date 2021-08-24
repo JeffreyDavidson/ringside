@@ -26,7 +26,7 @@ class EmployControllerTest extends TestCase
 
         $tagTeamMock->expects()->canBeEmployed()->andReturns(true);
         $repositoryMock->expects()->employ($tagTeamMock, now()->toDateTimeString())->once()->andReturns();
-        $tagTeamMock->expects()->updateStatusAndSave()->once();
+        $tagTeamMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($tagTeamMock, new EmployRequest, $repositoryMock);
     }

@@ -34,7 +34,7 @@ class RetireController extends Controller
 
         $managerRepository->release($manager, $retirementDate);
         $managerRepository->retire($manager, $retirementDate);
-        $manager->updateStatusAndSave();
+        $manager->updateStatus()->save();
 
         if ($manager->has('currentTagTeams')) {
             $managerRepository->removeFromCurrentTagTeams($manager);

@@ -33,10 +33,10 @@ class ReleaseController extends Controller
         }
 
         $wrestlerRepository->release($wrestler, $releaseDate);
-        $wrestler->updateStatusAndSave();
+        $wrestler->updateStatus()->save();
 
         if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
-            $wrestler->currentTagTeam->updateStatusAndSave();
+            $wrestler->currentTagTeam->updateStatus()->save();
         }
 
         return redirect()->route('wrestlers.index');

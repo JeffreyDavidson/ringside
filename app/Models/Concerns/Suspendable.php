@@ -131,4 +131,18 @@ trait Suspendable
 
         return true;
     }
+
+    /**
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeReinstated()
+    {
+        if (! $this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
 }

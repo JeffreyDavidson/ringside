@@ -26,7 +26,7 @@ class ReinstateControllerTest extends TestCase
 
         $wrestlerMock->expects()->canBeReinstated()->andReturns(true);
         $repositoryMock->expects()->reinstate($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new ReinstateRequest, $repositoryMock);
     }

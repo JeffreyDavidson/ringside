@@ -26,7 +26,7 @@ class ReinstateControllerTest extends TestCase
 
         $tagTeamMock->expects()->canBeReinstated()->andReturns(true);
         $repositoryMock->expects()->reinstate($tagTeamMock, now()->toDateTimeString())->once()->andReturns();
-        $tagTeamMock->expects()->updateStatusAndSave()->once();
+        $tagTeamMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($tagTeamMock, new ReinstateRequest, $repositoryMock);
     }

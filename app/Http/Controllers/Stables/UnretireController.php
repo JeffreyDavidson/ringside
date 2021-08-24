@@ -26,7 +26,7 @@ class UnretireController extends Controller
 
         $stableRepository->unretire($stable, $unretiredDate);
         $stableRepository->activate($stable, $unretiredDate);
-        $stable->updateStatusAndSave();
+        $stable->updateStatus()->save();
 
         return redirect()->route('stables.index');
     }

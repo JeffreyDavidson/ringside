@@ -25,7 +25,7 @@ class EmployController extends Controller
         $employmentDate = now()->toDateTimeString();
 
         $managerRepository->employ($manager, $employmentDate);
-        $manager->updateStatusAndSave();
+        $manager->updateStatus()->save();
 
         return redirect()->route('managers.index');
     }

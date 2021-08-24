@@ -73,4 +73,11 @@ interface Suspendable
      * @return string
      */
     public function canBeSuspended();
+
+    /**
+     * Determine if the model can be reinstated.
+     *
+     * @return bool
+     */
+    public function canBeReinstated();
 }

@@ -33,7 +33,7 @@ class DeactivateController extends Controller
 
         $stableRepository->deactivate($stable, $deactivationDate);
         $stableRepository->disassemble($stable, $deactivationDate);
-        $stable->updateStatusAndSave();
+        $stable->updateStatus()->save();
 
         return redirect()->route('stables.index');
     }

@@ -26,7 +26,7 @@ class UnretireController extends Controller
 
         $titleRepository->unretire($title, $unretiredDate);
         $titleRepository->activate($title, $unretiredDate);
-        $title->updateStatusAndSave();
+        $title->updateStatus()->save();
 
         return redirect()->route('titles.index');
     }

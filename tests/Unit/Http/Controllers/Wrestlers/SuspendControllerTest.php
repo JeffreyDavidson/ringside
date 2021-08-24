@@ -30,7 +30,7 @@ class SuspendControllerTest extends TestCase
 
         $wrestlerMock->expects()->canBeSuspended()->andReturns(true);
         $repositoryMock->expects()->suspend($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new SuspendRequest, $repositoryMock);
     }
@@ -50,8 +50,8 @@ class SuspendControllerTest extends TestCase
 
         $wrestlerMock->expects()->canBeSuspended()->andReturns(true);
         $repositoryMock->expects()->suspend($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
-        $currentTagTeamRelationMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
+        $currentTagTeamRelationMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new SuspendRequest, $repositoryMock);
     }

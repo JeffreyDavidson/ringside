@@ -29,7 +29,7 @@ class RetireControllerTest extends TestCase
         $refereeMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatusAndSave()->once();
+        $refereeMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($refereeMock, new RetireRequest, $repositoryMock);
     }
@@ -49,7 +49,7 @@ class RetireControllerTest extends TestCase
         $repositoryMock->expects()->reinstate($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatusAndSave()->once();
+        $refereeMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($refereeMock, new RetireRequest, $repositoryMock);
     }
@@ -69,7 +69,7 @@ class RetireControllerTest extends TestCase
         $repositoryMock->expects()->clearInjury($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatusAndSave()->once();
+        $refereeMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($refereeMock, new RetireRequest, $repositoryMock);
     }

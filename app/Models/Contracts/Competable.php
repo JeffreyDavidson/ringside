@@ -5,16 +5,17 @@ namespace App\Models\Contracts;
 interface Competable
 {
     /**
-     * Scope a query to only include competable models.
+     * Scope a query to include competable models.
      *
-     * @return mixed
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeCompetable();
+    public function scopeCompetable($query);
 
     /**
      * Check to see if the model can be competed for.
      *
-     * @return string
+     * @return bool
      */
     public function isCompetable();
 }

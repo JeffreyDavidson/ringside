@@ -6,12 +6,11 @@ use App\Enums\StableStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
-use App\Models\Contracts\Unretirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Stable extends Model implements Activatable, Deactivatable, Retirable, Unretirable
+class Stable extends Model implements Activatable, Deactivatable, Retirable
 {
     use SoftDeletes,
         HasFactory,
@@ -163,28 +162,15 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable, Unr
      */
     public function updateStatus()
     {
-        if ($this->isCurrentlyActivated()) {
-            $this->status = StableStatus::ACTIVE;
-        } elseif ($this->hasFutureActivation()) {
-            $this->status = StableStatus::FUTURE_ACTIVATION;
-        } elseif ($this->isDeactivated()) {
-            $this->status = StableStatus::INACTIVE;
-        } elseif ($this->isRetired()) {
-            $this->status = StableStatus::RETIRED;
-        } else {
-            $this->status = StableStatus::UNACTIVATED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isCurrentlyActivated() => StableStatus::ACTIVE,
+            $this->hasFutureEmployment() => StableStatus::FUTURE_ACTIVATION,
+            $this->isDeactivated() => StableStatus::INACTIVE,
+            $this->isRetired() => StableStatus::RETIRED,
+            default => StableStatus::UNACTIVATED
+        };
 
-    /**
-     * Updates a stable's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 
     /**

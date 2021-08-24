@@ -25,7 +25,7 @@ class InjureController extends Controller
         $injureDate = now()->toDateTimeString();
 
         $refereeRepository->injure($referee, $injureDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

@@ -32,11 +32,11 @@ class ReinstateController extends Controller
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $wrestlerRepository->reinstate($wrestler, $reinstatementDate);
             $wrestlerRepository->employ($wrestler, $reinstatementDate);
-            $wrestler->updateStatusAndSave();
+            $wrestler->updateStatus()->save();
         }
 
         $tagTeamRepository->reinstate($tagTeam, $reinstatementDate);
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->updateStatus()->save();
 
         return redirect()->route('tag-teams.index');
     }

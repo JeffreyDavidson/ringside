@@ -27,7 +27,7 @@ class UnretireControllerTest extends TestCase
         $wrestlerMock->expects()->canBeUnretired()->andReturns(true);
         $repositoryMock->expects()->unretire($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->employ($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatusAndSave()->once();
+        $wrestlerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($wrestlerMock, new UnretireRequest, $repositoryMock);
     }

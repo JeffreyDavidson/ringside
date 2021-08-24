@@ -25,7 +25,7 @@ class DeactivateController extends Controller
         $deactivationDate = now()->toDateTimeString();
 
         $titleRepository->deactivate($title, $deactivationDate);
-        $title->updateStatusAndSave();
+        $title->updateStatus()->save();
 
         return redirect()->route('titles.index');
     }

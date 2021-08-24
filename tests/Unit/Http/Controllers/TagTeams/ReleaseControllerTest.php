@@ -26,7 +26,7 @@ class ReleaseControllerTest extends TestCase
 
         $tagTeamMock->expects()->canBeReleased()->andReturns(true);
         $repositoryMock->expects()->release($tagTeamMock, now()->toDateTimeString())->once()->andReturns();
-        $tagTeamMock->expects()->updateStatusAndSave()->once();
+        $tagTeamMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($tagTeamMock, new ReleaseRequest, $repositoryMock);
     }

@@ -83,33 +83,18 @@ class Manager extends SingleRosterMember implements StableMember
      */
     public function updateStatus()
     {
-        if ($this->isCurrentlyEmployed()) {
-            if ($this->isInjured()) {
-                $this->status = ManagerStatus::INJURED;
-            } elseif ($this->isSuspended()) {
-                $this->status = ManagerStatus::SUSPENDED;
-            } elseif ($this->isAvailable()) {
-                $this->status = ManagerStatus::AVAILABLE;
-            }
-        } elseif ($this->hasFutureEmployment()) {
-            $this->status = ManagerStatus::FUTURE_EMPLOYMENT;
-        } elseif ($this->isReleased()) {
-            $this->status = ManagerStatus::RELEASED;
-        } elseif ($this->isRetired()) {
-            $this->status = ManagerStatus::RETIRED;
-        } else {
-            $this->status = ManagerStatus::UNEMPLOYED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isCurrentlyEmployed() => match ($this) {
+                $this->isInjured() => ManagerStatus::INJURED,
+                $this->isSuspended() => ManagerStatus::SUSPENDED,
+                $this->isAvailable() => ManagerStatus::AVAILABLE,
+            },
+            $this->hasFutureEmployment() => ManagerStatus::FUTURE_EMPLOYMENT,
+            $this->isReleased() => ManagerStatus::RELEASED,
+            $this->isRetired() => ManagerStatus::RETIRED,
+            default => ManagerStatus::UNEMPLOYED
+        };
 
-    /**
-     * Updates a manager's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 }

@@ -34,7 +34,7 @@ class ActivateController extends Controller
         if ($stable->currentWrestlers->every->isNotInEmployment()) {
             foreach ($stable->currentWrestlers as $wrestler) {
                 $wrestlerRepository->employ($wrestler, $activationDate);
-                $wrestler->updateStatusAndSave();
+                $wrestler->updateStatus()->save();
             }
         }
 
@@ -42,15 +42,15 @@ class ActivateController extends Controller
             foreach ($stable->currentTagTeams as $tagTeam) {
                 foreach ($tagTeam->currentWrestlers as $wrestler) {
                     $wrestlerRepository->employ($wrestler, $activationDate);
-                    $wrestler->updateStatusAndSave();
+                    $wrestler->updateStatus()->save();
                 }
                 $tagTeamRepository->employ($tagTeam, $activationDate);
-                $tagTeam->updateStatusAndSave();
+                $tagTeam->updateStatus()->save();
             }
         }
 
         $stableRepository->activate($stable, $activationDate);
-        $stable->updateStatusAndSave();
+        $stable->updateStatus()->save();
 
         return redirect()->route('stables.index');
     }

@@ -27,7 +27,7 @@ class RetireControllerTest extends TestCase
         $stableMock->expects()->canBeRetired()->andReturns(true);
         $repositoryMock->expects()->deactivate($stableMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($stableMock, now()->toDateTimeString())->once()->andReturns();
-        $stableMock->expects()->updateStatusAndSave()->once();
+        $stableMock->expects()->updateStatus()->save()->once();
 
         $stableMock->expects()->has('currentTagTeams')->andReturns(false);
         $stableMock->expects()->has('currentWrestlers')->andReturns(false);
@@ -47,7 +47,7 @@ class RetireControllerTest extends TestCase
         $stableMock->expects()->canBeRetired()->andReturns(true);
         $repositoryMock->expects()->deactivate($stableMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($stableMock, now()->toDateTimeString())->once()->andReturns();
-        $stableMock->expects()->updateStatusAndSave()->once();
+        $stableMock->expects()->updateStatus()->save()->once();
 
         $stableMock->expects()->has('currentTagTeams')->andReturns(true);
         $stableMock->expects()->has('currentWrestlers')->andReturns(false);
@@ -69,7 +69,7 @@ class RetireControllerTest extends TestCase
         $stableMock->expects()->canBeRetired()->andReturns(true);
         $repositoryMock->expects()->deactivate($stableMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($stableMock, now()->toDateTimeString())->once()->andReturns();
-        $stableMock->expects()->updateStatusAndSave()->once();
+        $stableMock->expects()->updateStatus()->save()->once();
 
         $stableMock->expects()->has('currentTagTeams')->andReturns(false);
         $stableMock->expects()->has('currentWrestlers')->andReturns(true);

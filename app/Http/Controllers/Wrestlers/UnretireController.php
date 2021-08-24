@@ -26,7 +26,7 @@ class UnretireController extends Controller
 
         $wrestlerRepository->unretire($wrestler, $unretiredDate);
         $wrestlerRepository->employ($wrestler, $unretiredDate);
-        $wrestler->updateStatusAndSave();
+        $wrestler->updateStatus()->save();
 
         return redirect()->route('wrestlers.index');
     }

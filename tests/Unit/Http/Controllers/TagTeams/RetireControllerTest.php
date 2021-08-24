@@ -28,7 +28,7 @@ class RetireControllerTest extends TestCase
         $tagTeamMock->expects()->isSuspended()->andReturns(false);
         $repositoryMock->expects()->release($tagTeamMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($tagTeamMock, now()->toDateTimeString())->once()->andReturns();
-        $tagTeamMock->expects()->updateStatusAndSave()->once();
+        $tagTeamMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($tagTeamMock, new RetireRequest, $repositoryMock);
     }

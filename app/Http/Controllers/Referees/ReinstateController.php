@@ -25,7 +25,7 @@ class ReinstateController extends Controller
         $reinstatementDate = now()->toDateTimeString();
 
         $refereeRepository->reinstate($referee, $reinstatementDate);
-        $referee->updateStatusAndSave();
+        $referee->updateStatus()->save();
 
         return redirect()->route('referees.index');
     }

@@ -33,7 +33,7 @@ class RetireControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($managerMock, new RetireRequest, $repositoryMock);
     }
@@ -53,7 +53,7 @@ class RetireControllerTest extends TestCase
         $repositoryMock->expects()->reinstate($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->updateStatus()->save()->once();
 
         $managerMock->expects()->has('currentTagTeams')->andReturns(false);
         $managerMock->expects()->has('currentWrestlers')->andReturns(false);
@@ -76,7 +76,7 @@ class RetireControllerTest extends TestCase
         $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->updateStatus()->save()->once();
 
         $managerMock->expects()->has('currentTagTeams')->andReturns(false);
         $managerMock->expects()->has('currentWrestlers')->andReturns(false);
@@ -98,7 +98,7 @@ class RetireControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->updateStatus()->save()->once();
 
         $managerMock->expects()->has('currentTagTeams')->andReturns(true);
         $managerMock->expects()->has('currentWrestlers')->andReturns(false);
@@ -121,7 +121,7 @@ class RetireControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatusAndSave()->once();
+        $managerMock->expects()->updateStatus()->save()->once();
 
         $managerMock->expects()->has('currentTagTeams')->andReturns(false);
         $managerMock->expects()->has('currentWrestlers')->andReturns(true);

@@ -34,11 +34,11 @@ class UnretireController extends Controller
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $wrestlerRepository->unretire($wrestler, $unretiredDate);
             $wrestlerRepository->employ($wrestler, $unretiredDate);
-            $wrestler->updateStatusAndSave();
+            $wrestler->updateStatus()->save();
         }
 
         $tagTeamRepository->employ($tagTeam, $unretiredDate);
-        $tagTeam->updateStatusAndSave();
+        $tagTeam->updateStatus()->save();
 
         return redirect()->route('tag-teams.index');
     }

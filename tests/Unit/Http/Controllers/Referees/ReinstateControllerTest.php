@@ -26,7 +26,7 @@ class ReinstateControllerTest extends TestCase
 
         $refereeMock->expects()->canBeReinstated()->andReturns(true);
         $repositoryMock->expects()->reinstate($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatusAndSave()->once();
+        $refereeMock->expects()->updateStatus()->save()->once();
 
         $controller->__invoke($refereeMock, new ReinstateRequest, $repositoryMock);
     }

@@ -65,37 +65,22 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTe
     /**
      * Update the status for the wrestler.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {
-        if ($this->isCurrentlyEmployed()) {
-            if ($this->isInjured()) {
-                $this->status = WrestlerStatus::INJURED;
-            } elseif ($this->isSuspended()) {
-                $this->status = WrestlerStatus::SUSPENDED;
-            } elseif ($this->isBookable()) {
-                $this->status = WrestlerStatus::BOOKABLE;
-            }
-        } elseif ($this->hasFutureEmployment()) {
-            $this->status = WrestlerStatus::FUTURE_EMPLOYMENT;
-        } elseif ($this->isReleased()) {
-            $this->status = WrestlerStatus::RELEASED;
-        } elseif ($this->isRetired()) {
-            $this->status = WrestlerStatus::RETIRED;
-        } else {
-            $this->status = WrestlerStatus::UNEMPLOYED;
-        }
-    }
+        $this->status = match($this) {
+            $this->isCurrentlyActivated() => match ($this) {
+                $this->isInjured() => WrestlerStatus::INJURED,
+                $this->isSuspended() => WrestlerStatus::SUSPENDED,
+                $this->isBookable() => WrestlerStatus::BOOKABLE,
+            },
+            $this->hasFutureEmployment() => WrestlerStatus::FUTURE_EMPLOYMENT,
+            $this->isReleased() => WrestlerStatus::RELEASED,
+            $this->isRetired() => WrestlerStatus::RETIRED,
+            default => WrestlerStatus::UNEMPLOYED
+        };
 
-    /**
-     * Updates a wrestler's status and saves.
-     *
-     * @return void
-     */
-    public function updateStatusAndSave()
-    {
-        $this->updateStatus();
-        $this->save();
+        return $this;
     }
 }

@@ -68,7 +68,9 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      */
     public function activate(Activatable $title, string $activationDate)
     {
-        return $title->activations()->updateOrCreate(['ended_at' => null], ['started_at' => $activationDate]);
+        $title->activations()->updateOrCreate(['ended_at' => null], ['started_at' => $activationDate]);
+
+        return $title;
     }
 
     /**

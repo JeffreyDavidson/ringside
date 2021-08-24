@@ -25,7 +25,7 @@ class SuspendController extends Controller
         $suspensionDate = now()->toDateTimeString();
 
         $managerRepository->suspend($manager, $suspensionDate);
-        $manager->updateStatusAndSave();
+        $manager->updateStatus()->save();
 
         return redirect()->route('managers.index');
     }

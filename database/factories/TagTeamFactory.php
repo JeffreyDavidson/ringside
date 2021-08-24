@@ -62,8 +62,8 @@ class TagTeamFactory extends Factory
         ->has(Employment::factory()->started($start))
         ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable(), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->currentWrestlers->each->updateStatusAndSave();
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->currentWrestlers->each->updateStatus()->save();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -77,7 +77,7 @@ class TagTeamFactory extends Factory
         ->has(Employment::factory()->started($start))
         ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->injured(), ['joined_at' => Carbon::yesterday()])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -91,7 +91,7 @@ class TagTeamFactory extends Factory
         ->has(Employment::factory()->started($start))
         ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)), ['joined_at' => Carbon::now()])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -108,7 +108,7 @@ class TagTeamFactory extends Factory
         ->has(Suspension::factory()->started($end))
         ->hasAttached(Wrestler::factory()->count(2)->suspended(), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -125,7 +125,7 @@ class TagTeamFactory extends Factory
         ->has(Retirement::factory()->started($end))
         ->hasAttached(Wrestler::factory()->count(2)->retired(), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -136,7 +136,7 @@ class TagTeamFactory extends Factory
         })
         ->hasAttached(Wrestler::factory()->count(2), ['joined_at' => Carbon::now()])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -152,7 +152,7 @@ class TagTeamFactory extends Factory
         ->has(Employment::factory()->started($start)->ended($end))
         ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)->ended($end)), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -168,7 +168,7 @@ class TagTeamFactory extends Factory
         ->hasAttached(Wrestler::factory()->injured()->has(Employment::factory()->started($start)), ['joined_at' => $start])
         ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -184,7 +184,7 @@ class TagTeamFactory extends Factory
         ->hasAttached(Wrestler::factory()->suspended()->has(Employment::factory()->started($start)), ['joined_at' => $start])
         ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start])
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->updateStatusAndSave();
+            $tagTeam->updateStatus()->save();
         });
     }
 
@@ -194,7 +194,7 @@ class TagTeamFactory extends Factory
             return ['deleted_at' => now()];
         })
         ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
+            $tagTeam->updateStatus()->save();
         });
     }
 }
