@@ -365,7 +365,6 @@ class TagTeamControllerTest extends TestCase
      */
     public function deletes_a_tag_team_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
         $tagTeam = TagTeam::factory()->create();
 
         $this->actAs($administrators)
