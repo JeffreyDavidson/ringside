@@ -121,7 +121,7 @@ class WrestlerControllerTest extends TestCase
 
         tap(Wrestler::first(), function ($wrestler) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
-            $this->assertEquals(76, $wrestler->height);
+            $this->assertEquals(76, $wrestler->height->height);
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
             $this->assertEquals('The Finisher', $wrestler->signature_move);
@@ -292,7 +292,7 @@ class WrestlerControllerTest extends TestCase
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
-            $this->assertEquals(76, $wrestler->height);
+            $this->assertEquals(76, $wrestler->height->height);
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
             $this->assertEquals('The Finisher', $wrestler->signature_move);
@@ -355,6 +355,26 @@ class WrestlerControllerTest extends TestCase
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertCount(1, $wrestler->employments);
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function updating_cannot_reemploy_a_released_wrestler($administrators)
+    {
+        $wrestler = Wrestler::factory()->released()->create();
+        $startDate = $wrestler->employments->last()->started_at->toDateTimeString();
+
+        $this->actAs($administrators)
+            ->from(route('wrestlers.edit', $wrestler))
+            ->patch(route('wrestlers.update', $wrestler), $this->validParams())
+            ->assertRedirect(route('wrestlers.index'));
+
+        tap($wrestler->fresh(), function ($wrestler) use ($startDate) {
+            $this->assertCount(1, $wrestler->employments);
+            $this->assertSame($startDate, $wrestler->employments->last()->started_at->toDateTimeString());
         });
     }
 

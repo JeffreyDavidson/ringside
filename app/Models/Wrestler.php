@@ -18,6 +18,7 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTe
         HasFactory,
         Concerns\Bookable,
         Concerns\Manageable,
+        Concerns\OwnedByUser,
         Concerns\StableMember,
         Concerns\TagTeamMember,
         Concerns\Unguarded,

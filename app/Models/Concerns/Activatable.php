@@ -229,7 +229,7 @@ trait Activatable
      */
     public function isNotActivation()
     {
-        return $this->isNotActivated() || $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
+        return $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }
 
     /**
@@ -241,5 +241,19 @@ trait Activatable
     public function activatedOn(string $activationDate)
     {
         return $this->activations->last()->started_at->ne($activationDate);
+    }
+
+    /**
+     * Check to see if activatable can have their start date changed.
+     *
+     * @return bool
+     */
+    public function canHaveActivationStartDateChanged()
+    {
+        if ($this->isUnactivated() || $this->hasFutureActivation()) {
+            return true;
+        }
+
+        return false;
     }
 }

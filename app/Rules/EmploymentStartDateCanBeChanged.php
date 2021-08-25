@@ -31,6 +31,10 @@ class EmploymentStartDateCanBeChanged implements Rule
      */
     public function passes($attribute, $value)
     {
+        if ($this->model->isUnemployed() || $this->model->hasFutureEmployment()) {
+            return true;
+        }
+
         if ($this->model->isCurrentlyEmployed() && $this->model->currentEmployment->started_at->eq($value)) {
             return true;
         }
@@ -40,6 +44,6 @@ class EmploymentStartDateCanBeChanged implements Rule
 
     public function message()
     {
-        return 'The :attribute field cannot be changed to a date different than '.$this->model->started_at->toDateTimeString().'.';
+        return 'The :attribute field cannot be changed.';
     }
 }

@@ -39,6 +39,24 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider administrators
+     */
+    public function invoke_retires_an_inactive_title_and_redirects($administrators)
+    {
+        $title = Title::factory()->inactive()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('titles.retire', $title))
+            ->assertRedirect(route('titles.index'));
+
+        tap($title->fresh(), function ($title) {
+            $this->assertCount(1, $title->retirements);
+            $this->assertEquals(TitleStatus::RETIRED, $title->status);
+        });
+    }
+
+    /**
+     * @test
      */
     public function invoke_validates_using_a_form_request()
     {
@@ -108,21 +126,6 @@ class RetireControllerTest extends TestCase
         $this->withoutExceptionHandling();
 
         $title = Title::factory()->unactivated()->create();
-
-        $this->actAs($administrators)
-            ->patch(route('titles.retire', $title));
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function retiring_an_inactive_title_throws_an_exception($administrators)
-    {
-        $this->expectException(CannotBeRetiredException::class);
-        $this->withoutExceptionHandling();
-
-        $title = Title::factory()->inactive()->create();
 
         $this->actAs($administrators)
             ->patch(route('titles.retire', $title));

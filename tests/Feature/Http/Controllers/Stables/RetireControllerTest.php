@@ -53,6 +53,34 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider administrators
+     */
+    public function invoke_retires_an_inactive_stable_and_its_members_and_redirects($administrators)
+    {
+        $stable = Stable::factory()->inactive()->create();
+
+        $this->actAs($administrators)
+            ->patch(route('stables.retire', $stable))
+            ->assertRedirect(route('stables.index'));
+
+        tap($stable->fresh(), function ($stable) {
+            $this->assertCount(1, $stable->retirements);
+            $this->assertEquals(StableStatus::RETIRED, $stable->status);
+
+            foreach ($stable->currentWrestlers as $wrestler) {
+                $this->assertCount(1, $wrestler->retirements);
+                $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
+            }
+
+            foreach ($stable->currentTagTeams as $tagTeam) {
+                $this->assertCount(1, $tagTeam->retirements);
+                $this->assertEquals(TagTeamStatus::RETIRED, $tagTeam->status);
+            }
+        });
+    }
+
+    /**
+     * @test
      */
     public function invoke_validates_using_a_form_request()
     {
@@ -122,21 +150,6 @@ class RetireControllerTest extends TestCase
         $this->withoutExceptionHandling();
 
         $stable = Stable::factory()->unactivated()->create();
-
-        $this->actAs($administrators)
-            ->patch(route('stables.retire', $stable));
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function invoke_throws_exception_for_retiring_an_inactive_stable($administrators)
-    {
-        $this->expectException(CannotBeRetiredException::class);
-        $this->withoutExceptionHandling();
-
-        $stable = Stable::factory()->inactive()->create();
 
         $this->actAs($administrators)
             ->patch(route('stables.retire', $stable));

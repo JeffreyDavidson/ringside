@@ -52,7 +52,7 @@ class WrestlerService
     {
         $this->wrestlerRepository->update($wrestler, $data);
 
-        if (isset($data['started_at'])) {
+        if ($wrestler->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
             $this->employOrUpdateEmployment($wrestler, $data['started_at']);
         }
 

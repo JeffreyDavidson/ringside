@@ -52,7 +52,7 @@ class ManagerService
     {
         $this->managerRepository->update($manager, $data);
 
-        if (isset($data['started_at'])) {
+        if ($manager->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
             $this->employOrUpdateEmployment($manager, $data['started_at']);
         }
 

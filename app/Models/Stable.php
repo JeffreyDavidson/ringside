@@ -16,6 +16,8 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
         HasFactory,
         Concerns\Activatable,
         Concerns\Deactivatable,
+        Concerns\HasMembers,
+        Concerns\OwnedByUser,
         Concerns\Unguarded;
 
     /**
@@ -47,118 +49,9 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     ];
 
     /**
-     * Get the user belonging to the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the wrestlers belonging to the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function wrestlers()
-    {
-        return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
-                    ->using(Member::class)
-                    ->withPivot(['joined_at', 'left_at']);
-    }
-
-    /**
-     * Get all current wrestlers that are members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function currentWrestlers()
-    {
-        return $this->wrestlers()->whereNull('left_at');
-    }
-
-    /**
-     * Get all previous wrestlers that were members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function previousWrestlers()
-    {
-        return $this->wrestlers()->whereNotNull('left_at');
-    }
-
-    /**
-     * Get the tag teams belonging to the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function tagTeams()
-    {
-        return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
-                    ->using(Member::class)
-                    ->withPivot(['joined_at', 'left_at']);
-    }
-
-    /**
-     * Get all current tag teams that are members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function currentTagTeams()
-    {
-        return $this->tagTeams()->whereNull('left_at');
-    }
-
-    /**
-     * Get all previous tag teams that were members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function previousTagTeams()
-    {
-        return $this->tagTeams()->whereNotNull('left_at');
-    }
-
-    /**
-     * Get the members belonging to the stable.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getMembersAttribute()
-    {
-        $wrestlers = $this->wrestlers;
-        $tagTeams = $this->tagTeams;
-
-        $members = $wrestlers->merge($tagTeams);
-
-        return $members;
-    }
-
-    /**
-     * Get all current members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function currentMembers()
-    {
-        return $this->currentTagTeams()->currentWrestlers();
-    }
-
-    /**
-     * Get all previous members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function previousMembers()
-    {
-        return $this->previousTagTeams()->previousWrestlers();
-    }
-
-    /**
      * Update the status for the stable.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {
@@ -285,11 +178,15 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      */
     public function canBeRetired()
     {
-        if ($this->isNotInActivation()) {
-            return false;
+        if ($this->isCurrentlyActivated()) {
+            return true;
         }
 
-        return true;
+        if ($this->isDeactivated()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

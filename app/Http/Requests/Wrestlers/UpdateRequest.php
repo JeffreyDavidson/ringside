@@ -34,7 +34,15 @@ class UpdateRequest extends FormRequest
             'weight' => ['required', 'integer'],
             'hometown' => ['required', 'string'],
             'signature_move' => ['nullable', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s', new EmploymentStartDateCanBeChanged($this->route('wrestler'))],
+            'started_at' => [
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s',
+                Rule::when(
+                    $this->wrestler->isUnemployed() || $this->wrestler->hasFutureEmployment(),
+                    [new EmploymentStartDateCanBeChanged($this->route('wrestler'))]
+                ),
+            ],
         ];
     }
 

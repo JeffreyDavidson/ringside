@@ -319,19 +319,19 @@ class RefereeControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function update_can_employ_a_released_referee_when_started_at_is_filled($administrators)
+    public function update_cannot_reemploy_a_released_referee($administrators)
     {
-        $now = now()->toDateTimeString();
         $referee = Referee::factory()->released()->create();
+        $startDate = $referee->employments->last()->started_at->toDateTimeString();
 
-        $response = $this->actAs($administrators)
+        $this->actAs($administrators)
             ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams(['started_at' => $now]));
-        $response->assertRedirect(route('referees.index'));
+            ->put(route('referees.update', $referee), $this->validParams())
+            ->assertRedirect(route('referees.index'));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
-            $this->assertCount(2, $referee->employments);
-            $this->assertEquals($now, $referee->employments->last()->started_at->toDateTimeString());
+        tap($referee->fresh(), function ($referee) use ($startDate) {
+            $this->assertCount(1, $referee->employments);
+            $this->assertSame($startDate, $referee->employments->last()->started_at->toDateTimeString());
         });
     }
 

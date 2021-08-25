@@ -55,11 +55,15 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      */
     public function canBeRetired()
     {
-        if ($this->isNotInActivation()) {
-            return false;
+        if ($this->isCurrentlyActivated()) {
+            return true;
         }
 
-        return true;
+        if ($this->isDeactivated()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

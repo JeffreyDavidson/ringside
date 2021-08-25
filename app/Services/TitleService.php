@@ -52,7 +52,7 @@ class TitleService
     {
         $this->titleRepository->update($title, $data);
 
-        if (isset($data['activated_at'])) {
+        if ($title->canHaveActivationStartDateChanged() && isset($data['activated_at'])) {
             $this->activateOrUpdateActivation($title, $data['activated_at']);
         }
 
@@ -68,7 +68,7 @@ class TitleService
      */
     public function activateOrUpdateActivation(Title $title, string $activationDate)
     {
-        if ($title->isNotInActivation()) {
+        if ($title->isUnactivated()) {
             return $this->titleRepository->activate($title, $activationDate);
         }
 

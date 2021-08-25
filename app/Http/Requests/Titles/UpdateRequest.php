@@ -28,7 +28,15 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3', 'ends_with:Title,Titles', Rule::unique('titles')->ignore($this->route('title')->id)],
-            'activated_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s', new ActivationStartDateCanBeChanged($this->route('title'))],
+            'activated_at' => [
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s',
+                Rule::when(
+                    $this->route('title')->isUnactivated() || $this->route('title')->hasFutureActivation(),
+                    [new ActivationStartDateCanBeChanged($this->route('title'))]
+                ),
+            ],
         ];
     }
 }

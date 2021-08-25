@@ -52,7 +52,7 @@ class RefereeService
     {
         $this->refereeRepository->update($referee, $data);
 
-        if (isset($data['started_at'])) {
+        if ($referee->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
             $this->employOrUpdateEmployment($referee, $data['started_at']);
         }
 

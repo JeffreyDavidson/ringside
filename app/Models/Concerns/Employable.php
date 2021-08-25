@@ -228,4 +228,18 @@ trait Employable
     {
         return $this->employments->last()->started_at->ne($employmentDate);
     }
+
+    /**
+     * Check to see if employable can have their start date changed.
+     *
+     * @return bool
+     */
+    public function canHaveEmploymentStartDateChanged()
+    {
+        if ($this->isUnemployed() || $this->hasFutureEmployment()) {
+            return true;
+        }
+
+        return false;
+    }
 }

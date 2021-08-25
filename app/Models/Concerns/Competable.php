@@ -25,7 +25,7 @@ trait Competable
      */
     public function isCompetable()
     {
-        if ($this->isNotActivated() || $this->isDeactivated() || $this->isRetired() || $this->hasFutureActivation()) {
+        if ($this->isNotActivation() || $this->isDeactivated() || $this->isRetired() || $this->hasFutureActivation()) {
             return false;
         }
 

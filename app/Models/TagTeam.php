@@ -21,6 +21,7 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     use SoftDeletes,
         HasFactory,
         HasMorphToOne,
+        Concerns\OwnedByUser,
         Concerns\Retirable,
         Concerns\StableMember,
         Concerns\Suspendable,
@@ -396,6 +397,20 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     public function employedOn(string $employmentDate)
     {
         return $this->employments->last()->started_at->ne($employmentDate);
+    }
+
+    /**
+     * Check to see if employable can have their start date changed.
+     *
+     * @return bool
+     */
+    public function canHaveEmploymentStartDateChanged()
+    {
+        if ($this->isUnemployed() || $this->hasFutureEmployment()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -26,8 +26,6 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this->manager->isRetired());
-
         return [
             'first_name' => ['required', 'string', 'min:3'],
             'last_name' => ['required', 'string', 'min:3'],
@@ -36,7 +34,7 @@ class UpdateRequest extends FormRequest
                 'string',
                 'date_format:Y-m-d H:i:s',
                 Rule::when(
-                    ! $this->manager->isRetired() && ! $this->manager->isReleased(),
+                    $this->manager->isUnemployed() || $this->manager->hasFutureEmployment(),
                     [new EmploymentStartDateCanBeChanged($this->route('manager'))]
                 ),
             ],

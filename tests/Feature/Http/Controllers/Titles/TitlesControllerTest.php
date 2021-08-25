@@ -245,7 +245,7 @@ class TitlesControllerTest extends TestCase
             ->assertRedirect(route('titles.index'));
 
         tap($title->fresh(), function ($title) {
-            $this->assertTrue($title->hasActivations());
+            $this->assertCount(1, $title->activations);
         });
     }
 
@@ -255,18 +255,17 @@ class TitlesControllerTest extends TestCase
      */
     public function update_can_activate_a_future_activated_title_when_activated_at_is_filled($administrators)
     {
-        $now = now()->toDateTimeString();
-
         $title = Title::factory()->withFutureActivation()->create();
+        $startDate = $title->activations->last()->started_at->toDateTimeString();
 
         $this->actAs($administrators)
             ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams(['activated_at' => $now]))
+            ->put(route('titles.update', $title), $this->validParams())
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
+        tap($title->fresh(), function ($title) use ($startDate) {
             $this->assertCount(1, $title->activations);
-            $this->assertEquals($now, $title->activations()->first()->started_at->toDateTimeString());
+            $this->assertEquals($startDate, $title->activations()->first()->started_at->toDateTimeString());
         });
     }
 
@@ -274,20 +273,19 @@ class TitlesControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function update_can_activate_an_inactive_title_when_activated_at_is_filled($administrators)
+    public function update_cannot_activate_an_inactive_title($administrators)
     {
-        $now = now()->toDateTimeString();
-
         $title = Title::factory()->inactive()->create();
+        $startDate = $title->activations->last()->started_at->toDateTimeString();
 
         $this->actAs($administrators)
             ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams(['activated_at' => $now]))
+            ->put(route('titles.update', $title), $this->validParams())
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) use ($now) {
-            $this->assertCount(2, $title->activations);
-            $this->assertEquals($now, $title->activations->last()->started_at->toDateTimeString());
+        tap($title->fresh(), function ($title) use ($startDate) {
+            $this->assertCount(1, $title->activations);
+            $this->assertSame($startDate, $title->activations->last()->started_at->toDateTimeString());
         });
     }
 
@@ -295,17 +293,19 @@ class TitlesControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function updating_cannot_activate_an_active_title_when_activated_at_is_filled($administrators)
+    public function updating_cannot_activate_an_active_title($administrators)
     {
         $title = Title::factory()->active()->create();
+        $startDate = $title->activations->last()->started_at->toDateTimeString();
 
         $this->actAs($administrators)
             ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams(['activated_at' => $title->activations()->first()->started_at->toDateTimeString()]))
+            ->put(route('titles.update', $title), $this->validParams())
             ->assertRedirect(route('titles.index'));
 
-        tap($title->fresh(), function ($title) {
+        tap($title->fresh(), function ($title) use ($startDate) {
             $this->assertCount(1, $title->activations);
+            $this->assertSame($startDate, $title->activations->last()->started_at->toDateTimeString());
         });
     }
 

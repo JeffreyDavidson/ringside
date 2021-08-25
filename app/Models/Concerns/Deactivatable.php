@@ -56,21 +56,22 @@ trait Deactivatable
     {
         return $this->previousActivation()->exists() &&
                 $this->currentActivation()->doesntExist() &&
+                $this->futureActivation()->doesntExist() &&
                 $this->currentRetirement()->doesntExist();
     }
 
     /**
-     * Determine if the deactivatable can be deactivated.
+     * Determine if the stable can be deactivated.
      *
      * @return bool
      */
     public function canBeDeactivated()
     {
-        if ($this->isNotInActivation()) {
-            return false;
+        if ($this->isCurrentlyActivated()) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -80,6 +81,6 @@ trait Deactivatable
      */
     public function isNotInActivation()
     {
-        return $this->isNotActivated() || $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
+        return $this->isNotActivation() || $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }
 }

@@ -24,8 +24,6 @@ class DeactivateController extends Controller
         Stable $stable,
         DeactivateRequest $request,
         StableRepository $stableRepository,
-        WrestlerRepository $wrestlerRepository,
-        TagTeamRepository $tagTeamRepository
     ) {
         throw_unless($stable->canBeDeactivated(), new CannotBeDeactivatedException);
 

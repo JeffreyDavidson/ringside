@@ -57,7 +57,7 @@ class TagTeamService
     {
         $this->tagTeamRepository->update($tagTeam, $data);
 
-        if (isset($data['started_at'])) {
+        if ($tagTeam->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
             $this->employOrUpdateEmployment($tagTeam, $data['started_at']);
         }
 

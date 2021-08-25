@@ -274,8 +274,9 @@ class ManagerControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function update_a_manage_and_redirects($administrators)
+    public function update_a_manager_and_redirects($administrators)
     {
+        $this->withoutExceptionHandling();
         $manager = Manager::factory()->create();
 
         $this->actAs($administrators)
@@ -333,19 +334,20 @@ class ManagerControllerTest extends TestCase
      * @test
      * @dataProvider administrators
      */
-    public function update_can_employ_a_released_manager_when_started_at_is_filled($administrators)
+    public function update_cannot_reemploy_a_released_manager($administrators)
     {
-        $now = now()->toDateTimeString();
         $manager = Manager::factory()->released()->create();
+        $startDate = $manager->employments->last()->started_at->toDateTimeString();
 
-        $response = $this->actAs($administrators)
+        $this->assertCount(1, $manager->employments);
+
+        $this->actAs($administrators)
             ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams(['started_at' => $now]));
-        dd($response);
+            ->put(route('managers.update', $manager), $this->validParams());
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertCount(2, $manager->employments);
-            $this->assertEquals($now, $manager->employments->last()->started_at->toDateTimeString());
+        tap($manager->fresh(), function ($manager) use ($startDate) {
+            $this->assertCount(1, $manager->employments);
+            $this->assertSame($startDate, $manager->employments->last()->started_at->toDateTimeString());
         });
     }
 
