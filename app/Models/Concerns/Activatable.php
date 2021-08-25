@@ -121,9 +121,7 @@ trait Activatable
      */
     public function scopeUnactivated(Builder $query)
     {
-        return $query->whereDoesntHas('previousActivation')
-                    ->whereDoesntHave('currentActivation')
-                    ->whereDoesntHave('currentRetirement');
+        return $query->whereDoesntHave('activations');
     }
 
     /**
@@ -179,7 +177,7 @@ trait Activatable
      *
      * @return bool
      */
-    public function isNotActivated()
+    public function isUnactivated()
     {
         return $this->activations()->count() === 0;
     }

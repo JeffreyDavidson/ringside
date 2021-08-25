@@ -2,6 +2,7 @@
 
 namespace Tests\Integration\Models;
 
+use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -11,10 +12,16 @@ use Tests\TestCase;
  */
 class WrestlerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        Concerns\EmployableContractTests,
+        Concerns\InjurableContractTests,
+        Concerns\RetirableContractTests,
+        Concerns\StableMemberContractTests,
+        Concerns\SuspendableContractTests,
+        Concerns\TagTeamMemberContractTests;
 
-    private $futureEmployedWrestler;
     private $bookableWrestler;
+    private $futureEmployedWrestler;
     private $injuredWrestler;
     private $suspendedWrestler;
     private $retiredWrestler;
@@ -24,12 +31,103 @@ class WrestlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->futureEmployedWrestler = Wrestler::factory()->withFutureEmployment()->create();
         $this->bookableWrestler = Wrestler::factory()->bookable()->create();
+        $this->futureEmployedWrestler = Wrestler::factory()->withFutureEmployment()->create();
         $this->injuredWrestler = Wrestler::factory()->injured()->create();
         $this->suspendedWrestler = Wrestler::factory()->suspended()->create();
         $this->retiredWrestler = Wrestler::factory()->retired()->create();
         $this->releasedWrestler = Wrestler::factory()->released()->create();
+    }
+
+    protected function getEmployable()
+    {
+        return Wrestler::factory()->create();
+    }
+
+    protected function getInjurable()
+    {
+        return Wrestler::factory()->injured()->create();
+    }
+
+    protected function getRetirable()
+    {
+        return Wrestler::factory()->retired()->create();
+    }
+
+    protected function getStableMember()
+    {
+        return Wrestler::factory()->suspended()->create();
+    }
+
+    protected function getSuspendable()
+    {
+        return Wrestler::factory()->suspended()->create();
+    }
+
+    protected function getTagTeamMember()
+    {
+        return Wrestler::factory()->suspended()->create();
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_has_a_name()
+    {
+        $wrestler = Wrestler::factory()->create(['name' => 'Example Wrestler Name']);
+
+        $this->assertEquals('Example Wrestler Name', $wrestler->name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_has_a_height()
+    {
+        $wrestler = Wrestler::factory()->create(['height' => 70]);
+
+        $this->assertEquals('70', $wrestler->height);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_has_a_weight()
+    {
+        $wrestler = Wrestler::factory()->create(['weight' => 210]);
+
+        $this->assertEquals(210, $wrestler->weight);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_has_a_hometown()
+    {
+        $wrestler = Wrestler::factory()->create(['hometown' => 'Los Angeles, California']);
+
+        $this->assertEquals('Los Angeles, California', $wrestler->hometown);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_can_have_a_signature_move()
+    {
+        $wrestler = Wrestler::factory()->create(['signature_move' => 'Example Signature Move']);
+
+        $this->assertEquals('Example Signature Move', $wrestler->signature_move);
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_has_a_status()
+    {
+        $wrestler = Wrestler::factory()->create();
+        $wrestler->setRawAttributes(['status' => 'example'], true);
+
+        $this->assertEquals('example', $wrestler->getRawOriginal('status'));
     }
 
     /**
@@ -40,12 +138,12 @@ class WrestlerTest extends TestCase
         $bookableWrestlers = Wrestler::bookable()->get();
 
         $this->assertCount(1, $bookableWrestlers);
-        $this->assertTrue($bookableWrestlers->contains($this->bookableWrestler));
-        $this->assertFalse($bookableWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($bookableWrestlers->contains($this->injuredWrestler));
-        $this->assertFalse($bookableWrestlers->contains($this->suspendedWrestler));
-        $this->assertFalse($bookableWrestlers->contains($this->retiredWrestler));
-        $this->assertFalse($bookableWrestlers->contains($this->releasedWrestler));
+        $this->assertCollectionHas($bookableWrestlers, $this->bookableWrestler);
+        $this->assertCollectionDoesntHave($bookableWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($bookableWrestlers, $this->injuredWrestler);
+        $this->assertCollectionDoesntHave($bookableWrestlers, $this->suspendedWrestler);
+        $this->assertCollectionDoesntHave($bookableWrestlers, $this->retiredWrestler);
+        $this->assertCollectionDoesntHave($bookableWrestlers, $this->releasedWrestler);
     }
 
     /**
@@ -56,12 +154,12 @@ class WrestlerTest extends TestCase
         $futureEmployedWrestlers = Wrestler::futureEmployed()->get();
 
         $this->assertCount(1, $futureEmployedWrestlers);
-        $this->assertTrue($futureEmployedWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($futureEmployedWrestlers->contains($this->bookableWrestler));
-        $this->assertFalse($futureEmployedWrestlers->contains($this->injuredWrestler));
-        $this->assertFalse($futureEmployedWrestlers->contains($this->suspendedWrestler));
-        $this->assertFalse($futureEmployedWrestlers->contains($this->retiredWrestler));
-        $this->assertFalse($futureEmployedWrestlers->contains($this->releasedWrestler));
+        $this->assertCollectionHas($futureEmployedWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($futureEmployedWrestlers, $this->bookableWrestler);
+        $this->assertCollectionDoesntHave($futureEmployedWrestlers, $this->injuredWrestler);
+        $this->assertCollectionDoesntHave($futureEmployedWrestlers, $this->suspendedWrestler);
+        $this->assertCollectionDoesntHave($futureEmployedWrestlers, $this->retiredWrestler);
+        $this->assertCollectionDoesntHave($futureEmployedWrestlers, $this->releasedWrestler);
     }
 
     /**
@@ -72,12 +170,12 @@ class WrestlerTest extends TestCase
         $employedWrestlers = Wrestler::employed()->get();
 
         $this->assertCount(3, $employedWrestlers);
-        $this->assertTrue($employedWrestlers->contains($this->injuredWrestler));
-        $this->assertTrue($employedWrestlers->contains($this->bookableWrestler));
-        $this->assertTrue($employedWrestlers->contains($this->suspendedWrestler));
-        $this->assertFalse($employedWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($employedWrestlers->contains($this->retiredWrestler));
-        $this->assertFalse($employedWrestlers->contains($this->releasedWrestler));
+        $this->assertCollectionHas($employedWrestlers, $this->injuredWrestler);
+        $this->assertCollectionHas($employedWrestlers, $this->bookableWrestler);
+        $this->assertCollectionHas($employedWrestlers, $this->suspendedWrestler);
+        $this->assertCollectionDoesntHave($employedWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($employedWrestlers, $this->retiredWrestler);
+        $this->assertCollectionDoesntHave($employedWrestlers, $this->releasedWrestler);
     }
 
     /**
@@ -88,12 +186,12 @@ class WrestlerTest extends TestCase
         $releasedWrestlers = Wrestler::released()->get();
 
         $this->assertCount(1, $releasedWrestlers);
-        $this->assertTrue($releasedWrestlers->contains($this->releasedWrestler));
-        $this->assertFalse($releasedWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($releasedWrestlers->contains($this->bookableWrestler));
-        $this->assertFalse($releasedWrestlers->contains($this->injuredWrestler));
-        $this->assertFalse($releasedWrestlers->contains($this->suspendedWrestler));
-        $this->assertFalse($releasedWrestlers->contains($this->retiredWrestler));
+        $this->assertCollectionHas($releasedWrestlers, $this->releasedWrestler);
+        $this->assertCollectionDoesntHave($releasedWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($releasedWrestlers, $this->bookableWrestler);
+        $this->assertCollectionDoesntHave($releasedWrestlers, $this->injuredWrestler);
+        $this->assertCollectionDoesntHave($releasedWrestlers, $this->suspendedWrestler);
+        $this->assertCollectionDoesntHave($releasedWrestlers, $this->retiredWrestler);
     }
 
     /**
@@ -104,12 +202,12 @@ class WrestlerTest extends TestCase
         $suspendedWrestlers = Wrestler::suspended()->get();
 
         $this->assertCount(1, $suspendedWrestlers);
-        $this->assertTrue($suspendedWrestlers->contains($this->suspendedWrestler));
-        $this->assertFalse($suspendedWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($suspendedWrestlers->contains($this->bookableWrestler));
-        $this->assertFalse($suspendedWrestlers->contains($this->injuredWrestler));
-        $this->assertFalse($suspendedWrestlers->contains($this->retiredWrestler));
-        $this->assertFalse($suspendedWrestlers->contains($this->releasedWrestler));
+        $this->assertCollectionHas($suspendedWrestlers, $this->suspendedWrestler);
+        $this->assertCollectionDoesntHave($suspendedWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($suspendedWrestlers, $this->bookableWrestler);
+        $this->assertCollectionDoesntHave($suspendedWrestlers, $this->injuredWrestler);
+        $this->assertCollectionDoesntHave($suspendedWrestlers, $this->retiredWrestler);
+        $this->assertCollectionDoesntHave($suspendedWrestlers, $this->releasedWrestler);
     }
 
     /**
@@ -120,12 +218,12 @@ class WrestlerTest extends TestCase
         $injuredWrestlers = Wrestler::injured()->get();
 
         $this->assertCount(1, $injuredWrestlers);
-        $this->assertTrue($injuredWrestlers->contains($this->injuredWrestler));
-        $this->assertFalse($injuredWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($injuredWrestlers->contains($this->bookableWrestler));
-        $this->assertFalse($injuredWrestlers->contains($this->suspendedWrestler));
-        $this->assertFalse($injuredWrestlers->contains($this->retiredWrestler));
-        $this->assertFalse($injuredWrestlers->contains($this->releasedWrestler));
+        $this->assertCollectionHas($injuredWrestlers, $this->injuredWrestler);
+        $this->assertCollectionDoesntHave($injuredWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($injuredWrestlers, $this->bookableWrestler);
+        $this->assertCollectionDoesntHave($injuredWrestlers, $this->suspendedWrestler);
+        $this->assertCollectionDoesntHave($injuredWrestlers, $this->retiredWrestler);
+        $this->assertCollectionDoesntHave($injuredWrestlers, $this->releasedWrestler);
     }
 
     /**
@@ -136,11 +234,11 @@ class WrestlerTest extends TestCase
         $retiredWrestlers = Wrestler::retired()->get();
 
         $this->assertCount(1, $retiredWrestlers);
-        $this->assertTrue($retiredWrestlers->contains($this->retiredWrestler));
-        $this->assertFalse($retiredWrestlers->contains($this->futureEmployedWrestler));
-        $this->assertFalse($retiredWrestlers->contains($this->bookableWrestler));
-        $this->assertFalse($retiredWrestlers->contains($this->injuredWrestler));
-        $this->assertFalse($retiredWrestlers->contains($this->suspendedWrestler));
+        $this->assertCollectionHas($retiredWrestlers, $this->retiredWrestler);
+        $this->assertCollectionDoesntHave($retiredWrestlers, $this->futureEmployedWrestler);
+        $this->assertCollectionDoesntHave($retiredWrestlers, $this->bookableWrestler);
+        $this->assertCollectionDoesntHave($retiredWrestlers, $this->injuredWrestler);
+        $this->assertCollectionDoesntHave($retiredWrestlers, $this->suspendedWrestler);
     }
 
     /**

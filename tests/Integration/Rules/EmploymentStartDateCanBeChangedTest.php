@@ -20,7 +20,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function an_unemployed_wrestlers_start_date_can_be_changed()
+    public function an_unemployed_wrestler_start_date_can_be_changed()
     {
         $wrestler = Wrestler::factory()->unemployed()->create();
 
@@ -30,7 +30,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_future_employed_wrestlers_start_date_can_be_changed()
+    public function a_future_employed_wrestler_start_date_can_be_changed()
     {
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
@@ -40,9 +40,9 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_bookable_wrestlers_start_date_cannot_be_changed()
+    public function an_employed_wrestler_start_date_cannot_be_changed()
     {
-        $wrestler = Wrestler::factory()->bookable()->create();
+        $wrestler = Wrestler::factory()->employed()->create();
 
         $this->assertFalse((new EmploymentStartDateCanBeChanged($wrestler))->passes(null, now()->toDateTimeString()));
     }
@@ -50,7 +50,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function an_unemployed_managers_start_date_can_be_changed()
+    public function an_unemployed_manager_start_date_can_be_changed()
     {
         $manager = Manager::factory()->unemployed()->create();
 
@@ -60,7 +60,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_future_employed_managers_start_date_can_be_changed()
+    public function a_future_employed_manager_start_date_can_be_changed()
     {
         $manager = Manager::factory()->withFutureEmployment()->create();
 
@@ -70,9 +70,9 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function an_available_managers_start_date_cannot_be_changed()
+    public function an_employed_manager_start_date_cannot_be_changed()
     {
-        $manager = Manager::factory()->available()->create();
+        $manager = Manager::factory()->employed()->create();
 
         $this->assertFalse((new EmploymentStartDateCanBeChanged($manager))->passes(null, now()->toDateTimeString()));
     }
@@ -80,7 +80,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function an_unemployed_referees_start_date_can_be_changed()
+    public function an_unemployed_referee_start_date_can_be_changed()
     {
         $referee = Referee::factory()->unemployed()->create();
 
@@ -90,7 +90,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_future_employed_referees_start_date_can_be_changed()
+    public function a_future_employed_referee_start_date_can_be_changed()
     {
         $referee = Referee::factory()->withFutureEmployment()->create();
 
@@ -100,9 +100,9 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_bookable_referees_start_date_cannot_be_changed()
+    public function an_employed_referee_start_date_cannot_be_changed()
     {
-        $referee = Referee::factory()->bookable()->create();
+        $referee = Referee::factory()->employed()->create();
 
         $this->assertFalse((new EmploymentStartDateCanBeChanged($referee))->passes(null, now()->toDateTimeString()));
     }
@@ -110,7 +110,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function an_unemployed_tag_teams_start_date_can_be_changed()
+    public function an_unemployed_tag_team_start_date_can_be_changed()
     {
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
@@ -120,7 +120,7 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_future_employed_tag_teams_start_date_can_be_changed()
+    public function a_future_employed_tag_team_start_date_can_be_changed()
     {
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
 
@@ -130,9 +130,9 @@ class EmploymentStartDateCanBeChangedTest extends TestCase
     /**
      * @test
      */
-    public function a_bookable_tag_teams_start_date_cannot_be_changed()
+    public function an_employed_tag_teams_start_date_cannot_be_changed()
     {
-        $tagTeam = TagTeam::factory()->bookable()->create();
+        $tagTeam = TagTeam::factory()->employed()->create();
 
         $this->assertFalse((new EmploymentStartDateCanBeChanged($tagTeam))->passes(null, now()->toDateTimeString()));
     }

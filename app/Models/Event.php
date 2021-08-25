@@ -50,7 +50,7 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include scheduled events.
+     * Scope a query to include scheduled events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -61,7 +61,7 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include unscheduled events.
+     * Scope a query to include unscheduled events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -72,7 +72,7 @@ class Event extends Model
     }
 
     /**
-     * Scope a query to only include past events.
+     * Scope a query to include past events.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -89,11 +89,7 @@ class Event extends Model
      */
     public function isScheduled()
     {
-        if (! $this->date) {
-            return false;
-        }
-
-        return $this->date->isFuture();
+        return $this->date?->isFuture() ?? false;
     }
 
     /**
@@ -103,11 +99,7 @@ class Event extends Model
      */
     public function isPast()
     {
-        if (! $this->date) {
-            return false;
-        }
-
-        return $this->date->isPast();
+        return $this->date?->isPast() ?? false;
     }
 
     /**
@@ -115,7 +107,7 @@ class Event extends Model
      *
      * @return bool
      */
-    public function isUnScheduled()
+    public function isUnscheduled()
     {
         return $this->date === null;
     }

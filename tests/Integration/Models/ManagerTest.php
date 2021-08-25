@@ -12,7 +12,11 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        Concerns\EmployableContractTests,
+        Concerns\InjurableContractTests,
+        Concerns\RetirableContractTests,
+        Concerns\SuspendableContractTests;
 
     private $futureEmployedManager;
     private $availableManager;
@@ -31,6 +35,57 @@ class ManagerTest extends TestCase
         $this->suspendedManager = Manager::factory()->suspended()->create();
         $this->retiredManager = Manager::factory()->retired()->create();
         $this->releasedManager = Manager::factory()->released()->create();
+    }
+
+    protected function getEmployable()
+    {
+        return Manager::factory()->create();
+    }
+
+    protected function getInjurable()
+    {
+        return Manager::factory()->injured()->create();
+    }
+
+    protected function getRetirable()
+    {
+        return Manager::factory()->retired()->create();
+    }
+
+    protected function getSuspendable()
+    {
+        return Manager::factory()->suspended()->create();
+    }
+
+    /**
+     * @test
+     */
+    public function a_manager_has_a_first_name()
+    {
+        $manager = Manager::factory()->create(['first_name' => 'John']);
+
+        $this->assertEquals('John', $manager->first_name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_manager_has_a_last_name()
+    {
+        $manager = Manager::factory()->create(['last_name' => 'Smith']);
+
+        $this->assertEquals('Smith', $manager->last_name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_manager_has_a_status()
+    {
+        $manager = Manager::factory()->create();
+        $manager->setRawAttributes(['status' => 'example'], true);
+
+        $this->assertEquals('example', $manager->getRawOriginal('status'));
     }
 
     /**
@@ -142,82 +197,5 @@ class ManagerTest extends TestCase
         $this->assertFalse($retiredManagers->contains($this->availableManager));
         $this->assertFalse($retiredManagers->contains($this->injuredManager));
         $this->assertFalse($retiredManagers->contains($this->suspendedManager));
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_a_suspension_is_suspended()
-    {
-        $manager = Manager::factory()->suspended()->create();
-
-        $this->assertTrue($manager->isSuspended());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_can_be_suspended_multiple_times()
-    {
-        $manager = Manager::factory()->suspended()->create();
-
-        $manager->reinstate();
-        $manager->suspend();
-
-        $this->assertCount(1, $manager->previousSuspensions);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_a_retirement_is_retired()
-    {
-        $manager = Manager::factory()->retired()->create();
-
-        $this->assertTrue($manager->isRetired());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_an_injury_is_injured()
-    {
-        $manager = Manager::factory()->injured()->create();
-
-        $this->assertTrue($manager->isInjured());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_can_be_injured_multiple_times()
-    {
-        $manager = Manager::factory()->injured()->create();
-
-        $manager->clearFromInjury();
-        $manager->injure();
-
-        $this->assertCount(1, $manager->previousInjuries);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_with_an_employment_now_or_in_the_past_is_employed()
-    {
-        $manager = Manager::factory()->create();
-        $manager->employments()->create(['started_at' => Carbon::now()]);
-
-        $this->assertTrue($manager->isCurrentlyEmployed());
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_without_an_employment_is_unemployed()
-    {
-        $manager = Manager::factory()->create();
-
-        $this->assertTrue($manager->isUnemployed());
     }
 }

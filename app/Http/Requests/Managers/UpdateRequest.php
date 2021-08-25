@@ -5,6 +5,7 @@ namespace App\Http\Requests\Managers;
 use App\Models\Manager;
 use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -25,10 +26,20 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        dd($this->manager->isRetired());
+
         return [
             'first_name' => ['required', 'string', 'min:3'],
             'last_name' => ['required', 'string', 'min:3'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s', new EmploymentStartDateCanBeChanged($this->route('manager'))],
+            'started_at' => [
+                'nullable',
+                'string',
+                'date_format:Y-m-d H:i:s',
+                Rule::when(
+                    ! $this->manager->isRetired() && ! $this->manager->isReleased(),
+                    [new EmploymentStartDateCanBeChanged($this->route('manager'))]
+                ),
+            ],
         ];
     }
 

@@ -3,11 +3,9 @@
 namespace Tests\Integration\Http\Livewire\Titles;
 
 use App\Http\Livewire\Titles\RetiredTitles;
-use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
-use TitlesTestTableSeeder;
 
 /**
  * @group titles
@@ -17,34 +15,21 @@ class RetiredTitlesTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
+    /**
+     * @test
+     */
+    public function component_should_return_correct_view()
     {
-        parent::setUp();
-
-        $this->seed(TitlesTestTableSeeder::class);
+        Livewire::test(RetiredTitles::class)
+            ->assertViewIs('livewire.titles.retired-titles');
     }
 
     /**
      * @test
      */
-    public function retired_titles_component_should_return_correct_view()
+    public function component_should_pass_correct_data()
     {
-        $component = Livewire::test(RetiredTitles::class);
-
-        $this->assertEquals('livewire.titles.retired-titles', $component->lastRenderedView->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function retired_titles_component_should_pass_correct_data()
-    {
-        $component = Livewire::test(RetiredTitles::class);
-
-        $retiredTitles = Title::retired()->get();
-
-        $component->assertViewHas('retiredTitles');
-        $this->assertCount(3, $retiredTitles);
-        $this->assertEquals($this->titles->get('retired')->pluck('id')->toArray(), $retiredTitles->pluck('id')->sort()->values()->toArray());
+        Livewire::test(RetiredTitles::class)
+            ->assertViewHas('retiredTitles');
     }
 }

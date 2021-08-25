@@ -18,7 +18,7 @@ class TagTeamCanJoinStableTest extends TestCase
     /**
      * @test
      */
-    public function an_unactivated_tag_team_can_join_an_unactivated_stable()
+    public function an_unemployed_tag_team_can_join_an_unactivated_stable()
     {
         $stable = Stable::factory()->unactivated()->create();
         $tagTeam = TagTeam::factory()->unemployed()->create();
@@ -29,7 +29,7 @@ class TagTeamCanJoinStableTest extends TestCase
     /**
      * @test
      */
-    public function a_tag_team_in_an_active_stable_cannot_join_another_ctive_stable()
+    public function a_tag_team_cannot_be_a_member_of_multiple_active_stables()
     {
         $stableA = Stable::factory()->active()->create();
         $stableB = Stable::factory()->active()->create();

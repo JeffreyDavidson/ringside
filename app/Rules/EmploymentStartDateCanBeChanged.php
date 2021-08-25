@@ -31,19 +31,7 @@ class EmploymentStartDateCanBeChanged implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($this->model->isNotInEmployment()) {
-            return true;
-        }
-
-        if ($this->model->hasFutureEmployment()) {
-            return true;
-        }
-
-        if ($this->model->currentEmployment && $this->model->currentEmployment->started_at->lt($value)) {
-            return true;
-        }
-
-        if (isset($this->model->started_at) && $this->model->started_at->eq($value)) {
+        if ($this->model->isCurrentlyEmployed() && $this->model->currentEmployment->started_at->eq($value)) {
             return true;
         }
 

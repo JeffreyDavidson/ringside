@@ -11,7 +11,11 @@ use Tests\TestCase;
  */
 class RefereeTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        Concerns\EmployableContractTests,
+        Concerns\InjurableContractTests,
+        Concerns\RetirableContractTests,
+        Concerns\SuspendableContractTests;
 
     private $futureEmployedReferee;
     private $bookableReferee;
@@ -30,6 +34,57 @@ class RefereeTest extends TestCase
         $this->suspendedReferee = Referee::factory()->suspended()->create();
         $this->retiredReferee = Referee::factory()->retired()->create();
         $this->releasedReferee = Referee::factory()->released()->create();
+    }
+
+    protected function getEmployable()
+    {
+        return Referee::factory()->create();
+    }
+
+    protected function getInjurable()
+    {
+        return Referee::factory()->injured()->create();
+    }
+
+    protected function getRetirable()
+    {
+        return Referee::factory()->retired()->create();
+    }
+
+    protected function getSuspendable()
+    {
+        return Referee::factory()->suspended()->create();
+    }
+
+    /**
+     * @test
+     */
+    public function a_referee_has_a_first_name()
+    {
+        $referee = Referee::factory()->create(['first_name' => 'John']);
+
+        $this->assertEquals('John', $referee->first_name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_referee_has_a_last_name()
+    {
+        $referee = Referee::factory()->create(['last_name' => 'Smith']);
+
+        $this->assertEquals('Smith', $referee->last_name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_referee_has_a_status()
+    {
+        $referee = Referee::factory()->create();
+        $referee->setRawAttributes(['status' => 'example'], true);
+
+        $this->assertEquals('example', $referee->getRawOriginal('status'));
     }
 
     /**

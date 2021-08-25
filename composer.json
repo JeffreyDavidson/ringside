@@ -12,7 +12,7 @@
         "fideloper/proxy": "^4.0",
         "fidum/laravel-eloquent-morph-to-one": "^2.0",
         "illuminatech/validation-composite": "*",
-        "laravel/framework": "^8.10",
+        "laravel/framework": "^8.56",
         "laravel/telescope": "^4",
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",

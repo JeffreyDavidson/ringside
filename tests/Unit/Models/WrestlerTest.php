@@ -2,16 +2,12 @@
 
 namespace Tests\Unit\Models;
 
-use App\Casts\HeightCast;
 use App\Enums\WrestlerStatus;
+use App\Height;
 use App\Models\Contracts\Bookable;
-use App\Models\Contracts\CanJoinStable;
+use App\Models\Contracts\StableMember;
 use App\Models\SingleRosterMember;
-use App\Models\Stable;
-use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 /**
@@ -21,87 +17,14 @@ use Tests\TestCase;
  */
 class WrestlerTest extends TestCase
 {
-    use DatabaseMigrations;
-
-    /**
-     * @test
-     */
-    public function a_wrestler_has_a_name()
-    {
-        $wrestler = new Wrestler(['name' => 'Example Wrestler Name']);
-
-        $this->assertEquals('Example Wrestler Name', $wrestler->name);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_has_a_height()
-    {
-        $wrestler = new Wrestler(['height' => 70]);
-
-        $this->assertEquals('70', $wrestler->height);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_has_a_weight()
-    {
-        $wrestler = new Wrestler(['weight' => 210]);
-
-        $this->assertEquals(210, $wrestler->weight);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_has_a_hometown()
-    {
-        $wrestler = new Wrestler(['hometown' => 'Los Angeles, California']);
-
-        $this->assertEquals('Los Angeles, California', $wrestler->hometown);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_can_have_a_signature_move()
-    {
-        $wrestler = new Wrestler(['signature_move' => 'Example Signature Move']);
-
-        $this->assertEquals('Example Signature Move', $wrestler->signature_move);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_has_a_status()
-    {
-        $wrestler = new Wrestler();
-        $wrestler->setRawAttributes(['status' => 'example'], true);
-
-        $this->assertEquals('example', $wrestler->getRawOriginal('status'));
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_status_gets_cast_as_a_wrestler_status_enum()
-    {
-        $wrestler = new Wrestler();
-
-        $this->assertInstanceOf(WrestlerStatus::class, $wrestler->status);
-    }
-
     /**
      * @test
      */
     public function a_wrestler_height_gets_cast_as_a_height_enum()
     {
-        $wrestler = new Wrestler();
+        $wrestler = Wrestler::factory()->make();
 
-        $this->assertInstanceOf(HeightCast::class, $wrestler->height);
+        $this->assertInstanceOf(Height::class, $wrestler->height);
     }
 
     /**
@@ -110,6 +33,16 @@ class WrestlerTest extends TestCase
     public function a_wrestler_is_a_single_roster_member()
     {
         $this->assertEquals(SingleRosterMember::class, get_parent_class(Wrestler::class));
+    }
+
+    /**
+     * @test
+     */
+    public function a_wrestler_status_gets_cast_as_a_wrestler_status_enum()
+    {
+        $wrestler = Wrestler::factory()->make();
+
+        $this->assertInstanceOf(WrestlerStatus::class, $wrestler->status);
     }
 
     /**
@@ -133,7 +66,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_uses_can_be_stable_member_trait()
     {
-        $this->assertUsesTrait('App\Models\Concerns\CanJoinStable', Wrestler::class);
+        $this->assertUsesTrait('App\Models\Concerns\StableMember', Wrestler::class);
     }
 
     /**
@@ -147,36 +80,8 @@ class WrestlerTest extends TestCase
     /**
      * @test
      */
-    public function a_wrestler_implements_can_join_stable_interface()
+    public function a_wrestler_implements_stable_member_interface()
     {
-        $this->assertContains(CanJoinStable::class, class_implements(Wrestler::class));
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_belongs_to_a_user()
-    {
-        $this->assertInstanceOf(BelongsTo::class, (new Wrestler)->user);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_can_have_one_current_tag_team()
-    {
-        $wrestler = Wrestler::factory()->hasAttached(TagTeam::factory(), ['joined_at' => now()])->create();
-
-        $this->assertInstanceOf(TagTeam::class, $wrestler->currentTagTeam);
-    }
-
-    /**
-     * @test
-     */
-    public function a_wrestler_can_have_one_current_stable()
-    {
-        $wrestler = Wrestler::factory()->hasAttached(Stable::factory(), ['joined_at' => now()])->create();
-
-        $this->assertInstanceOf(Stable::class, $wrestler->currentStable);
+        $this->assertContains(StableMember::class, class_implements(Wrestler::class));
     }
 }

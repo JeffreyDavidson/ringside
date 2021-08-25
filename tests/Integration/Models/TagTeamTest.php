@@ -11,7 +11,11 @@ use Tests\TestCase;
  */
 class TagTeamTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        Concerns\EmployableContractTests,
+        Concerns\RetirableContractTests,
+        Concerns\StableMemberContractTests,
+        Concerns\SuspendableContractTests;
 
     private $futureEmployedTagTeam;
     private $bookableTagTeam;
@@ -30,6 +34,57 @@ class TagTeamTest extends TestCase
         $this->releasedTagTeam = TagTeam::factory()->released()->create();
     }
 
+    protected function getEmployable()
+    {
+        return TagTeam::factory()->create();
+    }
+
+    protected function getRetirable()
+    {
+        return TagTeam::factory()->retired()->create();
+    }
+
+    protected function getStableMember()
+    {
+        return TagTeam::factory()->bookable()->create();
+    }
+
+    protected function getSuspendable()
+    {
+        return TagTeam::factory()->suspended()->create();
+    }
+
+    /**
+     * @test
+     */
+    public function a_tag_team_has_a_name()
+    {
+        $tagTeam = TagTeam::factory()->create(['name' => 'Example Tag Team Name']);
+
+        $this->assertEquals('Example Tag Team Name', $tagTeam->name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_tag_team_can_have_a_signature_move()
+    {
+        $tagTeam = TagTeam::factory()->create(['signature_move' => 'Example Signature Move']);
+
+        $this->assertEquals('Example Signature Move', $tagTeam->signature_move);
+    }
+
+    /**
+     * @test
+     */
+    public function a_tag_team_has_a_status()
+    {
+        $tagTeam = TagTeam::factory()->create();
+        $tagTeam->setRawAttributes(['status' => 'example'], true);
+
+        $this->assertEquals('example', $tagTeam->getRawOriginal('status'));
+    }
+
     /**
      * @test
      */
@@ -38,11 +93,11 @@ class TagTeamTest extends TestCase
         $bookableTagTeams = TagTeam::bookable()->get();
 
         $this->assertCount(1, $bookableTagTeams);
-        $this->assertTrue($bookableTagTeams->contains($this->bookableTagTeam));
-        $this->assertFalse($bookableTagTeams->contains($this->futureEmployedTagTeam));
-        $this->assertFalse($bookableTagTeams->contains($this->suspendedTagTeam));
-        $this->assertFalse($bookableTagTeams->contains($this->retiredTagTeam));
-        $this->assertFalse($bookableTagTeams->contains($this->releasedTagTeam));
+        $this->assertCollectionHas($bookableTagTeams, $this->bookableTagTeam);
+        $this->assertCollectionDoesntHave($bookableTagTeams, $this->futureEmployedTagTeam);
+        $this->assertCollectionDoesntHave($bookableTagTeams, $this->suspendedTagTeam);
+        $this->assertCollectionDoesntHave($bookableTagTeams, $this->retiredTagTeam);
+        $this->assertCollectionDoesntHave($bookableTagTeams, $this->releasedTagTeam);
     }
 
     /**
@@ -53,11 +108,11 @@ class TagTeamTest extends TestCase
         $futureEmployedTagTeams = TagTeam::futureEmployed()->get();
 
         $this->assertCount(1, $futureEmployedTagTeams);
-        $this->assertTrue($futureEmployedTagTeams->contains($this->futureEmployedTagTeam));
-        $this->assertFalse($futureEmployedTagTeams->contains($this->bookableTagTeam));
-        $this->assertFalse($futureEmployedTagTeams->contains($this->suspendedTagTeam));
-        $this->assertFalse($futureEmployedTagTeams->contains($this->retiredTagTeam));
-        $this->assertFalse($futureEmployedTagTeams->contains($this->releasedTagTeam));
+        $this->assertCollectionHas($futureEmployedTagTeams, $this->futureEmployedTagTeam);
+        $this->assertCollectionDoesntHave($futureEmployedTagTeams, $this->bookableTagTeam);
+        $this->assertCollectionDoesntHave($futureEmployedTagTeams, $this->suspendedTagTeam);
+        $this->assertCollectionDoesntHave($futureEmployedTagTeams, $this->retiredTagTeam);
+        $this->assertCollectionDoesntHave($futureEmployedTagTeams, $this->releasedTagTeam);
     }
 
     /**
@@ -68,11 +123,11 @@ class TagTeamTest extends TestCase
         $employedTagTeams = TagTeam::employed()->get();
 
         $this->assertCount(2, $employedTagTeams);
-        $this->assertTrue($employedTagTeams->contains($this->bookableTagTeam));
-        $this->assertTrue($employedTagTeams->contains($this->suspendedTagTeam));
-        $this->assertFalse($employedTagTeams->contains($this->futureEmployedTagTeam));
-        $this->assertFalse($employedTagTeams->contains($this->retiredTagTeam));
-        $this->assertFalse($employedTagTeams->contains($this->releasedTagTeam));
+        $this->assertCollectionHas($employedTagTeams, $this->bookableTagTeam);
+        $this->assertCollectionHas($employedTagTeams, $this->suspendedTagTeam);
+        $this->assertCollectionDoesntHave($employedTagTeams, $this->futureEmployedTagTeam);
+        $this->assertCollectionDoesntHave($employedTagTeams, $this->retiredTagTeam);
+        $this->assertCollectionDoesntHave($employedTagTeams, $this->releasedTagTeam);
     }
 
     /**
@@ -83,11 +138,11 @@ class TagTeamTest extends TestCase
         $releasedTagTeams = TagTeam::released()->get();
 
         $this->assertCount(1, $releasedTagTeams);
-        $this->assertTrue($releasedTagTeams->contains($this->releasedTagTeam));
-        $this->assertFalse($releasedTagTeams->contains($this->futureEmployedTagTeam));
-        $this->assertFalse($releasedTagTeams->contains($this->bookableTagTeam));
-        $this->assertFalse($releasedTagTeams->contains($this->suspendedTagTeam));
-        $this->assertFalse($releasedTagTeams->contains($this->retiredTagTeam));
+        $this->assertCollectionHas($releasedTagTeams, $this->releasedTagTeam);
+        $this->assertCollectionDoesntHave($releasedTagTeams, $this->futureEmployedTagTeam);
+        $this->assertCollectionDoesntHave($releasedTagTeams, $this->bookableTagTeam);
+        $this->assertCollectionDoesntHave($releasedTagTeams, $this->suspendedTagTeam);
+        $this->assertCollectionDoesntHave($releasedTagTeams, $this->retiredTagTeam);
     }
 
     /**
@@ -98,11 +153,11 @@ class TagTeamTest extends TestCase
         $suspendedTagTeams = TagTeam::suspended()->get();
 
         $this->assertCount(1, $suspendedTagTeams);
-        $this->assertTrue($suspendedTagTeams->contains($this->suspendedTagTeam));
-        $this->assertFalse($suspendedTagTeams->contains($this->futureEmployedTagTeam));
-        $this->assertFalse($suspendedTagTeams->contains($this->bookableTagTeam));
-        $this->assertFalse($suspendedTagTeams->contains($this->retiredTagTeam));
-        $this->assertFalse($suspendedTagTeams->contains($this->releasedTagTeam));
+        $this->assertCollectionHas($suspendedTagTeams, $this->suspendedTagTeam);
+        $this->assertCollectionDoesntHave($suspendedTagTeams, $this->futureEmployedTagTeam);
+        $this->assertCollectionDoesntHave($suspendedTagTeams, $this->bookableTagTeam);
+        $this->assertCollectionDoesntHave($suspendedTagTeams, $this->retiredTagTeam);
+        $this->assertCollectionDoesntHave($suspendedTagTeams, $this->releasedTagTeam);
     }
 
     /**
@@ -113,10 +168,10 @@ class TagTeamTest extends TestCase
         $retiredTagTeams = TagTeam::retired()->get();
 
         $this->assertCount(1, $retiredTagTeams);
-        $this->assertTrue($retiredTagTeams->contains($this->retiredTagTeam));
-        $this->assertFalse($retiredTagTeams->contains($this->futureEmployedTagTeam));
-        $this->assertFalse($retiredTagTeams->contains($this->bookableTagTeam));
-        $this->assertFalse($retiredTagTeams->contains($this->suspendedTagTeam));
-        $this->assertFalse($retiredTagTeams->contains($this->releasedTagTeam));
+        $this->assertCollectionHas($retiredTagTeams, $this->retiredTagTeam);
+        $this->assertCollectionDoesntHave($retiredTagTeams, $this->futureEmployedTagTeam);
+        $this->assertCollectionDoesntHave($retiredTagTeams, $this->bookableTagTeam);
+        $this->assertCollectionDoesntHave($retiredTagTeams, $this->suspendedTagTeam);
+        $this->assertCollectionDoesntHave($retiredTagTeams, $this->releasedTagTeam);
     }
 }

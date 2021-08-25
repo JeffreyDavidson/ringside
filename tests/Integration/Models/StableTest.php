@@ -11,23 +11,46 @@ use Tests\TestCase;
  */
 class StableTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        Concerns\RetirableContractTests;
+
+    private $activeStable;
+    private $futureActivatedStable;
+    private $retiredStable;
+    private $unactivatedStable;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->activeStable = Stable::factory()->active()->create();
+        $this->futureActivatedStable = Stable::factory()->withFutureActivation()->create();
+        $this->retiredStable = Stable::factory()->retired()->create();
+        $this->unactivatedStable = Stable::factory()->unactivated()->create();
+    }
+
+    protected function getActivatable()
+    {
+        return Stable::factory()->active()->create();
+    }
+
+    protected function getRetirable()
+    {
+        return Stable::factory()->retired()->create();
+    }
 
     /**
      * @test
      */
     public function it_can_get_active_stables()
     {
-        $activeStable = Stable::factory()->active()->create();
-        $futureActivatedStable = Stable::factory()->withFutureActivation()->create();
-        $retiredStable = Stable::factory()->retired()->create();
-
         $activeStables = Stable::active()->get();
 
         $this->assertCount(1, $activeStables);
-        $this->assertTrue($activeStables->contains($activeStable));
-        $this->assertFalse($activeStables->contains($futureActivatedStable));
-        $this->assertFalse($activeStables->contains($retiredStable));
+        $this->assertCollectionHas($activeStables, $this->activeStable);
+        $this->assertCollectionDoesntHave($activeStables, $this->futureActivatedStable);
+        $this->assertCollectionDoesntHave($activeStables, $this->retiredStable);
+        $this->assertCollectionDoesntHave($activeStables, $this->unactivatedStable);
     }
 
     /**
@@ -35,16 +58,13 @@ class StableTest extends TestCase
      */
     public function it_can_get_future_activated_stables()
     {
-        $activeStable = Stable::factory()->active()->create();
-        $futureActivatedStable = Stable::factory()->withFutureActivation()->create();
-        $retiredStable = Stable::factory()->retired()->create();
-
         $futureActiveStables = Stable::withFutureActivation()->get();
 
         $this->assertCount(1, $futureActiveStables);
-        $this->assertTrue($futureActiveStables->contains($futureActivatedStable));
-        $this->assertFalse($futureActiveStables->contains($activeStable));
-        $this->assertFalse($futureActiveStables->contains($retiredStable));
+        $this->assertCollectionHas($futureActiveStables, $this->futureActivatedStable);
+        $this->assertCollectionDoesntHave($futureActiveStables, $this->activeStable);
+        $this->assertCollectionDoesntHave($futureActiveStables, $this->retiredStable);
+        $this->assertCollectionDoesntHave($futureActiveStables, $this->unactivatedStable);
     }
 
     /**
@@ -52,15 +72,26 @@ class StableTest extends TestCase
      */
     public function it_can_get_retired_stables()
     {
-        $activeStable = Stable::factory()->active()->create();
-        $futureActivatedStable = Stable::factory()->withFutureActivation()->create();
-        $retiredStable = Stable::factory()->retired()->create();
-
         $retiredStables = Stable::retired()->get();
 
         $this->assertCount(1, $retiredStables);
-        $this->assertTrue($retiredStables->contains($retiredStable));
-        $this->assertFalse($retiredStables->contains($activeStable));
-        $this->assertFalse($retiredStables->contains($futureActivatedStable));
+        $this->assertCollectionHas($retiredStables, $this->retiredStable);
+        $this->assertCollectionDoesntHave($retiredStables, $this->activeStable);
+        $this->assertCollectionDoesntHave($retiredStables, $this->futureActivatedStable);
+        $this->assertCollectionDoesntHave($retiredStables, $this->unactivatedStable);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_unactivated_stables()
+    {
+        $unactivatedStables = Stable::unactivated()->get();
+
+        $this->assertCount(1, $unactivatedStables);
+        $this->assertCollectionHas($unactivatedStables, $this->unactivatedStable);
+        $this->assertCollectionDoesntHave($unactivatedStables, $this->activeStable);
+        $this->assertCollectionDoesntHave($unactivatedStables, $this->futureActivatedStable);
+        $this->assertCollectionDoesntHave($unactivatedStables, $this->retiredStable);
     }
 }

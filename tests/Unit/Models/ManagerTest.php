@@ -5,7 +5,6 @@ namespace Tests\Unit\Models;
 use App\Enums\ManagerStatus;
 use App\Models\Manager;
 use App\Models\SingleRosterMember;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -15,45 +14,12 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * @test
-     */
-    public function a_manager_has_a_first_name()
-    {
-        $manager = new Manager(['first_name' => 'John']);
-
-        $this->assertEquals('John', $manager->first_name);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_has_a_last_name()
-    {
-        $manager = new Manager(['last_name' => 'Smith']);
-
-        $this->assertEquals('Smith', $manager->last_name);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_has_a_status()
-    {
-        $manager = new Manager();
-        $manager->setRawAttributes(['status' => 'example'], true);
-
-        $this->assertEquals('example', $manager->getRawOriginal('status'));
-    }
-
     /**
      * @test
      */
     public function a_manager_status_gets_cast_as_a_manager_status_enum()
     {
-        $manager = new Manager();
+        $manager = Manager::factory()->make();
 
         $this->assertInstanceOf(ManagerStatus::class, $manager->status);
     }

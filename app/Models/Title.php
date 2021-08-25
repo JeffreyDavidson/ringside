@@ -15,6 +15,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     use SoftDeletes,
         HasFactory,
         Concerns\Activatable,
+        Concerns\Competable,
         Concerns\Deactivatable,
         Concerns\Retirable,
         Concerns\Unguarded;

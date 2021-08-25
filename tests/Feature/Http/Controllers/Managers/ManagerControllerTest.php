@@ -338,10 +338,10 @@ class ManagerControllerTest extends TestCase
         $now = now()->toDateTimeString();
         $manager = Manager::factory()->released()->create();
 
-        $this->actAs($administrators)
+        $response = $this->actAs($administrators)
             ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams(['started_at' => $now]))
-            ->assertRedirect(route('managers.index'));
+            ->put(route('managers.update', $manager), $this->validParams(['started_at' => $now]));
+        dd($response);
 
         tap($manager->fresh(), function ($manager) use ($now) {
             $this->assertCount(2, $manager->employments);

@@ -52,6 +52,23 @@ class TagTeamFactory extends Factory
         });
     }
 
+    public function employed()
+    {
+        $start = now()->subDays(3);
+
+        return $this->state(function (array $attributes) {
+            return ['status' => TagTeamStatus::BOOKABLE];
+        })
+        ->has(Employment::factory()->started(Carbon::yesterday()))
+        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable(), ['joined_at' => $start])
+        ->afterCreating(function (TagTeam $tagTeam) {
+            $tagTeam->currentWrestlers->each(function ($wrestler) {
+                $wrestler->updateStatus()->save();
+            });
+            $tagTeam->updateStatus()->save();
+        });
+    }
+
     public function bookable()
     {
         $start = now()->subDays(3);

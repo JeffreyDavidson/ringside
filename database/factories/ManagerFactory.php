@@ -34,6 +34,18 @@ class ManagerFactory extends Factory
         ];
     }
 
+    public function employed()
+    {
+        return $this->state(function (array $attributes) {
+            return ['status' => ManagerStatus::AVAILABLE];
+        })
+        ->has(Employment::factory()->started(Carbon::yesterday()))
+        ->afterCreating(function (Manager $manager) {
+            $manager->updateStatus()->save();
+            $manager->load('employments');
+        });
+    }
+
     public function available()
     {
         return $this->state(function (array $attributes) {

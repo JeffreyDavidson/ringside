@@ -11,10 +11,11 @@ use Tests\TestCase;
  */
 class TitleTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        Concerns\RetirableContractTests;
 
-    private $futureActivatedTitle;
     private $activeTitle;
+    private $futureActivatedTitle;
     private $inactiveTitle;
     private $retiredTitle;
 
@@ -22,24 +23,41 @@ class TitleTest extends TestCase
     {
         parent::setUp();
 
-        $this->futureActivatedTitle = Title::factory()->withFutureActivation()->create();
         $this->activeTitle = Title::factory()->active()->create();
+        $this->futureActivatedTitle = Title::factory()->withFutureActivation()->create();
         $this->inactiveTitle = Title::factory()->inactive()->create();
         $this->retiredTitle = Title::factory()->retired()->create();
+    }
+
+    protected function getActivatable()
+    {
+        return Title::factory()->active()->create();
+    }
+
+    protected function getRetirable()
+    {
+        return Title::factory()->retired()->create();
     }
 
     /**
      * @test
      */
-    public function it_can_get_future_activated_titles()
+    public function a_title_has_a_name()
     {
-        $futureActivatedTitles = Title::withFutureActivation()->get();
+        $wrestler = Title::factory()->create(['name' => 'Example Title Name']);
 
-        $this->assertCount(1, $futureActivatedTitles);
-        $this->assertTrue($futureActivatedTitles->contains($this->futureActivatedTitle));
-        $this->assertFalse($futureActivatedTitles->contains($this->activeTitle));
-        $this->assertFalse($futureActivatedTitles->contains($this->inactiveTitle));
-        $this->assertFalse($futureActivatedTitles->contains($this->retiredTitle));
+        $this->assertEquals('Example Title Name', $wrestler->name);
+    }
+
+    /**
+     * @test
+     */
+    public function a_title_has_a_status()
+    {
+        $title = Title::factory()->create();
+        $title->setRawAttributes(['status' => 'example'], true);
+
+        $this->assertEquals('example', $title->getRawOriginal('status'));
     }
 
     /**
@@ -50,10 +68,24 @@ class TitleTest extends TestCase
         $activeTitles = Title::active()->get();
 
         $this->assertCount(1, $activeTitles);
-        $this->assertTrue($activeTitles->contains($this->activeTitle));
-        $this->assertFalse($activeTitles->contains($this->futureActivatedTitle));
-        $this->assertFalse($activeTitles->contains($this->inactiveTitle));
-        $this->assertFalse($activeTitles->contains($this->retiredTitle));
+        $this->assertCollectionHas($activeTitles, $this->activeTitle);
+        $this->assertCollectionDoesntHave($activeTitles, $this->futureActivatedTitle);
+        $this->assertCollectionDoesntHave($activeTitles, $this->inactiveTitle);
+        $this->assertCollectionDoesntHave($activeTitles, $this->retiredTitle);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_future_activated_titles()
+    {
+        $futureActivatedTitles = Title::withFutureActivation()->get();
+
+        $this->assertCount(1, $futureActivatedTitles);
+        $this->assertCollectionHas($futureActivatedTitles, $this->futureActivatedTitle);
+        $this->assertCollectionDoesntHave($futureActivatedTitles, $this->activeTitle);
+        $this->assertCollectionDoesntHave($futureActivatedTitles, $this->inactiveTitle);
+        $this->assertCollectionDoesntHave($futureActivatedTitles, $this->retiredTitle);
     }
 
     /**
@@ -64,10 +96,10 @@ class TitleTest extends TestCase
         $inactiveTitles = Title::inactive()->get();
 
         $this->assertCount(1, $inactiveTitles);
-        $this->assertTrue($inactiveTitles->contains($this->inactiveTitle));
-        $this->assertFalse($inactiveTitles->contains($this->futureActivatedTitle));
-        $this->assertFalse($inactiveTitles->contains($this->activeTitle));
-        $this->assertFalse($inactiveTitles->contains($this->retiredTitle));
+        $this->assertCollectionHas($inactiveTitles, $this->inactiveTitle);
+        $this->assertCollectionDoesntHave($inactiveTitles, $this->futureActivatedTitle);
+        $this->assertCollectionDoesntHave($inactiveTitles, $this->activeTitle);
+        $this->assertCollectionDoesntHave($inactiveTitles, $this->retiredTitle);
     }
 
     /**
@@ -78,9 +110,9 @@ class TitleTest extends TestCase
         $retiredTitles = Title::retired()->get();
 
         $this->assertCount(1, $retiredTitles);
-        $this->assertTrue($retiredTitles->contains($this->retiredTitle));
-        $this->assertFalse($retiredTitles->contains($this->futureActivatedTitle));
-        $this->assertFalse($retiredTitles->contains($this->activeTitle));
-        $this->assertFalse($retiredTitles->contains($this->inactiveTitle));
+        $this->assertCollectionHas($retiredTitles, $this->retiredTitle);
+        $this->assertCollectionDoesntHave($retiredTitles, $this->futureActivatedTitle);
+        $this->assertCollectionDoesntHave($retiredTitles, $this->activeTitle);
+        $this->assertCollectionDoesntHave($retiredTitles, $this->inactiveTitle);
     }
 }

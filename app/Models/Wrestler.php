@@ -53,16 +53,6 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTe
     ];
 
     /**
-     * Get the user assigned to the wrestler.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * Update the status for the wrestler.
      *
      * @return $this

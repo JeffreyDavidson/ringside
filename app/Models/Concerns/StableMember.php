@@ -32,7 +32,7 @@ trait StableMember
                 ['id', ['member_type', 'member_id'], 'id'],
                 [null, null, 'stable_id']
             )
-            ->wherePivotNull('left_at');
+            ->whereNull('left_at');
     }
 
     /**

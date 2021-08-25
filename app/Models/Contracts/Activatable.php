@@ -115,7 +115,7 @@ interface Activatable
      *
      * @return bool
      */
-    public function isNotActivated();
+    public function isUnactivated();
 
     /**
      * Check to see if the model has a future activation.

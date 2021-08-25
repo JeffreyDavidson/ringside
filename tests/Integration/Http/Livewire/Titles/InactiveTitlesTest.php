@@ -3,11 +3,9 @@
 namespace Tests\Integration\Http\Livewire\Titles;
 
 use App\Http\Livewire\Titles\InactiveTitles;
-use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
-use TitlesTestTableSeeder;
 
 /**
  * @group titles
@@ -17,34 +15,21 @@ class InactiveTitlesTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
+    /**
+     * @test
+     */
+    public function component_should_return_correct_view()
     {
-        parent::setUp();
-
-        $this->seed(TitlesTestTableSeeder::class);
+        Livewire::test(InactiveTitles::class)
+            ->assertViewIs('livewire.titles.inactive-titles');
     }
 
     /**
      * @test
      */
-    public function retired_titles_component_should_return_correct_view()
+    public function component_should_pass_correct_data()
     {
-        $component = Livewire::test(RetiredTitles::class);
-
-        $this->assertEquals('livewire.titles.retired-titles', $component->lastRenderedView->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function inactive_titles_component_should_pass_correct_data()
-    {
-        $component = Livewire::test(InactiveTitles::class);
-
-        $inactiveTitles = Title::inactive()->get();
-
-        $component->assertViewHas('inactiveTitles');
-        $this->assertCount(3, $this->titles['inactive']);
-        $this->assertEquals($this->titles->only('inactive')->pluck('id')->toArray(), $inactiveTitles->pluck('id')->sort()->values()->toArray());
+        Livewire::test(InactiveTitles::class)
+                ->assertViewHas('inactiveTitles');
     }
 }

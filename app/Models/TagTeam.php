@@ -24,7 +24,8 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
         Concerns\Retirable,
         Concerns\StableMember,
         Concerns\Suspendable,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        \Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
     /**
      * The "booted" method of the model.
@@ -67,16 +68,6 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     protected $casts = [
         'status' => TagTeamStatus::class,
     ];
-
-    /**
-     * Get the user belonging to the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     /**
      * Get the wrestlers that have been tag team partners of the tag team.
