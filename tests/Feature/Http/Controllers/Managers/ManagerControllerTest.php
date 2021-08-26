@@ -276,7 +276,6 @@ class ManagerControllerTest extends TestCase
      */
     public function update_a_manager_and_redirects($administrators)
     {
-        $this->withoutExceptionHandling();
         $manager = Manager::factory()->create();
 
         $this->actAs($administrators)
