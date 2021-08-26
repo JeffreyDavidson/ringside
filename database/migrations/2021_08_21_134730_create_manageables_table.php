@@ -15,7 +15,7 @@ class CreateManageablesTable extends Migration
     {
         Schema::create('manageables', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('manager_id');
+            $table->foreignId('manager_id')->constrained();
             $table->morphs('manageable');
             $table->dateTime('hired_at');
             $table->dateTime('left_at')->nullable();
