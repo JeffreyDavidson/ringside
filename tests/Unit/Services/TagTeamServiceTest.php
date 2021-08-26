@@ -19,11 +19,13 @@ class TagTeamServiceTest extends TestCase
      */
     public function it_can_create_a_tag_team_and_tag_team_partners_with_an_employment()
     {
+        $data = ['started_at' => now()->toDateTimeString(), 'wrestlers' => ['1', '2']];
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $service = new TagTeamService($repositoryMock);
 
-        $repositoryMock->expects()->create($data)->once()->andReturns($tagTeam);
+        $repositoryMock->expects()->create($data)->once()->andReturns($tagTeamMock);
+        $repositoryMock->expects()->employ($tagTeamMock, $data['started_at'])->once();
         $repositoryMock->expects()->addWrestlers($tagTeamMock, $data['wrestlers'], $data['started_at'])->once();
 
         $service->create($data);
@@ -34,6 +36,7 @@ class TagTeamServiceTest extends TestCase
      */
     public function it_can_create_a_tag_team_and_tag_team_partners_without_an_employment()
     {
+        $data = ['wrestlers' => ['1', '2']];
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $service = new TagTeamService($repositoryMock);
@@ -49,11 +52,13 @@ class TagTeamServiceTest extends TestCase
      */
     public function it_can_create_a_tag_team_without_tag_team_partners_and_without_an_employment()
     {
+        $data = [];
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $service = new TagTeamService($repositoryMock);
 
         $repositoryMock->expects()->create($data)->once()->andReturns($tagTeamMock);
+        $repositoryMock->shouldNotHaveReceived('employ');
         $repositoryMock->shouldNotHaveReceived('addWrestlers');
 
         $service->create($data);
@@ -62,14 +67,19 @@ class TagTeamServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_tag_team_and_employ_without_an_employment_start_date()
+    public function it_can_update_a_tag_team_and_employ_if_started_at_is_filled()
     {
+        $data = ['started_at' => now()->toDateTimeString(), 'wrestlers' => [1, 2]];
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $service = new TagTeamService($repositoryMock);
 
         $repositoryMock->expects()->update($tagTeamMock, $data)->once()->andReturns($tagTeamMock);
-        // Expect a call to not be made to employOrUpdateEmployment
+        $tagTeamMock->expects()->canHaveEmploymentStartDateChanged()->once()->andReturns(true);
+        $tagTeamMock->expects()->isNotInEmployment()->once()->andReturns(true);
+        $repositoryMock->expects()->employ($tagTeamMock, $data['started_at'])->once()->andReturns($tagTeamMock);
+        $tagTeamMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
+        $repositoryMock->expects()->addWrestlers($tagTeamMock, $data['wrestlers'])->once()->andReturns($tagTeamMock);
 
         $service->update($tagTeamMock, $data);
     }
@@ -79,38 +89,21 @@ class TagTeamServiceTest extends TestCase
      */
     public function it_can_update_a_future_employed_tag_team_and_employ_if_started_at_is_filled()
     {
+        $data = ['started_at' => now()->toDateTimeString(), 'wrestlers' => [1, 2]];
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $service = new TagTeamService($repositoryMock);
 
         $repositoryMock->expects()->update($tagTeamMock, $data)->once()->andReturns($tagTeamMock);
-        $repositoryMock->expects()->addWrestlers($tagTeamMock, $data['wrestlers'])->once();
+        $tagTeamMock->expects()->canHaveEmploymentStartDateChanged()->once()->andReturns(true);
+        $tagTeamMock->expects()->isNotInEmployment()->andReturns(false);
+        $tagTeamMock->expects()->hasFutureEmployment()->andReturns(true);
+        $tagTeamMock->expects()->employedOn($data['started_at'])->andReturns(false);
+        $repositoryMock->expects()->updateEmployment($tagTeamMock, $data['started_at'])->once()->andReturns($tagTeamMock);
+        $tagTeamMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
+        $repositoryMock->expects()->addWrestlers($tagTeamMock, $data['wrestlers'])->once()->andReturns($tagTeamMock);
 
         $service->update($tagTeamMock, $data);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_employ_a_tag_team_that_is_not_in_employment()
-    {
-        $tagTeamMock = $this->mock(TagTeam::class);
-        $repositoryMock = $this->mock(TagTeamRepository::class);
-        $service = new TagTeamService($repositoryMock);
-
-        $service->employOrUpdateEmployment($tagTeamMock, now()->toDateTimeString());
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_a_tag_team_employment_date_when_tag_team_has_future_employment()
-    {
-        $tagTeamMock = $this->mock(TagTeam::class);
-        $repositoryMock = $this->mock(TagTeamRepository::class);
-        $service = new TagTeamService($repositoryMock);
-
-        $service->employOrUpdateEmployment($tagTeamMock, $employmentDate);
     }
 
     /**

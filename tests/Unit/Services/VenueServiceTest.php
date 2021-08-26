@@ -18,6 +18,7 @@ class VenueServiceTest extends TestCase
      */
     public function it_can_create_a_venue()
     {
+        $data = [];
         $venueMock = $this->mock(Venue::class);
         $repositoryMock = $this->mock(VenueRepository::class);
         $service = new VenueService($repositoryMock);

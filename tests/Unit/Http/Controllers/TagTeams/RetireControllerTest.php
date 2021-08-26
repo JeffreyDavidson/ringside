@@ -20,6 +20,7 @@ class RetireControllerTest extends TestCase
      */
     public function a_retirable_tag_team_can_be_retired_with_a_given_date()
     {
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new RetireController;
@@ -38,6 +39,7 @@ class RetireControllerTest extends TestCase
      */
     public function a_retirable_tag_team_that_cannot_be_retired_throws_an_exception()
     {
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new RetireController;

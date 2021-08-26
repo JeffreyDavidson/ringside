@@ -25,8 +25,9 @@ class EmployControllerTest extends TestCase
         $controller = new EmployController;
 
         $wrestlerMock->expects()->canBeEmployed()->andReturns(true);
-        $repositoryMock->expects()->employ($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatus()->save()->once();
+        $repositoryMock->expects()->employ($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->updateStatus()->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->save()->once()->andReturns($wrestlerMock);
 
         $controller->__invoke($wrestlerMock, new EmployRequest, $repositoryMock);
     }

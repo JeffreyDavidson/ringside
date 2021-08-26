@@ -26,7 +26,8 @@ class InjureControllerTest extends TestCase
 
         $managerMock->expects()->canBeInjured()->andReturns(true);
         $repositoryMock->expects()->injure($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new InjureRequest, $repositoryMock);
     }

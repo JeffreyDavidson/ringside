@@ -26,7 +26,8 @@ class InjureControllerTest extends TestCase
 
         $refereeMock->expects()->canBeInjured()->andReturns(true);
         $repositoryMock->expects()->injure($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatus()->save()->once();
+        $refereeMock->expects()->updateStatus()->once()->andReturns($refereeMock);
+        $refereeMock->expects()->save()->once()->andReturns($refereeMock);
 
         $controller->__invoke($refereeMock, new InjureRequest, $repositoryMock);
     }

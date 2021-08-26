@@ -25,8 +25,9 @@ class ClearInjuryControllerTest extends TestCase
         $controller = new ClearInjuryController;
 
         $wrestlerMock->expects()->canBeClearedFromInjury()->andReturns(true);
-        $repositoryMock->expects()->clearInjury($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatus()->save()->once();
+        $repositoryMock->expects()->clearInjury($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->updateStatus()->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->save()->once()->andReturns($wrestlerMock);
 
         $controller->__invoke($wrestlerMock, new ClearInjuryRequest, $repositoryMock);
     }

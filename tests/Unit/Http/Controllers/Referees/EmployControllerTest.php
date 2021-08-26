@@ -26,7 +26,8 @@ class EmployControllerTest extends TestCase
 
         $refereeMock->expects()->canBeEmployed()->andReturns(true);
         $repositoryMock->expects()->employ($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatus()->save()->once();
+        $refereeMock->expects()->updateStatus()->once()->andReturns($refereeMock);
+        $refereeMock->expects()->save()->once()->andReturns($refereeMock);
 
         $controller->__invoke($refereeMock, new EmployRequest, $repositoryMock);
     }

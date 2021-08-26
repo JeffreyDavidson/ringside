@@ -20,6 +20,7 @@ class ReleaseControllerTest extends TestCase
      */
     public function a_releasable_tag_team_can_be_released_with_a_given_date()
     {
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new ReleaseController;
@@ -36,6 +37,7 @@ class ReleaseControllerTest extends TestCase
      */
     public function a_releasable_tag_team_that_cannot_be_released_throws_an_exception()
     {
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new ReleaseController;

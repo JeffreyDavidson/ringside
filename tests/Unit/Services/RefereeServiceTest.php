@@ -50,12 +50,13 @@ class RefereeServiceTest extends TestCase
      */
     public function it_can_update_a_referee_without_an_employment_start_date()
     {
-        $data = [];
+        $data = ['started_at' => null];
         $refereeMock = $this->mock(Referee::class);
         $repositoryMock = $this->mock(RefereeRepository::class);
         $service = new RefereeService($repositoryMock);
 
         $repositoryMock->expects()->update($refereeMock, $data)->once()->andReturns($refereeMock);
+        $refereeMock->expects()->canHaveEmploymentStartDateChanged()->once()->andReturns(false);
 
         $service->update($refereeMock, $data);
     }
@@ -71,34 +72,11 @@ class RefereeServiceTest extends TestCase
         $service = new RefereeService($repositoryMock);
 
         $repositoryMock->expects()->update($refereeMock, $data)->once()->andReturns($refereeMock);
+        $refereeMock->expects()->canHaveEmploymentStartDateChanged()->once()->andReturns(true);
         $refereeMock->expects()->isNotInEmployment()->once()->andReturns(true);
-        $repositoryMock->expects()->employ($refereeMock, $data['started_at'])->andReturns($refereeMock);
+        $repositoryMock->expects()->employ($refereeMock, $data['started_at'])->once()->andReturns($refereeMock);
 
         $service->update($refereeMock, $data);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_employ_a_referee_that_is_not_in_employment()
-    {
-        $refereeMock = $this->mock(Referee::class);
-        $repositoryMock = $this->mock(RefereeRepository::class);
-        $service = new RefereeService($repositoryMock);
-
-        $service->employOrUpdateEmployment($refereeMock, now()->toDateTimeString());
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_a_referee_employment_date_when_referee_has_future_employment()
-    {
-        $refereeMock = $this->mock(Referee::class);
-        $repositoryMock = $this->mock(RefereeRepository::class);
-        $service = new RefereeService($repositoryMock);
-
-        $service->employOrUpdateEmployment($refereeMock, now()->toDateTimeString());
     }
 
     /**

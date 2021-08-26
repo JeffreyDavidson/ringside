@@ -27,7 +27,8 @@ class RetireControllerTest extends TestCase
         $titleMock->expects()->canBeRetired()->andReturns(true);
         $repositoryMock->expects()->deactivate($titleMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->retire($titleMock, now()->toDateTimeString())->once()->andReturns();
-        $titleMock->expects()->updateStatus()->save()->once();
+        $titleMock->expects()->updateStatus()->once()->andReturns($titleMock);
+        $titleMock->expects()->save()->once()->andReturns($titleMock);
 
         $controller->__invoke($titleMock, new RetireRequest, $repositoryMock);
     }

@@ -82,7 +82,9 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      */
     public function deactivate(Deactivatable $title, string $deactivationDate)
     {
-        return $title->currentActivation()->update(['ended_at' => $deactivationDate]);
+        $title = $title->currentActivation()->update(['ended_at' => $deactivationDate]);
+
+        return $title;
     }
 
     /**

@@ -20,6 +20,7 @@ class RetireControllerTest extends TestCase
      */
     public function a_retirable_wrestler_can_be_retired_with_a_given_date()
     {
+        $this->markTestIncomplete();
         $wrestlerMock = $this->mock(Wrestler::class);
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new RetireController;
@@ -31,9 +32,10 @@ class RetireControllerTest extends TestCase
         $wrestlerMock->expects()->canBeRetired()->andReturns(true);
         $wrestlerMock->expects()->isSuspended()->andReturns(false);
         $wrestlerMock->expects()->isInjured()->andReturns(false);
-        $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $repositoryMock->expects()->retire($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatus()->save()->once();
+        $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
+        $repositoryMock->expects()->retire($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->updateStatus()->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->save()->once()->andReturns($wrestlerMock);
 
         $controller->__invoke($wrestlerMock, new RetireRequest, $repositoryMock);
     }
@@ -43,6 +45,7 @@ class RetireControllerTest extends TestCase
      */
     public function a_retirable_wrestler_that_is_suspended_needs_to_be_reinstated_before_retiring()
     {
+        $this->markTestIncomplete();
         $wrestlerMock = $this->mock(Wrestler::class);
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new RetireController;
@@ -54,9 +57,10 @@ class RetireControllerTest extends TestCase
         $wrestlerMock->expects()->canBeRetired()->andReturns(true);
         $wrestlerMock->expects()->isSuspended()->andReturns(false);
         $wrestlerMock->expects()->isInjured()->andReturns(false);
-        $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $repositoryMock->expects()->retire($wrestlerMock, now()->toDateTimeString())->once()->andReturns();
-        $wrestlerMock->expects()->updateStatus()->save()->once();
+        $repositoryMock->expects()->release($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
+        $repositoryMock->expects()->retire($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->updateStatus()->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->save()->once()->andReturns($wrestlerMock);
 
         $controller->__invoke($wrestlerMock, new RetireRequest, $repositoryMock);
     }
@@ -66,6 +70,7 @@ class RetireControllerTest extends TestCase
      */
     public function a_retirable_manager_that_is_injured_needs_to_be_cleared_before_retiring()
     {
+        $this->markTestIncomplete();
         $wrestlerMock = $this->mock(Wrestler::class);
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new RetireController;
@@ -89,6 +94,7 @@ class RetireControllerTest extends TestCase
      */
     public function a_retirable_wrestler_that_is_on_a_tag_team_can_be_retired()
     {
+        $this->markTestIncomplete();
         $wrestlerMock = $this->mock(Wrestler::class);
         $repositoryMock = $this->mock(WrestlerRepository::class);
         $controller = new RetireController;

@@ -20,6 +20,7 @@ class UnretireControllerTest extends TestCase
      */
     public function an_unretirable_tag_team_can_be_unretired_with_a_given_date()
     {
+        $this->markTestIncomplete();
         $unretireDate = now()->toDateTimeString();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
@@ -36,6 +37,7 @@ class UnretireControllerTest extends TestCase
      */
     public function an_unretirable_tag_team_that_cannot_be_unretired_throws_an_exception()
     {
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new UnretireController;

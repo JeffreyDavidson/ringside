@@ -26,7 +26,8 @@ class DeactivateControllerTest extends TestCase
 
         $titleMock->expects()->canBeDeactivated()->andReturns(true);
         $repositoryMock->expects()->deactivate($titleMock, now()->toDateTimeString())->once()->andReturns();
-        $titleMock->expects()->updateStatus()->save()->once();
+        $titleMock->expects()->updateStatus()->once()->andReturns($titleMock);
+        $titleMock->expects()->save()->once()->andReturns($titleMock);
 
         $controller->__invoke($titleMock, new DeactivateRequest, $repositoryMock);
     }

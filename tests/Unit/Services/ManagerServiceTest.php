@@ -48,14 +48,15 @@ class ManagerServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_manager_without_an_employment_start_date()
+    public function it_can_update_a_manager_without_a_started_at_date()
     {
-        $data = [];
+        $data = ['started_at' => null];
         $managerMock = $this->mock(Manager::class);
         $repositoryMock = $this->mock(ManagerRepository::class);
         $service = new ManagerService($repositoryMock);
 
         $repositoryMock->expects()->update($managerMock, $data)->once()->andReturns($managerMock);
+        $managerMock->expects()->canHaveEmploymentStartDateChanged()->once()->andReturns(false);
 
         $service->update($managerMock, $data);
     }
@@ -71,43 +72,11 @@ class ManagerServiceTest extends TestCase
         $service = new ManagerService($repositoryMock);
 
         $repositoryMock->expects()->update($managerMock, $data)->once()->andReturns($managerMock);
+        $managerMock->expects()->canHaveEmploymentStartDateChanged()->once()->andReturns(true);
         $managerMock->expects()->isNotInEmployment()->once()->andReturns(true);
         $repositoryMock->expects()->employ($managerMock, $data['started_at'])->once()->andReturns($managerMock);
 
         $service->update($managerMock, $data);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_employ_a_manager_that_is_not_in_employment()
-    {
-        $managerMock = $this->mock(Manager::class);
-        $repositoryMock = $this->mock(ManagerRepository::class);
-        $service = new ManagerService($repositoryMock);
-
-        $managerMock->expects()->isNotInEmployment()->once()->andReturns(true);
-        $repositoryMock->expects()->employ($managerMock, now()->toDateTimeString())->once()->andReturns($managerMock);
-
-        $service->employOrUpdateEmployment($managerMock, now()->toDateTimeString());
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_a_manager_employment_date_when_manager_has_future_employment()
-    {
-        $managerMock = $this->mock(Manager::class);
-        $repositoryMock = $this->mock(ManagerRepository::class);
-        $service = new ManagerService($repositoryMock);
-
-        $managerMock->expects()->isNotInEmployment()->once()->andReturns(false);
-        $repositoryMock->shouldNotHaveReceived('employ');
-        $managerMock->expects()->hasFutureEmployment()->once()->andReturns(true);
-        $managerMock->expects()->employedOn(now()->toDateTimeString())->once()->andReturns(false);
-        $repositoryMock->expects()->updateEmployment($managerMock, now()->toDateTimeString());
-
-        $service->employOrUpdateEmployment($managerMock, now()->toDateTimeString());
     }
 
     /**

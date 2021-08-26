@@ -19,13 +19,20 @@ class StableServiceTest extends TestCase
      */
     public function it_can_create_a_stable_with_an_activation()
     {
+        $data = ['started_at' => now()->toDateTimeString(), 'wrestlers' => [1, 2], 'tag_teams' => [1, 2]];
         $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->create(typeOf('array'))->once()->andReturns($stableMock);
+        $repositoryMock->expects()->create($data)->once()->andReturns($stableMock);
+        $repositoryMock->expects()->activate($stableMock, $data['started_at'])->once()->andReturns($stableMock);
 
-        $service->create([]);
+        $stableMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
+        $stableMock->shouldReceive('getAttribute')->with('currentTagTeams')->andReturns(collect([]));
+        $repositoryMock->expects()->addWrestlers($stableMock, $data['wrestlers'], $data['started_at'])->once()->andReturns($stableMock);
+        $repositoryMock->expects()->addTagTeams($stableMock, $data['tag_teams'], $data['started_at'])->once()->andReturns($stableMock);
+
+        $service->create($data);
     }
 
     /**
@@ -33,11 +40,17 @@ class StableServiceTest extends TestCase
      */
     public function it_can_create_a_stable_without_an_activation()
     {
+        $data = ['wrestlers' => [1, 2], 'tag_teams' => [1, 2]];
+        $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
-        $repositoryMock->expects()->create($data)->once();
+        $repositoryMock->expects()->create($data)->once()->andReturns($stableMock);
         $repositoryMock->shouldNotReceive('employ');
+        $stableMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
+        $stableMock->shouldReceive('getAttribute')->with('currentTagTeams')->andReturns(collect([]));
+        $repositoryMock->expects()->addWrestlers($stableMock, $data['wrestlers'], now()->toDateTimeString())->once()->andReturns($stableMock);
+        $repositoryMock->expects()->addTagTeams($stableMock, $data['tag_teams'], now()->toDateTimeString())->once()->andReturns($stableMock);
 
         $service->create($data);
     }
@@ -47,12 +60,16 @@ class StableServiceTest extends TestCase
      */
     public function it_can_update_a_stable_without_an_activation_start_date()
     {
+        $data = ['wrestlers' => [1, 2], 'tag_teams' => [1, 2]];
         $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
         $repositoryMock->expects()->update($stableMock, $data)->once()->andReturns($stableMock);
-        // Expect a call to not be made to employOrUpdateActivation
+        $stableMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
+        $stableMock->shouldReceive('getAttribute')->with('currentTagTeams')->andReturns(collect([]));
+        $repositoryMock->expects()->addWrestlers($stableMock, $data['wrestlers'], now()->toDateTimeString())->once()->andReturns($stableMock);
+        $repositoryMock->expects()->addTagTeams($stableMock, $data['tag_teams'], now()->toDateTimeString())->once()->andReturns($stableMock);
 
         $service->update($stableMock, $data);
     }
@@ -62,12 +79,16 @@ class StableServiceTest extends TestCase
      */
     public function it_can_update_a_stable_and_activate_if_started_at_is_filled()
     {
+        $data = ['wrestlers' => [1, 2], 'tag_teams' => [1, 2]];
         $stableMock = $this->mock(Stable::class);
         $repositoryMock = $this->mock(StableRepository::class);
         $service = new StableService($repositoryMock);
 
         $repositoryMock->expects()->update($stableMock, $data)->once()->andReturns($stableMock);
-        // Expect a call to employOrUpdateActivation with $activationDate
+        $stableMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
+        $stableMock->shouldReceive('getAttribute')->with('currentTagTeams')->andReturns(collect([]));
+        $repositoryMock->expects()->addWrestlers($stableMock, $data['wrestlers'], now()->toDateTimeString())->once()->andReturns($stableMock);
+        $repositoryMock->expects()->addTagTeams($stableMock, $data['tag_teams'], now()->toDateTimeString())->once()->andReturns($stableMock);
 
         $service->update($stableMock, $data);
     }

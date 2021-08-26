@@ -5,8 +5,8 @@ namespace Tests\Unit\Http\Controllers\Managers;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Managers\SuspendController;
 use App\Http\Requests\Managers\SuspendRequest;
-use App\Repositories\ManagerRepository;
 use App\Models\Manager;
+use App\Repositories\ManagerRepository;
 use Tests\TestCase;
 
 /**
@@ -26,7 +26,8 @@ class SuspendControllerTest extends TestCase
 
         $managerMock->expects()->canBeSuspended()->andReturns(true);
         $repositoryMock->expects()->suspend($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new SuspendRequest, $repositoryMock);
     }

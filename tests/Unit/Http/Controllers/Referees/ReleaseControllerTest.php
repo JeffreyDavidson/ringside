@@ -29,7 +29,8 @@ class ReleaseControllerTest extends TestCase
         $refereeMock->expects()->isSuspended()->andReturns(false);
         $refereeMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($refereeMock, $releaseDate)->once()->andReturns();
-        $refereeMock->expects()->updateStatus()->save()->once();
+        $refereeMock->expects()->updateStatus()->once()->andReturns($refereeMock);
+        $refereeMock->expects()->save()->once()->andReturns($refereeMock);
 
         $controller->__invoke($refereeMock, new ReleaseRequest, $repositoryMock);
     }
@@ -48,7 +49,8 @@ class ReleaseControllerTest extends TestCase
         $refereeMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->reinstate($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatus()->save()->once();
+        $refereeMock->expects()->updateStatus()->once()->andReturns($refereeMock);
+        $refereeMock->expects()->save()->once()->andReturns($refereeMock);
 
         $controller->__invoke($refereeMock, new ReleaseRequest, $repositoryMock);
     }
@@ -67,7 +69,8 @@ class ReleaseControllerTest extends TestCase
         $refereeMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($refereeMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatus()->save()->once();
+        $refereeMock->expects()->updateStatus()->once()->andReturns($refereeMock);
+        $refereeMock->expects()->save()->once()->andReturns($refereeMock);
 
         $controller->__invoke($refereeMock, new ReleaseRequest, $repositoryMock);
     }

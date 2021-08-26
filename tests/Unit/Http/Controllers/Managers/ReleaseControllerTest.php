@@ -7,7 +7,6 @@ use App\Http\Controllers\Managers\ReleaseController;
 use App\Http\Requests\Managers\ReleaseRequest;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Tests\TestCase;
 
 /**
@@ -32,7 +31,8 @@ class ReleaseControllerTest extends TestCase
         $managerMock->expects()->isSuspended()->andReturns(false);
         $managerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -54,7 +54,8 @@ class ReleaseControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(false);
         $repositoryMock->expects()->reinstate($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -76,7 +77,8 @@ class ReleaseControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -95,11 +97,12 @@ class ReleaseControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $managerMock->expects()->has('currentTagTeams')->andReturns(true);
         $managerMock->expects()->has('currentWrestlers')->andReturns(false);
-        $managerMock->expects()->removeFromCurrentTagTeams()->once();
+        $repositoryMock->expects()->removeFromCurrentTagTeams($managerMock)->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
     }
@@ -118,11 +121,12 @@ class ReleaseControllerTest extends TestCase
         $managerMock->expects()->isInjured()->andReturns(true);
         $repositoryMock->expects()->clearInjury($managerMock, now()->toDateTimeString())->once()->andReturns();
         $repositoryMock->expects()->release($managerMock, now()->toDateTimeString())->once()->andReturns();
-        $managerMock->expects()->updateStatus()->save()->once();
+        $managerMock->expects()->updateStatus()->once()->andReturns($managerMock);
+        $managerMock->expects()->save()->once()->andReturns($managerMock);
 
         $managerMock->expects()->has('currentTagTeams')->andReturns(false);
         $managerMock->expects()->has('currentWrestlers')->andReturns(true);
-        $managerMock->expects()->removeFromCurrentWrestlers()->once();
+        $repositoryMock->expects()->removeFromCurrentWrestlers($managerMock)->once()->andReturns($managerMock);
 
         $controller->__invoke($managerMock, new ReleaseRequest, $repositoryMock);
     }

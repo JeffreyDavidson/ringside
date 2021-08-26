@@ -66,7 +66,7 @@ class ManagerService
      * @param  string $employmentDate
      * @return void
      */
-    public function employOrUpdateEmployment(Manager $manager, string $employmentDate)
+    private function employOrUpdateEmployment(Manager $manager, string $employmentDate)
     {
         if ($manager->isNotInEmployment()) {
             return $this->managerRepository->employ($manager, $employmentDate);

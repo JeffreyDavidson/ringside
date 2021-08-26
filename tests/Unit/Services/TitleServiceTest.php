@@ -53,6 +53,7 @@ class TitleServiceTest extends TestCase
         $service = new TitleService($repositoryMock);
 
         $repositoryMock->expects()->update($titleMock, $data)->once()->andReturns($titleMock);
+        $titleMock->expects()->canHaveActivationStartDateChanged()->once()->andReturns(false);
 
         $service->update($titleMock, $data);
     }
@@ -60,40 +61,19 @@ class TitleServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_title_and_employ_if_started_at_is_filled()
+    public function it_can_update_a_title_and_activate_if_started_at_is_filled()
     {
-        $data = [];
+        $data = ['activated_at' => now()->toDateTimeString()];
         $titleMock = $this->mock(Title::class);
         $repositoryMock = $this->mock(TitleRepository::class);
         $service = new TitleService($repositoryMock);
 
         $repositoryMock->expects()->update($titleMock, $data)->once()->andReturns($titleMock);
+        $titleMock->expects()->canHaveActivationStartDateChanged()->once()->andReturns(true);
+        $titleMock->expects()->isUnactivated()->once()->andReturns(true);
+        $repositoryMock->expects()->activate($titleMock, $data['activated_at']);
 
         $service->update($titleMock, $data);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_activate_a_title_that_is_not_in_activation()
-    {
-        $titleMock = $this->mock(Title::class);
-        $repositoryMock = $this->mock(TitleRepository::class);
-        $service = new TitleService($repositoryMock);
-
-        $service->activateOrUpdateActivation($titleMock, now()->toDateTimeString());
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_a_title_activation_date_when_title_has_future_activation()
-    {
-        $titleMock = $this->mock(Title::class);
-        $repositoryMock = $this->mock(TitleRepository::class);
-        $service = new TitleService($repositoryMock);
-
-        $service->activateOrUpdateActivation($titleMock, now()->toDateTImeString());
     }
 
     /**

@@ -69,7 +69,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     /**
      * Update the status for the title.
      *
-     * @return void
+     * @return $this
      */
     public function updateStatus()
     {

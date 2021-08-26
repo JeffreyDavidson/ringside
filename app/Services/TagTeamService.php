@@ -76,7 +76,7 @@ class TagTeamService
     public function employOrUpdateEmployment(TagTeam $tagTeam, string $employmentDate)
     {
         if ($tagTeam->isNotInEmployment()) {
-            $this->tagTeamRepository->employ($tagTeam, $employmentDate);
+            return $this->tagTeamRepository->employ($tagTeam, $employmentDate);
         }
 
         if ($tagTeam->hasFutureEmployment() && ! $tagTeam->employedOn($employmentDate)) {

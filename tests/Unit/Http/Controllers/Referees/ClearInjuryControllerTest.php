@@ -26,7 +26,8 @@ class ClearInjuryControllerTest extends TestCase
 
         $refereeMock->expects()->canBeClearedFromInjury()->andReturns(true);
         $repositoryMock->expects()->clearInjury($refereeMock, now()->toDateTimeString())->once()->andReturns();
-        $refereeMock->expects()->updateStatus()->save()->once();
+        $refereeMock->expects()->updateStatus()->once()->andReturns($refereeMock);
+        $refereeMock->expects()->save()->once()->andReturns($refereeMock);
 
         $controller->__invoke($refereeMock, new ClearInjuryRequest, $repositoryMock);
     }

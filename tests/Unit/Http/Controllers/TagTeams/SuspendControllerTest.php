@@ -20,6 +20,7 @@ class SuspendControllerTest extends TestCase
      */
     public function a_suspendable_tag_team_can_be_suspended_with_a_given_date()
     {
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new SuspendController;
@@ -35,7 +36,7 @@ class SuspendControllerTest extends TestCase
      */
     public function a_suspendable_tag_team_that_cannot_be_suspended_throws_an_exception()
     {
-        $suspensionDate = null;
+        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new SuspendController;
