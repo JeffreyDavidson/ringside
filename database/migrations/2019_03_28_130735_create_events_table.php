@@ -17,7 +17,7 @@ class CreateEventsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->datetime('date')->nullable();
-            $table->foreignId('venue_id')->constrained();
+            $table->foreignId('venue_id')->nullable()->constrained();
             $table->text('preview')->nullable();
             $table->string('status');
             $table->timestamps();
