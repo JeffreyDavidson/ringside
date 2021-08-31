@@ -9,6 +9,7 @@ use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Manager;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\ManagerRequestDataFactory;
 use Tests\TestCase;
 
 /**
@@ -21,19 +22,12 @@ class ManagerControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Valid parameters for request.
-     *
-     * @param  array $overrides
-     * @return array
-     */
-    private function validParams($overrides = [])
+    public function setUp(): void
     {
-        return array_replace([
-            'first_name' => 'John',
-            'last_name' => 'Smith',
-            'started_at' => now()->toDateTimeString(),
-        ], $overrides);
+        parent::setUp();
+
+        $this->manager = Manager::factory()->create();
+        $this->factory = ManagerRequestDataFactory::new()->withManager($this->manager);
     }
 
     /**
@@ -42,8 +36,9 @@ class ManagerControllerTest extends TestCase
      */
     public function index_returns_a_views($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('managers.index'))
+        $this
+            ->actAs($administrators)
+            ->get(action([ManagersController::class, 'index']))
             ->assertOk()
             ->assertViewIs('managers.index')
             ->assertSeeLivewire('managers.employed-managers')
@@ -59,8 +54,9 @@ class ManagerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_managers_index_page()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('managers.index'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([ManagersController::class, 'index']))
             ->assertForbidden();
     }
 
@@ -69,7 +65,8 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_managers_index_page()
     {
-        $this->get(route('managers.index'))
+        $this
+            ->get(action([ManagersController::class, 'index']))
             ->assertRedirect(route('login'));
     }
 
@@ -79,8 +76,9 @@ class ManagerControllerTest extends TestCase
      */
     public function create_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('managers.create'))
+        $this
+            ->actAs($administrators)
+            ->get(action([ManagersController::class, 'create']))
             ->assertViewIs('managers.create')
             ->assertViewHas('manager', new Manager);
     }
@@ -90,8 +88,9 @@ class ManagerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_creating_a_manager()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('managers.create'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([ManagersController::class, 'index']))
             ->assertForbidden();
     }
 
@@ -100,7 +99,8 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_the_form_for_creating_a_manager()
     {
-        $this->get(route('managers.create'))
+        $this
+            ->get(action([ManagersController::class, 'create']))
             ->assertRedirect(route('login'));
     }
 
@@ -110,10 +110,11 @@ class ManagerControllerTest extends TestCase
      */
     public function store_creates_a_manager_and_redirects($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('managers.create'))
-            ->post(route('managers.store', $this->validParams()))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'create']))
+            ->post(action([ManagersController::class, 'store'], ManagerRequestDataFactory::new()->create()))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap(Manager::first(), function ($manager) {
             $this->assertEquals('John', $manager->first_name);
@@ -127,9 +128,10 @@ class ManagerControllerTest extends TestCase
      */
     public function an_employment_is_not_created_for_the_manager_if_started_at_is_filled_in_request($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('managers.create'))
-            ->post(route('managers.store', $this->validParams(['started_at' => null])));
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'create']))
+            ->post(route('managers.store', ManagerRequestDataFactory::new()->create(['started_at' => null])));
 
         tap(Manager::first(), function ($manager) {
             $this->assertCount(0, $manager->employments);
@@ -144,9 +146,10 @@ class ManagerControllerTest extends TestCase
     {
         $startedAt = now()->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('managers.create'))
-            ->post(route('managers.store', $this->validParams(['started_at' => $startedAt])));
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'create']))
+            ->post(action([ManagersController::class, 'store'], ManagerRequestDataFactory::new()->create(['started_at' => $startedAt])));
 
         tap(Manager::first(), function ($manager) use ($startedAt) {
             $this->assertCount(1, $manager->employments);
@@ -159,9 +162,10 @@ class ManagerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_create_a_manager()
     {
-        $this->actAs(Role::BASIC)
-            ->from(route('managers.create'))
-            ->post(route('managers.store', $this->validParams()))
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([ManagersController::class, 'create']))
+            ->post(route('managers.store', ManagerRequestDataFactory::new()->create()))
             ->assertForbidden();
     }
 
@@ -170,8 +174,9 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_create_a_manager()
     {
-        $this->from(route('managers.create'))
-            ->post(route('managers.store', $this->validParams()))
+        $this
+            ->from(action([ManagersController::class, 'create']))
+            ->post(action([ManagersController::class, 'store'], ManagerRequestDataFactory::new()->create()))
             ->assertRedirect(route('login'));
     }
 
@@ -189,12 +194,11 @@ class ManagerControllerTest extends TestCase
      */
     public function show_can_view_a_manager_profile($administrators)
     {
-        $manager = Manager::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('managers.show', $manager))
+        $this
+            ->actAs($administrators)
+            ->get(action([ManagersController::class, 'show'], $this->manager))
             ->assertViewIs('managers.show')
-            ->assertViewHas('manager', $manager);
+            ->assertViewHas('manager', $this->manager);
     }
 
     /**
@@ -203,9 +207,10 @@ class ManagerControllerTest extends TestCase
     public function a_basic_user_can_view_their_manager_profile()
     {
         $this->actAs(Role::BASIC);
-        $manager = Manager::factory()->create(['user_id' => auth()->user()]);
+        $this->manager = Manager::factory()->create(['user_id' => auth()->user()]);
 
-        $this->get(route('managers.show', $manager))
+        $this
+            ->get(action([ManagersController::class, 'show'], $this->manager))
             ->assertOk();
     }
 
@@ -215,10 +220,11 @@ class ManagerControllerTest extends TestCase
     public function a_basic_user_cannot_view_another_users_manager_profile()
     {
         $otherUser = User::factory()->create();
-        $manager = Manager::factory()->create(['user_id' => $otherUser->id]);
+        $this->manager = Manager::factory()->create(['user_id' => $otherUser->id]);
 
-        $this->actAs(Role::BASIC)
-            ->get(route('managers.show', $manager))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([ManagersController::class, 'create'], $this->manager))
             ->assertForbidden();
     }
 
@@ -227,9 +233,8 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_a_manager_profile()
     {
-        $manager = Manager::factory()->create();
-
-        $this->get(route('managers.show', $manager))
+        $this
+            ->get(action([ManagersController::class, 'show'], $this->manager))
             ->assertRedirect(route('login'));
     }
 
@@ -239,12 +244,11 @@ class ManagerControllerTest extends TestCase
      */
     public function edit_returns_a_view($administrators)
     {
-        $manager = Manager::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('managers.edit', $manager))
+        $this
+            ->actAs($administrators)
+            ->get(action([ManagersController::class, 'edit'], $this->manager))
             ->assertViewIs('managers.edit')
-            ->assertViewHas('manager', $manager);
+            ->assertViewHas('manager', $this->manager);
     }
 
     /**
@@ -252,10 +256,9 @@ class ManagerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_editing_a_manager()
     {
-        $manager = Manager::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->get(route('managers.edit', $manager))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([ManagersController::class, 'edit'], $this->manager))
             ->assertForbidden();
     }
 
@@ -264,9 +267,8 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_the_form_for_editing_a_manager()
     {
-        $manager = Manager::factory()->create();
-
-        $this->get(route('managers.edit', $manager))
+        $this
+            ->get(action([ManagersController::class, 'edit'], $this->manager))
             ->assertRedirect(route('login'));
     }
 
@@ -276,14 +278,13 @@ class ManagerControllerTest extends TestCase
      */
     public function update_a_manager_and_redirects($administrators)
     {
-        $manager = Manager::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(action([ManagersController::class, 'update'], $this->manager), $this->factory->create())
+            ->assertRedirect(action([ManagersController::class, 'edit']));
 
-        $this->actAs($administrators)
-            ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams())
-            ->assertRedirect(route('managers.index'));
-
-        tap($manager->fresh(), function ($manager) {
+        tap($this->manager->fresh(), function ($manager) {
             $this->assertEquals('John', $manager->first_name);
             $this->assertEquals('Smith', $manager->last_name);
         });
@@ -298,10 +299,11 @@ class ManagerControllerTest extends TestCase
         $now = now()->toDateTimeString();
         $manager = Manager::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams(['started_at' => $now]))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(action([ManagersController::class, 'update'], $this->manager), $this->factory->create(['started_at' => $now]))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) use ($now) {
             $this->assertCount(1, $manager->employments);
@@ -316,14 +318,15 @@ class ManagerControllerTest extends TestCase
     public function update_can_employ_a_future_employed_manager_when_started_at_is_filled($administrators)
     {
         $now = now()->toDateTimeString();
-        $manager = Manager::factory()->withFutureEmployment()->create();
+        $this->manager = Manager::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams(['started_at' => $now]))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(action([ManagersController::class, 'update'], $this->manager), $this->factory->create(['started_at' => $now]))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
+        tap($this->manager->fresh(), function ($manager) use ($now) {
             $this->assertCount(1, $manager->employments);
             $this->assertEquals($now, $manager->employments()->first()->started_at->toDateTimeString());
         });
@@ -340,11 +343,12 @@ class ManagerControllerTest extends TestCase
 
         $this->assertCount(1, $manager->employments);
 
-        $this->actAs($administrators)
-            ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams());
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(action([ManagersController::class, 'update'], $this->manager), $this->factory->create());
 
-        tap($manager->fresh(), function ($manager) use ($startDate) {
+        tap($this->manager->fresh(), function ($manager) use ($startDate) {
             $this->assertCount(1, $manager->employments);
             $this->assertSame($startDate, $manager->employments->last()->started_at->toDateTimeString());
         });
@@ -358,10 +362,14 @@ class ManagerControllerTest extends TestCase
     {
         $manager = Manager::factory()->available()->create();
 
-        $this->actAs($administrators)
-            ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams(['started_at' => $manager->employments()->first()->started_at->toDateTimeString()]))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(
+                action([ManagersController::class, 'create'], $this->manager),
+                $this->factory->create(['started_at' => $manager->employments()->first()->started_at->toDateTimeString()])
+            )
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->employments);
@@ -373,11 +381,10 @@ class ManagerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_update_a_manager()
     {
-        $manager = Manager::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams())
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(action([ManagersController::class, 'update'], $this->manager), $this->factory->create())
             ->assertForbidden();
     }
 
@@ -386,10 +393,9 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_update_a_manager()
     {
-        $manager = Manager::factory()->create();
-
-        $this->from(route('managers.edit', $manager))
-            ->put(route('managers.update', $manager), $this->validParams())
+        $this
+            ->from(action([ManagersController::class, 'edit'], $this->manager))
+            ->put(action([ManagersController::class, 'update'], $this->manager), $this->factory->create())
             ->assertRedirect(route('login'));
     }
 
@@ -407,13 +413,12 @@ class ManagerControllerTest extends TestCase
      */
     public function delete_a_manager_and_redirects($administrators)
     {
-        $manager = Manager::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->delete(action([ManagersController::class, 'destroy'], $this->manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->delete(route('managers.destroy', $manager))
-            ->assertRedirect(route('managers.index'));
-
-        $this->assertSoftDeleted($manager);
+        $this->assertSoftDeleted($this->manager);
     }
 
     /**
@@ -421,10 +426,8 @@ class ManagerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_delete_a_manager()
     {
-        $manager = Manager::factory()->create();
-
         $this->actAs(Role::BASIC)
-            ->delete(route('managers.destroy', $manager))
+            ->delete(action([ManagersController::class, 'destory'], $this->manager))
             ->assertForbidden();
     }
 
@@ -433,9 +436,7 @@ class ManagerControllerTest extends TestCase
      */
     public function a_guest_cannot_delete_a_manager()
     {
-        $manager = Manager::factory()->create();
-
-        $this->delete(route('managers.destroy', $manager))
+        $this->delete(action([ManagersController::class, 'destroy'], $this->manager))
             ->assertRedirect(route('login'));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Factories;
 
-use App\Models\Title;
+use App\Models\Stable;
 use Carbon\Carbon;
 
 class StableRequestDataFactory
@@ -23,19 +23,22 @@ class StableRequestDataFactory
         ], $overrides);
     }
 
-    public function withStartedAtDate(string | Carbon $startedAt): array
-    {
-        return array_replace([
-            'name' => $this->name,
-            'started_at' => $this->started_at,
-        ], $overrides);
-    }
-
-    public function withTitle(Title $title): self
+    public function withStartedAtDate(string|Carbon $startedAt): self
     {
         $clone = clone $this;
 
-        $this->name = $title->name;
+        $clone->date = $startedAt instanceof Carbon
+            ? $startedAt->format('Y-m-d')
+            : $startedAt;
+
+        return $clone;
+    }
+
+    public function withStable(Stable $stable): self
+    {
+        $clone = clone $this;
+
+        $this->name = $stable->name;
 
         return $clone;
     }
