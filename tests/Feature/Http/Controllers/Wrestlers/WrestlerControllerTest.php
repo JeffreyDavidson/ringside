@@ -9,6 +9,7 @@ use App\Http\Requests\Wrestlers\UpdateRequest;
 use App\Models\User;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\WrestlerRequestDataFactory;
 use Tests\TestCase;
 
 /**
@@ -21,23 +22,15 @@ class WrestlerControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Valid parameters for request.
-     *
-     * @param  array $overrides
-     * @return array
-     */
-    private function validParams($overrides = [])
+    private Wrestler $wrestler;
+    private WrestlerRequestDataFactory $factory;
+
+    public function setUp(): void
     {
-        return array_replace([
-            'name' => 'Example Wrestler Name',
-            'feet' => 6,
-            'inches' => 4,
-            'weight' => 240,
-            'hometown' => 'Laraville, FL',
-            'signature_move' => 'The Finisher',
-            'started_at' => now()->toDateTimeString(),
-        ], $overrides);
+        parent::setUp();
+
+        $this->wrestler = Wrestler::factory()->create();
+        $this->factory = WrestlerRequestDataFactory::new()->withWrestler($this->wrestler);
     }
 
     /**
@@ -46,8 +39,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function index_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('wrestlers.index'))
+        $this
+            ->actAs($administrators)
+            ->get(action([WrestlersController::class, 'index']))
             ->assertOk()
             ->assertViewIs('wrestlers.index')
             ->assertSeeLivewire('wrestlers.bookable-wrestlers')
@@ -63,8 +57,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_wrestlers_index_page()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('wrestlers.index'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([WrestlersController::class, 'index']))
             ->assertForbidden();
     }
 
@@ -73,7 +68,8 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_wrestlers_index_page()
     {
-        $this->get(route('wrestlers.index'))
+        $this
+            ->get(action([WrestlersController::class, 'index']))
             ->assertRedirect(route('login'));
     }
 
@@ -83,8 +79,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function create_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('wrestlers.create'))
+        $this
+            ->actAs($administrators)
+            ->get(action([WrestlersController::class, 'create']))
             ->assertViewIs('wrestlers.create')
             ->assertViewHas('wrestler', new Wrestler);
     }
@@ -94,8 +91,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_creating_a_wrestler()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('wrestlers.create'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([WrestlersController::class, 'create']))
             ->assertForbidden();
     }
 
@@ -104,7 +102,8 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_the_form_for_creating_a_wrestler()
     {
-        $this->get(route('wrestlers.create'))
+        $this
+            ->get(action([WrestlersController::class, 'create']))
             ->assertRedirect(route('login'));
     }
 
@@ -114,12 +113,19 @@ class WrestlerControllerTest extends TestCase
      */
     public function store_creates_a_wrestler_and_redirects($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams())
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'create']))
+            ->post(action([WrestlersController::class, 'store']), WrestlerRequestDataFactory::new()->create([
+                'name' => 'Example Wrestler Name',
+                'feet' => 6,
+                'inches' => 4,
+                'hometown' => 'Laraville, FL',
+                'signature_move' => 'The Finisher',
+            ]))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        tap(Wrestler::first(), function ($wrestler) {
+        tap(Wrestler::all()->last(), function ($wrestler) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
             $this->assertEquals(76, $wrestler->height->height);
             $this->assertEquals(240, $wrestler->weight);
@@ -134,9 +140,13 @@ class WrestlerControllerTest extends TestCase
      */
     public function an_employment_is_not_created_for_the_wrestler_if_started_at_is_filled_in_request($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams(['started_at' => null]));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'create']))
+            ->post(
+                action([WrestlersController::class, 'store']),
+                WrestlerRequestDataFactory::new()->create(['started_at' => null])
+            );
 
         tap(Wrestler::first(), function ($wrestler) {
             $this->assertCount(0, $wrestler->employments);
@@ -149,15 +159,19 @@ class WrestlerControllerTest extends TestCase
      */
     public function an_employment_is_created_for_the_wrestler_if_started_at_is_filled_in_request($administrators)
     {
-        $startedAt = now();
+        $startedAt = now()->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams(['started_at' => $startedAt->toDateTimeString()]));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'create']))
+            ->post(
+                action([WrestlersController::class, 'store']),
+                WrestlerRequestDataFactory::new()->create(['started_at' => $startedAt])
+            );
 
-        tap(Wrestler::first(), function ($wrestler) use ($startedAt) {
+        tap(Wrestler::all()->last(), function ($wrestler) use ($startedAt) {
             $this->assertCount(1, $wrestler->employments);
-            $this->assertEquals($startedAt->toDateTimeString('minute'), $wrestler->employments->first()->started_at->toDateTimeString('minute'));
+            $this->assertEquals($startedAt, $wrestler->employments->first()->started_at->toDateTimeString());
         });
     }
 
@@ -166,9 +180,10 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_create_a_wrestler()
     {
-        $this->actAs(Role::BASIC)
-            ->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams())
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([WrestlersController::class, 'create']))
+            ->post(action([WrestlersController::class, 'store']), WrestlerRequestDataFactory::new()->create())
             ->assertForbidden();
     }
 
@@ -177,8 +192,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_guest_cannot_create_a_wrestler()
     {
-        $this->from(route('wrestlers.create'))
-            ->post(route('wrestlers.store'), $this->validParams())
+        $this
+            ->from(action([WrestlersController::class, 'create']))
+            ->post(action([WrestlersController::class, 'store']), WrestlerRequestDataFactory::new()->create())
             ->assertRedirect(route('login'));
     }
 
@@ -196,12 +212,11 @@ class WrestlerControllerTest extends TestCase
      */
     public function show_returns_a_view($administrators)
     {
-        $wrestler = Wrestler::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('wrestlers.show', $wrestler))
+        $this
+            ->actAs($administrators)
+            ->get(action([WrestlersController::class, 'show'], $this->wrestler))
             ->assertViewIs('wrestlers.show')
-            ->assertViewHas('wrestler', $wrestler);
+            ->assertViewHas('wrestler', $this->wrestler);
     }
 
     /**
@@ -210,9 +225,10 @@ class WrestlerControllerTest extends TestCase
     public function a_basic_user_can_view_their_wrestler_profile()
     {
         $this->actAs(Role::BASIC);
-        $wrestler = Wrestler::factory()->create(['user_id' => auth()->user()]);
+        $this->wrestler = Wrestler::factory()->create(['user_id' => auth()->user()]);
 
-        $this->get(route('wrestlers.show', $wrestler))
+        $this
+            ->get(action([WrestlersController::class, 'show'], $this->wrestler))
             ->assertOk();
     }
 
@@ -222,10 +238,11 @@ class WrestlerControllerTest extends TestCase
     public function a_basic_user_cannot_view_another_users_wrestler_profile()
     {
         $otherUser = User::factory()->create();
-        $wrestler = Wrestler::factory()->create(['user_id' => $otherUser->id]);
+        $this->wrestler = Wrestler::factory()->create(['user_id' => $otherUser->id]);
 
-        $this->actAs(Role::BASIC)
-            ->get(route('wrestlers.show', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([WrestlersController::class, 'show'], $this->wrestler))
             ->assertForbidden();
     }
 
@@ -234,9 +251,8 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_guest_cannot_view_a_wrestler_profile()
     {
-        $wrestler = Wrestler::factory()->create();
-
-        $this->get(route('wrestlers.show', $wrestler))
+        $this
+            ->get(action([WrestlersController::class, 'show'], $this->wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -246,12 +262,11 @@ class WrestlerControllerTest extends TestCase
      */
     public function edit_returns_a_view($administrators)
     {
-        $wrestler = Wrestler::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('wrestlers.edit', $wrestler))
+        $this
+            ->actAs($administrators)
+            ->get(action([WrestlersController::class, 'edit'], $this->wrestler))
             ->assertViewIs('wrestlers.edit')
-            ->assertViewHas('wrestler', $wrestler);
+            ->assertViewHas('wrestler', $this->wrestler);
     }
 
     /**
@@ -261,7 +276,8 @@ class WrestlerControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->actAs(Role::BASIC)
+        $this
+            ->actAs(Role::BASIC)
             ->get(route('wrestlers.edit', $wrestler))
             ->assertForbidden();
     }
@@ -273,7 +289,8 @@ class WrestlerControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->get(route('wrestlers.edit', $wrestler))
+        $this
+            ->get(route('wrestlers.edit', $wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -283,19 +300,21 @@ class WrestlerControllerTest extends TestCase
      */
     public function updates_a_wrestler_and_redirects($administrators)
     {
-        $wrestler = Wrestler::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(
+                action([WrestlersController::class, 'update'], $this->wrestler),
+                $this->factory->create()
+            )
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams())
-            ->assertRedirect(route('wrestlers.index'));
-
-        tap($wrestler->fresh(), function ($wrestler) {
+        tap($this->wrestler->fresh(), function ($wrestler) {
             $this->assertEquals('Example Wrestler Name', $wrestler->name);
-            $this->assertEquals(76, $wrestler->height->height);
+            $this->assertEquals(78, $wrestler->height->inInches());
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
-            $this->assertEquals('The Finisher', $wrestler->signature_move);
+            $this->assertEquals('The Signature Move', $wrestler->signature_move);
         });
     }
 
@@ -307,16 +326,23 @@ class WrestlerControllerTest extends TestCase
     {
         $now = now();
 
-        $wrestler = Wrestler::factory()->unemployed()->create();
+        $this->wrestler = Wrestler::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams(['started_at' => $now->toDateTimeString()]))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(
+                action([WrestlersController::class, 'update'], $this->wrestler),
+                $this->factory->create(['started_at' => $now->toDateTimeString()])
+            )
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        tap($wrestler->fresh(), function ($wrestler) use ($now) {
+        tap($this->wrestler->fresh(), function ($wrestler) use ($now) {
             $this->assertCount(1, $wrestler->employments);
-            $this->assertEquals($now->toDateTimeString('minute'), $wrestler->employments->first()->started_at->toDateTimeString('minute'));
+            $this->assertEquals(
+                $now->toDateTimeString('minute'),
+                $wrestler->employments->first()->started_at->toDateTimeString('minute')
+            );
         });
     }
 
@@ -327,16 +353,23 @@ class WrestlerControllerTest extends TestCase
     public function update_can_employ_a_future_employed_wrestler_when_started_at_is_filled($administrators)
     {
         $now = now();
-        $wrestler = Wrestler::factory()->withFutureEmployment()->create();
+        $this->wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams(['started_at' => $now->toDateTimeString()]))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(
+                action([WrestlersController::class, 'update'], $this->wrestler),
+                $this->factory->create(['started_at' => $now->toDateTimeString()])
+            )
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        tap($wrestler->fresh(), function ($wrestler) use ($now) {
+        tap($this->wrestler->fresh(), function ($wrestler) use ($now) {
             $this->assertCount(1, $wrestler->employments);
-            $this->assertEquals($now->toDateTimeString('minute'), $wrestler->employments()->first()->started_at->toDateTimeString('minute'));
+            $this->assertEquals(
+                $now->toDateTimeString(),
+                $wrestler->employments()->first()->started_at->toDateTimeString()
+            );
         });
     }
 
@@ -346,14 +379,20 @@ class WrestlerControllerTest extends TestCase
      */
     public function updating_cannot_employ_a_bookable_wrestler_when_started_at_is_filled($administrators)
     {
-        $wrestler = Wrestler::factory()->bookable()->create();
+        $this->wrestler = Wrestler::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams(['started_at' => $wrestler->employments()->first()->started_at->toDateTimeString()]))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(
+                action([WrestlersController::class, 'update'], $this->wrestler),
+                $this->factory->create(
+                    ['started_at' => $this->wrestler->employments()->first()->started_at->toDateTimeString()]
+                )
+            )
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        tap($wrestler->fresh(), function ($wrestler) {
+        tap($this->wrestler->fresh(), function ($wrestler) {
             $this->assertCount(1, $wrestler->employments);
         });
     }
@@ -364,15 +403,16 @@ class WrestlerControllerTest extends TestCase
      */
     public function updating_cannot_reemploy_a_released_wrestler($administrators)
     {
-        $wrestler = Wrestler::factory()->released()->create();
-        $startDate = $wrestler->employments->last()->started_at->toDateTimeString();
+        $this->wrestler = Wrestler::factory()->released()->create();
+        $startDate = $this->wrestler->employments->last()->started_at->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams())
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(action([WrestlersController::class, 'update'], $this->wrestler), $this->factory->create())
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        tap($wrestler->fresh(), function ($wrestler) use ($startDate) {
+        tap($this->wrestler->fresh(), function ($wrestler) use ($startDate) {
             $this->assertCount(1, $wrestler->employments);
             $this->assertSame($startDate, $wrestler->employments->last()->started_at->toDateTimeString());
         });
@@ -383,11 +423,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_update_a_wrestler()
     {
-        $wrestler = Wrestler::factory()->create();
-
         $this->actAs(Role::BASIC)
-            ->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams())
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(action([WrestlersController::class, 'update'], $this->wrestler), $this->factory->create())
             ->assertForbidden();
     }
 
@@ -396,10 +434,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_guest_cannot_update_a_wrestler()
     {
-        $wrestler = Wrestler::factory()->create();
-
-        $this->from(route('wrestlers.edit', $wrestler))
-            ->patch(route('wrestlers.update', $wrestler), $this->validParams())
+        $this
+            ->from(action([WrestlersController::class, 'edit'], $this->wrestler))
+            ->patch(action([WrestlersController::class, 'update'], $this->wrestler), $this->factory->create())
             ->assertRedirect(route('login'));
     }
 
@@ -417,13 +454,12 @@ class WrestlerControllerTest extends TestCase
      */
     public function deletes_a_wrestler_and_redirects($administrators)
     {
-        $wrestler = Wrestler::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->delete(action([WrestlersController::class, 'destroy'], $this->wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->delete(route('wrestlers.destroy', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
-
-        $this->assertSoftDeleted($wrestler);
+        $this->assertSoftDeleted($this->wrestler);
     }
 
     /**
@@ -431,10 +467,9 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_basic_user_cannot_delete_a_wrestler()
     {
-        $wrestler = Wrestler::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->delete(route('wrestlers.destroy', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->delete(action([WrestlersController::class, 'destroy'], $this->wrestler))
             ->assertForbidden();
     }
 
@@ -443,9 +478,8 @@ class WrestlerControllerTest extends TestCase
      */
     public function a_guest_cannot_delete_a_wrestler()
     {
-        $wrestler = Wrestler::factory()->create();
-
-        $this->delete(route('wrestlers.destroy', $wrestler))
+        $this
+            ->delete(action([WrestlersController::class, 'destroy'], $this->wrestler))
             ->assertRedirect(route('login'));
     }
 }

@@ -29,9 +29,10 @@ class UnretireControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertNotNull($wrestler->retirements->last()->ended_at);
@@ -54,8 +55,9 @@ class UnretireControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('wrestlers.unretire', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler))
             ->assertForbidden();
     }
 
@@ -66,7 +68,8 @@ class UnretireControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->patch(route('wrestlers.unretire', $wrestler))
+        $this
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -81,8 +84,9 @@ class UnretireControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
     }
 
     /**
@@ -96,8 +100,9 @@ class UnretireControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
     }
 
     /**
@@ -112,7 +117,7 @@ class UnretireControllerTest extends TestCase
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler));
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
     }
 
     /**
@@ -127,7 +132,7 @@ class UnretireControllerTest extends TestCase
         $wrestler = Wrestler::factory()->released()->create();
 
         $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler));
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
     }
 
     /**
@@ -142,7 +147,7 @@ class UnretireControllerTest extends TestCase
         $wrestler = Wrestler::factory()->suspended()->create();
 
         $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler));
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
     }
 
     /**
@@ -157,6 +162,6 @@ class UnretireControllerTest extends TestCase
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this->actAs($administrators)
-            ->patch(route('wrestlers.unretire', $wrestler));
+            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
     }
 }

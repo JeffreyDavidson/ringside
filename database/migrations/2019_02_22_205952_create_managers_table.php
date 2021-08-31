@@ -15,7 +15,6 @@ class CreateManagersTable extends Migration
     {
         Schema::create('managers', function (Blueprint $table) {
             $table->increments('id');
-            $table->foreignId('manager_id')->nullable()->constrained();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('status');
