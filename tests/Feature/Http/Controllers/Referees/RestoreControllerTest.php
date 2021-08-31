@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers\Referees;
 
 use App\Enums\Role;
+use App\Http\Controllers\Referees\RefereesController;
+use App\Http\Controllers\Referees\RestoreController;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,9 +26,10 @@ class RestoreControllerTest extends TestCase
     {
         $referee = Referee::factory()->softDeleted()->create();
 
-        $this->actAs(Role::ADMINISTRATOR)
-            ->patch(route('referees.restore', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RestoreController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         $this->assertNull($referee->fresh()->deleted_at);
     }
@@ -38,8 +41,9 @@ class RestoreControllerTest extends TestCase
     {
         $referee = Referee::factory()->softDeleted()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('referees.restore', $referee))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RestoreController::class], $referee))
             ->assertForbidden();
     }
 
@@ -50,7 +54,8 @@ class RestoreControllerTest extends TestCase
     {
         $referee = Referee::factory()->softDeleted()->create();
 
-        $this->patch(route('referees.restore', $referee))
+        $this
+            ->patch(action([RestoreController::class], $referee))
             ->assertRedirect(route('login'));
     }
 }

@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers\Titles;
 
 use App\Enums\Role;
+use App\Http\Controllers\Titles\RestoreController;
+use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,9 +25,10 @@ class RestoreControllerTest extends TestCase
     {
         $title = Title::factory()->softDeleted()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.restore', $title))
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RestoreController::class], $title))
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
         tap($title->fresh(), function ($title) {
             $this->assertNull($title->deleted_at);
@@ -39,8 +42,9 @@ class RestoreControllerTest extends TestCase
     {
         $title = Title::factory()->softDeleted()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('titles.restore', $title))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RestoreController::class], $title))
             ->assertForbidden();
     }
 
@@ -51,7 +55,8 @@ class RestoreControllerTest extends TestCase
     {
         $title = Title::factory()->softDeleted()->create();
 
-        $this->patch(route('titles.restore', $title))
+        $this
+            ->patch(action([RestoreController::class], $title))
             ->assertRedirect(route('login'));
     }
 }

@@ -26,6 +26,7 @@ class EventFactory extends Factory
     {
         return [
             'name' => $this->faker->words(2, true),
+            'date' => now()->toDateTimeString(),
             'status' => EventStatus::__default,
             'venue_id' => Venue::factory()->create()->id,
             'preview' => $this->faker->paragraph(),
@@ -36,6 +37,7 @@ class EventFactory extends Factory
     {
         return $this->state([
             'status' => EventStatus::UNSCHEDULED,
+            'date' => null,
         ])->afterCreating(function (Event $event) {
             $event->save();
         });

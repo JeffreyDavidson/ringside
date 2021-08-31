@@ -8,6 +8,7 @@ use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Stables\DeactivateController;
+use App\Http\Controllers\Stables\StablesController;
 use App\Http\Requests\Stables\DeactivateRequest;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,9 +32,10 @@ class DeactivateControllerTest extends TestCase
     {
         $stable = Stable::factory()->active()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.deactivate', $stable))
-            ->assertRedirect(route('stables.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertNotNull($stable->activations->last()->ended_at);
@@ -64,8 +66,9 @@ class DeactivateControllerTest extends TestCase
     {
         $stable = Stable::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('stables.deactivate', $stable))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([DeactivateController::class], $stable))
             ->assertForbidden();
     }
 
@@ -76,7 +79,8 @@ class DeactivateControllerTest extends TestCase
     {
         $stable = Stable::factory()->create();
 
-        $this->patch(route('stables.deactivate', $stable))
+        $this
+            ->patch(action([DeactivateController::class], $stable))
             ->assertRedirect(route('login'));
     }
 
@@ -91,8 +95,9 @@ class DeactivateControllerTest extends TestCase
 
         $stable = Stable::factory()->inactive()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.deactivate', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $stable));
     }
 
     /**
@@ -106,8 +111,9 @@ class DeactivateControllerTest extends TestCase
 
         $stable = Stable::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.deactivate', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $stable));
     }
 
     /**
@@ -121,8 +127,9 @@ class DeactivateControllerTest extends TestCase
 
         $stable = Stable::factory()->unactivated()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.deactivate', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $stable));
     }
 
     /**
@@ -136,7 +143,8 @@ class DeactivateControllerTest extends TestCase
 
         $stable = Stable::factory()->withFutureActivation()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.deactivate', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $stable));
     }
 }

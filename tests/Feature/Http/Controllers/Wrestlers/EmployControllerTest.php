@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Wrestlers\EmployController;
+use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Http\Requests\Wrestlers\EmployRequest;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,9 +33,10 @@ class EmployControllerTest extends TestCase
         $this->assertCount(0, $wrestler->employments);
         $this->assertEquals(WrestlerStatus::UNEMPLOYED, $wrestler->status);
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.employ', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertCount(1, $wrestler->employments);
@@ -54,9 +56,10 @@ class EmployControllerTest extends TestCase
         $this->assertTrue(now()->lt($startedAt));
         $this->assertEquals(WrestlerStatus::FUTURE_EMPLOYMENT, $wrestler->status);
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.employ', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) use ($startedAt) {
             $this->assertTrue($wrestler->currentEmployment->started_at->lt($startedAt));
@@ -74,9 +77,10 @@ class EmployControllerTest extends TestCase
 
         $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.employ', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertCount(2, $wrestler->employments);
@@ -99,8 +103,9 @@ class EmployControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('wrestlers.employ', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([EmployController::class], $wrestler))
             ->assertForbidden();
     }
 
@@ -111,7 +116,8 @@ class EmployControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->patch(route('wrestlers.employ', $wrestler))
+        $this
+            ->patch(action([EmployController::class], $wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -126,8 +132,9 @@ class EmployControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->employed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.employ', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $wrestler));
     }
 
     /**
@@ -142,6 +149,6 @@ class EmployControllerTest extends TestCase
         $wrestler = Wrestler::factory()->retired()->create();
 
         $this->actAs($administrators)
-            ->patch(route('wrestlers.employ', $wrestler));
+            ->patch(action([EmployController::class], $wrestler));
     }
 }

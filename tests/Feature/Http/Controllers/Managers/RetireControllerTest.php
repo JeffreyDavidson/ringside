@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Managers;
 use App\Enums\ManagerStatus;
 use App\Enums\Role;
 use App\Exceptions\CannotBeRetiredException;
+use App\Http\Controllers\Managers\ManagersController;
 use App\Http\Controllers\Managers\RetireController;
 use App\Http\Requests\Managers\RetireRequest;
 use App\Models\Manager;
@@ -32,8 +33,8 @@ class RetireControllerTest extends TestCase
         $manager = Manager::factory()->available()->create();
 
         $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager))
-            ->assertRedirect(route('managers.index'));
+            ->patch(action([RetireController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->retirements);
@@ -50,8 +51,8 @@ class RetireControllerTest extends TestCase
         $manager = Manager::factory()->injured()->create();
 
         $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager))
-            ->assertRedirect(route('managers.index'));
+            ->patch(action([RetireController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->retirements);
@@ -68,8 +69,8 @@ class RetireControllerTest extends TestCase
         $manager = Manager::factory()->suspended()->create();
 
         $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager))
-            ->assertRedirect(route('managers.index'));
+            ->patch(action([RetireController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->retirements);
@@ -93,12 +94,16 @@ class RetireControllerTest extends TestCase
             ->create();
 
         $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager))
-            ->assertRedirect(route('managers.index'));
+            ->patch(action([RetireController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) use ($tagTeam, $wrestler) {
-            $this->assertNotNull($manager->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at);
-            $this->assertNotNull($manager->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at);
+            $this->assertNotNull(
+                $manager->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at
+            );
+            $this->assertNotNull(
+                $manager->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at
+            );
         });
     }
 
@@ -117,8 +122,9 @@ class RetireControllerTest extends TestCase
     {
         $manager = Manager::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('managers.retire', $manager))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RetireController::class], $manager))
             ->assertForbidden();
     }
 
@@ -129,7 +135,8 @@ class RetireControllerTest extends TestCase
     {
         $manager = Manager::factory()->create();
 
-        $this->patch(route('managers.retire', $manager))
+        $this
+            ->patch(action([RetireController::class], $manager))
             ->assertRedirect(route('login'));
     }
 
@@ -144,8 +151,9 @@ class RetireControllerTest extends TestCase
 
         $manager = Manager::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $manager));
     }
 
     /**
@@ -159,8 +167,9 @@ class RetireControllerTest extends TestCase
 
         $manager = Manager::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $manager));
     }
 
     /**
@@ -174,8 +183,9 @@ class RetireControllerTest extends TestCase
 
         $manager = Manager::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $manager));
     }
 
     /**
@@ -189,7 +199,8 @@ class RetireControllerTest extends TestCase
 
         $manager = Manager::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.retire', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $manager));
     }
 }

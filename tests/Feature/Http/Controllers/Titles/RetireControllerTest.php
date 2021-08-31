@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Titles\RetireController;
+use App\Http\Controllers\Titles\TitlesController;
 use App\Http\Requests\Titles\RetireRequest;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,9 +28,10 @@ class RetireControllerTest extends TestCase
     {
         $title = Title::factory()->active()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.retire', $title))
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $title))
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
         tap($title->fresh(), function ($title) {
             $this->assertCount(1, $title->retirements);
@@ -45,9 +47,10 @@ class RetireControllerTest extends TestCase
     {
         $title = Title::factory()->inactive()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.retire', $title))
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $title))
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
         tap($title->fresh(), function ($title) {
             $this->assertCount(1, $title->retirements);
@@ -70,8 +73,9 @@ class RetireControllerTest extends TestCase
     {
         $title = Title::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('titles.retire', $title))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RetireController::class], $title))
             ->assertForbidden();
     }
 
@@ -82,7 +86,8 @@ class RetireControllerTest extends TestCase
     {
         $title = Title::factory()->create();
 
-        $this->patch(route('titles.retire', $title))
+        $this
+            ->patch(action([RetireController::class], $title))
             ->assertRedirect(route('login'));
     }
 
@@ -97,8 +102,9 @@ class RetireControllerTest extends TestCase
 
         $title = Title::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.retire', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $title));
     }
 
     /**
@@ -112,8 +118,9 @@ class RetireControllerTest extends TestCase
 
         $title = Title::factory()->withFutureActivation()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.retire', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $title));
     }
 
     /**
@@ -127,7 +134,8 @@ class RetireControllerTest extends TestCase
 
         $title = Title::factory()->unactivated()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.retire', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $title));
     }
 }

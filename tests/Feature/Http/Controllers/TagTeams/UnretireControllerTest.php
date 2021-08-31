@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeUnretiredException;
+use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Controllers\TagTeams\UnretireController;
 use App\Http\Requests\TagTeams\UnretireRequest;
 use App\Models\TagTeam;
@@ -30,9 +31,10 @@ class UnretireControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.unretire', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertNotNull($tagTeam->retirements->last()->ended_at);
@@ -60,8 +62,9 @@ class UnretireControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('tag-teams.unretire', $tagTeam))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([UnretireController::class], $tagTeam))
             ->assertForbidden();
     }
 
@@ -72,7 +75,8 @@ class UnretireControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $this->patch(route('tag-teams.unretire', $tagTeam))
+        $this
+            ->patch(action([UnretireController::class], $tagTeam))
             ->assertRedirect(route('login'));
     }
 
@@ -87,8 +91,9 @@ class UnretireControllerTest extends TestCase
 
         $tagTeam = TagTeam::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.unretire', $tagTeam));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $tagTeam));
     }
 
     /**
@@ -102,8 +107,9 @@ class UnretireControllerTest extends TestCase
 
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.unretire', $tagTeam));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $tagTeam));
     }
 
     /**
@@ -117,8 +123,9 @@ class UnretireControllerTest extends TestCase
 
         $tagTeam = TagTeam::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.unretire', $tagTeam));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $tagTeam));
     }
 
     /**
@@ -132,8 +139,9 @@ class UnretireControllerTest extends TestCase
 
         $tagTeam = TagTeam::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.unretire', $tagTeam));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $tagTeam));
     }
 
     /**
@@ -147,7 +155,8 @@ class UnretireControllerTest extends TestCase
 
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.unretire', $tagTeam));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $tagTeam));
     }
 }

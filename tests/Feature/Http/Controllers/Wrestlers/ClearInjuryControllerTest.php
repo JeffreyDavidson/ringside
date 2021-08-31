@@ -6,7 +6,9 @@ use App\Enums\Role;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Wrestlers\ClearInjuryController;
+use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Http\Requests\Wrestlers\ClearInjuryRequest;
+use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -31,13 +33,31 @@ class ClearInjuryControllerTest extends TestCase
 
         $this->assertNull($wrestler->injuries->last()->ended_at);
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ClearInjuryController::class], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertNotNull($wrestler->injuries->last()->ended_at);
             $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider administrators
+     */
+    public function clearing_an_injured_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable($administrators)
+    {
+        $tagTeam = TagTeam::factory()->bookable()->create();
+        $wrestler = $tagTeam->currentWrestlers()->first();
+
+        $this->actAs($administrators)
+            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+
+        tap($wrestler->fresh(), function ($wrestler) {
+            $this->assertTrue($wrestler->isBookable());
         });
     }
 
@@ -56,8 +76,9 @@ class ClearInjuryControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->injured()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([ClearInjuryController::class], $wrestler))
             ->assertForbidden();
     }
 
@@ -68,7 +89,8 @@ class ClearInjuryControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->injured()->create();
 
-        $this->patch(route('wrestlers.clear-from-injury', $wrestler))
+        $this
+            ->patch(action([ClearInjuryController::class], $wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -83,8 +105,9 @@ class ClearInjuryControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
@@ -98,8 +121,9 @@ class ClearInjuryControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
@@ -113,8 +137,9 @@ class ClearInjuryControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
@@ -128,8 +153,9 @@ class ClearInjuryControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
@@ -143,7 +169,8 @@ class ClearInjuryControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ClearInjuryController::class], $wrestler));
     }
 }

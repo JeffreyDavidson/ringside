@@ -8,6 +8,7 @@ use App\Http\Requests\Referees\StoreRequest;
 use App\Http\Requests\Referees\UpdateRequest;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\RefereeRequestDataFactory;
 use Tests\TestCase;
 
 /**
@@ -20,19 +21,15 @@ class RefereeControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Valid parameters for request.
-     *
-     * @param  array $overrides
-     * @return array
-     */
-    private function validParams($overrides = [])
+    private Referee $referee;
+    private RefereeRequestDataFactory $factory;
+
+    public function setUp(): void
     {
-        return array_replace([
-            'first_name' => 'John',
-            'last_name' => 'Smith',
-            'started_at' => now()->toDateTimeString(),
-        ], $overrides);
+        parent::setUp();
+
+        $this->referee = Referee::factory()->create();
+        $this->factory = RefereeRequestDataFactory::new()->withReferee($this->referee);
     }
 
     /**
@@ -41,8 +38,9 @@ class RefereeControllerTest extends TestCase
      */
     public function index_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('referees.index'))
+        $this
+            ->actAs($administrators)
+            ->get(action([RefereesController::class, 'index']))
             ->assertOk()
             ->assertViewIs('referees.index')
             ->assertSeeLivewire('referees.employed-referees')
@@ -58,8 +56,9 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_referees_index_page()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('referees.index'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([RefereesController::class, 'index']))
             ->assertForbidden();
     }
 
@@ -68,7 +67,8 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_view_referees_index_page()
     {
-        $this->get(route('referees.index'))
+        $this
+            ->get(action([RefereesController::class, 'index']))
             ->assertRedirect(route('login'));
     }
 
@@ -78,8 +78,9 @@ class RefereeControllerTest extends TestCase
      */
     public function create_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('referees.create'))
+        $this
+            ->actAs($administrators)
+            ->get(action([RefereesController::class, 'create']))
             ->assertViewIs('referees.create')
             ->assertViewHas('referee', new Referee);
     }
@@ -89,8 +90,9 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_creating_a_referee()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('referees.create'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([RefereesController::class, 'create']))
             ->assertForbidden();
     }
 
@@ -99,7 +101,8 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_view_the_form_for_creating_a_referee()
     {
-        $this->get(route('referees.create'))
+        $this
+            ->get(action([RefereesController::class, 'create']))
             ->assertRedirect(route('login'));
     }
 
@@ -109,14 +112,15 @@ class RefereeControllerTest extends TestCase
      */
     public function store_creates_a_referee_and_redirects($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('referees.create'))
-            ->post(route('referees.store', $this->validParams()))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'create']))
+            ->post(action([RefereesController::class, 'store'], RefereeRequestDataFactory::new()->create()))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        tap(Referee::first(), function ($referee) {
-            $this->assertEquals('John', $referee->first_name);
-            $this->assertEquals('Smith', $referee->last_name);
+        tap(Referee::all()->last(), function ($referee) {
+            $this->assertEquals('James', $referee->first_name);
+            $this->assertEquals('Williams', $referee->last_name);
         });
     }
 
@@ -126,9 +130,13 @@ class RefereeControllerTest extends TestCase
      */
     public function an_employment_is_not_created_for_the_referee_if_started_at_is_filled_in_request($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('referees.create'))
-            ->post(route('referees.store', $this->validParams(['started_at' => null])));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'create']))
+            ->post(
+                action([RefereesController::class, 'index']),
+                RefereeRequestDataFactory::new()->create(['started_at' => null])
+            );
 
         tap(Referee::first(), function ($referee) {
             $this->assertCount(0, $referee->employments);
@@ -143,11 +151,15 @@ class RefereeControllerTest extends TestCase
     {
         $startedAt = now()->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('referees.create'))
-            ->post(route('referees.store', $this->validParams(['started_at' => $startedAt])));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'create']))
+            ->post(
+                action([RefereesController::class, 'store']),
+                RefereeRequestDataFactory::new()->create(['started_at' => $startedAt])
+            );
 
-        tap(Referee::first(), function ($referee) use ($startedAt) {
+        tap(Referee::all()->last(), function ($referee) use ($startedAt) {
             $this->assertCount(1, $referee->employments);
             $this->assertEquals($startedAt, $referee->employments->first()->started_at->toDateTimeString());
         });
@@ -158,9 +170,10 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_create_a_referee()
     {
-        $this->actAs(Role::BASIC)
-            ->from(route('referees.create'))
-            ->post(route('referees.store'), $this->validParams())
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([RefereesController::class, 'create']))
+            ->post(action([RefereesController::class, 'store']), RefereeRequestDataFactory::new()->create())
             ->assertForbidden();
     }
 
@@ -169,8 +182,9 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_create_a_referee()
     {
-        $this->from(route('referees.create'))
-            ->post(route('referees.store'), $this->validParams())
+        $this
+            ->from(action([RefereesController::class, 'create']))
+            ->post(action([RefereesController::class, 'store']), RefereeRequestDataFactory::new()->create())
             ->assertRedirect(route('login'));
     }
 
@@ -188,12 +202,11 @@ class RefereeControllerTest extends TestCase
      */
     public function show_returns_a_view($administrators)
     {
-        $referee = Referee::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('referees.show', $referee))
+        $this
+            ->actAs($administrators)
+            ->get(action([RefereesController::class, 'show'], $this->referee))
             ->assertViewIs('referees.show')
-            ->assertViewHas('referee', $referee);
+            ->assertViewHas('referee', $this->referee);
     }
 
     /**
@@ -201,10 +214,9 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_a_referee_profile()
     {
-        $referee = Referee::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->get(route('referees.show', $referee))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([RefereesController::class, 'show'], $this->referee))
             ->assertForbidden();
     }
 
@@ -213,9 +225,8 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_view_a_referee_profile()
     {
-        $referee = Referee::factory()->create();
-
-        $this->get(route('referees.show', $referee))
+        $this
+            ->get(action([RefereesController::class, 'show'], $this->referee))
             ->assertRedirect(route('login'));
     }
 
@@ -225,12 +236,11 @@ class RefereeControllerTest extends TestCase
      */
     public function edit_returns_a_view($administrators)
     {
-        $referee = Referee::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('referees.edit', $referee))
+        $this
+            ->actAs($administrators)
+            ->get(action([RefereesController::class, 'edit'], $this->referee))
             ->assertViewIs('referees.edit')
-            ->assertViewHas('referee', $referee);
+            ->assertViewHas('referee', $this->referee);
     }
 
     /**
@@ -238,10 +248,9 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_editing_a_referee()
     {
-        $referee = Referee::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->get(route('referees.edit', $referee))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([RefereesController::class, 'edit'], $this->referee))
             ->assertForbidden();
     }
 
@@ -250,9 +259,8 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_view_the_form_for_editing_a_referee()
     {
-        $referee = Referee::factory()->create();
-
-        $this->get(route('referees.edit', $referee))
+        $this
+            ->get(action([RefereesController::class, 'edit'], $this->referee))
             ->assertRedirect(route('login'));
     }
 
@@ -262,16 +270,18 @@ class RefereeControllerTest extends TestCase
      */
     public function update_a_referee($administrators)
     {
-        $referee = Referee::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->withReferee($this->referee)->create()
+            )
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams())
-            ->assertRedirect(route('referees.index'));
-
-        tap($referee->fresh(), function ($referee) {
-            $this->assertEquals('John', $referee->first_name);
-            $this->assertEquals('Smith', $referee->last_name);
+        tap($this->referee->fresh(), function ($referee) {
+            $this->assertEquals('James', $referee->first_name);
+            $this->assertEquals('Williams', $referee->last_name);
         });
     }
 
@@ -282,14 +292,18 @@ class RefereeControllerTest extends TestCase
     public function update_can_employ_an_unemployed_referee_when_started_at_is_filled($administrators)
     {
         $now = now()->toDateTimeString();
-        $referee = Referee::factory()->unemployed()->create();
+        $this->referee = Referee::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams(['started_at' => $now]))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->withReferee($this->referee)->create(['started_at' => $now])
+            )
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($this->referee->fresh(), function ($referee) use ($now) {
             $this->assertCount(1, $referee->employments);
             $this->assertEquals($now, $referee->employments->first()->started_at->toDateTimeString());
         });
@@ -302,14 +316,18 @@ class RefereeControllerTest extends TestCase
     public function update_can_employ_a_future_employed_referee_when_started_at_is_filled($administrators)
     {
         $now = now()->toDateTimeString();
-        $referee = Referee::factory()->withFutureEmployment()->create();
+        $this->referee = Referee::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams(['started_at' => $now]))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->withReferee($this->referee)->create(['started_at' => $now])
+            )
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        tap($referee->fresh(), function ($referee) use ($now) {
+        tap($this->referee->fresh(), function ($referee) use ($now) {
             $this->assertCount(1, $referee->employments);
             $this->assertEquals($now, $referee->employments()->first()->started_at->toDateTimeString());
         });
@@ -321,15 +339,19 @@ class RefereeControllerTest extends TestCase
      */
     public function update_cannot_reemploy_a_released_referee($administrators)
     {
-        $referee = Referee::factory()->released()->create();
-        $startDate = $referee->employments->last()->started_at->toDateTimeString();
+        $this->referee = Referee::factory()->released()->create();
+        $startDate = $this->referee->employments->last()->started_at->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams())
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->withReferee($this->referee)->create()
+            )
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        tap($referee->fresh(), function ($referee) use ($startDate) {
+        tap($this->referee->fresh(), function ($referee) use ($startDate) {
             $this->assertCount(1, $referee->employments);
             $this->assertSame($startDate, $referee->employments->last()->started_at->toDateTimeString());
         });
@@ -341,14 +363,20 @@ class RefereeControllerTest extends TestCase
      */
     public function updating_cannot_employ_a_bookable_referee_when_started_at_is_filled($administrators)
     {
-        $referee = Referee::factory()->bookable()->create();
+        $this->referee = Referee::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams(['started_at' => $referee->employments()->first()->started_at->toDateTimeString()]))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->withReferee($this->referee)->create([
+                    'started_at' => $this->referee->employments()->first()->started_at->toDateTimeString(),
+                ])
+            )
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        tap($referee->fresh(), function ($referee) {
+        tap($this->referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->employments);
         });
     }
@@ -358,11 +386,13 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_update_a_referee()
     {
-        $referee = Referee::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams())
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->create()
+            )
             ->assertForbidden();
     }
 
@@ -371,10 +401,12 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_update_a_referee()
     {
-        $referee = Referee::factory()->create();
-
-        $this->from(route('referees.edit', $referee))
-            ->put(route('referees.update', $referee), $this->validParams())
+        $this
+            ->from(action([RefereesController::class, 'edit'], $this->referee))
+            ->put(
+                action([RefereesController::class, 'update'], $this->referee),
+                RefereeRequestDataFactory::new()->withReferee($this->referee)->create()
+            )
             ->assertRedirect(route('login'));
     }
 
@@ -392,13 +424,12 @@ class RefereeControllerTest extends TestCase
      */
     public function an_administrator_can_delete_a_referee($administrators)
     {
-        $referee = Referee::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->delete(action([RefereesController::class, 'destroy'], $this->referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->delete(route('referees.destroy', $referee))
-            ->assertRedirect(route('referees.index'));
-
-        $this->assertSoftDeleted($referee);
+        $this->assertSoftDeleted($this->referee);
     }
 
     /**
@@ -406,10 +437,9 @@ class RefereeControllerTest extends TestCase
      */
     public function a_basic_user_cannot_delete_a_referee()
     {
-        $referee = Referee::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->delete(route('referees.destroy', $referee))
+        $this
+            ->actAs(Role::BASIC)
+            ->delete(action([RefereesController::class, 'destroy'], $this->referee))
             ->assertForbidden();
     }
 
@@ -418,9 +448,8 @@ class RefereeControllerTest extends TestCase
      */
     public function a_guest_cannot_delete_a_referee()
     {
-        $referee = Referee::factory()->create();
-
-        $this->delete(route('referees.destroy', $referee))
+        $this
+            ->delete(action([RefereesController::class, 'destroy'], $this->referee))
             ->assertRedirect(route('login'));
     }
 }

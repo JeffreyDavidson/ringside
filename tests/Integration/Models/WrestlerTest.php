@@ -240,21 +240,4 @@ class WrestlerTest extends TestCase
         $this->assertCollectionDoesntHave($retiredWrestlers, $this->injuredWrestler);
         $this->assertCollectionDoesntHave($retiredWrestlers, $this->suspendedWrestler);
     }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function clearing_an_injured_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable($administrators)
-    {
-        $tagTeam = TagTeam::factory()->bookable()->create();
-        $wrestler = $tagTeam->currentWrestlers()->first();
-
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
-
-        tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertTrue($wrestler->isBookable());
-        });
-    }
 }

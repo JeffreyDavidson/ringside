@@ -6,6 +6,7 @@ use App\Enums\RefereeStatus;
 use App\Enums\Role;
 use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Referees\EmployController;
+use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Requests\Referees\EmployRequest;
 use App\Models\Referee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,9 +33,10 @@ class EmployControllerTest extends TestCase
         $this->assertCount(0, $referee->employments);
         $this->assertEquals(RefereeStatus::UNEMPLOYED, $referee->status);
 
-        $this->actAs($administrators)
-            ->patch(route('referees.employ', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->employments);
@@ -54,9 +56,10 @@ class EmployControllerTest extends TestCase
         $this->assertTrue(now()->lt($startedAt));
         $this->assertEquals(RefereeStatus::FUTURE_EMPLOYMENT, $referee->status);
 
-        $this->actAs($administrators)
-            ->patch(route('referees.employ', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) use ($startedAt) {
             $this->assertTrue($referee->currentEmployment->started_at->lt($startedAt));
@@ -74,9 +77,10 @@ class EmployControllerTest extends TestCase
 
         $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
 
-        $this->actAs($administrators)
-            ->patch(route('referees.employ', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(2, $referee->employments);
@@ -99,8 +103,9 @@ class EmployControllerTest extends TestCase
     {
         $referee = Referee::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('referees.employ', $referee))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([EmployController::class], $referee))
             ->assertForbidden();
     }
 
@@ -111,7 +116,8 @@ class EmployControllerTest extends TestCase
     {
         $referee = Referee::factory()->create();
 
-        $this->patch(route('referees.employ', $referee))
+        $this
+            ->patch(action([EmployController::class], $referee))
             ->assertRedirect(route('login'));
     }
 
@@ -126,7 +132,8 @@ class EmployControllerTest extends TestCase
 
         $referee = Referee::factory()->employed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.employ', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $referee));
     }
 }

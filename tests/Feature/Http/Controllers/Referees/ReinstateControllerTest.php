@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Referees;
 use App\Enums\RefereeStatus;
 use App\Enums\Role;
 use App\Exceptions\CannotBeReinstatedException;
+use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Controllers\Referees\ReinstateController;
 use App\Http\Requests\Referees\ReinstateRequest;
 use App\Models\Referee;
@@ -31,9 +32,10 @@ class ReinstateControllerTest extends TestCase
 
         $this->assertNull($referee->currentSuspension->ended_at);
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertNotNull($referee->suspensions->last()->ended_at);
@@ -57,7 +59,7 @@ class ReinstateControllerTest extends TestCase
         $this->actAs(Role::BASIC);
         $referee = Referee::factory()->create();
 
-        $this->patch(route('referees.reinstate', $referee))
+        $this->patch(action([ReinstateController::class], $referee))
             ->assertForbidden();
     }
 
@@ -68,7 +70,7 @@ class ReinstateControllerTest extends TestCase
     {
         $referee = Referee::factory()->create();
 
-        $this->patch(route('referees.reinstate', $referee))
+        $this->patch(action([ReinstateController::class], $referee))
             ->assertRedirect(route('login'));
     }
 
@@ -83,8 +85,9 @@ class ReinstateControllerTest extends TestCase
 
         $referee = Referee::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee));
     }
 
     /**
@@ -98,8 +101,9 @@ class ReinstateControllerTest extends TestCase
 
         $referee = Referee::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee));
     }
 
     /**
@@ -113,8 +117,9 @@ class ReinstateControllerTest extends TestCase
 
         $referee = Referee::factory()->injured()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee));
     }
 
     /**
@@ -128,8 +133,9 @@ class ReinstateControllerTest extends TestCase
 
         $referee = Referee::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee));
     }
 
     /**
@@ -143,8 +149,9 @@ class ReinstateControllerTest extends TestCase
 
         $referee = Referee::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee));
     }
 
     /**
@@ -158,7 +165,8 @@ class ReinstateControllerTest extends TestCase
 
         $referee = Referee::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.reinstate', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReinstateController::class], $referee));
     }
 }

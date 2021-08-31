@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Referees;
 use App\Enums\RefereeStatus;
 use App\Enums\Role;
 use App\Exceptions\CannotBeRetiredException;
+use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Controllers\Referees\RetireController;
 use App\Http\Requests\Referees\RetireRequest;
 use App\Models\Referee;
@@ -29,9 +30,10 @@ class RetireControllerTest extends TestCase
     {
         $referee = Referee::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->retirements);
@@ -47,9 +49,10 @@ class RetireControllerTest extends TestCase
     {
         $referee = Referee::factory()->injured()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->retirements);
@@ -65,9 +68,10 @@ class RetireControllerTest extends TestCase
     {
         $referee = Referee::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee))
-            ->assertRedirect(route('referees.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee))
+            ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->retirements);
@@ -90,8 +94,9 @@ class RetireControllerTest extends TestCase
     {
         $referee = Referee::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('referees.retire', $referee))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RetireController::class], $referee))
             ->assertForbidden();
     }
 
@@ -102,7 +107,8 @@ class RetireControllerTest extends TestCase
     {
         $referee = Referee::factory()->create();
 
-        $this->patch(route('referees.retire', $referee))
+        $this
+            ->patch(action([RetireController::class], $referee))
             ->assertRedirect(route('login'));
     }
 
@@ -117,8 +123,9 @@ class RetireControllerTest extends TestCase
 
         $referee = Referee::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee));
     }
 
     /**
@@ -132,8 +139,9 @@ class RetireControllerTest extends TestCase
 
         $referee = Referee::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee));
     }
 
     /**
@@ -147,8 +155,9 @@ class RetireControllerTest extends TestCase
 
         $referee = Referee::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee));
     }
 
     /**
@@ -162,7 +171,8 @@ class RetireControllerTest extends TestCase
 
         $referee = Referee::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('referees.retire', $referee));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $referee));
     }
 }

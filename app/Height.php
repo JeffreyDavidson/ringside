@@ -53,8 +53,6 @@ class Height
 
     public function __toString()
     {
-        dd($this->height);
-
         return strval($this->height);
     }
 }

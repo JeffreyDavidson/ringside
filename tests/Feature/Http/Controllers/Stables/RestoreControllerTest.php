@@ -4,6 +4,8 @@ namespace Tests\Feature\Http\Controllers\Stables;
 
 use App\Enums\Role;
 use App\Enums\StableStatus;
+use App\Http\Controllers\Stables\RestoreController;
+use App\Http\Controllers\Stables\StablesController;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,9 +28,10 @@ class RestoreControllerTest extends TestCase
     {
         $stable = Stable::factory()->softDeleted()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.restore', $stable))
-            ->assertRedirect(route('stables.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RestoreController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertEquals(StableStatus::UNACTIVATED, $stable->status);
@@ -43,8 +46,9 @@ class RestoreControllerTest extends TestCase
     {
         $stable = Stable::factory()->softDeleted()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('stables.restore', $stable))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RestoreController::class], $stable))
             ->assertForbidden();
     }
 
@@ -55,7 +59,7 @@ class RestoreControllerTest extends TestCase
     {
         $stable = Stable::factory()->softDeleted()->create();
 
-        $this->patch(route('stables.restore', $stable))
+        $this->patch(action([RestoreController::class], $stable))
             ->assertRedirect(route('login'));
     }
 }

@@ -8,6 +8,7 @@ use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeActivatedException;
 use App\Http\Controllers\Stables\ActivateController;
+use App\Http\Controllers\Stables\StablesController;
 use App\Http\Requests\Stables\ActivateRequest;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,9 +34,10 @@ class ActivateControllerTest extends TestCase
 
         $this->assertEquals(StableStatus::UNACTIVATED, $stable->status);
 
-        $this->actAs($administrators)
-            ->patch(route('stables.activate', $stable))
-            ->assertRedirect(route('stables.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ActivateController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertCount(1, $stable->activations);
@@ -65,9 +67,10 @@ class ActivateControllerTest extends TestCase
         $this->assertTrue(now()->lt($startedAt));
         $this->assertEquals(StableStatus::FUTURE_ACTIVATION, $stable->status);
 
-        $this->actAs($administrators)
-            ->patch(route('stables.activate', $stable))
-            ->assertRedirect(route('stables.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ActivateController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) use ($startedAt) {
             $this->assertTrue($stable->currentActivation->started_at->lt($startedAt));
@@ -93,9 +96,10 @@ class ActivateControllerTest extends TestCase
     {
         $stable = Stable::factory()->inactive()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.activate', $stable))
-            ->assertRedirect(route('stables.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ActivateController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertCount(2, $stable->activations);
@@ -128,8 +132,9 @@ class ActivateControllerTest extends TestCase
     {
         $stable = Stable::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('stables.activate', $stable))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([ActivateController::class], $stable))
             ->assertForbidden();
     }
 
@@ -140,7 +145,8 @@ class ActivateControllerTest extends TestCase
     {
         $stable = Stable::factory()->create();
 
-        $this->patch(route('stables.activate', $stable))
+        $this
+            ->patch(action([ActivateController::class], $stable))
             ->assertRedirect(route('login'));
     }
 
@@ -155,8 +161,9 @@ class ActivateControllerTest extends TestCase
 
         $stable = Stable::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.activate', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ActivateController::class], $stable));
     }
 
     /**
@@ -170,7 +177,8 @@ class ActivateControllerTest extends TestCase
 
         $stable = Stable::factory()->active()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.activate', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ActivateController::class], $stable));
     }
 }

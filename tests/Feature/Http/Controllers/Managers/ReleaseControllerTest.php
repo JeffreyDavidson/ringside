@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Managers;
 use App\Enums\ManagerStatus;
 use App\Enums\Role;
 use App\Exceptions\CannotBeReleasedException;
+use App\Http\Controllers\Managers\ManagersController;
 use App\Http\Controllers\Managers\ReleaseController;
 use App\Http\Requests\Managers\ReleaseRequest;
 use App\Models\Manager;
@@ -31,9 +32,10 @@ class ReleaseControllerTest extends TestCase
     {
         $manager = Manager::factory()->available()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertNotNull($manager->employments->last()->ended_at);
@@ -49,9 +51,10 @@ class ReleaseControllerTest extends TestCase
     {
         $manager = Manager::factory()->injured()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertNotNull($manager->injuries->last()->ended_at);
@@ -68,9 +71,10 @@ class ReleaseControllerTest extends TestCase
     {
         $manager = Manager::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertNotNull($manager->suspensions->last()->ended_at);
@@ -94,9 +98,10 @@ class ReleaseControllerTest extends TestCase
             ->hasAttached($wrestler, ['hired_at' => now()->toDateTimeString()])
             ->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) use ($tagTeam, $wrestler) {
             $this->assertNotNull($manager->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at);
@@ -119,8 +124,9 @@ class ReleaseControllerTest extends TestCase
     {
         $manager = Manager::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('managers.release', $manager))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([ReleaseController::class], $manager))
             ->assertForbidden();
     }
 
@@ -131,7 +137,8 @@ class ReleaseControllerTest extends TestCase
     {
         $manager = Manager::factory()->create();
 
-        $this->patch(route('managers.release', $manager))
+        $this
+            ->patch(action([ReleaseController::class], $manager))
             ->assertRedirect(route('login'));
     }
 
@@ -146,8 +153,9 @@ class ReleaseControllerTest extends TestCase
 
         $manager = Manager::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager));
     }
 
     /**
@@ -161,8 +169,9 @@ class ReleaseControllerTest extends TestCase
 
         $manager = Manager::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager));
     }
 
     /**
@@ -176,8 +185,9 @@ class ReleaseControllerTest extends TestCase
 
         $manager = Manager::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager));
     }
 
     /**
@@ -191,7 +201,8 @@ class ReleaseControllerTest extends TestCase
 
         $manager = Manager::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.release', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([ReleaseController::class], $manager));
     }
 }

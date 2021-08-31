@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Wrestlers\UnretireController;
+use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Http\Requests\Wrestlers\UnretireRequest;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,7 +32,7 @@ class UnretireControllerTest extends TestCase
 
         $this
             ->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler))
+            ->patch(action([UnretireController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
@@ -57,7 +58,7 @@ class UnretireControllerTest extends TestCase
 
         $this
             ->actAs(Role::BASIC)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler))
+            ->patch(action([UnretireController::class], $wrestler))
             ->assertForbidden();
     }
 
@@ -69,7 +70,7 @@ class UnretireControllerTest extends TestCase
         $wrestler = Wrestler::factory()->create();
 
         $this
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler))
+            ->patch(action([UnretireController::class], $wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -86,7 +87,7 @@ class UnretireControllerTest extends TestCase
 
         $this
             ->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
+            ->patch(action([UnretireController::class], $wrestler));
     }
 
     /**
@@ -102,7 +103,7 @@ class UnretireControllerTest extends TestCase
 
         $this
             ->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
+            ->patch(action([UnretireController::class], $wrestler));
     }
 
     /**
@@ -116,8 +117,9 @@ class UnretireControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->injured()->create();
 
-        $this->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $wrestler));
     }
 
     /**
@@ -131,8 +133,9 @@ class UnretireControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $wrestler));
     }
 
     /**
@@ -146,8 +149,9 @@ class UnretireControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $wrestler));
     }
 
     /**
@@ -161,7 +165,8 @@ class UnretireControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(action([UnretireController::class, '__invoke'], $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([UnretireController::class], $wrestler));
     }
 }

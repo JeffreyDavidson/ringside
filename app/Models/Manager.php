@@ -12,6 +12,7 @@ class Manager extends SingleRosterMember implements StableMember
 {
     use SoftDeletes,
         HasFactory,
+        Concerns\OwnedByUser,
         Concerns\HasFullName,
         Concerns\Manageables,
         Concerns\StableMember,
@@ -44,16 +45,6 @@ class Manager extends SingleRosterMember implements StableMember
     protected $casts = [
         'status' => ManagerStatus::class,
     ];
-
-    /**
-     * Get the user belonging to the manager.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     /**
      * Scope a query to only include available managers.

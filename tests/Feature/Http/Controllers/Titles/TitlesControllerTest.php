@@ -8,6 +8,7 @@ use App\Http\Requests\Titles\StoreRequest;
 use App\Http\Requests\Titles\UpdateRequest;
 use App\Models\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\TitleRequestDataFactory;
 use Tests\TestCase;
 
 /**
@@ -18,18 +19,15 @@ class TitlesControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Valid parameters for request.
-     *
-     * @param  array $overrides
-     * @return array
-     */
-    private function validParams($overrides = [])
+    private Title $title;
+    private TitleRequestDataFactory $factory;
+
+    public function setUp(): void
     {
-        return array_replace([
-            'name' => 'Example Name Title',
-            'activated_at' => now()->toDateTimeString(),
-        ], $overrides);
+        parent::setUp();
+
+        $this->title = Title::factory()->create();
+        $this->factory = TitleRequestDataFactory::new()->withTitle($this->title);
     }
 
     /**
@@ -38,8 +36,9 @@ class TitlesControllerTest extends TestCase
      */
     public function index_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('titles.index'))
+        $this
+            ->actAs($administrators)
+            ->get(action([TitlesController::class, 'index']))
             ->assertOk()
             ->assertViewIs('titles.index')
             ->assertSeeLivewire('titles.active-titles')
@@ -53,8 +52,9 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_titles_index_page()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('titles.index'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([TitlesController::class, 'index']))
             ->assertForbidden();
     }
 
@@ -63,7 +63,8 @@ class TitlesControllerTest extends TestCase
      */
     public function a_guest_cannot_view_titles_index_page()
     {
-        $this->get(route('titles.index'))
+        $this
+            ->get(action([TitlesController::class, 'index']))
             ->assertRedirect(route('login'));
     }
 
@@ -73,8 +74,9 @@ class TitlesControllerTest extends TestCase
      */
     public function create_returns_a_view($administrators)
     {
-        $this->actAs($administrators)
-            ->get(route('titles.create'))
+        $this
+            ->actAs($administrators)
+            ->get(action([TitlesController::class, 'create']))
             ->assertViewIs('titles.create')
             ->assertViewHas('title', new Title);
     }
@@ -84,8 +86,9 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_creating_a_title()
     {
-        $this->actAs(Role::BASIC)
-            ->get(route('titles.create'))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([TitlesController::class, 'create']))
             ->assertForbidden();
     }
 
@@ -94,7 +97,8 @@ class TitlesControllerTest extends TestCase
      */
     public function guests_cannot_view_the_form_for_creating_a_title()
     {
-        $this->get(route('titles.create'))
+        $this
+            ->get(action([TitlesController::class, 'create']))
             ->assertRedirect(route('login'));
     }
 
@@ -104,13 +108,14 @@ class TitlesControllerTest extends TestCase
      */
     public function store_creates_a_title_and_redirects($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('titles.create'))
-            ->post(route('titles.store'), $this->validParams())
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'create']))
+            ->post(action([TitlesController::class, 'store']), TitleRequestDataFactory::new()->create())
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        tap(Title::first(), function ($title) {
-            $this->assertEquals('Example Name Title', $title->name);
+        tap(Title::all()->last(), function ($title) {
+            $this->assertEquals('Example Title', $title->name);
         });
     }
 
@@ -120,9 +125,13 @@ class TitlesControllerTest extends TestCase
      */
     public function an_activation_is_not_created_for_the_title_if_activated_at_is_filled_in_request($administrators)
     {
-        $this->actAs($administrators)
-            ->from(route('titles.create'))
-            ->post(route('titles.store'), $this->validParams(['activated_at' => null]));
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'create']))
+            ->post(
+                action([TitlesController::class, 'store']),
+                TitleRequestDataFactory::new()->create(['activated_at' => null])
+            );
 
         tap(Title::first(), function ($title) {
             $this->assertFalse($title->hasActivations());
@@ -137,11 +146,15 @@ class TitlesControllerTest extends TestCase
     {
         $activatedAt = now()->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('titles.create'))
-            ->post(route('titles.store'), $this->validParams(['activated_at' => $activatedAt]));
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'create']))
+            ->post(
+                action([TitlesController::class, 'store']),
+                TitleRequestDataFactory::new()->create(['activated_at' => $activatedAt])
+            );
 
-        tap(Title::first(), function ($title) use ($activatedAt) {
+        tap(Title::all()->last(), function ($title) use ($activatedAt) {
             $this->assertTrue($title->hasActivations());
             $this->assertEquals($activatedAt, $title->activations->first()->started_at->toDateTimeString());
         });
@@ -152,9 +165,10 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_cannot_create_a_title()
     {
-        $this->actAs(Role::BASIC)
-            ->from(route('titles.create'))
-            ->post(route('titles.store'), $this->validParams())
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([TitlesController::class, 'create']))
+            ->post(action([TitlesController::class, 'store']), TitleRequestDataFactory::new()->create())
             ->assertForbidden();
     }
 
@@ -163,8 +177,9 @@ class TitlesControllerTest extends TestCase
      */
     public function guests_cannot_create_a_title()
     {
-        $this->from(route('titles.create'))
-            ->post(route('titles.store'), $this->validParams())
+        $this
+            ->from(action([TitlesController::class, 'create']))
+            ->post(action([TitlesController::class, 'store']), TitleRequestDataFactory::new()->create())
             ->assertRedirect(route('login'));
     }
 
@@ -182,12 +197,11 @@ class TitlesControllerTest extends TestCase
      */
     public function edit_returns_a_view($administrators)
     {
-        $title = Title::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('titles.edit', $title))
+        $this
+            ->actAs($administrators)
+            ->get(action([TitlesController::class, 'edit'], $this->title))
             ->assertViewIs('titles.edit')
-            ->assertViewHas('title', $title);
+            ->assertViewHas('title', $this->title);
     }
 
     /**
@@ -195,10 +209,8 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_cannot_view_the_form_for_editing_a_title()
     {
-        $title = Title::factory()->create();
-
         $this->actAs(Role::BASIC)
-            ->get(route('titles.edit', $title))
+            ->get(action([TitlesController::class, 'edit'], $this->title))
             ->assertForbidden();
     }
 
@@ -207,9 +219,8 @@ class TitlesControllerTest extends TestCase
      */
     public function a_guest_cannot_view_the_form_for_editing_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->get(route('titles.edit', $title))
+        $this
+            ->get(action([TitlesController::class, 'edit'], $this->title))
             ->assertRedirect(route('login'));
     }
 
@@ -219,15 +230,14 @@ class TitlesControllerTest extends TestCase
      */
     public function update_a_title($administrators)
     {
-        $title = Title::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(action([TitlesController::class, 'update'], $this->title), $this->factory->create())
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams())
-            ->assertRedirect(route('titles.index'));
-
-        tap($title->fresh(), function ($title) {
-            $this->assertEquals('Example Name Title', $title->name);
+        tap($this->title->fresh(), function ($title) {
+            $this->assertEquals('Example Title', $title->name);
         });
     }
 
@@ -237,14 +247,18 @@ class TitlesControllerTest extends TestCase
      */
     public function update_can_activate_an_unactivated_title_when_activated_at_is_filled($administrators)
     {
-        $title = Title::factory()->unactivated()->create();
+        $this->title = Title::factory()->unactivated()->create();
 
-        $this->actAs($administrators)
-            ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams(['activated_at' => now()->toDateTimeString()]))
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(
+                action([TitlesController::class, 'update'], $this->title),
+                $this->factory->create(['activated_at' => now()->toDateTimeString()])
+            )
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        tap($title->fresh(), function ($title) {
+        tap($this->title->fresh(), function ($title) {
             $this->assertCount(1, $title->activations);
         });
     }
@@ -255,15 +269,16 @@ class TitlesControllerTest extends TestCase
      */
     public function update_can_activate_a_future_activated_title_when_activated_at_is_filled($administrators)
     {
-        $title = Title::factory()->withFutureActivation()->create();
-        $startDate = $title->activations->last()->started_at->toDateTimeString();
+        $this->title = Title::factory()->withFutureActivation()->create();
+        $startDate = $this->title->activations->last()->started_at->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams())
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(action([TitlesController::class, 'update'], $this->title), $this->factory->create())
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        tap($title->fresh(), function ($title) use ($startDate) {
+        tap($this->title->fresh(), function ($title) use ($startDate) {
             $this->assertCount(1, $title->activations);
             $this->assertEquals($startDate, $title->activations()->first()->started_at->toDateTimeString());
         });
@@ -275,15 +290,15 @@ class TitlesControllerTest extends TestCase
      */
     public function update_cannot_activate_an_inactive_title($administrators)
     {
-        $title = Title::factory()->inactive()->create();
-        $startDate = $title->activations->last()->started_at->toDateTimeString();
+        $this->title = Title::factory()->inactive()->create();
+        $startDate = $this->title->activations->last()->started_at->toDateTimeString();
 
         $this->actAs($administrators)
-            ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams())
-            ->assertRedirect(route('titles.index'));
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(action([TitlesController::class, 'update'], $this->title), $this->factory->create())
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        tap($title->fresh(), function ($title) use ($startDate) {
+        tap($this->title->fresh(), function ($title) use ($startDate) {
             $this->assertCount(1, $title->activations);
             $this->assertSame($startDate, $title->activations->last()->started_at->toDateTimeString());
         });
@@ -295,15 +310,16 @@ class TitlesControllerTest extends TestCase
      */
     public function updating_cannot_activate_an_active_title($administrators)
     {
-        $title = Title::factory()->active()->create();
-        $startDate = $title->activations->last()->started_at->toDateTimeString();
+        $this->title = Title::factory()->active()->create();
+        $startDate = $this->title->activations->last()->started_at->toDateTimeString();
 
-        $this->actAs($administrators)
-            ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams())
-            ->assertRedirect(route('titles.index'));
+        $this
+            ->actAs($administrators)
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(action([TitlesController::class, 'update'], $this->title), $this->factory->create())
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        tap($title->fresh(), function ($title) use ($startDate) {
+        tap($this->title->fresh(), function ($title) use ($startDate) {
             $this->assertCount(1, $title->activations);
             $this->assertSame($startDate, $title->activations->last()->started_at->toDateTimeString());
         });
@@ -314,11 +330,10 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_cannot_update_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams())
+        $this
+            ->actAs(Role::BASIC)
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(action([TitlesController::class, 'update'], $this->title), $this->factory->create())
             ->assertForbidden();
     }
 
@@ -327,10 +342,9 @@ class TitlesControllerTest extends TestCase
      */
     public function a_guest_cannot_update_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->from(route('titles.edit', $title))
-            ->put(route('titles.update', $title), $this->validParams())
+        $this
+            ->from(action([TitlesController::class, 'edit'], $this->title))
+            ->put(action([TitlesController::class, 'update'], $this->title), $this->factory->create())
             ->assertRedirect(route('login'));
     }
 
@@ -348,12 +362,11 @@ class TitlesControllerTest extends TestCase
      */
     public function a_title_can_be_viewed($administrators)
     {
-        $title = Title::factory()->create();
-
-        $this->actAs($administrators)
-            ->get(route('titles.show', $title))
+        $this
+            ->actAs($administrators)
+            ->get(action([TitlesController::class, 'show'], $this->title))
             ->assertViewIs('titles.show')
-            ->assertViewHas('title', $title);
+            ->assertViewHas('title', $this->title);
     }
 
     /**
@@ -361,10 +374,9 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_can_view_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->get(route('titles.show', $title))
+        $this
+            ->actAs(Role::BASIC)
+            ->get(action([TitlesController::class, 'show'], $this->title))
             ->assertForbidden();
     }
 
@@ -373,9 +385,8 @@ class TitlesControllerTest extends TestCase
      */
     public function a_guest_cannot_view_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->get(route('titles.show', $title))
+        $this
+            ->get(action([TitlesController::class, 'show'], $this->title))
             ->assertRedirect(route('login'));
     }
 
@@ -385,13 +396,12 @@ class TitlesControllerTest extends TestCase
      */
     public function delete_a_title($administrators)
     {
-        $title = Title::factory()->create();
+        $this
+            ->actAs($administrators)
+            ->delete(action([TitlesController::class, 'destroy'], $this->title))
+            ->assertRedirect(action([TitlesController::class, 'index']));
 
-        $this->actAs($administrators)
-            ->delete(route('titles.destroy', $title))
-            ->assertRedirect(route('titles.index'));
-
-        $this->assertSoftDeleted($title);
+        $this->assertSoftDeleted($this->title);
     }
 
     /**
@@ -399,10 +409,9 @@ class TitlesControllerTest extends TestCase
      */
     public function a_basic_user_cannot_delete_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->actAs(Role::BASIC)
-            ->delete(route('titles.destroy', $title))
+        $this
+            ->actAs(Role::BASIC)
+            ->delete(action([TitlesController::class, 'destroy'], $this->title))
             ->assertForbidden();
     }
 
@@ -411,9 +420,8 @@ class TitlesControllerTest extends TestCase
      */
     public function a_guest_cannot_delete_a_title()
     {
-        $title = Title::factory()->create();
-
-        $this->delete(route('titles.destroy', $title))
+        $this
+            ->delete(action([TitlesController::class, 'destroy'], $this->title))
             ->assertRedirect(route('login'));
     }
 }

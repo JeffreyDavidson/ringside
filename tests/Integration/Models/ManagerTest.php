@@ -3,7 +3,6 @@
 namespace Tests\Integration\Models;
 
 use App\Models\Manager;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

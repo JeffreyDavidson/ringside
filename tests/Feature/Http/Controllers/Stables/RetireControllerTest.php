@@ -8,6 +8,7 @@ use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Stables\RetireController;
+use App\Http\Controllers\Stables\StablesController;
 use App\Http\Requests\Stables\RetireRequest;
 use App\Models\Stable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,9 +32,10 @@ class RetireControllerTest extends TestCase
     {
         $stable = Stable::factory()->active()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.retire', $stable))
-            ->assertRedirect(route('stables.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertCount(1, $stable->retirements);
@@ -60,8 +62,8 @@ class RetireControllerTest extends TestCase
         $stable = Stable::factory()->inactive()->create();
 
         $this->actAs($administrators)
-            ->patch(route('stables.retire', $stable))
-            ->assertRedirect(route('stables.index'));
+            ->patch(action([RetireController::class], $stable))
+            ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertCount(1, $stable->retirements);
@@ -94,8 +96,9 @@ class RetireControllerTest extends TestCase
     {
         $stable = Stable::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('stables.retire', $stable))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RetireController::class], $stable))
             ->assertForbidden();
     }
 
@@ -106,7 +109,8 @@ class RetireControllerTest extends TestCase
     {
         $stable = Stable::factory()->create();
 
-        $this->patch(route('stables.retire', $stable))
+        $this
+            ->patch(action([RetireController::class], $stable))
             ->assertRedirect(route('login'));
     }
 
@@ -121,8 +125,9 @@ class RetireControllerTest extends TestCase
 
         $stable = Stable::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.retire', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $stable));
     }
 
     /**
@@ -136,8 +141,9 @@ class RetireControllerTest extends TestCase
 
         $stable = Stable::factory()->withFutureActivation()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.retire', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $stable));
     }
 
     /**
@@ -151,7 +157,8 @@ class RetireControllerTest extends TestCase
 
         $stable = Stable::factory()->unactivated()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('stables.retire', $stable));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RetireController::class], $stable));
     }
 }

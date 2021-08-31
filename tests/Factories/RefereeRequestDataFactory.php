@@ -3,6 +3,7 @@
 namespace Tests\Factories;
 
 use App\Models\Referee;
+use Carbon\Carbon;
 
 class RefereeRequestDataFactory
 {
@@ -22,6 +23,17 @@ class RefereeRequestDataFactory
             'last_name' => $this->last_name,
             'started_at' => $this->started_at,
         ], $overrides);
+    }
+
+    public function withStartDate(string | Carbon $startedAt): self
+    {
+        $clone = clone $this;
+
+        $clone->started_at = $startedAt instanceof Carbon
+            ? $startedAt->format('Y-m-d H:i:a')
+            : $startedAt;
+
+        return $clone;
     }
 
     public function withReferee(Referee $referee): self

@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers\Managers;
 
 use App\Enums\Role;
+use App\Http\Controllers\Managers\ManagersController;
+use App\Http\Controllers\Managers\RestoreController;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,9 +26,10 @@ class RestoreControllerTest extends TestCase
     {
         $manager = Manager::factory()->softDeleted()->create();
 
-        $this->actAs(Role::ADMINISTRATOR)
-            ->patch(route('managers.restore', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RestoreController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         $this->assertNull($manager->fresh()->deleted_at);
     }
@@ -38,8 +41,9 @@ class RestoreControllerTest extends TestCase
     {
         $manager = Manager::factory()->softDeleted()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('managers.restore', $manager))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RestoreController::class], $manager))
             ->assertForbidden();
     }
 
@@ -50,7 +54,8 @@ class RestoreControllerTest extends TestCase
     {
         $manager = Manager::factory()->softDeleted()->create();
 
-        $this->patch(route('managers.restore', $manager))
+        $this
+            ->patch(action([RestoreController::class], $manager))
             ->assertRedirect(route('login'));
     }
 }

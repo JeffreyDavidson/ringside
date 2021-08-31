@@ -7,6 +7,7 @@ use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\TagTeams\EmployController;
+use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Requests\TagTeams\EmployRequest;
 use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,9 +34,10 @@ class EmployControllerTest extends TestCase
         $this->assertCount(0, $tagTeam->employments);
         $this->assertEquals(TagTeamStatus::UNEMPLOYED, $tagTeam->status);
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.employ', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertCount(1, $tagTeam->employments);
@@ -60,9 +62,10 @@ class EmployControllerTest extends TestCase
         $this->assertTrue(now()->lt($startedAt));
         $this->assertEquals(TagTeamStatus::FUTURE_EMPLOYMENT, $tagTeam->status);
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.employ', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) use ($startedAt) {
             $this->assertTrue($tagTeam->currentEmployment->started_at->lt($startedAt));
@@ -85,9 +88,10 @@ class EmployControllerTest extends TestCase
 
         $this->assertEquals(TagTeamStatus::RELEASED, $tagTeam->status);
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.employ', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertCount(2, $tagTeam->employments);
@@ -115,8 +119,9 @@ class EmployControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('tag-teams.employ', $tagTeam))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([EmployController::class], $tagTeam))
             ->assertForbidden();
     }
 
@@ -127,7 +132,7 @@ class EmployControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $this->patch(route('tag-teams.employ', $tagTeam))
+        $this->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(route('login'));
     }
 
@@ -143,7 +148,7 @@ class EmployControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->bookable()->create();
 
         $this->actAs($administrators)
-            ->patch(route('tag-teams.employ', $tagTeam));
+            ->patch(action([EmployController::class], $tagTeam));
     }
 
     /**
@@ -158,7 +163,7 @@ class EmployControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->retired()->create();
 
         $this->actAs($administrators)
-            ->patch(route('tag-teams.employ', $tagTeam));
+            ->patch(action([EmployController::class], $tagTeam));
     }
 
     /**
@@ -173,6 +178,6 @@ class EmployControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->suspended()->create();
 
         $this->actAs($administrators)
-            ->patch(route('tag-teams.employ', $tagTeam));
+            ->patch(action([EmployController::class], $tagTeam));
     }
 }

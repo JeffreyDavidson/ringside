@@ -7,6 +7,7 @@ use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Wrestlers\SuspendController;
+use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Http\Requests\Wrestlers\SuspendRequest;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
@@ -31,9 +32,10 @@ class SuspendControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertCount(1, $wrestler->suspensions);
@@ -52,8 +54,9 @@ class SuspendControllerTest extends TestCase
 
         $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
 
         $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->fresh()->status);
     }
@@ -73,8 +76,9 @@ class SuspendControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('wrestlers.suspend', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([SuspendController::class], $wrestler))
             ->assertForbidden();
     }
 
@@ -85,7 +89,8 @@ class SuspendControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->create();
 
-        $this->patch(route('wrestlers.suspend', $wrestler))
+        $this
+            ->patch(action([SuspendController::class], $wrestler))
             ->assertRedirect(route('login'));
     }
 
@@ -100,8 +105,9 @@ class SuspendControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
@@ -115,8 +121,9 @@ class SuspendControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
@@ -130,8 +137,9 @@ class SuspendControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->injured()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
@@ -145,8 +153,9 @@ class SuspendControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
@@ -160,8 +169,9 @@ class SuspendControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
@@ -175,7 +185,8 @@ class SuspendControllerTest extends TestCase
 
         $wrestler = Wrestler::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('wrestlers.suspend', $wrestler));
+        $this
+            ->actAs($administrators)
+            ->patch(action([SuspendController::class], $wrestler));
     }
 }

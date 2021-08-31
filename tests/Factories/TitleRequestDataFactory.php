@@ -6,7 +6,7 @@ use App\Models\Title;
 
 class TitleRequestDataFactory
 {
-    private string $name = 'Example Title Name';
+    private string $name = 'Example Title';
     private string $activated_at = '2021-01-01 00:00:00';
 
     public static function new(): self

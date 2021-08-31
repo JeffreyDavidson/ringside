@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers\Wrestlers;
 
 use App\Enums\Role;
+use App\Http\Controllers\Wrestlers\RestoreController;
+use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,14 +21,16 @@ class RestoreControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider administrators
      */
-    public function invoke_restores_a_deleted_wrestler_and_redirects()
+    public function invoke_restores_a_deleted_wrestler_and_redirects($administrators)
     {
         $wrestler = Wrestler::factory()->softDeleted()->create();
 
-        $this->actAs(Role::ADMINISTRATOR)
-            ->patch(route('wrestlers.restore', $wrestler))
-            ->assertRedirect(route('wrestlers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([RestoreController::class], $wrestler))
+            ->assertRedirect(action([WrestlersController::class, 'index']));
 
         $this->assertNull($wrestler->fresh()->deleted_at);
     }
@@ -38,8 +42,9 @@ class RestoreControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->softDeleted()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('wrestlers.restore', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RestoreController::class], $wrestler))
             ->assertForbidden();
     }
 
@@ -50,7 +55,8 @@ class RestoreControllerTest extends TestCase
     {
         $wrestler = Wrestler::factory()->softDeleted()->create();
 
-        $this->patch(route('wrestlers.restore', $wrestler))
+        $this
+            ->patch(action([RestoreController::class], $wrestler))
             ->assertRedirect(route('login'));
     }
 }

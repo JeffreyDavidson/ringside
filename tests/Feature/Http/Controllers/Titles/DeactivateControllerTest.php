@@ -27,8 +27,9 @@ class DeactivateControllerTest extends TestCase
     {
         $title = Title::factory()->active()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.deactivate', $title))
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $title))
             ->assertRedirect(route('titles.index'));
 
         tap($title->fresh(), function ($title) {
@@ -52,8 +53,9 @@ class DeactivateControllerTest extends TestCase
     {
         $title = Title::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('titles.deactivate', $title))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([DeactivateController::class], $title))
             ->assertForbidden();
     }
 
@@ -64,7 +66,8 @@ class DeactivateControllerTest extends TestCase
     {
         $title = Title::factory()->create();
 
-        $this->patch(route('titles.deactivate', $title))
+        $this
+            ->patch(action([DeactivateController::class], $title))
             ->assertRedirect(route('login'));
     }
 
@@ -79,8 +82,9 @@ class DeactivateControllerTest extends TestCase
 
         $title = Title::factory()->unactivated()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.deactivate', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $title));
     }
 
     /**
@@ -94,8 +98,9 @@ class DeactivateControllerTest extends TestCase
 
         $title = Title::factory()->withFutureActivation()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.deactivate', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $title));
     }
 
     /**
@@ -109,8 +114,9 @@ class DeactivateControllerTest extends TestCase
 
         $title = Title::factory()->inactive()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.deactivate', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $title));
     }
 
     /**
@@ -124,7 +130,8 @@ class DeactivateControllerTest extends TestCase
 
         $title = Title::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('titles.deactivate', $title));
+        $this
+            ->actAs($administrators)
+            ->patch(action([DeactivateController::class], $title));
     }
 }

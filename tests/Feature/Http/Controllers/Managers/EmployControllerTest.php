@@ -6,6 +6,7 @@ use App\Enums\ManagerStatus;
 use App\Enums\Role;
 use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Managers\EmployController;
+use App\Http\Controllers\Managers\ManagersController;
 use App\Http\Requests\Managers\EmployRequest;
 use App\Models\Manager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,9 +33,10 @@ class EmployControllerTest extends TestCase
         $this->assertCount(0, $manager->employments);
         $this->assertEquals(ManagerStatus::UNEMPLOYED, $manager->status);
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->employments);
@@ -54,9 +56,10 @@ class EmployControllerTest extends TestCase
         $this->assertTrue(now()->lt($startedAt));
         $this->assertEquals(ManagerStatus::FUTURE_EMPLOYMENT, $manager->status);
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) use ($startedAt) {
             $this->assertTrue($manager->currentEmployment->started_at->lt($startedAt));
@@ -74,9 +77,10 @@ class EmployControllerTest extends TestCase
 
         $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager))
-            ->assertRedirect(route('managers.index'));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager))
+            ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(2, $manager->employments);
@@ -99,8 +103,9 @@ class EmployControllerTest extends TestCase
     {
         $manager = Manager::factory()->withFutureEmployment()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('managers.employ', $manager))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([EmployController::class], $manager))
             ->assertForbidden();
     }
 
@@ -111,7 +116,8 @@ class EmployControllerTest extends TestCase
     {
         $manager = Manager::factory()->withFutureEmployment()->create();
 
-        $this->patch(route('managers.employ', $manager))
+        $this
+            ->patch(action([EmployController::class], $manager))
             ->assertRedirect(route('login'));
     }
 
@@ -126,8 +132,9 @@ class EmployControllerTest extends TestCase
 
         $manager = Manager::factory()->available()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager));
     }
 
     /**
@@ -141,8 +148,9 @@ class EmployControllerTest extends TestCase
 
         $manager = Manager::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager));
     }
 
     /**
@@ -156,8 +164,9 @@ class EmployControllerTest extends TestCase
 
         $manager = Manager::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager));
     }
 
     /**
@@ -171,7 +180,8 @@ class EmployControllerTest extends TestCase
 
         $manager = Manager::factory()->injured()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('managers.employ', $manager));
+        $this
+            ->actAs($administrators)
+            ->patch(action([EmployController::class], $manager));
     }
 }
