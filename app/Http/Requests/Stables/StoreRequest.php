@@ -7,6 +7,7 @@ use App\Rules\TagTeamCanJoinStable;
 use App\Rules\WrestlerCanJoinStable;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class StoreRequest extends FormRequest
 {
@@ -40,10 +41,10 @@ class StoreRequest extends FormRequest
     /**
      * Undocumented function.
      *
-     * @param  Illuminate\Contracts\Validation\Validator  $validator
+     * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
-    public function after($validator)
+    public function after(Validator $validator)
     {
         $totalStableMembers = count($this->wrestlers) + (count($this->tagteams) * 2);
 
