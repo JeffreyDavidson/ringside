@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use SoftDeletes,
+    use Concerns\Unguarded,
         HasFactory,
-        Concerns\Unguarded;
+        SoftDeletes;
 
     /**
      * The "booted" method of the model.

@@ -4,19 +4,18 @@ namespace App\Models;
 
 use App\Enums\ManagerStatus;
 use App\Models\Contracts\StableMember;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manager extends SingleRosterMember implements StableMember
 {
-    use SoftDeletes,
-        HasFactory,
-        Concerns\OwnedByUser,
-        Concerns\HasFullName,
+    use Concerns\HasFullName,
         Concerns\Manageables,
+        Concerns\OwnedByUser,
         Concerns\StableMember,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * The "booted" method of the model.

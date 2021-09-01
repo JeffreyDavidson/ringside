@@ -12,17 +12,17 @@ use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Wrestler extends SingleRosterMember implements Bookable, Manageable, TagTeamMember, StableMember
+class Wrestler extends SingleRosterMember implements Bookable, Manageable, StableMember, TagTeamMember
 {
-    use SoftDeletes,
-        HasFactory,
-        Concerns\Bookable,
+    use Concerns\Bookable,
         Concerns\Manageable,
         Concerns\OwnedByUser,
         Concerns\StableMember,
         Concerns\TagTeamMember,
         Concerns\Unguarded,
-        HasRelationships;
+        HasFactory,
+        HasRelationships,
+        SoftDeletes;
 
     /**
      * The "booted" method of the model.

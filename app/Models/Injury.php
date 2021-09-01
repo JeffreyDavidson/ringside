@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Injury extends Model
 {
-    use HasFactory,
-        Concerns\Unguarded;
+    use Concerns\Unguarded,
+        HasFactory;
 
     /**
      * The table associated with the model.

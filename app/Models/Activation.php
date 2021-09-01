@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activation extends Model
 {
-    use Concerns\Unguarded, HasFactory;
+    use Concerns\Unguarded,
+        HasFactory;
 
     /**
      * The table associated with the model.

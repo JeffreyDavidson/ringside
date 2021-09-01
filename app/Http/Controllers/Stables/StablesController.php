@@ -43,6 +43,7 @@ class StablesController extends Controller
      */
     public function store(StoreRequest $request, StableService $stableService)
     {
+        dd($request->all());
         $stableService->create($request->only(['name', 'started_at', 'wrestlers', 'tag_teams']));
 
         return redirect()->route('stables.index');

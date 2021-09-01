@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referee extends SingleRosterMember implements Bookable
 {
-    use SoftDeletes,
-        HasFactory,
-        Concerns\Bookable,
+    use Concerns\Bookable,
         Concerns\HasFullName,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * The "booted" method of the model.

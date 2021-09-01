@@ -22,6 +22,8 @@ class StableRequestDataFactory
         return array_replace([
             'name' => $this->name,
             'started_at' => $this->started_at,
+            'wrestlers' => $this->wrestlers,
+            'tag_teams' => $this->tagTeams,
         ], $overrides);
     }
 
