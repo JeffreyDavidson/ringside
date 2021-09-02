@@ -32,7 +32,6 @@ class StableService
      */
     public function create(array $data)
     {
-        dd($data);
         $stable = $this->stableRepository->create($data);
 
         if (isset($data['started_at'])) {

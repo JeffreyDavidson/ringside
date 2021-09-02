@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class StableRequestDataFactory
 {
     private string $name = 'Example Stable Name';
-    private string $started_at = '2021-01-01 00:00:00';
+    private ?string $started_at = null;
     private array $wrestlers = [];
     private array $tagTeams = [];
 

@@ -39,6 +39,6 @@ class StableHasEnoughMembers implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'There is not enough members for this stable.';
     }
 }
