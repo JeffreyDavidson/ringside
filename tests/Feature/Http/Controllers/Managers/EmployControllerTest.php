@@ -24,9 +24,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_an_unemployed_manager_and_redirects($administrators)
+    public function invoke_employs_an_unemployed_manager_and_redirects()
     {
         $manager = Manager::factory()->unemployed()->create();
 
@@ -34,7 +33,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(ManagerStatus::UNEMPLOYED, $manager->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
@@ -46,9 +45,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_future_employed_manager_and_redirects($administrators)
+    public function invoke_employs_a_future_employed_manager_and_redirects()
     {
         $manager = Manager::factory()->withFutureEmployment()->create();
         $startedAt = $manager->employments->last()->started_at;
@@ -57,7 +55,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(ManagerStatus::FUTURE_EMPLOYMENT, $manager->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
@@ -69,16 +67,15 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_released_manager_and_redirects($administrators)
+    public function invoke_employs_a_released_manager_and_redirects()
     {
         $manager = Manager::factory()->released()->create();
 
         $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
@@ -123,9 +120,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_an_available_manager($administrators)
+    public function invoke_throws_exception_for_employing_an_available_manager()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -133,15 +129,14 @@ class EmployControllerTest extends TestCase
         $manager = Manager::factory()->available()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_a_retired_manager($administrators)
+    public function invoke_throws_exception_for_employing_a_retired_manager()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -149,15 +144,14 @@ class EmployControllerTest extends TestCase
         $manager = Manager::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_a_suspended_manager($administrators)
+    public function invoke_throws_exception_for_employing_a_suspended_manager()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -165,15 +159,14 @@ class EmployControllerTest extends TestCase
         $manager = Manager::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_an_injured_manager($administrators)
+    public function invoke_throws_exception_for_employing_an_injured_manager()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -181,7 +174,7 @@ class EmployControllerTest extends TestCase
         $manager = Manager::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $manager));
     }
 }

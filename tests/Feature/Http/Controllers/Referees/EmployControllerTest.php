@@ -24,9 +24,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_an_unemployed_referee_and_redirects($administrators)
+    public function invoke_employs_an_unemployed_referee_and_redirects()
     {
         $referee = Referee::factory()->unemployed()->create();
 
@@ -34,7 +33,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(RefereeStatus::UNEMPLOYED, $referee->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
@@ -46,9 +45,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_future_employed_referee_and_redirects($administrators)
+    public function invoke_employs_a_future_employed_referee_and_redirects()
     {
         $referee = Referee::factory()->withFutureEmployment()->create();
         $startedAt = $referee->employments->last()->started_at;
@@ -57,7 +55,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(RefereeStatus::FUTURE_EMPLOYMENT, $referee->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
@@ -69,16 +67,15 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_released_referee_and_redirects($administrators)
+    public function invoke_employs_a_released_referee_and_redirects()
     {
         $referee = Referee::factory()->released()->create();
 
         $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
@@ -123,9 +120,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_an_employed_referee($administrators)
+    public function invoke_throws_exception_for_employing_an_employed_referee()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -133,7 +129,7 @@ class EmployControllerTest extends TestCase
         $referee = Referee::factory()->employed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $referee));
     }
 }

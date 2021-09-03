@@ -24,8 +24,7 @@ class SuspendController extends Controller
         SuspendRequest $request,
         TagTeamRepository $tagTeamRepository,
         WrestlerRepository $wrestlerRepository
-    )
-    {
+    ) {
         throw_unless($tagTeam->canBeSuspended(), new CannotBeSuspendedException);
 
         $suspensionDate = now()->toDateTimeString();

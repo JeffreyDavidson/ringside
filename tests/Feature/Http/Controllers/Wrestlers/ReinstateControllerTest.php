@@ -26,16 +26,15 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_reinstates_a_suspended_wrestler_and_redirects($administrators)
+    public function invoke_reinstates_a_suspended_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->suspended()->create();
 
         $this->assertNull($wrestler->currentSuspension->ended_at);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -47,15 +46,14 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function reinstating_a_suspended_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable($administrators)
+    public function reinstating_a_suspended_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable()
     {
         $tagTeam = TagTeam::factory()->withSuspendedWrestler()->create();
         $wrestler = $tagTeam->currentWrestlers()->suspended()->first();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
@@ -98,9 +96,8 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_bookable_wrestler($administrators)
+    public function invoke_throws_exception_for_reinstating_a_bookable_wrestler()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -108,15 +105,14 @@ class ReinstateControllerTest extends TestCase
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_an_unemployed_wrestler($administrators)
+    public function invoke_throws_exception_for_reinstating_an_unemployed_wrestler()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -124,15 +120,14 @@ class ReinstateControllerTest extends TestCase
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_an_injured_wrestler($administrators)
+    public function invoke_throws_exception_for_reinstating_an_injured_wrestler()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -140,15 +135,14 @@ class ReinstateControllerTest extends TestCase
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_released_wrestler($administrators)
+    public function invoke_throws_exception_for_reinstating_a_released_wrestler()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -156,15 +150,14 @@ class ReinstateControllerTest extends TestCase
         $wrestler = Wrestler::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_future_employed_wrestler($administrators)
+    public function invoke_throws_exception_for_reinstating_a_future_employed_wrestler()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -172,15 +165,14 @@ class ReinstateControllerTest extends TestCase
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_retired_wrestler($administrators)
+    public function invoke_throws_exception_for_reinstating_a_retired_wrestler()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -188,7 +180,7 @@ class ReinstateControllerTest extends TestCase
         $wrestler = Wrestler::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $wrestler));
     }
 }

@@ -26,16 +26,15 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_activates_an_unactivated_stable_with_members_and_redirects($administrators)
+    public function invoke_activates_an_unactivated_stable_with_members_and_redirects()
     {
         $stable = Stable::factory()->unactivated()->create();
 
         $this->assertEquals(StableStatus::UNACTIVATED, $stable->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -57,9 +56,8 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_activates_a_future_activated_stable_with_members_and_redirects($administrators)
+    public function invoke_activates_a_future_activated_stable_with_members_and_redirects()
     {
         $stable = Stable::factory()->withFutureActivation()->create();
         $startedAt = $stable->activations->last()->started_at;
@@ -68,7 +66,7 @@ class ActivateControllerTest extends TestCase
         $this->assertEquals(StableStatus::FUTURE_ACTIVATION, $stable->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -90,14 +88,13 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_activates_an_inactive_stable_with_members_and_redirects($administrators)
+    public function invoke_activates_an_inactive_stable_with_members_and_redirects()
     {
         $stable = Stable::factory()->inactive()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -152,9 +149,8 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_activating_an_retired_stable($administrators)
+    public function invoke_throws_exception_for_activating_an_retired_stable()
     {
         $this->expectException(CannotBeActivatedException::class);
         $this->withoutExceptionHandling();
@@ -162,15 +158,14 @@ class ActivateControllerTest extends TestCase
         $stable = Stable::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_activating_an_active_stable($administrators)
+    public function invoke_throws_exception_for_activating_an_active_stable()
     {
         $this->expectException(CannotBeActivatedException::class);
         $this->withoutExceptionHandling();
@@ -178,7 +173,7 @@ class ActivateControllerTest extends TestCase
         $stable = Stable::factory()->active()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $stable));
     }
 }

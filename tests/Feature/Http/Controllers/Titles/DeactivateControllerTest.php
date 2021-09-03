@@ -21,14 +21,13 @@ class DeactivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_deactivates_an_active_title_and_redirects($administrators)
+    public function invoke_deactivates_an_active_title_and_redirects()
     {
         $title = Title::factory()->active()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $title))
             ->assertRedirect(route('titles.index'));
 
@@ -73,9 +72,8 @@ class DeactivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_an_unactivated_title($administrators)
+    public function invoke_throws_exception_for_deactivating_an_unactivated_title()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -83,15 +81,14 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->unactivated()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $title));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_a_future_activated_title($administrators)
+    public function invoke_throws_exception_for_deactivating_a_future_activated_title()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -99,15 +96,14 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->withFutureActivation()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $title));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_an_inactive_title($administrators)
+    public function invoke_throws_exception_for_deactivating_an_inactive_title()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -115,15 +111,14 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->inactive()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $title));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_a_retired_title($administrators)
+    public function invoke_throws_exception_for_deactivating_a_retired_title()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -131,7 +126,7 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $title));
     }
 }

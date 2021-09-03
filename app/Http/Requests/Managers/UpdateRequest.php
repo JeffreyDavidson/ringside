@@ -5,7 +5,6 @@ namespace App\Http\Requests\Managers;
 use App\Models\Manager;
 use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -33,10 +32,7 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date_format:Y-m-d H:i:s',
-                Rule::when(
-                    $this->manager->isUnemployed() || $this->manager->hasFutureEmployment(),
-                    [new EmploymentStartDateCanBeChanged($this->route('manager'))]
-                ),
+                new EmploymentStartDateCanBeChanged($this->route('manager')),
             ],
         ];
     }

@@ -24,16 +24,15 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_reinstates_a_suspended_manager_and_redirects($administrators)
+    public function invoke_reinstates_a_suspended_manager_and_redirects()
     {
         $manager = Manager::factory()->suspended()->create();
 
         $this->assertNull($manager->currentSuspension->ended_at);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
@@ -78,9 +77,8 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_an_available_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_an_available_manager()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -88,15 +86,14 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->available()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_an_unemployed_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_an_unemployed_manager()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -104,15 +101,14 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_an_injured_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_an_injured_manager()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -120,15 +116,14 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_released_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_a_released_manager()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -136,15 +131,14 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_future_employed_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_a_future_employed_manager()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -152,15 +146,14 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_retired_manager($administrators)
+    public function invoke_throws_exception_for_reinstating_a_retired_manager()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -168,7 +161,7 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $manager));
     }
 }

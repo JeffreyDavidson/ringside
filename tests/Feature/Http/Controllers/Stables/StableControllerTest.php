@@ -4,15 +4,9 @@ namespace Tests\Feature\Http\Controllers\Stables;
 
 use App\Enums\Role;
 use App\Http\Controllers\Stables\StablesController;
-use App\Http\Requests\Stables\StoreRequest;
-use App\Http\Requests\Stables\UpdateRequest;
 use App\Models\Stable;
-use App\Models\TagTeam;
 use App\Models\User;
-use App\Models\Wrestler;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\StableRequestDataFactory;
 use Tests\TestCase;
 
 /**
@@ -25,25 +19,13 @@ class StableControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private Stable $stable;
-    private StableRequestDataFactory $factory;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->stable = Stable::factory()->create();
-        $this->factory = StableRequestDataFactory::new()->withStable($this->stable);
-    }
-
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function index_returns_a_view($administrators)
+    public function index_returns_a_view()
     {
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->get(action([StablesController::class, 'index']))
             ->assertOk()
             ->assertViewIs('stables.index')
@@ -76,234 +58,16 @@ class StableControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function create_returns_a_view($administrators)
+    public function show_returns_a_view()
     {
-        $this
-            ->actAs($administrators)
-            ->get(action([StablesController::class, 'create']))
-            ->assertViewIs('stables.create')
-            ->assertViewHas('stable', new Stable);
-    }
-
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_view_the_form_for_creating_a_stable()
-    {
-        $this
-            ->actAs(Role::BASIC)
-            ->get(action([StablesController::class, 'create']))
-            ->assertForbidden();
-    }
-
-    /**
-     * @test
-     */
-    public function a_guest_cannot_view_the_form_for_creating_a_stable()
-    {
-        $this
-            ->get(action([StablesController::class, 'create']))
-            ->assertRedirect(route('login'));
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function store_creates_a_stable_and_redirects($administrators)
-    {
-        $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'create']))
-            ->post(action([StablesController::class, 'store']), StableRequestDataFactory::new()->create([
-                'name' => 'Example Stable Name',
-                'started_at' => null,
-                'wrestlers' => [],
-                'tag_teams' => [],
-            ]))
-            ->assertRedirect(action([StablesController::class, 'index']));
-
-        tap(Stable::all()->last(), function ($stable) {
-            $this->assertEquals('Example Stable Name', $stable->name);
-            $this->assertCount(0, $stable->activations);
-            $this->assertCount(0, $stable->wrestlers);
-            $this->assertCount(0, $stable->tagteams);
-        });
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function an_activation_is_created_for_the_stable_if_started_at_is_filled_in_request($administrators)
-    {
-        $startedAt = now()->toDateTimeString();
-        $wrestlers = Wrestler::factory()->times(3)->create();
+        $stable = Stable::factory()->create();
 
         $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'create']))
-            ->post(
-                action([StablesController::class, 'store']),
-                StableRequestDataFactory::new()->create([
-                    'started_at' => $startedAt,
-                    'wrestlers' => $wrestlers->pluck('id')->toArray(),
-                ])
-            );
-
-        tap(Stable::all()->last(), function ($stable) use ($startedAt) {
-            $this->assertCount(1, $stable->activations);
-            $this->assertEquals($startedAt, $stable->activations->first()->started_at->toDateTimeString());
-        });
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function wrestlers_are_added_to_stable_if_present($administrators)
-    {
-        $createdWrestlers = Wrestler::factory()->count(3)->create()->pluck('id')->toArray();
-
-        $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'create']))
-            ->post(
-                action([StablesController::class, 'store']),
-                StableRequestDataFactory::new()->withWrestlers($createdWrestlers)->create()
-            );
-
-        tap(Stable::all()->last()->currentWrestlers, function ($wrestlers) use ($createdWrestlers) {
-            $this->assertCount(3, $wrestlers);
-            $this->assertEquals($wrestlers->modelKeys(), $createdWrestlers);
-        });
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function tag_teams_are_added_to_stable_if_present($administrators)
-    {
-        $createdTagTeams = TagTeam::factory()->times(1)->create()->pluck('id')->toArray();
-
-        $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'create']))
-            ->post(
-                action([StablesController::class, 'store']),
-                StableRequestDataFactory::new()->withTagTeams($createdTagTeams)->create()
-            );
-
-        tap(Stable::all()->last()->currentTagTeams, function ($tagTeams) use ($createdTagTeams) {
-            $this->assertCount(1, $tagTeams);
-            $this->assertEquals($tagTeams->modelKeys(), $createdTagTeams);
-        });
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function a_stables_members_join_when_stable_is_started_if_filled($administrators)
-    {
-        $createdWrestlers = Wrestler::factory()->count(3)->create()->pluck('id')->toArray();
-
-        $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'create']))
-            ->post(
-                action([StablesController::class, 'store']),
-                StableRequestDataFactory::new()->withStartDate(now()->toDateTimeString())->create([
-                    'wrestlers' => $createdWrestlers,
-                ])
-            );
-
-        tap(Stable::all()->last(), function ($stable) {
-            $wrestlers = $stable->currentWrestlers;
-            foreach ($wrestlers as $wrestler) {
-                $this->assertNotNull($wrestler->pivot->joined_at);
-            }
-        });
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function a_stables_members_join_at_the_current_time_when_stable_is_created_if_started_at_is_not_filled($administrators)
-    {
-        $wrestler = Wrestler::factory()->create()->getKey();
-        $tagTeam = TagTeam::factory()->create()->getKey();
-        $now = now()->toDateTimeString();
-        Carbon::setTestNow($now);
-
-        $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'create']))
-            ->post(
-                action([StablesController::class, 'store']),
-                StableRequestDataFactory::new()->withWrestlers([$wrestler])->withTagTeams([$tagTeam])->create([
-                    'started_at' => '',
-                ])
-            );
-
-        tap(Stable::all()->last(), function ($stable) use ($wrestler, $tagTeam, $now) {
-            $wrestlers = $stable->currentWrestlers;
-            $tagTeams = $stable->currentTagTeams;
-
-            $this->assertCollectionHas($wrestlers, $wrestler);
-            $this->assertCollectionHas($tagTeams, $tagTeam);
-
-            $this->assertEquals($now, $wrestlers->first()->pivot->joined_at->toDateTimeString());
-            $this->assertEquals($now, $tagTeams->first()->pivot->joined_at->toDateTimeString());
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_create_a_stable()
-    {
-        $this
-            ->actAs(Role::BASIC)
-            ->from(action([StablesController::class, 'create']))
-            ->post(action([StablesController::class, 'store']), StableRequestDataFactory::new()->create())
-            ->assertForbidden();
-    }
-
-    /**
-     * @test
-     */
-    public function a_guest_cannot_create_a_stable()
-    {
-        $this
-            ->from(action([StablesController::class, 'create']))
-            ->post(action([StablesController::class, 'store']), StableRequestDataFactory::new()->create())
-            ->assertRedirect(route('login'));
-    }
-
-    /**
-     * @test
-     */
-    public function store_validates_using_a_form_request()
-    {
-        $this->assertActionUsesFormRequest(StablesController::class, 'store', StoreRequest::class);
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function show_returns_a_view($administrators)
-    {
-        $this
-            ->actAs($administrators)
-            ->get(action([StablesController::class, 'show'], $this->stable))
+            ->actAs(Role::ADMINISTRATOR)
+            ->get(action([StablesController::class, 'show'], $stable))
             ->assertViewIs('stables.show')
-            ->assertViewHas('stable', $this->stable);
+            ->assertViewHas('stable', $stable);
     }
 
     /**
@@ -312,10 +76,10 @@ class StableControllerTest extends TestCase
     public function a_basic_user_can_view_their_stable_profile()
     {
         $this->actAs(Role::BASIC);
-        $this->stable = Stable::factory()->create(['user_id' => auth()->user()]);
+        $stable = Stable::factory()->create(['user_id' => auth()->user()]);
 
         $this
-            ->get(action([StablesController::class, 'show'], $this->stable))
+            ->get(action([StablesController::class, 'show'], $stable))
             ->assertOk();
     }
 
@@ -325,11 +89,11 @@ class StableControllerTest extends TestCase
     public function a_basic_user_cannot_view_another_users_stable_profile()
     {
         $otherUser = User::factory()->create();
-        $this->stable = Stable::factory()->create(['user_id' => $otherUser->id]);
+        $stable = Stable::factory()->create(['user_id' => $otherUser->id]);
 
         $this
             ->actAs(Role::BASIC)
-            ->get(action([StablesController::class, 'show'], $this->stable))
+            ->get(action([StablesController::class, 'show'], $stable))
             ->assertForbidden();
     }
 
@@ -338,134 +102,26 @@ class StableControllerTest extends TestCase
      */
     public function a_guest_cannot_view_a_stable_profile()
     {
+        $stable = Stable::factory()->create();
+
         $this
-            ->get(action([StablesController::class, 'show'], $this->stable))
+            ->get(action([StablesController::class, 'show'], $stable))
             ->assertRedirect(route('login'));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function edit_returns_a_view($administrators)
+    public function deletes_a_stable_and_redirects()
     {
-        $this
-            ->actAs($administrators)
-            ->get(action([StablesController::class, 'edit'], $this->stable))
-            ->assertViewIs('stables.edit')
-            ->assertViewHas('stable', $this->stable);
-    }
-
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_view_the_form_for_editing_a_stable()
-    {
-        $this
-            ->actAs(Role::BASIC)
-            ->get(action([StablesController::class, 'edit'], $this->stable))
-            ->assertForbidden();
-    }
-
-    /**
-     * @test
-     */
-    public function a_guest_cannot_view_the_form_for_editing_a_stable()
-    {
-        $this
-            ->get(action([StablesController::class, 'edit'], $this->stable))
-            ->assertRedirect(route('login'));
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function updates_a_stable_and_redirects($administrators)
-    {
-        $this
-            ->actAs($administrators)
-            ->from(action([StablesController::class, 'edit'], $this->stable))
-            ->put(
-                action([StablesController::class, 'update'], $this->stable),
-                StableRequestDataFactory::new()->withStable($this->stable)->create()
-            )
-            ->assertRedirect(action([StablesController::class, 'index']));
-
-        tap($this->stable->fresh(), function ($stable) {
-            $this->assertEquals('Example Stable Name', $stable->name);
-        });
-    }
-
-    public function wrestlers_of_stable_are_synced_when_stable_is_updated()
-    {
-        $this->stable = Stable::factory()->active()->create();
-        $wrestlers = Wrestler::factory()->bookable()->times(2)->create();
+        $stable = Stable::factory()->create();
 
         $this
             ->actAs(Role::ADMINISTRATOR)
-            ->from(action([StablesController::class, 'edit'], $this->stable))
-            ->put(
-                action([StablesController::class, 'update'], $this->stable),
-                StableRequestDataFactory::new()->withStable($this->stable)->withWrestlers([$wrestlers])->create()
-            )
+            ->delete(action([StablesController::class, 'destroy'], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
-        tap($this->stable->currentWrestlers->fresh(), function ($stableWrestlers) use ($wrestlers) {
-            $this->assertCount(2, $stableWrestlers);
-            $this->assertEquals($stableWrestlers->modelKeys(), $wrestlers->modelKeys());
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_update_a_stable()
-    {
-        $this
-            ->actAs(Role::BASIC)
-            ->from(action([StablesController::class, 'edit'], $this->stable))
-            ->put(
-                action([StablesController::class, 'update'], $this->stable),
-                StableRequestDataFactory::new()->withStable($this->stable)->create()
-            )
-            ->assertForbidden();
-    }
-
-    /**
-     * @test
-     */
-    public function a_guest_cannot_update_a_stable()
-    {
-        $this
-            ->from(action([StablesController::class, 'edit'], $this->stable))
-            ->put(
-                action([StablesController::class, 'update'], $this->stable),
-                StableRequestDataFactory::new()->withStable($this->stable)->create()
-            )
-            ->assertRedirect(route('login'));
-    }
-
-    /**
-     * @test
-     */
-    public function update_validates_using_a_form_request()
-    {
-        $this->assertActionUsesFormRequest(StablesController::class, 'update', UpdateRequest::class);
-    }
-
-    /**
-     * @test
-     * @dataProvider administrators
-     */
-    public function deletes_a_stable_and_redirects($administrators)
-    {
-        $this
-            ->actAs($administrators)
-            ->delete(action([StablesController::class, 'destroy'], $this->stable))
-            ->assertRedirect(action([StablesController::class, 'index']));
-
-        $this->assertSoftDeleted($this->stable);
+        $this->assertSoftDeleted($stable);
     }
 
     /**
@@ -473,9 +129,11 @@ class StableControllerTest extends TestCase
      */
     public function a_basic_user_cannot_delete_a_stable()
     {
+        $stable = Stable::factory()->create();
+
         $this
             ->actAs(Role::BASIC)
-            ->delete(action([StablesController::class, 'destroy'], $this->stable))
+            ->delete(action([StablesController::class, 'destroy'], $stable))
             ->assertForbidden();
     }
 
@@ -484,8 +142,10 @@ class StableControllerTest extends TestCase
      */
     public function a_guest_cannot_delete_a_stable()
     {
+        $stable = Stable::factory()->create();
+
         $this
-            ->delete(action([StablesController::class, 'destroy'], $this->stable))
+            ->delete(action([StablesController::class, 'destroy'], $stable))
             ->assertRedirect(route('login'));
     }
 }

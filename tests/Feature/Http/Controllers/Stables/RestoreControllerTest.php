@@ -20,23 +20,26 @@ class RestoreControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public Stable $stable;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->stable = Stable::factory()->softDeleted()->create();
+    }
+
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_restores_a_stable_and_redirects($administrators)
+    public function invoke_restores_a_stable_and_redirects()
     {
-        $stable = Stable::factory()->softDeleted()->create();
-
         $this
-            ->actAs($administrators)
-            ->patch(action([RestoreController::class], $stable))
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RestoreController::class], $this->stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
-        tap($stable->fresh(), function ($stable) {
-            $this->assertEquals(StableStatus::UNACTIVATED, $stable->status);
-            $this->assertNull($stable->fresh()->deleted_at);
-        });
+        $this->assertNull($this->stable->fresh()->deleted_at);
     }
 
     /**
@@ -44,11 +47,9 @@ class RestoreControllerTest extends TestCase
      */
     public function a_basic_user_cannot_restore_a_stable()
     {
-        $stable = Stable::factory()->softDeleted()->create();
-
         $this
             ->actAs(Role::BASIC)
-            ->patch(action([RestoreController::class], $stable))
+            ->patch(action([RestoreController::class], $this->stable))
             ->assertForbidden();
     }
 
@@ -57,9 +58,7 @@ class RestoreControllerTest extends TestCase
      */
     public function a_guest_cannot_restore_a_stable()
     {
-        $stable = Stable::factory()->softDeleted()->create();
-
-        $this->patch(action([RestoreController::class], $stable))
+        $this->patch(action([RestoreController::class], $this->stable))
             ->assertRedirect(route('login'));
     }
 }

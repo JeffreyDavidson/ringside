@@ -9,7 +9,7 @@ class RefereeRequestDataFactory
 {
     private string $first_name = 'James';
     private string $last_name = 'Williams';
-    private string $started_at = '2021-01-01 00:00:00';
+    private ?string $started_at = null;
 
     public static function new(): self
     {

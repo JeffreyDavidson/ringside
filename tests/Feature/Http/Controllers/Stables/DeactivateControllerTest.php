@@ -26,14 +26,13 @@ class DeactivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_deactivates_an_active_stable_and_its_members_and_redirects($administrators)
+    public function invoke_deactivates_an_active_stable_and_its_members_and_redirects()
     {
         $stable = Stable::factory()->active()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -86,9 +85,8 @@ class DeactivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_an_inactive_stable($administrators)
+    public function invoke_throws_exception_for_deactivating_an_inactive_stable()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -96,15 +94,14 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->inactive()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_an_retired_stable($administrators)
+    public function invoke_throws_exception_for_deactivating_an_retired_stable()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -112,15 +109,14 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_an_unactivated_stable($administrators)
+    public function invoke_throws_exception_for_deactivating_an_unactivated_stable()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -128,15 +124,14 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->unactivated()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_deactivating_a_future_activated_stable($administrators)
+    public function invoke_throws_exception_for_deactivating_a_future_activated_stable()
     {
         $this->expectException(CannotBeDeactivatedException::class);
         $this->withoutExceptionHandling();
@@ -144,7 +139,7 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->withFutureActivation()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([DeactivateController::class], $stable));
     }
 }

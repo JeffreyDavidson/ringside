@@ -19,19 +19,26 @@ class RestoreControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public Referee $referee;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->referee = Referee::factory()->softDeleted()->create();
+    }
+
     /**
      * @test
      */
     public function invoke_restores_a_soft_deleted_referee_and_redirects()
     {
-        $referee = Referee::factory()->softDeleted()->create();
-
         $this
             ->actAs(Role::ADMINISTRATOR)
-            ->patch(action([RestoreController::class], $referee))
+            ->patch(action([RestoreController::class], $this->referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
-        $this->assertNull($referee->fresh()->deleted_at);
+        $this->assertNull($this->referee->fresh()->deleted_at);
     }
 
     /**
@@ -39,11 +46,9 @@ class RestoreControllerTest extends TestCase
      */
     public function a_basic_user_cannot_restore_a_referee()
     {
-        $referee = Referee::factory()->softDeleted()->create();
-
         $this
             ->actAs(Role::BASIC)
-            ->patch(action([RestoreController::class], $referee))
+            ->patch(action([RestoreController::class], $this->referee))
             ->assertForbidden();
     }
 
@@ -52,10 +57,8 @@ class RestoreControllerTest extends TestCase
      */
     public function a_guest_cannot_restore_a_referee()
     {
-        $referee = Referee::factory()->softDeleted()->create();
-
         $this
-            ->patch(action([RestoreController::class], $referee))
+            ->patch(action([RestoreController::class], $this->referee))
             ->assertRedirect(route('login'));
     }
 }

@@ -30,7 +30,7 @@ class TagTeamFactory extends Factory
     {
         return [
             'name' => Str::title($this->faker->words(2, true)),
-            'signature_move' => Str::title($this->faker->words(4, true)),
+            'signature_move' => null,
             'status' => TagTeamStatus::__default,
         ];
     }

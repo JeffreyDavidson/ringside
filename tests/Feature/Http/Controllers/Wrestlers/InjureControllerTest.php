@@ -26,16 +26,15 @@ class InjureControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_injures_a_bookable_wrestler_and_redirects($administrators)
+    public function invoke_injures_a_bookable_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this->assertCount(0, $wrestler->injuries);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -47,9 +46,8 @@ class InjureControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function injuring_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable($administrators)
+    public function injuring_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
@@ -57,7 +55,7 @@ class InjureControllerTest extends TestCase
         $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
@@ -100,9 +98,8 @@ class InjureControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_an_unemployed_wrestler($administrators)
+    public function invoke_throws_exception_for_injuring_an_unemployed_wrestler()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -110,15 +107,14 @@ class InjureControllerTest extends TestCase
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_suspended_wrestler($administrators)
+    public function invoke_throws_exception_for_injuring_a_suspended_wrestler()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -126,15 +122,14 @@ class InjureControllerTest extends TestCase
         $wrestler = Wrestler::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_released_wrestler($administrators)
+    public function invoke_throws_exception_for_injuring_a_released_wrestler()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -142,15 +137,14 @@ class InjureControllerTest extends TestCase
         $wrestler = Wrestler::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_future_employed_wrestler($administrators)
+    public function invoke_throws_exception_for_injuring_a_future_employed_wrestler()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -158,15 +152,14 @@ class InjureControllerTest extends TestCase
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_injuring_a_retired_wrestler_throws($administrators)
+    public function invoke_throws_exception_injuring_a_retired_wrestler_throws()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -174,15 +167,14 @@ class InjureControllerTest extends TestCase
         $wrestler = Wrestler::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_an_injured_wrestler($administrators)
+    public function invoke_throws_exception_for_injuring_an_injured_wrestler()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -190,7 +182,7 @@ class InjureControllerTest extends TestCase
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $wrestler));
     }
 }

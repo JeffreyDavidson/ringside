@@ -24,9 +24,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_an_unemployed_wrestler_and_redirects($administrators)
+    public function invoke_employs_an_unemployed_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->unemployed()->create();
 
@@ -34,7 +33,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(WrestlerStatus::UNEMPLOYED, $wrestler->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -46,9 +45,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_future_employed_wrestler_and_redirects($administrators)
+    public function invoke_employs_a_future_employed_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
         $startedAt = $wrestler->employments->last()->started_at;
@@ -57,7 +55,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(WrestlerStatus::FUTURE_EMPLOYMENT, $wrestler->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -69,16 +67,15 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_released_wrestler_and_redirects($administrators)
+    public function invoke_employs_a_released_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->released()->create();
 
         $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -123,9 +120,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_an_employed_wrestler($administrators)
+    public function invoke_throws_exception_for_employing_an_employed_wrestler()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
@@ -133,22 +129,21 @@ class EmployControllerTest extends TestCase
         $wrestler = Wrestler::factory()->employed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_a_retired_wrestler($administrators)
+    public function invoke_throws_exception_for_employing_a_retired_wrestler()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
 
         $wrestler = Wrestler::factory()->retired()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $wrestler));
     }
 }

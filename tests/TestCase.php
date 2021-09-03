@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
 use JMac\Testing\Traits\AdditionalAssertions;
-use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {

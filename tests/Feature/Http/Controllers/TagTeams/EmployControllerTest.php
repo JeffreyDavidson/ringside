@@ -25,9 +25,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_an_unemployed_tag_team_and_their_tag_team_partners_and_redirects($administrators)
+    public function invoke_employs_an_unemployed_tag_team_and_their_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
@@ -35,7 +34,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(TagTeamStatus::UNEMPLOYED, $tagTeam->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
@@ -52,9 +51,8 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_future_employed_tag_team_and_their_tag_team_partners_and_redirects($administrators)
+    public function invoke_employs_a_future_employed_tag_team_and_their_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
         $startedAt = $tagTeam->employments->last()->started_at;
@@ -63,7 +61,7 @@ class EmployControllerTest extends TestCase
         $this->assertEquals(TagTeamStatus::FUTURE_EMPLOYMENT, $tagTeam->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
@@ -80,16 +78,15 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_employs_a_released_tag_team_and_their_tag_team_partners_redirects($administrators)
+    public function invoke_employs_a_released_tag_team_and_their_tag_team_partners_redirects()
     {
         $tagTeam = TagTeam::factory()->released()->create();
 
         $this->assertEquals(TagTeamStatus::RELEASED, $tagTeam->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
@@ -138,46 +135,43 @@ class EmployControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_a_bookable_tag_team($administrators)
+    public function invoke_throws_exception_for_employing_a_bookable_tag_team()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->bookable()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_a_retired_tag_team($administrators)
+    public function invoke_throws_exception_for_employing_a_retired_tag_team()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->retired()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_employing_a_suspended_tag_team($administrators)
+    public function invoke_throws_exception_for_employing_a_suspended_tag_team()
     {
         $this->expectException(CannotBeEmployedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->suspended()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([EmployController::class], $tagTeam));
     }
 }

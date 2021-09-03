@@ -22,14 +22,13 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_retires_an_active_title_and_redirects($administrators)
+    public function invoke_retires_an_active_title_and_redirects()
     {
         $title = Title::factory()->active()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([RetireController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
@@ -41,14 +40,13 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_retires_an_inactive_title_and_redirects($administrators)
+    public function invoke_retires_an_inactive_title_and_redirects()
     {
         $title = Title::factory()->inactive()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([RetireController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
@@ -93,9 +91,8 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function retiring_a_retired_title_throws_an_exception($administrators)
+    public function retiring_a_retired_title_throws_an_exception()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -103,15 +100,14 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([RetireController::class], $title));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function retiring_a_future_activated_title_throws_an_exception($administrators)
+    public function retiring_a_future_activated_title_throws_an_exception()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -119,15 +115,14 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->withFutureActivation()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([RetireController::class], $title));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function retiring_an_unactivated_title_throws_an_exception($administrators)
+    public function retiring_an_unactivated_title_throws_an_exception()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
@@ -135,7 +130,7 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->unactivated()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([RetireController::class], $title));
     }
 }

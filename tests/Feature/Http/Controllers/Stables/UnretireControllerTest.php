@@ -25,9 +25,8 @@ class UnretireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_unretires_a_retired_stable_and_its_members_and_redirects($administrators)
+    public function invoke_unretires_a_retired_stable_and_its_members_and_redirects()
     {
         $now = now();
         Carbon::setTestNow($now);
@@ -35,7 +34,7 @@ class UnretireControllerTest extends TestCase
         $stable = Stable::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -81,9 +80,8 @@ class UnretireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function unretiring_an_active_stable_throws_an_exception($administrators)
+    public function unretiring_an_active_stable_throws_an_exception()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -91,15 +89,14 @@ class UnretireControllerTest extends TestCase
         $stable = Stable::factory()->active()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function unretiring_a_future_activated_stable_throws_an_exception($administrators)
+    public function unretiring_a_future_activated_stable_throws_an_exception()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -107,15 +104,14 @@ class UnretireControllerTest extends TestCase
         $stable = Stable::factory()->withFutureActivation()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function unretiring_an_inactive_stable_throws_an_exception($administrators)
+    public function unretiring_an_inactive_stable_throws_an_exception()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -123,15 +119,14 @@ class UnretireControllerTest extends TestCase
         $stable = Stable::factory()->inactive()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $stable));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function unretiring_an_unactivated_stable_throws_an_exception($administrators)
+    public function unretiring_an_unactivated_stable_throws_an_exception()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
@@ -139,7 +134,7 @@ class UnretireControllerTest extends TestCase
         $stable = Stable::factory()->unactivated()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $stable));
     }
 }

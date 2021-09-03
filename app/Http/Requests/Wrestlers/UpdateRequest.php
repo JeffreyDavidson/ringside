@@ -38,10 +38,7 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date_format:Y-m-d H:i:s',
-                Rule::when(
-                    $this->wrestler->isUnemployed() || $this->wrestler->hasFutureEmployment(),
-                    [new EmploymentStartDateCanBeChanged($this->route('wrestler'))]
-                ),
+                new EmploymentStartDateCanBeChanged($this->route('wrestler')),
             ],
         ];
     }

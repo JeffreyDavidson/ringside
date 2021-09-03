@@ -25,16 +25,15 @@ class ClearInjuryControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_marks_an_injured_wrestler_as_being_cleared_from_injury_and_redirects($administrators)
+    public function invoke_marks_an_injured_wrestler_as_being_cleared_from_injury_and_redirects()
     {
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this->assertNull($wrestler->injuries->last()->ended_at);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -46,14 +45,13 @@ class ClearInjuryControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function clearing_an_injured_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable($administrators)
+    public function clearing_an_injured_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(route('wrestlers.clear-from-injury', $wrestler));
 
         tap($wrestler->fresh(), function ($wrestler) {
@@ -96,9 +94,8 @@ class ClearInjuryControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_an_unemployed_wrestler($administrators)
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_an_unemployed_wrestler()
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
@@ -106,15 +103,14 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_future_employed_wrestler($administrators)
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_future_employed_wrestler()
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
@@ -122,15 +118,14 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_bookable_wrestler($administrators)
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_bookable_wrestler()
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
@@ -138,15 +133,14 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_retired_wrestler($administrators)
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_retired_wrestler()
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
@@ -154,15 +148,14 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_suspended_wrestler($administrators)
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_suspended_wrestler()
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
@@ -170,7 +163,7 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 }

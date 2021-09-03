@@ -26,14 +26,13 @@ class SuspendControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_suspends_a_bookable_wrestler_and_redirects($administrators)
+    public function invoke_suspends_a_bookable_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -45,9 +44,8 @@ class SuspendControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function suspending_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable($administrators)
+    public function suspending_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
@@ -55,7 +53,7 @@ class SuspendControllerTest extends TestCase
         $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
 
         $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->fresh()->status);
@@ -96,9 +94,8 @@ class SuspendControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_suspending_an_unemployed_wrestler($administrators)
+    public function invoke_throws_exception_for_suspending_an_unemployed_wrestler()
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -106,15 +103,14 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_suspending_a_future_employed_wrestler($administrators)
+    public function invoke_throws_exception_for_suspending_a_future_employed_wrestler()
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -122,15 +118,14 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_suspending_an_injured_wrestler($administrators)
+    public function invoke_throws_exception_for_suspending_an_injured_wrestler()
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -138,15 +133,14 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_suspending_a_released_wrestler($administrators)
+    public function invoke_throws_exception_for_suspending_a_released_wrestler()
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -154,15 +148,14 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_suspending_a_retired_wrestler($administrators)
+    public function invoke_throws_exception_for_suspending_a_retired_wrestler()
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -170,15 +163,14 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_suspending_a_suspended_wrestler($administrators)
+    public function invoke_throws_exception_for_suspending_a_suspended_wrestler()
     {
         $this->expectException(CannotBeSuspendedException::class);
         $this->withoutExceptionHandling();
@@ -186,7 +178,7 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([SuspendController::class], $wrestler));
     }
 }

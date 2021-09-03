@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use App\Repositories\WrestlerRepository;
 
 class TagTeamService
 {
@@ -15,13 +16,22 @@ class TagTeamService
     protected $tagTeamRepository;
 
     /**
+     * The repository implementation.
+     *
+     * @var \App\Repositories\WrestlerRepository
+     */
+    protected $wrestlerRepository;
+
+    /**
      * Create a new tag team service instance.
      *
      * @param \App\Repositories\TagTeamRepository $tagTeamRepository
+     * @param \App\Repositories\WrestlerRepository $wrestlerRepository
      */
-    public function __construct(TagTeamRepository $tagTeamRepository)
+    public function __construct(TagTeamRepository $tagTeamRepository, WrestlerRepository $wrestlerRepository)
     {
         $this->tagTeamRepository = $tagTeamRepository;
+        $this->wrestlerRepository = $wrestlerRepository;
     }
 
     /**
@@ -36,6 +46,9 @@ class TagTeamService
 
         if (isset($data['started_at'])) {
             $this->tagTeamRepository->employ($tagTeam, $data['started_at']);
+            foreach ($data['wrestlers'] as $wrestler) {
+                $this->wrestlerRepository->employ($wrestler, $data['started_at']);
+            }
             $this->tagTeamRepository->addWrestlers($tagTeam, $data['wrestlers'], $data['started_at']);
         } else {
             if (isset($data['wrestlers'])) {

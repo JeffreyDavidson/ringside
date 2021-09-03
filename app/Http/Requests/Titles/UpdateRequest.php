@@ -27,15 +27,17 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:3', 'ends_with:Title,Titles', Rule::unique('titles')->ignore($this->route('title')->id)],
+            'name' => [
+                'required',
+                'min:3',
+                'ends_with:Title,Titles',
+                Rule::unique('titles')->ignore($this->route('title')->id),
+            ],
             'activated_at' => [
                 'nullable',
                 'string',
                 'date_format:Y-m-d H:i:s',
-                Rule::when(
-                    $this->route('title')->isUnactivated() || $this->route('title')->hasFutureActivation(),
-                    [new ActivationStartDateCanBeChanged($this->route('title'))]
-                ),
+                new ActivationStartDateCanBeChanged($this->route('title')),
             ],
         ];
     }

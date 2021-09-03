@@ -54,9 +54,11 @@ class EventTest extends TestCase
      */
     public function an_event_has_a_venue()
     {
-        $event = Event::factory()->create();
+        $venue = Venue::factory()->create();
+        $event = Event::factory()->create(['venue_id' => $venue->id]);
 
         $this->assertInstanceOf(Venue::class, $event->venue);
+        $this->assertTrue($event->venue->is($venue));
     }
 
     /**

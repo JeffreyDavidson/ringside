@@ -3,13 +3,13 @@
 namespace Tests\Factories;
 
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 
 class TagTeamRequestDataFactory
 {
     private string $name = 'Example Tag Team Name';
-    private string $signature_move = 'The Signature Move';
-    private string $started_at = '2021-01-01 00:00:00';
+    private ?string $signature_move = null;
+    private ?string $started_at = null;
+    private array $wrestlers = [];
 
     public static function new(): self
     {
@@ -18,13 +18,11 @@ class TagTeamRequestDataFactory
 
     public function create(array $overrides = []): array
     {
-        $wrestlers = Wrestler::factory()->count(2)->create();
-
         return array_replace([
             'name' => $this->name,
             'signature_move' => $this->signature_move,
             'started_at' => $this->started_at,
-            'wrestlers' => $overrides['wrestlers'] ?? $wrestlers->pluck('id')->toArray(),
+            'wrestlers' => $overrides['wrestlers'] ?? $this->wrestlers,
         ], $overrides);
     }
 

@@ -24,14 +24,13 @@ class InjureControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_injures_a_bookable_referee_and_redirects($administrators)
+    public function invoke_injures_a_bookable_referee_and_redirects()
     {
         $referee = Referee::factory()->bookable()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
@@ -74,9 +73,8 @@ class InjureControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_an_unemployed_referee($administrators)
+    public function invoke_throws_exception_for_injuring_an_unemployed_referee()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -84,15 +82,14 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_suspended_referee($administrators)
+    public function invoke_throws_exception_for_injuring_a_suspended_referee()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -100,15 +97,14 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_released_referee($administrators)
+    public function invoke_throws_exception_for_injuring_a_released_referee()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -116,15 +112,14 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_future_employed_referee($administrators)
+    public function invoke_throws_exception_for_injuring_a_future_employed_referee()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -132,15 +127,14 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_a_retired_referee($administrators)
+    public function invoke_throws_exception_for_injuring_a_retired_referee()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -148,15 +142,14 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_injuring_an_injured_referee($administrators)
+    public function invoke_throws_exception_for_injuring_an_injured_referee()
     {
         $this->expectException(CannotBeInjuredException::class);
         $this->withoutExceptionHandling();
@@ -164,7 +157,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([InjureController::class], $referee));
     }
 }

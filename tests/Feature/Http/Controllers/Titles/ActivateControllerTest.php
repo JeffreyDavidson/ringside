@@ -22,16 +22,15 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_activates_an_unactivated_title_and_redirects($administrators)
+    public function invoke_activates_an_unactivated_title_and_redirects()
     {
         $title = Title::factory()->unactivated()->create();
 
         $this->assertEquals(TitleStatus::UNACTIVATED, $title->status);
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
@@ -43,15 +42,14 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_activates_a_future_activated_title_and_redirects($administrators)
+    public function invoke_activates_a_future_activated_title_and_redirects()
     {
         $title = Title::factory()->withFutureActivation()->create();
         $startedAt = $title->activations->last()->started_at;
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
@@ -63,14 +61,13 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_activates_an_inactive_title_and_redirects($administrators)
+    public function invoke_activates_an_inactive_title_and_redirects()
     {
         $title = Title::factory()->inactive()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
@@ -114,9 +111,8 @@ class ActivateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_activating_an_active_title($administrators)
+    public function invoke_throws_exception_for_activating_an_active_title()
     {
         $this->expectException(CannotBeActivatedException::class);
         $this->withoutExceptionHandling();
@@ -124,15 +120,14 @@ class ActivateControllerTest extends TestCase
         $title = Title::factory()->active()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $title));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_activating_a_retired_title($administrators)
+    public function invoke_throws_exception_for_activating_a_retired_title()
     {
         $this->expectException(CannotBeActivatedException::class);
         $this->withoutExceptionHandling();
@@ -140,7 +135,7 @@ class ActivateControllerTest extends TestCase
         $title = Title::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ActivateController::class], $title));
     }
 }

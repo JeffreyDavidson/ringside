@@ -7,6 +7,7 @@ use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\TagTeams\RetireController;
+use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Requests\TagTeams\RetireRequest;
 use App\Models\TagTeam;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,15 +25,15 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_retires_a_bookable_tag_team_and_its_tag_team_partners_and_redirects($administrators)
+    public function invoke_retires_a_bookable_tag_team_and_its_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertCount(1, $tagTeam->retirements);
@@ -47,15 +48,15 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_retires_a_suspended_tag_team_and_its_tag_team_partners_and_redirects($administrators)
+    public function invoke_retires_a_suspended_tag_team_and_its_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertCount(1, $tagTeam->retirements);
@@ -69,15 +70,15 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_retires_an_unbookable_tag_team_and_its_tag_team_partners_and_redirects($administrators)
+    public function invoke_retires_an_unbookable_tag_team_and_its_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->unbookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertEquals(TagTeamStatus::RETIRED, $tagTeam->status);
@@ -103,8 +104,9 @@ class RetireControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('tag-teams.retire', $tagTeam))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([RetireController::class], $tagTeam))
             ->assertForbidden();
     }
 
@@ -115,67 +117,67 @@ class RetireControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create();
 
-        $this->patch(route('tag-teams.retire', $tagTeam))
+        $this->patch(action([RetireController::class], $tagTeam))
             ->assertRedirect(route('login'));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_retiring_a_retired_tag_team($administrators)
+    public function invoke_throws_exception_for_retiring_a_retired_tag_team()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_retiring_a_future_employed_tag_team($administrators)
+    public function invoke_throws_exception_for_retiring_a_future_employed_tag_team()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_retiring_a_released_tag_team($administrators)
+    public function invoke_throws_exception_for_retiring_a_released_tag_team()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_retiring_an_unemployed_tag_team($administrators)
+    public function invoke_throws_exception_for_retiring_an_unemployed_tag_team()
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.retire', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([RetireController::class], $tagTeam));
     }
 }

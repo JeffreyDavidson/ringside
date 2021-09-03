@@ -36,10 +36,7 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date_format:Y-m-d H:i:s',
-                Rule::when(
-                    $this->route('tag_team')->isUnemployed() || $this->route('tag_team')->hasFutureEmployment(),
-                    [new EmploymentStartDateCanBeChanged($this->route('tag_team'))]
-                ),
+                new EmploymentStartDateCanBeChanged($this->route('tag_team')),
             ],
             'wrestlers' => ['array'],
             'wrestlers.*', [

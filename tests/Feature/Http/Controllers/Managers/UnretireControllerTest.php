@@ -24,13 +24,12 @@ class UnretireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_unretires_a_retired_manager_and_redirects($administrators)
+    public function invoke_unretires_a_retired_manager_and_redirects()
     {
         $manager = Manager::factory()->retired()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
@@ -73,91 +72,85 @@ class UnretireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_an_available_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_an_available_manager()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
 
         $manager = Manager::factory()->available()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_a_future_employed_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_a_future_employed_manager()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
 
         $manager = Manager::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_an_injured_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_an_injured_manager()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
 
         $manager = Manager::factory()->injured()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_a_released_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_a_released_manager()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
 
         $manager = Manager::factory()->released()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_a_suspended_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_a_suspended_manager()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
 
         $manager = Manager::factory()->suspended()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_unretiring_an_unemployed_manager($administrators)
+    public function invoke_throws_exception_for_unretiring_an_unemployed_manager()
     {
         $this->expectException(CannotBeUnretiredException::class);
         $this->withoutExceptionHandling();
 
         $manager = Manager::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
+        $this->actAs(Role::ADMINISTRATOR)
             ->patch(action([UnretireController::class], $manager));
     }
 }

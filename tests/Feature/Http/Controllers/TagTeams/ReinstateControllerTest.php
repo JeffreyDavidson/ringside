@@ -25,14 +25,13 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_reinstates_a_suspended_tag_team_and_its_tag_team_partners_and_redirects($administrators)
+    public function invoke_reinstates_a_suspended_tag_team_and_its_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
@@ -82,9 +81,8 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_bookable_tag_team($administrators)
+    public function invoke_throws_exception_for_reinstating_a_bookable_tag_team()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -92,15 +90,14 @@ class ReinstateControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->bookable()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_future_employed_tag_team($administrators)
+    public function invoke_throws_exception_for_reinstating_a_future_employed_tag_team()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -108,15 +105,14 @@ class ReinstateControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_an_unemployed_tag_team($administrators)
+    public function invoke_throws_exception_for_reinstating_an_unemployed_tag_team()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -124,15 +120,14 @@ class ReinstateControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_released_tag_team($administrators)
+    public function invoke_throws_exception_for_reinstating_a_released_tag_team()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -140,15 +135,14 @@ class ReinstateControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_exception_for_reinstating_a_retired_tag_team($administrators)
+    public function invoke_throws_exception_for_reinstating_a_retired_tag_team()
     {
         $this->expectException(CannotBeReinstatedException::class);
         $this->withoutExceptionHandling();
@@ -156,7 +150,7 @@ class ReinstateControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReinstateController::class], $tagTeam));
     }
 }

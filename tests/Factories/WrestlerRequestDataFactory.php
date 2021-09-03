@@ -11,8 +11,8 @@ class WrestlerRequestDataFactory
     private int $inches = 6;
     private int $weight = 240;
     private string $hometown = 'Laraville, FL';
-    private string $signature_move = 'The Signature Move';
-    private string $started_at = '2021-01-01 00:00:00';
+    private ?string $signature_move = null;
+    private ?string $started_at = null;
 
     public static function new(): self
     {

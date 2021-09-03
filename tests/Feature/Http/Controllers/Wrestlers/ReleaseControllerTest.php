@@ -26,14 +26,13 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_releases_a_bookable_wrestler_and_redirects($administrators)
+    public function invoke_releases_a_bookable_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -45,14 +44,13 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_releases_an_injured_wrestler_and_redirects($administrators)
+    public function invoke_releases_an_injured_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -65,14 +63,13 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_releases_a_suspended_wrestler_and_redirects($administrators)
+    public function invoke_releases_a_suspended_wrestler_and_redirects()
     {
         $wrestler = Wrestler::factory()->suspended()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -85,15 +82,14 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function releasing_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable($administrators)
+    public function releasing_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
@@ -136,9 +132,8 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_an_unemployed_wrestler($administrators)
+    public function invoke_throws_an_exception_for_releasing_an_unemployed_wrestler()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -146,15 +141,14 @@ class ReleaseControllerTest extends TestCase
         $wrestler = Wrestler::factory()->unemployed()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_a_future_employed_wrestler($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_future_employed_wrestler()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -162,15 +156,14 @@ class ReleaseControllerTest extends TestCase
         $wrestler = Wrestler::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_a_released_wrestler($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_released_wrestler()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -178,15 +171,14 @@ class ReleaseControllerTest extends TestCase
         $wrestler = Wrestler::factory()->released()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_a_retired_wrestler($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_retired_wrestler()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
@@ -194,7 +186,7 @@ class ReleaseControllerTest extends TestCase
         $wrestler = Wrestler::factory()->retired()->create();
 
         $this
-            ->actAs($administrators)
+            ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ReleaseController::class], $wrestler));
     }
 }

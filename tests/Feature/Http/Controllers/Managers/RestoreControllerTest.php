@@ -19,19 +19,26 @@ class RestoreControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public Manager $manager;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->manager = Manager::factory()->softDeleted()->create();
+    }
+
     /**
      * @test
      */
     public function invoke_restores_a_soft_deleted_manager_and_redirects()
     {
-        $manager = Manager::factory()->softDeleted()->create();
-
         $this
             ->actAs(Role::ADMINISTRATOR)
-            ->patch(action([RestoreController::class], $manager))
+            ->patch(action([RestoreController::class], $this->manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
-        $this->assertNull($manager->fresh()->deleted_at);
+        $this->assertNull($this->manager->fresh()->deleted_at);
     }
 
     /**
@@ -39,11 +46,9 @@ class RestoreControllerTest extends TestCase
      */
     public function a_basic_user_cannot_restore_a_manager()
     {
-        $manager = Manager::factory()->softDeleted()->create();
-
         $this
             ->actAs(Role::BASIC)
-            ->patch(action([RestoreController::class], $manager))
+            ->patch(action([RestoreController::class], $this->manager))
             ->assertForbidden();
     }
 
@@ -52,10 +57,8 @@ class RestoreControllerTest extends TestCase
      */
     public function a_guest_cannot_restore_a_manager()
     {
-        $manager = Manager::factory()->softDeleted()->create();
-
         $this
-            ->patch(action([RestoreController::class], $manager))
+            ->patch(action([RestoreController::class], $this->manager))
             ->assertRedirect(route('login'));
     }
 }

@@ -6,10 +6,10 @@ use App\Enums\Role;
 use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeReleasedException;
-use App\Http\Controllers\Wrestlers\ReleaseController;
-use App\Http\Requests\Wrestlers\ReleaseRequest;
+use App\Http\Controllers\TagTeams\ReleaseController;
+use App\Http\Controllers\TagTeams\TagTeamsController;
+use App\Http\Requests\TagTeams\ReleaseRequest;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,15 +25,15 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_releases_a_bookable_tag_team_and_tag_team_partners_and_redirects($administrators)
+    public function invoke_releases_a_bookable_tag_team_and_tag_team_partners_and_redirects()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.release', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([ReleaseController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertNotNull($tagTeam->employments->last()->ended_at);
@@ -47,15 +47,15 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_releases_a_suspended_tag_team_and_tag_team_partners_redirects($administrators)
+    public function invoke_releases_a_suspended_tag_team_and_tag_team_partners_redirects()
     {
         $tagTeam = TagTeam::factory()->suspended()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.release', $tagTeam))
-            ->assertRedirect(route('tag-teams.index'));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([ReleaseController::class], $tagTeam))
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertNotNull($tagTeam->suspensions->last()->ended_at);
@@ -79,83 +79,85 @@ class ReleaseControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_basic_user_cannot_suspend_a_wrestler()
+    public function a_basic_user_cannot_suspend_a_tag_team()
     {
-        $wrestler = Wrestler::factory()->create();
+        $tagTeam = TagTeam::factory()->create();
 
-        $this->actAs(Role::BASIC)
-            ->patch(route('wrestlers.release', $wrestler))
+        $this
+            ->actAs(Role::BASIC)
+            ->patch(action([ReleaseController::class], $tagTeam))
             ->assertForbidden();
     }
 
     /**
      * @test
      */
-    public function a_guest_cannot_release_a_wrestler()
+    public function a_guest_cannot_release_a_tag_team()
     {
-        $wrestler = Wrestler::factory()->create();
+        $tagTeam = TagTeam::factory()->create();
 
-        $this->patch(route('wrestlers.release', $wrestler))
+        $this
+            ->patch(action([ReleaseController::class], $tagTeam))
             ->assertRedirect(route('login'));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_an_unemployed_tag_team($administrators)
+    public function invoke_throws_an_exception_for_releasing_an_unemployed_tag_team()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.release', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([ReleaseController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_a_future_employed_tag_team($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_future_employed_tag_team()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.release', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([ReleaseController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_a_released_tag_team($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_released_tag_team()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->released()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.release', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([ReleaseController::class], $tagTeam));
     }
 
     /**
      * @test
-     * @dataProvider administrators
      */
-    public function invoke_throws_an_exception_for_releasing_a_retired_tag_team($administrators)
+    public function invoke_throws_an_exception_for_releasing_a_retired_tag_team()
     {
         $this->expectException(CannotBeReleasedException::class);
         $this->withoutExceptionHandling();
 
         $tagTeam = TagTeam::factory()->retired()->create();
 
-        $this->actAs($administrators)
-            ->patch(route('tag-teams.release', $tagTeam));
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->patch(action([ReleaseController::class], $tagTeam));
     }
 }
