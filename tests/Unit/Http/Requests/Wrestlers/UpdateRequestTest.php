@@ -6,7 +6,9 @@ use App\Http\Requests\Wrestlers\UpdateRequest;
 use App\Models\Wrestler;
 use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 use Tests\TestCase;
 
@@ -24,16 +26,20 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
-        $this->markTestIncomplete();
-        $wrestler = Wrestler::factory()->create();
-
         $subject = $this->createFormRequest(UpdateRequest::class);
-        $subject->setRouteResolver(function () use ($wrestler) {
-            $stub = $this->createStub(Route::class);
-            $stub->expects($this->any())->method('hasParameter')->with('wrestler')->willReturn(true);
-            $stub->expects($this->any())->method('parameter')->with('wrestler')->willReturn($wrestler);
 
-            return $stub;
+        $wrestlerMock = $this->mock(Wrestler::class)->expects()->set('id', 1);
+
+        $requestMock = $this->mock(Request::class)
+            ->makePartial()
+            ->shouldReceive('route')
+            ->set('wrestler', $wrestlerMock)
+            ->once()
+            ->andReturn(\Mockery::self());
+
+        $this->mock(Rule::class, function ($mock) use ($wrestlerMock, $requestMock) {
+            $mock->expects()->unique('wrestler')->andReturns(\Mockery::self());
+            $mock->expects()->ignore($requestMock)->andReturns(\Mockery::self());
         });
 
         $rules = $subject->rules();
@@ -41,12 +47,12 @@ class UpdateRequestTest extends TestCase
         $this->assertValidationRules(
             [
                 'name' => ['required', 'string', 'min:3'],
-                'feet' => ['required', 'integer', 'min:5', 'max:7'],
+                'feet' => ['required', 'integer'],
                 'inches' => ['required', 'integer', 'max:11'],
                 'weight' => ['required', 'integer'],
                 'hometown' => ['required', 'string'],
                 'signature_move' => ['nullable', 'string'],
-                'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+                'started_at' => ['nullable', 'string', 'date'],
             ],
             $rules
         );
