@@ -86,4 +86,19 @@ class VenuesController extends Controller
 
         return redirect()->route('venues.index');
     }
+
+    /**
+     * Delete a venue.
+     *
+     * @param  \App\Models\Venue  $venue
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Venue $venue, VenueService $venueService)
+    {
+        $this->authorize('delete', $venue);
+
+        $venueService->delete($venue);
+
+        return redirect()->route('venues.index');
+    }
 }
