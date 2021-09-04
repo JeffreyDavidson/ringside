@@ -16,8 +16,10 @@ class ActivateController extends Controller
      * Activate a stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  \App\Http\Requests\Stables\ActivateRequest  $stable
+     * @param  \App\Http\Requests\Stables\ActivateRequest  $request
      * @param  \App\Repositories\StableRepository  $stableRepository
+     * @param  \App\Repositories\WrestlerRepository  $wrestlerRepository
+     * @param  \App\Repositories\TagTeamRepository  $tagTeamRepository
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(
