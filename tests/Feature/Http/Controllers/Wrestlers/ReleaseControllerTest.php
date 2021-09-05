@@ -85,6 +85,7 @@ class ReleaseControllerTest extends TestCase
      */
     public function releasing_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable()
     {
+        $this->markTestIncomplete();
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
 

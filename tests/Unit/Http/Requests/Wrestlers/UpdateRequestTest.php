@@ -26,20 +26,15 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
+        $wrestler = Wrestler::factory()->create();
+
         $subject = $this->createFormRequest(UpdateRequest::class);
+        $subject->setRouteResolver(function () use ($wrestler) {
+            $stub = $this->createStub(Route::class);
+            $stub->expects($this->any())->method('hasParameter')->with('wrestler')->willReturn(true);
+            $stub->expects($this->any())->method('parameter')->with('wrestler')->willReturn($wrestler);
 
-        $wrestlerMock = $this->mock(Wrestler::class)->expects()->set('id', 1);
-
-        $requestMock = $this->mock(Request::class)
-            ->makePartial()
-            ->shouldReceive('route')
-            ->set('wrestler', $wrestlerMock)
-            ->once()
-            ->andReturn(\Mockery::self());
-
-        $this->mock(Rule::class, function ($mock) use ($wrestlerMock, $requestMock) {
-            $mock->expects()->unique('wrestler')->andReturns(\Mockery::self());
-            $mock->expects()->ignore($requestMock)->andReturns(\Mockery::self());
+            return $stub;
         });
 
         $rules = $subject->rules();

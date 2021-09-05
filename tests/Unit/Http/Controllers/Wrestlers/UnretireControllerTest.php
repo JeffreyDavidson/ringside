@@ -29,6 +29,7 @@ class UnretireControllerTest extends TestCase
         $repositoryMock->expects()->employ($wrestlerMock, now()->toDateTimeString())->once()->andReturns($wrestlerMock);
         $wrestlerMock->expects()->updateStatus()->once()->andReturns($wrestlerMock);
         $wrestlerMock->expects()->save()->once()->andReturns($wrestlerMock);
+        $wrestlerMock->expects()->getAttribute('currentTagTeam')->andReturns(null);
 
         $controller->__invoke($wrestlerMock, new UnretireRequest, $repositoryMock);
     }

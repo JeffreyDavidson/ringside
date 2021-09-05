@@ -23,7 +23,6 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
-        $this->markTestIncomplete();
         $referee = Referee::factory()->create();
 
         $subject = $this->createFormRequest(UpdateRequest::class);
@@ -41,7 +40,7 @@ class UpdateRequestTest extends TestCase
             [
                 'first_name' => ['required', 'string'],
                 'last_name' => ['required', 'string'],
-                'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+                'started_at' => ['nullable', 'string', 'date'],
             ],
             $rules
         );

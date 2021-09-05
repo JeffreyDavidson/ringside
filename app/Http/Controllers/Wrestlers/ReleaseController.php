@@ -36,6 +36,7 @@ class ReleaseController extends Controller
         $wrestler->updateStatus()->save();
 
         if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
+            $wrestlerRepository->removeFromCurrentTagTeam($wrestler, $releaseDate);
             $wrestler->currentTagTeam->updateStatus()->save();
         }
 
