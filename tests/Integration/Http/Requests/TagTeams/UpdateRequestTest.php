@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Http\Requests\Wrestlers;
+namespace Tests\Integration\Http\Requests\TagTeams;
 
 use App\Http\Requests\Wrestlers\UpdateRequest;
 use App\Models\Employment;

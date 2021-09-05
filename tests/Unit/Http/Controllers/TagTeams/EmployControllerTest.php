@@ -21,7 +21,6 @@ class EmployControllerTest extends TestCase
      */
     public function an_employable_tag_team_can_be_employed_with_a_given_date()
     {
-        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $wrestlerRepositoryMock = $this->mock(WrestlerRepository::class);
@@ -40,7 +39,6 @@ class EmployControllerTest extends TestCase
      */
     public function an_employable_tag_team_that_cannot_be_employed_throws_an_exception()
     {
-        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
         $repositoryMock = $this->mock(TagTeamRepository::class);
         $controller = new EmployController;

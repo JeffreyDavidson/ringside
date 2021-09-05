@@ -39,7 +39,7 @@ class StoreRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('wrestlers', 'id'),
-                new CannotBeEmployedAfterDate(request('started_at')),
+                new CannotBeEmployedAfterDate($this->input('started_at')),
                 new CannotBeHindered,
                 new CannotBelongToMultipleEmployedTagTeams,
             ],

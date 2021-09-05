@@ -22,13 +22,12 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
-        $this->markTestIncomplete();
         $tagTeamMock = $this->mock(TagTeam::class);
 
         $subject = $this->createFormRequest(UpdateRequest::class);
         $subject->setRouteResolver(function () use ($tagTeamMock) {
             $stub = $this->createStub(Route::class);
-            $tagTeamMock->expects()->getAttribute('id')->andReturns(\Mockery::any());
+            $stub->expects($this->any())->method('hasParameter')->with('tqg_team')->willReturn(true);
             $stub->expects($this->any())->method('parameter')->with('tag_team')->willReturn($tagTeamMock);
 
             return $stub;
@@ -39,8 +38,8 @@ class UpdateRequestTest extends TestCase
         $this->assertValidationRules([
             'name' => ['required', 'string'],
             'signature_move' => ['nullable', 'string'],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'wrestlers' => ['array'],
+            'started_at' => ['nullable', 'string', 'date'],
+            'wrestlers' => ['nullable', 'array'],
             'wrestlers.*' => ['bail', 'integer', 'distinct'],
         ], $rules);
 

@@ -4,6 +4,7 @@ namespace Tests\Integration\Http\Requests\TagTeams;
 
 use App\Http\Requests\TagTeams\StoreRequest;
 use App\Models\Employment;
+use App\Models\Suspension;
 use App\Models\TagTeam;
 use App\Models\User;
 use App\Models\Wrestler;
@@ -248,9 +249,58 @@ class StoreRequestTest extends TestCase
 
         $this->createRequest(StoreRequest::class)
             ->validate([
+                'signature_move' => 'Example Signature Move',
                 'started_at' => Carbon::now()->toDateString(),
                 'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
             ])
-            ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbeemployedafterdate']);
+            ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbeemployedafterdate'])
+            ->assertFailsValidation(['wrestlers.1' => 'app\rules\cannotbeemployedafterdate']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_tag_team_wrestler_must_be_bookable_to_join_a_tag_team()
+    {
+        $wrestlerA = Wrestler::factory()
+            ->has(Employment::factory()->started(Carbon::yesterday()->toDateString()))
+            ->has(Suspension::factory()->started(Carbon::now()->toDateString()))
+            ->create();
+
+        $wrestlerB = Wrestler::factory()
+            ->has(Employment::factory()->started(Carbon::yesterday()->toDateString()))
+            ->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate([
+                'signature_move' => 'Example Signature Move',
+                'started_at' => Carbon::now()->toDateString(),
+                'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
+            ])
+            ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbehindered']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_tag_team_wrestler_cannot_join_multiple_tag_team()
+    {
+        $tagTeam = TagTeam::factory()
+            ->has(Employment::factory()->started(Carbon::yesterday()->toDateString()))
+            ->has(Wrestler::factory()->bookable()->count(2))
+            ->bookable()
+            ->create();
+
+        $wrestlerB = Wrestler::factory()
+            ->has(Employment::factory()->started(Carbon::yesterday()->toDateString()))
+            ->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate([
+                'signature_move' => 'Example Signature Move',
+                'started_at' => Carbon::now()->toDateString(),
+                'wrestlers' => [$tagTeam->currentWrestlers->first()->id, $wrestlerB->id],
+            ])
+            ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbelongtomultipleemployedtagteams']);
     }
 }
