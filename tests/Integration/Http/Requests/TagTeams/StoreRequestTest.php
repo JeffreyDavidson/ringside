@@ -11,6 +11,7 @@ use App\Models\Wrestler;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\Rule;
+use Tests\Factories\TagTeamRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
 
@@ -54,9 +55,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_name_is_required()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'name' => null,
-            ])
+            ]))
             ->assertFailsValidation(['name' => 'required']);
     }
 
@@ -66,9 +67,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_name_must_be_a_string()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'name' => 123,
-            ])
+            ]))
             ->assertFailsValidation(['name' => 'string']);
     }
 
@@ -78,9 +79,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_name_must_be_at_least_3_characters()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'name' => 'ab',
-            ])
+            ]))
             ->assertFailsValidation(['name' => 'min:3']);
     }
 
@@ -92,9 +93,9 @@ class StoreRequestTest extends TestCase
         TagTeam::factory()->create(['name' => 'Example TagTeam Name']);
 
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'name' => 'Example TagTeam Name',
-            ])
+            ]))
             ->assertFailsValidation(['name' => Rule::unique('tag_teams', 'name')]);
     }
 
@@ -104,10 +105,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_signature_move_is_optional()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'signature_move' => null,
-                'name' => 'Example Tag Team Name',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -117,9 +117,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_signature_move_must_be_a_string_if_provided()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'signature_move' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['signature_move' => 'string']);
     }
 
@@ -129,10 +129,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_started_at_is_optional()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'started_at' => null,
-                'name' => 'Example Tag Team Name',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -142,9 +141,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_started_at_must_be_a_string_if_provided()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'started_at' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'string']);
     }
 
@@ -154,9 +153,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_started_at_must_be_in_the_correct_date_format()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'started_at' => 'not-a-date',
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'date']);
     }
 
@@ -166,10 +165,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_wrestlers_are_optional()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => null,
-                'name' => 'Example Tag Team Name',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -179,9 +177,9 @@ class StoreRequestTest extends TestCase
     public function tag_team_wrestlers_must_be_an_array_if_provided()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => 'not-an-array',
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers' => 'array']);
     }
 
@@ -191,10 +189,10 @@ class StoreRequestTest extends TestCase
     public function tag_team_wrestlers_is_required_with_a_tag_team_signature_move()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => null,
-                'signature_move' => 'Example Signature Move',
-            ])
+                'signature_move' => 'Example Signature Mo)ve',
+            ]))
             ->assertFailsValidation(['wrestlers' => 'requiredwith:signature_move']);
     }
 
@@ -204,9 +202,9 @@ class StoreRequestTest extends TestCase
     public function each_tag_team_wrestler_must_be_an_integer()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => ['not-an-integer'],
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers.0' => 'integer']);
     }
 
@@ -216,9 +214,9 @@ class StoreRequestTest extends TestCase
     public function each_tag_team_wrestler_must_be_distinct()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => [1, 1],
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers.0' => 'distinct']);
     }
 
@@ -228,9 +226,9 @@ class StoreRequestTest extends TestCase
     public function each_tag_team_wrestler_must_exist()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => [1, 2],
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers.0' => 'exist']);
     }
 
@@ -248,11 +246,10 @@ class StoreRequestTest extends TestCase
             ->create();
 
         $this->createRequest(StoreRequest::class)
-            ->validate([
-                'signature_move' => 'Example Signature Move',
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'started_at' => Carbon::now()->toDateString(),
                 'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbeemployedafterdate'])
             ->assertFailsValidation(['wrestlers.1' => 'app\rules\cannotbeemployedafterdate']);
     }
@@ -272,11 +269,9 @@ class StoreRequestTest extends TestCase
             ->create();
 
         $this->createRequest(StoreRequest::class)
-            ->validate([
-                'signature_move' => 'Example Signature Move',
-                'started_at' => Carbon::now()->toDateString(),
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbehindered']);
     }
 
@@ -296,11 +291,9 @@ class StoreRequestTest extends TestCase
             ->create();
 
         $this->createRequest(StoreRequest::class)
-            ->validate([
-                'signature_move' => 'Example Signature Move',
-                'started_at' => Carbon::now()->toDateString(),
+            ->validate(TagTeamRequestDataFactory::new()->create([
                 'wrestlers' => [$tagTeam->currentWrestlers->first()->id, $wrestlerB->id],
-            ])
+            ]))
             ->assertFailsValidation(['wrestlers.0' => 'app\rules\cannotbelongtomultipleemployedtagteams']);
     }
 }

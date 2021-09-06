@@ -32,12 +32,22 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['filled', Rule::unique('stables')->ignore($this->route('stable')->id)],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s', new ActivationStartDateCanBeChanged($this->route('stable'))],
+            'name' => ['required', 'string', 'min:3', Rule::unique('stables')->ignore($this->route('stable')->id)],
+            'started_at' => ['nullable', 'string', 'date', new ActivationStartDateCanBeChanged($this->route('stable'))],
             'wrestlers' => ['array'],
-            'wrestlers.*' => ['bail ', 'integer', Rule::exists('wrestlers', 'id'), new WrestlerCanJoinStable($this->route('stable'))],
             'tag_teams' => ['array'],
-            'tag_teams.*' => ['bail', 'integer', Rule::exists('tag_teams', 'id'), new TagTeamCanJoinStable($this->route('stable'))],
+            'wrestlers.*' => [
+                'bail ',
+                'integer',
+                Rule::exists('wrestlers', 'id'),
+                new WrestlerCanJoinStable($this->route('stable')),
+            ],
+            'tag_teams.*' => [
+                'bail',
+                'integer',
+                Rule::exists('tag_teams', 'id'),
+                new TagTeamCanJoinStable($this->route('stable')),
+            ],
         ];
     }
 

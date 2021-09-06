@@ -7,6 +7,7 @@ use App\Models\Employment;
 use App\Models\Referee;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\RefereeRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
 
@@ -29,9 +30,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'first_name' => null,
-            ])
+            ]))
             ->assertFailsValidation(['first_name' => 'required']);
     }
 
@@ -44,9 +45,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'first_name' => 123,
-            ])
+            ]))
             ->assertFailsValidation(['first_name' => 'string']);
     }
 
@@ -59,9 +60,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'first_name' => 'ab',
-            ])
+            ]))
             ->assertFailsValidation(['first_name' => 'min:3']);
     }
 
@@ -74,9 +75,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'last_name' => null,
-            ])
+            ]))
             ->assertFailsValidation(['last_name' => 'required']);
     }
 
@@ -89,9 +90,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'last_name' => 123,
-            ])
+            ]))
             ->assertFailsValidation(['last_name' => 'string']);
     }
 
@@ -104,9 +105,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'last_name' => 'ab',
-            ])
+            ]))
             ->assertFailsValidation(['last_name' => 'min:3']);
     }
 
@@ -119,11 +120,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'started_at' => null,
-                'first_name' => 'John',
-                'last_name' => 'Smith',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -136,9 +135,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'started_at' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'string']);
     }
 
@@ -151,9 +150,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'started_at' => 'not-a-date-format',
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'date']);
     }
 
@@ -166,9 +165,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'started_at' => '2021-01-01',
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'app\rules\employmentstartdatecanbechanged']);
     }
 
@@ -181,11 +180,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('referee', $referee)
-            ->validate([
+            ->validate(RefereeRequestDataFactory::new()->create([
                 'started_at' => Carbon::tomorrow()->toDateString(),
-                'first_name' => 'John',
-                'last_name' => 'Smith',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 }

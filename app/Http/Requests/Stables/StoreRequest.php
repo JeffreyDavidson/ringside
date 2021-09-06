@@ -29,22 +29,45 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', Rule::unique('stables', 'name')],
-            'started_at' => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-            'wrestlers' => ['array', new StableHasEnoughMembers($this->input('started_at'), $this->input('tag_teams'))],
+            'name' => ['required', 'string', 'min:3', Rule::unique('stables', 'name')],
+            'started_at' => ['nullable', 'string', 'date'],
+            'wrestlers' => ['array'],
             'tag_teams' => ['array'],
             'wrestlers.*' => [
                 'bail',
                 'integer',
+                'distinct',
                 Rule::exists('wrestlers', 'id'),
                 new WrestlerCanJoinStable(new Stable),
             ],
             'tag_teams.*' => [
                 'bail',
                 'integer',
+                'distinct',
                 Rule::exists('tag_teams', 'id'),
                 new TagTeamCanJoinStable(new Stable),
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $result = (new StableHasEnoughMembers(
+                $this->input('tag_teams'),
+                $this->input('wrestlers')
+            ))->passes();
+
+            if ($result) {
+                $validator->errors()->add('wrestlers', 'There is not enough wrestlers and tag teams.');
+                $validator->errors()->add('tag_teams', 'There is not enough wrestlers and tag teams.');
+            }
+        });
     }
 }

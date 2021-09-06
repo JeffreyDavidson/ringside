@@ -6,18 +6,18 @@ use Illuminate\Contracts\Validation\Rule;
 
 class StableHasEnoughMembers implements Rule
 {
-    private ?string $startDate;
     private ?array $tagTeamIds = [];
+    private ?array $wrestlerIds = [];
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(?string $startDate = null, ?array $tagTeamIds = [])
+    public function __construct(?array $tagTeamIds, ?array $wrestlerIds)
     {
-        $this->startDate = $startDate;
         $this->tagTeamIds = $tagTeamIds;
+        $this->wrestlerIds = $wrestlerIds;
     }
 
     /**
@@ -29,7 +29,22 @@ class StableHasEnoughMembers implements Rule
      */
     public function passes($attribute, $value)
     {
-        return ! ($this->startDate && ((! $this->tagTeamIds && count($value) < 3) || (! $value && count($this->tagTeamIds) === 1)));
+        $tagTeamsCount = count($this->tagTeamIds);
+        $wrestlersCount = count($this->wrestlerIds);
+
+        if ($tagTeamsCount >= 2) {
+            return true;
+        }
+
+        if ($wrestlersCount >= 3) {
+            return true;
+        }
+
+        if ($tagTeamsCount == 1 && $wrestlersCount >= 1) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Tests\Integration\Http\Requests\Managers;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\ManagerRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
 
@@ -48,9 +49,9 @@ class StoreRequestTest extends TestCase
     public function manager_first_name_is_required()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'first_name' => null,
-            ])
+            ]))
             ->assertFailsValidation(['first_name' => 'required']);
     }
 
@@ -60,9 +61,9 @@ class StoreRequestTest extends TestCase
     public function manager_first_name_must_be_a_string()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'first_name' => 123,
-            ])
+            ]))
             ->assertFailsValidation(['first_name' => 'string']);
     }
 
@@ -72,9 +73,9 @@ class StoreRequestTest extends TestCase
     public function manager_first_name_must_be_at_least_3_characters()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'first_name' => 'ab',
-            ])
+            ]))
             ->assertFailsValidation(['first_name' => 'min:3']);
     }
 
@@ -84,9 +85,9 @@ class StoreRequestTest extends TestCase
     public function manager_last_name_is_required()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'last_name' => null,
-            ])
+            ]))
             ->assertFailsValidation(['last_name' => 'required']);
     }
 
@@ -96,9 +97,9 @@ class StoreRequestTest extends TestCase
     public function manager_last_name_must_be_a_string()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'last_name' => 123,
-            ])
+            ]))
             ->assertFailsValidation(['last_name' => 'string']);
     }
 
@@ -108,9 +109,9 @@ class StoreRequestTest extends TestCase
     public function manager_last_name_must_be_at_least_3_characters()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'last_name' => 'ab',
-            ])
+            ]))
             ->assertFailsValidation(['last_name' => 'min:3']);
     }
 
@@ -120,11 +121,9 @@ class StoreRequestTest extends TestCase
     public function manager_started_at_is_optional()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'started_at' => null,
-                'first_name' => 'John',
-                'last_name' => 'John',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -134,9 +133,9 @@ class StoreRequestTest extends TestCase
     public function manager_started_at_must_be_a_string_if_provided()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'started_at' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'string']);
     }
 
@@ -146,9 +145,9 @@ class StoreRequestTest extends TestCase
     public function manager_started_at_must_be_in_the_correct_date_format()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate([
+            ->validate(ManagerRequestDataFactory::new()->create([
                 'started_at' => 'not-a-date',
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'date']);
     }
 }

@@ -23,7 +23,7 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
-        $referee = Referee::factory()->create();
+        $referee = $this->createMock(Referee::class);
 
         $subject = $this->createFormRequest(UpdateRequest::class);
         $subject->setRouteResolver(function () use ($referee) {
@@ -38,8 +38,8 @@ class UpdateRequestTest extends TestCase
 
         $this->assertValidationRules(
             [
-                'first_name' => ['required', 'string'],
-                'last_name' => ['required', 'string'],
+                'first_name' => ['required', 'string', 'min:3'],
+                'last_name' => ['required', 'string', 'min:3'],
                 'started_at' => ['nullable', 'string', 'date'],
             ],
             $rules

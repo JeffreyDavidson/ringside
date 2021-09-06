@@ -22,8 +22,8 @@ class StoreRequestTest extends TestCase
 
         $this->assertExactValidationRules(
             [
-                'first_name' => ['required', 'string'],
-                'last_name' => ['required', 'string'],
+                'first_name' => ['required', 'string', 'min:3'],
+                'last_name' => ['required', 'string', 'min:3'],
                 'started_at' => ['nullable', 'string', 'date'],
             ],
             $rules

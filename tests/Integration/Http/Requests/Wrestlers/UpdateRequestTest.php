@@ -7,6 +7,7 @@ use App\Models\Employment;
 use App\Models\Wrestler;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\WrestlerRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
 
@@ -29,9 +30,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'name' => null,
-            ])
+            ]))
             ->assertFailsValidation(['name' => 'required']);
     }
 
@@ -44,9 +45,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'name' => 123,
-            ])
+            ]))
             ->assertFailsValidation(['name' => 'string']);
     }
 
@@ -59,9 +60,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'name' => 'ab',
-            ])
+            ]))
             ->assertFailsValidation(['name' => 'min:3']);
     }
 
@@ -75,13 +76,10 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestlerA)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'name' => 'Example Wrestler Name B',
-                'feet' => $wrestlerA->height->feet(),
-                'inches' => $wrestlerA->height->inches(),
-                'weight' => $wrestlerA->weight,
-                'hometown' => $wrestlerA->hometown,
-            ])->assertFailsValidation(['name' => 'unique:wrestlers,NULL,1,id']);
+            ]))
+            ->assertFailsValidation(['name' => 'unique:wrestlers,NULL,1,id']);
     }
 
     /**
@@ -93,9 +91,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'feet' => null,
-            ])
+            ]))
             ->assertFailsValidation(['feet' => 'required']);
     }
 
@@ -108,9 +106,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'feet' => 'not-an-integer',
-            ])
+            ]))
             ->assertFailsValidation(['feet' => 'integer']);
     }
 
@@ -123,9 +121,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'inches' => null,
-            ])
+            ]))
             ->assertFailsValidation(['inches' => 'required']);
     }
 
@@ -138,9 +136,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'inches' => 'not-an-integer',
-            ])
+            ]))
             ->assertFailsValidation(['inches' => 'integer']);
     }
 
@@ -153,9 +151,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'inches' => 12,
-            ])
+            ]))
             ->assertFailsValidation(['inches' => 'max:11']);
     }
 
@@ -168,9 +166,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'weight' => null,
-            ])
+            ]))
             ->assertFailsValidation(['weight' => 'required']);
     }
 
@@ -183,9 +181,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'weight' => 'not-an-integer',
-            ])
+            ]))
             ->assertFailsValidation(['weight' => 'integer']);
     }
 
@@ -198,9 +196,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'hometown' => null,
-            ])
+            ]))
             ->assertFailsValidation(['hometown' => 'required']);
     }
 
@@ -213,9 +211,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'hometown' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['hometown' => 'string']);
     }
 
@@ -228,14 +226,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'signature_move' => null,
-                'name' => 'Example Wrestler Name',
-                'feet' => 6,
-                'inches' => 4,
-                'weight' => 240,
-                'hometown' => 'Las Vegan, NV',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -248,9 +241,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'signature_move' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['signature_move' => 'string']);
     }
 
@@ -263,14 +256,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'started_at' => null,
-                'name' => 'Example Wrestler Name',
-                'feet' => 6,
-                'inches' => 4,
-                'weight' => 240,
-                'hometown' => 'Las Vegan, NV',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 
@@ -283,9 +271,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'started_at' => 12345,
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'string']);
     }
 
@@ -298,9 +286,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'started_at' => 'not-a-date-format',
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'date']);
     }
 
@@ -313,9 +301,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'started_at' => '2021-01-01',
-            ])
+            ]))
             ->assertFailsValidation(['started_at' => 'app\rules\employmentstartdatecanbechanged']);
     }
 
@@ -328,14 +316,9 @@ class UpdateRequestTest extends TestCase
 
         $this->createRequest(UpdateRequest::class)
             ->withParam('wrestler', $wrestler)
-            ->validate([
+            ->validate(WrestlerRequestDataFactory::new()->create([
                 'started_at' => Carbon::tomorrow()->toDateString(),
-                'name' => 'Example Wrestler Name',
-                'feet' => 6,
-                'inches' => 4,
-                'weight' => 240,
-                'hometown' => 'Las Vegan, NV',
-            ])
+            ]))
             ->assertPassesValidation();
     }
 }

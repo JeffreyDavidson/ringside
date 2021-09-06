@@ -21,9 +21,11 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
-        $wrestlerMock = $this->mock(Wrestler::class);
+        $wrestlerMock = $this->createMock(Wrestler::class);
+        $wrestlerMock->method('__get')->with('id')->willReturn(1);
 
         $subject = $this->createFormRequest(UpdateRequest::class);
+
         $subject->setRouteResolver(function () use ($wrestlerMock) {
             $stub = $this->createStub(Route::class);
             $stub->expects($this->any())->method('hasParameter')->with('wrestler')->willReturn(true);

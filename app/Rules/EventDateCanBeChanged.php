@@ -2,12 +2,18 @@
 
 namespace App\Rules;
 
-use App\Models\Wrestler;
+use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
-class CannotBeHindered implements Rule
+class EventDateCanBeChanged implements Rule
 {
-    protected $wrestler;
+    protected $event;
+
+    public function __construct(Event $event)
+    {
+        $this->event = $event;
+    }
 
     /**
      * Determine if the validation rule passes.
@@ -18,9 +24,11 @@ class CannotBeHindered implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->wrestler = Wrestler::find($value);
+        if (is_null($this->event->date)) {
+            return true;
+        }
 
-        if ($this->wrestler->isUnemployed() || $this->wrestler->isBookable()) {
+        if ($this->event->date->isFuture() && Carbon::parse($value)->gt(now())) {
             return true;
         }
 
@@ -34,6 +42,6 @@ class CannotBeHindered implements Rule
      */
     public function message()
     {
-        return $this->wrestler->name.' is not allowed to join this tag team.';
+        return 'The validation error message.';
     }
 }
