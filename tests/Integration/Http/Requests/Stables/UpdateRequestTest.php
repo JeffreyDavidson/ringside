@@ -91,13 +91,12 @@ class UpdateRequestTest extends TestCase
     {
         $stable = Stable::factory()->unactivated()->create();
 
-        $test = $this->createRequest(UpdateRequest::class)
+        $this->createRequest(UpdateRequest::class)
             ->withParam('stable', $stable)
             ->validate(StableRequestDataFactory::new()->create([
                 'started_at' => null,
             ]))
-        // dd($test->getFailedRules());
-        ->assertPassesValidation();
+            ->assertPassesValidation();
     }
 
     /**
@@ -107,13 +106,12 @@ class UpdateRequestTest extends TestCase
     {
         $stable = Stable::factory()->active()->create();
 
-        $test = $this->createRequest(UpdateRequest::class)
+        $this->createRequest(UpdateRequest::class)
             ->withParam('stable', $stable)
             ->validate(StableRequestDataFactory::new()->create([
                 'started_at' => null,
             ]))
-        // dd($test->getFailedRules());
-        ->assertFailsValidation(['started_at' => 'requiredif']);
+            ->assertFailsValidation(['started_at' => 'required']);
     }
 
     /**

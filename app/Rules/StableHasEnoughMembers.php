@@ -27,7 +27,6 @@ class StableHasEnoughMembers
     {
         $tagTeamsCount = count($this->tagTeamIds);
         $wrestlersCount = count($this->wrestlerIds);
-        // dd($tagTeamsCount, $wrestlersCount);
 
         if ($tagTeamsCount >= 2) {
             return true;
@@ -36,12 +35,10 @@ class StableHasEnoughMembers
         if ($wrestlersCount >= 3) {
             return true;
         }
-        // dd('another');
 
         if ($tagTeamsCount == 1 && $wrestlersCount >= 1) {
             return true;
         }
-        // dd('last shot');
 
         return false;
     }
