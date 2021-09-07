@@ -224,7 +224,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_tagTeams_in_a_stable_must_be_distinct()
+    public function each_tag_teams_in_a_stable_must_be_distinct()
     {
         $this->createRequest(StoreRequest::class)
             ->validate(StableRequestDataFactory::new()->create([
@@ -265,17 +265,82 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function stable_must_have_a_minimum_number_of_members()
+    public function stable_must_have_a_minimum_number_of_3_members()
     {
         $wrestlerA = Wrestler::factory()->create();
         $wrestlerB = Wrestler::factory()->create();
 
-        $test = $this->createRequest(StoreRequest::class)
+        $this->createRequest(StoreRequest::class)
             ->validate(StableRequestDataFactory::new()->create([
                 'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
                 'tag_teams' => [],
-            ]));
-        // dd($test->getFailedRules());
-        // ->assertFailsValidation(['wrestlers' => 'app\rules\stablehasenoughmembers']);
+            ]))
+            ->assertFailsValidation(['tag_teams' => 'app\rules\stablehasenoughmembers'])
+            ->assertFailsValidation(['tag_teams' => 'app\rules\stablehasenoughmembers']);
+    }
+
+    /**
+     * @test
+     */
+    public function stable_can_have_one_wrestler_and_one_tag_team()
+    {
+        $tagTeam = TagTeam::factory()->create();
+        $wrestler = Wrestler::factory()->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(StableRequestDataFactory::new()->create([
+                'wrestlers' => [$wrestler->id],
+                'tag_teams' => [$tagTeam->id],
+            ]))
+            ->assertPassesValidation();
+    }
+
+    /**
+     * @test
+     */
+    public function a_stable_cannot_be_formed_with_only_one_tag_team_and_no_wrestlers()
+    {
+        $tagTeam = TagTeam::factory()->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(StableRequestDataFactory::new()->create([
+                'wrestlers' => [],
+                'tag_teams' => [$tagTeam->id],
+            ]))
+            ->assertFailsValidation(['wrestlers' => 'app\rules\stablehasenoughmembers'])
+            ->assertFailsValidation(['tag_teams' => 'app\rules\stablehasenoughmembers']);
+    }
+
+    /**
+     * @test
+     */
+    public function a_stable_can_contain_at_least_two_tag_teams_with_no_wrestlers()
+    {
+        $tagTeamA = TagTeam::factory()->create();
+        $tagTeamB = TagTeam::factory()->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(StableRequestDataFactory::new()->create([
+                'wrestlers' => [],
+                'tag_teams' => [$tagTeamA->id, $tagTeamB->id],
+            ]))
+            ->assertPassesValidation();
+    }
+
+    /**
+     * @test
+     */
+    public function a_stable_can_contain_at_least_three_wrestlers_with_no_tag_teams()
+    {
+        $wrestlerA = Wrestler::factory()->create();
+        $wrestlerB = Wrestler::factory()->create();
+        $wrestlerC = Wrestler::factory()->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(StableRequestDataFactory::new()->create([
+                'wrestlers' => [$wrestlerA->id, $wrestlerB->id, $wrestlerC->id],
+                'tag_teams' => [],
+            ]))
+            ->assertPassesValidation();
     }
 }

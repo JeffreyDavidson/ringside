@@ -2,9 +2,7 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
-
-class StableHasEnoughMembers implements Rule
+class StableHasEnoughMembers
 {
     private ?array $tagTeamIds = [];
     private ?array $wrestlerIds = [];
@@ -23,14 +21,13 @@ class StableHasEnoughMembers implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes()
     {
         $tagTeamsCount = count($this->tagTeamIds);
         $wrestlersCount = count($this->wrestlerIds);
+        // dd($tagTeamsCount, $wrestlersCount);
 
         if ($tagTeamsCount >= 2) {
             return true;
@@ -39,10 +36,12 @@ class StableHasEnoughMembers implements Rule
         if ($wrestlersCount >= 3) {
             return true;
         }
+        // dd('another');
 
         if ($tagTeamsCount == 1 && $wrestlersCount >= 1) {
             return true;
         }
+        // dd('last shot');
 
         return false;
     }

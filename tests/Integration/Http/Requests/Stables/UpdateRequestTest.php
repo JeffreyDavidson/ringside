@@ -5,6 +5,7 @@ namespace Tests\Integration\Http\Requests\Stables;
 use App\Http\Requests\Stables\UpdateRequest;
 use App\Models\Activation;
 use App\Models\Stable;
+use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -86,16 +87,33 @@ class UpdateRequestTest extends TestCase
     /**
      * @test
      */
-    public function stable_started_at_is_optional()
+    public function stable_started_at_is_optional_if_not_activated()
     {
-        $stable = Stable::factory()->create();
+        $stable = Stable::factory()->unactivated()->create();
 
-        $this->createRequest(UpdateRequest::class)
+        $test = $this->createRequest(UpdateRequest::class)
             ->withParam('stable', $stable)
             ->validate(StableRequestDataFactory::new()->create([
                 'started_at' => null,
             ]))
-            ->assertPassesValidation();
+        // dd($test->getFailedRules());
+        ->assertPassesValidation();
+    }
+
+    /**
+     * @test
+     */
+    public function stable_started_at_is_required_if_active()
+    {
+        $stable = Stable::factory()->active()->create();
+
+        $test = $this->createRequest(UpdateRequest::class)
+            ->withParam('stable', $stable)
+            ->validate(StableRequestDataFactory::new()->create([
+                'started_at' => null,
+            ]))
+        // dd($test->getFailedRules());
+        ->assertFailsValidation(['started_at' => 'requiredif']);
     }
 
     /**
@@ -330,13 +348,13 @@ class UpdateRequestTest extends TestCase
         $wrestlerA = Wrestler::factory()->create();
         $wrestlerB = Wrestler::factory()->create();
 
-        $test = $this->createRequest(StoreRequest::class)
+        $this->createRequest(UpdateRequest::class)
             ->withParam('stable', $stable)
             ->validate(StableRequestDataFactory::new()->create([
                 'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
                 'tag_teams' => [],
-            ]));
-        // dd($test->getFailedRules());
-        // ->assertFailsValidation(['wrestlers' => 'app\rules\stablehasenoughmembers']);
+            ]))
+            ->assertFailsValidation(['wrestlers' => 'app\rules\stablehasenoughmembers'])
+            ->assertFailsValidation(['tag_teams' => 'app\rules\stablehasenoughmembers']);
     }
 }
