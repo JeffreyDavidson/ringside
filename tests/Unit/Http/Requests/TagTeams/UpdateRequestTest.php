@@ -42,15 +42,14 @@ class UpdateRequestTest extends TestCase
             'signature_move' => ['nullable', 'string'],
             'started_at' => ['nullable', 'string', 'date'],
             'wrestlers' => ['nullable', 'array'],
-            // 'wrestlers.*' => ['bail', 'integer', 'distinct'],
-            // 'wrestlers.*' => ['distinct'],
+            'wrestlers.*' => ['bail', 'integer', 'distinct'],
         ], $rules);
 
         $this->assertValidationRuleContains($rules['name'], Unique::class);
         $this->assertValidationRuleContains($rules['started_at'], EmploymentStartDateCanBeChanged::class);
-        // $this->assertValidationRuleContains($rules['wrestlers.*'], Exists::class);
-        // $this->assertValidationRuleContains($rules['wrestlers.*'], CannotBeEmployedAfterDate::class);
-        // $this->assertValidationRuleContains($rules['wrestlers.*'], CannotBeHindered::class);
-        // $this->assertValidationRuleContains($rules['wrestlers.*'], CannotBelongToMultipleEmployedTagTeams::class);
+        $this->assertValidationRuleContains($rules['wrestlers.*'], Exists::class);
+        $this->assertValidationRuleContains($rules['wrestlers.*'], CannotBeEmployedAfterDate::class);
+        $this->assertValidationRuleContains($rules['wrestlers.*'], CannotBeHindered::class);
+        $this->assertValidationRuleContains($rules['wrestlers.*'], CannotBelongToMultipleEmployedTagTeams::class);
     }
 }

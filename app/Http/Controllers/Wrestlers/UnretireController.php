@@ -28,10 +28,6 @@ class UnretireController extends Controller
         $wrestlerRepository->employ($wrestler, $unretiredDate);
         $wrestler->updateStatus()->save();
 
-        if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
-            $wrestler->currentTagTeam->updateStatus()->save();
-        }
-
         return redirect()->route('wrestlers.index');
     }
 }

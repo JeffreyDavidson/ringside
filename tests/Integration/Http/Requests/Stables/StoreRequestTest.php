@@ -343,4 +343,23 @@ class StoreRequestTest extends TestCase
             ]))
             ->assertPassesValidation();
     }
+
+    /**
+     * @test
+     */
+    public function a_stable_cannot_contain_a_wrestler_that_is_added_in_a_tag_team()
+    {
+        $wrestler = Wrestler::factory()->create();
+        $tagTeam = TagTeam::factory()
+            ->hasAttached($wrestler, ['joined_at' => now()->toDateTimeString()])
+            ->hasAttached(Wrestler::factory(), ['joined_at' => now()->toDateTimeString()])
+            ->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(StableRequestDataFactory::new()->create([
+                'wrestlers' => [$wrestler->id],
+                'tag_teams' => [$tagTeam->id],
+            ]))
+            ->assertFailsValidation(['wrestlers' => 'app\rules\wrestlerjoinedstableintagteam']);
+    }
 }

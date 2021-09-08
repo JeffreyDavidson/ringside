@@ -43,12 +43,12 @@ class UpdateRequestTest extends TestCase
         $rules = $subject->rules();
 
         $this->assertValidationRules([
-            // 'name' => ['required', 'string', 'min:3'],
+            'name' => ['required', 'string', 'min:3'],
             'started_at' => ['nullable', 'string', 'date'],
-            // 'wrestlers' => ['array'],
-            // 'wrestlers.*' => ['bail ', 'integer', 'distinct'],
-            // 'tag_teams' => ['array'],
-            // 'tag_teams.*' => ['bail', 'integer', 'distinct'],
+            'wrestlers' => ['array'],
+            'wrestlers.*' => ['bail ', 'integer', 'distinct'],
+            'tag_teams' => ['array'],
+            'tag_teams.*' => ['bail', 'integer', 'distinct'],
         ], $rules);
 
         $this->assertValidationRuleContains($rules['name'], Unique::class);

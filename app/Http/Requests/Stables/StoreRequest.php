@@ -6,6 +6,7 @@ use App\Models\Stable;
 use App\Rules\StableHasEnoughMembers;
 use App\Rules\TagTeamCanJoinStable;
 use App\Rules\WrestlerCanJoinStable;
+use App\Rules\WrestlerJoinedStableInTagTeam;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -71,14 +72,23 @@ class StoreRequest extends FormRequest
             if ($validator->errors()->isEmpty()) {
                 $membersWereAdded = count($this->input('tag_teams')) > 0 || count($this->input('wrestlers')) > 0;
                 if ($membersWereAdded) {
-                    $result = (new StableHasEnoughMembers(
+                    $stableHasEnoughMembersResult = (new StableHasEnoughMembers(
                         $this->input('tag_teams'),
                         $this->input('wrestlers')
                     ))->passes();
 
-                    if (! $result) {
+                    if (! $stableHasEnoughMembersResult) {
                         $validator->addFailure('wrestlers', StableHasEnoughMembers::class);
                         $validator->addFailure('tag_teams', StableHasEnoughMembers::class);
+                    }
+
+                    $wrestlerJoinedStableInTagTeamResult = (new WrestlerJoinedStableInTagTeam(
+                        $this->input('tag_teams'),
+                        $this->input('wrestlers')
+                    ))->passes();
+
+                    if (! $wrestlerJoinedStableInTagTeamResult) {
+                        $validator->addFailure('wrestlers', WrestlerJoinedStableInTagTeam::class);
                     }
                 }
             }
