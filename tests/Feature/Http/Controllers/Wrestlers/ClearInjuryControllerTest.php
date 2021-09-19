@@ -94,76 +94,29 @@ class ClearInjuryControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider nonclearableWrestlerTypes
      */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_an_unemployed_wrestler()
+    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_non_clearable_wrestler($factoryState)
     {
         $this->withoutExceptionHandling();
         $this->expectException(CannotBeClearedFromInjuryException::class);
 
-        $wrestler = Wrestler::factory()->unemployed()->create();
+        $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
         $this
             ->actAs(Role::ADMINISTRATOR)
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 
-    /**
-     * @test
-     */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_future_employed_wrestler()
+    public function nonclearableWrestlerTypes()
     {
-        $this->withoutExceptionHandling();
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $wrestler = Wrestler::factory()->withFutureEmployment()->create();
-
-        $this
-            ->actAs(Role::ADMINISTRATOR)
-            ->patch(action([ClearInjuryController::class], $wrestler));
-    }
-
-    /**
-     * @test
-     */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_bookable_wrestler()
-    {
-        $this->withoutExceptionHandling();
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $wrestler = Wrestler::factory()->bookable()->create();
-
-        $this
-            ->actAs(Role::ADMINISTRATOR)
-            ->patch(action([ClearInjuryController::class], $wrestler));
-    }
-
-    /**
-     * @test
-     */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_retired_wrestler()
-    {
-        $this->withoutExceptionHandling();
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $wrestler = Wrestler::factory()->retired()->create();
-
-        $this
-            ->actAs(Role::ADMINISTRATOR)
-            ->patch(action([ClearInjuryController::class], $wrestler));
-    }
-
-    /**
-     * @test
-     */
-    public function invoke_throws_an_exception_for_clearing_an_injury_from_a_suspended_wrestler()
-    {
-        $this->withoutExceptionHandling();
-        $this->expectException(CannotBeClearedFromInjuryException::class);
-
-        $wrestler = Wrestler::factory()->suspended()->create();
-
-        $this
-            ->actAs(Role::ADMINISTRATOR)
-            ->patch(action([ClearInjuryController::class], $wrestler));
+        return [
+            'unemployed wrestler' => ['unemployed'],
+            'released wrestler' => ['released'],
+            'with future employed wrestler' => ['withFutureEmployment'],
+            'bookable wrestler' => ['bookable'],
+            'retired wrestler' => ['retired'],
+            'suspended wrestler' => ['suspended'],
+        ];
     }
 }
