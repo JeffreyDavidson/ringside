@@ -48,14 +48,22 @@ class ClearInjuryControllerTest extends TestCase
      */
     public function clearing_an_injured_wrestler_on_an_unbookable_tag_team_makes_tag_team_bookable()
     {
-        $tagTeam = TagTeam::factory()->bookable()->create();
-        $wrestler = $tagTeam->currentWrestlers()->first();
+        $injuredWrestler = Wrestler::factory()->injured()->create();
+        $tagTeam = TagTeam::factory()
+            ->hasAttached($injuredWrestler, ['joined_at' => now()->toDateTimeString()])
+            ->hasAttached(Wrestler::factory()->bookable(), ['joined_at' => now()->toDateTimeString()])
+            ->bookable()
+            ->create();
 
         $this->actAs(Role::ADMINISTRATOR)
-            ->patch(route('wrestlers.clear-from-injury', $wrestler));
+            ->patch(route('wrestlers.clear-from-injury', $injuredWrestler));
 
-        tap($wrestler->fresh(), function ($wrestler) {
+        tap($injuredWrestler->fresh(), function ($wrestler) {
             $this->assertTrue($wrestler->isBookable());
+        });
+
+        tap($tagTeam->fresh(), function ($tagTeam) {
+            $this->assertTrue($tagTeam->isBookable());
         });
     }
 
