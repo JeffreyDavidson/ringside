@@ -140,7 +140,7 @@ class RetireControllerTest extends TestCase
      * @test
      * @dataProvider nonretirableManagerTypes
      */
-    public function invoke_throws_exception_for_retiring_an_unemployed_manager($factoryState)
+    public function invoke_throws_exception_for_retiring_a_non_retirable_manager($factoryState)
     {
         $this->expectException(CannotBeRetiredException::class);
         $this->withoutExceptionHandling();
