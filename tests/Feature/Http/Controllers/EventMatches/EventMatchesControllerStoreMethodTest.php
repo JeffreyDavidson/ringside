@@ -3,11 +3,14 @@
 namespace Tests\Feature\Http\Controllers\Events;
 
 use App\Enums\Role;
+use App\Http\Controllers\EventMatches\EventMatchesController;
 use App\Http\Controllers\Events\EventsController;
 use App\Http\Requests\Events\StoreRequest;
 use App\Models\Event;
 use App\Models\Venue;
+use Database\Seeders\MatchTypesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\EventMatchesRequestDataFactory;
 use Tests\Factories\EventRequestDataFactory;
 use Tests\TestCase;
 
@@ -15,41 +18,15 @@ use Tests\TestCase;
  * @group events
  * @group feature-events
  */
-class EventControllerStoreMethodTest extends TestCase
+class EventMatchesControllerStoreMethodTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
-    public function create_returns_a_view_with_date()
+    public function setUp(): void
     {
-        $this
-            ->actAs(Role::ADMINISTRATOR)
-            ->get(action([EventsController::class, 'create']))
-            ->assertViewIs('events.create')
-            ->assertViewHas('event', new Event);
-    }
+        parent::setUp();
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_view_the_form_for_creating_an_event()
-    {
-        $this
-            ->actAs(Role::BASIC)
-            ->get(action([EventsController::class, 'create']))
-            ->assertForbidden();
-    }
-
-    /**
-     * @test
-     */
-    public function a_guest_cannot_view_the_form_for_creating_an_event()
-    {
-        $this
-            ->get(action([EventsController::class, 'create']))
-            ->assertRedirect(route('login'));
+        $this->seed(MatchTypesTableSeeder::class);
     }
 
     /**
@@ -57,24 +34,21 @@ class EventControllerStoreMethodTest extends TestCase
      */
     public function store_creates_an_event_and_redirects()
     {
+        $this->withoutExceptionHandling();
+        $event = Event::factory()->create();
+
         $this
             ->actAs(Role::ADMINISTRATOR)
-            ->from(action([EventsController::class, 'create']))
-            ->post(action([EventsController::class, 'store']), EventRequestDataFactory::new()->create([
-                'name' => 'Example Event Name',
-                'date' => null,
-                'venue_id' => null,
-                'preview' => null,
-                'matches' => [],
-            ]))
-            ->assertRedirect(action([EventsController::class, 'index']));
+            ->from(action([EventMatchesController::class, 'create'], $event))
+            ->post(
+                action([EventMatchesController::class, 'store'], $event),
+                EventMatchesRequestDataFactory::new()->create([
+                    'matches' => [],
+                ])
+            )
+            ->assertRedirect(action([EventMatchesController::class, 'index'], $event));
 
-        tap(Event::first(), function ($event) {
-            $this->assertEquals('Example Event Name', $event->name);
-            $this->assertNull($event->date);
-            $this->assertNull($event->venue_id);
-            $this->assertNull($event->preview);
-        });
+        $this->assertCount(0, $event->matches);
     }
 
     /**

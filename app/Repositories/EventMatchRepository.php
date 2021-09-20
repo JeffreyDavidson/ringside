@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Event;
 
-class EventRepository
+class EventMatchRepository
 {
     /**
      * Create a new event with the given data.
@@ -59,20 +59,5 @@ class EventRepository
     public function restore(Event $event)
     {
         $event->restore($event);
-    }
-
-    /**
-     * Restore a given event.
-     *
-     * @param  \App\Models\Event $event
-     * @return void
-     */
-    public function addMatches(Event $event, $matches)
-    {
-        foreach ($matches as $match) {
-            $event->matches()->create([
-
-            ]);
-        }
     }
 }
