@@ -68,12 +68,6 @@ class StoreRequestTest extends TestCase
      */
     public function event_match_must_be_an_array()
     {
-        dd($this->createRequest(StoreRequest::class)
-        ->validate(EventMatchesRequestDataFactory::new()->create([
-            'matches' => [
-                0 => 'not-an-array',
-            ],
-        ]))->getFailedRules());
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchesRequestDataFactory::new()->create([
                 'matches' => [

@@ -25,10 +25,12 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->all());
+
         return [
-            'matches' => ['bail', 'present', 'array'],
-            'matches.*' => ['bail', 'array'],
-            'matches.*.match_type_id' => ['required', 'integer', Rule::exists('match_types', 'id')],
+            'matches' => ['bail', 'required', 'array', 'min:1'],
+            'matches.*' => ['bail', 'required', 'array'],
+            'matches.*.match_type_id' => ['required_with:matches.*', 'integer', Rule::exists('match_types', 'id')],
             'matches.*.referee_id' => ['required_with:matches.*', 'integer', Rule::exists('referees', 'id')],
             'matches.*.title_id' => ['nullable', 'integer', Rule::exists('titles', 'id')],
             'matches.*.competitors' => ['required_with:matches.*', 'array'],
