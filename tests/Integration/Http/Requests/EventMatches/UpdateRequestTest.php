@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Http\Requests\Events;
+namespace Tests\Integration\Http\Requests\EventMatches;
 
 use App\Http\Requests\Events\UpdateRequest;
 use App\Models\Event;

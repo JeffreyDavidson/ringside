@@ -5,7 +5,7 @@ namespace Tests\Factories;
 use App\Models\MatchType;
 use App\Models\Referee;
 
-class EventMatchesRequestDataFactory
+class EventMatchesRequestDataFactoryCopy
 {
     private const DEFAULT_MATCH_TYPE  = 1;
     private const DEFAULT_REFEREE_ID  = 1;

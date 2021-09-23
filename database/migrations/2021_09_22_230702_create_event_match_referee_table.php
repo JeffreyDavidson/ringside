@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventMatchesTable extends Migration
+class CreateEventMatchRefereeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateEventMatchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('event_matches', function (Blueprint $table) {
+        Schema::create('event_match_referee', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained();
-            $table->foreignId('match_type_id')->constrained();
-            $table->text('preview')->nullable();
+            $table->foreignId('event_match_id')->constrained();
+            $table->foreignId('referee_id')->constrained();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateEventMatchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_matches');
+        Schema::dropIfExists('event_match_referee');
     }
 }

@@ -3,61 +3,58 @@
 namespace App\Repositories;
 
 use App\Models\Event;
+use App\Models\EventMatch;
 
 class EventMatchRepository
 {
     /**
      * Create a new event with the given data.
      *
+     * @param  \App\Models\Event $event
      * @param  array $data
+     * @return \App\Models\EventMatch
+     */
+    public function create(Event $event, array $data)
+    {
+        return $event->matches()->create([
+            'match_type_id' => $data['match_type_id'],
+            'preview' => $data['preview'],
+        ]);
+    }
+
+    /**
+     * Create a new event with the given data.
+     *
+     * @param  \App\MOdels\EventMatch $match
+     * @param  int $titleId
      * @return \App\Models\Event
      */
-    public function create(array $data)
+    public function addTitleToMatch(EventMatch $match, int $titleId)
     {
-        return Event::create([
-            'name' => $data['name'],
-            'date' => $data['date'],
-            'venue_id' => $data['venue_id'],
-            'preview' => $data['preview'],
-        ]);
+        return $match->titles()->attach($titleId);
     }
 
     /**
-     * Update a given event with given data.
+     * Create a new event with the given data.
      *
-     * @param  \App\Models\Event $event
-     * @param  array $data
-     * @return \App\Models\Event $event
+     * @param  \App\Models\EventMatch $match
+     * @param  int $refereeId
+     * @return \App\Models\EventMatch
      */
-    public function update(Event $event, array $data)
+    public function addRefereeToMatch(EventMatch $match, int $refereeId)
     {
-        return $event->update([
-            'name' => $data['name'],
-            'date' => $data['date'],
-            'venue_id' => $data['venue_id'],
-            'preview' => $data['preview'],
-        ]);
+        return $match->referees()->attach($refereeId);
     }
 
     /**
-     * Delete a given event.
+     * Create a new event with the given data.
      *
-     * @param  \App\Models\Event $event
-     * @return void
+     * @param  \App\Models\EventMatch $match
+     * @param  int $competitorId
+     * @return \App\Models\Event
      */
-    public function delete(Event $event)
+    public function addCompetitorToMatch(EventMatch $match, int $competitorId)
     {
-        $event->delete($event);
-    }
-
-    /**
-     * Restore a given event.
-     *
-     * @param  \App\Models\Event $event
-     * @return void
-     */
-    public function restore(Event $event)
-    {
-        $event->restore($event);
+        return $match->competitors()->attach($competitorId);
     }
 }
