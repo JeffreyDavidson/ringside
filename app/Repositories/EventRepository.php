@@ -67,7 +67,7 @@ class EventRepository
      * @param  \App\Models\Event $event
      * @return void
      */
-    public function addMatches(Event $event, $matches)
+    public function addMatch(Event $event, $matches)
     {
         foreach ($matches as $match) {
             $event->matches()->create([

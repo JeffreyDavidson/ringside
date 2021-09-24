@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\EventMatches;
+namespace Tests\Feature\Http\Controllers\EventMatch;
 
 use App\Enums\Role;
 use App\Http\Controllers\EventMatches\EventMatchesController;
 use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\Event;
-use App\Models\EventMatch;
 use App\Models\Referee;
+use App\Models\Title;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\EventMatchesRequestDataFactory;
+use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 
 /**
  * @group events
  * @group feature-events
  */
-class EventMatchesControllerStoreMethodTest extends TestCase
+class EventMatchControllerStoreMethodTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -34,7 +34,6 @@ class EventMatchesControllerStoreMethodTest extends TestCase
      */
     public function store_creates_matches_for_an_event_and_redirects()
     {
-        // $this->withoutExceptionHandling();
         $event = Event::factory()->create();
         $referee = Referee::factory()->create();
         $wrestlerA = Wrestler::factory()->create();
@@ -45,23 +44,52 @@ class EventMatchesControllerStoreMethodTest extends TestCase
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
                 action([EventMatchesController::class, 'store'], $event),
-                EventMatchesRequestDataFactory::new()->create([
-                    'matches' => [
-                        0 => [
-                            'match_type_id' => 1,
-                            'titles' => [],
-                            'referees' => [$referee->id],
-                            'competitors' => [$wrestlerA->id, $wrestlerB->id],
-                        ],
-                    ],
+                EventMatchRequestDataFactory::new()->create([
+                    'match_type_id' => 1,
+                    'titles' => [],
+                    'referees' => [$referee->id],
+                    'competitors' => [$wrestlerA->id, $wrestlerB->id],
+                    'preview' => 'This is a general match preview.',
                 ])
             );
 
         $this->assertCount(1, $event->matches);
-        tap($event->matches->first(), function ($match) {
+        tap($event->matches->first(), function ($match) use ($referee) {
             $this->assertEquals(1, $match->match_type_id);
             $this->assertCount(0, $match->titles);
             $this->assertCount(1, $match->referees);
+            $this->assertCollectionHas($match->referees, $referee);
+            $this->assertEquals('This is a general match preview.', $match->preview);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function store_creates_a_title_match_for_an_event_and_redirects()
+    {
+        $event = Event::factory()->create();
+        $referee = Referee::factory()->create();
+        $title = Title::factory()->create();
+        $wrestlerA = Wrestler::factory()->create();
+        $wrestlerB = Wrestler::factory()->create();
+
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->from(action([EventMatchesController::class, 'create'], $event))
+            ->post(
+                action([EventMatchesController::class, 'store'], $event),
+                EventMatchRequestDataFactory::new()->create([
+                    'match_type_id' => 1,
+                    'titles' => [$title->id],
+                    'referees' => [$referee->id],
+                    'competitors' => [$wrestlerA->id, $wrestlerB->id],
+                ])
+            );
+
+        tap($event->matches->first(), function ($match) use ($title) {
+            $this->assertCount(1, $match->titles);
+            $this->assertCollectionHas($match->titles, $title);
         });
     }
 
@@ -77,7 +105,7 @@ class EventMatchesControllerStoreMethodTest extends TestCase
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
                 action([EventMatchesController::class, 'store'], $event),
-                EventMatchesRequestDataFactory::new()->create([])
+                EventMatchRequestDataFactory::new()->create([])
             )
             ->assertForbidden();
     }
@@ -93,7 +121,7 @@ class EventMatchesControllerStoreMethodTest extends TestCase
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
                 action([EventMatchesController::class, 'store'], $event),
-                EventMatchesRequestDataFactory::new()->create()
+                EventMatchRequestDataFactory::new()->create()
             )
             ->assertRedirect(route('login'));
     }

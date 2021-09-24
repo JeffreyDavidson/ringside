@@ -65,7 +65,6 @@ class EventControllerStoreMethodTest extends TestCase
                 'date' => null,
                 'venue_id' => null,
                 'preview' => null,
-                'matches' => [],
             ]))
             ->assertRedirect(action([EventsController::class, 'index']));
 
@@ -123,30 +122,6 @@ class EventControllerStoreMethodTest extends TestCase
             ->from(action([EventsController::class, 'create']))
             ->post(action([EventsController::class, 'store']), EventRequestDataFactory::new()->create([
                 'preview' => 'This is a general event preview.',
-            ]));
-
-        tap(Event::first(), function ($event) {
-            $this->assertEquals('This is a general event preview.', $event->preview);
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function store_creates_an_event_with_matches_and_redirects()
-    {
-        $this
-            ->actAs(Role::ADMINISTRATOR)
-            ->from(action([EventsController::class, 'create']))
-            ->post(action([EventsController::class, 'store']), EventRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'match_type_id' => 1,
-                        'title_id' => 0,
-                        'referee_id' => 1,
-                        'competitors' => [1, 2],
-                    ],
-                ],
             ]));
 
         tap(Event::first(), function ($event) {

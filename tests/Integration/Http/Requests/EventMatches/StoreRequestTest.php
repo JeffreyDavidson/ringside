@@ -6,7 +6,7 @@ use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\User;
 use Database\Seeders\MatchTypesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\EventMatchesRequestDataFactory;
+use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
 
@@ -54,123 +54,157 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_matches_must_be_an_array()
+    public function event_match_type_id_is_required()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => 'not-an-array',
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'match_type_id' => null,
             ]))
-            ->assertFailsValidation(['matches' => 'array']);
+            ->assertFailsValidation(['match_type_id' => 'required']);
     }
 
     /**
      * @test
      */
-    public function event_match_must_be_an_array()
+    public function event_match_type_id_must_be_an_integer()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => 'not-an-array',
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'match_type_id' => 'not-an-integer',
             ]))
-            ->assertFailsValidation(['matches.0', 'array']);
+            ->assertFailsValidation(['match_type_id' => 'integer']);
     }
 
     /**
      * @test
      */
-    public function event_match_type_id_is_required_with_each_match()
+    public function event_match_type_must_exist()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'match_type_id' => null,
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'match_type_id' => 999999,
             ]))
-            ->assertFailsValidation(['matches.0.match_type_id' => 'required_with:matches.*']);
+            ->assertFailsValidation(['match_type_id' => 'exists']);
     }
 
     /**
      * @test
      */
-    public function each_event_match_type_id_must_be_an_integer()
+    public function event_match_referees_is_required()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'match_type_id' => 'not-an-integer',
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'referees' => null,
             ]))
-            ->assertFailsValidation(['matches.0.match_type_id' => 'integer']);
+            ->assertFailsValidation(['referees' => 'required']);
     }
 
     /**
      * @test
      */
-    public function each_event_match_type_must_exist()
+    public function event_match_referees_must_be_an_array()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'match_type_id' => 999999,
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'referees' => 'not-an-array',
             ]))
-            ->assertFailsValidation(['matches.0.match_type_id' => 'exists']);
+            ->assertFailsValidation(['referees' => 'array']);
     }
 
     /**
      * @test
      */
-    public function each_event_match_referee_id_is_required_with_each_match()
+    public function each_event_match_referees_must_be_an_integer()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'referee_id' => null,
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'referees' => ['not-an-integer'],
             ]))
-            ->assertFailsValidation(['matches.0.referee_id' => 'required_with:matches.*']);
+            ->assertFailsValidation(['referees.0' => 'integer']);
     }
 
     /**
      * @test
      */
-    public function each_event_match_referee_id_must_be_an_integer()
+    public function each_event_match_referees_must_be_distinct()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'referee_id' => 'not-an-integer',
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'referees' => [1, 1],
             ]))
-            ->assertFailsValidation(['matches.0.referee_id' => 'integer']);
+            ->assertFailsValidation(['referees.0' => 'distinct']);
     }
 
     /**
      * @test
      */
-    public function each_event_match_referee_id_must_exist()
+    public function each_event_match_referees_must_exist()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'referee_id' => 999999,
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'referees' => [999999],
             ]))
-            ->assertFailsValidation(['matches.0.referee_id' => 'exists']);
+            ->assertFailsValidation(['referees.0' => 'exists']);
+    }
+
+    /**
+     * @test
+     */
+    public function event_match_titles_is_optional()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => null,
+            ]))
+            ->assertPassesValidation();
+    }
+
+    /**
+     * @test
+     */
+    public function event_match_titles_must_be_an_array()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => 'not-an-array',
+            ]))
+            ->assertFailsValidation(['titles' => 'array']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_titles_must_be_an_integer()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => ['not-an-integer'],
+            ]))
+            ->assertFailsValidation(['titles.0' => 'integer']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_titles_must_be_distinct()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => [1, 1],
+            ]))
+            ->assertFailsValidation(['titles.0' => 'distinct']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_titles_must_exist()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => [999999],
+            ]))
+            ->assertFailsValidation(['titles.0' => 'exists']);
     }
 
     /**
@@ -179,12 +213,8 @@ class StoreRequestTest extends TestCase
     public function each_event_match_preview_is_optional()
     {
         $this->createRequest(StoreRequest::class)
-            ->validate(EventMatchesRequestDataFactory::new()->create([
-                'matches' => [
-                    0 => [
-                        'preview' => null,
-                    ],
-                ],
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'preview' => null,
             ]))
             ->assertPassesValidation();
     }

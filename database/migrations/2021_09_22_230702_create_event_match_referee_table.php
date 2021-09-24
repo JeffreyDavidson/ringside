@@ -15,7 +15,7 @@ class CreateEventMatchRefereeTable extends Migration
     {
         Schema::create('event_match_referee', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_match_id')->constrained();
+            $table->foreignId('event_match_id')->constrained('event_matches');
             $table->foreignId('referee_id')->constrained();
             $table->timestamps();
         });

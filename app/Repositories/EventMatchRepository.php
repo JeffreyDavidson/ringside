@@ -14,7 +14,7 @@ class EventMatchRepository
      * @param  array $data
      * @return \App\Models\EventMatch
      */
-    public function create(Event $event, array $data)
+    public function createForEvent(Event $event, array $data)
     {
         return $event->matches()->create([
             'match_type_id' => $data['match_type_id'],
