@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 /**
- * @method static self available()
+ * @method static self bookable()
  * @method static self injured()
  * @method static self future_employment()
  * @method static self released()
