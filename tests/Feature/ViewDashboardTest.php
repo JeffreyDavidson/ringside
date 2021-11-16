@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Enums\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ViewDashboardTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
