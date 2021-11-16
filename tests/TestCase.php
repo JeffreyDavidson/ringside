@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -81,13 +80,5 @@ abstract class TestCase extends BaseTestCase
         $this->assertFalse($collection->contains($entity));
 
         return $this;
-    }
-
-    public function administrators()
-    {
-        return [
-            'administrator' => [Role::administrator()],
-            'super_administrator' => [Role::super_administrator()],
-        ];
     }
 }
