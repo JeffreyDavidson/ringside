@@ -111,7 +111,6 @@ class EventControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
     public function deletes_an_event_and_redirects()
     {

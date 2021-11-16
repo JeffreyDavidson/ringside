@@ -57,7 +57,6 @@ class WrestlerControllerUpdateMethodTest extends TestCase
 
     /**
      * @test
-     * @dataProvider administrators
      */
     public function updates_a_wrestler_and_redirects()
     {
