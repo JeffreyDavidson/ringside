@@ -10,12 +10,29 @@ class ViewDashboardTest extends TestCase
     /**
      * @test
      */
-    public function an_administrator_can_access_the_dashboard_if_signed_in()
+    public function administrators_can_view_the_dashboard()
     {
-        $this->actAs(Role::administrator());
+        $this->actAs(Role::administrator())
+            ->get(route('dashboard'))
+            ->assertViewIs('dashboard');
+    }
 
-        $response = $this->get(route('dashboard'));
+    /**
+     * @test
+     */
+    public function basic_users_can_view_the_dashboard()
+    {
+        $this->actAs(Role::basic())
+            ->get(route('dashboard'))
+            ->assertViewIs('dashboard');
+    }
 
-        $response->assertViewIs('dashboard');
+    /**
+     * @test
+     */
+    public function a_guest_cannot_view_dashboard_page()
+    {
+        $this->get(route('dashboard'))
+            ->assertRedirect(route('login'));
     }
 }
