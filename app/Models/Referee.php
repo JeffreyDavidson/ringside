@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Enums\RefereeStatus;
-use App\Models\Contracts\Bookable;
+use App\Models\Contracts\IsBookableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Referee extends SingleRosterMember implements Bookable
+class Referee extends SingleRosterMember implements IsBookableContract
 {
-    use Concerns\Bookable,
-        Concerns\HasFullName,
+    use Concerns\HasFullName,
+        Concerns\IsBookable,
         Concerns\Unguarded,
         HasFactory,
         SoftDeletes;

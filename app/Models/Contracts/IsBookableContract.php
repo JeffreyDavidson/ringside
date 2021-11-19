@@ -4,7 +4,7 @@ namespace App\Models\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface Bookable
+interface IsBookableContract
 {
     /**
      * Check to see if the model is bookable.
@@ -19,5 +19,5 @@ interface Bookable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder  $query
      */
-    public function scopeBookable(Builder $query);
+    public function scopeIsBookable(Builder $query);
 }

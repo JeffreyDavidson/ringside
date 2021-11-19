@@ -4,7 +4,7 @@ namespace App\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 
-trait Bookable
+trait IsBookable
 {
     /**
      * Check to see if the model is bookable.
@@ -26,7 +26,7 @@ trait Bookable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBookable(Builder $query)
+    public function scopeIsBookable(Builder $query)
     {
         return $query->whereHas('currentEmployment')
                     ->whereDoesntHave('currentSuspension')

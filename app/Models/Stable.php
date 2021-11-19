@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stable extends Model implements Activatable, Deactivatable, Retirable
 {
-    use SoftDeletes,
-        HasFactory,
-        Concerns\Activatable,
+    use Concerns\Activatable,
         Concerns\Deactivatable,
         Concerns\HasMembers,
         Concerns\OwnedByUser,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * The "booted" method of the model.
