@@ -249,7 +249,7 @@ class StoreRequestTest extends TestCase
      */
     public function each_event_match_competitors_items_in_the_array_must_equal_number_of_sides_of_the_match_type()
     {
-        dd($this->createRequest(StoreRequest::class)
+        $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
                 'match_type_id' => MatchType::factory()->create(['number_of_sides' => 2])->id,
                 'competitors' => [
@@ -257,8 +257,7 @@ class StoreRequestTest extends TestCase
                     [2],
                     [3],
                 ],
-            ]))->getFailedRules());
-        // ->assertFailsValidation(['competitors.' => 'size:2']);
+            ]))->assertFailsValidation(['competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype']);
     }
 
     /**

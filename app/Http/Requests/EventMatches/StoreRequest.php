@@ -48,18 +48,12 @@ class StoreRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            // dd($validator->errors());
-            // dd($this->all());
             if ($validator->errors()->isEmpty()) {
-                if ((new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id')))->passes('competitors', $this->input('competitors'))) {
-                    return true;
-                }
+                $rule = new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id'));
 
-                if (is_null($this->input('titles'))) {
-                    return true;
+                if (! $rule->passes('competitors', $this->input('competitors'))) {
+                    $validator->addFailure('competitors', CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class);
                 }
-
-                return false;
             }
         });
     }
