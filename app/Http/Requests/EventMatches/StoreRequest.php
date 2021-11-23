@@ -3,7 +3,7 @@
 namespace App\Http\Requests\EventMatches;
 
 use App\Models\EventMatch;
-use App\Models\Title;
+use App\Rules\CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -32,8 +32,9 @@ class StoreRequest extends FormRequest
             'referees.*' => ['integer', 'distinct', Rule::exists('referees', 'id')],
             'titles' => ['nullable', 'array'],
             'titles.*' => ['integer', 'distinct', Rule::exists('titles', 'id')],
-            'competitors' => ['required', 'array'],
-            'competitors.*' => ['integer', 'distinct', Rule::exists('wrestlers', 'id')],
+            'competitors' => ['required', 'array', 'min:2'],
+            'competitors.*' => ['required', 'array'],
+            'competitors.*.*' => ['integer', 'distinct', Rule::exists('wrestlers', 'id')],
             'preview' => ['nullable', 'string'],
         ];
     }
@@ -47,24 +48,18 @@ class StoreRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            // dd($validator->errors());
+            // dd($this->all());
             if ($validator->errors()->isEmpty()) {
+                if ((new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id')))->passes('competitors', $this->input('competitors'))) {
+                    return true;
+                }
+
                 if (is_null($this->input('titles'))) {
                     return true;
                 }
 
-                foreach ($this->input('titles') as $titleId) {
-                    $title = Title::find($titleId);
-
-                    if (is_null($title->champion)) {
-                        continue;
-                    }
-
-                    if (in_array($title->champion->id, $this->input('competitors'))) {
-                        continue;
-                    }
-
-                    $validator->errors()->add('competitors', 'This match requires the champion to be involved.');
-                }
+                return false;
             }
         });
     }
