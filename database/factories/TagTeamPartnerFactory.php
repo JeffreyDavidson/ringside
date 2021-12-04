@@ -2,23 +2,23 @@
 
 namespace Database\Factories;
 
-use App\Enums\RefereeStatus;
+use App\Enums\WrestlerStatus;
 use App\Models\Employment;
 use App\Models\Injury;
-use App\Models\Referee;
 use App\Models\Retirement;
 use App\Models\Suspension;
+use App\Models\Wrestler;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RefereeFactory extends Factory
+class TagTeamPartnerFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $modelClass = Referee::class;
+    protected $modelClass = TagTeamPartner::class;
 
     /**
      * Define the model's default state.
@@ -28,41 +28,47 @@ class RefereeFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'status' => RefereeStatus::unemployed(),
+            'user_id' => null,
+            'name' => $this->faker->name,
+            'height' => $this->faker->numberBetween(60, 95),
+            'weight' => $this->faker->numberBetween(180, 500),
+            'hometown' => $this->faker->city.', '.$this->faker->state,
+            'signature_move' => null,
+            'status' => WrestlerStatus::unemployed(),
         ];
     }
 
     public function bookable()
     {
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::bookable()];
+            return ['status' => WrestlerStatus::bookable()];
         })
         ->has(Employment::factory()->started(Carbon::yesterday()))
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
+            $wrestler->load('employments');
         });
     }
 
     public function withFutureEmployment()
     {
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::future_employment()];
+            return ['status' => WrestlerStatus::future_employment()];
         })
         ->has(Employment::factory()->started(Carbon::tomorrow()))
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
+            $wrestler->load('employments');
         });
     }
 
     public function unemployed()
     {
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::unemployed()];
+            return ['status' => WrestlerStatus::unemployed()];
         })
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
         });
     }
 
@@ -73,27 +79,30 @@ class RefereeFactory extends Factory
         $end = $now->copy()->subDays(1);
 
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::retired()];
+            return ['status' => WrestlerStatus::retired()];
         })
         ->has(Employment::factory()->started($start)->ended($end))
         ->has(Retirement::factory()->started($end))
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
+            $wrestler->load('employments');
+            $wrestler->load('retirements');
         });
     }
 
     public function released()
     {
         $now = now();
-        $start = $now->copy()->subWeeks(2);
-        $end = $now->copy()->subWeeks(1);
+        $start = $now->copy()->subDays(2);
+        $end = $now->copy()->subDays(1);
 
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::released()];
+            return ['status' => WrestlerStatus::released()];
         })
         ->has(Employment::factory()->started($start)->ended($end))
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
+            $wrestler->load('employments');
         });
     }
 
@@ -104,12 +113,14 @@ class RefereeFactory extends Factory
         $end = $now->copy()->subDays(1);
 
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::suspended()];
+            return ['status' => WrestlerStatus::suspended()];
         })
         ->has(Employment::factory()->started($start))
         ->has(Suspension::factory()->started($end))
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
+            $wrestler->load('employments');
+            $wrestler->load('suspensions');
         });
     }
 
@@ -119,12 +130,14 @@ class RefereeFactory extends Factory
         $start = $now->copy()->subDays(2);
 
         return $this->state(function (array $attributes) {
-            return ['status' => RefereeStatus::injured()];
+            return ['status' => WrestlerStatus::injured()];
         })
         ->has(Employment::factory()->started($start))
         ->has(Injury::factory()->started($now))
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
+            $wrestler->load('employments');
+            $wrestler->load('injuries');
         });
     }
 
@@ -133,8 +146,8 @@ class RefereeFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['deleted_at' => now()];
         })
-        ->afterCreating(function (Referee $referee) {
-            $referee->save();
+        ->afterCreating(function (Wrestler $wrestler) {
+            $wrestler->save();
         });
     }
 }

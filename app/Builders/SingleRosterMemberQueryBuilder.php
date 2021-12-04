@@ -3,6 +3,9 @@
 namespace App\Builders;
 
 use App\Models\Employment;
+use App\Models\Injury;
+use App\Models\Retirement;
+use App\Models\Suspension;
 use Illuminate\Database\Eloquent\Builder;
 
 class SingleRosterMemberQueryBuilder extends Builder
@@ -26,7 +29,7 @@ class SingleRosterMemberQueryBuilder extends Builder
     {
         return $this->addSelect(['current_suspended_at' => Suspension::select('started_at')
             ->whereColumn('suspendable_id', $this->qualifyColumn('id'))
-            ->where('suspendable_type', $this->getMorphClass())
+            ->where('suspendable_type', $this->getModel())
             ->latest('started_at')
             ->limit(1),
         ])->withCasts(['current_suspended_at' => 'datetime']);
@@ -61,8 +64,8 @@ class SingleRosterMemberQueryBuilder extends Builder
     public function withCurrentRetiredAtDate()
     {
         return $this->addSelect(['current_retired_at' => Retirement::select('started_at')
-            ->whereColumn('retiree_id', $this->getTable().'.id')
-            ->where('retiree_type', $this->getMorphClass())
+            ->whereColumn('retiree_id', $this->getModel()->getTable().'.id')
+            ->where('retiree_type', $this->getModel())
             ->latest('started_at')
             ->limit(1),
         ])->withCasts(['current_retired_at' => 'datetime']);
@@ -99,8 +102,8 @@ class SingleRosterMemberQueryBuilder extends Builder
     public function withReleasedAtDate()
     {
         return $this->addSelect(['released_at' => Employment::select('ended_at')
-            ->whereColumn('employable_id', $this->getTable().'.id')
-            ->where('employable_type', $this->getMorphClass())
+            ->whereColumn('employable_id', $this->getModel()->getTable().'.id')
+            ->where('employable_type', $this->getModel())
             ->latest('ended_at')
             ->limit(1),
         ])->withCasts(['released_at' => 'datetime']);
@@ -122,7 +125,7 @@ class SingleRosterMemberQueryBuilder extends Builder
      *
      * @return $this
      */
-    public function injured(Builder $query)
+    public function injured()
     {
         return $this->whereHas('currentInjury');
     }
@@ -136,7 +139,7 @@ class SingleRosterMemberQueryBuilder extends Builder
     {
         return $this->addSelect(['current_injured_at' => Injury::select('started_at')
             ->whereColumn('injurable_id', $this->qualifyColumn('id'))
-            ->where('injurable_type', $this->getMorphClass())
+            ->where('injurable_type', $this->getModel())
             ->latest('started_at')
             ->limit(1),
         ])->withCasts(['current_injured_at' => 'datetime']);
@@ -193,7 +196,7 @@ class SingleRosterMemberQueryBuilder extends Builder
     {
         return $this->addSelect(['first_employed_at' => Employment::select('started_at')
             ->whereColumn('employable_id', $this->qualifyColumn('id'))
-            ->where('employable_type', $this->getMorphClass())
+            ->where('employable_type', $this->getModel())
             ->oldest('started_at')
             ->limit(1),
         ])->withCasts(['first_employed_at' => 'datetime']);
