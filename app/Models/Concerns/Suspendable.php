@@ -3,7 +3,6 @@
 namespace App\Models\Concerns;
 
 use App\Models\Suspension;
-use Illuminate\Database\Eloquent\Builder;
 
 trait Suspendable
 {
@@ -50,45 +49,6 @@ trait Suspendable
         return $this->morphOne(Suspension::class, 'suspendable')
                     ->latest('ended_at')
                     ->limit(1);
-    }
-
-    /**
-     * Scope a query to include suspended models.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeSuspended(Builder $query)
-    {
-        return $query->whereHas('currentSuspension');
-    }
-
-    /**
-     * Scope a query to include current suspension date.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithCurrentSuspendedAtDate(Builder $query)
-    {
-        return $query->addSelect(['current_suspended_at' => Suspension::select('started_at')
-            ->whereColumn('suspendable_id', $query->qualifyColumn('id'))
-            ->where('suspendable_type', $this->getMorphClass())
-            ->latest('started_at')
-            ->limit(1),
-        ])->withCasts(['current_suspended_at' => 'datetime']);
-    }
-
-    /**
-     * Scope a query to order by the model's current suspension date.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $direction
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeOrderByCurrentSuspendedAtDate(Builder $query, string $direction = 'asc')
-    {
-        return $query->orderByRaw("DATE(current_suspended_at) $direction");
     }
 
     /**

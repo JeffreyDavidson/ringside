@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\SingleRosterMemberQueryBuilder;
 use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Releasable;
@@ -16,4 +17,9 @@ abstract class SingleRosterMember extends Model implements Employable, Injurable
         Concerns\Releasable,
         Concerns\Retirable,
         Concerns\Suspendable;
+
+    public function newEloquentBuilder($query)
+    {
+        return new SingleRosterMemberQueryBuilder($query);
+    }
 }

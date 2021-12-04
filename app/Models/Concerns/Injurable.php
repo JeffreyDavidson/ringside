@@ -3,7 +3,6 @@
 namespace App\Models\Concerns;
 
 use App\Models\Injury;
-use Illuminate\Database\Eloquent\Builder;
 
 trait Injurable
 {
@@ -50,45 +49,6 @@ trait Injurable
         return $this->morphOne(Injury::class, 'injurable')
                     ->latest('ended_at')
                     ->limit(1);
-    }
-
-    /**
-     * Scope a query to only include injured models.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeInjured(Builder $query)
-    {
-        return $query->whereHas('currentInjury');
-    }
-
-    /**
-     * Scope a query to include current injured date.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithCurrentInjuredAtDate(Builder $query)
-    {
-        return $query->addSelect(['current_injured_at' => Injury::select('started_at')
-            ->whereColumn('injurable_id', $query->qualifyColumn('id'))
-            ->where('injurable_type', $this->getMorphClass())
-            ->latest('started_at')
-            ->limit(1),
-        ])->withCasts(['current_injured_at' => 'datetime']);
-    }
-
-    /**
-     * Scope a query to order by the model's current injured date.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $direction
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeOrderByCurrentInjuredAtDate(Builder $query, string $direction = 'asc')
-    {
-        return $query->orderByRaw("DATE(current_injured_at) $direction");
     }
 
     /**
