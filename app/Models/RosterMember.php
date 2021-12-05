@@ -334,4 +334,18 @@ abstract class RosterMember extends Model implements Employable
     {
         return $this->retirements()->count() > 0;
     }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeRetired()
+    {
+        if ($this->isNotInEmployment()) {
+            return false;
+        }
+
+        return true;
+    }
 }

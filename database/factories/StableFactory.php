@@ -55,12 +55,12 @@ class StableFactory extends Factory
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started(Carbon::tomorrow())), ['joined_at' => now()])
         ->afterCreating(function (Stable $stable) {
             $stable->currentWrestlers->each(function ($wrestler) {
-                $wrestler->updateStatus()->save();
+                $wrestler->save();
             });
             $stable->currentTagTeams->each(function ($tagTeam) {
-                $tagTeam->updateStatus()->save();
+                $tagTeam->save();
             });
-            $stable->updateStatus()->save();
+            $stable->save();
         });
     }
 
@@ -85,12 +85,12 @@ class StableFactory extends Factory
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started($activationDate)), ['joined_at' => $activationDate])
         ->afterCreating(function (Stable $stable) {
             $stable->currentWrestlers->each(function ($wrestler) {
-                $wrestler->updateStatus()->save();
+                $wrestler->save();
             });
             $stable->currentTagTeams->each(function ($tagTeam) {
-                $tagTeam->updateStatus()->save();
+                $tagTeam->save();
             });
-            $stable->updateStatus()->save();
+            $stable->save();
         });
     }
 
@@ -108,12 +108,12 @@ class StableFactory extends Factory
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start, 'left_at' => $end])
         ->afterCreating(function (Stable $stable) {
             $stable->currentWrestlers->each(function ($wrestler) {
-                $wrestler->updateStatus()->save();
+                $wrestler->save();
             });
             $stable->currentTagTeams->each(function ($tagTeam) {
-                $tagTeam->updateStatus()->save();
+                $tagTeam->save();
             });
-            $stable->updateStatus()->save();
+            $stable->save();
         });
     }
 
@@ -132,12 +132,12 @@ class StableFactory extends Factory
         ->hasAttached(TagTeam::factory()->has(Employment::factory()->started($start)->ended($end))->has(Retirement::factory()->started($end)), ['joined_at' => $start])
         ->afterCreating(function (Stable $stable) {
             $stable->currentWrestlers->each(function ($wrestler) {
-                $wrestler->updateStatus()->save();
+                $wrestler->save();
             });
             $stable->currentTagTeams->each(function ($tagTeam) {
-                $tagTeam->updateStatus()->save();
+                $tagTeam->save();
             });
-            $stable->updateStatus()->save();
+            $stable->save();
         });
     }
 

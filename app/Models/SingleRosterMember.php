@@ -58,20 +58,6 @@ abstract class SingleRosterMember extends RosterMember
     }
 
     /**
-     * Determine if the model can be retired.
-     *
-     * @return bool
-     */
-    public function canBeRetired()
-    {
-        if ($this->isNotInEmployment()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Determine if the model can be unretired.
      *
      * @return bool
@@ -180,6 +166,20 @@ abstract class SingleRosterMember extends RosterMember
     public function canBeClearedFromInjury()
     {
         if (! $this->isInjured()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check to see if the model is bookable.
+     *
+     * @return bool
+     */
+    public function isBookable()
+    {
+        if ($this->isNotInEmployment() || $this->isSuspended() || $this->isInjured()) {
             return false;
         }
 
