@@ -48,13 +48,6 @@ class TagTeam extends RosterMember implements Bookable, StableMember
     const MAX_WRESTLERS_COUNT = 2;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'tag_teams';
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array

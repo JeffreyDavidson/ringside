@@ -27,18 +27,13 @@ class Event extends Model
     }
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'events';
-
-    /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $dates = ['date'];
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 
     /**
      * Create a new Eloquent query builder for the model.
