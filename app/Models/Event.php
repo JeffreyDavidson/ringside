@@ -33,11 +33,13 @@ class Event extends Model
     protected $table = 'events';
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $dates = ['date'];
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 
     /**
      * Retrieve the venue of the event.

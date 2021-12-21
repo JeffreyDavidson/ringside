@@ -18,11 +18,14 @@ class Activation extends Model
     protected $table = 'activations';
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $dates = ['started_at', 'ended_at'];
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+    ];
 
     /**
      * Get the owning activated model.

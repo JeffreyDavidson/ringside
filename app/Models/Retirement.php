@@ -17,11 +17,14 @@ class Retirement extends Model
     protected $table = 'retirements';
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $dates = ['started_at', 'ended_at'];
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+    ];
 
     /**
      * Retrieve the retired model.

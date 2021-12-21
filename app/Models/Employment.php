@@ -18,11 +18,14 @@ class Employment extends Model
     protected $table = 'employments';
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $dates = ['started_at', 'ended_at'];
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+    ];
 
     /**
      * Get the owning employed model.
