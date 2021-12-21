@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        TestResponse::macro('data', fn($key) => $this->original->getData()[$key]);
+        TestResponse::macro('data', fn ($key) => $this->original->getData()[$key]);
 
         // Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
     }

@@ -34,6 +34,6 @@ class VenueFactory extends Factory
 
     public function softDeleted()
     {
-        return $this->state(fn(array $attributes) => ['deleted_at' => now()]);
+        return $this->state(fn (array $attributes) => ['deleted_at' => now()]);
     }
 }

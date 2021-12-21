@@ -114,7 +114,7 @@ class TestValidationResult
         }
 
         $failedRules = collect($this->validator->failed())
-            ->map(fn($details) => collect($details)->reduce(function ($aggregateRule, $constraints, $ruleName) {
+            ->map(fn ($details) => collect($details)->reduce(function ($aggregateRule, $constraints, $ruleName) {
                 $failedRule = Str::lower($ruleName);
 
                 if (count($constraints)) {

@@ -9,6 +9,6 @@ class BaseEnum extends Enum
 {
     protected static function values(): Closure
     {
-        return fn(string $name): string => str_replace('_', '-', $name);
+        return fn (string $name): string => str_replace('_', '-', $name);
     }
 }

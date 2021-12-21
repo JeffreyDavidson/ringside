@@ -36,7 +36,7 @@ class RefereeFactory extends Factory
 
     public function bookable()
     {
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::bookable()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::bookable()])
         ->has(Employment::factory()->started(Carbon::yesterday()))
         ->afterCreating(function (Referee $referee) {
             $referee->updateStatus()->save();
@@ -45,7 +45,7 @@ class RefereeFactory extends Factory
 
     public function withFutureEmployment()
     {
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::future_employment()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::future_employment()])
         ->has(Employment::factory()->started(Carbon::tomorrow()))
         ->afterCreating(function (Referee $referee) {
             $referee->updateStatus()->save();
@@ -54,7 +54,7 @@ class RefereeFactory extends Factory
 
     public function employed()
     {
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::bookable()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::bookable()])
         ->has(Employment::factory()->started(Carbon::yesterday()))
         ->afterCreating(function (Referee $referee) {
             $referee->updateStatus()->save();
@@ -64,7 +64,7 @@ class RefereeFactory extends Factory
 
     public function unemployed()
     {
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::unemployed()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::unemployed()])
         ->afterCreating(function (Referee $referee) {
             $referee->updateStatus()->save();
         });
@@ -76,7 +76,7 @@ class RefereeFactory extends Factory
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::retired()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::retired()])
         ->has(Employment::factory()->started($start)->ended($end))
         ->has(Retirement::factory()->started($end))
         ->afterCreating(function (Referee $referee) {
@@ -90,7 +90,7 @@ class RefereeFactory extends Factory
         $start = $now->copy()->subWeeks(2);
         $end = $now->copy()->subWeeks(1);
 
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::released()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::released()])
         ->has(Employment::factory()->started($start)->ended($end))
         ->afterCreating(function (Referee $referee) {
             $referee->updateStatus()->save();
@@ -103,7 +103,7 @@ class RefereeFactory extends Factory
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::suspended()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::suspended()])
         ->has(Employment::factory()->started($start))
         ->has(Suspension::factory()->started($end))
         ->afterCreating(function (Referee $referee) {
@@ -116,7 +116,7 @@ class RefereeFactory extends Factory
         $now = now();
         $start = $now->copy()->subDays(2);
 
-        return $this->state(fn(array $attributes) => ['status' => RefereeStatus::injured()])
+        return $this->state(fn (array $attributes) => ['status' => RefereeStatus::injured()])
         ->has(Employment::factory()->started($start))
         ->has(Injury::factory()->started($now))
         ->afterCreating(function (Referee $referee) {
@@ -126,7 +126,7 @@ class RefereeFactory extends Factory
 
     public function softDeleted()
     {
-        return $this->state(fn(array $attributes) => ['deleted_at' => now()])
+        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
         ->afterCreating(function (Referee $referee) {
             $referee->updateStatus()->save();
         });
