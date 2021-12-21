@@ -11,13 +11,6 @@ class Employment extends Model
         HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'employments';
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array

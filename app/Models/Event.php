@@ -26,13 +26,6 @@ class Event extends Model
     }
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'events';
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array

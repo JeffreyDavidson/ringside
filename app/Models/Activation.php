@@ -11,13 +11,6 @@ class Activation extends Model
         HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'activations';
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array

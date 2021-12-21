@@ -48,13 +48,6 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     const MAX_WRESTLERS_COUNT = 2;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'tag_teams';
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array
