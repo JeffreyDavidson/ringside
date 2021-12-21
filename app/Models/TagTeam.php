@@ -449,7 +449,7 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
      */
     public function getStartedAtAttribute()
     {
-        return optional($this->employments->first())->started_at;
+        return $this->employments->first()?->started_at;
     }
 
     /**
