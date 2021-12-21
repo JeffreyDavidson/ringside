@@ -61,7 +61,7 @@ class TestValidationResult
             // dd($expectedFailedRule, $constraints);
             // ^ 0
             // ^ "matches.0"
-            if (str_contains($constraints, '.')) {
+            if (Str::contains($constraints, '.')) {
                 // dd($failedRules->all());
                 // ^ array:1 [
                 //     "matches.0" => "array"
