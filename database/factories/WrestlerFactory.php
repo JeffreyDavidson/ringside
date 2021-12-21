@@ -29,10 +29,10 @@ class WrestlerFactory extends Factory
     {
         return [
             'user_id' => null,
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
             'height' => $this->faker->numberBetween(60, 95),
             'weight' => $this->faker->numberBetween(180, 500),
-            'hometown' => $this->faker->city.', '.$this->faker->state,
+            'hometown' => $this->faker->city().', '.$this->faker->state(),
             'signature_move' => null,
             'status' => WrestlerStatus::unemployed(),
         ];
