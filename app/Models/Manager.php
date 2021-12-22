@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
 use App\Models\Contracts\StableMember;
 use App\Observers\ManagerObserver;
@@ -28,6 +29,11 @@ class Manager extends SingleRosterMember implements StableMember
         parent::boot();
 
         self::observe(ManagerObserver::class);
+    }
+
+    public function newEloquentBuilder($query)
+    {
+        return new ManagerQueryBuilder($query);
     }
 
     /**

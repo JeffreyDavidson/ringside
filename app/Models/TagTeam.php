@@ -48,13 +48,6 @@ class TagTeam extends RosterMember implements Bookable, StableMember
     const MAX_WRESTLERS_COUNT = 2;
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['currentWrestlers'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -214,6 +207,20 @@ class TagTeam extends RosterMember implements Bookable, StableMember
         }
 
         if ($this->isSuspended()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the model can be unretired.
+     *
+     * @return bool
+     */
+    public function canBeUnretired()
+    {
+        if (! $this->isRetired()) {
             return false;
         }
 

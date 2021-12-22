@@ -45,12 +45,11 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
     /**
      * Scope a query to only include bookable models.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return $this
      */
-    public function scopeBookable(Builder $query)
+    public function bookable()
     {
-        return $query->whereHas('currentEmployment')
+        return $this->whereHas('currentEmployment')
                     ->whereDoesntHave('currentSuspension')
                     ->whereDoesntHave('currentInjury');
     }

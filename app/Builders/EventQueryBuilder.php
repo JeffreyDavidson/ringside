@@ -12,7 +12,7 @@ class EventQueryBuilder extends Builder
      *
      * @return $this
      */
-    public function scopeScheduled()
+    public function scheduled()
     {
         return $this->where('status', EventStatus::scheduled())->whereNotNull('date');
     }
@@ -22,7 +22,7 @@ class EventQueryBuilder extends Builder
      *
      * @return $this
      */
-    public function scopeUnscheduled()
+    public function unscheduled()
     {
         return $this->where('status', EventStatus::unscheduled())->whereNull('date');
     }
@@ -32,7 +32,7 @@ class EventQueryBuilder extends Builder
      *
      * @return $this
      */
-    public function scopePast()
+    public function past()
     {
         return $this->where(function () {
             $this->where('status', EventStatus::past())->where('date', '<', now()->toDateString());

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
@@ -31,6 +32,11 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
         parent::boot();
 
         self::observe(TitleObserver::class);
+    }
+
+    public function newEloquentBuilder($query)
+    {
+        return new TitleQueryBuilder($query);
     }
 
     /**

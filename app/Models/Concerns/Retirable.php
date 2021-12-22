@@ -1,53 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Concerns;
 
-use App\Builders\StableQueryBuilder;
-use App\Enums\StableStatus;
-use App\Models\Contracts\Activatable;
-use App\Models\Contracts\Deactivatable;
-use App\Models\Contracts\Retirable;
-use App\Observers\StableObserver;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Retirement;
 
-class Stable extends Model implements Activatable, Deactivatable, Retirable
+trait Retirable
 {
-    use SoftDeletes,
-        HasFactory,
-        Concerns\Activatable,
-        Concerns\Deactivatable,
-        Concerns\HasMembers,
-        Concerns\OwnedByUser,
-        Concerns\Unguarded;
-
-    /**
-     * The "boot" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::observe(StableObserver::class);
-    }
-
-    public function newEloquentBuilder($query)
-    {
-        return new StableQueryBuilder($query);
-    }
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'status' => StableStatus::class,
-    ];
-
     /**
      * Get the retirements of the model.
      *
@@ -121,15 +79,11 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      */
     public function canBeRetired()
     {
-        if ($this->isCurrentlyActivated()) {
-            return true;
+        if ($this->isNotInEmployment()) {
+            return false;
         }
 
-        if ($this->isDeactivated()) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     /**

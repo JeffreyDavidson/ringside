@@ -116,7 +116,7 @@ class ManagerFactory extends Factory
     {
         return $this->state(fn (array $attributes) => ['deleted_at' => now()])
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 }
