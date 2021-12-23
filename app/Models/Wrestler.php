@@ -8,7 +8,7 @@ use App\Models\Contracts\Bookable;
 use App\Models\Contracts\Manageable;
 use App\Models\Contracts\StableMember;
 use App\Models\Contracts\TagTeamMember;
-use Illuminate\Database\Eloquent\Concerns\HasRelationships;
+use App\Observers\WrestlerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,27 +21,19 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, Stabl
         Concerns\TagTeamMember,
         Concerns\Unguarded,
         HasFactory,
-        HasRelationships,
         SoftDeletes;
 
     /**
-     * The "booted" method of the model.
+     * The "boot" method of the model.
      *
      * @return void
      */
-    protected static function booted()
+    protected static function boot()
     {
-        static::saving(function ($wrestler) {
-            $wrestler->updateStatus();
-        });
-    }
+        parent::boot();
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'wrestlers';
+        self::observe(WrestlerObserver::class);
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -52,26 +44,4 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, Stabl
         'status' => WrestlerStatus::class,
         'height' => HeightCast::class,
     ];
-
-    /**
-     * Update the status for the wrestler.
-     *
-     * @return $this
-     */
-    public function updateStatus()
-    {
-        $this->status = match (true) {
-            $this->isCurrentlyEmployed() => match (true) {
-                $this->isInjured() => WrestlerStatus::injured(),
-                $this->isSuspended() => WrestlerStatus::suspended(),
-                $this->isBookable() => WrestlerStatus::bookable(),
-            },
-            $this->hasFutureEmployment() => WrestlerStatus::future_employment(),
-            $this->isReleased() => WrestlerStatus::released(),
-            $this->isRetired() => WrestlerStatus::retired(),
-            default => WrestlerStatus::unemployed()
-        };
-
-        return $this;
-    }
 }

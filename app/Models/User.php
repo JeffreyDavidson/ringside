@@ -9,16 +9,9 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable,
+    use Concerns\Unguarded,
         HasFactory,
-        Concerns\Unguarded;
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
+        Notifiable;
 
     /**
      * The attributes that should be hidden for arrays.

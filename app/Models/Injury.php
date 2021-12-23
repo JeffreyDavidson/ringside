@@ -12,20 +12,13 @@ class Injury extends Model
         HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'injuries';
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'started_at' => 'date',
-        'ended_at' => 'date',
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
     ];
 
     /**

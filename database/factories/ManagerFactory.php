@@ -28,53 +28,35 @@ class ManagerFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
             'status' => ManagerStatus::unemployed(),
         ];
     }
 
-    public function employed()
-    {
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::available()];
-        })
-        ->has(Employment::factory()->started(Carbon::yesterday()))
-        ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
-            $manager->load('employments');
-        });
-    }
-
     public function available()
     {
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::available()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::available()])
         ->has(Employment::factory()->started(Carbon::yesterday()))
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
     public function withFutureEmployment()
     {
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::future_employment()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::future_employment()])
         ->has(Employment::factory()->started(Carbon::tomorrow()))
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
     public function unemployed()
     {
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::unemployed()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::unemployed()])
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
@@ -83,13 +65,11 @@ class ManagerFactory extends Factory
         $start = now()->subMonths(1);
         $end = now()->subDays(3);
 
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::retired()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::retired()])
         ->has(Employment::factory()->started($start)->ended($end))
         ->has(Retirement::factory()->started($end))
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
@@ -98,12 +78,10 @@ class ManagerFactory extends Factory
         $start = now()->subMonths(1);
         $end = now()->subDays(3);
 
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::released()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::released()])
         ->has(Employment::factory()->started($start)->ended($end))
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
@@ -113,13 +91,11 @@ class ManagerFactory extends Factory
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::suspended()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::suspended()])
         ->has(Employment::factory()->started($start))
         ->has(Suspension::factory()->started($end))
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
@@ -128,23 +104,19 @@ class ManagerFactory extends Factory
         $now = now();
         $start = $now->copy()->subDays(2);
 
-        return $this->state(function (array $attributes) {
-            return ['status' => ManagerStatus::injured()];
-        })
+        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::injured()])
         ->has(Employment::factory()->started($start))
         ->has(Injury::factory()->started($now))
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 
     public function softDeleted()
     {
-        return $this->state(function (array $attributes) {
-            return ['deleted_at' => now()];
-        })
+        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
         ->afterCreating(function (Manager $manager) {
-            $manager->updateStatus()->save();
+            $manager->save();
         });
     }
 }

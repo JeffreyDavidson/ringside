@@ -11,21 +11,17 @@ class Activation extends Model
         HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'activations';
-
-    /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $dates = ['started_at', 'ended_at'];
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+    ];
 
     /**
-     * Get the owning activated model.
+     * Get the activated model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
@@ -35,7 +31,7 @@ class Activation extends Model
     }
 
     /**
-     * Retrieve an activation started before a given date.
+     * Determine an activation started before a given date.
      *
      * @param  string $date
      * @return bool

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RefereeStatus;
 use App\Models\Contracts\IsBookableContract;
+use App\Observers\RefereeObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -16,23 +17,16 @@ class Referee extends SingleRosterMember implements IsBookableContract
         SoftDeletes;
 
     /**
-     * The "booted" method of the model.
+     * The "boot" method of the model.
      *
      * @return void
      */
-    protected static function booted()
+    protected static function boot()
     {
-        static::saving(function ($referee) {
-            $referee->updateStatus();
-        });
-    }
+        parent::boot();
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'referees';
+        self::observe(RefereeObserver::class);
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -42,26 +36,4 @@ class Referee extends SingleRosterMember implements IsBookableContract
     protected $casts = [
         'status' => RefereeStatus::class,
     ];
-
-    /**
-     * Update the status for the referee.
-     *
-     * @return $this
-     */
-    public function updateStatus()
-    {
-        $this->status = match (true) {
-            $this->isCurrentlyEmployed() => match (true) {
-                $this->isInjured() => RefereeStatus::injured(),
-                $this->isSuspended() => RefereeStatus::suspended(),
-                $this->isBookable() => RefereeStatus::bookable(),
-            },
-            $this->hasFutureEmployment() => RefereeStatus::future_employment(),
-            $this->isReleased() => RefereeStatus::released(),
-            $this->isRetired() => RefereeStatus::retired(),
-            default => RefereeStatus::unemployed()
-        };
-
-        return $this;
-    }
 }

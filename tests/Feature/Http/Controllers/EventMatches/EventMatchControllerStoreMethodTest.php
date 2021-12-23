@@ -18,7 +18,7 @@ use Tests\TestCase;
  */
 class EventMatchControllerStoreMethodTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
     /**
      * @test
      */
-    public function store_creates_matches_for_an_event_and_redirects()
+    public function store_creates_a_match_for_an_event_and_redirects()
     {
         $event = Event::factory()->create();
         $referee = Referee::factory()->create();
@@ -44,7 +44,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
                     'match_type_id' => 1,
                     'titles' => [],
                     'referees' => [$referee->id],
-                    'competitors' => [$wrestlerA->id, $wrestlerB->id],
+                    'competitors' => [[$wrestlerA->id], [$wrestlerB->id]],
                     'preview' => 'This is a general match preview.',
                 ])
             );
@@ -79,7 +79,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
                     'match_type_id' => 1,
                     'titles' => [$title->id],
                     'referees' => [$referee->id],
-                    'competitors' => [$wrestlerA->id, $wrestlerB->id],
+                    'competitors' => [[$wrestlerA->id], [$wrestlerB->id]],
                 ])
             );
 

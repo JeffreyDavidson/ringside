@@ -17,7 +17,7 @@ class ReleaseAction extends BaseRefereeAction
      */
     public function handle(Referee $referee): void
     {
-        $releaseDate = $releaseDate ?? now()->toDateTimeString();
+        $releaseDate ??= now()->toDateTimeString();
 
         if ($referee->isSuspended()) {
             $this->refereeRepository->reinstate($referee, $releaseDate);
@@ -28,6 +28,6 @@ class ReleaseAction extends BaseRefereeAction
         }
 
         $this->refereeRepository->release($referee, $releaseDate);
-        $referee->updateStatus()->save();
+        $referee->save();
     }
 }

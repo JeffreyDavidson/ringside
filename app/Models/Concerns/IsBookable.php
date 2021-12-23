@@ -6,16 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait IsBookable
 {
-    /**
-     * Check to see if the model is bookable.
-     *
-     * @return bool
-     */
-    public function isBookable()
-    {
-        if ($this->isNotInEmployment() || $this->isSuspended() || $this->isInjured()) {
-            return false;
-        }
 
         return true;
     }
