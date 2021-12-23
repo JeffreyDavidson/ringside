@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\WrestlerQueryBuilder;
 use App\Casts\HeightCast;
 use App\Enums\WrestlerStatus;
 use App\Models\Contracts\Bookable;
@@ -14,8 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends SingleRosterMember implements Bookable, Manageable, StableMember, TagTeamMember
 {
-    use Concerns\Bookable,
-        Concerns\Manageable,
+    use Concerns\Manageable,
         Concerns\OwnedByUser,
         Concerns\StableMember,
         Concerns\TagTeamMember,
@@ -33,6 +33,17 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, Stabl
         parent::boot();
 
         self::observe(WrestlerObserver::class);
+    }
+
+    /**
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new WrestlerQueryBuilder($query);
     }
 
     /**
