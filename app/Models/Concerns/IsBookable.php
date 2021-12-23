@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait IsBookable
 {
-
-        return true;
-    }
-
     /**
      * Scope a query to only include bookable models.
      *
