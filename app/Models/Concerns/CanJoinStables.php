@@ -5,7 +5,7 @@ namespace App\Models\Concerns;
 use App\Models\Stable;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
-trait StableMember
+trait CanJoinStables
 {
     use HasRelationships;
 

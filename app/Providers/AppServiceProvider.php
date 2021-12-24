@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
             $column = $this->getGrammar()->wrap($column);
             $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
 
-            return $this->orderByRaw("$column IS NULL $direction, $column $direction");
+            return $this->orderByRaw("{$column} IS NULL {$direction}, {$column} {$direction}");
         });
     }
 }

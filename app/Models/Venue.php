@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venue extends Model
 {
-    use Concerns\Unguarded,
-        HasFactory,
-        SoftDeletes;
+    use HasFactory,
+        SoftDeletes,
+        Unguarded;
 }
