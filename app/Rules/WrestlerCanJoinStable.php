@@ -9,17 +9,17 @@ use Illuminate\Contracts\Validation\Rule;
 class WrestlerCanJoinStable implements Rule
 {
     /**
-     * @var string $message
+     * @var string
      */
     protected string $message;
 
     /**
-     * @var \App\Models\Stable $stable
+     * @var \App\Models\Stable
      */
     protected Stable $stable;
 
     /**
-     * @var string|null $startedAt
+     * @var string|null
      */
     protected ?string $startedAt;
 
@@ -45,11 +45,7 @@ class WrestlerCanJoinStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->find($value);
-
-        if (! $wrestler) {
-            return false;
-        }
+        $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->sole($value);
 
         if ($wrestler->currentStable && $wrestler->currentStable->isNot($this->stable)) {
             $this->setMessage('This wrestler is already a member of an active stable.');

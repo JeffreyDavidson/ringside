@@ -45,11 +45,7 @@ class TagTeamCanJoinStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $tagTeam = TagTeam::with('currentStable', 'futureEmployment')->find($value);
-
-        if (! $tagTeam) {
-            return false;
-        }
+        $tagTeam = TagTeam::with(['currentStable', 'futureEmployment'])->sole($value);
 
         if ($tagTeam->currentStable && $tagTeam->currentStable->isNot($this->stable)) {
             $this->setMessage('This tag team is already a members of an active stable.');

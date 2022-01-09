@@ -33,7 +33,7 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
      */
     public function passes($attribute, $value)
     {
-        $tagTeam = TagTeam::with(['futureEmployment'])->whereKey($value)->firstOrFail();
+        $tagTeam = TagTeam::with(['futureEmployment'])->sole($value);
 
         if ($tagTeam->isCurrentlyEmployed()) {
             return true;

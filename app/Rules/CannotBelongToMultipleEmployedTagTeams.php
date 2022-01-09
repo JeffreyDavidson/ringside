@@ -29,13 +29,13 @@ class CannotBelongToMultipleEmployedTagTeams implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->wrestler = Wrestler::findOrFail($value);
+        $this->wrestler = Wrestler::sole($value);
 
         if (! $this->wrestler->currentTagTeam) {
             return true;
         }
 
-        if ($this->tagTeam && $this->wrestler->currentTagTeam->is($this->tagTeam)) {
+        if ($this->wrestler->currentTagTeam->is($this->tagTeam)) {
             return true;
         }
 

@@ -8,12 +8,12 @@ use Illuminate\Contracts\Validation\Rule;
 class CannotBeEmployedAfterDate implements Rule
 {
     /**
-     * @var \App\Models\Wrestler $wrestler
+     * @var \App\Models\Wrestler
      */
     protected $wrestler;
 
     /**
-     * @var string|null $startedAt
+     * @var string|null
      */
     protected ?string $startedAt;
 
@@ -38,7 +38,7 @@ class CannotBeEmployedAfterDate implements Rule
             return true;
         }
 
-        $this->wrestler = Wrestler::with(['currentEmployment', 'futureEmployment'])->findOrFail($value);
+        $this->wrestler = Wrestler::with(['currentEmployment', 'futureEmployment'])->sole($value);
 
         if ($this->wrestler->isUnemployed()) {
             return true;

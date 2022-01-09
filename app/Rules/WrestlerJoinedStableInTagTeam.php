@@ -6,10 +6,14 @@ use App\Models\TagTeam;
 
 class WrestlerJoinedStableInTagTeam
 {
-    /** @var int[]|null */
+    /**
+     * @var int[]|null
+     */
     private ?array $tagTeamIds = [];
 
-    /** @var int[]|null */
+    /**
+     * @var int[]|null
+     */
     private ?array $wrestlerIds = [];
 
     /**
@@ -45,7 +49,7 @@ class WrestlerJoinedStableInTagTeam
         }
 
         foreach ($this->tagTeamIds as $tagTeamId) {
-            $tagTeam = TagTeam::with('currentWrestlers')->find($tagTeamId);
+            $tagTeam = TagTeam::with('currentWrestlers')->sole($tagTeamId);
 
             $tagTeamWrestlerIds = $tagTeam->currentWrestlers->pluck('id');
 
