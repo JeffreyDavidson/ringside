@@ -49,7 +49,7 @@ class WrestlerJoinedStableInTagTeam
         }
 
         foreach ($this->tagTeamIds as $tagTeamId) {
-            $tagTeam = TagTeam::with('currentWrestlers')->sole($tagTeamId);
+            $tagTeam = TagTeam::with('currentWrestlers')->whereKey($tagTeamId)->sole();
 
             $tagTeamWrestlerIds = $tagTeam->currentWrestlers->pluck('id');
 

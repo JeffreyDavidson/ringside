@@ -4,8 +4,6 @@ namespace App\Http\Requests\Stables;
 
 use App\Models\Stable;
 use App\Rules\StableHasEnoughMembers;
-use App\Rules\TagTeamCanJoinStable;
-use App\Rules\WrestlerCanJoinStable;
 use App\Rules\WrestlerJoinedStableInTagTeam;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -48,14 +46,12 @@ class StoreRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('wrestlers', 'id'),
-                new WrestlerCanJoinStable(new Stable),
             ],
             'tag_teams.*' => [
                 'bail',
                 'integer',
                 'distinct',
                 Rule::exists('tag_teams', 'id'),
-                new TagTeamCanJoinStable(new Stable),
             ],
         ];
     }

@@ -39,10 +39,45 @@ class StoreRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('wrestlers', 'id'),
-                new CannotBeEmployedAfterDate($this->input('started_at')),
-                new CannotBeHindered,
-                new CannotBelongToMultipleEmployedTagTeams,
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isEmpty()) {
+                foreach ($this->input('wrestlers') as $wrestlerId) {
+                    $wrestler = Wrestler::query()
+                        ->with(['currentTagTeam', 'currentEmployment', 'futureEmployment'])
+                        ->whereKey($wrestlerId)
+                        ->sole();
+
+                    $cannotBeEmployedAfterDateRuleResult = (new CannotBeEmployedAfterDate($wrestler, $this->input('started_at')))->passes();
+
+                    if (! $cannotBeEmployedAfterDateRuleResult) {
+                        $validator->addFailure('wrestlers', CannotBeEmployedAfterDate::class);
+                    }
+
+                    $cannotBeHinderedRuleResult = (new CannotBeHindered($wrestler))->passes();
+
+                    if (! $cannotBeHinderedRuleResult) {
+                        $validator->addFailure('wrestlers', CannotBeHindered::class);
+                    }
+
+                    $cannotBelongToMultipleEmployedTagTeamRuleResult = (new CannotBelongToMultipleEmployedTagTeams)->passes();
+
+                    if (! $cannotBelongToMultipleEmployedTagTeamRuleResult) {
+                        $validator->addFailure('wrestlers', CannotBelongToMultipleEmployedTagTeams::class);
+                    }
+                }
+            }
+        });
     }
 }

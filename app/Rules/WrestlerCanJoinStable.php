@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Stable;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
 class WrestlerCanJoinStable implements Rule
@@ -19,18 +20,18 @@ class WrestlerCanJoinStable implements Rule
     protected Stable $stable;
 
     /**
-     * @var string|null
+     * @var \Carbon\Carbon|null
      */
-    protected ?string $startedAt;
+    protected $startedAt;
 
     /**
      * Create a new rule instance.
      *
-     * @param \App\Models\Stable $stable
-     * @param string|null $startedAt
+     * @param  \App\Models\Stable $stable
+     * @param  \Carbon\Carbon|null $startedAt
      * @return void
      */
-    public function __construct(Stable $stable, string $startedAt = null)
+    public function __construct(Stable $stable, Carbon $startedAt = null)
     {
         $this->stable = $stable;
         $this->startedAt = $startedAt;
@@ -45,20 +46,18 @@ class WrestlerCanJoinStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->sole($value);
+        $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->whereKey($value)->sole();
 
-        if ($wrestler->currentStable->isNot($this->stable)) {
+        if (! $wrestler->isNotCurrentlyInStable($this->stable)) {
             $this->setMessage('This wrestler is already a member of an active stable.');
 
             return false;
         }
 
-        if (is_string($this->startedAt)) {
-            if ($wrestler->futureEmployment && $wrestler->futureEmployment->startedAfter($this->startedAt)) {
-                $this->setMessage("This wrestler's future employment starts after stable's start date.");
+        if ($wrestler->employedBefore($this->startedAt)) {
+            $this->setMessage("This wrestler's future employment starts after stable's start date.");
 
-                return false;
-            }
+            return false;
         }
 
         return true;

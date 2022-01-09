@@ -13,6 +13,9 @@ class CannotBelongToMultipleEmployedTagTeams implements Rule
      */
     private Wrestler $wrestler;
 
+    /**
+     * @var TagTeam|null
+     */
     private $tagTeam;
 
     public function __construct(TagTeam $tagTeam = null)
@@ -29,12 +32,6 @@ class CannotBelongToMultipleEmployedTagTeams implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->wrestler = Wrestler::sole($value);
-
-        if (! $this->wrestler->currentTagTeam) {
-            return true;
-        }
-
         if ($this->wrestler->currentTagTeam->is($this->tagTeam)) {
             return true;
         }

@@ -8,7 +8,10 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CompetitorsAreValid implements Rule
 {
-    private string $message;
+    /**
+     * @var string
+     */
+    protected string $message;
 
     /**
      * Determine if the validation rule passes.
@@ -31,18 +34,6 @@ class CompetitorsAreValid implements Rule
 
         $tag_team_ids = array_column($tagTeams, 'competitor_id');
 
-        if (count(array_unique($wrestler_ids)) !== count($wrestler_ids)) {
-            $this->setMessage('There are duplicate wrestlers in this match.');
-
-            return false;
-        }
-
-        if (count(array_unique($tag_team_ids)) !== count($tag_team_ids)) {
-            $this->setMessage('There are duplicate tag teams in this match.');
-
-            return false;
-        }
-
         $existing_wrestler_ids = Wrestler::whereIn('id', $wrestler_ids)->pluck('id')->toArray();
         $existing_tag_team_ids = TagTeam::whereIn('id', $tag_team_ids)->pluck('id')->toArray();
 
@@ -56,7 +47,7 @@ class CompetitorsAreValid implements Rule
         }
 
         if (count($diffTagTeams) > 0) {
-            $this->setMessage('There are tag_teams added to the match that don\'t exist in the database.');
+            $this->setMessage('There are tag teams added to the match that don\'t exist in the database.');
 
             return false;
         }
@@ -65,12 +56,12 @@ class CompetitorsAreValid implements Rule
     }
 
     /**
-     * Set the message of the validation rule.
+     * Set the message of the error message.
      *
      * @param  string $message
      * @return void
      */
-    public function setMessage(string $message)
+    protected function setMessage(string $message)
     {
         $this->message = $message;
     }
@@ -82,6 +73,6 @@ class CompetitorsAreValid implements Rule
      */
     public function message()
     {
-        return $this->message;
+        return 'The validation error message.';
     }
 }

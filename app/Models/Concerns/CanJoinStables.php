@@ -27,13 +27,13 @@ trait CanJoinStables
     public function currentStable()
     {
         return $this
-            ->wherePivotNull('left_at')
             ->hasOneDeep(
                 Stable::class,
                 [static::class, 'stable_members'],
                 ['id', ['member_type', 'member_id'], 'id'],
                 [null, null, 'stable_id']
-            );
+            )
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -46,5 +46,10 @@ trait CanJoinStables
         return $this->morphMany(Stable::class, 'members')
                     ->wherePivot('joined_at', '<', now())
                     ->wherePivotNotNull('left_at');
+    }
+
+    public function isNotCurrentlyInStable(Stable $stable)
+    {
+        $this->currentStable->isNot($stable);
     }
 }

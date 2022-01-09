@@ -51,14 +51,14 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('wrestlers', 'id'),
-                new WrestlerCanJoinStable($this->route->param('stable')),
+                new WrestlerCanJoinStable($this->route->param('stable'), $this->date('started_at')),
             ],
             'tag_teams.*' => [
                 'bail',
                 'integer',
                 'distinct',
                 Rule::exists('tag_teams', 'id'),
-                new TagTeamCanJoinStable($this->route->param('stable')),
+                new TagTeamCanJoinStable($this->route->param('stable'), $this->date('started_at')),
             ],
         ];
     }

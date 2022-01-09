@@ -204,6 +204,18 @@ abstract class RosterMember extends Model implements Employable
     }
 
     /**
+     * Undocumented function.
+     *
+     * @param  \Carbon\Carbon|null $startDate
+     * @return bool
+     */
+    public function employedBefore(Carbon $startDate = null)
+    {
+        // return $this->currentAndPastEmployments()->startedAfter($startDate)->exists();
+        return true;
+    }
+
+    /**
      * Get the suspensions of the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
