@@ -22,13 +22,9 @@ class CompetitorsAreValid implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestlers = array_filter($value, static function ($contestant) {
-            return $contestant['competitor_type'] === 'wrestler';
-        });
+        $wrestlers = array_filter($value, static fn ($contestant) => $contestant['competitor_type'] === 'wrestler');
 
-        $tagTeams = array_filter($value, static function ($contestant) {
-            return $contestant['competitor_type'] === 'tag_team';
-        });
+        $tagTeams = array_filter($value, static fn ($contestant) => $contestant['competitor_type'] === 'tag_team');
 
         $wrestler_ids = array_column($wrestlers, 'competitor_id');
 

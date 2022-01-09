@@ -69,9 +69,7 @@ class EventMatchData
 
     public static function getWrestlers($competitors)
     {
-        $wrestlers = array_filter($competitors, static function ($contestant) {
-            return $contestant['competitor_type'] === 'wrestler';
-        });
+        $wrestlers = array_filter($competitors, static fn ($contestant) => $contestant['competitor_type'] === 'wrestler');
 
         $wrestler_ids = array_column($wrestlers, 'competitor_id');
 
@@ -80,9 +78,7 @@ class EventMatchData
 
     public static function getTagTeams($competitors)
     {
-        $tagTeams = array_filter($competitors, static function ($contestant) {
-            return $contestant['competitor_type'] === 'tag_teams';
-        });
+        $tagTeams = array_filter($competitors, static fn ($contestant) => $contestant['competitor_type'] === 'tag_teams');
 
         $tag_team_ids = array_column($tagTeams, 'competitor_id');
 

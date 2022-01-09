@@ -81,18 +81,14 @@ class TitleFactory extends Factory
 
     public function unactivated()
     {
-        return $this->state(function (array $attributes) {
-            return ['status' => TitleStatus::unactivated()];
-        })->afterCreating(function (Title $title) {
+        return $this->state(fn (array $attributes) => ['status' => TitleStatus::unactivated()])->afterCreating(function (Title $title) {
             $title->save();
         });
     }
 
     public function softDeleted($delete = true)
     {
-        return $this->state(function (array $attributes) {
-            return ['deleted_at' => now()];
-        })->afterCreating(function (Title $title) {
+        return $this->state(fn (array $attributes) => ['deleted_at' => now()])->afterCreating(function (Title $title) {
             $title->save();
         });
     }

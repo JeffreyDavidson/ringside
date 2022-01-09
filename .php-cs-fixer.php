@@ -119,6 +119,7 @@ $rules = [
     'trailing_comma_in_multiline' => true,
     'trim_array_spaces' => true,
     'unary_operator_spaces' => true,
+    'use_arrow_functions' => true,
     'visibility_required' => [
         'elements' => ['method', 'property', 'const'],
     ],
