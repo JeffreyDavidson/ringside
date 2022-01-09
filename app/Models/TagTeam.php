@@ -35,7 +35,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @var int
      */
-    const MAX_WRESTLERS_COUNT = 2;
+    public const MAX_WRESTLERS_COUNT = 2;
 
     /**
      * The attributes that are mass assignable.

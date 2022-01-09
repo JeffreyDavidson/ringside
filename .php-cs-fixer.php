@@ -4,6 +4,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $rules = [
+    '@PSR2' => true,
     'array_syntax' => ['syntax' => 'short'],
     'binary_operator_spaces' => [
         'default' => 'single_space',
@@ -118,7 +119,7 @@ $rules = [
     'trim_array_spaces' => true,
     'unary_operator_spaces' => true,
     'visibility_required' => [
-        'elements' => ['method', 'property'],
+        'elements' => ['method', 'property', 'const'],
     ],
     'whitespace_after_comma_in_array' => true,
 ];
