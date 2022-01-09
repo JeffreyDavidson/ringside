@@ -38,7 +38,7 @@ abstract class RosterMember extends Model implements Employable
     public function firstEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
-                    ->oldestOfMany('started_at');
+            ->oldestOfMany('started_at');
     }
 
     /**
@@ -49,9 +49,9 @@ abstract class RosterMember extends Model implements Employable
     public function currentEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->latestOfMany();
+            ->where('started_at', '<=', now())
+            ->whereNull('ended_at')
+            ->latestOfMany();
     }
 
     /**
@@ -62,9 +62,9 @@ abstract class RosterMember extends Model implements Employable
     public function futureEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
-                    ->where('started_at', '>', now())
-                    ->whereNull('ended_at')
-                    ->latestOfMany();
+            ->where('started_at', '>', now())
+            ->whereNull('ended_at')
+            ->latestOfMany();
     }
 
     /**
@@ -75,7 +75,7 @@ abstract class RosterMember extends Model implements Employable
     public function previousEmployments()
     {
         return $this->employments()
-                    ->whereNotNull('ended_at');
+            ->whereNotNull('ended_at');
     }
 
     /**
@@ -86,9 +86,9 @@ abstract class RosterMember extends Model implements Employable
     public function previousEmployment()
     {
         return $this->morphOne(Employment::class, 'employable')
-                    ->whereNotNull('ended_at')
-                    ->latest('ended_at')
-                    ->latestOfMany();
+            ->whereNotNull('ended_at')
+            ->latest('ended_at')
+            ->latestOfMany();
     }
 
     /**
@@ -233,8 +233,8 @@ abstract class RosterMember extends Model implements Employable
     public function currentSuspension()
     {
         return $this->morphOne(Suspension::class, 'suspendable')
-                    ->whereNull('ended_at')
-                    ->limit(1);
+            ->whereNull('ended_at')
+            ->limit(1);
     }
 
     /**
@@ -245,7 +245,7 @@ abstract class RosterMember extends Model implements Employable
     public function previousSuspensions()
     {
         return $this->suspensions()
-                    ->whereNotNull('ended_at');
+            ->whereNotNull('ended_at');
     }
 
     /**
@@ -256,8 +256,8 @@ abstract class RosterMember extends Model implements Employable
     public function previousSuspension()
     {
         return $this->morphOne(Suspension::class, 'suspendable')
-                    ->latest('ended_at')
-                    ->limit(1);
+            ->latest('ended_at')
+            ->limit(1);
     }
 
     /**
@@ -312,9 +312,9 @@ abstract class RosterMember extends Model implements Employable
     public function currentRetirement()
     {
         return $this->morphOne(Retirement::class, 'retiree')
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->limit(1);
+            ->where('started_at', '<=', now())
+            ->whereNull('ended_at')
+            ->limit(1);
     }
 
     /**
@@ -325,7 +325,7 @@ abstract class RosterMember extends Model implements Employable
     public function previousRetirements()
     {
         return $this->retirements()
-                    ->whereNotNull('ended_at');
+            ->whereNotNull('ended_at');
     }
 
     /**
@@ -336,8 +336,8 @@ abstract class RosterMember extends Model implements Employable
     public function previousRetirement()
     {
         return $this->morphOne(Retirement::class, 'retiree')
-                    ->latest('ended_at')
-                    ->limit(1);
+            ->latest('ended_at')
+            ->limit(1);
     }
 
     /**

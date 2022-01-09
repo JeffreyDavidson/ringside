@@ -23,11 +23,11 @@ class ClearWrestlerInjuryTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
-                    ->fillInLoginForm($user->email, 'password')
-                    ->click('Wrestlers')
-                    ->assertPathIs('/roster/wrestlers')
-                    ->assertSee($wrestler->name)
-                    ->click();
+                ->fillInLoginForm($user->email, 'password')
+                ->click('Wrestlers')
+                ->assertPathIs('/roster/wrestlers')
+                ->assertSee($wrestler->name)
+                ->click();
         });
     }
 }

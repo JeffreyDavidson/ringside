@@ -21,8 +21,8 @@ class LoginTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->visit(new Login)
-                    ->fillInLoginForm($user->email, 'password')
-                    ->assertAuthenticatedAs($user);
+                ->fillInLoginForm($user->email, 'password')
+                ->assertAuthenticatedAs($user);
         });
     }
 }

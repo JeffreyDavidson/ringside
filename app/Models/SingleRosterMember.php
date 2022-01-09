@@ -89,8 +89,8 @@ abstract class SingleRosterMember extends RosterMember
     public function currentInjury()
     {
         return $this->morphOne(Injury::class, 'injurable')
-                    ->whereNull('ended_at')
-                    ->limit(1);
+            ->whereNull('ended_at')
+            ->limit(1);
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class SingleRosterMember extends RosterMember
     public function previousInjuries()
     {
         return $this->injuries()
-                    ->whereNotNull('ended_at');
+            ->whereNotNull('ended_at');
     }
 
     /**
@@ -112,8 +112,8 @@ abstract class SingleRosterMember extends RosterMember
     public function previousInjury()
     {
         return $this->morphOne(Injury::class, 'injurable')
-                    ->latest('ended_at')
-                    ->limit(1);
+            ->latest('ended_at')
+            ->limit(1);
     }
 
     /**

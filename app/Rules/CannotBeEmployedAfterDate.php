@@ -7,16 +7,22 @@ use Illuminate\Contracts\Validation\Rule;
 class CannotBeEmployedAfterDate implements Rule
 {
     /**
+     * The wrestler to compare against.
+     *
      * @var \App\Models\Wrestler
      */
     protected $wrestler;
 
     /**
+     * The employment start date to compare against.
+     *
      * @var string|null
      */
     protected ?string $startedAt;
 
     /**
+     * Create a new base manager action instance.
+     *
      * @param  string|null $startedAt
      */
     public function __construct(string $startedAt = null)

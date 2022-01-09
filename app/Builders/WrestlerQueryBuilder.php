@@ -16,7 +16,7 @@ class WrestlerQueryBuilder extends SingleRosterMemberQueryBuilder
     public function bookable()
     {
         return $this->whereHas('currentEmployment')
-                    ->whereDoesntHave('currentSuspension')
-                    ->whereDoesntHave('currentInjury');
+            ->whereDoesntHave('currentSuspension')
+            ->whereDoesntHave('currentInjury');
     }
 }

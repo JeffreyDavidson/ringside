@@ -44,8 +44,8 @@ trait CanJoinStables
     public function previousStables()
     {
         return $this->morphMany(Stable::class, 'members')
-                    ->wherePivot('joined_at', '<', now())
-                    ->wherePivotNotNull('left_at');
+            ->wherePivot('joined_at', '<', now())
+            ->wherePivotNotNull('left_at');
     }
 
     public function isNotCurrentlyInStable(Stable $stable)

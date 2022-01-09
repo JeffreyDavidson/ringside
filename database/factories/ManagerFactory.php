@@ -115,7 +115,7 @@ class ManagerFactory extends Factory
     public function softDeleted()
     {
         return $this->state(fn (array $attributes) => ['deleted_at' => now()])
-        ->afterCreating(function (Manager $manager) {
+            ->afterCreating(function (Manager $manager) {
             $manager->save();
         });
     }

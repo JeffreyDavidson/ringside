@@ -50,7 +50,7 @@ class Login extends Page
     public function fillInLoginForm(Browser $browser, $email, $password)
     {
         $browser->type('email', $email)
-                ->type('password', $password)
-                ->click('@login-button');
+            ->type('password', $password)
+            ->click('@login-button');
     }
 }

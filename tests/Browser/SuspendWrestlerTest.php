@@ -23,9 +23,9 @@ class SuspendWrestlerTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $wrestler) {
             $browser->visit(new Login)
-                    ->fillInLoginForm($user->email, 'password')
-                    ->visit(route('wrestlers.index'))
-                    ->assertSee($wrestler->name);
+                ->fillInLoginForm($user->email, 'password')
+                ->visit(route('wrestlers.index'))
+                ->assertSee($wrestler->name);
         });
     }
 }

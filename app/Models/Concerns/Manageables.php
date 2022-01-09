@@ -15,7 +15,7 @@ trait Manageables
     public function wrestlers()
     {
         return $this->morphedByMany(Wrestler::class, 'manageable')
-                    ->withPivot(['hired_at', 'left_at']);
+            ->withPivot(['hired_at', 'left_at']);
     }
 
     /**
@@ -26,7 +26,7 @@ trait Manageables
     public function currentWrestlers()
     {
         return $this->morphedByMany(Wrestler::class, 'manageable')
-                    ->wherePivotNull('left_at');
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -37,7 +37,7 @@ trait Manageables
     public function previousWrestlers()
     {
         return $this->morphedByMany(Wrestler::class, 'manageable')
-                    ->wherePivotNotNull('left_at');
+            ->wherePivotNotNull('left_at');
     }
 
     /**
@@ -48,7 +48,7 @@ trait Manageables
     public function tagTeams()
     {
         return $this->morphedByMany(TagTeam::class, 'manageable')
-                    ->withPivot(['hired_at', 'left_at']);
+            ->withPivot(['hired_at', 'left_at']);
     }
 
     /**
@@ -59,8 +59,8 @@ trait Manageables
     public function currentTagTeams()
     {
         return $this->morphedByMany(TagTeam::class, 'manageable')
-                    ->withPivot(['hired_at', 'left_at'])
-                    ->wherePivotNull('left_at');
+            ->withPivot(['hired_at', 'left_at'])
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -71,7 +71,7 @@ trait Manageables
     public function previousTagTeams()
     {
         return $this->morphedByMany(TagTeam::class, 'manageable')
-                    ->withPivot(['hired_at', 'left_at'])
-                    ->wherePivotNotNull('left_at');
+            ->withPivot(['hired_at', 'left_at'])
+            ->wherePivotNotNull('left_at');
     }
 }

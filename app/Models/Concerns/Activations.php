@@ -25,9 +25,9 @@ trait Activations
     public function currentActivation()
     {
         return $this->morphOne(Activation::class, 'activatable')
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->latestOfMany();
+            ->where('started_at', '<=', now())
+            ->whereNull('ended_at')
+            ->latestOfMany();
     }
 
     /**
@@ -38,7 +38,7 @@ trait Activations
     public function firstActivation()
     {
         return $this->morphOne(Activation::class, 'activatable')
-                    ->oldestOfMany('started_at');
+            ->oldestOfMany('started_at');
     }
 
     /**
@@ -49,9 +49,9 @@ trait Activations
     public function futureActivation()
     {
         return $this->morphOne(Activation::class, 'activatable')
-                    ->where('started_at', '>', now())
-                    ->whereNull('ended_at')
-                    ->latestOfMany();
+            ->where('started_at', '>', now())
+            ->whereNull('ended_at')
+            ->latestOfMany();
     }
 
     /**
@@ -62,8 +62,8 @@ trait Activations
     public function previousActivation()
     {
         return $this->morphOne(Activation::class, 'activatable')
-                    ->latest('ended_at')
-                    ->oldestOfMany();
+            ->latest('ended_at')
+            ->oldestOfMany();
     }
 
     /**
@@ -74,7 +74,7 @@ trait Activations
     public function previousActivations()
     {
         return $this->activations()
-                    ->whereNotNull('ended_at');
+            ->whereNotNull('ended_at');
     }
 
     /**

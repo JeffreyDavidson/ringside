@@ -57,7 +57,7 @@ class TitleQueryBuilder extends Builder
     public function deactivated()
     {
         return $this->whereDoesntHave('currentActivation')
-                    ->orWhereDoesntHave('previousActivations');
+            ->orWhereDoesntHave('previousActivations');
     }
 
     /**
@@ -114,9 +114,9 @@ class TitleQueryBuilder extends Builder
     public function static()
     {
         return $this->whereHas('previousActivation')
-                    ->whereDoesntHave('futureActivation')
-                    ->whereDoesntHave('currentActivation')
-                    ->whereDoesntHave('currentRetirement');
+            ->whereDoesntHave('futureActivation')
+            ->whereDoesntHave('currentActivation')
+            ->whereDoesntHave('currentRetirement');
     }
 
     /**

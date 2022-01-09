@@ -93,8 +93,8 @@ class RosterMemberQueryBuilder extends Builder
     public function released()
     {
         return $this->whereHas('previousEmployment')
-                    ->whereDoesntHave('currentEmployment')
-                    ->whereDoesntHave('currentRetirement');
+            ->whereDoesntHave('currentEmployment')
+            ->whereDoesntHave('currentRetirement');
     }
 
     /**
@@ -151,7 +151,7 @@ class RosterMemberQueryBuilder extends Builder
     public function unemployed()
     {
         return $this->whereDoesntHave('currentEmployment')
-                    ->orWhereDoesntHave('previousEmployments');
+            ->orWhereDoesntHave('previousEmployments');
     }
 
     /**

@@ -51,7 +51,7 @@ class EventMatch extends Model
     public function wrestlers()
     {
         return $this->morphedByMany(Wrestler::class, 'event_match_competitor', 'event_match_competitors')
-                    ->using(EventMatchCompetitor::class);
+            ->using(EventMatchCompetitor::class);
     }
 
     /**
@@ -62,6 +62,6 @@ class EventMatch extends Model
     public function tagTeams()
     {
         return $this->morphedByMany(Wrestler::class, 'event_match_competitor', 'event_match_competitors')
-                    ->using(EventMatchCompetitor::class);
+            ->using(EventMatchCompetitor::class);
     }
 }
