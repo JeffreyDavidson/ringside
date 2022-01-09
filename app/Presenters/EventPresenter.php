@@ -7,7 +7,7 @@ use App\Models\Event;
 class EventPresenter extends Presenter
 {
     /**
-     * @var Event $model
+     * @var Event
      */
     protected $model;
 

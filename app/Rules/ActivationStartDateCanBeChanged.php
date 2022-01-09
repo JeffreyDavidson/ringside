@@ -4,12 +4,11 @@ namespace App\Rules;
 
 use App\Models\Contracts\Activatable;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Database\Eloquent\Model;
 
 class ActivationStartDateCanBeChanged implements Rule
 {
     /**
-     * @var \App\Models\Contracts\Activatable $model
+     * @var \App\Models\Contracts\Activatable
      */
     protected $model;
 

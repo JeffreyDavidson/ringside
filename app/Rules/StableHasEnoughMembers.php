@@ -4,10 +4,14 @@ namespace App\Rules;
 
 class StableHasEnoughMembers
 {
-    /** @var int[]|null $tagTeamIds */
+    /**
+     * @var int[]|null
+     */
     private ?array $tagTeamIds = [];
 
-    /** @var int[]|null $wrestlerIds */
+    /**
+     * @var int[]|null
+     */
     private ?array $wrestlerIds = [];
 
     /**

@@ -67,7 +67,7 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, CanBe
     }
 
     /**
-     * Undocumented function
+     * Retrieve the event matches participated by the wrestler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
