@@ -115,6 +115,7 @@ $rules = [
     'standardize_not_equals' => true,
     'switch_case_semicolon_to_colon' => true,
     'switch_case_space' => true,
+    'switch_continue_to_break' => true,
     'ternary_operator_spaces' => true,
     'trailing_comma_in_multiline' => true,
     'trim_array_spaces' => true,
