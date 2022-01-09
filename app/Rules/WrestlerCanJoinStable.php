@@ -47,7 +47,7 @@ class WrestlerCanJoinStable implements Rule
     {
         $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->sole($value);
 
-        if ($wrestler->currentStable && $wrestler->currentStable->isNot($this->stable)) {
+        if ($wrestler->currentStable->isNot($this->stable)) {
             $this->setMessage('This wrestler is already a member of an active stable.');
 
             return false;
