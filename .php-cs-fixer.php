@@ -87,6 +87,7 @@ $rules = [
     'not_operator_with_successor_space' => true,
     'object_operator_without_whitespace' => true,
     'ordered_imports' => ['sort_algorithm' => 'alpha'],
+    'ordered_traits' => true,
     'phpdoc_add_missing_param_annotation' => [
         'only_untyped' => false,
     ],
