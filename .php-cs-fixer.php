@@ -99,6 +99,9 @@ $rules = [
     'phpdoc_trim' => true,
     'phpdoc_types' => true,
     'phpdoc_var_without_name' => true,
+    'return_type_declaration' => [
+        'space_before' => 'none',
+    ],
     'self_accessor' => true,
     'semicolon_after_instruction' => true,
     'short_scalar_cast' => true,
