@@ -73,6 +73,7 @@ $rules = [
     'no_spaces_after_function_name' => true,
     'no_spaces_around_offset' => true,
     'no_spaces_inside_parenthesis' => true,
+    'no_superfluous_elseif' => true,
     'no_trailing_comma_in_list_call' => true,
     'no_trailing_comma_in_singleline_array' => true,
     'no_trailing_whitespace' => true,
