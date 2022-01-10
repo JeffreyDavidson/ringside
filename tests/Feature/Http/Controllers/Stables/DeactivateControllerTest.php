@@ -74,6 +74,8 @@ class DeactivateControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nondeactivatableStableTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_deactivating_a_non_deactivatable_stable($factoryState)
     {

@@ -12,6 +12,7 @@ class RestoreController extends Controller
      * Restores a title.
      *
      * @param  int $titleId
+     * @param TitleService $titleService
      *
      * @return \Illuminate\Http\RedirectResponse
      */

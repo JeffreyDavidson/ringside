@@ -11,6 +11,7 @@ class Height
 
     /**
      * @param string
+     * @param string $height
      */
     public function __construct(string $height)
     {

@@ -83,6 +83,8 @@ class SuspendControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonsuspendableWrestlerTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_suspending_a_non_suspendable_wrestler($factoryState)
     {

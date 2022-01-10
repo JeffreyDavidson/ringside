@@ -64,6 +64,7 @@ class TitlePolicy
      * Determine whether the user can retire a title.
      *
      * @param  \App\Models\User  $user
+     * @param Title $title
      *
      * @return bool
      */
@@ -76,6 +77,7 @@ class TitlePolicy
      * Determine whether the user can unretire a title.
      *
      * @param  \App\Models\User  $user
+     * @param Title $title
      *
      * @return bool
      */

@@ -66,6 +66,8 @@ class ReinstateControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonreinstatableManagerTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_reinstating_a_non_reinstatable_manager($factoryState)
     {

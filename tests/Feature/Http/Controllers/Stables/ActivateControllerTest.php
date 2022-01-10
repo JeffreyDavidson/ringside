@@ -138,6 +138,8 @@ class ActivateControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonactivatableStableTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_activating_a_non_activatable_stable($factoryState)
     {

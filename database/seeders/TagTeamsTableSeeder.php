@@ -13,6 +13,8 @@ class TagTeamsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * @param mixed|null $dateToStart
+     *
      * @return void
      */
     public function run($dateToStart = null)

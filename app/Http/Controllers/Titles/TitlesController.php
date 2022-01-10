@@ -38,6 +38,8 @@ class TitlesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Title $title
+     *
      * @return \Illuminate\View\View
      */
     public function create(Title $title)
@@ -66,6 +68,8 @@ class TitlesController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @param Title $title
      *
      * @return \Illuminate\View\View
      */

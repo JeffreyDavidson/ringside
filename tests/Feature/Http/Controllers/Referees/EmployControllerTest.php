@@ -109,6 +109,8 @@ class EmployControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonemployableRefereeTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_employing_a_non_employable_referee($factoryState)
     {

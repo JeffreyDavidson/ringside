@@ -119,6 +119,8 @@ class RetireControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonretirableWrestlerTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_an_exception_for_retiring_a_non_retirable_wrestler($factoryState)
     {

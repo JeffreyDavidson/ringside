@@ -64,6 +64,8 @@ class ReinstateControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonreinstatableRefereeTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_reinstating_a_non_reinstatable_referee($factoryState)
     {

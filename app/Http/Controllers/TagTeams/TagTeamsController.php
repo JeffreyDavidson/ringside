@@ -39,6 +39,8 @@ class TagTeamsController extends Controller
     /**
      * Show the form for creating a new tag team.
      *
+     * @param TagTeam $tagTeam
+     *
      * @return \Illuminate\View\View
      */
     public function create(TagTeam $tagTeam)

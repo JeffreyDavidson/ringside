@@ -38,6 +38,8 @@ class StablesController extends Controller
     /**
      * Show the form for creating a stable.
      *
+     * @param Stable $stable
+     *
      * @return \Illuminate\View\View
      */
     public function create(Stable $stable)

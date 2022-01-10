@@ -69,6 +69,8 @@ class UnretireControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonunretirableStableTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_unretiring_a_non_unretirable_stable($factoryState)
     {

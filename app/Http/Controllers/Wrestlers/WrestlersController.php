@@ -38,6 +38,8 @@ class WrestlersController extends Controller
     /**
      * Show the form for creating a new wrestler.
      *
+     * @param Wrestler $wrestler
+     *
      * @return \Illuminate\View\View
      */
     public function create(Wrestler $wrestler)

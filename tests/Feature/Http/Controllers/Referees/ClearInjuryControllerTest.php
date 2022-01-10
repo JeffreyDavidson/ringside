@@ -66,6 +66,8 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      * @dataProvider nonclearableRefereeTypes
+     *
+     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_clearing_an_injury_from_a_non_clearable_referee($factoryState)
     {

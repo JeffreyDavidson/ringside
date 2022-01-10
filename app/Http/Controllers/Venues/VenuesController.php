@@ -38,6 +38,8 @@ class VenuesController extends Controller
     /**
      * Show the form for creating a venue.
      *
+     * @param Venue $venue
+     *
      * @return \Illuminate\View\View
      */
     public function create(Venue $venue)
