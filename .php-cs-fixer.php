@@ -35,6 +35,7 @@ $rules = [
     'include' => true,
     'increment_style' => ['style' => 'post'],
     'indentation_type' => true,
+    'is_null' => true,
     'linebreak_after_opening_tag' => true,
     'line_ending' => true,
     'list_syntax' => [

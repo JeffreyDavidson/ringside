@@ -45,7 +45,7 @@ class WrestlerJoinedStableInTagTeam
 
         $wrestlerIdsAddedFromTagTeams = collect();
 
-        if (is_null($this->tagTeamIds) || count($this->tagTeamIds) == 0) {
+        if (null === $this->tagTeamIds || count($this->tagTeamIds) == 0) {
             return false;
         }
 

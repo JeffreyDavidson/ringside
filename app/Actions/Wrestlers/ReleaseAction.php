@@ -31,7 +31,7 @@ class ReleaseAction extends BaseWrestlerAction
         $this->wrestlerRepository->release($wrestler, $releaseDate);
         $wrestler->save();
 
-        if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
+        if (null !== $wrestler->currentTagTeam && $wrestler->currentTagTeam->exists()) {
             $wrestler->currentTagTeam->save();
             $this->wrestlerRepository->removeFromCurrentTagTeam($wrestler, $releaseDate);
         }

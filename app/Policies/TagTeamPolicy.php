@@ -152,7 +152,7 @@ class TagTeamPolicy
      */
     public function view(User $user, TagTeam $tagTeam)
     {
-        if (! is_null($tagTeam->user) && $tagTeam->user->is($user)) {
+        if (null !== $tagTeam->user && $tagTeam->user->is($user)) {
             return true;
         }
 

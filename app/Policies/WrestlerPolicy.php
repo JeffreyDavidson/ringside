@@ -177,7 +177,7 @@ class WrestlerPolicy
      */
     public function view(User $user, Wrestler $wrestler)
     {
-        if (! is_null($wrestler->user) && $wrestler->user->is($user)) {
+        if (null !== $wrestler->user && $wrestler->user->is($user)) {
             return true;
         }
 
