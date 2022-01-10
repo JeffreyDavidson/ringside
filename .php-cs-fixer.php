@@ -20,11 +20,27 @@ $rules = [
     'class_attributes_separation' => [
         'elements' => ['method' => 'one'],
     ],
-    'class_definition' => true,
+    'clean_namespace' => true,
+    'class_definition' => [
+        'multi_line_extends_each_single_line' => false,
+        'single_item_single_line' => true,
+        'single_line' => true,
+    ],
+    'combine_consecutive_issets' => true,
+    'compact_nullable_typehint' => true,
     'concat_space' => [
         'spacing' => 'none',
     ],
-    'declare_equal_normalize' => true,
+    'constant_case' => [
+        'case' => 'lower',
+    ],
+    'control_structure_continuation_position' => [
+        'position' => 'same_line',
+    ],
+    'declare_equal_normalize' => [
+        'space' => 'none',
+    ],
+    'declare_parentheses' => true,
     'elseif' => true,
     'encoding' => true,
     'explicit_string_variable' => true,
