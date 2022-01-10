@@ -87,6 +87,7 @@ $rules = [
     'not_operator_with_successor_space' => true,
     'object_operator_without_whitespace' => true,
     'ordered_imports' => ['sort_algorithm' => 'alpha'],
+    'phpdoc_scalar' => true,
     'phpdoc_indent' => true,
     'phpdoc_line_span' => true,
     'phpdoc_no_access' => true,
