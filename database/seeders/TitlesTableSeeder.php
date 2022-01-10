@@ -86,9 +86,7 @@ class TitlesTableSeeder extends Seeder
             $eNum++;
         }
 
-        /*
-         * We need to create 1 title for the the future activation.
-         */
+        // We need to create 1 title for the the future activation.
         TitleFactory::new()
             ->futureActivation()
             ->create(['name' => 'Title '.$eNum]);
