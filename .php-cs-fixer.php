@@ -49,6 +49,7 @@ $rules = [
     ],
     'native_function_casing' => true,
     'no_alias_functions' => true,
+    'no_alternative_syntax' => true,
     'no_blank_lines_after_class_opening' => true,
     'no_blank_lines_after_phpdoc' => true,
     'no_closing_tag' => true,
