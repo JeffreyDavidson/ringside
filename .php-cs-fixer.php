@@ -112,6 +112,7 @@ $rules = [
     ],
     'single_line_throw' => true,
     'single_quote' => true,
+    'single_space_after_construct' => true,
     'space_after_semicolon' => true,
     'standardize_increment' => true,
     'standardize_not_equals' => true,
