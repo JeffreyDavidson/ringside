@@ -13,6 +13,7 @@ class ReleaseAction extends BaseManagerAction
      * Release a manager.
      *
      * @param  \App\Models\Manager  $manager
+     *
      * @return void
      */
     public function handle(Manager $manager): void

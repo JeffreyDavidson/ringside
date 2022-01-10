@@ -13,6 +13,7 @@ abstract class RosterMember extends Model implements Employable
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
+     *
      * @return \App\Builders\RosterMemberQueryBuilder<\App\Models\RosterMember>
      */
     public function newEloquentBuilder($query)
@@ -182,6 +183,7 @@ abstract class RosterMember extends Model implements Employable
      * Get the model's first employment date.
      *
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return bool
      */
     public function employedOn(Carbon $employmentDate)
@@ -207,6 +209,7 @@ abstract class RosterMember extends Model implements Employable
      * Undocumented function.
      *
      * @param  \Carbon\Carbon|null $startDate
+     *
      * @return bool
      */
     public function employedBefore(Carbon $startDate = null)

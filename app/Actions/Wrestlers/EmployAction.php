@@ -13,6 +13,7 @@ class EmployAction extends BaseWrestlerAction
      * Employ a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return void
      */
     public function handle(Wrestler $wrestler): void

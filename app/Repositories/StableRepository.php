@@ -15,6 +15,7 @@ class StableRepository
      * Create a new stable with the given data.
      *
      * @param  \App\DataTransferObjects\StableData $stableData
+     *
      * @return \App\Models\Stable
      */
     public function create(StableData $stableData)
@@ -29,6 +30,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable $stable
      * @param  \App\DataTransferObjects\StableData $stableData
+     *
      * @return \App\Models\Stable $stable
      */
     public function update(Stable $stable, StableData $stableData)
@@ -44,6 +46,7 @@ class StableRepository
      * Delete a given stable.
      *
      * @param  \App\Models\Stable $stable
+     *
      * @return void
      */
     public function delete(Stable $stable)
@@ -55,6 +58,7 @@ class StableRepository
      * Restore a given stable.
      *
      * @param  \App\Models\Stable $stable
+     *
      * @return void
      */
     public function restore(Stable $stable)
@@ -67,6 +71,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable $stable
      * @param  \Carbon\Carbon $activationDate
+     *
      * @return \App\Models\Stable $stable
      */
     public function activate(Stable $stable, Carbon $activationDate)
@@ -81,6 +86,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable $stable
      * @param  \Carbon\Carbon $deactivationDate
+     *
      * @return \App\Models\Stable $stable
      */
     public function deactivate(Stable $stable, Carbon $deactivationDate)
@@ -95,6 +101,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable $stable
      * @param  \Carbon\Carbon $retirementDate
+     *
      * @return \App\Models\Stable $stable
      */
     public function retire(Stable $stable, Carbon $retirementDate)
@@ -109,6 +116,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable $stable
      * @param  \Carbon\Carbon $unretireDate
+     *
      * @return \App\Models\Stable $stable
      */
     public function unretire(Stable $stable, Carbon $unretireDate)
@@ -123,6 +131,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable $stable
      * @param  \Carbon\Carbon $disassembleDate
+     *
      * @return \App\Models\Stable $stable
      */
     public function disassemble(Stable $stable, Carbon $disassembleDate)
@@ -144,6 +153,7 @@ class StableRepository
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection  $wrestlers
      * @param  \Carbon\Carbon  $joinDate
+     *
      * @return void
      */
     public function addWrestlers(Stable $stable, Collection $wrestlers, Carbon $joinDate)
@@ -159,6 +169,7 @@ class StableRepository
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection  $tagTeams
      * @param  \Carbon\Carbon  $joinDate
+     *
      * @return void
      */
     public function addTagTeams(Stable $stable, Collection $tagTeams, Carbon $joinDate)
@@ -174,6 +185,7 @@ class StableRepository
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection $currentWrestlers
      * @param  \Carbon\Carbon $removalDate
+     *
      * @return void
      */
     public function removeWrestlers(Stable $stable, Collection $currentWrestlers, Carbon $removalDate)
@@ -189,6 +201,7 @@ class StableRepository
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection $currentTagTeams
      * @param  \Carbon\Carbon $removalDate
+     *
      * @return void
      */
     public function removeTagTeams(Stable $stable, Collection $currentTagTeams, Carbon $removalDate)

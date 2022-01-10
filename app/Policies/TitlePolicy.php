@@ -14,6 +14,7 @@ class TitlePolicy
      * Determine whether the user can create a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function create(User $user)
@@ -25,6 +26,7 @@ class TitlePolicy
      * Determine whether the user can update a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function update(User $user)
@@ -37,6 +39,7 @@ class TitlePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Title  $title
+     *
      * @return bool
      */
     public function delete(User $user, Title $title)
@@ -49,6 +52,7 @@ class TitlePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Title  $title
+     *
      * @return bool
      */
     public function restore(User $user, Title $title)
@@ -60,6 +64,7 @@ class TitlePolicy
      * Determine whether the user can retire a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function retire(User $user, Title $title)
@@ -71,6 +76,7 @@ class TitlePolicy
      * Determine whether the user can unretire a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function unretire(User $user, Title $title)
@@ -82,6 +88,7 @@ class TitlePolicy
      * Determine whether the user can activate a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function activate(User $user)
@@ -93,6 +100,7 @@ class TitlePolicy
      * Determine whether the user can deactivate a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function deactivate(User $user)
@@ -104,6 +112,7 @@ class TitlePolicy
      * Determine whether the user can view a list of titles.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function viewList(User $user)
@@ -115,6 +124,7 @@ class TitlePolicy
      * Determine whether the user can view a title.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function view(User $user)

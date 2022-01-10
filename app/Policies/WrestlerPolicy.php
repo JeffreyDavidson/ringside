@@ -14,6 +14,7 @@ class WrestlerPolicy
      * Determine whether the user can create wrestlers.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function create(User $user)
@@ -25,6 +26,7 @@ class WrestlerPolicy
      * Determine whether the user can update a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function update(User $user)
@@ -36,6 +38,7 @@ class WrestlerPolicy
      * Determine whether the user can delete a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function delete(User $user)
@@ -47,6 +50,7 @@ class WrestlerPolicy
      * Determine whether the user can restore a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function restore(User $user)
@@ -58,6 +62,7 @@ class WrestlerPolicy
      * Determine whether the user can retire a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function retire(User $user)
@@ -69,6 +74,7 @@ class WrestlerPolicy
      * Determine whether the user can unretire a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function unretire(User $user)
@@ -80,6 +86,7 @@ class WrestlerPolicy
      * Determine whether the user can suspend a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function suspend(User $user)
@@ -91,6 +98,7 @@ class WrestlerPolicy
      * Determine whether the user can reinstate a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function reinstate(User $user)
@@ -102,6 +110,7 @@ class WrestlerPolicy
      * Determine whether the user can injure a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function injure(User $user)
@@ -114,6 +123,7 @@ class WrestlerPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return bool
      */
     public function clearFromInjury(User $user, Wrestler $wrestler)
@@ -125,6 +135,7 @@ class WrestlerPolicy
      * Determine whether the user can employ a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function employ(User $user)
@@ -136,6 +147,7 @@ class WrestlerPolicy
      * Determine whether the user can release a wrestler.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function release(User $user)
@@ -147,6 +159,7 @@ class WrestlerPolicy
      * Determine whether the user can view a list of wrestlers.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function viewList(User $user)
@@ -159,6 +172,7 @@ class WrestlerPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return bool
      */
     public function view(User $user, Wrestler $wrestler)

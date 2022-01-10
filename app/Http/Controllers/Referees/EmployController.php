@@ -14,6 +14,7 @@ class EmployController extends Controller
      *
      * @param  \App\Models\Referee  $referee
      * @param  \App\Actions\Referees\EmployAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Referee $referee, EmployAction $action)

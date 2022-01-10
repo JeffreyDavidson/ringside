@@ -14,6 +14,7 @@ class InjureController extends Controller
      *
      * @param  \App\Models\Manager  $manager
      * @param  \App\Actions\Managers\InjureAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Manager $manager, InjureAction $action)

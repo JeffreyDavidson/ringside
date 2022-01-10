@@ -54,6 +54,7 @@ class TitlesController extends Controller
      *
      * @param  \App\Http\Requests\Titles\StoreRequest  $request
      * @param  \App\DataTransferObjects\TitleData $titleData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request, TitleData $titleData)
@@ -81,6 +82,7 @@ class TitlesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Title  $title
+     *
      * @return \Illuminate\View\View
      */
     public function edit(Title $title)
@@ -98,6 +100,7 @@ class TitlesController extends Controller
      * @param  \App\Http\Requests\Titles\UpdateRequest  $request
      * @param  \App\Models\Title  $title
      * @param  \App\DataTransferObjects\TitleData $titleData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Title $title, TitleData $titleData)
@@ -111,6 +114,7 @@ class TitlesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Title  $title
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Title $title)

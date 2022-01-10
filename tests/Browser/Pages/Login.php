@@ -20,6 +20,7 @@ class Login extends Page
      * Assert that the browser is on the page.
      *
      * @param  Browser  $browser
+     *
      * @return void
      */
     public function assert(Browser $browser)
@@ -45,6 +46,7 @@ class Login extends Page
      * @param  \Laravel\Dusk\Browser  $browser
      * @param  string  $email
      * @param  string  $password
+     *
      * @return void
      */
     public function fillInLoginForm(Browser $browser, $email, $password)

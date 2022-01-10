@@ -14,6 +14,7 @@ class UnretireController extends Controller
      *
      * @param  \App\Models\Title $title
      * @param  \App\Actions\Titles\UnretireAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Title $title, UnretireAction $action)

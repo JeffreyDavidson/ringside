@@ -14,6 +14,7 @@ class DeactivateController extends Controller
      *
      * @param  \App\Models\Title  $title
      * @param  \App\Actions\Titles\DeactivateAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Title $title, DeactivateAction $action)

@@ -14,6 +14,7 @@ class ClearInjuryController extends Controller
      *
      * @param  \App\Models\Wrestler  $wrestler
      * @param  \App\Actions\Wrestlers\ClearInjuryAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Wrestler $wrestler, ClearInjuryAction $action)

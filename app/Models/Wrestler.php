@@ -59,6 +59,7 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, CanBe
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
+     *
      * @return \App\Builders\WrestlerQueryBuilder<\App\Models\Wrestler>
      */
     public function newEloquentBuilder($query)

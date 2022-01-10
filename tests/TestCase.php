@@ -41,6 +41,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  string  $trait
      * @param  mixed   $class
+     *
      * @return void
      */
     public function assertUsesTrait($trait, $class)

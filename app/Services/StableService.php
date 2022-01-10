@@ -31,6 +31,7 @@ class StableService
      * Create a stable with given data.
      *
      * @param  \App\DataTransferObjects\StableData $stableData
+     *
      * @return \App\Models\Stable $stable
      */
     public function create(StableData $stableData)
@@ -51,6 +52,7 @@ class StableService
      *
      * @param  \App\Models\Stable $stable
      * @param  \App\DataTransferObjects\StableData $stableData
+     *
      * @return \App\Models\Stable $stable
      */
     public function update(Stable $stable, StableData $stableData)
@@ -70,6 +72,7 @@ class StableService
      * Delete a given stable.
      *
      * @param  \App\Models\Stable $stable
+     *
      * @return void
      */
     public function delete(Stable $stable)
@@ -81,6 +84,7 @@ class StableService
      * Restore a given stable.
      *
      * @param  \App\Models\Stable $stable
+     *
      * @return void
      */
     public function restore(Stable $stable)
@@ -95,6 +99,7 @@ class StableService
      * @param  \Illuminate\Support\Collection|null $wrestlers
      * @param  \Illuminate\Support\Collection|null $tagTeams
      * @param  \Carbon\Carbon|null $joinedDate
+     *
      * @return \App\Models\Stable $stable
      */
     private function addMembers(
@@ -122,6 +127,7 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @param  \Illuminate\Support\Collection $wrestlers
      * @param  \Illuminate\Support\Collection $tagTeams
+     *
      * @return \App\Models\Stable $stable
      */
     private function updateMembers(Stable $stable, Collection $wrestlers, Collection $tagTeams)
@@ -158,6 +164,7 @@ class StableService
      *
      * @param  \App\Models\Stable $stable
      * @param  \Carbon\Carbon $activationDate
+     *
      * @return \App\Models\Stable $stable
      */
     public function activateOrUpdateActivation(Stable $stable, Carbon $activationDate)
@@ -179,6 +186,7 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @param  array $tagTeamIds
      * @param  string $joinedDate
+     *
      * @return void
      */
     public function addTagTeams($stable, $tagTeamIds, $joinedDate)
@@ -193,6 +201,7 @@ class StableService
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection  $wrestlers
+     *
      * @return void
      */
     public function updateWrestlers(Stable $stable, Collection $wrestlers)

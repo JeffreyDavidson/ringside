@@ -28,7 +28,9 @@ abstract class Presenter
      * Undocumented function.
      *
      * @param  string $property
+     *
      * @return mixed
+     *
      * @throws \Exception
      */
     public function __get(string $property)

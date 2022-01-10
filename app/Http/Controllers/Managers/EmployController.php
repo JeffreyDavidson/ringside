@@ -14,6 +14,7 @@ class EmployController extends Controller
      *
      * @param  \App\Models\Manager  $manager
      * @param  \App\Actions\Managers\EmployAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Manager $manager, EmployAction $action)

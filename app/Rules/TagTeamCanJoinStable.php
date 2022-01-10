@@ -28,6 +28,7 @@ class TagTeamCanJoinStable implements Rule
      *
      * @param  \App\Models\Stable $stable
      * @param  string|null $startedAt
+     *
      * @return void
      */
     public function __construct(Stable $stable, string $startedAt = null)
@@ -41,6 +42,7 @@ class TagTeamCanJoinStable implements Rule
      *
      * @param  string  $attribute
      * @param  mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -68,6 +70,7 @@ class TagTeamCanJoinStable implements Rule
      * Set the message of the validation error.
      *
      * @param  string $message
+     *
      * @return void
      */
     protected function setMessage(string $message)

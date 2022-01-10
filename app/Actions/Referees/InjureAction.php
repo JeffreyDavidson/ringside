@@ -13,6 +13,7 @@ class InjureAction extends BaseRefereeAction
      * Injure a referee.
      *
      * @param  \App\Models\Referee  $referee
+     *
      * @return void
      */
     public function handle(Referee $referee): void

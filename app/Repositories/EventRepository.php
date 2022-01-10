@@ -11,6 +11,7 @@ class EventRepository
      * Create a new event with the given data.
      *
      * @param  \App\DataTransferObjects\EventData $eventData
+     *
      * @return \App\Models\Event
      */
     public function create(EventData $eventData)
@@ -28,6 +29,7 @@ class EventRepository
      *
      * @param  \App\Models\Event $event
      * @param  \App\DataTransferObjects\EventData $eventData
+     *
      * @return \App\Models\Event $event
      */
     public function update(Event $event, EventData $eventData)
@@ -46,6 +48,7 @@ class EventRepository
      * Delete a given event.
      *
      * @param  \App\Models\Event $event
+     *
      * @return void
      */
     public function delete(Event $event)
@@ -57,6 +60,7 @@ class EventRepository
      * Restore a given event.
      *
      * @param  \App\Models\Event $event
+     *
      * @return void
      */
     public function restore(Event $event)

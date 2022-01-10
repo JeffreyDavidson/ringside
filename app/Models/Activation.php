@@ -40,6 +40,7 @@ class Activation extends Model
      * Determine an activation started before a given date.
      *
      * @param  string $date
+     *
      * @return bool
      */
     public function startedBefore($date)

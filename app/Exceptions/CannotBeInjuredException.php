@@ -15,6 +15,7 @@ class CannotBeInjuredException extends Exception
      * Render the exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function render($request)

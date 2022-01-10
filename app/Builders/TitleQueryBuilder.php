@@ -42,6 +42,7 @@ class TitleQueryBuilder extends Builder
      * Scope a query to order by the model's current retirement date.
      *
      * @param  string $direction
+     *
      * @return \App\Builders\TitleQueryBuilder
      */
     public function orderByCurrentRetiredAtDate($direction = 'asc')
@@ -79,6 +80,7 @@ class TitleQueryBuilder extends Builder
      * Scope a query to order by the models current deactivation date.
      *
      * @param  string $direction
+     *
      * @return \App\Builders\TitleQueryBuilder
      */
     public function orderByLastDeactivationDate(string $direction = 'asc')
@@ -148,6 +150,7 @@ class TitleQueryBuilder extends Builder
      * Scope a query to order by the models first activation date.
      *
      * @param  string $direction
+     *
      * @return \App\Builders\TitleQueryBuilder
      */
     public function orderByFirstActivatedAtDate(string $direction = 'asc')

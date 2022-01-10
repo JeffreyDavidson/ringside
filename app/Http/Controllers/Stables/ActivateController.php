@@ -14,6 +14,7 @@ class ActivateController extends Controller
      *
      * @param  \App\Models\Stable  $stable
      * @param  \App\Actions\Stables\ActivateAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Stable $stable, ActivateAction $action)

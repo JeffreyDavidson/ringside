@@ -30,6 +30,7 @@ class RefereeService
      * Create a referee with given data.
      *
      * @param  \App\DataTransferObjects\RefereeData $refereeData
+     *
      * @return \App\Models\Referee $referee
      */
     public function create(RefereeData $refereeData)
@@ -48,6 +49,7 @@ class RefereeService
      *
      * @param  \App\Models\Referee $referee
      * @param  \App\DataTransferObjects\RefereeData $refereeData
+     *
      * @return \App\Models\Referee $referee
      */
     public function update(Referee $referee, RefereeData $refereeData)
@@ -66,6 +68,7 @@ class RefereeService
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function employOrUpdateEmployment(Referee $referee, Carbon $employmentDate)
@@ -89,6 +92,7 @@ class RefereeService
      * Delete a given referee.
      *
      * @param  \App\Models\Referee $referee
+     *
      * @return void
      */
     public function delete(Referee $referee)
@@ -100,6 +104,7 @@ class RefereeService
      * Restore a given referee.
      *
      * @param  \App\Models\Referee $referee
+     *
      * @return void
      */
     public function restore(Referee $referee)

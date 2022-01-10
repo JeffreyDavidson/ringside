@@ -14,6 +14,7 @@ class EmployController extends Controller
      *
      * @param  \App\Models\Wrestler  $wrestler
      * @param  \App\Actions\Wrestlers\EmployAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Wrestler $wrestler, EmployAction $action)

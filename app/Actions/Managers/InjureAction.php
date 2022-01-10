@@ -13,6 +13,7 @@ class InjureAction extends BaseManagerAction
      * Injure a manager.
      *
      * @param  \App\Models\Manager  $manager
+     *
      * @return void
      */
     public function handle(Manager $manager): void

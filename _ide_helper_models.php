@@ -21,6 +21,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $activatable
+     *
      * @method static \Database\Factories\ActivationFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Activation newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Activation newQuery()
@@ -50,6 +51,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $employable
+     *
      * @method static \Database\Factories\EmploymentFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Employment newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Employment newQuery()
@@ -83,6 +85,7 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventMatch[] $matches
      * @property-read int|null $matches_count
      * @property-read \App\Models\Venue|null $venue
+     *
      * @method static \Database\Factories\EventFactory factory(...$parameters)
      * @method static \App\Builders\EventQueryBuilder|Event newModelQuery()
      * @method static \App\Builders\EventQueryBuilder|Event newQuery()
@@ -126,6 +129,7 @@ namespace App\Models{
      * @property-read int|null $titles_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
      * @property-read int|null $wrestlers_count
+     *
      * @method static \Database\Factories\EventMatchFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatch newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatch newQuery()
@@ -147,6 +151,7 @@ namespace App\Models{
      * App\Models\EventMatchCompetitor.
      *
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $competitor
+     *
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatchCompetitor newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatchCompetitor newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatchCompetitor query()
@@ -168,6 +173,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $injurable
+     *
      * @method static \Database\Factories\InjuryFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Injury newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Injury newQuery()
@@ -243,6 +249,7 @@ namespace App\Models{
      * @property-read \App\Models\User|null $user
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
      * @property-read int|null $wrestlers_count
+     *
      * @method static \App\Builders\ManagerQueryBuilder|Manager available()
      * @method static \App\Builders\ManagerQueryBuilder|Manager bookable()
      * @method static \App\Builders\ManagerQueryBuilder|Manager employed()
@@ -292,6 +299,7 @@ namespace App\Models{
      * @property string $slug
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     *
      * @method static \Illuminate\Database\Eloquent\Builder|MatchDecision newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|MatchDecision newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|MatchDecision query()
@@ -316,6 +324,7 @@ namespace App\Models{
      * @property int|null $number_of_sides
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     *
      * @method static \Database\Factories\MatchTypeFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|MatchType newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|MatchType newQuery()
@@ -371,6 +380,7 @@ namespace App\Models{
      * @property-read int|null $retirements_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
      * @property-read int|null $suspensions_count
+     *
      * @method static \App\Builders\RefereeQueryBuilder|Referee bookable()
      * @method static \App\Builders\RefereeQueryBuilder|Referee employed()
      * @method static \Database\Factories\RefereeFactory factory(...$parameters)
@@ -421,6 +431,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $retiree
+     *
      * @method static \Database\Factories\RetirementFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Retirement newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Retirement newQuery()
@@ -477,6 +488,7 @@ namespace App\Models{
      * @property-read \App\Models\User|null $user
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
      * @property-read int|null $wrestlers_count
+     *
      * @method static \App\Builders\StableQueryBuilder|Stable active()
      * @method static \App\Builders\StableQueryBuilder|Stable deactivated()
      * @method static \Database\Factories\StableFactory factory(...$parameters)
@@ -534,6 +546,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $suspendable
+     *
      * @method static \Database\Factories\SuspensionFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Suspension newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Suspension newQuery()
@@ -605,6 +618,7 @@ namespace App\Models{
      * @property-read \App\Models\User|null $user
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
      * @property-read int|null $wrestlers_count
+     *
      * @method static \App\Builders\TagTeamQueryBuilder|TagTeam bookable()
      * @method static \App\Builders\TagTeamQueryBuilder|TagTeam employed()
      * @method static \Database\Factories\TagTeamFactory factory(...$parameters)
@@ -665,6 +679,7 @@ namespace App\Models{
      * @property-read int|null $previous_retirements_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
      * @property-read int|null $retirements_count
+     *
      * @method static \App\Builders\TitleQueryBuilder|Title active()
      * @method static \App\Builders\TitleQueryBuilder|Title competable()
      * @method static \App\Builders\TitleQueryBuilder|Title deactivated()
@@ -714,6 +729,7 @@ namespace App\Models{
      * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
      * @property-read int|null $notifications_count
      * @property-read \App\Models\Wrestler|null $wrestler
+     *
      * @method static \Database\Factories\UserFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -748,6 +764,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $deleted_at
+     *
      * @method static \Database\Factories\VenueFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Venue newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Venue newQuery()
@@ -831,6 +848,7 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
      * @property-read int|null $tag_teams_count
      * @property-read \App\Models\User|null $user
+     *
      * @method static \App\Builders\WrestlerQueryBuilder|Wrestler bookable()
      * @method static \App\Builders\WrestlerQueryBuilder|Wrestler employed()
      * @method static \Database\Factories\WrestlerFactory factory(...$parameters)

@@ -57,6 +57,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
+     *
      * @return \App\Builders\TitleQueryBuilder<\App\Models\Title>
      */
     public function newEloquentBuilder($query): TitleQueryBuilder

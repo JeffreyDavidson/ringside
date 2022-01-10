@@ -14,6 +14,7 @@ class RetireController extends Controller
      *
      * @param  \App\Models\Stable  $stable
      * @param  \App\Actions\Stables\RetireAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Stable $stable, RetireAction $action)

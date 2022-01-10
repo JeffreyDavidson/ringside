@@ -13,6 +13,7 @@ class RetireAction extends BaseTitleAction
      * Retire a title.
      *
      * @param  \App\Models\Title  $title
+     *
      * @return void
      */
     public function handle(Title $title): void

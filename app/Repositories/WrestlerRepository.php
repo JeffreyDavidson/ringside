@@ -12,6 +12,7 @@ class WrestlerRepository
      * Create a new wrestler with the given data.
      *
      * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
+     *
      * @return \App\Models\Wrestler
      */
     public function create(WrestlerData $wrestlerData)
@@ -30,6 +31,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function update(Wrestler $wrestler, WrestlerData $wrestlerData)
@@ -49,6 +51,7 @@ class WrestlerRepository
      * Delete a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
+     *
      * @return void
      */
     public function delete(Wrestler $wrestler)
@@ -60,6 +63,7 @@ class WrestlerRepository
      * Restore a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
+     *
      * @return void
      */
     public function restore(Wrestler $wrestler)
@@ -72,6 +76,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function employ(Wrestler $wrestler, Carbon $employmentDate)
@@ -86,6 +91,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $releaseDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function release(Wrestler $wrestler, Carbon $releaseDate)
@@ -100,6 +106,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $injureDate
+     *
      * @return \App\Models\Wrestler
      */
     public function injure(Wrestler $wrestler, Carbon $injureDate)
@@ -114,6 +121,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $recoveryDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function clearInjury(Wrestler $wrestler, Carbon $recoveryDate)
@@ -128,6 +136,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $retirementDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function retire(Wrestler $wrestler, Carbon $retirementDate)
@@ -142,6 +151,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $unretireDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function unretire(Wrestler $wrestler, Carbon $unretireDate)
@@ -156,6 +166,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $suspensionDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function suspend(Wrestler $wrestler, Carbon $suspensionDate)
@@ -170,6 +181,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $reinstateDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function reinstate(Wrestler $wrestler, Carbon $reinstateDate)
@@ -184,6 +196,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\Wrestler $wrestler
      */
     public function updateEmployment(Wrestler $wrestler, Carbon $employmentDate)
@@ -198,6 +211,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon  $removalDate
+     *
      * @return void
      */
     public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate)

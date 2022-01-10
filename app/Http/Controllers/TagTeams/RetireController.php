@@ -14,6 +14,7 @@ class RetireController extends Controller
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\Actions\TagTeams\RetireAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(TagTeam $tagTeam, RetireAction $action)

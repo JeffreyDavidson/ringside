@@ -11,6 +11,7 @@ class RefereeObserver
      * Handle the Referee "saved" event.
      *
      * @param  \App\Models\Referee $referee
+     *
      * @return void
      */
     public function saving(Referee $referee)

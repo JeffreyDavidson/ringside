@@ -29,6 +29,7 @@ class VenueService
      * Create a new venue with given data.
      *
      * @param  \App\DataTransferObjects\VenueData $venueData
+     *
      * @return \App\Models\Venue $venue
      */
     public function create(VenueData $venueData)
@@ -43,6 +44,7 @@ class VenueService
      *
      * @param  \App\Models\Venue $venue
      * @param  \App\DataTransferObjects\VenueData $venueData
+     *
      * @return \App\Models\Venue $venue
      */
     public function update(Venue $venue, VenueData $venueData)
@@ -56,6 +58,7 @@ class VenueService
      * Delete a given venue.
      *
      * @param  \App\Models\Venue $venue
+     *
      * @return void
      */
     public function delete(Venue $venue)
@@ -67,6 +70,7 @@ class VenueService
      * Restore a given venue.
      *
      * @param  \App\Models\Venue $venue
+     *
      * @return void
      */
     public function restore(Venue $venue)

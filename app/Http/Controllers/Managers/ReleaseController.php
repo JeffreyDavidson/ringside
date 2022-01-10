@@ -14,6 +14,7 @@ class ReleaseController extends Controller
      *
      * @param  \App\Models\Manager  $manager
      * @param  \App\Actions\Managers\ReleaseAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Manager $manager, ReleaseAction $action)

@@ -14,6 +14,7 @@ class StablePolicy
      * Determine whether the user can create stables.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function create(User $user)
@@ -25,6 +26,7 @@ class StablePolicy
      * Determine whether the user can update a stable.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function update(User $user)
@@ -36,6 +38,7 @@ class StablePolicy
      * Determine whether the user can delete a stable.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function delete(User $user)
@@ -47,6 +50,7 @@ class StablePolicy
      * Determine whether the user can restore a deleted stable.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function restore(User $user)
@@ -59,6 +63,7 @@ class StablePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Stable  $stable
+     *
      * @return bool
      */
     public function activate(User $user, Stable $stable)
@@ -71,6 +76,7 @@ class StablePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Stable  $stable
+     *
      * @return bool
      */
     public function deactivate(User $user, Stable $stable)
@@ -83,6 +89,7 @@ class StablePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Stable  $stable
+     *
      * @return bool
      */
     public function retire(User $user, Stable $stable)
@@ -95,6 +102,7 @@ class StablePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Stable  $stable
+     *
      * @return bool
      */
     public function unretire(User $user, Stable $stable)
@@ -106,6 +114,7 @@ class StablePolicy
      * Determine whether the user can view a list of stables.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function viewList(User $user)
@@ -118,6 +127,7 @@ class StablePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Stable  $stable
+     *
      * @return bool
      */
     public function view(User $user, Stable $stable)

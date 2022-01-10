@@ -30,6 +30,7 @@ class TitleService
      * Create a title with given data.
      *
      * @param  \App\DataTransferObjects\TitleData $titleData
+     *
      * @return \App\Models\Title
      */
     public function create(TitleData $titleData)
@@ -48,6 +49,7 @@ class TitleService
      *
      * @param  \App\Models\Title $title
      * @param  \App\DataTransferObjects\TitleData $titleData
+     *
      * @return \App\Models\Title $title
      */
     public function update(Title $title, TitleData $titleData)
@@ -66,6 +68,7 @@ class TitleService
      *
      * @param  \App\Models\Title $title
      * @param  \Carbon\Carbon $activationDate
+     *
      * @return \App\Models\Title $title
      */
     public function activateOrUpdateActivation(Title $title, Carbon $activationDate)
@@ -89,6 +92,7 @@ class TitleService
      * Delete a given title.
      *
      * @param  \App\Models\Title $title
+     *
      * @return void
      */
     public function delete(Title $title)
@@ -100,6 +104,7 @@ class TitleService
      * Restore a given title.
      *
      * @param  \App\Models\Title $title
+     *
      * @return void
      */
     public function restore(Title $title)

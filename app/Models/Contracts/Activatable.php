@@ -99,6 +99,7 @@ interface Activatable
      * Check to see if the model was activated on a given date.
      *
      * @param  string  $activationDate
+     *
      * @return bool
      */
     public function activatedOn(string $activationDate);

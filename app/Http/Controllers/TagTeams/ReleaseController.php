@@ -14,6 +14,7 @@ class ReleaseController extends Controller
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\Actions\TagTeams\ReleaseAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(TagTeam $tagTeam, ReleaseAction $action)

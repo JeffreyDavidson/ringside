@@ -12,6 +12,7 @@ class RefereeRepository
      * Create a new referee with the given data.
      *
      * @param  \App\DataTransferObjects\RefereeData $refereeData
+     *
      * @return \App\Models\Referee
      */
     public function create(RefereeData $refereeData)
@@ -27,6 +28,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \App\DataTransferObjects\RefereeData $refereeData
+     *
      * @return \App\Models\Referee $referee
      */
     public function update(Referee $referee, RefereeData $refereeData)
@@ -43,6 +45,7 @@ class RefereeRepository
      * Delete a given referee.
      *
      * @param  \App\Models\Referee $referee
+     *
      * @return void
      */
     public function delete(Referee $referee)
@@ -54,6 +57,7 @@ class RefereeRepository
      * Restore a given referee.
      *
      * @param  \App\Models\Referee $referee
+     *
      * @return void
      */
     public function restore(Referee $referee)
@@ -66,6 +70,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function employ(Referee $referee, Carbon $employmentDate)
@@ -80,6 +85,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $releaseDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function release(Referee $referee, Carbon $releaseDate)
@@ -94,6 +100,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $injureDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function injure(Referee $referee, Carbon $injureDate)
@@ -108,6 +115,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $recoveryDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function clearInjury(Referee $referee, Carbon $recoveryDate)
@@ -122,6 +130,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $retirementDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function retire(Referee $referee, Carbon $retirementDate)
@@ -136,6 +145,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $unretireDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function unretire(Referee $referee, Carbon $unretireDate)
@@ -150,6 +160,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $suspensionDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function suspend(Referee $referee, Carbon $suspensionDate)
@@ -164,6 +175,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $reinstateDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function reinstate(Referee $referee, Carbon $reinstateDate)
@@ -178,6 +190,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\Referee $referee
      */
     public function updateEmployment(Referee $referee, Carbon $employmentDate)

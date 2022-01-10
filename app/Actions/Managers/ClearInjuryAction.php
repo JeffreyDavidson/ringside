@@ -13,6 +13,7 @@ class ClearInjuryAction extends BaseManagerAction
      * Clear an injury of a manager.
      *
      * @param  \App\Models\Manager  $manager
+     *
      * @return void
      */
     public function handle(Manager $manager): void

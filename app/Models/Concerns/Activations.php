@@ -163,6 +163,7 @@ trait Activations
      * Get the model's first activation date.
      *
      * @param  string $activationDate
+     *
      * @return bool
      */
     public function activatedOn(string $activationDate)

@@ -14,6 +14,7 @@ class ClearInjuryController extends Controller
      *
      * @param  \App\Models\Manager  $manager
      * @param  \App\Actions\Managers\ClearInjuryAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Manager $manager, ClearInjuryAction $action)

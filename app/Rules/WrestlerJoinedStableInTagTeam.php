@@ -21,6 +21,7 @@ class WrestlerJoinedStableInTagTeam
      *
      * @param  int[]|null $tagTeamIds
      * @param  int[]|null $wrestlerIds
+     *
      * @return void
      */
     public function __construct(?array $tagTeamIds, ?array $wrestlerIds)

@@ -14,6 +14,7 @@ class ReinstateController extends Controller
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\Actions\TagTeams\ReinstateAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(TagTeam $tagTeam, ReinstateAction $action)

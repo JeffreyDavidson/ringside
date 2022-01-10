@@ -17,6 +17,7 @@ class EventMatchRepository
      *
      * @param  \App\Models\Event $event
      * @param  \App\DataTransferObjects\EventMatchData $eventMatchData
+     *
      * @return \App\Models\EventMatch
      */
     public function createForEvent(Event $event, EventMatchData $eventMatchData)
@@ -32,6 +33,7 @@ class EventMatchRepository
      *
      * @param  \App\Models\EventMatch $match
      * @param  \App\Models\Title $title
+     *
      * @return \App\Models\EventMatch $match
      */
     public function addTitleToMatch(EventMatch $match, Title $title)
@@ -46,6 +48,7 @@ class EventMatchRepository
      *
      * @param  \App\Models\EventMatch $match
      * @param  \App\Models\Referee $referee
+     *
      * @return \App\Models\EventMatch $match
      */
     public function addRefereeToMatch(EventMatch $match, Referee $referee)
@@ -61,6 +64,7 @@ class EventMatchRepository
      * @param  \App\Models\EventMatch $match
      * @param  \App\Models\Wrestler $wrestler
      * @param  int $sideNumber
+     *
      * @return \App\Models\EventMatch $match
      */
     public function addWrestlerToMatch(EventMatch $match, Wrestler $wrestler, int $sideNumber)
@@ -76,6 +80,7 @@ class EventMatchRepository
      * @param  \App\Models\EventMatch $match
      * @param  \App\Models\TagTeam $tagTeam
      * @param  int $sideNumber
+     *
      * @return \App\Models\EventMatch $match
      */
     public function addTagTeamToMatch(EventMatch $match, TagTeam $tagTeam, int $sideNumber)

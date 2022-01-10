@@ -10,6 +10,7 @@ abstract class SingleRosterMember extends RosterMember
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
+     *
      * @return \App\Builders\SingleRosterMemberQueryBuilder<\App\Models\SingleRosterMember>
      */
     public function newEloquentBuilder($query)

@@ -16,6 +16,7 @@ class DataTable extends Component
      * Create a new component instance.
      *
      * @param  \Illuminate\Database\Eloquent\Collection $collection
+     *
      * @return void
      */
     public function __construct(Collection $collection)

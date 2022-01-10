@@ -13,6 +13,7 @@ class RetireAction extends BaseWrestlerAction
      * Retire a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return void
      */
     public function handle(Wrestler $wrestler): void

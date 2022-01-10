@@ -30,6 +30,7 @@ class ManagerService
      * Create a manager with given data.
      *
      * @param  \App\DataTransferObjects\ManagerData $managerData
+     *
      * @return \App\Models\Manager $manager
      */
     public function create(ManagerData $managerData)
@@ -48,6 +49,7 @@ class ManagerService
      *
      * @param  \App\Models\Manager $manager
      * @param  \App\DataTransferObjects\ManagerData $managerData
+     *
      * @return \App\Models\Manager $manager
      */
     public function update(Manager $manager, ManagerData $managerData)
@@ -66,6 +68,7 @@ class ManagerService
      *
      * @param  \App\Models\Manager $manager
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\Manager $manager
      */
     private function employOrUpdateEmployment(Manager $manager, Carbon $employmentDate)
@@ -89,6 +92,7 @@ class ManagerService
      * Delete a given manager.
      *
      * @param  \App\Models\Manager $manager
+     *
      * @return void
      */
     public function delete(Manager $manager)
@@ -100,6 +104,7 @@ class ManagerService
      * Restore a given manager.
      *
      * @param  \App\Models\Manager $manager
+     *
      * @return void
      */
     public function restore(Manager $manager)

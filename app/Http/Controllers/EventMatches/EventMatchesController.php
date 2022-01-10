@@ -15,6 +15,7 @@ class EventMatchesController extends Controller
      * Show the form for creating a new match for a given event.
      *
      * @param  \App\Models\Event $event
+     *
      * @return \Illuminate\View\View
      */
     public function create(Event $event)
@@ -33,6 +34,7 @@ class EventMatchesController extends Controller
      * @param  \App\Http\Requests\EventMatches\StoreRequest  $request
      * @param  \App\Actions\AddMatchForEvent $addMatchForEvent
      * @param  \App\DataTransferObjects\EventMatchData $eventMatchData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Event $event, StoreRequest $request, AddMatchForEvent $addMatchForEvent, EventMatchData $eventMatchData)

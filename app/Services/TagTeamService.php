@@ -42,6 +42,7 @@ class TagTeamService
      * Create a tag team with given data.
      *
      * @param  \App\DataTransferObjects\TagTeamData $tagTeamData
+     *
      * @return \App\Models\TagTeam $tagTeam
      */
     public function create(TagTeamData $tagTeamData)
@@ -70,6 +71,7 @@ class TagTeamService
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  \App\DataTransferObjects\TagTeamData $tagTeamData
+     *
      * @return \App\Models\TagTeam $tagTeam
      */
     public function update(TagTeam $tagTeam, TagTeamData $tagTeamData)
@@ -90,6 +92,7 @@ class TagTeamService
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  \Carbon\Carbon $employmentDate
+     *
      * @return \App\Models\TagTeam $tagTeam
      */
     public function employOrUpdateEmployment(TagTeam $tagTeam, Carbon $employmentDate)
@@ -113,6 +116,7 @@ class TagTeamService
      * Delete a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
+     *
      * @return void
      */
     public function delete(TagTeam $tagTeam)
@@ -124,6 +128,7 @@ class TagTeamService
      * Restore a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
+     *
      * @return void
      */
     public function restore(TagTeam $tagTeam)
@@ -136,6 +141,7 @@ class TagTeamService
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  \Illuminate\Support\Collection $wrestlers
+     *
      * @return \App\Models\TagTeam $tagTeam
      */
     public function updateTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers)
@@ -159,6 +165,7 @@ class TagTeamService
      * Employ a given tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
+     *
      * @return void
      */
     public function employ(TagTeam $tagTeam)

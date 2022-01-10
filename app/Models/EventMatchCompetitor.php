@@ -29,6 +29,7 @@ class EventMatchCompetitor extends MorphPivot
      * Create a new Eloquent Collection instance.
      *
      * @param  array  $models
+     *
      * @return \App\Collections\EventMatchCompetitorsCollection
      */
     public function newCollection(array $models = [])

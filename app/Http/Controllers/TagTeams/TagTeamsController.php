@@ -58,6 +58,7 @@ class TagTeamsController extends Controller
      *
      * @param  \App\Http\Requests\TagTeams\StoreRequest  $request
      * @param  \App\DataTransferObjects\TagTeamData  $tagTeamData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request, TagTeamData $tagTeamData)
@@ -71,6 +72,7 @@ class TagTeamsController extends Controller
      * Show the profile of a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     *
      * @return \Illuminate\View\View
      */
     public function show(TagTeam $tagTeam)
@@ -86,6 +88,7 @@ class TagTeamsController extends Controller
      * Show the form for editing a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     *
      * @return \Illuminate\View\View
      */
     public function edit(TagTeam $tagTeam)
@@ -106,6 +109,7 @@ class TagTeamsController extends Controller
      * @param  \App\Http\Requests\TagTeams\UpdateRequest  $request
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \App\DataTransferObjects\TagTeamData  $tagTeamData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, TagTeam $tagTeam, TagTeamData $tagTeamData)
@@ -122,6 +126,7 @@ class TagTeamsController extends Controller
      * Delete a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(TagTeam $tagTeam)

@@ -13,6 +13,7 @@ class RetireAction extends BaseManagerAction
      * Retire a manager.
      *
      * @param  \App\Models\Manager  $manager
+     *
      * @return void
      */
     public function handle(Manager $manager): void

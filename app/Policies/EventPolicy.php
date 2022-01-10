@@ -14,6 +14,7 @@ class EventPolicy
      * Determine whether the user can create an event.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function create(User $user)
@@ -26,6 +27,7 @@ class EventPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Event  $event
+     *
      * @return bool
      */
     public function update(User $user, Event $event)
@@ -46,6 +48,7 @@ class EventPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Event  $event
+     *
      * @return bool
      */
     public function delete(User $user, Event $event)
@@ -58,6 +61,7 @@ class EventPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Event  $event
+     *
      * @return bool
      */
     public function restore(User $user, Event $event)
@@ -69,6 +73,7 @@ class EventPolicy
      * Determine whether the user can view a list of events.
      *
      * @param  \App\Models\User  $user
+     *
      * @return bool
      */
     public function viewList(User $user)
@@ -81,6 +86,7 @@ class EventPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Event  $event
+     *
      * @return bool
      */
     public function view(User $user, Event $event)

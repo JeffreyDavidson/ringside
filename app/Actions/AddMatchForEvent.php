@@ -30,6 +30,7 @@ class AddMatchForEvent
      *
      * @param  \App\Models\Event $event
      * @param  \App\DataTransferObjects\EventMatchData $eventMatchData
+     *
      * @return \App\Models\EventMatch $cratedMatch
      */
     public function __invoke(Event $event, EventMatchData $eventMatchData)

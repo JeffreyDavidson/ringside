@@ -40,6 +40,7 @@ class Employment extends Model
      * Determine if employment start date was started before a given date.
      *
      * @param  string $date
+     *
      * @return bool
      */
     public function startedBefore($date)
@@ -51,6 +52,7 @@ class Employment extends Model
      * Determine if employment start date was started after a given date.
      *
      * @param  string $date
+     *
      * @return bool
      */
     public function startedAfter(string $date)

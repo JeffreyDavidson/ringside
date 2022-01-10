@@ -18,6 +18,7 @@ class CompetitorsAreValid implements Rule
      *
      * @param  string  $attribute
      * @param  array  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -55,6 +56,7 @@ class CompetitorsAreValid implements Rule
      * Set the message of the error message.
      *
      * @param  string $message
+     *
      * @return void
      */
     protected function setMessage(string $message)
