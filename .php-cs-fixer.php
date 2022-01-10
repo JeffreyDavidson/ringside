@@ -36,6 +36,7 @@ $rules = [
     'increment_style' => ['style' => 'post'],
     'indentation_type' => true,
     'is_null' => true,
+    'lambda_not_used_import' => true,
     'linebreak_after_opening_tag' => true,
     'line_ending' => true,
     'list_syntax' => [
