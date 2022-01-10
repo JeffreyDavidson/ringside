@@ -149,10 +149,10 @@ abstract class RosterMember extends Model implements Employable
      */
     public function isReleased()
     {
-        return $this->previousEmployment()->exists() &&
-                $this->futureEmployment()->doesntExist() &&
-                $this->currentEmployment()->doesntExist() &&
-                $this->currentRetirement()->doesntExist();
+        return $this->previousEmployment()->exists()
+                && $this->futureEmployment()->doesntExist()
+                && $this->currentEmployment()->doesntExist()
+                && $this->currentRetirement()->doesntExist();
     }
 
     /**

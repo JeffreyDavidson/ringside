@@ -86,6 +86,9 @@ $rules = [
     'normalize_index_brace' => true,
     'not_operator_with_successor_space' => true,
     'object_operator_without_whitespace' => true,
+    'operator_linebreak' => [
+        'position' => 'beginning',
+    ],
     'ordered_imports' => [
         'sort_algorithm' => 'alpha',
     ],
