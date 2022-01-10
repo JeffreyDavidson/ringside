@@ -114,6 +114,9 @@ $rules = [
         'style' => 'annotation',
     ],
     'php_unit_fqcn_annotation' => true,
+    'php_unit_method_casing' => [
+        'case' => 'snake_case',
+    ],
     'return_type_declaration' => [
         'space_before' => 'none',
     ],

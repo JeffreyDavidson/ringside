@@ -16,7 +16,7 @@ class ClearWrestlerInjuryTest extends DuskTestCase
     /**
      * @test
      */
-    public function testExample()
+    public function test_example()
     {
         $user = User::factory()->superAdministrator()->create();
         $wrestler = Wrestler::factory()->injured()->create();

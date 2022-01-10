@@ -288,7 +288,7 @@ class UpdateRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_tagTeams_in_a_stable_must_be_distinct()
+    public function each_tag_teams_in_a_stable_must_be_distinct()
     {
         $stable = Stable::factory()->create();
 
