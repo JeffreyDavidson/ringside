@@ -32,7 +32,7 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date',
-                new EmploymentStartDateCanBeChanged($this->route()->parameter('manager')),
+                new EmploymentStartDateCanBeChanged($this->route->param('manager')),
             ],
         ];
     }

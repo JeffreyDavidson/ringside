@@ -2,20 +2,14 @@
 
 namespace App\Http\Livewire\Wrestlers;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\Wrestler;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class FutureEmployedAndUnemployedWrestlers extends Component
+class FutureEmployedAndUnemployedWrestlers extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()

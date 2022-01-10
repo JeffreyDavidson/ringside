@@ -2,29 +2,13 @@
 
 namespace App\Http\Livewire\Wrestlers;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\Wrestler;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class SuspendedWrestlers extends Component
+class SuspendedWrestlers extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
-     * @return string
-     */
-    public function paginationView()
-    {
-        return 'pagination.datatables';
-    }
-
-    /**
-     * Undocumented function.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */

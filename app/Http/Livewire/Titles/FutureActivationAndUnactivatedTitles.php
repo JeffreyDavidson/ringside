@@ -11,11 +11,15 @@ class FutureActivationAndUnactivatedTitles extends Component
     use WithPagination;
 
     /**
+     * Number of items to display on each page.
+     *
      * @var int
      */
     public $perPage = 10;
 
     /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()

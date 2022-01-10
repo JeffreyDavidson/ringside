@@ -2,20 +2,14 @@
 
 namespace App\Http\Livewire\TagTeams;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\TagTeam;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class RetiredTagTeams extends Component
+class RetiredTagTeams extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()

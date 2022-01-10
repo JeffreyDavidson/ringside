@@ -30,13 +30,18 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3', Rule::unique('tag_teams')->ignore($this->route()->parameter('tag_team')->id)],
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                Rule::unique('tag_teams')->ignore($this->route->param('tag_team')->id),
+            ],
             'signature_move' => ['nullable', 'string'],
             'started_at' => [
                 'nullable',
                 'string',
                 'date',
-                new EmploymentStartDateCanBeChanged($this->route()->parameter('tag_team')),
+                new EmploymentStartDateCanBeChanged($this->route->param('tag_team')),
             ],
             'wrestlers' => ['nullable', 'array'],
             'wrestlers.*', [

@@ -3,11 +3,13 @@
 namespace App\Http\Requests\TagTeams;
 
 use App\Models\TagTeam;
+use App\Models\Wrestler;
 use App\Rules\CannotBeEmployedAfterDate;
 use App\Rules\CannotBeHindered;
 use App\Rules\CannotBelongToMultipleEmployedTagTeams;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class StoreRequest extends FormRequest
 {

@@ -2,20 +2,14 @@
 
 namespace App\Http\Livewire\Events;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\Event;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class PastEvents extends Component
+class PastEvents extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()

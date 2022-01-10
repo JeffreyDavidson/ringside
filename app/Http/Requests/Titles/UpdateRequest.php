@@ -32,13 +32,13 @@ class UpdateRequest extends FormRequest
                 'string',
                 'min:3',
                 'ends_with:Title,Titles',
-                Rule::unique('titles')->ignore($this->route()->parameter('title')->id),
+                Rule::unique('titles')->ignore($this->route->param('title')->id),
             ],
             'activated_at' => [
                 'nullable',
                 'string',
                 'date',
-                new ActivationStartDateCanBeChanged($this->route()->parameter('title')),
+                new ActivationStartDateCanBeChanged($this->route->param('title')),
             ],
         ];
     }

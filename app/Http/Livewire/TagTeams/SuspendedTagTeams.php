@@ -2,28 +2,14 @@
 
 namespace App\Http\Livewire\TagTeams;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\TagTeam;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class SuspendedTagTeams extends Component
+class SuspendedTagTeams extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
-     * @return string
-     */
-    public function paginationView()
-    {
-        return 'pagination.datatables';
-    }
-
-    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()

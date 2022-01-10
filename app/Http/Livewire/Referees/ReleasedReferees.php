@@ -2,20 +2,14 @@
 
 namespace App\Http\Livewire\Referees;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\Referee;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class ReleasedReferees extends Component
+class ReleasedReferees extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()

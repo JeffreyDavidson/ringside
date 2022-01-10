@@ -2,28 +2,14 @@
 
 namespace App\Http\Livewire\Managers;
 
+use App\Http\Livewire\BaseComponent;
 use App\Models\Manager;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class EmployedManagers extends Component
+class EmployedManagers extends BaseComponent
 {
-    use WithPagination;
-
     /**
-     * @var int
-     */
-    public $perPage = 10;
-
-    /**
-     * @return string
-     */
-    public function paginationView()
-    {
-        return 'pagination.datatables';
-    }
-
-    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\View\View
      */
     public function render()
