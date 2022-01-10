@@ -110,6 +110,7 @@ $rules = [
     'single_line_comment_style' => [
         'comment_types' => ['hash'],
     ],
+    'single_line_throw' => true,
     'single_quote' => true,
     'space_after_semicolon' => true,
     'standardize_increment' => true,
