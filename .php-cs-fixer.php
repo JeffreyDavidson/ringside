@@ -89,6 +89,9 @@ $rules = [
     'ordered_imports' => [
         'sort_algorithm' => 'alpha',
     ],
+    'ordered_interfaces' => [
+        'direction' => 'ascend',
+    ],
     'ordered_traits' => true,
     'phpdoc_add_missing_param_annotation' => [
         'only_untyped' => false,

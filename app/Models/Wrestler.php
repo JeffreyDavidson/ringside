@@ -17,7 +17,7 @@ use App\Observers\WrestlerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Wrestler extends SingleRosterMember implements Bookable, Manageable, CanBeAStableMember, TagTeamMember
+class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Manageable, TagTeamMember
 {
     use CanJoinStables,
         CanJoinTagTeams,

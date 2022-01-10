@@ -886,7 +886,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Query\Builder|Wrestler withTrashed()
      * @method static \Illuminate\Database\Query\Builder|Wrestler withoutTrashed()
      */
-    class Wrestler extends \Eloquent implements \App\Models\Contracts\Bookable, \App\Models\Contracts\Manageable, \App\Models\Contracts\CanBeAStableMember, \App\Models\Contracts\TagTeamMember
+    class Wrestler extends \Eloquent implements \App\Models\Contracts\Bookable, \App\Models\Contracts\CanBeAStableMember, \App\Models\Contracts\Manageable, \App\Models\Contracts\TagTeamMember
     {
     }
 }
