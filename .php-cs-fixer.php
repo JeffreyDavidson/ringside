@@ -48,6 +48,7 @@ $rules = [
         'strategy' => 'no_multi_line',
     ],
     'native_function_casing' => true,
+    'native_function_type_declaration_casing' => true,
     'no_alias_functions' => true,
     'no_alternative_syntax' => true,
     'no_blank_lines_after_class_opening' => true,
