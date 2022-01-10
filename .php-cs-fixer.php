@@ -40,6 +40,7 @@ $rules = [
     'list_syntax' => [
         'syntax' => 'short',
     ],
+    'logical_operators' => true,
     'lowercase_cast' => true,
     'lowercase_keywords' => true,
     'lowercase_static_reference' => true,

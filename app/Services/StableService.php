@@ -102,7 +102,8 @@ class StableService
      *
      * @return \App\Models\Stable $stable
      */
-    private function addMembers(Stable $stable, Collection $wrestlers = null, Collection $tagTeams = null, Carbon $joinedDate = null) {
+    private function addMembers(Stable $stable, Collection $wrestlers = null, Collection $tagTeams = null, Carbon $joinedDate = null)
+    {
         $joinedDate ??= now();
 
         if ($wrestlers) {

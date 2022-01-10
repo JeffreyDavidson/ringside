@@ -200,7 +200,8 @@ class TagTeamRepository
      *
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function syncTagTeamPartners(TagTeam $tagTeam, Collection $formerTagTeamPartners, Collection $newTagTeamPartners, Carbon $date = null) {
+    public function syncTagTeamPartners(TagTeam $tagTeam, Collection $formerTagTeamPartners, Collection $newTagTeamPartners, Carbon $date = null)
+    {
         $date ??= now();
 
         $formerTagTeamPartners->map(fn (Wrestler $formerTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($formerTagTeamPartner, ['left_at' => $date->toDateTimeString()]));
