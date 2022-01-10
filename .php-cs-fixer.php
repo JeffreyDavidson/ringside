@@ -101,6 +101,7 @@ $rules = [
     'phpdoc_var_without_name' => true,
     'self_accessor' => true,
     'short_scalar_cast' => true,
+    'simple_to_complex_string_variable' => true,
     'simplified_null_return' => true,
     'single_blank_line_at_eof' => true,
     'single_blank_line_before_namespace' => true,
