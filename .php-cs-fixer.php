@@ -102,6 +102,7 @@ $rules = [
         'null_adjustment' => 'always_last',
         'sort_algorithm' => 'none',
     ],
+    'phpdoc_var_annotation_correct_order' => true,
     'phpdoc_var_without_name' => true,
     'return_type_declaration' => [
         'space_before' => 'none',
