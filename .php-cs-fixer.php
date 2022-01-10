@@ -91,6 +91,7 @@ $rules = [
     ],
     'ordered_interfaces' => [
         'direction' => 'ascend',
+        'order' => 'alpha',
     ],
     'ordered_traits' => true,
     'phpdoc_add_missing_param_annotation' => [
