@@ -116,10 +116,7 @@ class TagTeamsController extends Controller
      */
     public function update(UpdateRequest $request, TagTeam $tagTeam, TagTeamData $tagTeamData)
     {
-        $this->tagTeamService->update(
-            $tagTeam,
-            $tagTeamData->fromUpdateRequest($request)
-        );
+        $this->tagTeamService->update($tagTeam, $tagTeamData->fromUpdateRequest($request));
 
         return redirect()->route('tag-teams.index');
     }

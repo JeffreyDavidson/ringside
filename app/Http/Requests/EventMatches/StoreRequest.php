@@ -55,19 +55,13 @@ class StoreRequest extends FormRequest
                 $rule = new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id'));
 
                 if (! $rule->passes('competitors', $this->input('competitors'))) {
-                    $validator->addFailure(
-                        'competitors',
-                        CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class
-                    );
+                    $validator->addFailure('competitors', CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class);
                 }
 
                 $rule2 = new CompetitorsAreValid;
 
                 if (! $rule2->passes('competitors', $this->input('competitors'))) {
-                    $validator->addFailure(
-                        'competitors',
-                        CompetitorsAreValid::class
-                    );
+                    $validator->addFailure('competitors', CompetitorsAreValid::class);
                 }
             }
         });

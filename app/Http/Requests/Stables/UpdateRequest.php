@@ -76,10 +76,7 @@ class UpdateRequest extends FormRequest
             if ($validator->errors()->isEmpty()) {
                 $membersWereAdded = count($this->input('tag_teams')) > 0 || count($this->input('wrestlers')) > 0;
                 if ($membersWereAdded) {
-                    $result = (new StableHasEnoughMembers(
-                        $this->input('tag_teams'),
-                        $this->input('wrestlers')
-                    ))->passes();
+                    $result = (new StableHasEnoughMembers($this->input('tag_teams'), $this->input('wrestlers')))->passes();
 
                     if (! $result) {
                         $validator->addFailure('wrestlers', StableHasEnoughMembers::class);

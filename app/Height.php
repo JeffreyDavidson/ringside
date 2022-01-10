@@ -35,7 +35,7 @@ class Height
      */
     public function feet()
     {
-        return intval($this->height / 12);
+        return (int) ($this->height / 12);
     }
 
     /**
@@ -60,6 +60,6 @@ class Height
 
     public function __toString()
     {
-        return strval($this->height);
+        return (string) ($this->height);
     }
 }

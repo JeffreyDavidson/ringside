@@ -37,13 +37,19 @@ $rules = [
     'indentation_type' => true,
     'linebreak_after_opening_tag' => true,
     'line_ending' => true,
+    'list_syntax' => [
+        'syntax' => 'short',
+    ],
     'lowercase_cast' => true,
     'lowercase_keywords' => true,
-    'lowercase_static_reference' => true, // added from Symfony
-    'magic_method_casing' => true, // added from Symfony
+    'lowercase_static_reference' => true,
     'magic_constant_casing' => true,
-    'method_argument_space' => true,
+    'magic_method_casing' => true,
+    'method_argument_space' => [
+        'on_multiline' => 'ensure_single_line',
+    ],
     'method_chaining_indentation' => true,
+    'modernize_types_casting' => true,
     'multiline_whitespace_before_semicolons' => [
         'strategy' => 'no_multi_line',
     ],

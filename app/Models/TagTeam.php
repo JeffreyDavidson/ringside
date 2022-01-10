@@ -121,9 +121,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function combinedWeight(): Attribute
     {
-        return new Attribute(
-            get: fn ($value, $attributes) => $this->currentWrestlers->sum('weight')
-        );
+        return new Attribute(get: fn ($value, $attributes) => $this->currentWrestlers->sum('weight'));
     }
 
     /**
@@ -173,9 +171,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
             return false;
         }
 
-        if ($this->currentWrestlers->filter(
-            fn (Wrestler $wrestler) => $wrestler->canBeReinstated()
-        )->count() != 2) {
+        if ($this->currentWrestlers->filter(fn (Wrestler $wrestler) => $wrestler->canBeReinstated())->count() != 2) {
             return false;
         }
 
@@ -213,9 +209,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function partnersAreBookable()
     {
-        if ($this->currentWrestlers->filter(
-            fn (Wrestler $wrestler) => ! $wrestler->isBookable()
-        )->count() != 2) {
+        if ($this->currentWrestlers->filter(fn (Wrestler $wrestler) => ! $wrestler->isBookable())->count() != 2) {
             return false;
         }
 

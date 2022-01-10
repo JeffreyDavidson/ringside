@@ -52,9 +52,7 @@ class TagTeamService
         if (isset($tagTeamData->start_date)) {
             $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
 
-            $tagTeamData->wrestlers->map(
-                fn (Wrestler $wrestler) => $this->wrestlerRepository->employ($wrestler, $tagTeamData->start_date)
-            );
+            $tagTeamData->wrestlers->map(fn (Wrestler $wrestler) => $this->wrestlerRepository->employ($wrestler, $tagTeamData->start_date));
 
             $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers, $tagTeamData->start_date);
         } else {

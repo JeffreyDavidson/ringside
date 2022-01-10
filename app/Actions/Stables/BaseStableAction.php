@@ -21,11 +21,7 @@ abstract class BaseStableAction
      * @param  \App\Repositories\TagTeamRepository  $tagTeamRepository
      * @param  \App\Repositories\WrestlerRepository  $wrestlerRepository
      */
-    public function __construct(
-        StableRepository $stableRepository,
-        TagTeamRepository $tagTeamRepository,
-        WrestlerRepository $wrestlerRepository
-    ) {
+    public function __construct(StableRepository $stableRepository, TagTeamRepository $tagTeamRepository, WrestlerRepository $wrestlerRepository) {
         $this->stableRepository = $stableRepository;
         $this->tagTeamRepository = $tagTeamRepository;
         $this->wrestlerRepository = $wrestlerRepository;

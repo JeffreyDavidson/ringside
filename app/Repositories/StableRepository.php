@@ -136,13 +136,9 @@ class StableRepository
      */
     public function disassemble(Stable $stable, Carbon $disassembleDate)
     {
-        $stable->currentWrestlers->map(
-            fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler, ['left_at' => $disassembleDate->toDateTimeString()])
-        );
+        $stable->currentWrestlers->map(fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler, ['left_at' => $disassembleDate->toDateTimeString()]));
 
-        $stable->currentTagTeams->map(
-            fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam, ['left_at' => $disassembleDate->toDateTimeString()])
-        );
+        $stable->currentTagTeams->map(fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam, ['left_at' => $disassembleDate->toDateTimeString()]));
 
         return $stable;
     }
