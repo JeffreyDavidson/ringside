@@ -109,6 +109,9 @@ $rules = [
     ],
     'phpdoc_var_annotation_correct_order' => true,
     'phpdoc_var_without_name' => true,
+    'php_unit_test_annotation' => [
+        'style' => 'annotation',
+    ],
     'return_type_declaration' => [
         'space_before' => 'none',
     ],
