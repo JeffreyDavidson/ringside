@@ -113,6 +113,7 @@ $rules = [
     'php_unit_test_annotation' => [
         'style' => 'annotation',
     ],
+    'php_unit_fqcn_annotation' => true,
     'return_type_declaration' => [
         'space_before' => 'none',
     ],
