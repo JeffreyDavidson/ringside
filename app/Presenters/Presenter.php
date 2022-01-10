@@ -29,9 +29,9 @@ abstract class Presenter
      *
      * @param  string $property
      *
-     * @return mixed
-     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function __get(string $property)
     {
