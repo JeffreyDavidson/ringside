@@ -100,6 +100,7 @@ $rules = [
     'phpdoc_types' => true,
     'phpdoc_var_without_name' => true,
     'self_accessor' => true,
+    'semicolon_after_instruction' => true,
     'short_scalar_cast' => true,
     'simple_to_complex_string_variable' => true,
     'simplified_null_return' => true,
