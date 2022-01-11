@@ -3,6 +3,8 @@
 namespace App\Actions\Stables;
 
 use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ActivateAction extends BaseStableAction
@@ -21,21 +23,22 @@ class ActivateAction extends BaseStableAction
         $activationDate = now();
 
         if ($stable->currentWrestlers->isNotEmpty()) {
-            foreach ($stable->currentWrestlers as $wrestler) {
+            $stable->currentWrestlers->each(function (Wrestler $wrestler) use ($activationDate) {
                 $this->wrestlerRepository->employ($wrestler, $activationDate);
                 $wrestler->save();
-            }
+            });
         }
 
         if ($stable->currentTagTeams->isNotEmpty()) {
-            foreach ($stable->currentTagTeams as $tagTeam) {
-                foreach ($tagTeam->currentWrestlers as $wrestler) {
+            $stable->currentTagTeams->each(function (TagTeam $tagTeam) use ($activationDate) {
+                $tagTeam->currentWrestlers->each(function (Wrestler $wrestler) use ($activationDate) {
                     $this->wrestlerRepository->employ($wrestler, $activationDate);
                     $wrestler->save();
-                }
+                });
+
                 $this->tagTeamRepository->employ($tagTeam, $activationDate);
                 $tagTeam->save();
-            }
+            });
         }
 
         $this->stableRepository->activate($stable, $activationDate);

@@ -3,6 +3,8 @@
 namespace App\Actions\Stables;
 
 use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class RetireAction extends BaseStableAction
@@ -20,20 +22,20 @@ class RetireAction extends BaseStableAction
     {
         $retirementDate = now();
 
-        if ($stable->has('currentTagTeams')) {
-            foreach ($stable->currentTagTeams as $tagTeam) {
+        if ($stable->currentTagTeams->isNotEmpty()) {
+            $stable->currentTagTeams->each(function (TagTeam $tagTeam) use ($retirementDate) {
                 $this->tagTeamRepository->release($tagTeam, $retirementDate);
                 $this->tagTeamRepository->retire($tagTeam, $retirementDate);
                 $tagTeam->save();
-            }
+            });
         }
 
-        if ($stable->has('currentWrestlers')) {
-            foreach ($stable->currentWrestlers as $wrestler) {
+        if ($stable->currentWrestlers->isNotEmpty()) {
+            $stable->currentWrestlers->each(function (Wrestler $wrestler) use ($retirementDate) {
                 $this->wrestlerRepository->release($wrestler, $retirementDate);
                 $this->wrestlerRepository->retire($wrestler, $retirementDate);
                 $wrestler->save();
-            }
+            });
         }
 
         $this->stableRepository->deactivate($stable, $retirementDate);
