@@ -3,11 +3,10 @@
 namespace App\Http\Requests\TagTeams;
 
 use App\Models\TagTeam;
-use App\Rules\CannotBeEmployedAfterDate;
-use App\Rules\CannotBeHindered;
-use App\Rules\CannotBelongToMultipleEmployedTagTeams;
+use App\Models\Wrestler;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class UpdateRequest extends FormRequest
 {
@@ -66,10 +65,7 @@ class UpdateRequest extends FormRequest
                 if ($tagTeam->isCurrentlyEmployed()
                     && $tagTeam->currentEmployment->started_at->ne($this->input('started_at'))
                 ) {
-                    $validator->errors()->add(
-                        'started_at',
-                        "{$tagTeam->name} is currently employed and the employment date cannot be changed."
-                    );
+                    $validator->errors()->add('started_at', "{$tagTeam->name} is currently employed and the employment date cannot be changed.");
                 }
 
                 foreach ($this->input('wrestlers') as $wrestlerId) {
@@ -78,31 +74,19 @@ class UpdateRequest extends FormRequest
                     if ($wrestler->isCurrentlyEmployed()
                         && $wrestler->currentEmployment->started_at->gt($this->input('started_at'))
                     ) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} is currently employed and the employment date cannot be after the tag team start date."
-                        );
+                        $validator->errors()->add('wrestlers', "{$wrestler->name} is currently employed and the employment date cannot be after the tag team start date.");
                     }
 
                     if (! $wrestler->isUnemployed()) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} is not employed and therefore cannot be added to a tag team."
-                        );
+                        $validator->errors()->add('wrestlers', "{$wrestler->name} is not employed and therefore cannot be added to a tag team.");
                     }
 
                     if (! $wrestler->isBookable()) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} is not bookable and therefore cannot be added to a tag team."
-                        );
+                        $validator->errors()->add('wrestlers', "{$wrestler->name} is not bookable and therefore cannot be added to a tag team.");
                     }
 
-                    if ($wrestler->currentTagTeam && $wrestler->currentTagTeam->isNot($this->route->param('tag_team'))) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} is a member of a tag team that is not in the editted tag team and therefore cannot be added to the tag team."
-                        );
+                    if (null !== $wrestler->currentTagTeam && $wrestler->currentTagTeam->isNot($this->route->param('tag_team'))) {
+                        $validator->errors()->add('wrestlers', "{$wrestler->name} is a member of a tag team that is not in the editted tag team and therefore cannot be added to the tag team.");
                     }
                 }
             }

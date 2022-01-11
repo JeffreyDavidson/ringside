@@ -20,7 +20,7 @@ class EventData
 
         $dto->name = $request->input('name');
         $dto->date = $request->date('date');
-        $dto->venue = Venue::find($request->input('venue_id'));
+        $dto->venue = Venue::whereKey($request->input('venue_id'))->sole();
         $dto->preview = $request->input('preview');
 
         return $dto;
@@ -32,7 +32,7 @@ class EventData
 
         $dto->name = $request->input('name');
         $dto->date = $request->date('date');
-        $dto->venue = Venue::find($request->input('venue_id'));
+        $dto->venue = Venue::whereKey($request->input('venue_id'))->sole();
         $dto->preview = $request->input('preview');
 
         return $dto;
