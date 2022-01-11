@@ -9,6 +9,8 @@ use Illuminate\Contracts\Validation\Rule;
 class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
 {
     /**
+     * The start date of the stable.
+     *
      * @var \Carbon\Carbon
      */
     private $stableStartDate;

@@ -138,9 +138,8 @@ class SuspendControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider nonsuspendableRefereeTypes
      *
-     * @param mixed $factoryState
+     * @dataProvider nonsuspendableRefereeTypes
      */
     public function invoke_throws_exception_for_suspending_a_non_suspendable_referee($factoryState)
     {

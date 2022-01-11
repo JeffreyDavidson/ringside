@@ -6,7 +6,6 @@ use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\MatchType;
 use App\Models\User;
 use Database\Seeders\MatchTypesTableSeeder;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
@@ -44,7 +43,6 @@ class StoreRequestTest extends TestCase
      */
     public function a_non_administrator_is_not_authorized_to_make_this_request()
     {
-        /** @var Authenticatable */
         $user = User::factory()->create();
 
         $this->createRequest(StoreRequest::class)

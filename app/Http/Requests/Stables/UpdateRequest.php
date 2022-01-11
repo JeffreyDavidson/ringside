@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Stables;
 
 use App\Models\Stable;
-use App\Rules\ActivationStartDateCanBeChanged;
 use App\Rules\StableHasEnoughMembers;
 use App\Rules\TagTeamCanJoinStable;
 use App\Rules\WrestlerCanJoinStable;
@@ -42,7 +41,6 @@ class UpdateRequest extends FormRequest
                 Rule::requiredIf(fn () => ! $this->route->param('stable')->isUnactivated()),
                 'string',
                 'date',
-                new ActivationStartDateCanBeChanged($this->route->param('stable')),
             ],
             'wrestlers' => ['array'],
             'tag_teams' => ['array'],
@@ -74,6 +72,15 @@ class UpdateRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isEmpty()) {
+                $stable = $this->route->param('stable');
+
+                if ($stable->isCurrentlyActivated() && $stable->currentActivation->started_at->ne($this->input('activated_at'))) {
+                    $validator->errors()->add(
+                        'activated_at',
+                        "{$stable->name} is currently activated and the activation date cannot be changed."
+                    );
+                }
+
                 $membersWereAdded = count($this->input('tag_teams')) > 0 || count($this->input('wrestlers')) > 0;
                 if ($membersWereAdded) {
                     $result = (new StableHasEnoughMembers($this->input('tag_teams'), $this->input('wrestlers')))->passes();

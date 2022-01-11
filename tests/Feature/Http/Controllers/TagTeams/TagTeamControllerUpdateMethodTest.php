@@ -63,7 +63,7 @@ class TagTeamControllerUpdateMethodTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->create(['name' => 'Old Tag Team Name']);
 
-        $response = $this
+        $this
             ->actAs(Role::administrator())
             ->from(action([TagTeamsController::class, 'edit'], $tagTeam))
             ->put(
@@ -71,9 +71,8 @@ class TagTeamControllerUpdateMethodTest extends TestCase
                 TagTeamRequestDataFactory::new()->withTagTeam($tagTeam)->create([
                     'name' => 'New Tag Team Name',
                 ])
-            );
-        dd($response);
-        // ->assertRedirect(action([TagTeamsController::class, 'index']));
+            )
+            ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertEquals('New Tag Team Name', $tagTeam->name);

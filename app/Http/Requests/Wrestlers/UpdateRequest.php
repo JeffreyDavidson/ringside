@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Wrestlers;
 
 use App\Models\Wrestler;
-use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -43,7 +42,6 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date',
-                new EmploymentStartDateCanBeChanged($this->route->param('wrestler')),
             ],
         ];
     }
@@ -73,6 +71,16 @@ class UpdateRequest extends FormRequest
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
                 $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);
+
+                $wrestler = $this->route->param('wrestler');
+                if ($wrestler->isCurrentlyEmployed()
+                    && $wrestler->currentEmployment->started_at->ne($this->input('started_at'))
+                ) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$wrestler->name} is currently employed and the employment date cannot be changed."
+                    );
+                }
             }
         });
     }

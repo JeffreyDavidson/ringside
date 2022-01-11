@@ -9,10 +9,17 @@ use Illuminate\Contracts\Validation\Rule;
 class EventDateCanBeChanged implements Rule
 {
     /**
+     * The event to be checked against.
+     *
      * @var \App\Models\Event
      */
     protected $event;
 
+    /**
+     * Create a new event date can be changed rule instance.
+     *
+     * @param \App\Models\Event $event
+     */
     public function __construct(Event $event)
     {
         $this->event = $event;

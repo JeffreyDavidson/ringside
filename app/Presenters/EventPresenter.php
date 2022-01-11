@@ -2,12 +2,12 @@
 
 namespace App\Presenters;
 
-use App\Models\Event;
-
 class EventPresenter extends Presenter
 {
     /**
-     * @var Event
+     * The event to be presented.
+     *
+     * @var \App\Models\Event
      */
     protected $model;
 

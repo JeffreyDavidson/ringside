@@ -12,10 +12,8 @@ class EndsWithTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider endsWithMessages
      *
-     * @param mixed $arguments
-     * @param mixed $message
+     * @dataProvider endsWithMessages
      */
     public function it_formats_ends_with_message_correctly($arguments, $message): void
     {

@@ -8,6 +8,8 @@ use Illuminate\View\Component;
 class DataTable extends Component
 {
     /**
+     * The collection of models to be passed to view.
+     *
      * @var \Illuminate\Database\Eloquent\Collection
      */
     public $collection;

@@ -121,7 +121,9 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function combinedWeight(): Attribute
     {
-        return new Attribute(get: fn ($value, $attributes) => $this->currentWrestlers->sum('weight'));
+        return new Attribute(
+            get: fn () => $this->currentWrestlers->sum('weight')
+        );
     }
 
     /**

@@ -27,7 +27,12 @@ trait CanJoinStables
     public function currentStable()
     {
         return $this
-            ->hasOneDeep(Stable::class, [static::class, 'stable_members'], ['id', ['member_type', 'member_id'], 'id'], [null, null, 'stable_id'])
+            ->hasOneDeep(
+                Stable::class,
+                [static::class, 'stable_members'],
+                ['id', ['member_type', 'member_id'], 'id'],
+                [null, null, 'stable_id']
+            )
             ->wherePivotNull('left_at');
     }
 

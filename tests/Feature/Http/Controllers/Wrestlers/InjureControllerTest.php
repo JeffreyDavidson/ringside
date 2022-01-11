@@ -86,9 +86,8 @@ class InjureControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider noninjurableWrestlerTypes
      *
-     * @param mixed $factoryState
+     * @dataProvider noninjurableWrestlerTypes
      */
     public function invoke_throws_exception_for_injuring_a_non_injurable_wrestler($factoryState)
     {

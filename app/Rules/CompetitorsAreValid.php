@@ -9,6 +9,8 @@ use Illuminate\Contracts\Validation\Rule;
 class CompetitorsAreValid implements Rule
 {
     /**
+     * The message to be sent as the validation message.
+     *
      * @var string
      */
     protected string $message;

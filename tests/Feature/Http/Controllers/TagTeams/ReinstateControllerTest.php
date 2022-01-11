@@ -69,9 +69,8 @@ class ReinstateControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider nonreinstatableTagTeamTypes
      *
-     * @param mixed $factoryState
+     * @dataProvider nonreinstatableTagTeamTypes
      */
     public function invoke_throws_exception_for_reinstating_a_non_reinstatable_tag_team($factoryState)
     {

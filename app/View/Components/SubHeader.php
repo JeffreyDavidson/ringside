@@ -7,6 +7,8 @@ use Illuminate\View\Component;
 class SubHeader extends Component
 {
     /**
+     * The title of the component.
+     *
      * @var string
      */
     public $title;

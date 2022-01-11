@@ -11,12 +11,14 @@ use App\Repositories\EventMatchRepository;
 class AddMatchForEvent
 {
     /**
+     * The repository to save event matches.
+     *
      * @var \App\Repositories\EventMatchRepository
      */
     private EventMatchRepository $eventMatchRepository;
 
     /**
-     * Undocumented function.
+     * Create a new add match for event instance.
      *
      * @param \App\Repositories\EventMatchRepository $eventMatchRepository
      */
@@ -38,10 +40,20 @@ class AddMatchForEvent
         $createdMatch = $this->eventMatchRepository->createForEvent($event, $eventMatchData);
 
         if ($eventMatchData->titles) {
-            $eventMatchData->titles->map(fn (Title $title) => $this->eventMatchRepository->addTitleToMatch($createdMatch, $title));
+            $eventMatchData->titles->map(
+                fn (Title $title) => $this->eventMatchRepository->addTitleToMatch(
+                    $createdMatch,
+                    $title
+                )
+            );
         }
 
-        $eventMatchData->referees->map(fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch($createdMatch, $referee));
+        $eventMatchData->referees->map(
+            fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch(
+                $createdMatch,
+                $referee
+            )
+        );
 
         foreach ($eventMatchData->competitors as $sideNumber => $sideCompetitors) {
             if (array_key_exists('wrestlers', $sideCompetitors)) {

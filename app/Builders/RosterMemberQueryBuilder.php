@@ -8,6 +8,8 @@ use App\Models\Suspension;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * The query builder attached to a roster member.
+ *
  * @template TModelClass of \App\Models\RosterMember
  * @extends Builder<TModelClass>
  */
@@ -30,11 +32,12 @@ class RosterMemberQueryBuilder extends Builder
      */
     public function withCurrentSuspendedAtDate()
     {
-        return $this->addSelect(['current_suspended_at' => Suspension::select('started_at')
-            ->whereColumn('suspendable_id', $this->qualifyColumn('id'))
-            ->where('suspendable_type', $this->getModel())
-            ->latest('started_at')
-            ->limit(1),
+        return $this->addSelect([
+            'current_suspended_at' => Suspension::select('started_at')
+                ->whereColumn('suspendable_id', $this->qualifyColumn('id'))
+                ->where('suspendable_type', $this->getModel())
+                ->latest('started_at')
+                ->limit(1),
         ])->withCasts(['current_suspended_at' => 'datetime']);
     }
 
@@ -67,11 +70,12 @@ class RosterMemberQueryBuilder extends Builder
      */
     public function withCurrentRetiredAtDate()
     {
-        return $this->addSelect(['current_retired_at' => Retirement::select('started_at')
-            ->whereColumn('retiree_id', $this->getModel()->getTable().'.id')
-            ->where('retiree_type', $this->getModel())
-            ->latest('started_at')
-            ->limit(1),
+        return $this->addSelect([
+            'current_retired_at' => Retirement::select('started_at')
+                ->whereColumn('retiree_id', $this->getModel()->getTable().'.id')
+                ->where('retiree_type', $this->getModel())
+                ->latest('started_at')
+                ->limit(1),
         ])->withCasts(['current_retired_at' => 'datetime']);
     }
 
@@ -106,11 +110,12 @@ class RosterMemberQueryBuilder extends Builder
      */
     public function withReleasedAtDate()
     {
-        return $this->addSelect(['released_at' => Employment::select('ended_at')
-            ->whereColumn('employable_id', $this->getModel()->getTable().'.id')
-            ->where('employable_type', $this->getModel())
-            ->latest('ended_at')
-            ->limit(1),
+        return $this->addSelect([
+            'released_at' => Employment::select('ended_at')
+                ->whereColumn('employable_id', $this->getModel()->getTable().'.id')
+                ->where('employable_type', $this->getModel())
+                ->latest('ended_at')
+                ->limit(1),
         ])->withCasts(['released_at' => 'datetime']);
     }
 
@@ -164,11 +169,12 @@ class RosterMemberQueryBuilder extends Builder
      */
     public function withFirstEmployedAtDate()
     {
-        return $this->addSelect(['first_employed_at' => Employment::select('started_at')
-            ->whereColumn('employable_id', $this->qualifyColumn('id'))
-            ->where('employable_type', $this->getModel())
-            ->oldest('started_at')
-            ->limit(1),
+        return $this->addSelect([
+            'first_employed_at' => Employment::select('started_at')
+                ->whereColumn('employable_id', $this->qualifyColumn('id'))
+                ->where('employable_type', $this->getModel())
+                ->oldest('started_at')
+                ->limit(1),
         ])->withCasts(['first_employed_at' => 'datetime']);
     }
 

@@ -5,6 +5,8 @@ namespace App\Builders;
 use App\Enums\ManagerStatus;
 
 /**
+ * The query builder attached to a manager.
+ *
  * @template TModelClass of \App\Models\Manager
  * @extends SingleRosterMemberQueryBuilder<TModelClass>
  */

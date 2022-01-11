@@ -8,6 +8,8 @@ use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * The query builder attached to a title.
+ *
  * @template TModelClass of \App\Models\Title
  * @extends Builder<TModelClass>
  */
@@ -30,11 +32,12 @@ class TitleQueryBuilder extends Builder
      */
     public function withCurrentRetiredAtDate()
     {
-        return $this->addSelect(['current_retired_at' => Retirement::select('started_at')
-            ->whereColumn('retiree_id', $this->getModel()->getTable().'.id')
-            ->where('retiree_type', $this->getModel())
-            ->latest('started_at')
-            ->limit(1),
+        return $this->addSelect([
+            'current_retired_at' => Retirement::select('started_at')
+                ->whereColumn('retiree_id', $this->getModel()->getTable().'.id')
+                ->where('retiree_type', $this->getModel())
+                ->latest('started_at')
+                ->limit(1),
         ])->withCasts(['current_retired_at' => 'datetime']);
     }
 
@@ -68,11 +71,12 @@ class TitleQueryBuilder extends Builder
      */
     public function withLastDeactivationDate()
     {
-        return $this->addSelect(['last_deactivated_at' => Activation::select('ended_at')
-            ->whereColumn('activatable_id', $this->getModel()->getTable().'.id')
-            ->where('activatable_type', $this->getModel())
-            ->orderBy('ended_at', 'desc')
-            ->limit(1),
+        return $this->addSelect([
+            'last_deactivated_at' => Activation::select('ended_at')
+                ->whereColumn('activatable_id', $this->getModel()->getTable().'.id')
+                ->where('activatable_type', $this->getModel())
+                ->orderBy('ended_at', 'desc')
+                ->limit(1),
         ])->withCasts(['last_deactivated_at' => 'datetime']);
     }
 
@@ -138,11 +142,12 @@ class TitleQueryBuilder extends Builder
      */
     public function withFirstActivatedAtDate()
     {
-        return $this->addSelect(['first_activated_at' => Activation::select('started_at')
-            ->whereColumn('activatable_id', $this->getModel()->getTable().'.id')
-            ->where('activatable_type', $this->getModel())
-            ->oldest('started_at')
-            ->limit(1),
+        return $this->addSelect([
+            'first_activated_at' => Activation::select('started_at')
+                ->whereColumn('activatable_id', $this->getModel()->getTable().'.id')
+                ->where('activatable_type', $this->getModel())
+                ->oldest('started_at')
+                ->limit(1),
         ])->withCasts(['first_activated_at' => 'datetime']);
     }
 

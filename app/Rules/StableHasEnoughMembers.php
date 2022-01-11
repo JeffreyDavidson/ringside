@@ -5,11 +5,15 @@ namespace App\Rules;
 class StableHasEnoughMembers
 {
     /**
+     * Array of tag team ids to join stable.
+     *
      * @var int[]|null
      */
     private ?array $tagTeamIds = [];
 
     /**
+     * Array of wrestler ids to join stable.
+     *
      * @var int[]|null
      */
     private ?array $wrestlerIds = [];

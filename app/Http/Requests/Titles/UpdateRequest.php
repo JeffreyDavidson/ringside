@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Titles;
 
 use App\Models\Title;
-use App\Rules\ActivationStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -38,8 +37,30 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date',
-                new ActivationStartDateCanBeChanged($this->route->param('title')),
             ],
         ];
+    }
+
+    /**
+     * Perform additional validation.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->isEmpty()) {
+                $title = $this->route->param('title');
+
+                if ($title->isCurrentlyActivated() && $title->currentActivation->started_at->ne($this->input('activated_at'))) {
+                    $validator->errors()->add(
+                        'activated_at',
+                        "{$title->name} is currently activated and the activation date cannot be changed."
+                    );
+                }
+            }
+        });
     }
 }

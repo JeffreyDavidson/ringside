@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Referees;
 
 use App\Models\Referee;
-use App\Rules\EmploymentStartDateCanBeChanged;
+use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -32,9 +32,32 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date',
-                new EmploymentStartDateCanBeChanged($this->route->param('referee')),
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isEmpty()) {
+                $referee = $this->route->param('referee');
+                if ($referee->isCurrentlyEmployed()
+                    && $referee->currentEmployment->started_at->ne($this->input('started_at'))
+                ) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$referee->full_name} is currently employed and the employment date cannot be changed."
+                    );
+                }
+            }
+        });
     }
 
     /**

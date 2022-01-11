@@ -136,9 +136,8 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider nonreleasableTagTeamTypes
      *
-     * @param mixed $factoryState
+     * @dataProvider nonreleasableTagTeamTypes
      */
     public function invoke_throws_an_exception_for_releasing_a_non_releasable_tag_team($factoryState)
     {

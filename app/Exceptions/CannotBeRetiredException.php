@@ -7,6 +7,8 @@ use Exception;
 class CannotBeRetiredException extends Exception
 {
     /**
+     * The default message for sending with exception.
+     *
      * @var string
      */
     protected $message = 'This entity cannot be retired. This entity does not have an active employment';

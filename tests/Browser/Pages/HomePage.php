@@ -25,7 +25,6 @@ class HomePage extends Page
      */
     public function assert(Browser $browser)
     {
-        // $browser->assert
     }
 
     /**

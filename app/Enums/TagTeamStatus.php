@@ -3,6 +3,8 @@
 namespace App\Enums;
 
 /**
+ * These are the statuses a tag team can have at any given time.
+ *
  * @method static self bookable()
  * @method static self unbookable()
  * @method static self future_employment()

@@ -146,9 +146,8 @@ class ReleaseControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider nonreleasableRefereeTypes
      *
-     * @param mixed $factoryState
+     * @dataProvider nonreleasableRefereeTypes
      */
     public function invoke_throws_exception_for_releasing_a_non_releasable_referee($factoryState)
     {

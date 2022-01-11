@@ -41,7 +41,14 @@ class VenueServiceTest extends TestCase
             'state' => 'California',
             'zip' => '12345',
         ];
-        $venue = Venue::factory()->make(['name' => 'Example Venue', 'address1' => '123 Main Street', 'address2' => 'Suite 123', 'city' => 'Laraville', 'state' => 'California', 'zip' => '12345']);
+        $venue = Venue::factory()->make([
+            'name' => 'Example Venue',
+            'address1' => '123 Main Street',
+            'address2' => 'Suite 123',
+            'city' => 'Laraville',
+            'state' => 'California',
+            'zip' => '12345'
+        ]);
         $repositoryMock = $this->mock(VenueRepository::class);
         $service = new VenueService($repositoryMock);
 

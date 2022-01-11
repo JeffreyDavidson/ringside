@@ -10,16 +10,22 @@ use Illuminate\Contracts\Validation\Rule;
 class WrestlerCanJoinStable implements Rule
 {
     /**
+     * The message to be sent as the validation message.
+     *
      * @var string
      */
     protected string $message;
 
     /**
+     * The stable to check against.
+     *
      * @var \App\Models\Stable
      */
     protected Stable $stable;
 
     /**
+     * The start date of the stable.
+     *
      * @var \Carbon\Carbon|null
      */
     protected $startedAt;

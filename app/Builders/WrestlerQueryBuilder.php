@@ -3,6 +3,8 @@
 namespace App\Builders;
 
 /**
+ * The query builder attached to a wrestler.
+ *
  * @template TModelClass of \App\Models\Wrestler
  * @extends SingleRosterMemberQueryBuilder<TModelClass>
  */

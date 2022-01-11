@@ -111,9 +111,8 @@ class RetireControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider nonretirableTagTeamTypes
      *
-     * @param mixed $factoryState
+     * @dataProvider nonretirableTagTeamTypes
      */
     public function invoke_throws_exception_for_retiring_a_non_retirable_tag_team($factoryState)
     {

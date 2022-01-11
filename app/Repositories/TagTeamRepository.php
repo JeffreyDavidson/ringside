@@ -185,7 +185,12 @@ class TagTeamRepository
     {
         $joinDate ??= now();
 
-        $wrestlers->map(fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => $joinDate->toDateTimeString()]));
+        $wrestlers->map(
+            fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach(
+                $wrestler->id,
+                ['joined_at' => $joinDate->toDateTimeString()]
+            )
+        );
 
         return $tagTeam;
     }
@@ -200,13 +205,28 @@ class TagTeamRepository
      *
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function syncTagTeamPartners(TagTeam $tagTeam, Collection $formerTagTeamPartners, Collection $newTagTeamPartners, Carbon $date = null)
+    public function syncTagTeamPartners(
+        TagTeam $tagTeam,
+        Collection $formerTagTeamPartners,
+        Collection $newTagTeamPartners,
+        Carbon $date = null
+    )
     {
         $date ??= now();
 
-        $formerTagTeamPartners->map(fn (Wrestler $formerTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($formerTagTeamPartner, ['left_at' => $date->toDateTimeString()]));
+        $formerTagTeamPartners->map(
+            fn (Wrestler $formerTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot(
+                $formerTagTeamPartner,
+                ['left_at' => $date->toDateTimeString()]
+            )
+        );
 
-        $newTagTeamPartners->map(fn (Wrestler $newTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($newTagTeamPartner, ['joined_at' => $date->toDateTimeString()]));
+        $newTagTeamPartners->map(
+            fn (Wrestler $newTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot(
+                $newTagTeamPartner,
+                ['joined_at' => $date->toDateTimeString()]
+            )
+        );
 
         return $tagTeam;
     }

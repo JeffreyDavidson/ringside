@@ -7,6 +7,8 @@ use Exception;
 class NotEnoughMembersException extends Exception
 {
     /**
+     * The default message for sending with exception.
+     *
      * @return self
      */
     public static function forTagTeam()

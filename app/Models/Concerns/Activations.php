@@ -125,12 +125,10 @@ trait Activations
     public function canBeActivated()
     {
         if ($this->isCurrentlyActivated()) {
-            // throw new CannotBeActivatedException('Entity cannot be activated. This entity is active.');
             return false;
         }
 
         if ($this->isRetired()) {
-            // throw new CannotBeActivatedException('Entity cannot be activated. This entity is retired.');
             return false;
         }
 
@@ -144,7 +142,9 @@ trait Activations
      */
     public function activatedAt(): Attribute
     {
-        return new Attribute(get: fn ($value, $attribute) => $this->activations->first()?->started_at);
+        return new Attribute(
+            get: fn () => $this->activations->first()?->started_at
+        );
     }
 
     /**

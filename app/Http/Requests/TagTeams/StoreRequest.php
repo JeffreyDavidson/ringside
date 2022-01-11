@@ -4,9 +4,6 @@ namespace App\Http\Requests\TagTeams;
 
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Rules\CannotBeEmployedAfterDate;
-use App\Rules\CannotBeHindered;
-use App\Rules\CannotBelongToMultipleEmployedTagTeams;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -62,22 +59,28 @@ class StoreRequest extends FormRequest
                         ->whereKey($wrestlerId)
                         ->sole();
 
-                    $cannotBeEmployedAfterDateRuleResult = (new CannotBeEmployedAfterDate($wrestler, $this->input('started_at')))->passes();
-
-                    if (! $cannotBeEmployedAfterDateRuleResult) {
-                        $validator->addFailure('wrestlers', CannotBeEmployedAfterDate::class);
+                    if ($this->wrestler->isCurrentlyEmployed()
+                        && ! $wrestler->currentEmployment->started_at->ne($this->startedAt)
+                    ) {
+                        $validator->errors()->add(
+                            'wrestlers',
+                            "{$wrestler->name} is currently employed and the employment date cannot be changed."
+                        );
                     }
 
-                    $cannotBeHinderedRuleResult = (new CannotBeHindered($wrestler))->passes();
-
-                    if (! $cannotBeHinderedRuleResult) {
-                        $validator->addFailure('wrestlers', CannotBeHindered::class);
+                    if ($wrestler->hasFutureEmployment() && ! $wrestler->futureEmployment->started_at->lt(now())) {
+                        $validator->errors()->add(
+                            'wrestlers',
+                            "{$wrestler->name} has a current employment scheduled and the employment date cannot be changed to a date before the current day."
+                        );
                     }
 
-                    $cannotBelongToMultipleEmployedTagTeamRuleResult = (new CannotBelongToMultipleEmployedTagTeams)->passes();
+                    if ($wrestler->isUnemployed() || $wrestler->isBookable()) {
+                        $validator->errors()->add('wrestlers', $wrestler->name.' is not allowed to join this tag team.');
+                    }
 
-                    if (! $cannotBelongToMultipleEmployedTagTeamRuleResult) {
-                        $validator->addFailure('wrestlers', CannotBelongToMultipleEmployedTagTeams::class);
+                    if ($wrestler->currentTagTeam) {
+                        $validator->errors()->add('wrestlers', $wrestler->name.' is already a part of a tag team.');
                     }
                 }
             }

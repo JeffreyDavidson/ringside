@@ -7,11 +7,15 @@ use App\Models\TagTeam;
 class WrestlerJoinedStableInTagTeam
 {
     /**
+     * Array of tag team ids to check against.
+     *
      * @var int[]|null
      */
     private ?array $tagTeamIds = [];
 
     /**
+     * Array of wrestler ids to check against.
+     *
      * @var int[]|null
      */
     private ?array $wrestlerIds = [];

@@ -23,7 +23,9 @@ class CannotBelongToMultipleEmployedTagTeamsTest extends TestCase
         $tagTeam = TagTeam::factory()->bookable()->create();
         $tagTeam2 = TagTeam::factory()->unemployed()->create();
 
-        $this->assertFalse((new CannotBelongToMultipleEmployedTagTeams($tagTeam2))->passes(null, $tagTeam->currentWrestlers->first()->id));
+        $this->assertFalse(
+            (new CannotBelongToMultipleEmployedTagTeams($tagTeam2))->passes(null, $tagTeam->currentWrestlers->first()->id)
+        );
     }
 
     /**
@@ -44,6 +46,8 @@ class CannotBelongToMultipleEmployedTagTeamsTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
 
-        $this->assertTrue((new CannotBelongToMultipleEmployedTagTeams($tagTeam))->passes(null, $tagTeam->currentWrestlers->first()->id));
+        $this->assertTrue(
+            (new CannotBelongToMultipleEmployedTagTeams($tagTeam))->passes(null, $tagTeam->currentWrestlers->first()->id)
+        );
     }
 }

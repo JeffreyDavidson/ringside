@@ -3,6 +3,8 @@
 namespace App\Enums;
 
 /**
+ * These are the statuses a wrestler can have at any given time.
+ *
  * @method static self bookable()
  * @method static self injured()
  * @method static self future_employment()

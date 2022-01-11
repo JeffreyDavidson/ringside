@@ -19,7 +19,8 @@ class EventMatchesRequestDataFactoryCopy
         private ?int $title_id,
         private array $competitors,
         private ?string $preview
-    ) {
+    )
+    {
         $this->match_type_id = MatchType::first()->id ?? self::DEFAULT_MATCH_TYPE;
         $this->referee_id = Referee::factory()->create()->id ?? self::DEFAULT_REFEREE_ID;
         $this->title_id = $title_id;

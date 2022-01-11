@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Collections\EventMatchCompetitorsCollection;
-use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 class EventMatchCompetitor extends MorphPivot
@@ -18,6 +17,8 @@ class EventMatchCompetitor extends MorphPivot
     protected $fillable = ['event_match_id', 'event_match_competitor_id', 'event_match_competitor_type', 'side_number'];
 
     /**
+     * Retreive the model as the competitor.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function competitor()

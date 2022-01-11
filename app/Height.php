@@ -5,11 +5,15 @@ namespace App;
 class Height
 {
     /**
+     * The height of the roster member.
+     *
      * @var string
      */
     public $height;
 
     /**
+     * Create a new height instance.
+     *
      * @param string
      * @param string $height
      */

@@ -5,6 +5,8 @@ namespace App\Builders;
 use App\Models\Injury;
 
 /**
+ * The query builder attached to a singles roster member.
+ *
  * @template TModelClass of \App\Models\SingleRosterMember
  * @extends RosterMemberQueryBuilder<TModelClass>
  */
@@ -27,11 +29,12 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
      */
     public function withCurrentInjuredAtDate()
     {
-        return $this->addSelect(['current_injured_at' => Injury::select('started_at')
-            ->whereColumn('injurable_id', $this->qualifyColumn('id'))
-            ->where('injurable_type', $this->getModel())
-            ->latest('started_at')
-            ->limit(1),
+        return $this->addSelect([
+            'current_injured_at' => Injury::select('started_at')
+                ->whereColumn('injurable_id', $this->qualifyColumn('id'))
+                ->where('injurable_type', $this->getModel())
+                ->latest('started_at')
+                ->limit(1),
         ])->withCasts(['current_injured_at' => 'datetime']);
     }
 
