@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
-use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateRequest extends FormRequest
 {

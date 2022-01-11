@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Referees;
 
 use App\Models\Referee;
-use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateRequest extends FormRequest
 {
