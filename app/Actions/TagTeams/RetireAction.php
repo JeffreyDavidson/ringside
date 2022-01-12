@@ -23,16 +23,16 @@ class RetireAction extends BaseTagTeamAction
         if ($tagTeam->isSuspended()) {
             $this->tagTeamRepository->reinstate($tagTeam, $retirementDate);
 
-            foreach ($tagTeam->currentWrestlers as $wrestler) {
+            $tagTeam->currentWrestlers->each(function ($wrestler) use ($retirementDate) {
                 $this->wrestlerRepository->reinstate($wrestler, $retirementDate);
-            }
+            });
         }
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($retirementDate) {
             $this->wrestlerRepository->release($wrestler, $retirementDate);
             $this->wrestlerRepository->retire($wrestler, $retirementDate);
             $wrestler->save();
-        }
+        });
 
         $this->tagTeamRepository->release($tagTeam, $retirementDate);
         $this->tagTeamRepository->retire($tagTeam, $retirementDate);

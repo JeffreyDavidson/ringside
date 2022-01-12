@@ -20,11 +20,11 @@ class ReinstateAction extends BaseTagTeamAction
     {
         $reinstatementDate = now();
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($reinstatementDate) {
             $this->wrestlerRepository->reinstate($wrestler, $reinstatementDate);
             $this->wrestlerRepository->employ($wrestler, $reinstatementDate);
             $wrestler->save();
-        }
+        });
 
         $this->tagTeamRepository->reinstate($tagTeam, $reinstatementDate);
         $tagTeam->save();

@@ -76,7 +76,10 @@ class StableRepository
      */
     public function activate(Stable $stable, Carbon $activationDate)
     {
-        $stable->activations()->updateOrCreate(['ended_at' => null], ['started_at' => $activationDate->toDateTimeString()]);
+        $stable->activations()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $activationDate->toDateTimeString()]
+        );
 
         return $stable;
     }
@@ -136,9 +139,19 @@ class StableRepository
      */
     public function disassemble(Stable $stable, Carbon $disassembleDate)
     {
-        $stable->currentWrestlers->each(fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler->id, ['left_at' => $disassembleDate->toDateTimeString()]));
+        $stable->currentWrestlers->each(
+            fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot(
+                $wrestler->id,
+                ['left_at' => $disassembleDate->toDateTimeString()]
+            )
+        );
 
-        $stable->currentTagTeams->each(fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam->id, ['left_at' => $disassembleDate->toDateTimeString()]));
+        $stable->currentTagTeams->each(
+            fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot(
+                $tagTeam->id,
+                ['left_at' => $disassembleDate->toDateTimeString()]
+            )
+        );
 
         return $stable;
     }
@@ -154,9 +167,9 @@ class StableRepository
      */
     public function addWrestlers(Stable $stable, Collection $wrestlers, Carbon $joinDate)
     {
-        foreach ($wrestlers as $wrestler) {
+        $wrestlers->each(function ($wrestler) use ($stable, $joinDate) {
             $stable->currentWrestlers()->attach($wrestler->id, ['joined_at' => $joinDate->toDateTimeString()]);
-        }
+        });
     }
 
     /**
@@ -170,9 +183,9 @@ class StableRepository
      */
     public function addTagTeams(Stable $stable, Collection $tagTeams, Carbon $joinDate)
     {
-        foreach ($tagTeams as $tagTeam) {
+        $tagTeams->each(function (TagTeam $tagTeam) use ($stable, $joinDate) {
             $stable->currentTagTeams()->attach($tagTeam->id, ['joined_at' => $joinDate->toDateTimeString()]);
-        }
+        });
     }
 
     /**
@@ -186,9 +199,12 @@ class StableRepository
      */
     public function removeWrestlers(Stable $stable, Collection $currentWrestlers, Carbon $removalDate)
     {
-        foreach ($currentWrestlers as $wrestler) {
-            $stable->currentWrestlers()->updateExistingPivot($wrestler->id, ['left_at' => $removalDate->toDateTimeString()]);
-        }
+        $currentWrestlers->each(function (Wrestler $wrestler) use ($stable, $removalDate) {
+            $stable->currentWrestlers()->updateExistingPivot(
+                $wrestler->id,
+                ['left_at' => $removalDate->toDateTimeString()]
+            );
+        });
     }
 
     /**
@@ -202,8 +218,11 @@ class StableRepository
      */
     public function removeTagTeams(Stable $stable, Collection $currentTagTeams, Carbon $removalDate)
     {
-        foreach ($currentTagTeams as $tagTeam) {
-            $stable->currentTagTeams()->updateExistingPivot($tagTeam->id, ['left_at' => $removalDate->toDateTimeString()]);
-        }
+        $currentTagTeams->each(function (TagTeam $tagTeam) use ($stable, $removalDate) {
+            $stable->currentTagTeams()->updateExistingPivot(
+                $tagTeam->id,
+                ['left_at' => $removalDate->toDateTimeString()]
+            );
+        });
     }
 }

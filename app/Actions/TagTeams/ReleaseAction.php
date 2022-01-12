@@ -22,17 +22,18 @@ class ReleaseAction extends BaseTagTeamAction
 
         if ($tagTeam->isSuspended()) {
             $this->tagTeamRepository->reinstate($tagTeam, $releaseDate);
-            foreach ($tagTeam->currentWrestlers as $wrestler) {
+
+            $tagTeam->currentWrestlers->each(function ($wrestler, $key) use ($releaseDate) {
                 $this->wrestlerRepository->reinstate($wrestler, $releaseDate);
-            }
+            });
         }
 
         $this->tagTeamRepository->release($tagTeam, $releaseDate);
         $tagTeam->save();
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
+        $tagTeam->currentWrestlers->each(function ($wrestler, $key) use ($releaseDate) {
             $this->wrestlerRepository->release($wrestler, $releaseDate);
             $wrestler->save();
-        }
+        });
     }
 }

@@ -77,7 +77,10 @@ class TagTeamRepository
      */
     public function employ(TagTeam $tagTeam, Carbon $employmentDate)
     {
-        $tagTeam->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+        $tagTeam->employments()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $employmentDate->toDateTimeString()]
+        );
 
         return $tagTeam;
     }
@@ -185,7 +188,7 @@ class TagTeamRepository
     {
         $joinDate ??= now();
 
-        $wrestlers->map(
+        $wrestlers->each(
             fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach(
                 $wrestler->id,
                 ['joined_at' => $joinDate->toDateTimeString()]
@@ -210,18 +213,17 @@ class TagTeamRepository
         Collection $formerTagTeamPartners,
         Collection $newTagTeamPartners,
         Carbon $date = null
-    )
-    {
+    ) {
         $date ??= now();
 
-        $formerTagTeamPartners->map(
+        $formerTagTeamPartners->each(
             fn (Wrestler $formerTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot(
                 $formerTagTeamPartner,
                 ['left_at' => $date->toDateTimeString()]
             )
         );
 
-        $newTagTeamPartners->map(
+        $newTagTeamPartners->each(
             fn (Wrestler $newTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot(
                 $newTagTeamPartner,
                 ['joined_at' => $date->toDateTimeString()]

@@ -66,7 +66,7 @@ $rules = [
     'magic_constant_casing' => true,
     'magic_method_casing' => true,
     'method_argument_space' => [
-        'on_multiline' => 'ensure_single_line',
+        'on_multiline' => 'ensure_fully_multiline',
     ],
     'method_chaining_indentation' => true,
     'modernize_types_casting' => true,

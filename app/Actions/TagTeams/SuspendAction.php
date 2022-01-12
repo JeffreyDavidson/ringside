@@ -20,10 +20,10 @@ class SuspendAction extends BaseTagTeamAction
     {
         $suspensionDate = now();
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($suspensionDate) {
             $this->wrestlerRepository->suspend($wrestler, $suspensionDate);
             $wrestler->save();
-        }
+        });
 
         $this->tagTeamRepository->suspend($tagTeam, $suspensionDate);
         $tagTeam->save();

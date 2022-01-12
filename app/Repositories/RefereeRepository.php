@@ -75,7 +75,10 @@ class RefereeRepository
      */
     public function employ(Referee $referee, Carbon $employmentDate)
     {
-        $referee->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+        $referee->employments()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $employmentDate->toDateTimeString()]
+        );
 
         return $referee;
     }

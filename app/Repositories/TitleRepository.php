@@ -73,7 +73,10 @@ class TitleRepository
      */
     public function activate(Title $title, Carbon $activationDate)
     {
-        $title->activations()->updateOrCreate(['ended_at' => null], ['started_at' => $activationDate->toDateTimeString()]);
+        $title->activations()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $activationDate->toDateTimeString()]
+        );
 
         return $title;
     }

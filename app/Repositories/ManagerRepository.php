@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\DataTransferObjects\ManagerData;
 use App\Models\Manager;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Carbon\Carbon;
 
 class ManagerRepository
@@ -75,7 +77,10 @@ class ManagerRepository
      */
     public function employ(Manager $manager, Carbon $employmentDate)
     {
-        $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+        $manager->employments()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $employmentDate->toDateTimeString()]
+        );
 
         return $manager;
     }
@@ -209,11 +214,11 @@ class ManagerRepository
      */
     public function removeFromCurrentTagTeams(Manager $manager)
     {
-        foreach ($manager->currentTagTeams as $tagTeam) {
+        $manager->currentTagTeams->each(function (TagTeam $tagTeam) use ($manager) {
             $manager->currentTagTeams()->updateExistingPivot($tagTeam->id, [
-                'left_at' => now(),
+                'left_at' => now()->toDateTimeString(),
             ]);
-        }
+        });
     }
 
     /**
@@ -225,10 +230,10 @@ class ManagerRepository
      */
     public function removeFromCurrentWrestlers(Manager $manager)
     {
-        foreach ($manager->currentWrestlers as $wrestler) {
+        $manager->currentWrestlers->each(function (Wrestler $wrestler) use ($manager) {
             $manager->currentWrestlers()->updateExistingPivot($wrestler->id, [
-                'left_at' => now(),
+                'left_at' => now()->toDateTimeString(),
             ]);
-        }
+        });
     }
 }

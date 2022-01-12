@@ -1,5 +1,7 @@
 <?php
 
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -287,7 +289,9 @@ return [
     | name of the Relationship, e.g. `'relationName' => RelationShipClass::class`.
     |
     */
-    'additional_relation_types' => [],
+    'additional_relation_types' => [
+        'hasOneDeep' => HasOneDeep::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------

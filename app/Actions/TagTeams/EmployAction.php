@@ -20,13 +20,12 @@ class EmployAction extends BaseTagTeamAction
     {
         $employmentDate = now();
 
-        $this->tagTeamRepository->employ($tagTeam, $employmentDate);
-
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($employmentDate) {
             $this->wrestlerRepository->employ($wrestler, $employmentDate);
             $wrestler->save();
-        }
+        });
 
+        $this->tagTeamRepository->employ($tagTeam, $employmentDate);
         $tagTeam->save();
     }
 }

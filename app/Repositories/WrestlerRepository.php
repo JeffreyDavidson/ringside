@@ -81,7 +81,10 @@ class WrestlerRepository
      */
     public function employ(Wrestler $wrestler, Carbon $employmentDate)
     {
-        $wrestler->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+        $wrestler->employments()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $employmentDate->toDateTimeString()]
+        );
 
         return $wrestler;
     }
@@ -216,7 +219,7 @@ class WrestlerRepository
      */
     public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate)
     {
-        $wrestler->currentTagTeam()->updateExistingPivot($wrestler->currentTagTeam->id, [
+        $wrestler->tagTeams()->updateExistingPivot($wrestler->currentTagTeam->id, [
             'left_at' => $removalDate->toDateTimeString(),
         ]);
     }
