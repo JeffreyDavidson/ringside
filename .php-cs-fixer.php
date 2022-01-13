@@ -71,7 +71,7 @@ $rules = [
     'method_chaining_indentation' => true,
     'modernize_types_casting' => true,
     'multiline_whitespace_before_semicolons' => [
-        'strategy' => 'no_multi_line',
+        'strategy' => 'ensure_fully_multiline',
     ],
     'native_function_casing' => true,
     'native_function_type_declaration_casing' => true,
