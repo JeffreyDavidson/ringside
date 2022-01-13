@@ -5,6 +5,9 @@ use PhpCsFixer\Finder;
 
 $rules = [
     '@PSR2' => true,
+    'align_multiline_comment' => [
+        'comment_type' => 'phpdocs_only',
+    ],
     'array_syntax' => ['syntax' => 'short'],
     'binary_operator_spaces' => [
         'default' => 'single_space',
@@ -14,13 +17,6 @@ $rules = [
     'blank_line_after_opening_tag' => true,
     'blank_line_before_statement' => [
         'statements' => ['return'],
-    ],
-    'braces' => [
-        'allow_single_line_anonymous_class_with_empty_body' => false,
-        'allow_single_line_closure' => false,
-        'position_after_anonymous_constructs' => 'same',
-        'position_after_control_structures' => 'same',
-        'position_after_functions_and_oop_constructs' => 'next',
     ],
     'cast_spaces' => true,
     'class_attributes_separation' => [
@@ -143,9 +139,6 @@ $rules = [
         'order' => 'alpha',
     ],
     'ordered_traits' => true,
-    'phpdoc_add_missing_param_annotation' => [
-        'only_untyped' => false,
-    ],
     'phpdoc_indent' => true,
     'phpdoc_line_span' => true,
     'phpdoc_no_access' => true,
@@ -156,7 +149,6 @@ $rules = [
     'phpdoc_separation' => true,
     'phpdoc_single_line_var_spacing' => true,
     'phpdoc_summary' => true,
-    'phpdoc_to_comment' => true,
     'phpdoc_trim' => true,
     'phpdoc_types' => true,
     'phpdoc_types_order' => [

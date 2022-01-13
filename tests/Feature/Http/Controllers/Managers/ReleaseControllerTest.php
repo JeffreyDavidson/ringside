@@ -134,8 +134,6 @@ class ReleaseControllerTest extends TestCase
      * @test
      *
      * @dataProvider nonreleasableManagerTypes
-     *
-     * @param mixed $factoryState
      */
     public function invoke_throws_exception_for_releasing_a_non_releasable_manager($factoryState)
     {

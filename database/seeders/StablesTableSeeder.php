@@ -22,7 +22,7 @@ class StablesTableSeeder extends Seeder
         $eNum = 1;
         $now = Carbon::now();
 
-        if (is_null($dateToStart)) {
+        if (null === $dateToStart) {
             $dateToStart = Carbon::now()->subYears(5);
         }
 
@@ -32,7 +32,7 @@ class StablesTableSeeder extends Seeder
         $maxYears = floor($diffInYears * .75);
         $randomNumberOfYearsEmployed = rand($minYears, $maxYears);
 
-        /*
+        /**
          * We need to create 3 stables at this time X years ago but since by
          * the time we reach the current date these stables should be
          * inactive so we need to make them inactive and figure out
@@ -55,7 +55,7 @@ class StablesTableSeeder extends Seeder
             $eNum++;
         }
 
-        /*
+        /**
          * We need to create 2 stables that have been retired. We need to
          * make sure that their activation end date is the same as their
          * start of their retirement date.
@@ -73,7 +73,7 @@ class StablesTableSeeder extends Seeder
             $eNum++;
         }
 
-        /*
+        /**
          * We need to create 1 stable at this time x years ago for each
          * 6 months but since by the time we reach the current
          * date these stables should be inactive so we need to
@@ -101,7 +101,7 @@ class StablesTableSeeder extends Seeder
             $startDate->addMonth();
         }
 
-        /*
+        /**
          * We need to create 1 stables for the next 3 months and
          * should be pending activation and should NOT
          * have an ended activation date.
@@ -118,7 +118,7 @@ class StablesTableSeeder extends Seeder
             $eNum++;
         }
 
-        /*
+        /**
          * We need to create 1 stable that does not have an activation date.
          * This stables should be marked as being unactivated.
          */

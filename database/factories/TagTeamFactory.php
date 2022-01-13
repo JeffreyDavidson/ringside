@@ -58,6 +58,7 @@ class TagTeamFactory extends Factory
 
         $wrestlers = Wrestler::factory()
             ->has(Employment::factory()->started($start))
+            ->bookable()
             ->count(2)
             ->create();
 
@@ -157,7 +158,7 @@ class TagTeamFactory extends Factory
         $wrestlerA = Wrestler::factory()->injured()->has(Employment::factory()->started($start));
         $wrestlerB = Wrestler::factory()->has(Employment::factory()->started($start));
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::UNbookable()])
+        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::unbookable()])
             ->has(Employment::factory()->started($start))
             ->hasAttached($wrestlerA, ['joined_at' => $start])
             ->hasAttached($wrestlerB, ['joined_at' => $start])

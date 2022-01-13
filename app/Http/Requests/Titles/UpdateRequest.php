@@ -5,6 +5,7 @@ namespace App\Http\Requests\Titles;
 use App\Models\Title;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class UpdateRequest extends FormRequest
 {

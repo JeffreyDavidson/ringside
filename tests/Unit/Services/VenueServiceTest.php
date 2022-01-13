@@ -47,7 +47,7 @@ class VenueServiceTest extends TestCase
             'address2' => 'Suite 123',
             'city' => 'Laraville',
             'state' => 'California',
-            'zip' => '12345'
+            'zip' => '12345',
         ]);
         $repositoryMock = $this->mock(VenueRepository::class);
         $service = new VenueService($repositoryMock);
