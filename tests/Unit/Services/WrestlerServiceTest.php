@@ -95,7 +95,11 @@ class WrestlerServiceTest extends TestCase
         $wrestlerMock->expects()->isNotInEmployment()->once()->andReturns(false);
         $wrestlerMock->expects()->hasFutureEmployment()->once()->andReturns(true);
         $wrestlerMock->expects()->employedOn($data['started_at'])->andReturns(false);
-        $repositoryMock->expects()->updateEmployment($wrestlerMock, $data['started_at'])->once()->andReturns($wrestlerMock);
+        $repositoryMock
+            ->expects()
+            ->updateEmployment($wrestlerMock, $data['started_at'])
+            ->once()
+            ->andReturns($wrestlerMock);
 
         $service->update($wrestlerMock, $data);
     }

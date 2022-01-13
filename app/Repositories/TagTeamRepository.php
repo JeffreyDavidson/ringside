@@ -213,7 +213,8 @@ class TagTeamRepository
         Collection $formerTagTeamPartners,
         Collection $newTagTeamPartners,
         Carbon $date = null
-    ) {
+    )
+    {
         $date ??= now();
 
         $formerTagTeamPartners->each(

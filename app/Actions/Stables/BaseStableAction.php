@@ -40,7 +40,8 @@ abstract class BaseStableAction
         StableRepository $stableRepository,
         TagTeamRepository $tagTeamRepository,
         WrestlerRepository $wrestlerRepository
-    ) {
+    )
+    {
         $this->stableRepository = $stableRepository;
         $this->tagTeamRepository = $tagTeamRepository;
         $this->wrestlerRepository = $wrestlerRepository;

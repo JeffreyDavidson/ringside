@@ -102,7 +102,10 @@ class TagTeamControllerStoreMethodTest extends TestCase
 
         tap(TagTeam::first(), function ($tagTeam) use ($startDate) {
             $this->assertCount(1, $tagTeam->employments);
-            $this->assertEquals($startDate->toDateTimeString(), $tagTeam->employments->first()->started_at->toDateTimeString());
+            $this->assertEquals(
+                $startDate->toDateTimeString(),
+                $tagTeam->employments->first()->started_at->toDateTimeString()
+            );
 
             foreach ($tagTeam->wrestlers as $wrestler) {
                 $this->assertSame($startDate->toDateTimeString(), $wrestler->pivot->joined_at);

@@ -111,7 +111,11 @@ class TagTeamServiceTest extends TestCase
         $tagTeamMock->expects()->isNotInEmployment()->andReturns(false);
         $tagTeamMock->expects()->hasFutureEmployment()->andReturns(true);
         $tagTeamMock->expects()->employedOn($data['started_at'])->andReturns(false);
-        $repositoryMock->expects()->updateEmployment($tagTeamMock, $data['started_at'])->once()->andReturns($tagTeamMock);
+        $repositoryMock
+            ->expects()
+            ->updateEmployment($tagTeamMock, $data['started_at'])
+            ->once()
+            ->andReturns($tagTeamMock);
         $tagTeamMock->shouldReceive('getAttribute')->with('currentWrestlers')->andReturns(collect([]));
         $repositoryMock->expects()->addWrestlers($tagTeamMock, $data['wrestlers'])->once()->andReturns($tagTeamMock);
 
