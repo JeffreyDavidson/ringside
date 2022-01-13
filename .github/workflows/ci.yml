@@ -9,6 +9,6 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
     - name: Run PHP-CS-Fixer
-      uses: docker://oskarstark/php-cs-fixer-ga:2.19.0
+      uses: docker://oskarstark/php-cs-fixer-ga:3.4.0
       with:
         args: --dry-run --config=./.php-cs-fixer.php
