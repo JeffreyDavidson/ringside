@@ -37,8 +37,12 @@ class EventMatchesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Event $event, StoreRequest $request, AddMatchForEvent $addMatchForEvent, EventMatchData $eventMatchData)
-    {
+    public function store(
+        Event $event,
+        StoreRequest $request,
+        AddMatchForEvent $addMatchForEvent,
+        EventMatchData $eventMatchData
+    ) {
         $addMatchForEvent($event, $eventMatchData->fromStoreRequest($request));
 
         return redirect()->route('events.index');

@@ -79,7 +79,7 @@ class UpdateRequest extends FormRequest
                     ) {
                         $validator->errors()->add(
                             'wrestlers',
-                            "{$wrestler->name} is currently employed and the employment date cannot be after the tag team start date."
+                            "{$wrestler->name} is currently employed and tag team employment start date has past."
                         );
                     }
 
@@ -100,10 +100,7 @@ class UpdateRequest extends FormRequest
                     if (null !== $wrestler->currentTagTeam
                         && ! $wrestler->currentTagTeam->isNot($this->route->param('tag_team'))
                     ) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} is a member of a tag team that is not in the editted tag team and therefore cannot be added to the tag team."
-                        );
+                        $validator->errors()->add('wrestlers', "{$wrestler->name} is already a member of a tag team.");
                     }
                 }
             }

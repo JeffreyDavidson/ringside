@@ -122,11 +122,10 @@ class WrestlerPolicy
      * Determine whether the user can clear a wrestler from an injury.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Wrestler  $wrestler
      *
      * @return bool
      */
-    public function clearFromInjury(User $user, Wrestler $wrestler)
+    public function clearFromInjury(User $user)
     {
         return $user->isAdministrator();
     }

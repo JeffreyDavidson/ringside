@@ -38,11 +38,10 @@ class TitlePolicy
      * Determine whether the user can delete a title.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Title  $title
      *
      * @return bool
      */
-    public function delete(User $user, Title $title)
+    public function delete(User $user)
     {
         return $user->isAdministrator();
     }
@@ -51,11 +50,10 @@ class TitlePolicy
      * Determine whether the user can restore a title.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Title  $title
      *
      * @return bool
      */
-    public function restore(User $user, Title $title)
+    public function restore(User $user)
     {
         return $user->isAdministrator();
     }
@@ -64,11 +62,10 @@ class TitlePolicy
      * Determine whether the user can retire a title.
      *
      * @param  \App\Models\User  $user
-     * @param Title $title
      *
      * @return bool
      */
-    public function retire(User $user, Title $title)
+    public function retire(User $user)
     {
         return $user->isAdministrator();
     }
@@ -77,11 +74,10 @@ class TitlePolicy
      * Determine whether the user can unretire a title.
      *
      * @param  \App\Models\User  $user
-     * @param Title $title
      *
      * @return bool
      */
-    public function unretire(User $user, Title $title)
+    public function unretire(User $user)
     {
         return $user->isAdministrator();
     }

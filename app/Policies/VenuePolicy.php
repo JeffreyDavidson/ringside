@@ -74,11 +74,10 @@ class VenuePolicy
      * Determine whether the user can view a venue.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Venue  $venue
      *
      * @return bool
      */
-    public function view(User $user, Venue $venue)
+    public function view(User $user)
     {
         return $user->isAdministrator();
     }

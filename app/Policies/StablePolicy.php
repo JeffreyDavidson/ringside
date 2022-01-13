@@ -62,11 +62,10 @@ class StablePolicy
      * Determine whether the user can activate a stable.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stable  $stable
      *
      * @return bool
      */
-    public function activate(User $user, Stable $stable)
+    public function activate(User $user)
     {
         return $user->isAdministrator();
     }
@@ -75,11 +74,10 @@ class StablePolicy
      * Determine whether the user can deactivate a stable.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stable  $stable
      *
      * @return bool
      */
-    public function deactivate(User $user, Stable $stable)
+    public function deactivate(User $user)
     {
         return $user->isAdministrator();
     }
@@ -88,11 +86,10 @@ class StablePolicy
      * Determine whether the user can retire a stable.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stable  $stable
      *
      * @return bool
      */
-    public function retire(User $user, Stable $stable)
+    public function retire(User $user)
     {
         return $user->isAdministrator();
     }
@@ -105,7 +102,7 @@ class StablePolicy
      *
      * @return bool
      */
-    public function unretire(User $user, Stable $stable)
+    public function unretire(User $user)
     {
         return $user->isAdministrator();
     }

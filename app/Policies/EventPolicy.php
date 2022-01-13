@@ -47,11 +47,10 @@ class EventPolicy
      * Determine whether the user can delete an event.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      *
      * @return bool
      */
-    public function delete(User $user, Event $event)
+    public function delete(User $user)
     {
         return $user->isAdministrator();
     }
@@ -60,11 +59,10 @@ class EventPolicy
      * Determine whether the user can restore a deleted event.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      *
      * @return bool
      */
-    public function restore(User $user, Event $event)
+    public function restore(User $user)
     {
         return $user->isAdministrator();
     }
@@ -85,11 +83,10 @@ class EventPolicy
      * Determine whether the user can view an event.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      *
      * @return bool
      */
-    public function view(User $user, Event $event)
+    public function view(User $user)
     {
         return $user->isAdministrator();
     }
