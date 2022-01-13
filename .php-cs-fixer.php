@@ -15,7 +15,13 @@ $rules = [
     'blank_line_before_statement' => [
         'statements' => ['return'],
     ],
-    'braces' => true,
+    'braces' => [
+        'allow_single_line_anonymous_class_with_empty_body' => false,
+        'allow_single_line_closure' => false,
+        'position_after_anonymous_constructs' => 'same',
+        'position_after_control_structures' => 'same',
+        'position_after_functions_and_oop_constructs' => 'next',
+    ],
     'cast_spaces' => true,
     'class_attributes_separation' => [
         'elements' => ['method' => 'one'],
