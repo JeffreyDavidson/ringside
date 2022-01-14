@@ -79,6 +79,7 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "php-cs-fixer": "php-cs-fixer --config=./.php-cs-fixer.php fix"
     }
 }
