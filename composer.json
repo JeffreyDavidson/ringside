@@ -36,6 +36,7 @@
         "nunomaduro/collision": "^5.0",
         "nunomaduro/larastan": "dev-master",
         "nunomaduro/laravel-mojito": "^0.2.4",
+        "nunomaduro/phpinsights": "^2.1",
         "phpunit/phpunit": "^9",
         "squizlabs/php_codesniffer": "*"
     },
@@ -44,7 +45,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": false
+            "composer/package-versions-deprecated": false,
+            "dealerdirect/phpcodesniffer-composer-installer": false
         }
     },
     "extra": {

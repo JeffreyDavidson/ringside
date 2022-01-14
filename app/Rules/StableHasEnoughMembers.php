@@ -21,8 +21,8 @@ class StableHasEnoughMembers
     /**
      * Create a new rule instance.
      *
-     * @param  int[]|null $tagTeamIds
-     * @param  int[]|null $wrestlerIds
+     * @param  array|null $tagTeamIds
+     * @param  array|null $wrestlerIds
      *
      * @return void
      */

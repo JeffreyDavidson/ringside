@@ -34,9 +34,7 @@ class VenueService
      */
     public function create(VenueData $venueData)
     {
-        $venue = $this->venueRepository->create($venueData);
-
-        return $venue;
+        return $this->venueRepository->create($venueData);
     }
 
     /**
@@ -49,9 +47,7 @@ class VenueService
      */
     public function update(Venue $venue, VenueData $venueData)
     {
-        $venue = $this->venueRepository->update($venue, $venueData);
-
-        return $venue;
+        return $this->venueRepository->update($venue, $venueData);
     }
 
     /**

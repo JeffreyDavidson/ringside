@@ -9,22 +9,22 @@ class WrestlerJoinedStableInTagTeam
     /**
      * Array of tag team ids to check against.
      *
-     * @var int[]|null
+     * @var array|null
      */
     private ?array $tagTeamIds = [];
 
     /**
      * Array of wrestler ids to check against.
      *
-     * @var int[]|null
+     * @var array|null
      */
     private ?array $wrestlerIds = [];
 
     /**
      * Create a new rule instance.
      *
-     * @param  int[]|null $tagTeamIds
-     * @param  int[]|null $wrestlerIds
+     * @param  array|null $tagTeamIds
+     * @param  array|null $wrestlerIds
      *
      * @return void
      */

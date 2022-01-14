@@ -94,9 +94,7 @@ trait HasMembers
         $wrestlers = $this->wrestlers;
         $tagTeams = $this->tagTeams;
 
-        $members = $wrestlers->merge($tagTeams);
-
-        return $members;
+        return $wrestlers->merge($tagTeams);
     }
 
     /**
