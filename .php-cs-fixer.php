@@ -4,10 +4,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $rules = [
-    '@PSR2' => true,
-    'align_multiline_comment' => [
-        'comment_type' => 'phpdocs_only',
-    ],
+    'array_indentation' => true,
     'array_syntax' => ['syntax' => 'short'],
     'binary_operator_spaces' => [
         'default' => 'single_space',
@@ -18,198 +15,145 @@ $rules = [
     'blank_line_before_statement' => [
         'statements' => ['return'],
     ],
+    'braces' => true,
     'cast_spaces' => true,
     'class_attributes_separation' => [
-        'elements' => ['method' => 'one'],
+        'elements' => [
+            'const' => 'one',
+            'method' => 'one',
+            'property' => 'one',
+            'trait_import' => 'none',
+        ],
     ],
-    'clean_namespace' => true,
     'class_definition' => [
-        'multi_line_extends_each_single_line' => false,
+        'multi_line_extends_each_single_line' => true,
         'single_item_single_line' => true,
         'single_line' => true,
     ],
-    'combine_consecutive_issets' => true,
-    'compact_nullable_typehint' => true,
     'concat_space' => [
         'spacing' => 'none',
     ],
-    'constant_case' => [
-        'case' => 'lower',
-    ],
-    'control_structure_continuation_position' => [
-        'position' => 'same_line',
-    ],
-    'declare_equal_normalize' => [
-        'space' => 'none',
-    ],
-    'declare_parentheses' => true,
+    'constant_case' => ['case' => 'lower'],
+    'declare_equal_normalize' => true,
     'elseif' => true,
     'encoding' => true,
-    'explicit_string_variable' => true,
     'full_opening_tag' => true,
-    'fully_qualified_strict_types' => true,
+    'fully_qualified_strict_types' => true, // added by Shift
     'function_declaration' => true,
     'function_typehint_space' => true,
+    'general_phpdoc_tag_rename' => true,
     'heredoc_to_nowdoc' => true,
     'include' => true,
     'increment_style' => ['style' => 'post'],
     'indentation_type' => true,
-    'is_null' => true,
-    'lambda_not_used_import' => true,
     'linebreak_after_opening_tag' => true,
     'line_ending' => true,
-    'list_syntax' => [
-        'syntax' => 'short',
-    ],
-    'logical_operators' => true,
     'lowercase_cast' => true,
     'lowercase_keywords' => true,
-    'lowercase_static_reference' => true,
+    'lowercase_static_reference' => true, // added from Symfony
+    'magic_method_casing' => true, // added from Symfony
     'magic_constant_casing' => true,
-    'magic_method_casing' => true,
     'method_argument_space' => [
-        'on_multiline' => 'ensure_fully_multiline',
+        'on_multiline' => 'ignore',
     ],
-    'method_chaining_indentation' => true,
-    'modernize_types_casting' => true,
     'multiline_whitespace_before_semicolons' => [
         'strategy' => 'no_multi_line',
     ],
     'native_function_casing' => true,
-    'native_function_type_declaration_casing' => true,
     'no_alias_functions' => true,
-    'no_alternative_syntax' => true,
+    'no_extra_blank_lines' => [
+        'tokens' => [
+            'extra',
+            'throw',
+            'use',
+        ],
+    ],
     'no_blank_lines_after_class_opening' => true,
     'no_blank_lines_after_phpdoc' => true,
     'no_closing_tag' => true,
-    'no_empty_comment' => true,
     'no_empty_phpdoc' => true,
     'no_empty_statement' => true,
-    'no_extra_blank_lines' => [
-        'tokens' => [
-            'break',
-            'continue',
-            'curly_brace_block',
-            'default',
-            'extra',
-            'parenthesis_brace_block',
-            'return',
-            'square_brace_block',
-            'throw',
-            'use',
-            'use_trait',
-        ],
-    ],
     'no_leading_import_slash' => true,
     'no_leading_namespace_whitespace' => true,
     'no_mixed_echo_print' => [
         'use' => 'echo',
     ],
     'no_multiline_whitespace_around_double_arrow' => true,
-    'no_null_property_initialization' => true,
     'no_short_bool_cast' => true,
     'no_singleline_whitespace_before_semicolons' => true,
-    'no_space_around_double_colon' => true,
     'no_spaces_after_function_name' => true,
-    'no_spaces_around_offset' => true,
+    'no_spaces_around_offset' => [
+        'positions' => ['inside', 'outside'],
+    ],
     'no_spaces_inside_parenthesis' => true,
-    'no_superfluous_elseif' => true,
     'no_trailing_comma_in_list_call' => true,
     'no_trailing_comma_in_singleline_array' => true,
     'no_trailing_whitespace' => true,
     'no_trailing_whitespace_in_comment' => true,
-    'no_trailing_whitespace_in_string' => true,
-    'no_unneeded_control_parentheses' => true,
+    'no_unneeded_control_parentheses' => [
+        'statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield'],
+    ],
     'no_unreachable_default_argument_value' => true,
-    'no_unused_imports' => true,
     'no_useless_return' => true,
     'no_whitespace_before_comma_in_array' => true,
     'no_whitespace_in_blank_line' => true,
     'normalize_index_brace' => true,
     'not_operator_with_successor_space' => true,
     'object_operator_without_whitespace' => true,
-    'operator_linebreak' => [
-        'position' => 'beginning',
-    ],
-    'ordered_imports' => [
-        'sort_algorithm' => 'alpha',
-    ],
-    'ordered_interfaces' => [
-        'direction' => 'ascend',
-        'order' => 'alpha',
-    ],
-    'ordered_traits' => true,
+    'ordered_imports' => ['sort_algorithm' => 'alpha'],
+    'psr_autoloading' => true,
     'phpdoc_indent' => true,
-    'phpdoc_line_span' => true,
+    'phpdoc_inline_tag_normalizer' => true,
     'phpdoc_no_access' => true,
     'phpdoc_no_package' => true,
     'phpdoc_no_useless_inheritdoc' => true,
-    'phpdoc_order' => true,
     'phpdoc_scalar' => true,
-    'phpdoc_separation' => true,
     'phpdoc_single_line_var_spacing' => true,
-    'phpdoc_summary' => true,
+    'phpdoc_summary' => false,
+    'phpdoc_to_comment' => false, // override to preserve user preference
+    'phpdoc_tag_type' => true,
     'phpdoc_trim' => true,
     'phpdoc_types' => true,
-    'phpdoc_types_order' => [
-        'null_adjustment' => 'always_last',
-        'sort_algorithm' => 'none',
-    ],
-    'phpdoc_var_annotation_correct_order' => true,
     'phpdoc_var_without_name' => true,
-    'php_unit_mock_short_will_return' => true,
-    'php_unit_test_annotation' => [
-        'style' => 'annotation',
-    ],
-    'php_unit_fqcn_annotation' => true,
-    'php_unit_method_casing' => [
-        'case' => 'snake_case',
-    ],
-    'return_type_declaration' => [
-        'space_before' => 'none',
-    ],
     'self_accessor' => true,
-    'semicolon_after_instruction' => true,
     'short_scalar_cast' => true,
-    'simple_to_complex_string_variable' => true,
-    'simplified_null_return' => true,
+    'simplified_null_return' => false, // disabled as "risky"
     'single_blank_line_at_eof' => true,
     'single_blank_line_before_namespace' => true,
-    'single_class_element_per_statement' => true,
+    'single_class_element_per_statement' => [
+        'elements' => ['const', 'property'],
+    ],
     'single_import_per_statement' => true,
     'single_line_after_imports' => true,
     'single_line_comment_style' => [
         'comment_types' => ['hash'],
     ],
-    'single_line_throw' => true,
     'single_quote' => true,
-    'single_space_after_construct' => true,
     'space_after_semicolon' => true,
-    'standardize_increment' => true,
     'standardize_not_equals' => true,
     'switch_case_semicolon_to_colon' => true,
     'switch_case_space' => true,
-    'switch_continue_to_break' => true,
     'ternary_operator_spaces' => true,
-    'trailing_comma_in_multiline' => true,
+    'trailing_comma_in_multiline' => ['elements' => ['arrays']],
     'trim_array_spaces' => true,
     'unary_operator_spaces' => true,
-    'use_arrow_functions' => true,
     'visibility_required' => [
-        'elements' => ['method', 'property', 'const'],
+        'elements' => ['method', 'property'],
     ],
     'whitespace_after_comma_in_array' => true,
 ];
 
 $finder = Finder::create()
-    ->notPath('bootstrap')
-    ->notPath('storage')
-    ->notPath('vendor')
-    ->in(getcwd())
+    ->in([
+        __DIR__.'/app',
+        __DIR__.'/config',
+        __DIR__.'/database',
+        __DIR__.'/resources',
+        __DIR__.'/routes',
+        __DIR__.'/tests',
+    ])
     ->name('*.php')
     ->notName('*.blade.php')
-    ->notName('index.php')
-    ->notName('server.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
