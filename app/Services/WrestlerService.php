@@ -64,31 +64,6 @@ class WrestlerService
     }
 
     /**
-     * Employ a given wrestler or update the given wrestler's employment date.
-     *
-     * @param  \App\Models\Wrestler $wrestler
-     * @param  \Carbon\Carbon $employmentDate
-     *
-     * @return \App\Models\Wrestler $wrestler
-     */
-    public function employOrUpdateEmployment(Wrestler $wrestler, Carbon $employmentDate)
-    {
-        if ($wrestler->isNotInEmployment()) {
-            $this->wrestlerRepository->employ($wrestler, $employmentDate);
-
-            return $wrestler;
-        }
-
-        if ($wrestler->hasFutureEmployment() && ! $wrestler->employedOn($employmentDate)) {
-            $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
-
-            return $wrestler;
-        }
-
-        return $wrestler;
-    }
-
-    /**
      * Delete a given wrestler.
      *
      * @param  \App\Models\Wrestler $wrestler
@@ -110,5 +85,30 @@ class WrestlerService
     public function restore(Wrestler $wrestler)
     {
         $this->wrestlerRepository->restore($wrestler);
+    }
+
+    /**
+     * Employ a given wrestler or update the given wrestler's employment date.
+     *
+     * @param  \App\Models\Wrestler $wrestler
+     * @param  \Carbon\Carbon $employmentDate
+     *
+     * @return \App\Models\Wrestler $wrestler
+     */
+    private function employOrUpdateEmployment(Wrestler $wrestler, Carbon $employmentDate)
+    {
+        if (! $wrestler->isNotInEmployment()) {
+            $this->wrestlerRepository->employ($wrestler, $employmentDate);
+
+            return $wrestler;
+        }
+
+        if ($wrestler->hasFutureEmployment() && ! $wrestler->scheduledToBeEmployedOn($employmentDate)) {
+            $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
+
+            return $wrestler;
+        }
+
+        return $wrestler;
     }
 }

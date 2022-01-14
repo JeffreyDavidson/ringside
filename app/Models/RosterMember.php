@@ -119,7 +119,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function isNotInEmployment()
     {
-        return $this->isUnemployed() || $this->isReleased() || $this->hasFutureEmployment() || $this->isRetired();
+        return $this->isUnemployed() || $this->isReleased() || $this->isRetired();
     }
 
     /**
@@ -188,7 +188,19 @@ abstract class RosterMember extends Model implements Employable
      */
     public function employedOn(Carbon $employmentDate)
     {
-        return $this->employments->last()->started_at->ne($employmentDate);
+        return $this->currentEmployment->started_at->ne($employmentDate);
+    }
+
+    /**
+     * Get the model's first employment date.
+     *
+     * @param  \Carbon\Carbon $employmentDate
+     *
+     * @return bool
+     */
+    public function scheduledToBeEmployedOn(Carbon $employmentDate)
+    {
+        return $this->futureEmployment->started_at->ne($employmentDate);
     }
 
     /**

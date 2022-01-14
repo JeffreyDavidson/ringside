@@ -46,7 +46,6 @@ class InjureControllerTest extends TestCase
     public function injuring_a_bookable_wrestler_on_a_bookable_tag_team_makes_tag_team_unbookable()
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
-        dd($tagTeam);
         $wrestler = $tagTeam->currentWrestlers()->first();
 
         $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
