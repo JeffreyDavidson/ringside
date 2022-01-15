@@ -47,7 +47,7 @@ class UpdateRequest extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
-                $manager = $this->route->param('manager');
+                $manager = $this->route()->parameter('manager');
                 if ($manager->isCurrentlyEmployed()
                     && $manager->currentEmployment->started_at->ne($this->input('started_at'))
                 ) {

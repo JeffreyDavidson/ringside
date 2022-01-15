@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Activation;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait Activations
@@ -160,11 +161,11 @@ trait Activations
     /**
      * Get the model's first activation date.
      *
-     * @param  string $activationDate
+     * @param  \Carbon\Carbon $activationDate
      *
      * @return bool
      */
-    public function activatedOn(string $activationDate)
+    public function activatedOn(Carbon $activationDate)
     {
         return $this->activations->last()->started_at->ne($activationDate);
     }

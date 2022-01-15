@@ -103,6 +103,17 @@ abstract class RosterMember extends Model implements Employable
     }
 
     /**
+     * Check to see if the model is employed.
+     *
+     * @param  \Carbon\Carbon $startDate
+     * @return bool
+     */
+    public function startDateWas(Carbon $startDate)
+    {
+        return $this->firstEmployment->started_at->ne($startDate);
+    }
+
+    /**
      * Check to see if the model has been employed.
      *
      * @return bool
@@ -180,7 +191,7 @@ abstract class RosterMember extends Model implements Employable
     }
 
     /**
-     * Get the model's first employment date.
+     * Determine if the roster member was employed on a given date.
      *
      * @param  \Carbon\Carbon $employmentDate
      *
@@ -192,7 +203,7 @@ abstract class RosterMember extends Model implements Employable
     }
 
     /**
-     * Get the model's first employment date.
+     * Determine if the roster member is to be employed on a given date.
      *
      * @param  \Carbon\Carbon $employmentDate
      *

@@ -39,11 +39,11 @@ class Activation extends Model
     /**
      * Determine an activation started before a given date.
      *
-     * @param  string $date
+     * @param  \Carbon\Carbon $date
      *
      * @return bool
      */
-    public function startedBefore($date)
+    public function startedBefore(Carbon $date)
     {
         return $this->started_at->lt($date);
     }

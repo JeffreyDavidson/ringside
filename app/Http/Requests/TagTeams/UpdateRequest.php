@@ -32,7 +32,7 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 'min:3',
-                Rule::unique('tag_teams')->ignore($this->route->param('tag_team')->id),
+                Rule::unique('tag_teams')->ignore($this->route()->parameter('tag_team')->id),
             ],
             'signature_move' => ['nullable', 'string'],
             'started_at' => [
@@ -61,7 +61,7 @@ class UpdateRequest extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
-                $tagTeam = $this->route->param('tag_team');
+                $tagTeam = $this->route()->parameter('tag_team');
                 if ($tagTeam->isCurrentlyEmployed()
                     && $tagTeam->currentEmployment->started_at->ne($this->input('started_at'))
                 ) {

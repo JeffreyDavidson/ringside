@@ -103,7 +103,7 @@ class TagTeamService
             return $tagTeam;
         }
 
-        if ($tagTeam->hasFutureEmployment() && ! $tagTeam->employedOn($employmentDate)) {
+        if ($tagTeam->hasFutureEmployment() && ! $tagTeam->scheduledToBeEmployedOn($employmentDate)) {
             $this->tagTeamRepository->updateEmployment($tagTeam, $employmentDate);
 
             return $tagTeam;

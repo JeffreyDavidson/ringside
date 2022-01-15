@@ -38,6 +38,11 @@ class EventMatch extends Model
         return $this->belongsToMany(Title::class);
     }
 
+    /**
+     * Get all fo the event match competitors for the match.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function competitors()
     {
         return $this->hasMany(EventMatchCompetitor::class);

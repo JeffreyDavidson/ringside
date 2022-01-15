@@ -11,12 +11,12 @@ class EventMatchCompetitorsCollection extends Collection
      *
      * @return void
      */
-    public function groupBySide()
+    public function groupedBySide()
     {
         return $this->groupBy('side_number');
     }
 
-    public function groupByType()
+    public function groupedByType()
     {
         return $this->keyBy('event_match_competitor_type');
     }

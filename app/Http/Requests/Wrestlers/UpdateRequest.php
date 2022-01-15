@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 'min:3',
-                Rule::unique('wrestlers')->ignore($this->route->param('wrestler')->id),
+                Rule::unique('wrestlers')->ignore($this->route()->parameter('wrestler')->id),
             ],
             'feet' => ['required', 'integer'],
             'inches' => ['required', 'integer', 'max:11'],
@@ -70,17 +70,16 @@ class UpdateRequest extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
-                $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);
+                $wrestler = $this->route()->parameter('wrestler');
 
-                $wrestler = $this->route->param('wrestler');
-                if ($wrestler->isCurrentlyEmployed()
-                    && $wrestler->currentEmployment->started_at->ne($this->input('started_at'))
-                ) {
+                if ($wrestler->isCurrentlyEmployed() && $wrestler->startDateWas($this->input('started_at'))) {
                     $validator->errors()->add(
                         'started_at',
                         "{$wrestler->name} is currently employed and the employment date cannot be changed."
                     );
                 }
+
+                $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);
             }
         });
     }

@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Stable;
 use App\Models\TagTeam;
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
 class TagTeamCanJoinStable implements Rule
@@ -25,19 +26,19 @@ class TagTeamCanJoinStable implements Rule
     /**
      * The start date of the stable.
      *
-     * @var string|null
+     * @var \Carbon\Carbon|null
      */
-    protected ?string $startedAt;
+    protected ?Carbon $startedAt;
 
     /**
      * Create a new rule instance.
      *
      * @param  \App\Models\Stable $stable
-     * @param  string|null $startedAt
+     * @param  \Carbon\Carbon|null $startedAt
      *
      * @return void
      */
-    public function __construct(Stable $stable, string $startedAt = null)
+    public function __construct(Stable $stable, Carbon $startedAt = null)
     {
         $this->stable = $stable;
         $this->startedAt = $startedAt;
@@ -61,12 +62,10 @@ class TagTeamCanJoinStable implements Rule
             return false;
         }
 
-        if (is_string($this->startedAt)) {
-            if ($tagTeam->futureEmployment && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
-                $this->setMessage("This tag team's future employment starts after stable's start date.");
+        if ($tagTeam->futureEmployment && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
+            $this->setMessage("This tag team's future employment starts after stable's start date.");
 
-                return false;
-            }
+            return false;
         }
 
         return true;

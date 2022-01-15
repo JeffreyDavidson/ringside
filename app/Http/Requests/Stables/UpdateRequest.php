@@ -34,11 +34,11 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 'min:3',
-                Rule::unique('stables')->ignore($this->route->param('stable')->id),
+                Rule::unique('stables')->ignore($this->route()->parameter('stable')->id),
             ],
             'started_at' => [
                 'nullable',
-                Rule::requiredIf(fn () => ! $this->route->param('stable')->isUnactivated()),
+                Rule::requiredIf(fn () => ! $this->route()->parameter('stable')->isUnactivated()),
                 'string',
                 'date',
             ],
@@ -49,14 +49,14 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('wrestlers', 'id'),
-                new WrestlerCanJoinStable($this->route->param('stable'), $this->date('started_at')),
+                new WrestlerCanJoinStable($this->route()->parameter('stable'), $this->date('started_at')),
             ],
             'tag_teams.*' => [
                 'bail',
                 'integer',
                 'distinct',
                 Rule::exists('tag_teams', 'id'),
-                new TagTeamCanJoinStable($this->route->param('stable'), $this->date('started_at')),
+                new TagTeamCanJoinStable($this->route()->parameter('stable'), $this->date('started_at')),
             ],
         ];
     }
@@ -72,7 +72,7 @@ class UpdateRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isEmpty()) {
-                $stable = $this->route->param('stable');
+                $stable = $this->route()->parameter('stable');
 
                 if ($stable->isCurrentlyActivated()
                     && $stable->currentActivation->started_at->ne($this->input('activated_at'))

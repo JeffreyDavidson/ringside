@@ -32,7 +32,7 @@ class UpdateRequest extends FormRequest
                 'string',
                 'min:3',
                 'ends_with:Title,Titles',
-                Rule::unique('titles')->ignore($this->route->param('title')->id),
+                Rule::unique('titles')->ignore($this->route()->parameter('title')->id),
             ],
             'activated_at' => [
                 'nullable',
@@ -53,7 +53,7 @@ class UpdateRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isEmpty()) {
-                $title = $this->route->param('title');
+                $title = $this->route()->parameter('title');
 
                 if ($title->isCurrentlyActivated()
                     && $title->currentActivation->started_at->ne($this->input('activated_at'))
