@@ -1,6 +1,6 @@
 <?php
 
-// @formatter:off
+// @formatter:on
 /**
  * A helper file for your Eloquent Models
  * Copy the phpDocs from this file to the correct Model,
@@ -11,7 +11,7 @@
 
 namespace App\Models{
     /**
-     * App\Models\Activation.
+     * App\Models\Activation
      *
      * @property int $id
      * @property string $activatable_type
@@ -21,7 +21,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $activatable
-     *
      * @method static \Database\Factories\ActivationFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Activation newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Activation newQuery()
@@ -34,7 +33,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Employment.
+     * App\Models\Employment
      *
      * @property int $id
      * @property string $employable_type
@@ -44,7 +43,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $employable
-     *
      * @method static \Database\Factories\EmploymentFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Employment newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Employment newQuery()
@@ -57,7 +55,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Event.
+     * App\Models\Event
      *
      * @property int $id
      * @property string $name
@@ -70,7 +68,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $deleted_at
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventMatch[] $matches
      * @property-read \App\Models\Venue|null $venue
-     *
      * @method static \Database\Factories\EventFactory factory(...$parameters)
      * @method static \App\Builders\EventQueryBuilder|Event newModelQuery()
      * @method static \App\Builders\EventQueryBuilder|Event newQuery()
@@ -89,7 +86,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\EventMatch.
+     * App\Models\EventMatch
      *
      * @property int $id
      * @property int $event_id
@@ -102,7 +99,6 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $tagTeams
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Title[] $titles
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
-     *
      * @method static \Database\Factories\EventMatchFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatch newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatch newQuery()
@@ -115,7 +111,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\EventMatchCompetitor.
+     * App\Models\EventMatchCompetitor
      *
      * @property int $id
      * @property int $event_match_id
@@ -124,7 +120,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $competitor
-     *
      * @method static \App\Collections\EventMatchCompetitorsCollection|static[] all($columns = ['*'])
      * @method static \App\Collections\EventMatchCompetitorsCollection|static[] get($columns = ['*'])
      * @method static \Illuminate\Database\Eloquent\Builder|EventMatchCompetitor newModelQuery()
@@ -138,7 +133,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Injury.
+     * App\Models\Injury
      *
      * @property int $id
      * @property string $injurable_type
@@ -148,7 +143,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $injurable
-     *
      * @method static \Database\Factories\InjuryFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Injury newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Injury newQuery()
@@ -161,7 +155,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Manager.
+     * App\Models\Manager
      *
      * @property int $id
      * @property int|null $user_id
@@ -174,7 +168,7 @@ namespace App\Models{
      * @property-read \App\Models\Employment|null $currentEmployment
      * @property-read \App\Models\Injury|null $currentInjury
      * @property-read \App\Models\Retirement|null $currentRetirement
-     * @property-read \App\Models\Stable|null $currentStable
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $currentStable
      * @property-read \App\Models\Suspension|null $currentSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $currentTagTeams
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $currentWrestlers
@@ -201,7 +195,6 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
      * @property-read \App\Models\User|null $user
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
-     *
      * @method static \App\Builders\ManagerQueryBuilder|Manager available()
      * @method static \App\Builders\ManagerQueryBuilder|Manager bookable()
      * @method static \App\Builders\ManagerQueryBuilder|Manager employed()
@@ -236,14 +229,13 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\MatchDecision.
+     * App\Models\MatchDecision
      *
      * @property int $id
      * @property string $name
      * @property string $slug
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     *
      * @method static \Illuminate\Database\Eloquent\Builder|MatchDecision newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|MatchDecision newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|MatchDecision query()
@@ -255,7 +247,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\MatchType.
+     * App\Models\MatchType
      *
      * @property int $id
      * @property string $name
@@ -263,7 +255,6 @@ namespace App\Models{
      * @property int|null $number_of_sides
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     *
      * @method static \Database\Factories\MatchTypeFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|MatchType newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|MatchType newQuery()
@@ -276,7 +267,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Referee.
+     * App\Models\Referee
      *
      * @property int $id
      * @property string $first_name
@@ -305,7 +296,6 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $previousSuspensions
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
-     *
      * @method static \App\Builders\RefereeQueryBuilder|Referee bookable()
      * @method static \App\Builders\RefereeQueryBuilder|Referee employed()
      * @method static \Database\Factories\RefereeFactory factory(...$parameters)
@@ -339,7 +329,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Retirement.
+     * App\Models\Retirement
      *
      * @property int $id
      * @property string $retiree_type
@@ -349,7 +339,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $retiree
-     *
      * @method static \Database\Factories\RetirementFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Retirement newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Retirement newQuery()
@@ -362,7 +351,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Stable.
+     * App\Models\Stable
      *
      * @property int $id
      * @property int|null $user_id
@@ -389,7 +378,6 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
      * @property-read \App\Models\User|null $user
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
-     *
      * @method static \App\Builders\StableQueryBuilder|Stable active()
      * @method static \App\Builders\StableQueryBuilder|Stable deactivated()
      * @method static \Database\Factories\StableFactory factory(...$parameters)
@@ -417,7 +405,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\StableMember.
+     * App\Models\StableMember
      *
      * @method static \Illuminate\Database\Eloquent\Builder|StableMember newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|StableMember newQuery()
@@ -430,7 +418,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Suspension.
+     * App\Models\Suspension
      *
      * @property int $id
      * @property string $suspendable_type
@@ -440,7 +428,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $suspendable
-     *
      * @method static \Database\Factories\SuspensionFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Suspension newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Suspension newQuery()
@@ -453,7 +440,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\TagTeam.
+     * App\Models\TagTeam
      *
      * @property int $id
      * @property int|null $user_id
@@ -466,7 +453,7 @@ namespace App\Models{
      * @property-read \App\Models\Employment|null $currentEmployment
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Manager[] $currentManagers
      * @property-read \App\Models\Retirement|null $currentRetirement
-     * @property-read \App\Models\Stable|null $currentStable
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $currentStable
      * @property-read \App\Models\Suspension|null $currentSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $currentWrestlers
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
@@ -489,7 +476,6 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
      * @property-read \App\Models\User|null $user
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
-     *
      * @method static \App\Builders\TagTeamQueryBuilder|TagTeam bookable()
      * @method static \App\Builders\TagTeamQueryBuilder|TagTeam employed()
      * @method static \Database\Factories\TagTeamFactory factory(...$parameters)
@@ -520,7 +506,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Title.
+     * App\Models\Title
      *
      * @property int $id
      * @property string $name
@@ -538,7 +524,6 @@ namespace App\Models{
      * @property-read \App\Models\Retirement|null $previousRetirement
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $previousRetirements
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
-     *
      * @method static \App\Builders\TitleQueryBuilder|Title active()
      * @method static \App\Builders\TitleQueryBuilder|Title competable()
      * @method static \App\Builders\TitleQueryBuilder|Title deactivated()
@@ -567,7 +552,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\User.
+     * App\Models\User
      *
      * @property int $id
      * @property string $first_name
@@ -581,7 +566,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
      * @property-read \App\Models\Wrestler|null $wrestler
-     *
      * @method static \Database\Factories\UserFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -594,7 +578,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Venue.
+     * App\Models\Venue
      *
      * @property int $id
      * @property string $name
@@ -606,7 +590,6 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $deleted_at
-     *
      * @method static \Database\Factories\VenueFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|Venue newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Venue newQuery()
@@ -622,7 +605,7 @@ namespace App\Models{
 
 namespace App\Models{
     /**
-     * App\Models\Wrestler.
+     * App\Models\Wrestler
      *
      * @property int $id
      * @property int|null $user_id
@@ -639,9 +622,9 @@ namespace App\Models{
      * @property-read \App\Models\Injury|null $currentInjury
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Manager[] $currentManagers
      * @property-read \App\Models\Retirement|null $currentRetirement
-     * @property-read \App\Models\Stable|null $currentStable
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $currentStable
      * @property-read \App\Models\Suspension|null $currentSuspension
-     * @property-read \App\Models\TagTeam|null $currentTagTeam
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $currentTagTeam
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventMatch[] $eventMatches
      * @property-read \App\Models\Employment|null $firstEmployment
@@ -665,7 +648,6 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
      * @property-read \App\Models\User|null $user
-     *
      * @method static \App\Builders\WrestlerQueryBuilder|Wrestler bookable()
      * @method static \App\Builders\WrestlerQueryBuilder|Wrestler employed()
      * @method static \Database\Factories\WrestlerFactory factory(...$parameters)

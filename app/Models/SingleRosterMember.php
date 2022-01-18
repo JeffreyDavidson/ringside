@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Builders\SingleRosterMemberQueryBuilder;
 
+/**
+ * @mixin \Eloquent
+ */
 abstract class SingleRosterMember extends RosterMember
 {
     /**

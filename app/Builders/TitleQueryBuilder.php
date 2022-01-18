@@ -117,7 +117,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function static()
+    public function inactive()
     {
         return $this->whereHas('previousActivation')
             ->whereDoesntHave('futureActivation')

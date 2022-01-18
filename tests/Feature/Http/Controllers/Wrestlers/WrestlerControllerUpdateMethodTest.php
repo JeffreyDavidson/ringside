@@ -176,7 +176,7 @@ class WrestlerControllerUpdateMethodTest extends TestCase
     /**
      * @test
      */
-    public function update_cannot_reemploy_a_released_wrestler()
+    public function update_cannot_reemploy_a_wrestler_that_has_a()
     {
         $wrestler = Wrestler::factory()->released()->create();
         $startDate = $wrestler->employments->last()->started_at->toDateTimeString();

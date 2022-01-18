@@ -7,6 +7,9 @@ use App\Models\Contracts\Employable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin \Eloquent
+ */
 abstract class RosterMember extends Model implements Employable
 {
     /**
