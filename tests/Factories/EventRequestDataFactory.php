@@ -7,9 +7,13 @@ use App\Models\Event;
 class EventRequestDataFactory
 {
     private string $name = 'Example Event Name';
+
     private ?string $date = null;
+
     private ?int $venue_id = null;
+
     private ?string $preview = null;
+
     private array $matches = [];
 
     public static function new(): self

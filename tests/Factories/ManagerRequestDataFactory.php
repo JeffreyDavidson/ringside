@@ -7,7 +7,9 @@ use App\Models\Manager;
 class ManagerRequestDataFactory
 {
     private string $first_name = 'John';
+
     private string $last_name = 'Smith';
+
     private ?string $started_at = null;
 
     public static function new(): self

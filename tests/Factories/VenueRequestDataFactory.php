@@ -7,10 +7,15 @@ use App\Models\Venue;
 class VenueRequestDataFactory
 {
     private string $name = 'Example Venue Name';
+
     private string $address1 = '123 Main Street';
+
     private ?string $address2 = 'Suite 100';
+
     private string $city = 'Laraville';
+
     private string $state = 'New York';
+
     private string $zip = '12345';
 
     public static function new(): self

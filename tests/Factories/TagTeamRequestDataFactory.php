@@ -7,8 +7,11 @@ use App\Models\TagTeam;
 class TagTeamRequestDataFactory
 {
     private string $name = 'Example Tag Team Name';
+
     private ?string $signature_move = null;
+
     private ?string $started_at = null;
+
     private array $wrestlers = [];
 
     public static function new(): self

@@ -7,11 +7,17 @@ use App\Models\Wrestler;
 class WrestlerRequestDataFactory
 {
     private string $name = 'Example Wrestler Name';
+
     private int $feet = 6;
+
     private int $inches = 6;
+
     private int $weight = 240;
+
     private string $hometown = 'Laraville, FL';
+
     private ?string $signature_move = null;
+
     private ?string $started_at = null;
 
     public static function new(): self

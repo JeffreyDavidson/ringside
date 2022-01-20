@@ -8,7 +8,9 @@ use Carbon\Carbon;
 class RefereeRequestDataFactory
 {
     private string $first_name = 'James';
+
     private string $last_name = 'Williams';
+
     private ?string $started_at = null;
 
     public static function new(): self
