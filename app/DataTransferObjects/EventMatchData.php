@@ -13,11 +13,17 @@ use Illuminate\Support\Collection;
 class EventMatchData
 {
     public MatchType $matchType;
+
     public Collection $referees;
+
     public ?Collection $titles;
+
     public Collection $competitors;
+
     public Collection $wrestlers;
+
     public Collection $tagTeams;
+
     public ?string $preview;
 
     /**

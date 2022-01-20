@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class TitleData
 {
     public string $name;
+
     public ?Carbon $activation_date;
 
     public static function fromStoreRequest(StoreRequest $request): self

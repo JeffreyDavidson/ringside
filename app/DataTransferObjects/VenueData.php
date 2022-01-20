@@ -8,10 +8,15 @@ use App\Http\Requests\Venues\UpdateRequest;
 class VenueData
 {
     public string $name;
+
     public string $address1;
+
     public ?string $address2;
+
     public string $city;
+
     public string $state;
+
     public string $zip;
 
     public static function fromStoreRequest(StoreRequest $request): self

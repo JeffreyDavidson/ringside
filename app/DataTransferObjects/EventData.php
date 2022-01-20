@@ -10,8 +10,11 @@ use Carbon\Carbon;
 class EventData
 {
     public string $name;
+
     public ?Carbon $date;
+
     public ?Venue $venue;
+
     public ?string $preview;
 
     public static function fromStoreRequest(StoreRequest $request): self

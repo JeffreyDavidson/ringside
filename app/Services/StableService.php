@@ -107,8 +107,7 @@ class StableService
         Collection $wrestlers = null,
         Collection $tagTeams = null,
         Carbon $joinedDate = null
-    )
-    {
+    ) {
         $joinedDate ??= now();
 
         if ($wrestlers) {

@@ -11,8 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 class TagTeamData
 {
     public string $name;
+
     public ?string $signature_move;
+
     public ?Carbon $start_date;
+
     public Collection $wrestlers;
 
     public static function fromStoreRequest(StoreRequest $request): self

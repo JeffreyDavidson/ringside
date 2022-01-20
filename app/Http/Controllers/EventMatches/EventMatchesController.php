@@ -42,8 +42,7 @@ class EventMatchesController extends Controller
         StoreRequest $request,
         AddMatchForEvent $addMatchForEvent,
         EventMatchData $eventMatchData
-    )
-    {
+    ) {
         $addMatchForEvent($event, $eventMatchData->fromStoreRequest($request));
 
         return redirect()->route('events.index');

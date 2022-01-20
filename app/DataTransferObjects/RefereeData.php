@@ -9,7 +9,9 @@ use Carbon\Carbon;
 class RefereeData
 {
     public string $first_name;
+
     public string $last_name;
+
     public ?Carbon $start_date;
 
     public static function fromStoreRequest(StoreRequest $request): self
