@@ -167,7 +167,7 @@ trait Activations
      */
     public function activatedOn(Carbon $activationDate)
     {
-        return $this->activations->last()?->started_at->ne($activationDate);
+        return $this->currentActivation?->started_at->eq($activationDate);
     }
 
     /**

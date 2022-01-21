@@ -72,11 +72,20 @@ class UpdateRequest extends FormRequest
             if ($validator->errors()->isEmpty()) {
                 $wrestler = $this->route()->parameter('wrestler');
 
-                if ($wrestler->isCurrentlyEmployed() && $wrestler->startDateWas($this->input('started_at'))) {
+                if ($wrestler->isReleased() && ! $wrestler->employedOn($this->date('started_at'))) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$wrestler->name} was released and the employment date cannot be changed."
+                    );
+                }
+
+                if ($wrestler->isCurrentlyEmployed() && ! $wrestler->employedOn($this->date('started_at'))) {
                     $validator->errors()->add(
                         'started_at',
                         "{$wrestler->name} is currently employed and the employment date cannot be changed."
                     );
+
+                    $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
                 }
 
                 $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);

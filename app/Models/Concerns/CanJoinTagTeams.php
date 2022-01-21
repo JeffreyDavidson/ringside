@@ -29,7 +29,7 @@ trait CanJoinTagTeams
     public function currentTagTeam(): HasOneDeep
     {
         return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
-            ->wherePivotNull('left_at');
+            ->whereNull('left_at');
     }
 
     /**

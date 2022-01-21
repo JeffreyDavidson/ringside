@@ -97,7 +97,7 @@ class WrestlerService
      */
     private function employOrUpdateEmployment(Wrestler $wrestler, Carbon $employmentDate)
     {
-        if (! $wrestler->isNotInEmployment()) {
+        if ($wrestler->isNotInEmployment()) {
             $this->wrestlerRepository->employ($wrestler, $employmentDate);
 
             return $wrestler;

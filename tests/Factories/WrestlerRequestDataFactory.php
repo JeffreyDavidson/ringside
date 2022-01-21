@@ -47,6 +47,7 @@ class WrestlerRequestDataFactory
         $clone->weight = $wrestler->weight;
         $clone->hometown = $wrestler->hometown;
         $clone->signature_move = $wrestler->signature_move;
+        $clone->started_at = $wrestler->startedAt?->toDateTimeString();
 
         return $clone;
     }

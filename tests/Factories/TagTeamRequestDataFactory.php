@@ -35,6 +35,7 @@ class TagTeamRequestDataFactory
 
         $clone->name = $tagTeam->name;
         $clone->signature_move = $tagTeam->signature_move;
+        $clone->started_at = $tagTeam->startedAt?->toDateTimeString();
 
         return $clone;
     }

@@ -165,11 +165,13 @@ class RefereeControllerUpdateMethodTest extends TestCase
             ->from(action([RefereesController::class, 'edit'], $referee))
             ->put(
                 action([RefereesController::class, 'update'], $referee),
-                RefereeRequestDataFactory::new()->withReferee($referee)->create([
-                    'started_at' => $referee->employments()->first()->started_at->toDateTimeString(),
-                ])
+                RefereeRequestDataFactory::new()
+                    ->withReferee($referee)
+                    ->create([
+                        'started_at' => now()->toDateTImeString(),
+                    ])
             )
-            ->assertRedirect(action([RefereesController::class, 'index']));
+            ->assertSessionHasErrors(['started_at']);
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->employments);

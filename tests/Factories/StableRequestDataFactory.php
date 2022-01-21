@@ -63,6 +63,8 @@ class StableRequestDataFactory
 
         $clone->name = $stable->name;
         $clone->started_at = $stable->activatedAt?->toDateTimeString();
+        $clone->wrestlers = $stable->currentWrestlers->modelKeys();
+        $clone->tagTeams = $stable->currentTagTeams->modelKeys();
 
         return $clone;
     }

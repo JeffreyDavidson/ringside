@@ -37,12 +37,12 @@ class EmploymentFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $employmentDate
+     * @param \Carbon\Carbon $employmentDate
      */
-    public function started($employmentDate = 'now')
+    public function started(Carbon $employmentDate)
     {
         return $this->state([
-            'started_at' => $employmentDate instanceof Carbon ? $employmentDate : new Carbon($employmentDate),
+            'started_at' => $employmentDate->toDateTimeString() ?? now()->toDateTimeString(),
         ]);
     }
 

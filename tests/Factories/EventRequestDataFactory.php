@@ -33,7 +33,7 @@ class EventRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $event->name;
+        $clone->name = $event->name;
 
         return $clone;
     }

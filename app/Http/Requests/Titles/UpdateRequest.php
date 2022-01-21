@@ -55,13 +55,13 @@ class UpdateRequest extends FormRequest
             if ($validator->errors()->isEmpty()) {
                 $title = $this->route()->parameter('title');
 
-                if ($title->isCurrentlyActivated()
-                    && $title->currentActivation->started_at->ne($this->input('activated_at'))
-                ) {
+                if ($title->isCurrentlyActivated() && ! $title->activatedOn($this->date('activated_at'))) {
                     $validator->errors()->add(
                         'activated_at',
                         "{$title->name} is currently activated and the activation date cannot be changed."
                     );
+
+                    $validator->addFailure('activated_at', 'activation_date_cannot_be_changed');
                 }
             }
         });

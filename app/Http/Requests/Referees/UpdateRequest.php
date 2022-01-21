@@ -61,6 +61,7 @@ class UpdateRequest extends FormRequest
                         'started_at',
                         "{$referee->full_name} is currently employed and the employment date cannot be changed."
                     );
+                    $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
                 }
             }
         });

@@ -28,6 +28,7 @@ class TitleRequestDataFactory
         $clone = clone $this;
 
         $clone->name = $title->name;
+        $clone->activated_at = $title->activatedAt?->toDateTimeString();
 
         return $clone;
     }

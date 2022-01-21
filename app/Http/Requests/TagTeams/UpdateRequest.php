@@ -68,6 +68,8 @@ class UpdateRequest extends FormRequest
                         'started_at',
                         "{$tagTeam->name} is currently employed and the employment date cannot be changed."
                     );
+
+                    $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
                 }
 
                 if ($this->collect('wrestlers')->isNotEmpty()) {

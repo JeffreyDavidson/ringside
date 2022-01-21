@@ -52,9 +52,7 @@ class StableFactory extends Factory
 
     public function unactivated()
     {
-        return $this->state(fn (array $attributes) => ['status' => StableStatus::unactivated()])
-            ->hasAttached(Wrestler::factory()->unemployed(), ['joined_at' => now()])
-            ->hasAttached(TagTeam::factory()->unemployed(), ['joined_at' => now()]);
+        return $this->state(fn (array $attributes) => ['status' => StableStatus::unactivated()]);
     }
 
     public function active()

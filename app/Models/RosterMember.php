@@ -226,7 +226,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function employedBefore(Carbon $employmentDate)
     {
-        return $this->currentEmployment?->started_at->lt($employmentDate);
+        return $this->currentEmployment?->started_at->lte($employmentDate);
     }
 
     /**
