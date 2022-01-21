@@ -127,7 +127,6 @@ class TagTeamFactory extends Factory
     public function unemployed()
     {
         return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::unemployed()])
-            ->hasAttached(Wrestler::factory()->count(2), ['joined_at' => Carbon::now()])
             ->afterCreating(function (TagTeam $tagTeam) {
                 $tagTeam->save();
             });
@@ -186,6 +185,22 @@ class TagTeamFactory extends Factory
     public function softDeleted()
     {
         return $this->state(fn (array $attributes) => ['deleted_at' => now()])
+            ->afterCreating(function (TagTeam $tagTeam) {
+                $tagTeam->save();
+            });
+    }
+
+    public function withoutTagTeamPartners()
+    {
+        return $this->afterCreating(function (TagTeam $tagTeam) {
+            $tagTeam->save();
+        });
+    }
+
+    public function withTagTeamPartners()
+    {
+        return $this
+            ->hasAttached(Wrestler::factory()->count(2)->unemployed(), ['joined_at' => now()->toDateTimeString()])
             ->afterCreating(function (TagTeam $tagTeam) {
                 $tagTeam->save();
             });

@@ -98,8 +98,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
                     'started_at' => $startDate->toDateTimeString(),
                     'wrestlers' => $wrestlers->modelKeys(),
                 ])
-            )
-            ->dumpSession();
+            );
 
         tap(TagTeam::first(), function ($tagTeam) use ($startDate) {
             $this->assertCount(1, $tagTeam->employments);

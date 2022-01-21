@@ -218,6 +218,30 @@ abstract class RosterMember extends Model implements Employable
     }
 
     /**
+     * Determine if the roster member is to be employed on a given date.
+     *
+     * @param  \Carbon\Carbon $employmentDate
+     *
+     * @return bool
+     */
+    public function employedBefore(Carbon $employmentDate)
+    {
+        return $this->currentEmployment?->started_at->lt($employmentDate);
+    }
+
+    /**
+     * Determine if the roster member is employed after a given date.
+     *
+     * @param  \Carbon\Carbon $employmentDate
+     *
+     * @return bool
+     */
+    public function employedAfter(Carbon $employmentDate)
+    {
+        return $this->currentEmployment?->started_at->gt($employmentDate);
+    }
+
+    /**
      * Determine if the roster member future start date is before the given date.
      *
      * @param  \Carbon\Carbon $date

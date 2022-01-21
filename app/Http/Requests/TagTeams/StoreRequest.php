@@ -59,29 +59,11 @@ class StoreRequest extends FormRequest
                         ->whereKey($wrestlerId)
                         ->sole();
 
-                    if ($wrestler->isCurrentlyEmployed() && ! $wrestler->employedOn($this->date('started_at'))) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} is currently employed and the employment date cannot be changed."
-                        );
-                    }
-
-                    if ($wrestler->hasFutureEmployment() && ! $wrestler->futureEmploymentIsBefore(now())) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            "{$wrestler->name} has a future employment scheduled after the current date."
-                        );
-                    }
-
-                    if ($wrestler->isUnemployed() || $wrestler->isBookable()) {
-                        $validator->errors()->add(
-                            'wrestlers',
-                            $wrestler->name.' is not allowed to join this tag team.'
-                        );
-                    }
-
                     if (null !== $wrestler->currentTagTeam) {
-                        $validator->errors()->add('wrestlers', $wrestler->name.' is already a part of a tag team.');
+                        $validator->errors()->add(
+                            'wrestlers',
+                            "{$wrestler->name} is already a part of a bookable tag team."
+                        );
                     }
                 });
             }

@@ -189,10 +189,7 @@ class TagTeamRepository
         $joinDate ??= now();
 
         $wrestlers->each(
-            fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach(
-                $wrestler->id,
-                ['joined_at' => $joinDate->toDateTimeString()]
-            )
+            fn (Wrestler $wrestler) => $this->addTagTeamPartner($tagTeam, $wrestler, $joinDate)
         );
 
         return $tagTeam;
@@ -210,26 +207,54 @@ class TagTeamRepository
      */
     public function syncTagTeamPartners(
         TagTeam $tagTeam,
-        Collection $formerTagTeamPartners,
-        Collection $newTagTeamPartners,
+        Collection $formerTagTeamPartnerIds,
+        Collection $newTagTeamPartnerIds,
         Carbon $date = null
     ) {
         $date ??= now();
 
-        $formerTagTeamPartners->each(
-            fn (Wrestler $formerTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot(
-                $formerTagTeamPartner,
-                ['left_at' => $date->toDateTimeString()]
-            )
+        $formerTagTeamPartnerIds->each(
+            fn ($formerTagTeamPartnerId) => $this->removeTagTeamPartner($tagTeam, $formerTagTeamPartnerId, $date)
         );
 
-        $newTagTeamPartners->each(
-            fn (Wrestler $newTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot(
-                $newTagTeamPartner,
-                ['joined_at' => $date->toDateTimeString()]
-            )
+        $newTagTeamPartnerIds->each(
+            fn ($newTagTeamPartnerId) => $this->addTagTeamPartner($tagTeam, $newTagTeamPartnerId, $date)
         );
 
         return $tagTeam;
+    }
+
+    /**
+     * Remove wrestler from a tag team.
+     *
+     * @param  \App\Models\TagTeam $tagTeam
+     * @param  int $tagTeamPartnerId
+     * @param  \Carbon\Carbon|null $date
+     *
+     * @return void
+     */
+    public function removeTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date = null)
+    {
+        $tagTeam->currentWrestlers()->updateExistingPivot(
+            $tagTeamPartnerId,
+            ['left_at' => $date->toDateTimeString()]
+        );
+    }
+
+    /**
+     * Add wrestler to a tag team.
+     *
+     * @param  \App\Models\TagTeam $tagTeam
+     * @param  int $tagTeamPartnerId
+     * @param  \Carbon\Carbon|null $date
+     *
+     * @return void
+     */
+    public function addTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date = null)
+    {
+        $tagTeam->currentWrestlers()->attach(
+            $tagTeamPartnerId,
+            ['joined_at' => $date->toDateTimeString()]
+        );
     }
 }

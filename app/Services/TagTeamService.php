@@ -82,7 +82,9 @@ class TagTeamService
             $this->employOrUpdateEmployment($tagTeam, $$tagTeamData->start_date);
         }
 
-        $this->updateTagTeamPartners($tagTeam, $tagTeamData->wrestlers);
+        if ($tagTeamData->wrestlers->isNotEmpty()) {
+            $this->updateTagTeamPartners($tagTeam, $tagTeamData->wrestlers);
+        }
 
         return $tagTeam;
     }
@@ -152,8 +154,8 @@ class TagTeamService
             }
         } else {
             $currentTagTeamPartners = $tagTeam->currentWrestlers->pluck('id');
-            $formerTagTeamPartners = $currentTagTeamPartners->diff($wrestlers);
-            $newTagTeamPartners = $wrestlers->diff($currentTagTeamPartners);
+            $formerTagTeamPartners = $currentTagTeamPartners->diff($wrestlers->modelKeys());
+            $newTagTeamPartners = $wrestlers->pluck('id')->diff($currentTagTeamPartners);
 
             $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
         }
