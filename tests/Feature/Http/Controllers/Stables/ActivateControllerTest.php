@@ -10,6 +10,8 @@ use App\Exceptions\CannotBeActivatedException;
 use App\Http\Controllers\Stables\ActivateController;
 use App\Http\Controllers\Stables\StablesController;
 use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Tests\TestCase;
 
 /**
@@ -23,9 +25,9 @@ class ActivateControllerTest extends TestCase
     /**
      * @test
      */
-    public function invoke_activates_an_unactivated_stable_with_members_and_redirects()
+    public function invoke_activates_an_unactivated_stable_and_employs_its_unemployed_members_and_redirects()
     {
-        $stable = Stable::factory()->unactivated()->create();
+        $stable = Stable::factory()->unactivated()->withUnemployedDefaultMembers()->create();
 
         $this->assertEquals(StableStatus::unactivated(), $stable->status);
 
@@ -38,15 +40,15 @@ class ActivateControllerTest extends TestCase
             $this->assertCount(1, $stable->activations);
             $this->assertEquals(StableStatus::active(), $stable->status);
 
-            foreach ($stable->currentWrestlers as $wrestler) {
+            $stable->currentWrestlers->each(function (Wrestler $wrestler) {
                 $this->assertCount(1, $wrestler->employments);
                 $this->assertEquals(WrestlerStatus::bookable(), $wrestler->status);
-            }
+            });
 
-            foreach ($stable->currentTagTeams as $tagTeam) {
+            $stable->currentTagTeams->each(function (TagTeam $tagTeam) {
                 $this->assertCount(1, $tagTeam->employments);
                 $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
-            }
+            });
         });
     }
 

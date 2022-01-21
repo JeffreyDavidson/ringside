@@ -62,7 +62,7 @@ class WrestlerCanJoinStable implements Rule
             return false;
         }
 
-        if ($wrestler->employedBefore($this->startedAt)) {
+        if (! $wrestler->employedBefore($this->startedAt)) {
             $this->setMessage("This wrestler's future employment starts after stable's start date.");
 
             return false;

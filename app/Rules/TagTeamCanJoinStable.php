@@ -56,13 +56,13 @@ class TagTeamCanJoinStable implements Rule
     {
         $tagTeam = TagTeam::with(['currentStable', 'futureEmployment'])->whereKey($value)->sole();
 
-        if ($tagTeam->currentStable && $tagTeam->currentStable->isNot($this->stable)) {
-            $this->setMessage('This tag team is already a members of an active stable.');
+        if (! $tagTeam->isNotCurrentlyInStable($this->stable)) {
+            $this->setMessage('This tag team is already a member of an active stable.');
 
             return false;
         }
 
-        if ($tagTeam->futureEmployment && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
+        if (! $tagTeam->employedBefore($this->startedAt)) {
             $this->setMessage("This tag team's future employment starts after stable's start date.");
 
             return false;

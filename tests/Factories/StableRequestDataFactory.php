@@ -30,13 +30,11 @@ class StableRequestDataFactory
         ], $overrides);
     }
 
-    public function withStartDate(string | Carbon $startedAt): self
+    public function withStartDate(Carbon $startedAt): self
     {
         $clone = clone $this;
 
-        $clone->started_at = $startedAt instanceof Carbon
-            ? $startedAt->format('Y-m-d H:i:a')
-            : $startedAt;
+        $clone->started_at = $startedAt;
 
         return $clone;
     }
@@ -63,7 +61,8 @@ class StableRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $stable->name;
+        $clone->name = $stable->name;
+        $clone->started_at = $stable->activatedAt?->toDateTimeString();
 
         return $clone;
     }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Builders\RosterMemberQueryBuilder;
 use App\Models\Contracts\Employable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class RosterMember extends Model implements Employable
@@ -173,7 +174,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function canBeReleased()
     {
-        if ($this->isNotInEmployment()) {
+        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
         }
 
@@ -185,9 +186,11 @@ abstract class RosterMember extends Model implements Employable
      *
      * @return string|null
      */
-    public function getStartedAtAttribute()
+    public function startedAt(): Attribute
     {
-        return optional($this->employments->first())->started_at;
+        return new Attribute(
+            get: fn () => $this->employments->first()?->started_at
+        );
     }
 
     /**
@@ -199,7 +202,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function employedOn(Carbon $employmentDate)
     {
-        return $this->currentEmployment->started_at->ne($employmentDate);
+        return $this->currentEmployment?->started_at->eq($employmentDate);
     }
 
     /**
@@ -211,7 +214,19 @@ abstract class RosterMember extends Model implements Employable
      */
     public function scheduledToBeEmployedOn(Carbon $employmentDate)
     {
-        return $this->futureEmployment->started_at->ne($employmentDate);
+        return $this->futureEmployment?->started_at->eq($employmentDate);
+    }
+
+    /**
+     * Determine if the roster member future start date is before the given date.
+     *
+     * @param  \Carbon\Carbon $date
+     *
+     * @return bool
+     */
+    public function futureEmploymentIsBefore(Carbon $date)
+    {
+        return $this->futureEmployment?->started_at->lt($date);
     }
 
     /**
@@ -226,18 +241,6 @@ abstract class RosterMember extends Model implements Employable
         }
 
         return false;
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @param  \Carbon\Carbon|null $startDate
-     *
-     * @return bool
-     */
-    public function employedBefore(Carbon $startDate = null)
-    {
-        return true;
     }
 
     /**
@@ -392,7 +395,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function canBeRetired()
     {
-        if ($this->isNotInEmployment()) {
+        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
         }
 

@@ -27,7 +27,7 @@ class TitleRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $title->name;
+        $clone->name = $title->name;
 
         return $clone;
     }

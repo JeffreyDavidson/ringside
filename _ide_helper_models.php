@@ -407,6 +407,8 @@ namespace App\Models{
     /**
      * App\Models\StableMember
      *
+     * @property string $joined_at
+     * @property string|null $left_at
      * @method static \Illuminate\Database\Eloquent\Builder|StableMember newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|StableMember newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|StableMember query()
@@ -453,7 +455,7 @@ namespace App\Models{
      * @property-read \App\Models\Employment|null $currentEmployment
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Manager[] $currentManagers
      * @property-read \App\Models\Retirement|null $currentRetirement
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $currentStable
+     * @property-read \App\Models\Stable|null $currentStable
      * @property-read \App\Models\Suspension|null $currentSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $currentWrestlers
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
@@ -622,9 +624,9 @@ namespace App\Models{
      * @property-read \App\Models\Injury|null $currentInjury
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Manager[] $currentManagers
      * @property-read \App\Models\Retirement|null $currentRetirement
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $currentStable
+     * @property-read \App\Models\Stable|null $currentStable
      * @property-read \App\Models\Suspension|null $currentSuspension
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $currentTagTeam
+     * @property-read \App\Models\TagTeam|null $currentTagTeam
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventMatch[] $eventMatches
      * @property-read \App\Models\Employment|null $firstEmployment

@@ -23,7 +23,7 @@ class EventMatchCompetitor extends MorphPivot
      */
     public function competitor()
     {
-        return $this->morphTo();
+        return $this->morphTo('event_match_competitor');
     }
 
     /**

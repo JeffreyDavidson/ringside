@@ -39,12 +39,12 @@ class VenueRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $venue->name;
-        $this->address1 = $venue->address1;
-        $this->address2 = $venue->address2;
-        $this->city = $venue->city;
-        $this->state = $venue->state;
-        $this->zip = $venue->zip;
+        $clone->name = $venue->name;
+        $clone->address1 = $venue->address1;
+        $clone->address2 = $venue->address2;
+        $clone->city = $venue->city;
+        $clone->state = $venue->state;
+        $clone->zip = $venue->zip;
 
         return $clone;
     }

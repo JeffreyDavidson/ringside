@@ -33,8 +33,8 @@ class TagTeamRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $tagTeam->name;
-        $this->signature_move = $tagTeam->signature_move;
+        $clone->name = $tagTeam->name;
+        $clone->signature_move = $tagTeam->signature_move;
 
         return $clone;
     }

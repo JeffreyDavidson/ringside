@@ -83,16 +83,18 @@ class UpdateRequest extends FormRequest
                     );
                 }
 
-                $membersWereAdded = count($this->input('tag_teams')) > 0 || count($this->input('wrestlers')) > 0;
-                if ($membersWereAdded) {
-                    $result = (new StableHasEnoughMembers(
-                        $this->input('tag_teams'),
-                        $this->input('wrestlers')
-                    ))->passes();
+                $tagTeamsCountFromRequest = count($this->input('tag_teams'));
+                $wrestlersCountFromRequest = count($this->input('wrestlers'));
 
-                    if (! $result) {
-                        $validator->addFailure('wrestlers', StableHasEnoughMembers::class);
-                        $validator->addFailure('tag_teams', StableHasEnoughMembers::class);
+                $totalTagTeamsCount = count($this->stable->currentTagTeams) + $tagTeamsCountFromRequest;
+                $totalWrestlersCount = count($this->stable->currentWrestlers) + $wrestlersCountFromRequest;
+
+                if ($stable->isCurrentlyActivated()) {
+                    if ($totalTagTeamsCount * 2 + $totalWrestlersCount < 3) {
+                        $validator->errors()->add(
+                            '*',
+                            "{$stable->name} does not contain at least 3 members."
+                        );
                     }
                 }
             }

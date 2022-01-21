@@ -43,7 +43,7 @@ abstract class SingleRosterMember extends RosterMember
      */
     public function canBeSuspended()
     {
-        if ($this->isNotInEmployment()) {
+        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
         }
 
@@ -144,7 +144,7 @@ abstract class SingleRosterMember extends RosterMember
      */
     public function canBeInjured()
     {
-        if ($this->isNotInEmployment()) {
+        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
         }
 

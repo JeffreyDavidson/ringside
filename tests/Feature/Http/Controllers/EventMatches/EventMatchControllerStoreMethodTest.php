@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\EventMatches;
 
+use App\Collections\EventMatchCompetitorsCollection;
 use App\Enums\Role;
 use App\Http\Controllers\EventMatches\EventMatchesController;
 use App\Models\Event;
@@ -59,15 +60,10 @@ class EventMatchControllerStoreMethodTest extends TestCase
             $this->assertCount(0, $match->titles);
             $this->assertCount(1, $match->referees);
             $this->assertCollectionHas($match->referees, $referee);
-            $this->assertInstanceOf(Collection::class, $match->competitors);
-            $this->assertCount(2, $match->competitors->groupBySide());
-            $this->assertCount(1, $match->competitors->groupBySide()[0]->groupByType());
-            $this->assertCollectionHas($wrestlerA, $match->competitors->groupBySide()[0]->groupByType());
-            $this->assertCount(1, $match->competitors[1]->wrestlers);
-            $this->assertCollectionHas($wrestlerB, $match->competitors[1]->wrestlers);
-            $this->assertCount(2, $match->wrestlers);
-            $this->assertCollectionHas($match->wrestlers, $wrestlerA);
-            $this->assertCollectionHas($match->wrestlers, $wrestlerB);
+            $this->assertInstanceOf(EventMatchCompetitorsCollection::class, $match->competitors);
+            $this->assertCount(2, $match->competitors);
+            $this->assertInstanceOf(Wrestler::class, $match->competitors->first()->competitor);
+            $this->assertInstanceOf(Wrestler::class, $match->competitors->last()->competitor);
             $this->assertEquals('This is a general match preview.', $match->preview);
         });
     }

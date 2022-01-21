@@ -39,8 +39,6 @@ class StableFactory extends Factory
     {
         return $this->state(fn (array $attributes) => ['status' => StableStatus::future_activation()])
             ->has(Activation::factory()->started(Carbon::tomorrow()))
-            ->hasAttached(Wrestler::factory()->has(Employment::factory()->started(Carbon::tomorrow())), ['joined_at' => now()])
-            ->hasAttached(TagTeam::factory()->has(Employment::factory()->started(Carbon::tomorrow())), ['joined_at' => now()])
             ->afterCreating(function (Stable $stable) {
                 $stable->currentWrestlers->each(function ($wrestler) {
                     $wrestler->save();
@@ -124,6 +122,33 @@ class StableFactory extends Factory
     public function softDeleted()
     {
         return $this->state(fn (array $attributes) => ['deleted_at' => now()])
+            ->afterCreating(function (Stable $stable) {
+                $stable->save();
+            });
+    }
+
+    public function withNoMembers()
+    {
+        return $this->afterCreating(function (Stable $stable) {
+            $stable->save();
+        });
+    }
+
+    public function withEmployedDefaultMembers()
+    {
+        return $this
+            ->hasAttached(Wrestler::factory()->has(Employment::factory()->started(Carbon::yesterday())), ['joined_at' => now()])
+            ->hasAttached(TagTeam::factory()->has(Employment::factory()->started(Carbon::yesterday())), ['joined_at' => now()])
+            ->afterCreating(function (Stable $stable) {
+                $stable->save();
+            });
+    }
+
+    public function withUnemployedDefaultMembers()
+    {
+        return $this
+            ->hasAttached(Wrestler::factory()->unemployed(), ['joined_at' => now()])
+            ->hasAttached(TagTeam::factory()->unemployed(), ['joined_at' => now()])
             ->afterCreating(function (Stable $stable) {
                 $stable->save();
             });

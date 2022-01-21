@@ -53,22 +53,20 @@ class StoreRequest extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
-                foreach ($this->input('wrestlers') as $wrestlerId) {
+                $this->collect('wrestlers')->each(function ($wrestlerId) use ($validator) {
                     $wrestler = Wrestler::query()
                         ->with(['currentTagTeam', 'currentEmployment', 'futureEmployment'])
                         ->whereKey($wrestlerId)
                         ->sole();
 
-                    if ($this->wrestler->isCurrentlyEmployed()
-                        && ! $wrestler->currentEmployment->started_at->ne($this->startedAt)
-                    ) {
+                    if ($wrestler->isCurrentlyEmployed() && ! $wrestler->employedOn($this->date('started_at'))) {
                         $validator->errors()->add(
                             'wrestlers',
                             "{$wrestler->name} is currently employed and the employment date cannot be changed."
                         );
                     }
 
-                    if ($wrestler->hasFutureEmployment() && ! $wrestler->futureEmployment->started_at->lt(now())) {
+                    if ($wrestler->hasFutureEmployment() && ! $wrestler->futureEmploymentIsBefore(now())) {
                         $validator->errors()->add(
                             'wrestlers',
                             "{$wrestler->name} has a future employment scheduled after the current date."
@@ -85,7 +83,7 @@ class StoreRequest extends FormRequest
                     if (null !== $wrestler->currentTagTeam) {
                         $validator->errors()->add('wrestlers', $wrestler->name.' is already a part of a tag team.');
                     }
-                }
+                });
             }
         });
     }

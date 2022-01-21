@@ -14,8 +14,6 @@ class EventRequestDataFactory
 
     private ?string $preview = null;
 
-    private array $matches = [];
-
     public static function new(): self
     {
         return new self;
@@ -28,7 +26,6 @@ class EventRequestDataFactory
             'date' => $this->date,
             'venue_id' => $this->venue_id,
             'preview' => $this->preview,
-            'matches' => $this->matches,
         ], $overrides);
     }
 

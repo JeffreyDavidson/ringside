@@ -46,7 +46,7 @@ class InjureControllerTest extends TestCase
 
         $this
             ->actAs(Role::basic())
-            ->patch(route('managers.injure', $manager))
+            ->patch(action([InjureController::class], $manager))
             ->assertForbidden();
     }
 
@@ -58,7 +58,7 @@ class InjureControllerTest extends TestCase
         $manager = Manager::factory()->create();
 
         $this
-            ->patch(route('managers.injure', $manager))
+            ->patch(action([InjureController::class], $manager))
             ->assertRedirect(route('login'));
     }
 
@@ -76,7 +76,7 @@ class InjureControllerTest extends TestCase
 
         $this
             ->actAs(Role::administrator())
-            ->patch(route('managers.injure', $manager));
+            ->patch(action([InjureController::class], $manager));
     }
 
     public function noninjurablemanagerTypes()

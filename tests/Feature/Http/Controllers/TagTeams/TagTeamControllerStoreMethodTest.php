@@ -96,9 +96,10 @@ class TagTeamControllerStoreMethodTest extends TestCase
                 action([TagTeamsController::class, 'store']),
                 TagTeamRequestDataFactory::new()->create([
                     'started_at' => $startDate->toDateTimeString(),
-                    'wrestlers' => $wrestlers->pluck('id')->toArray(),
+                    'wrestlers' => $wrestlers->modelKeys(),
                 ])
-            );
+            )
+            ->dumpSession();
 
         tap(TagTeam::first(), function ($tagTeam) use ($startDate) {
             $this->assertCount(1, $tagTeam->employments);

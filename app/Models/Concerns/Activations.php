@@ -163,11 +163,11 @@ trait Activations
      *
      * @param  \Carbon\Carbon $activationDate
      *
-     * @return bool
+     * @return bool|null
      */
     public function activatedOn(Carbon $activationDate)
     {
-        return $this->activations->last()->started_at->ne($activationDate);
+        return $this->activations->last()?->started_at->ne($activationDate);
     }
 
     /**

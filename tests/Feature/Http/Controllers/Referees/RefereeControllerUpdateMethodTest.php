@@ -132,16 +132,18 @@ class RefereeControllerUpdateMethodTest extends TestCase
     public function update_cannot_reemploy_a_released_referee()
     {
         $referee = Referee::factory()->released()->create();
-        $startDate = $referee->employments->last()->started_at->toDateTimeString();
+        $startDate = $referee->startedAt->toDateTimeString();
 
         $this
             ->actAs(Role::administrator())
             ->from(action([RefereesController::class, 'edit'], $referee))
             ->put(
                 action([RefereesController::class, 'update'], $referee),
-                RefereeRequestDataFactory::new()->withReferee($referee)->create([
-                    'started_at' => now()->toDateTimeString(),
-                ])
+                RefereeRequestDataFactory::new()
+                    ->withReferee($referee)
+                    ->create([
+                        'started_at' => now()->toDateTimeString(),
+                    ])
             )
             ->assertSessionHasErrors(['started_at']);
 

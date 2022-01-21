@@ -30,8 +30,9 @@ class ManagerRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->first_name = $manager->first_name;
-        $this->last_name = $manager->last_name;
+        $clone->first_name = $manager->first_name;
+        $clone->last_name = $manager->last_name;
+        $clone->started_at = $manager->startedAt?->toDateTimeString();
 
         return $clone;
     }

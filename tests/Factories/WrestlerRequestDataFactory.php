@@ -42,11 +42,11 @@ class WrestlerRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $wrestler->name;
-        $this->height = $wrestler->height;
-        $this->weight = $wrestler->weight;
-        $this->hometown = $wrestler->hometown;
-        $this->signature_move = $wrestler->signature_move;
+        $clone->name = $wrestler->name;
+        $clone->height = $wrestler->height;
+        $clone->weight = $wrestler->weight;
+        $clone->hometown = $wrestler->hometown;
+        $clone->signature_move = $wrestler->signature_move;
 
         return $clone;
     }

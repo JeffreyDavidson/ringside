@@ -155,7 +155,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function canBeReleased()
     {
-        if ($this->isNotInEmployment()) {
+        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
         }
 
@@ -211,11 +211,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function partnersAreBookable()
     {
-        if ($this->currentWrestlers->filter(fn (Wrestler $wrestler) => ! $wrestler->isBookable())->count() != 2) {
-            return false;
-        }
-
-        return true;
+        return $this->currentWrestlers->every->isBookable();
     }
 
     /**
@@ -225,7 +221,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function canBeSuspended()
     {
-        if ($this->isNotInEmployment()) {
+        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
         }
 

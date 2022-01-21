@@ -23,7 +23,7 @@ class EventData
 
         $dto->name = $request->input('name');
         $dto->date = $request->date('date');
-        $dto->venue = Venue::whereKey($request->input('venue_id'))->sole();
+        $dto->venue = $request->input('venue_id') ? Venue::whereKey($request->input('venue_id'))->sole() : null;
         $dto->preview = $request->input('preview');
 
         return $dto;

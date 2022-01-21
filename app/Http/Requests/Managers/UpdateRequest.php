@@ -48,9 +48,15 @@ class UpdateRequest extends FormRequest
         $validator->after(function (Validator $validator) {
             if ($validator->errors()->isEmpty()) {
                 $manager = $this->route()->parameter('manager');
-                if ($manager->isCurrentlyEmployed()
-                    && $manager->currentEmployment->started_at->ne($this->input('started_at'))
-                ) {
+
+                if ($manager->isReleased() && ! $manager->employedOn($this->date('started_at'))) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$manager->full_name} was released and the employment date cannot be changed."
+                    );
+                }
+
+                if ($manager->isCurrentlyEmployed() && ! $manager->employedOn($this->date('started_at'))) {
                     $validator->errors()->add(
                         'started_at',
                         "{$manager->full_name} is currently employed and the employment date cannot be changed."
