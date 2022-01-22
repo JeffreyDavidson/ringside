@@ -32,15 +32,13 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * The number of the wrestlers allowed on a tag team.
-     *
-     * @var int
      */
     public const MAX_WRESTLERS_COUNT = 2;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['user_id', 'name', 'signature_move', 'status'];
 
@@ -173,7 +171,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
             return false;
         }
 
-        if ($this->currentWrestlers->filter(fn (Wrestler $wrestler) => $wrestler->canBeReinstated())->count() != 2) {
+        if ($this->currentWrestlers->filter(fn (Wrestler $wrestler) => $wrestler->canBeReinstated())->count() !== 2) {
             return false;
         }
 

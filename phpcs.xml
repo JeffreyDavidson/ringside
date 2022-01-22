@@ -160,5 +160,5 @@
 
     <arg name="colors"/>
     <arg value="spv"/>
-    <ini name="memory_limit" value="128M"/>
+    <ini name="memory_limit" value="2G"/>
 </ruleset>

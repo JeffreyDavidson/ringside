@@ -28,7 +28,7 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['user_id', 'name', 'status'];
 

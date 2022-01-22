@@ -12,7 +12,7 @@ class MatchType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['name', 'slug', 'number_of_sides'];
 

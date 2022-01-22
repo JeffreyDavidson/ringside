@@ -13,6 +13,6 @@ namespace App\Enums;
  * @method static self suspended()
  * @method static self unemployed()
  */
-final class TagTeamStatus extends BaseEnum
+class TagTeamStatus extends BaseEnum
 {
 }

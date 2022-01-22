@@ -11,6 +11,6 @@ namespace App\Enums;
  * @method static self retired()
  * @method static self unactivated()
  */
-final class StableStatus extends BaseEnum
+class StableStatus extends BaseEnum
 {
 }

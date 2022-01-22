@@ -83,7 +83,7 @@ class UpdateRequest extends FormRequest
                             );
                         }
 
-                        if (null !== $wrestler->currentTagTeam
+                        if ($wrestler->currentTagTeam !== null
                             && ! $wrestler->currentTagTeam->isNot($this->route()->parameter('tag_team'))
                         ) {
                             $validator->errors()->add(

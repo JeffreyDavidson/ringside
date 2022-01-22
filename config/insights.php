@@ -8,6 +8,8 @@ use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenPrivateMethods;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
 use NunoMaduro\PhpInsights\Domain\Metrics\Architecture\Classes;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PHP_CodeSniffer\Standards\PSR12\Sniffs\Classes\ClassInstantiationSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\UselessFunctionDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff;
@@ -76,6 +78,7 @@ return [
 
     'remove' => [
         AlphabeticallySortedUsesSniff::class,
+        ClassInstantiationSniff::class,
         DeclareStrictTypesSniff::class,
         DisallowMixedTypeHintSniff::class,
         ForbiddenDefineFunctions::class,
@@ -90,6 +93,9 @@ return [
     'config' => [
         ForbiddenPrivateMethods::class => [
             'title' => 'The usage of private methods is not idiomatic in Laravel.',
+        ],
+        LineLengthSniff::class => [
+            'lineLimit' => 120,
         ],
     ],
 
@@ -123,6 +129,6 @@ return [
     |
     */
 
-    'threads' => 0,
+    'threads' => 10,
 
 ];

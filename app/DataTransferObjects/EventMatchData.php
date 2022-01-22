@@ -60,10 +60,10 @@ class EventMatchData
         foreach ($competitors as $competitor) {
             $wrestlers = collect();
             $tagTeams = collect();
-            if ($competitor['competitor_type'] == 'wrestler') {
+            if ($competitor['competitor_type'] === 'wrestler') {
                 $wrestler = Wrestler::find($competitor['competitor_id']);
                 $formattedCompetitors->push(['wrestlers' => collect($wrestlers->push($wrestler))]);
-            } elseif ($competitor['competitor_type'] == 'tag_team') {
+            } elseif ($competitor['competitor_type'] === 'tag_team') {
                 $tagTeam = TagTeam::find($competitor['competitor_id']);
                 $formattedCompetitors->push(['tag_teams' => collect($tagTeams->push($tagTeam))]);
             }

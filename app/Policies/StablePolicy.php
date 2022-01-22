@@ -128,7 +128,7 @@ class StablePolicy
      */
     public function view(User $user, Stable $stable)
     {
-        if (null !== $stable->user && $stable->user->is($user)) {
+        if ($stable->user !== null && $stable->user->is($user)) {
             return true;
         }
 

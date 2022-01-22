@@ -12,7 +12,7 @@ class Suspension extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['suspendable_id', 'suspendable_type', 'started_at', 'ended_at'];
 

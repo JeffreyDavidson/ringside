@@ -35,7 +35,7 @@ class EventDateCanBeChanged implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (null === $this->event->date) {
+        if ($this->event->date === null) {
             return true;
         }
 

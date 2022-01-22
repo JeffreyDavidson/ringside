@@ -83,7 +83,7 @@ class StoreRequest extends FormRequest
                         );
                     }
 
-                    if (null !== $wrestler->currentTagTeam) {
+                    if ($wrestler->currentTagTeam !== null) {
                         $validator->errors()->add(
                             'wrestlers',
                             "{$wrestler->name} is already a part of a bookable tag team."

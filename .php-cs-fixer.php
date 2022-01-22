@@ -90,9 +90,7 @@ $rules = [
     'no_trailing_comma_in_singleline_array' => true,
     'no_trailing_whitespace' => true,
     'no_trailing_whitespace_in_comment' => true,
-    'no_unneeded_control_parentheses' => [
-        'statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield'],
-    ],
+    'no_unneeded_control_parentheses' => true,
     'no_unreachable_default_argument_value' => true,
     'no_useless_return' => true,
     'no_whitespace_before_comma_in_array' => true,
@@ -143,15 +141,14 @@ $rules = [
     'whitespace_after_comma_in_array' => true,
 ];
 
-
 $finder = Finder::create()
     ->in([
-        __DIR__ . '/app',
-        __DIR__ . '/config',
-        __DIR__ . '/database',
-        __DIR__ . '/resources',
-        __DIR__ . '/routes',
-        __DIR__ . '/tests',
+        __DIR__.'/app',
+        __DIR__.'/config',
+        __DIR__.'/database',
+        __DIR__.'/resources',
+        __DIR__.'/routes',
+        __DIR__.'/tests',
     ])
     ->name('*.php')
     ->notName('*.blade.php')

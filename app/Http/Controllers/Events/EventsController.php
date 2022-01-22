@@ -77,7 +77,7 @@ class EventsController extends Controller
     {
         $this->authorize('view', $event);
 
-        if (null !== $event->venue_id) {
+        if ($event->venue_id !== null) {
             $event->load('venue');
         }
 

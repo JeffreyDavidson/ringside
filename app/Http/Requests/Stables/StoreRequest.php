@@ -85,7 +85,7 @@ class StoreRequest extends FormRequest
                         $this->collect('wrestlers')->each(function ($wrestlerId, $key) use ($validator) {
                             $wrestler = Wrestler::with('currentStable')->whereKey($wrestlerId)->sole();
 
-                            if ($wrestler->currentStable != null) {
+                            if ($wrestler->currentStable !== null) {
                                 $validator->errors()->add(
                                     'wrestlers.'.$key,
                                     "{$wrestler->name} is already a member of a stable."
@@ -100,7 +100,7 @@ class StoreRequest extends FormRequest
                         $tagTeamIds->each(function ($tagTeamId, $key) use ($validator) {
                             $tagTeam = TagTeam::with('currentWrestlers')->whereKey($tagTeamId)->sole();
 
-                            if ($tagTeam->currentStable != null) {
+                            if ($tagTeam->currentStable !== null) {
                                 $validator->errors()->add(
                                     'tag_teams.'.$key,
                                     "{$tagTeam->name} is already a member of a stable."

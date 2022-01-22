@@ -9,6 +9,6 @@ namespace App\Enums;
  * @method static self scheduled()
  * @method static self unscheduled()
  */
-final class EventStatus extends BaseEnum
+class EventStatus extends BaseEnum
 {
 }

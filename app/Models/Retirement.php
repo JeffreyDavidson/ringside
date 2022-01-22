@@ -12,7 +12,7 @@ class Retirement extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['retiree_id', 'retiree_type', 'started_at', 'ended_at'];
 

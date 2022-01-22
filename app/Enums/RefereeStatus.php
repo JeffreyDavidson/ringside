@@ -13,6 +13,6 @@ namespace App\Enums;
  * @method static self suspended()
  * @method static self unemployed()
  */
-final class RefereeStatus extends BaseEnum
+class RefereeStatus extends BaseEnum
 {
 }

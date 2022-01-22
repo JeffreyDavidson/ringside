@@ -24,7 +24,7 @@ class EventMatchCompetitorsCollection extends Collection
     public function filterByType($type)
     {
         return $this->filter(function ($value, $key) use ($type) {
-            if ($key == $type) {
+            if ($key === $type) {
                 return true;
             }
         });

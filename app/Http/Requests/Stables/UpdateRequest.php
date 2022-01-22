@@ -79,7 +79,7 @@ class UpdateRequest extends FormRequest
                     $wrestlerIdsInStable = $stable->currentWrestlers->pluck('id');
                     $wrestlersIdsFromRequest = $this->collect('wrestlers');
                     $wrestlersNewToStable = $wrestlersIdsFromRequest->diff($wrestlerIdsInStable);
-                    $wrestlersNewToStable->each(function ($wrestlerId, $key) use ($validator, $stable) {
+                    $wrestlersNewToStable->each(function ($wrestlerId, $key) use ($validator) {
                         $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])
                             ->whereKey($wrestlerId)
                             ->sole();
@@ -120,7 +120,7 @@ class UpdateRequest extends FormRequest
                     $tagTeamIdsInStable = $stable->currentTagTeams->pluck('id');
                     $tagTeamsIdsFromRequest = $this->collect('tag_teams');
                     $tagTeamsNewToStable = $tagTeamsIdsFromRequest->diff($tagTeamIdsInStable);
-                    $tagTeamsNewToStable->each(function ($tagTeamId, $key) use ($validator, $stable) {
+                    $tagTeamsNewToStable->each(function ($tagTeamId, $key) use ($validator) {
                         $tagTeam = TagTeam::with(['currentStable', 'futureEmployment'])
                             ->whereKey($tagTeamId)
                             ->sole();

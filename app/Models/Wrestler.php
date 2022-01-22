@@ -29,7 +29,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['user_id', 'name', 'height', 'weight', 'hometown', 'signature_move', 'status'];
 

@@ -19,7 +19,7 @@ class Referee extends SingleRosterMember implements Bookable
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = ['first_name', 'last_name', 'status'];
 

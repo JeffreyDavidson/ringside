@@ -176,7 +176,7 @@ class ManagerPolicy
      */
     public function view(User $user, Manager $manager)
     {
-        if (null !== $manager->user && $manager->user->is($user)) {
+        if ($manager->user !== null && $manager->user->is($user)) {
             return true;
         }
 

@@ -153,7 +153,6 @@ class TagTeamService
                 $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers);
             }
         } else {
-            $currentTagTeamPartners = $tagTeam->currentWrestlers->pluck('id');
             $formerTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotIn(
                 'wrestler_id',
                 $wrestlers->modelKeys()
