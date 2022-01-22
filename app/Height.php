@@ -5,11 +5,18 @@ namespace App;
 class Height
 {
     /**
-     * The height of the roster member.
+     * The feet measurement of the roster member.
      *
      * @var string
      */
-    public $height;
+    public $feet;
+
+    /**
+     * The feet measurement of the roster member.
+     *
+     * @var string
+     */
+    public $inches;
 
     /**
      * Create a new height instance.
@@ -19,7 +26,8 @@ class Height
      */
     public function __construct(string $height)
     {
-        $this->height = $height;
+        $this->feet = (int) ($height / 12);
+        $this->inches = $height % 12;
     }
 
     /**
@@ -33,26 +41,6 @@ class Height
     }
 
     /**
-     * Return the wrestler's height in feet.
-     *
-     * @return string
-     */
-    public function feet()
-    {
-        return (int) ($this->height / 12);
-    }
-
-    /**
-     * Return the wrestler's height in inches.
-     *
-     * @return string
-     */
-    public function inches()
-    {
-        return $this->height % 12;
-    }
-
-    /**
      * Return the wrestler's height in inches.
      *
      * @return string
@@ -60,10 +48,5 @@ class Height
     public function inInches()
     {
         return $this->height;
-    }
-
-    public function __toString()
-    {
-        return (string) ($this->height);
     }
 }

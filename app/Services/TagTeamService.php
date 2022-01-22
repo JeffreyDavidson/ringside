@@ -8,7 +8,7 @@ use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
 use App\Repositories\WrestlerRepository;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class TagTeamService
 {
@@ -142,7 +142,7 @@ class TagTeamService
      * Update a given tag team with given wrestlers.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  \Illuminate\Support\Collection $wrestlers
+     * @param  \Illuminate\Database\Eloquent\Collection $wrestlers
      *
      * @return \App\Models\TagTeam $tagTeam
      */
@@ -154,8 +154,15 @@ class TagTeamService
             }
         } else {
             $currentTagTeamPartners = $tagTeam->currentWrestlers->pluck('id');
-            $formerTagTeamPartners = $currentTagTeamPartners->diff($wrestlers->modelKeys());
-            $newTagTeamPartners = $wrestlers->pluck('id')->diff($currentTagTeamPartners);
+            $formerTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotIn(
+                'wrestler_id',
+                $wrestlers->modelKeys()
+            )->get();
+
+            $newTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotNotIn(
+                'wrestler_id',
+                $wrestlers->modelKeys()
+            )->get();
 
             $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
         }

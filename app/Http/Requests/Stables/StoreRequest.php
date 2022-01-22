@@ -88,7 +88,7 @@ class StoreRequest extends FormRequest
                             if ($wrestler->currentStable != null) {
                                 $validator->errors()->add(
                                     'wrestlers.'.$key,
-                                    "{$wrestler->name} is already a member of an active stable and cannot be added to this stable."
+                                    "{$wrestler->name} is already a member of a stable."
                                 );
 
                                 $validator->addFailure('wrestlers.'.$key, 'wrestler_already_in_different_stable');
@@ -103,7 +103,7 @@ class StoreRequest extends FormRequest
                             if ($tagTeam->currentStable != null) {
                                 $validator->errors()->add(
                                     'tag_teams.'.$key,
-                                    "{$tagTeam->name} is already a member of an active stable and cannot be added to this stable."
+                                    "{$tagTeam->name} is already a member of a stable."
                                 );
 
                                 $validator->addFailure('tag_teams.'.$key, 'tag_team_already_in_different_stable');
@@ -111,9 +111,6 @@ class StoreRequest extends FormRequest
 
                             $wrestlersFromRequest = $this->collect('wrestlers'); // 1, 2, 3
                             $tagTeamPartnerIds = $tagTeam->currentWrestlers->pluck('id'); // 3, 4
-
-                            // $wrestlersAddedNotFromTagTeam = $this->collect('wrestlers')->diff($tagTeamPartnerIds);
-                            // dd($wrestlersAddedNotFromTagTeam); // 1, 2
 
                             $wrestlersInTagTeam = $tagTeamPartnerIds->intersect($wrestlersFromRequest);
 

@@ -6,7 +6,7 @@ use App\DataTransferObjects\TagTeamData;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class TagTeamRepository
 {
@@ -179,7 +179,7 @@ class TagTeamRepository
      * Add wrestlers to a tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  \Illuminate\Support\Collection $wrestlers
+     * @param  \Illuminate\Database\Eloquent\Collection $wrestlers
      * @param  \Carbon\Carbon|null $joinDate
      *
      * @return \App\Models\TagTeam $tagTeam
@@ -189,7 +189,7 @@ class TagTeamRepository
         $joinDate ??= now();
 
         $wrestlers->each(
-            fn (Wrestler $wrestler) => $this->addTagTeamPartner($tagTeam, $wrestler, $joinDate)
+            fn (Wrestler $wrestler) => $this->addTagTeamPartner($tagTeam, $wrestler->id, $joinDate)
         );
 
         return $tagTeam;
@@ -199,26 +199,34 @@ class TagTeamRepository
      * Add wrestlers to a tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  \Illuminate\Support\Collection $formerTagTeamPartners
-     * @param  \Illuminate\Support\Collection $newTagTeamPartners
+     * @param  \Illuminate\Database\Eloquent\Collection $formerTagTeamPartners
+     * @param  \Illuminate\Database\Eloquent\Collection $newTagTeamPartners
      * @param  \Carbon\Carbon|null $date
      *
      * @return \App\Models\TagTeam $tagTeam
      */
     public function syncTagTeamPartners(
         TagTeam $tagTeam,
-        Collection $formerTagTeamPartnerIds,
-        Collection $newTagTeamPartnerIds,
+        Collection $formerTagTeamPartners,
+        Collection $newTagTeamPartners,
         Carbon $date = null
     ) {
         $date ??= now();
 
-        $formerTagTeamPartnerIds->each(
-            fn ($formerTagTeamPartnerId) => $this->removeTagTeamPartner($tagTeam, $formerTagTeamPartnerId, $date)
+        $formerTagTeamPartners->each(
+            fn (Wrestler $formerTagTeamPartner) => $this->removeTagTeamPartner(
+                $tagTeam,
+                $formerTagTeamPartner->id,
+                $date
+            )
         );
 
-        $newTagTeamPartnerIds->each(
-            fn ($newTagTeamPartnerId) => $this->addTagTeamPartner($tagTeam, $newTagTeamPartnerId, $date)
+        $newTagTeamPartners->each(
+            fn (Wrestler $newTagTeamPartner) => $this->addTagTeamPartner(
+                $tagTeam,
+                $newTagTeamPartner->id,
+                $date
+            )
         );
 
         return $tagTeam;
@@ -229,11 +237,11 @@ class TagTeamRepository
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  int $tagTeamPartnerId
-     * @param  \Carbon\Carbon|null $date
+     * @param  \Carbon\Carbon $date
      *
      * @return void
      */
-    public function removeTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date = null)
+    public function removeTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date)
     {
         $tagTeam->currentWrestlers()->updateExistingPivot(
             $tagTeamPartnerId,
@@ -246,11 +254,11 @@ class TagTeamRepository
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  int $tagTeamPartnerId
-     * @param  \Carbon\Carbon|null $date
+     * @param  \Carbon\Carbon $date
      *
      * @return void
      */
-    public function addTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date = null)
+    public function addTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date)
     {
         $tagTeam->currentWrestlers()->attach(
             $tagTeamPartnerId,

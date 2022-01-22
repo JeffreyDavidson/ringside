@@ -360,7 +360,6 @@ class StoreRequestTest extends TestCase
     {
         [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
         $tagTeam = TagTeam::factory()->bookable()->create();
-        // dd($tagTeam->currentWrestlers->modelKeys()); // 3 & 4
 
         $this->createRequest(StoreRequest::class)
             ->validate(StableRequestDataFactory::new()->create([

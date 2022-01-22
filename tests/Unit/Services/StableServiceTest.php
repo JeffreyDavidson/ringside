@@ -30,7 +30,6 @@ class StableServiceTest extends TestCase
         $tagTeamBMock = $this->createMock(TagTeam::class);
         $data->started_at = now();
         $wrestlerAMock->set('id', 1);
-        dd($wrestlerAMock->id);
         $wrestlerBMock->shouldReceive('getAttribute')->with('id')->andReturns(2);
         $tagTeamAMock->shouldReceive('getAttribute')->with('id')->andReturns(1);
         $tagTeamBMock->shouldReceive('getAttribute')->with('id')->andReturns(2);
