@@ -13,17 +13,16 @@ class DeactivateController extends Controller
      * Deactivate a stable.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \App\Actions\Stables\DeactivateAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, DeactivateAction $action)
+    public function __invoke(Stable $stable)
     {
         $this->authorize('deactivate', $stable);
 
         throw_unless($stable->canBeDeactivated(), new CannotBeDeactivatedException);
 
-        $action->handle($stable);
+        DeactivateAction::run($stable);
 
         return redirect()->route('stables.index');
     }

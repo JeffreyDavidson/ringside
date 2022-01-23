@@ -13,17 +13,16 @@ class ClearInjuryController extends Controller
      * Clear a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @param  \App\Actions\Referees\ClearInjuryAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee, ClearInjuryAction $action)
+    public function __invoke(Referee $referee)
     {
         $this->authorize('clearFromInjury', $referee);
 
         throw_unless($referee->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
-        $action->handle($referee);
+        ClearInjuryAction::run($referee);
 
         return redirect()->route('referees.index');
     }

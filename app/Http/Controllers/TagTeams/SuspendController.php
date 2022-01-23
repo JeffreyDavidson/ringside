@@ -13,17 +13,16 @@ class SuspendController extends Controller
      * Suspend a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @param  \App\Actions\TagTeams\SuspendAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, SuspendAction $action)
+    public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('suspend', $tagTeam);
 
         throw_unless($tagTeam->canBeSuspended(), new CannotBeSuspendedException);
 
-        $action->handle($tagTeam);
+        SuspendAction::run($tagTeam);
 
         return redirect()->route('tag-teams.index');
     }

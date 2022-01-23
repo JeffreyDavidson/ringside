@@ -125,15 +125,7 @@ trait Activations
      */
     public function canBeActivated()
     {
-        if ($this->isCurrentlyActivated()) {
-            return false;
-        }
-
-        if ($this->isRetired()) {
-            return false;
-        }
-
-        return true;
+        return $this->isUnactivated() || $this->hasFutureActivation();
     }
 
     /**
@@ -175,12 +167,8 @@ trait Activations
      *
      * @return bool
      */
-    public function canHaveActivationStartDateChanged()
+    public function canHaveActivationStartDateChanged($activationDate)
     {
-        if ($this->isUnactivated() || $this->hasFutureActivation()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasFutureActivation() && ! $this->activatedOn($activationDate);
     }
 }

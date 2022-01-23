@@ -13,17 +13,16 @@ class ReleaseController extends Controller
      * Release a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @param  \App\Actions\Referees\ReleaseAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee, ReleaseAction $action)
+    public function __invoke(Referee $referee)
     {
         $this->authorize('release', $referee);
 
         throw_unless($referee->canBeReleased(), new CannotBeReleasedException);
 
-        $action->handle($referee);
+        ReleaseAction::run($referee);
 
         return redirect()->route('referees.index');
     }

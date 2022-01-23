@@ -13,17 +13,16 @@ class RetireController extends Controller
      * Retires a title.
      *
      * @param  \App\Models\Title $title
-     * @param  \App\Actions\Titles\RetireAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Title $title, RetireAction $action)
+    public function __invoke(Title $title)
     {
         $this->authorize('retire', $title);
 
         throw_unless($title->canBeRetired(), new CannotBeRetiredException);
 
-        $action->handle($title);
+        RetireAction::run($title);
 
         return redirect()->route('titles.index');
     }

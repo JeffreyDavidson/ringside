@@ -13,17 +13,16 @@ class EmployController extends Controller
      * Employ a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \App\Actions\Managers\EmployAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager, EmployAction $action)
+    public function __invoke(Manager $manager)
     {
         $this->authorize('employ', $manager);
 
         throw_unless($manager->canBeEmployed(), new CannotBeEmployedException);
 
-        $action->handle($manager);
+        EmployAction::run($manager);
 
         return redirect()->route('managers.index');
     }

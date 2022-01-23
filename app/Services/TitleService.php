@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Actions\Titles\ActivateAction;
 use App\DataTransferObjects\TitleData;
 use App\Models\Title;
 use App\Repositories\TitleRepository;
-use Carbon\Carbon;
 
 class TitleService
 {
@@ -38,7 +38,7 @@ class TitleService
         $title = $this->titleRepository->create($titleData);
 
         if (isset($titleData->activation_date)) {
-            $this->titleRepository->activate($title, $titleData->activation_date);
+            ActivateAction::run($title, $titleData->activation_date);
         }
 
         return $title;
@@ -56,33 +56,10 @@ class TitleService
     {
         $this->titleRepository->update($title, $titleData);
 
-        if ($title->canHaveActivationStartDateChanged() && isset($titleData->activation_date)) {
-            $this->activateOrUpdateActivation($title, $titleData->activation_date);
-        }
-
-        return $title;
-    }
-
-    /**
-     * Activate a given manager or update the given title's activation date.
-     *
-     * @param  \App\Models\Title $title
-     * @param  \Carbon\Carbon $activationDate
-     *
-     * @return \App\Models\Title $title
-     */
-    public function activateOrUpdateActivation(Title $title, Carbon $activationDate)
-    {
-        if ($title->isUnactivated()) {
-            $this->titleRepository->activate($title, $activationDate);
-
-            return $title;
-        }
-
-        if ($title->hasFutureActivation() && ! $title->activatedOn($activationDate)) {
-            $this->titleRepository->activate($title, $activationDate);
-
-            return $title;
+        if (isset($titleData->activation_date)) {
+            if ($title->canBeActivated() || $title->canHaveActivationStartDateChanged($titleData->activation_date)) {
+                ActivateAction::run($title, $titleData->activation_date);
+            }
         }
 
         return $title;

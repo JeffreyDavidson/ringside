@@ -13,17 +13,16 @@ class RetireController extends Controller
      * Retire a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @param  \App\Actions\TagTeams\RetireAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, RetireAction $action)
+    public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('retire', $tagTeam);
 
         throw_unless($tagTeam->canBeRetired(), new CannotBeRetiredException);
 
-        $action->handle($tagTeam);
+        RetireAction::run($tagTeam);
 
         return redirect()->route('tag-teams.index');
     }

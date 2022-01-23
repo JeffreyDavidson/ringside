@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Actions\Managers\EmployAction;
 use App\DataTransferObjects\ManagerData;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
-use Carbon\Carbon;
 
 class ManagerService
 {
@@ -38,7 +38,7 @@ class ManagerService
         $manager = $this->managerRepository->create($managerData);
 
         if (isset($managerData->start_date)) {
-            $this->managerRepository->employ($manager, $managerData->start_date);
+            EmployAction::run($manager, $managerData->start_date);
         }
 
         return $manager;
@@ -56,33 +56,12 @@ class ManagerService
     {
         $this->managerRepository->update($manager, $managerData);
 
-        if ($manager->canHaveEmploymentStartDateChanged() && isset($managerData->start_date)) {
-            $this->employOrUpdateEmployment($manager, $managerData->start_date);
-        }
-
-        return $manager;
-    }
-
-    /**
-     * Employ a given manager or update the given manager's employment date.
-     *
-     * @param  \App\Models\Manager $manager
-     * @param  \Carbon\Carbon $employmentDate
-     *
-     * @return \App\Models\Manager $manager
-     */
-    private function employOrUpdateEmployment(Manager $manager, Carbon $employmentDate)
-    {
-        if ($manager->isNotInEmployment()) {
-            $this->managerRepository->employ($manager, $employmentDate);
-
-            return $manager;
-        }
-
-        if ($manager->hasFutureEmployment() && ! $manager->employedOn($employmentDate)) {
-            $this->managerRepository->updateEmployment($manager, $employmentDate);
-
-            return $manager;
+        if (isset($managerData->start_date)) {
+            if ($manager->canBeEmployed()
+                || $manager->canHaveEmploymentStartDateChanged($managerData->start_date)
+            ) {
+                EmployAction::run($manager, $managerData->start_date);
+            }
         }
 
         return $manager;

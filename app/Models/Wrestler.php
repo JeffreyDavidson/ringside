@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Builders\WrestlerQueryBuilder;
-use App\Casts\HeightCast;
 use App\Enums\WrestlerStatus;
 use App\Models\Concerns\CanJoinStables;
 use App\Models\Concerns\CanJoinTagTeams;
@@ -40,7 +39,6 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      */
     protected $casts = [
         'status' => WrestlerStatus::class,
-        'height' => HeightCast::class,
     ];
 
     /**

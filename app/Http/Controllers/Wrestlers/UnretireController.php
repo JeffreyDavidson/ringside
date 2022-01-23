@@ -13,17 +13,16 @@ class UnretireController extends Controller
      * Unretire a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Actions\Wrestlers\UnretireAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler, UnretireAction $action)
+    public function __invoke(Wrestler $wrestler)
     {
         $this->authorize('unretire', $wrestler);
 
         throw_unless($wrestler->canBeUnretired(), new CannotBeUnretiredException);
 
-        $action->handle($wrestler);
+        UnretireAction::run($wrestler);
 
         return redirect()->route('wrestlers.index');
     }

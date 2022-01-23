@@ -13,17 +13,16 @@ class EmployController extends Controller
      * Employ a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @param  \App\Actions\TagTeams\EmployAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, EmployAction $action)
+    public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('employ', $tagTeam);
 
         throw_unless($tagTeam->canBeEmployed(), new CannotBeEmployedException);
 
-        $action->handle($tagTeam);
+        EmployAction::run($tagTeam);
 
         return redirect()->route('tag-teams.index');
     }

@@ -37,10 +37,10 @@ class EventMatchData
     {
         $dto = new self;
 
-        $dto->matchType = MatchType::whereKey($request->input('match_type_id'))->sole();
-        $dto->referees = Referee::findMany($request->input('referees'));
-        $dto->titles = Title::findMany($request->input('titles'));
-        $dto->competitors = self::getCompetitors($request->input('competitors'));
+        $dto->matchType = MatchType::query()->whereKey($request->input('match_type_id'))->sole();
+        $dto->referees = Referee::query()->findMany($request->collect('referees'));
+        $dto->titles = Title::query()->findMany($request->collect('titles'));
+        $dto->competitors = self::getCompetitors($request->collect('competitors'));
         $dto->preview = $request->input('preview');
 
         return $dto;
@@ -49,11 +49,11 @@ class EventMatchData
     /**
      * Undocumented function.
      *
-     * @param  array $competitors
+     * @param  \Illuminate\Support\Collection $competitors
      *
      * @return \Illuminate\Support\Collection
      */
-    public static function getCompetitors(array $competitors)
+    public static function getCompetitors(Collection $competitors)
     {
         $formattedCompetitors = collect();
 

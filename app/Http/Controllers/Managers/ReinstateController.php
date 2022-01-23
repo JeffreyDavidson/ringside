@@ -13,17 +13,16 @@ class ReinstateController extends Controller
      * Reinstate a suspended manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \App\Actions\Managers\ReinstateAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager, ReinstateAction $action)
+    public function __invoke(Manager $manager)
     {
         $this->authorize('reinstate', $manager);
 
         throw_unless($manager->canBeReinstated(), new CannotBeReinstatedException);
 
-        $action->handle($manager);
+        ReinstateAction::run($manager);
 
         return redirect()->route('managers.index');
     }

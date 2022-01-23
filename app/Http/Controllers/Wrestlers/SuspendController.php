@@ -13,17 +13,16 @@ class SuspendController extends Controller
      * Suspend a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Actions\Wrestlers\SuspendAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler, SuspendAction $action)
+    public function __invoke(Wrestler $wrestler)
     {
         $this->authorize('suspend', $wrestler);
 
         throw_unless($wrestler->canBeSuspended(), new CannotBeSuspendedException);
 
-        $action->handle($wrestler);
+        SuspendAction::run($wrestler);
 
         return redirect()->route('wrestlers.index');
     }

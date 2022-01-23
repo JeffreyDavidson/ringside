@@ -13,17 +13,16 @@ class EmployController extends Controller
      * Employ a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @param  \App\Actions\Referees\EmployAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee, EmployAction $action)
+    public function __invoke(Referee $referee)
     {
         $this->authorize('employ', $referee);
 
         throw_unless($referee->canBeEmployed(), new CannotBeEmployedException);
 
-        $action->handle($referee);
+        EmployAction::run($referee);
 
         return redirect()->route('referees.index');
     }

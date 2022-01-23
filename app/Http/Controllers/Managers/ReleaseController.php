@@ -13,17 +13,16 @@ class ReleaseController extends Controller
      * Release a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \App\Actions\Managers\ReleaseAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager, ReleaseAction $action)
+    public function __invoke(Manager $manager)
     {
         $this->authorize('release', $manager);
 
         throw_unless($manager->canBeReleased(), new CannotBeReleasedException);
 
-        $action->handle($manager);
+        ReleaseAction::run($manager);
 
         return redirect()->route('managers.index');
     }

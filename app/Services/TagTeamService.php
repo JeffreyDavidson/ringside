@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
+use App\Actions\TagTeams\AddTagTeamPartnersAction;
+use App\Actions\TagTeams\EmployAction;
+use App\Actions\TagTeams\UpdateTagTeamPartnersAction;
 use App\DataTransferObjects\TagTeamData;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
 use App\Repositories\WrestlerRepository;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 
 class TagTeamService
 {
@@ -49,18 +49,12 @@ class TagTeamService
     {
         $tagTeam = $this->tagTeamRepository->create($tagTeamData);
 
+        if ($tagTeamData->wrestlers->isNotEmpty()) {
+            AddTagTeamPartnersAction::run($tagTeam, $tagTeamData->wrestlers, now());
+        }
+
         if (isset($tagTeamData->start_date)) {
-            $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
-
-            $tagTeamData->wrestlers->map(
-                fn (Wrestler $wrestler) => $this->wrestlerRepository->employ($wrestler, $tagTeamData->start_date)
-            );
-
-            $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers, $tagTeamData->start_date);
-        } else {
-            if (isset($tagTeamData->wrestlers)) {
-                $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers);
-            }
+            EmployAction::run($tagTeam);
         }
 
         return $tagTeam;
@@ -78,37 +72,16 @@ class TagTeamService
     {
         $this->tagTeamRepository->update($tagTeam, $tagTeamData);
 
-        if ($tagTeam->canHaveEmploymentStartDateChanged() && isset($tagTeamData->start_date)) {
-            $this->employOrUpdateEmployment($tagTeam, $$tagTeamData->start_date);
-        }
-
         if ($tagTeamData->wrestlers->isNotEmpty()) {
-            $this->updateTagTeamPartners($tagTeam, $tagTeamData->wrestlers);
+            UpdateTagTeamPartnersAction::run($tagTeam, $tagTeamData->wrestlers);
         }
 
-        return $tagTeam;
-    }
-
-    /**
-     * Employ a given tag team or update the given tag team's employment date.
-     *
-     * @param  \App\Models\TagTeam $tagTeam
-     * @param  \Carbon\Carbon $employmentDate
-     *
-     * @return \App\Models\TagTeam $tagTeam
-     */
-    public function employOrUpdateEmployment(TagTeam $tagTeam, Carbon $employmentDate)
-    {
-        if ($tagTeam->isNotInEmployment()) {
-            $this->tagTeamRepository->employ($tagTeam, $employmentDate);
-
-            return $tagTeam;
-        }
-
-        if ($tagTeam->hasFutureEmployment() && ! $tagTeam->scheduledToBeEmployedOn($employmentDate)) {
-            $this->tagTeamRepository->updateEmployment($tagTeam, $employmentDate);
-
-            return $tagTeam;
+        if (isset($tagTeamData->start_date)) {
+            if ($tagTeam->canBeEmployed()
+                || $tagTeam->canHaveEmploymentStartDateChanged($tagTeamData->start_date)
+            ) {
+                EmployAction::run($tagTeam, $tagTeamData->start_date);
+            }
         }
 
         return $tagTeam;
@@ -136,48 +109,5 @@ class TagTeamService
     public function restore(TagTeam $tagTeam)
     {
         $this->tagTeamRepository->restore($tagTeam);
-    }
-
-    /**
-     * Update a given tag team with given wrestlers.
-     *
-     * @param  \App\Models\TagTeam $tagTeam
-     * @param  \Illuminate\Database\Eloquent\Collection $wrestlers
-     *
-     * @return \App\Models\TagTeam $tagTeam
-     */
-    public function updateTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers)
-    {
-        if ($tagTeam->currentWrestlers->isEmpty()) {
-            if ($wrestlers->isNotEmpty()) {
-                $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers);
-            }
-        } else {
-            $formerTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotIn(
-                'wrestler_id',
-                $wrestlers->modelKeys()
-            )->get();
-
-            $newTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotNotIn(
-                'wrestler_id',
-                $wrestlers->modelKeys()
-            )->get();
-
-            $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
-        }
-
-        return $tagTeam;
-    }
-
-    /**
-     * Employ a given tag team.
-     *
-     * @param  \App\Models\TagTeam $tagTeam
-     *
-     * @return void
-     */
-    public function employ(TagTeam $tagTeam)
-    {
-        $this->tagTeamRepository->employ($tagTeam, now());
     }
 }

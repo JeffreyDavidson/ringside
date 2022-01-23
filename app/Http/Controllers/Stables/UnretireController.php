@@ -13,17 +13,16 @@ class UnretireController extends Controller
      * Unretire a stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  \App\Actions\Stables\UnretireAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, UnretireAction $action)
+    public function __invoke(Stable $stable)
     {
         $this->authorize('unretire', $stable);
 
         throw_unless($stable->canBeUnretired(), new CannotBeUnretiredException);
 
-        $action->handle($stable);
+        UnretireAction::run($stable);
 
         return redirect()->route('stables.index');
     }

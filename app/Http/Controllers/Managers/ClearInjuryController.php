@@ -13,17 +13,16 @@ class ClearInjuryController extends Controller
      * Clear a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \App\Actions\Managers\ClearInjuryAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager, ClearInjuryAction $action)
+    public function __invoke(Manager $manager)
     {
         $this->authorize('clearFromInjury', $manager);
 
         throw_unless($manager->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
-        $action->handle($manager);
+        ClearInjuryAction::run($manager);
 
         return redirect()->route('managers.index');
     }

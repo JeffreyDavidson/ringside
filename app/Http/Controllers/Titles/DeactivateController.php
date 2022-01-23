@@ -13,17 +13,16 @@ class DeactivateController extends Controller
      * Deactivates a title.
      *
      * @param  \App\Models\Title  $title
-     * @param  \App\Actions\Titles\DeactivateAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Title $title, DeactivateAction $action)
+    public function __invoke(Title $title)
     {
         $this->authorize('deactivate', $title);
 
         throw_unless($title->canBeDeactivated(), new CannotBeDeactivatedException);
 
-        $action->handle($title);
+        DeactivateAction::run($title);
 
         return redirect()->route('titles.index');
     }

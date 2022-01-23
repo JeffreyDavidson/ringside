@@ -13,17 +13,16 @@ class ReleaseController extends Controller
      * Release a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Actions\Wrestlers\ReleaseAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler, ReleaseAction $action)
+    public function __invoke(Wrestler $wrestler)
     {
         $this->authorize('release', $wrestler);
 
         throw_unless($wrestler->canBeReleased(), new CannotBeReleasedException);
 
-        $action->handle($wrestler);
+        ReleaseAction::run($wrestler);
 
         return redirect()->route('wrestlers.index');
     }

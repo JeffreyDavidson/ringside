@@ -13,17 +13,16 @@ class ReinstateController extends Controller
      * Reinstate a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @param  \App\Actions\Referees\ReinstateAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee, ReinstateAction $action)
+    public function __invoke(Referee $referee)
     {
         $this->authorize('reinstate', $referee);
 
         throw_unless($referee->canBeReinstated(), new CannotBeReinstatedException);
 
-        $action->handle($referee);
+        ReinstateAction::run($referee);
 
         return redirect()->route('referees.index');
     }

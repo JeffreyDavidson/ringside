@@ -96,6 +96,7 @@ return [
         ],
         LineLengthSniff::class => [
             'lineLimit' => 120,
+            'absoluteLineLimit' => 120,
         ],
     ],
 

@@ -258,13 +258,9 @@ abstract class RosterMember extends Model implements Employable
      *
      * @return bool
      */
-    public function canHaveEmploymentStartDateChanged()
+    public function canHaveEmploymentStartDateChanged($employmentDate)
     {
-        if ($this->isUnemployed() || $this->hasFutureEmployment()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasFutureEmployment() && ! $this->scheduledToBeEmployedOn($employmentDate);
     }
 
     /**

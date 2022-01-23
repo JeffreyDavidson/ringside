@@ -13,17 +13,16 @@ class InjureController extends Controller
      * Injure a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \App\Actions\Managers\InjureAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager, InjureAction $action)
+    public function __invoke(Manager $manager)
     {
         $this->authorize('injure', $manager);
 
         throw_unless($manager->canBeInjured(), new CannotBeInjuredException);
 
-        $action->handle($manager);
+        InjureAction::run($manager);
 
         return redirect()->route('managers.index');
     }

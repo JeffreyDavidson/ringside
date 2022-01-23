@@ -13,17 +13,16 @@ class InjureController extends Controller
      * Injure a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Actions\Wrestlers\InjureAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler, InjureAction $action)
+    public function __invoke(Wrestler $wrestler)
     {
         $this->authorize('injure', $wrestler);
 
         throw_unless($wrestler->canBeInjured(), new CannotBeInjuredException);
 
-        $action->handle($wrestler);
+        InjureAction::run($wrestler);
 
         return redirect()->route('wrestlers.index');
     }

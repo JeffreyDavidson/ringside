@@ -86,7 +86,7 @@ class WrestlerControllerUpdateMethodTest extends TestCase
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertEquals('New Wrestler Name', $wrestler->name);
-            $this->assertEquals(74, $wrestler->height->inInches());
+            $this->assertEquals(74, $wrestler->height);
             $this->assertEquals(240, $wrestler->weight);
             $this->assertEquals('Laraville, FL', $wrestler->hometown);
             $this->assertEquals('New Signature Move', $wrestler->signature_move);

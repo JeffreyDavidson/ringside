@@ -13,17 +13,16 @@ class ClearInjuryController extends Controller
      * Have a wrestler recover from an injury.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Actions\Wrestlers\ClearInjuryAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler, ClearInjuryAction $action)
+    public function __invoke(Wrestler $wrestler)
     {
         $this->authorize('clearFromInjury', $wrestler);
 
         throw_unless($wrestler->canBeClearedFromInjury(), new CannotBeClearedFromInjuryException);
 
-        $action->handle($wrestler);
+        ClearInjuryAction::run($wrestler);
 
         return redirect()->route('wrestlers.index');
     }

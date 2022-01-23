@@ -27,8 +27,8 @@ class StableData
 
         $dto->name = $request->input('name');
         $dto->start_date = $request->date('started_at');
-        $dto->tagTeams = TagTeam::findMany($request->input('tag_teams'));
-        $dto->wrestlers = Wrestler::findMany($request->input('wrestlers'));
+        $dto->tagTeams = TagTeam::query()->findMany($request->collect('tag_teams'));
+        $dto->wrestlers = Wrestler::query()->findMany($request->collect('wrestlers'));
 
         return $dto;
     }
@@ -39,8 +39,8 @@ class StableData
 
         $dto->name = $request->input('name');
         $dto->start_date = $request->date('started_at');
-        $dto->tagTeams = TagTeam::findMany($request->input('tag_teams'));
-        $dto->wrestlers = Wrestler::findMany($request->input('wrestlers'));
+        $dto->tagTeams = TagTeam::query()->findMany($request->collect('tag_teams'));
+        $dto->wrestlers = Wrestler::query()->findMany($request->collect('wrestlers'));
 
         return $dto;
     }

@@ -58,23 +58,6 @@ class ActivateControllerTest extends TestCase
     /**
      * @test
      */
-    public function invoke_activates_an_inactive_title_and_redirects()
-    {
-        $title = Title::factory()->inactive()->create();
-
-        $this
-            ->actAs(Role::administrator())
-            ->patch(action([ActivateController::class], $title))
-            ->assertRedirect(action([TitlesController::class, 'index']));
-
-        tap($title->fresh(), function ($title) {
-            $this->assertEquals(TitleStatus::active(), $title->status);
-        });
-    }
-
-    /**
-     * @test
-     */
     public function a_basic_user_cannot_activate_a_title()
     {
         $title = Title::factory()->create();
@@ -118,6 +101,7 @@ class ActivateControllerTest extends TestCase
     {
         return [
             'active title' => ['active'],
+            'active title' => ['inactive'],
             'retired title' => ['retired'],
         ];
     }

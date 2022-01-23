@@ -13,17 +13,16 @@ class InjureController extends Controller
      * Injure a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @param  \App\Actions\Referees\InjureAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee, InjureAction $action)
+    public function __invoke(Referee $referee)
     {
         $this->authorize('injure', $referee);
 
         throw_unless($referee->canBeInjured(), new CannotBeInjuredException);
 
-        $action->handle($referee);
+        InjureAction::run($referee);
 
         return redirect()->route('referees.index');
     }

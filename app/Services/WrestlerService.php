@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Actions\Wrestlers\EmployAction;
 use App\DataTransferObjects\WrestlerData;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use Carbon\Carbon;
 
 class WrestlerService
 {
@@ -38,7 +38,7 @@ class WrestlerService
         $wrestler = $this->wrestlerRepository->create($wrestlerData);
 
         if (isset($wrestlerData->start_date)) {
-            $this->wrestlerRepository->employ($wrestler, $wrestlerData->start_date);
+            EmployAction::run($wrestler, $wrestlerData->start_date);
         }
 
         return $wrestler;
@@ -56,8 +56,12 @@ class WrestlerService
     {
         $this->wrestlerRepository->update($wrestler, $wrestlerData);
 
-        if ($wrestler->canHaveEmploymentStartDateChanged() && isset($wrestlerData->start_date)) {
-            $this->employOrUpdateEmployment($wrestler, $wrestlerData->start_date);
+        if (isset($wrestlerData->start_date)) {
+            if ($wrestler->canBeEmployed()
+                || $wrestler->canHaveEmploymentStartDateChanged($wrestlerData->start_date)
+            ) {
+                EmployAction::run($wrestler, $wrestlerData->start_date);
+            }
         }
 
         return $wrestler;
@@ -85,30 +89,5 @@ class WrestlerService
     public function restore(Wrestler $wrestler)
     {
         $this->wrestlerRepository->restore($wrestler);
-    }
-
-    /**
-     * Employ a given wrestler or update the given wrestler's employment date.
-     *
-     * @param  \App\Models\Wrestler $wrestler
-     * @param  \Carbon\Carbon $employmentDate
-     *
-     * @return \App\Models\Wrestler $wrestler
-     */
-    private function employOrUpdateEmployment(Wrestler $wrestler, Carbon $employmentDate)
-    {
-        if ($wrestler->isNotInEmployment()) {
-            $this->wrestlerRepository->employ($wrestler, $employmentDate);
-
-            return $wrestler;
-        }
-
-        if ($wrestler->hasFutureEmployment() && ! $wrestler->scheduledToBeEmployedOn($employmentDate)) {
-            $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
-
-            return $wrestler;
-        }
-
-        return $wrestler;
     }
 }

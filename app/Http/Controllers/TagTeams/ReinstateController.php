@@ -13,17 +13,16 @@ class ReinstateController extends Controller
      * Reinstate a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @param  \App\Actions\TagTeams\ReinstateAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, ReinstateAction $action)
+    public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('reinstate', $tagTeam);
 
         throw_unless($tagTeam->canBeReinstated(), new CannotBeReinstatedException);
 
-        $action->handle($tagTeam);
+        ReinstateAction::run($tagTeam);
 
         return redirect()->route('tag-teams.index');
     }

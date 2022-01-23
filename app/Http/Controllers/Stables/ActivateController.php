@@ -13,17 +13,16 @@ class ActivateController extends Controller
      * Activate a stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  \App\Actions\Stables\ActivateAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, ActivateAction $action)
+    public function __invoke(Stable $stable)
     {
         $this->authorize('activate', $stable);
 
         throw_unless($stable->canBeActivated(), new CannotBeActivatedException);
 
-        $action->handle($stable);
+        ActivateAction::run($stable);
 
         return redirect()->route('stables.index');
     }

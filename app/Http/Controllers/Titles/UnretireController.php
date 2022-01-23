@@ -13,17 +13,16 @@ class UnretireController extends Controller
      * Unretires a title.
      *
      * @param  \App\Models\Title $title
-     * @param  \App\Actions\Titles\UnretireAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Title $title, UnretireAction $action)
+    public function __invoke(Title $title)
     {
         $this->authorize('unretire', $title);
 
         throw_unless($title->canBeUnretired(), new CannotBeUnretiredException);
 
-        $action->handle($title);
+        UnretireAction::run($title);
 
         return redirect()->route('titles.index');
     }

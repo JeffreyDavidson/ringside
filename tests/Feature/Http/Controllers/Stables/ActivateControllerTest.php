@@ -57,6 +57,7 @@ class ActivateControllerTest extends TestCase
      */
     public function invoke_activates_a_future_activated_stable_with_members_and_redirects()
     {
+        $this->withoutExceptionHandling();
         $stable = Stable::factory()->withFutureActivation()->create();
         $startedAt = $stable->activations->last()->started_at;
 
@@ -79,34 +80,6 @@ class ActivateControllerTest extends TestCase
 
             foreach ($stable->currentTagTeams as $tagTeam) {
                 $this->assertCount(1, $tagTeam->employments);
-                $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
-            }
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function invoke_activates_an_inactive_stable_with_members_and_redirects()
-    {
-        $stable = Stable::factory()->inactive()->create();
-
-        $this
-            ->actAs(Role::administrator())
-            ->patch(action([ActivateController::class], $stable))
-            ->assertRedirect(action([StablesController::class, 'index']));
-
-        tap($stable->fresh(), function ($stable) {
-            $this->assertCount(2, $stable->activations);
-            $this->assertEquals(StableStatus::active(), $stable->status);
-
-            foreach ($stable->currentWrestlers as $wrestler) {
-                $this->assertCount(2, $wrestler->employments);
-                $this->assertEquals(WrestlerStatus::bookable(), $wrestler->status);
-            }
-
-            foreach ($stable->currentTagTeams as $tagTeam) {
-                $this->assertCount(2, $tagTeam->employments);
                 $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
             }
         });
@@ -158,6 +131,7 @@ class ActivateControllerTest extends TestCase
     {
         return [
             'retired stable' => ['retired'],
+            'inactive stable' => ['inactive'],
             'active stable' => ['active'],
         ];
     }

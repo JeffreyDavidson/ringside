@@ -13,17 +13,16 @@ class RetireController extends Controller
      * Retire a stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  \App\Actions\Stables\RetireAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable, RetireAction $action)
+    public function __invoke(Stable $stable)
     {
         $this->authorize('retire', $stable);
 
         throw_unless($stable->canBeRetired(), new CannotBeRetiredException);
 
-        $action->handle($stable);
+        RetireAction::run($stable);
 
         return redirect()->route('stables.index');
     }

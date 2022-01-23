@@ -13,17 +13,16 @@ class ReleaseController extends Controller
      * Release a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @param  \App\Actions\TagTeams\ReleaseAction  $action
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam, ReleaseAction $action)
+    public function __invoke(TagTeam $tagTeam)
     {
         $this->authorize('release', $tagTeam);
 
         throw_unless($tagTeam->canBeReleased(), new CannotBeReleasedException);
 
-        $action->handle($tagTeam);
+        ReleaseAction::run($tagTeam);
 
         return redirect()->route('tag-teams.index');
     }
