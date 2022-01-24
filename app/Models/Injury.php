@@ -12,7 +12,7 @@ class Injury extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['injurable_id', 'injurable_type', 'started_at', 'ended_at'];
 

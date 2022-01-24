@@ -9,7 +9,7 @@ class StableMember extends MorphPivot
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['stable_id', 'member_id', 'member_type', 'joined_at', 'left_at'];
 

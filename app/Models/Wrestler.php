@@ -28,7 +28,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['user_id', 'name', 'height', 'weight', 'hometown', 'signature_move', 'status'];
 
@@ -58,7 +58,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      *
-     * @return \App\Builders\WrestlerQueryBuilder<\App\Models\Wrestler>
+     * @return \App\Builders\WrestlerQueryBuilder
      */
     public function newEloquentBuilder($query)
     {

@@ -12,7 +12,7 @@ class EventMatch extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['event_id', 'match_type_id', 'preview'];
 
@@ -49,7 +49,7 @@ class EventMatch extends Model
     /**
      * Get the wrestlers involved in the match.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphedByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function wrestlers()
     {
@@ -60,7 +60,7 @@ class EventMatch extends Model
     /**
      * Get the tag teams involved in the match.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphedByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tagTeams()
     {

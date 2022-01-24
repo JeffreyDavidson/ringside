@@ -25,7 +25,7 @@ class Manager extends SingleRosterMember implements CanBeAStableMember
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['user_id', 'first_name', 'last_name', 'status'];
 

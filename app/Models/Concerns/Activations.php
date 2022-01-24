@@ -165,9 +165,10 @@ trait Activations
     /**
      * Check to see if activatable can have their start date changed.
      *
+     * @param  \Carbon\Carbon $activationDate
      * @return bool
      */
-    public function canHaveActivationStartDateChanged($activationDate)
+    public function canHaveActivationStartDateChanged(Carbon $activationDate)
     {
         return $this->hasFutureActivation() && ! $this->activatedOn($activationDate);
     }

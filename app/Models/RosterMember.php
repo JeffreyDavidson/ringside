@@ -184,12 +184,12 @@ abstract class RosterMember extends Model implements Employable
     /**
      * Get the model's first employment date.
      *
-     * @return string|null
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function startedAt(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->employments->first()?->started_at
+            get: fn () => $this->firstEmployment?->started_at
         );
     }
 
@@ -202,7 +202,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function employedOn(Carbon $employmentDate)
     {
-        return $this->currentEmployment?->started_at->eq($employmentDate);
+        return $this->currentEmployment->started_at->eq($employmentDate);
     }
 
     /**
@@ -214,7 +214,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function scheduledToBeEmployedOn(Carbon $employmentDate)
     {
-        return $this->futureEmployment?->started_at->eq($employmentDate);
+        return $this->futureEmployment->started_at->eq($employmentDate);
     }
 
     /**
@@ -226,7 +226,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function employedBefore(Carbon $employmentDate)
     {
-        return $this->currentEmployment?->started_at->lte($employmentDate);
+        return $this->currentEmployment->started_at->lte($employmentDate);
     }
 
     /**
@@ -238,7 +238,7 @@ abstract class RosterMember extends Model implements Employable
      */
     public function employedAfter(Carbon $employmentDate)
     {
-        return $this->currentEmployment?->started_at->gt($employmentDate);
+        return $this->currentEmployment->started_at->gt($employmentDate);
     }
 
     /**
@@ -250,15 +250,17 @@ abstract class RosterMember extends Model implements Employable
      */
     public function futureEmploymentIsBefore(Carbon $date)
     {
-        return $this->futureEmployment?->started_at->lt($date);
+        return $this->futureEmployment->started_at->lt($date);
     }
 
     /**
      * Check to see if employable can have their start date changed.
      *
+     * @param  \Carbon\Carbon $employmentDate
+     *
      * @return bool
      */
-    public function canHaveEmploymentStartDateChanged($employmentDate)
+    public function canHaveEmploymentStartDateChanged(Carbon $employmentDate)
     {
         return $this->hasFutureEmployment() && ! $this->scheduledToBeEmployedOn($employmentDate);
     }

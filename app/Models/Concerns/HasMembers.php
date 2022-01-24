@@ -5,9 +5,12 @@ namespace App\Models\Concerns;
 use App\Models\StableMember;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 trait HasMembers
 {
+    use HasMergedRelationships;
+
     /**
      * Get the wrestlers belonging to the stable.
      *
@@ -27,10 +30,8 @@ trait HasMembers
      */
     public function currentWrestlers()
     {
-        return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
-            ->using(StableMember::class)
-            ->withPivot(['joined_at', 'left_at'])
-            ->whereNull('left_at');
+        return $this->wrestlers()
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -40,10 +41,8 @@ trait HasMembers
      */
     public function previousWrestlers()
     {
-        return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
-            ->using(StableMember::class)
-            ->withPivot(['joined_at', 'left_at'])
-            ->whereNotNull('left_at');
+        return $this->wrestlers()
+            ->wherePivotNotNull('left_at');
     }
 
     /**
@@ -65,10 +64,8 @@ trait HasMembers
      */
     public function currentTagTeams()
     {
-        return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
-            ->using(StableMember::class)
-            ->withPivot(['joined_at', 'left_at'])
-            ->whereNull('left_at');
+        return $this->tagTeams()
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -78,42 +75,37 @@ trait HasMembers
      */
     public function previousTagTeams()
     {
-        return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
-            ->using(StableMember::class)
-            ->withPivot(['joined_at', 'left_at'])
-            ->whereNotNull('left_at');
+        return $this->tagTeams()
+            ->wherePivotNotNull('left_at');
     }
 
     /**
      * Get the members belonging to the stable.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
-    public function getMembersAttribute()
+    public function allMembers()
     {
-        $wrestlers = $this->wrestlers;
-        $tagTeams = $this->tagTeams;
-
-        return $wrestlers->merge($tagTeams);
+        return $this->mergedRelation('all_stable_members');
     }
 
     /**
      * Get all current members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
     public function currentMembers()
     {
-        return $this->currentTagTeams()->currentWrestlers();
+        return $this->mergedRelation('current_stable_members');
     }
 
     /**
      * Get all previous members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
     public function previousMembers()
     {
-        return $this->previousTagTeams()->previousWrestlers();
+        return $this->mergedRelation('previous_stable_members');
     }
 }

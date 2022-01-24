@@ -12,7 +12,7 @@ class EventMatchCompetitor extends MorphPivot
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['event_match_id', 'event_match_competitor_id', 'event_match_competitor_type', 'side_number'];
 

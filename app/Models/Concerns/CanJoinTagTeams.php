@@ -19,6 +19,8 @@ trait CanJoinTagTeams
 
     /**
      * Get the current tag team the member belongs to.
+     *
+     * @return \App\Models\TagTeam|null
      */
     public function currentTagTeam()
     {

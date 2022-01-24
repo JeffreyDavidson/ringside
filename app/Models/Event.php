@@ -17,7 +17,7 @@ class Event extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['name', 'date', 'venue_id', 'preview', 'status'];
 

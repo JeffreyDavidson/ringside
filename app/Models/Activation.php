@@ -13,7 +13,7 @@ class Activation extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['activatable_id', 'activatable_type', 'started_at', 'ended_at'];
 

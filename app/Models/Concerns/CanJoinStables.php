@@ -23,29 +23,36 @@ trait CanJoinStables
     /**
      * Get the current stable the member belongs to.
      *
-     * @return \Staudenmeir\EloquentHasManyDeep\HasOneDeep
+     * @return \App\Models\Stable|null
      */
     public function currentStable()
     {
-        return $this->morphToOne(Stable::class, 'member', 'stable_members')
+        return $this->stables()
             ->withPivot(['joined_at', 'left_at'])
-            ->wherePivotNull('left_at');
+            ->wherePivotNull('left_at')
+            ->first();
     }
 
     /**
      * Get the previous stables the member has belonged to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousStables()
     {
-        return $this->morphMany(Stable::class, 'members')
+        return $this->stables()
             ->wherePivot('joined_at', '<', now())
             ->wherePivotNotNull('left_at');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param  \App\Models\Stable $stable
+     * @return bool
+     */
     public function isNotCurrentlyInStable(Stable $stable)
     {
-        return ! $this->currentStable || $this->currentStable->isNot($stable);
+        return ! $this->currentStable() || $this->currentStable()->isNot($stable);
     }
 }
