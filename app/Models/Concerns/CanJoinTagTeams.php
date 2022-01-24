@@ -38,6 +38,6 @@ trait CanJoinTagTeams
     {
         return $this->tagTeams()
             ->withPivot(['joined_at', 'left_at'])
-            ->whereNotNull('left_at');
+            ->wherePivotNotNull('left_at');
     }
 }
