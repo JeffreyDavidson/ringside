@@ -52,7 +52,7 @@ class SuspendControllerTest extends TestCase
             ->actAs(Role::administrator())
             ->patch(action([SuspendController::class], $wrestler));
 
-        $this->assertEquals(TagTeamStatus::UNbookable(), $tagTeam->fresh()->status);
+        $this->assertEquals(TagTeamStatus::unbookable(), $tagTeam->fresh()->status);
     }
 
     /**
