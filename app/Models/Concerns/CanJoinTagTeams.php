@@ -3,13 +3,9 @@
 namespace App\Models\Concerns;
 
 use App\Models\TagTeam;
-use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 trait CanJoinTagTeams
 {
-    use HasRelationships;
-
     /**
      * Get the tag teams the model has been belonged to.
      *
@@ -23,13 +19,12 @@ trait CanJoinTagTeams
 
     /**
      * Get the current tag team the member belongs to.
-     *
-     * @return \Staudenmeir\EloquentHasManyDeep\HasOneDeep
      */
-    public function currentTagTeam(): HasOneDeep
+    public function currentTagTeam()
     {
-        return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
-            ->whereNull('left_at');
+        return $this->tagTeams()
+            ->wherePivotNull('left_at')
+            ->first();
     }
 
     /**
@@ -39,8 +34,8 @@ trait CanJoinTagTeams
      */
     public function previousTagTeams()
     {
-        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')
+        return $this->tagTeams()
             ->withPivot(['joined_at', 'left_at'])
-            ->whereNotNull('ended_at');
+            ->whereNotNull('left_at');
     }
 }
