@@ -5,12 +5,6 @@ namespace App\Builders;
 use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * The query builder attached to an event.
- *
- * @template TModelClass of \App\Models\Event
- * @extends Builder<TModelClass>
- */
 class EventQueryBuilder extends Builder
 {
     /**

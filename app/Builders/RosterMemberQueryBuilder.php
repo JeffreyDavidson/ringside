@@ -7,12 +7,6 @@ use App\Models\Retirement;
 use App\Models\Suspension;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * The query builder attached to a roster member.
- *
- * @template TModelClass of \App\Models\RosterMember
- * @extends Builder<TModelClass>
- */
 class RosterMemberQueryBuilder extends Builder
 {
     /**

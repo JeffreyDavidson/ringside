@@ -2,12 +2,6 @@
 
 namespace App\Builders;
 
-/**
- * The query builder attached to a referee.
- *
- * @template TModelClass of \App\Models\Referee
- * @extends SingleRosterMemberQueryBuilder<TModelClass>
- */
 class RefereeQueryBuilder extends SingleRosterMemberQueryBuilder
 {
     /**

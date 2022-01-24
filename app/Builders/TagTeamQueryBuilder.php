@@ -2,12 +2,6 @@
 
 namespace App\Builders;
 
-/**
- * The query builder attached to a tag team.
- *
- * @template TModelClass of \App\Models\TagTeam
- * @extends RosterMemberQueryBuilder<TModelClass>
- */
 class TagTeamQueryBuilder extends RosterMemberQueryBuilder
 {
     /**

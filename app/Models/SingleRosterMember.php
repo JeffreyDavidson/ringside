@@ -11,7 +11,7 @@ abstract class SingleRosterMember extends RosterMember
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      *
-     * @return \App\Builders\SingleRosterMemberQueryBuilder<\App\Models\SingleRosterMember>
+     * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
     public function newEloquentBuilder($query)
     {

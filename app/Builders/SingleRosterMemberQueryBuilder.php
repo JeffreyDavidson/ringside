@@ -4,12 +4,6 @@ namespace App\Builders;
 
 use App\Models\Injury;
 
-/**
- * The query builder attached to a singles roster member.
- *
- * @template TModelClass of \App\Models\SingleRosterMember
- * @extends RosterMemberQueryBuilder<TModelClass>
- */
 class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
 {
     /**

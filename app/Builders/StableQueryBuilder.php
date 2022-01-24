@@ -6,12 +6,6 @@ use App\Models\Activation;
 use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * The query builder attached to a stable.
- *
- * @template TModelClass of \App\Models\Stable
- * @extends Builder<TModelClass>
- */
 class StableQueryBuilder extends Builder
 {
     /**

@@ -15,7 +15,7 @@ abstract class RosterMember extends Model implements Employable
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      *
-     * @return \App\Builders\RosterMemberQueryBuilder<\App\Models\RosterMember>
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function newEloquentBuilder($query)
     {
