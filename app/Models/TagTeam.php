@@ -93,11 +93,9 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function currentWrestlers()
     {
-        return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler')
-            ->withPivot('joined_at', 'left_at')
+        return $this->wrestlers()
             ->wherePivot('joined_at', '<=', now())
-            ->wherePivot('left_at', '=', null)
-            ->limit(2);
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -107,9 +105,8 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function previousWrestlers()
     {
-        return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler')
-            ->withPivot('joined_at', 'left_at')
-            ->whereNotNull('left_at');
+        return $this->wrestlers()
+            ->wherePivotNotNull('left_at');
     }
 
     /**
