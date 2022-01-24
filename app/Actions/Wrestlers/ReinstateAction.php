@@ -23,8 +23,8 @@ class ReinstateAction extends BaseWrestlerAction
         $this->wrestlerRepository->reinstate($wrestler, $reinstatementDate);
         $wrestler->save();
 
-        if ($wrestler->currentTagTeam !== null && $wrestler->currentTagTeam->exists()) {
-            $wrestler->currentTagTeam->save();
+        if ($wrestler->currentTagTeam() !== null && $wrestler->currentTagTeam()->exists()) {
+            $wrestler->currentTagTeam()->touch();
         }
     }
 }

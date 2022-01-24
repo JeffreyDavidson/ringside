@@ -23,8 +23,8 @@ class InjureAction extends BaseWrestlerAction
         $this->wrestlerRepository->injure($wrestler, $injureDate);
         $wrestler->save();
 
-        if ($wrestler->currentTagTeam !== null && $wrestler->currentTagTeam->exists()) {
-            $wrestler->currentTagTeam->save();
+        if ($wrestler->currentTagTeam() !== null && $wrestler->currentTagTeam()->exists()) {
+            $wrestler->currentTagTeam()->touch();
         }
     }
 }
