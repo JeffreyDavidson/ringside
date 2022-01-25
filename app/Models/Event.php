@@ -47,7 +47,7 @@ class Event extends Model
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      *
-     * @return \App\Builders\EventQueryBuilder<\App\Models\Event>
+     * @return \App\Builders\EventQueryBuilder
      */
     public function newEloquentBuilder($query)
     {

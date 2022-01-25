@@ -35,6 +35,7 @@ class ManagerService
      */
     public function create(ManagerData $managerData)
     {
+        /* @var \App\Models\Manager $manager */
         $manager = $this->managerRepository->create($managerData);
 
         if (isset($managerData->start_date)) {

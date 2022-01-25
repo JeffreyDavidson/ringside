@@ -24,7 +24,7 @@ class EventMatchData
 
     public Collection $tagTeams;
 
-    public ?string $preview;
+    public mixed $preview;
 
     /**
      * Retrieve data from the store request.

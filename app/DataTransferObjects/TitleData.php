@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class TitleData
 {
-    public string $name = 'Example Title';
+    public mixed $name = 'Example Title';
 
     public ?Carbon $activation_date;
 

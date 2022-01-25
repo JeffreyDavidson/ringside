@@ -11,9 +11,9 @@ use Illuminate\Support\Collection;
 
 class StableData
 {
-    public string $name;
+    public mixed $name;
 
-    public ?string $signature_move;
+    public mixed $signature_move;
 
     public ?Carbon $start_date;
 

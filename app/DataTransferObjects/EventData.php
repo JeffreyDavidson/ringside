@@ -9,13 +9,13 @@ use Carbon\Carbon;
 
 class EventData
 {
-    public string $name;
+    public mixed $name;
 
     public ?Carbon $date;
 
     public ?Venue $venue;
 
-    public ?string $preview;
+    public mixed $preview;
 
     public static function fromStoreRequest(StoreRequest $request): self
     {

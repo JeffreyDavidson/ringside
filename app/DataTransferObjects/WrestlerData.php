@@ -8,15 +8,15 @@ use Carbon\Carbon;
 
 class WrestlerData
 {
-    public string $name;
+    public mixed $name;
 
-    public int $height;
+    public mixed $height;
 
-    public int $weight;
+    public mixed $weight;
 
-    public string $hometown;
+    public mixed $hometown;
 
-    public ?string $signature_move;
+    public mixed $signature_move;
 
     public ?Carbon $start_date;
 

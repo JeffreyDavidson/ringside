@@ -35,6 +35,7 @@ class TitleService
      */
     public function create(TitleData $titleData)
     {
+        /* @var \App\Models\Title */
         $title = $this->titleRepository->create($titleData);
 
         if (isset($titleData->activation_date)) {

@@ -139,14 +139,14 @@ class StableRepository
      */
     public function disassemble(Stable $stable, Carbon $disassembleDate)
     {
-        $stable->currentWrestlers->each(
+        $stable->currentWrestlers()->each(
             fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot(
                 $wrestler->id,
                 ['left_at' => $disassembleDate->toDateTimeString()]
             )
         );
 
-        $stable->currentTagTeams->each(
+        $stable->currentTagTeams()->each(
             fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot(
                 $tagTeam->id,
                 ['left_at' => $disassembleDate->toDateTimeString()]

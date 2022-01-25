@@ -7,17 +7,17 @@ use App\Http\Requests\Venues\UpdateRequest;
 
 class VenueData
 {
-    public string $name;
+    public mixed $name;
 
-    public string $address1;
+    public mixed $address1;
 
-    public ?string $address2;
+    public mixed $address2;
 
-    public string $city;
+    public mixed $city;
 
-    public string $state;
+    public mixed $state;
 
-    public string $zip;
+    public mixed $zip;
 
     public static function fromStoreRequest(StoreRequest $request): self
     {

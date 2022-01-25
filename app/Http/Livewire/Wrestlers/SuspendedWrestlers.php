@@ -15,10 +15,10 @@ class SuspendedWrestlers extends BaseComponent
     public function render()
     {
         $suspendedWrestlers = Wrestler::query()
+            ->orderBy('name')
             ->suspended()
             ->withCurrentSuspendedAtDate()
             ->orderByCurrentSuspendedAtDate()
-            ->orderBy('name')
             ->paginate($this->perPage);
 
         return view('livewire.wrestlers.suspended-wrestlers', [

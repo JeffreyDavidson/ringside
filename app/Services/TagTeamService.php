@@ -47,6 +47,7 @@ class TagTeamService
      */
     public function create(TagTeamData $tagTeamData)
     {
+        /* @var \App\Models\TagTeam */
         $tagTeam = $this->tagTeamRepository->create($tagTeamData);
 
         if ($tagTeamData->wrestlers->isNotEmpty()) {

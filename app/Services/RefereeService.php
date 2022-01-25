@@ -35,6 +35,7 @@ class RefereeService
      */
     public function create(RefereeData $refereeData)
     {
+        /* @var \App\Models\Referee $referee */
         $referee = $this->refereeRepository->create($refereeData);
 
         if (isset($refereeData->start_date)) {

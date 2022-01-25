@@ -34,7 +34,10 @@ class VenueService
      */
     public function create(VenueData $venueData)
     {
-        return $this->venueRepository->create($venueData);
+        /* @var \App\Models\Venue $venue */
+        $venue = $this->venueRepository->create($venueData);
+
+        return $venue;
     }
 
     /**

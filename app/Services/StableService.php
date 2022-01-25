@@ -37,6 +37,7 @@ class StableService
      */
     public function create(StableData $stableData)
     {
+        /* @var \App\Models\Stable $stable */
         $stable = $this->stableRepository->create($stableData);
 
         if (isset($stableData->start_date)) {
