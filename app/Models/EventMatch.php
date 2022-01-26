@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 class EventMatch extends Model
 {
-    use HasFactory;
+    use HasFactory,
+        HasMergedRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -43,7 +45,7 @@ class EventMatch extends Model
      */
     public function competitors()
     {
-        return $this->hasMany(EventMatchCompetitor::class);
+        return $this->mergedRelationWithModel(EventMatchCompetitor::class, 'all_match_competitors');
     }
 
     /**
