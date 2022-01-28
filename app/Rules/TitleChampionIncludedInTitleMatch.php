@@ -2,7 +2,10 @@
 
 namespace App\Rules;
 
+use App\Models\TagTeam;
 use App\Models\Title;
+use App\Models\TitleChampionship;
+use App\Models\Wrestler;
 use Illuminate\Contracts\Validation\Rule;
 
 class TitleChampionIncludedInTitleMatch implements Rule
@@ -32,24 +35,31 @@ class TitleChampionIncludedInTitleMatch implements Rule
      */
     public function passes($attribute, $value)
     {
-        $titles = Title::findMany($this->titleIds);
+        $titles = Title::with('currentChampionship.champion')
+            ->findMany($this->titleIds)
+            ->filter(fn ($title) => ! $title->isVacant());
 
-        $titlesNotHavingChampionsInvoled = collect();
+        $competitors = collect($value)->flatten(1);
+
+        $wrestlers = Wrestler::whereIn(
+            'id',
+            $competitors->where('competitor_type', 'wrestler')->pluck('competitor_id')
+        )->get();
+
+        $tagTeams = TagTeam::whereIn(
+            'id',
+            $competitors->where('competitor_type', 'tag_team')->pluck('competitor_id')
+        )->get();
+
+        $competitors = $wrestlers->merge($tagTeams);
 
         foreach ($titles as $title) {
-            if ($title->isVacant()) {
-                break;
-            }
-
-            foreach ($value as $competitor) {
-                dd($competitor);
-            }
-            if (! in_array($title->currentChampionship->champion->id, $value)) {
-                $titlesNotHavingChampionsInvoled->push($title->id);
+            if (! $competitors->contains($title->currentChampionship->champion)) {
+                return false;
             }
         }
 
-        return $titlesNotHavingChampionsInvoled->isEmpty();
+        return true;
     }
 
     /**

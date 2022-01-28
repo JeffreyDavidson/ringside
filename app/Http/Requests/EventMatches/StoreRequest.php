@@ -36,9 +36,9 @@ class StoreRequest extends FormRequest
             'titles' => ['nullable', 'array'],
             'titles.*' => ['integer', 'distinct', Rule::exists('titles', 'id')],
             'competitors' => ['required', 'array', 'min:2'],
-            'competitors.*' => ['required', 'array'],
-            'competitors.*.competitor_id' => ['required', 'integer'],
-            'competitors.*.competitor_type' => ['required', Rule::in(['wrestler', 'tag_team'])],
+            'competitors.*' => ['required', 'array', 'min:1'],
+            'competitors.*.*.competitor_id' => ['required', 'integer'],
+            'competitors.*.*.competitor_type' => ['required', Rule::in(['wrestler', 'tag_team'])],
             'preview' => ['nullable', 'string'],
         ];
     }

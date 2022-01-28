@@ -94,9 +94,12 @@ class TitleFactory extends Factory
         });
     }
 
-    public function withChampion($championFactory)
+    public function withChampion($champion)
     {
-        return $this->has(TitleChampionship::factory()->hasAttached($championFactory, [], 'champion'), 'championships');
+        return $this->has(
+            TitleChampionship::factory()->for($champion, 'champion'),
+            'championships'
+        );
     }
 
     public function nonActive()
