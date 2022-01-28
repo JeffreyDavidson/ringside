@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venue extends Model
 {
-    use Concerns\Unguarded,
-        HasFactory,
+    use HasFactory,
         SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['name', 'address1', 'address2', 'city', 'state', 'zip'];
 }

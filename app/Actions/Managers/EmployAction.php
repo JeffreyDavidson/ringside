@@ -3,6 +3,7 @@
 namespace App\Actions\Managers;
 
 use App\Models\Manager;
+use Carbon\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class EmployAction extends BaseManagerAction
@@ -13,13 +14,15 @@ class EmployAction extends BaseManagerAction
      * Employ a manager.
      *
      * @param  \App\Models\Manager  $manager
+     * @param  \Carbon\Carbon|null  $startDate
+     *
      * @return void
      */
-    public function handle(Manager $manager): void
+    public function handle(Manager $manager, ?Carbon $startDate = null): void
     {
-        $employmentDate = now()->toDateTimeString();
+        $startDate ??= now();
 
-        $this->managerRepository->employ($manager, $employmentDate);
+        $this->managerRepository->employ($manager, $startDate);
         $manager->save();
     }
 }

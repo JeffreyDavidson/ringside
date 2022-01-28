@@ -7,11 +7,12 @@ use App\Models\Title;
 class TitleRequestDataFactory
 {
     private string $name = 'Example Title';
+
     private ?string $activated_at = null;
 
     public static function new(): self
     {
-        return new self();
+        return new self;
     }
 
     public function create(array $overrides = []): array
@@ -26,7 +27,8 @@ class TitleRequestDataFactory
     {
         $clone = clone $this;
 
-        $this->name = $title->name;
+        $clone->name = $title->name;
+        $clone->activated_at = $title->activatedAt?->toDateTimeString();
 
         return $clone;
     }

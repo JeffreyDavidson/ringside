@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Referees;
 use App\Actions\Referees\InjureAction;
 use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Referees\InjureRequest;
 use App\Models\Referee;
 
 class InjureController extends Controller
@@ -14,15 +13,16 @@ class InjureController extends Controller
      * Injure a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @param  \App\Http\Requests\Referees\InjureRequest  $request
-     * @param  \App\Actions\Referees\InjureAction  $action
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Referee $referee, InjureRequest $request, InjureAction $action)
+    public function __invoke(Referee $referee)
     {
-        throw_unless($referee->canBeInjured(), new CannotBeInjuredException);
+        $this->authorize('injure', $referee);
 
-        $action->handle($referee);
+        throw_unless($referee->canBeInjured(), CannotBeInjuredException::class);
+
+        InjureAction::run($referee);
 
         return redirect()->route('referees.index');
     }

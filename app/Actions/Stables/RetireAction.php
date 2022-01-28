@@ -2,7 +2,11 @@
 
 namespace App\Actions\Stables;
 
+use App\Actions\TagTeams\RetireAction as TagTeamsRetireAction;
+use App\Actions\Wrestlers\RetireAction as WrestlersRetireAction;
 use App\Models\Stable;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class RetireAction extends BaseStableAction
@@ -13,26 +17,23 @@ class RetireAction extends BaseStableAction
      * Retire a stable.
      *
      * @param  \App\Models\Stable  $stable
+     *
      * @return void
      */
     public function handle(Stable $stable): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
-        if ($stable->has('currentTagTeams')) {
-            foreach ($stable->currentTagTeams as $tagTeam) {
-                $this->tagTeamRepository->release($tagTeam, $retirementDate);
-                $this->tagTeamRepository->retire($tagTeam, $retirementDate);
-                $tagTeam->save();
-            }
+        if ($stable->currentTagTeams->isNotEmpty()) {
+            $stable->currentTagTeams->each(function (TagTeam $tagTeam) use ($retirementDate) {
+                TagTeamsRetireAction::run($tagTeam, $retirementDate);
+            });
         }
 
-        if ($stable->has('currentWrestlers')) {
-            foreach ($stable->currentWrestlers as $wrestler) {
-                $this->wrestlerRepository->release($wrestler, $retirementDate);
-                $this->wrestlerRepository->retire($wrestler, $retirementDate);
-                $wrestler->save();
-            }
+        if ($stable->currentWrestlers->isNotEmpty()) {
+            $stable->currentWrestlers->each(function (Wrestler $wrestler) use ($retirementDate) {
+                WrestlersRetireAction::run($wrestler, $retirementDate);
+            });
         }
 
         $this->stableRepository->deactivate($stable, $retirementDate);

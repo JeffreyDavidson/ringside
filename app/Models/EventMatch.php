@@ -4,11 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 class EventMatch extends Model
 {
-    use Concerns\Unguarded,
-        HasFactory;
+    use HasFactory,
+        HasMergedRelationships;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['event_id', 'match_type_id', 'preview'];
 
     /**
      * Get the referees assigned to the match.
@@ -31,12 +39,34 @@ class EventMatch extends Model
     }
 
     /**
-     * Get the competitors of the match.
+     * Get all fo the event match competitors for the match.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function competitors()
     {
-        return $this->morphTo();
+        return $this->mergedRelationWithModel(EventMatchCompetitor::class, 'all_match_competitors');
+    }
+
+    /**
+     * Get the wrestlers involved in the match.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function wrestlers()
+    {
+        return $this->morphedByMany(Wrestler::class, 'competitor', 'event_match_competitors')
+            ->using(EventMatchCompetitor::class);
+    }
+
+    /**
+     * Get the tag teams involved in the match.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function tagTeams()
+    {
+        return $this->morphedByMany(TagTeam::class, 'competitor', 'event_match_competitors')
+            ->using(EventMatchCompetitor::class);
     }
 }

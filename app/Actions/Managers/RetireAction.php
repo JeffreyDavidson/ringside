@@ -13,29 +13,30 @@ class RetireAction extends BaseManagerAction
      * Retire a manager.
      *
      * @param  \App\Models\Manager  $manager
+     *
      * @return void
      */
     public function handle(Manager $manager): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
         if ($manager->isSuspended()) {
-            $this->managerRepository->reinstate($manager, $retirementDate);
+            ReinstateAction::run($manager, $retirementDate);
         }
 
         if ($manager->isInjured()) {
-            $this->managerRepository->clearInjury($manager, $retirementDate);
+            ClearInjuryAction::run($manager, $retirementDate);
         }
 
         $this->managerRepository->release($manager, $retirementDate);
         $this->managerRepository->retire($manager, $retirementDate);
         $manager->save();
 
-        if ($manager->has('currentTagTeams')) {
+        if ($manager->currentTagTeams->isNotEmpty()) {
             $this->managerRepository->removeFromCurrentTagTeams($manager);
         }
 
-        if ($manager->has('currentWrestlers')) {
+        if ($manager->currentWrestlers->isNotEmpty()) {
             $this->managerRepository->removeFromCurrentWrestlers($manager);
         }
     }

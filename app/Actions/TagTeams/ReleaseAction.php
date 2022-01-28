@@ -2,6 +2,7 @@
 
 namespace App\Actions\TagTeams;
 
+use App\Actions\Wrestlers\ReleaseAction as WrestlersReleaseAction;
 use App\Models\TagTeam;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -13,25 +14,22 @@ class ReleaseAction extends BaseTagTeamAction
      * Release a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     *
      * @return void
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $releaseDate = now()->toDateTimeString();
+        $releaseDate = now();
 
         if ($tagTeam->isSuspended()) {
-            $this->tagTeamRepository->reinstate($tagTeam, $releaseDate);
-            foreach ($tagTeam->currentWrestlers as $wrestler) {
-                $this->wrestlerRepository->reinstate($wrestler, $releaseDate);
-            }
+            ReinstateAction::run($tagTeam, $releaseDate);
         }
 
         $this->tagTeamRepository->release($tagTeam, $releaseDate);
         $tagTeam->save();
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
-            $this->wrestlerRepository->release($wrestler, $releaseDate);
-            $wrestler->save();
-        }
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($releaseDate) {
+            WrestlersReleaseAction::run($wrestler, $releaseDate);
+        });
     }
 }

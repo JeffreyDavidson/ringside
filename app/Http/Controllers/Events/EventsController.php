@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Events;
 
+use App\DataTransferObjects\EventData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
@@ -38,24 +39,29 @@ class EventsController extends Controller
      * Show the form for creating a new event.
      *
      * @param  \App\Models\Event $event
+     *
      * @return \Illuminate\View\View
      */
     public function create(Event $event)
     {
         $this->authorize('create', Event::class);
 
-        return view('events.create', compact('event'));
+        return view('events.create', [
+            'event' => $event,
+        ]);
     }
 
     /**
      * Create a new event.
      *
-     * @param  \App\Http\Requests\StoreRequest  $request
+     * @param  \App\Http\Requests\Events\StoreRequest  $request
+     * @param  \App\DataTransferObjects\EventData $eventData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, EventData $eventData)
     {
-        $this->eventService->create($request->validated());
+        $this->eventService->create($eventData->fromStoreRequest($request));
 
         return redirect()->route('events.index');
     }
@@ -64,30 +70,36 @@ class EventsController extends Controller
      * Show the event.
      *
      * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function show(Event $event)
     {
         $this->authorize('view', $event);
 
-        if (! is_null($event->venue_id)) {
+        if ($event->venue_id !== null) {
             $event->load('venue');
         }
 
-        return response()->view('events.show', compact('event'));
+        return view('events.show', [
+            'event' => $event,
+        ]);
     }
 
     /**
      * Show the form for editing a given event.
      *
      * @param  \App\Models\Event $event
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Event $event)
     {
         $this->authorize('update', $event);
 
-        return view('events.edit', compact('event'));
+        return view('events.edit', [
+            'event' => $event,
+        ]);
     }
 
     /**
@@ -95,11 +107,13 @@ class EventsController extends Controller
      *
      * @param  \App\Http\Requests\Events\UpdateRequest  $request
      * @param  \App\Models\Event  $event
+     * @param  \App\DataTransferObjects\EventData $eventData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Event $event)
+    public function update(UpdateRequest $request, Event $event, EventData $eventData)
     {
-        $this->eventService->update($event, $request->validated());
+        $this->eventService->update($event, $eventData->fromUpdateRequest($request));
 
         return redirect()->route('events.index');
     }
@@ -108,6 +122,7 @@ class EventsController extends Controller
      * Delete an event.
      *
      * @param  \App\Models\Event  $event
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Event $event)

@@ -7,13 +7,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
-use Spatie\Enum\Phpunit\EnumAssertions;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use EnumAssertions;
     use RefreshDatabase;
+
+    protected bool $dropViews = true;
 
     /**
      * Setup the test environment.
@@ -25,8 +25,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         TestResponse::macro('data', fn ($key) => $this->original->getData()[$key]);
-
-        // Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
     }
 
     public function actAs($role, $attributes = [])
@@ -43,6 +41,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  string  $trait
      * @param  mixed   $class
+     *
      * @return void
      */
     public function assertUsesTrait($trait, $class)

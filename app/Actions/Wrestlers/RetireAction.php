@@ -3,6 +3,7 @@
 namespace App\Actions\Wrestlers;
 
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class RetireAction extends BaseWrestlerAction
@@ -13,26 +14,28 @@ class RetireAction extends BaseWrestlerAction
      * Retire a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
+     * @param  \Carbon\Carbon|null  $retirementDate
+     *
      * @return void
      */
-    public function handle(Wrestler $wrestler): void
+    public function handle(Wrestler $wrestler, ?Carbon $retirementDate = null): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate ??= now();
 
         if ($wrestler->isSuspended()) {
-            $this->wrestlerRepository->reinstate($wrestler, $retirementDate);
+            ReinstateAction::run($wrestler, $retirementDate);
         }
 
         if ($wrestler->isInjured()) {
-            $this->wrestlerRepository->clearInjury($wrestler, $retirementDate);
+            ClearInjuryAction::run($wrestler, $retirementDate);
         }
 
         $this->wrestlerRepository->release($wrestler, $retirementDate);
         $this->wrestlerRepository->retire($wrestler, $retirementDate);
         $wrestler->save();
 
-        if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
-            $wrestler->currentTagTeam->save();
+        if ($wrestler->currentTagTeam() !== null && $wrestler->currentTagTeam()->exists()) {
+            $wrestler->currentTagTeam()->touch();
         }
     }
 }

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use App\Builders\StableQueryBuilder;
 use App\Enums\StableStatus;
+use App\Models\Concerns\Activations;
+use App\Models\Concerns\Deactivations;
+use App\Models\Concerns\HasMembers;
+use App\Models\Concerns\OwnedByUser;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
@@ -14,13 +18,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stable extends Model implements Activatable, Deactivatable, Retirable
 {
-    use SoftDeletes,
+    use Activations,
+        Deactivations,
         HasFactory,
-        Concerns\Activatable,
-        Concerns\Deactivatable,
-        Concerns\HasMembers,
-        Concerns\OwnedByUser,
-        Concerns\Unguarded;
+        HasMembers,
+        OwnedByUser,
+        SoftDeletes;
+
+    /**
+     * The minium number of members allowed on a tag team.
+     */
+    public const MIN_MEMBERS_COUNT = 3;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['user_id', 'name', 'status'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => StableStatus::class,
+    ];
 
     /**
      * The "boot" method of the model.
@@ -38,21 +62,13 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     *
+     * @return \App\Builders\StableQueryBuilder
      */
     public function newEloquentBuilder($query)
     {
         return new StableQueryBuilder($query);
     }
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'status' => StableStatus::class,
-    ];
 
     /**
      * Get the retirements of the model.
@@ -72,9 +88,9 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     public function currentRetirement()
     {
         return $this->morphOne(Retirement::class, 'retiree')
-                    ->where('started_at', '<=', now())
-                    ->whereNull('ended_at')
-                    ->limit(1);
+            ->where('started_at', '<=', now())
+            ->whereNull('ended_at')
+            ->limit(1);
     }
 
     /**
@@ -84,8 +100,8 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      */
     public function previousRetirements()
     {
-        return $this->retirements()
-                    ->whereNotNull('ended_at');
+        return $this->morphMany(Retirement::class, 'retiree')
+            ->whereNotNull('ended_at');
     }
 
     /**
@@ -96,8 +112,8 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     public function previousRetirement()
     {
         return $this->morphOne(Retirement::class, 'retiree')
-                    ->latest('ended_at')
-                    ->limit(1);
+            ->latest('ended_at')
+            ->limit(1);
     }
 
     /**
@@ -127,15 +143,7 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      */
     public function canBeRetired()
     {
-        if ($this->isCurrentlyActivated()) {
-            return true;
-        }
-
-        if ($this->isDeactivated()) {
-            return true;
-        }
-
-        return false;
+        return $this->isCurrentlyActivated() || $this->isDeactivated();
     }
 
     /**
@@ -145,10 +153,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      */
     public function canBeUnretired()
     {
-        if (! $this->isRetired()) {
-            return false;
-        }
-
-        return true;
+        return $this->isRetired();
     }
 }

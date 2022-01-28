@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Titles;
 
+use App\DataTransferObjects\TitleData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Titles\StoreRequest;
 use App\Http\Requests\Titles\UpdateRequest;
@@ -25,7 +26,7 @@ class TitlesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -37,30 +38,38 @@ class TitlesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Title $title
+     *
      * @return \Illuminate\View\View
      */
     public function create(Title $title)
     {
         $this->authorize('create', Title::class);
 
-        return view('titles.create', compact('title'));
+        return view('titles.create', [
+            'title' => $title,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Titles\StoreRequest  $request
+     * @param  \App\DataTransferObjects\TitleData $titleData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, TitleData $titleData)
     {
-        $this->titleService->create($request->validated());
+        $this->titleService->create($titleData->fromStoreRequest($request));
 
         return redirect()->route('titles.index');
     }
 
     /**
      * Display the specified resource.
+     *
+     * @param Title $title
      *
      * @return \Illuminate\View\View
      */
@@ -77,13 +86,16 @@ class TitlesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Title  $title
+     *
      * @return \Illuminate\View\View
      */
     public function edit(Title $title)
     {
         $this->authorize('update', Title::class);
 
-        return view('titles.edit', compact('title'));
+        return view('titles.edit', [
+            'title' => $title,
+        ]);
     }
 
     /**
@@ -91,11 +103,13 @@ class TitlesController extends Controller
      *
      * @param  \App\Http\Requests\Titles\UpdateRequest  $request
      * @param  \App\Models\Title  $title
+     * @param  \App\DataTransferObjects\TitleData $titleData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Title $title)
+    public function update(UpdateRequest $request, Title $title, TitleData $titleData)
     {
-        $this->titleService->update($title, $request->validated());
+        $this->titleService->update($title, $titleData->fromUpdateRequest($request));
 
         return redirect()->route('titles.index');
     }
@@ -104,6 +118,7 @@ class TitlesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Title  $title
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Title $title)

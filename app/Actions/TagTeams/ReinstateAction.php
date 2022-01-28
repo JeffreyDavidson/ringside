@@ -2,7 +2,9 @@
 
 namespace App\Actions\TagTeams;
 
+use App\Actions\Wrestlers\ReinstateAction as WrestlersReinstateAction;
 use App\Models\TagTeam;
+use Carbon\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ReinstateAction extends BaseTagTeamAction
@@ -13,17 +15,17 @@ class ReinstateAction extends BaseTagTeamAction
      * Reinstate a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     * @param  \Carbon\Carbon|null  $reinstatementDate
+     *
      * @return void
      */
-    public function handle(TagTeam $tagTeam): void
+    public function handle(TagTeam $tagTeam, ?Carbon $reinstatementDate = null): void
     {
-        $reinstatementDate = now()->toDateTimeString();
+        $reinstatementDate ??= now();
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
-            $this->wrestlerRepository->reinstate($wrestler, $reinstatementDate);
-            $this->wrestlerRepository->employ($wrestler, $reinstatementDate);
-            $wrestler->save();
-        }
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($reinstatementDate) {
+            WrestlersReinstateAction::run($wrestler, $reinstatementDate);
+        });
 
         $this->tagTeamRepository->reinstate($tagTeam, $reinstatementDate);
         $tagTeam->save();

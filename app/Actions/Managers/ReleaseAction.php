@@ -13,27 +13,29 @@ class ReleaseAction extends BaseManagerAction
      * Release a manager.
      *
      * @param  \App\Models\Manager  $manager
+     *
+     * @return void
      */
-    public function handle(Manager $manager)
+    public function handle(Manager $manager): void
     {
-        $releaseDate ??= now()->toDateTimeString();
+        $releaseDate = now();
 
         if ($manager->isSuspended()) {
-            $this->managerRepository->reinstate($manager, $releaseDate);
+            ReinstateAction::run($manager, $releaseDate);
         }
 
         if ($manager->isInjured()) {
-            $this->managerRepository->clearInjury($manager, $releaseDate);
+            ClearInjuryAction::run($manager, $releaseDate);
         }
 
         $this->managerRepository->release($manager, $releaseDate);
         $manager->save();
 
-        if ($manager->has('currentTagTeams')) {
+        if ($manager->currentTagTeams->isNotEmpty()) {
             $this->managerRepository->removeFromCurrentTagTeams($manager);
         }
 
-        if ($manager->has('currentWrestlers')) {
+        if ($manager->currentWrestlers->isNotEmpty()) {
             $this->managerRepository->removeFromCurrentWrestlers($manager);
         }
     }

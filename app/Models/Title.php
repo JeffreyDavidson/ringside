@@ -4,6 +4,10 @@ namespace App\Models;
 
 use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
+use App\Models\Concerns\Activations;
+use App\Models\Concerns\Competable;
+use App\Models\Concerns\Deactivations;
+use App\Models\Concerns\HasRetirements;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
@@ -14,13 +18,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
-    use Concerns\Activatable,
-        Concerns\Competable,
-        Concerns\Deactivatable,
-        Concerns\Retirable,
-        Concerns\Unguarded,
+    use Activations,
+        Competable,
+        Deactivations,
         HasFactory,
+        HasRetirements,
         SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['name', 'status'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => TitleStatus::class,
+    ];
 
     /**
      * The "boot" method of the model.
@@ -38,21 +57,23 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     *
+     * @return \App\Builders\TitleQueryBuilder<\App\Models\Title>
      */
-    public function newEloquentBuilder($query)
+    public function newEloquentBuilder($query): TitleQueryBuilder
     {
         return new TitleQueryBuilder($query);
     }
 
     /**
-     * The attributes that should be cast to native types.
+     * Determine if the model can be retired.
      *
-     * @var array
+     * @return bool
      */
-    protected $casts = [
-        'status' => TitleStatus::class,
-    ];
+    public function canBeRetired()
+    {
+        return $this->isCurrentlyActivated() || $this->isDeactivated();
+    }
 
     /**
      * Undocumented function.
@@ -80,20 +101,12 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     }
 
     /**
-     * Determine if the model can be retired.
+     * Determine if the model can be unretired.
      *
      * @return bool
      */
-    public function canBeRetired()
+    public function canBeUnretired()
     {
-        if ($this->isCurrentlyActivated()) {
-            return true;
-        }
-
-        if ($this->isDeactivated()) {
-            return true;
-        }
-
-        return false;
+        return $this->isRetired();
     }
 }

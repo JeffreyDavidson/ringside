@@ -13,6 +13,8 @@ class TitlesTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * @param mixed|null $dateToStart
+     *
      * @return void
      */
     public function run($dateToStart = null)
@@ -20,7 +22,7 @@ class TitlesTableSeeder extends Seeder
         $eNum = 1;
         $now = Carbon::now();
 
-        if (is_null($dateToStart)) {
+        if (null === $dateToStart) {
             $dateToStart = Carbon::now()->subYears(5);
         }
 
@@ -30,7 +32,7 @@ class TitlesTableSeeder extends Seeder
         $maxYears = floor($diffInYears * .75);
         $randomNumberOfYearsActivated = rand($minYears, $maxYears);
 
-        /*
+        /**
          * We need to create 5 titles at this time X years ago but since by
          * the time we reach the current date these titles should be
          * released so we need to make them released and figure out
@@ -70,7 +72,7 @@ class TitlesTableSeeder extends Seeder
 
         $eNum++;
 
-        /*
+        /**
          * We need to create 2 titles that have been retired. We need to
          * make sure that their activation end date is the same as their
          * start of their retirement date.
@@ -97,7 +99,7 @@ class TitlesTableSeeder extends Seeder
 
         $eNum++;
 
-        /*
+        /**
          * We need to create 1 title that does not have an activation date.
          * This title should be marked as being unactivated.
          */

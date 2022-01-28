@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Managers;
 
 use App\Models\Manager;
-use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateRequest extends FormRequest
 {
@@ -32,9 +32,49 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'date',
-                new EmploymentStartDateCanBeChanged($this->route('manager')),
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isEmpty()) {
+                /** @var \App\Models\Manager $manager */
+                $manager = $this->route()->parameter('manager');
+
+                if ($manager->isCurrentlyEmployed()) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$manager->full_name} is currently employed and cannot have their original start date changed."
+                    );
+                    $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
+                }
+
+                if ($manager->isReleased()) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$manager->full_name} has been released and cannot have their original start date changed."
+                    );
+                    $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
+                }
+
+                if ($manager->isRetired()) {
+                    $validator->errors()->add(
+                        'started_at',
+                        "{$manager->full_name} is currently retired and cannot have their original start date changed."
+                    );
+                    $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
+                }
+            }
+        });
     }
 
     /**

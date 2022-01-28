@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
+use App\DataTransferObjects\WrestlerData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
@@ -37,26 +38,30 @@ class WrestlersController extends Controller
     /**
      * Show the form for creating a new wrestler.
      *
+     * @param Wrestler $wrestler
+     *
      * @return \Illuminate\View\View
      */
     public function create(Wrestler $wrestler)
     {
         $this->authorize('create', Wrestler::class);
 
-        return view('wrestlers.create', compact('wrestler'));
+        return view('wrestlers.create', [
+            'wrestler' => $wrestler,
+        ]);
     }
 
     /**
      * Create a new wrestler.
      *
      * @param  \App\Http\Requests\Wrestlers\StoreRequest  $request
+     * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, WrestlerData $wrestlerData)
     {
-        $this->wrestlerService->create(
-            $request->only('name', 'height', 'weight', 'hometown', 'signature_move', 'started_at')
-        );
+        $this->wrestlerService->create($wrestlerData->fromStoreRequest($request));
 
         return redirect()->route('wrestlers.index');
     }
@@ -65,26 +70,32 @@ class WrestlersController extends Controller
      * Show the profile of a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return \Illuminate\View\View
      */
     public function show(Wrestler $wrestler)
     {
         $this->authorize('view', $wrestler);
 
-        return view('wrestlers.show', compact('wrestler'));
+        return view('wrestlers.show', [
+            'wrestler' => $wrestler,
+        ]);
     }
 
     /**
      * Show the form for editing a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return \Illuminate\View\View
      */
     public function edit(Wrestler $wrestler)
     {
         $this->authorize('update', $wrestler);
 
-        return view('wrestlers.edit', compact('wrestler'));
+        return view('wrestlers.edit', [
+            'wrestler' => $wrestler,
+        ]);
     }
 
     /**
@@ -92,14 +103,13 @@ class WrestlersController extends Controller
      *
      * @param  \App\Http\Requests\Wrestlers\UpdateRequest  $request
      * @param  \App\Models\Wrestler  $wrestler
+     * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Wrestler $wrestler)
+    public function update(UpdateRequest $request, Wrestler $wrestler, WrestlerData $wrestlerData)
     {
-        $this->wrestlerService->update(
-            $wrestler,
-            $request->only('name', 'height', 'weight', 'hometown', 'signature_move', 'started_at')
-        );
+        $this->wrestlerService->update($wrestler, $wrestlerData->fromUpdateRequest($request));
 
         return redirect()->route('wrestlers.index');
     }
@@ -108,6 +118,7 @@ class WrestlersController extends Controller
      * Delete a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Wrestler $wrestler)

@@ -14,6 +14,7 @@ use function PHPUnit\Framework\assertTrue;
 class TestValidationResult
 {
     private Validator $validator;
+
     private ?ValidationException $failed;
 
     public function __construct(Validator $validator, ?ValidationException $failed = null)
@@ -47,31 +48,15 @@ class TestValidationResult
         $failedRules = $this->getFailedRules();
 
         foreach ($expectedFailedRules as $expectedFailedRule => $constraints) {
-            // dd($expectedFailedRule, $constraints);
-            // ^ 0
-            // ^ "matches.0"
             if (Str::contains($constraints, '.')) {
-                // dd($failedRules->all());
-                // ^ array:1 [
-                //     "matches.0" => "array"
-                // ]
-                // dd($constraints); // matches.0
-                // dd($failedRules->all()[$constraints]); // array
-                // dd(is_array($failedRules->all()[$constraints])); false
                 if (is_array($failedRules->all()[$constraints])) {
                     foreach ($failedRules->all()[$constraints] as $key => $value) {
-                        dd($value);
                         $this->assertFailsValidation($expectedFailedRule);
                     }
                 } else {
-                    // dd($constraints);
-                    // dd($failedRules->all());
-                    // dd($expectedFailedRule);
                     assertArrayHasKey($constraints, $failedRules->all());
-                    // assertStringContainsString($constraints, $failedRules->all()[$expectedFailedRule]);
                 }
             }
-            // dd($expectedFailedRule, $failedRules);
             assertArrayHasKey($expectedFailedRule, $failedRules);
             assertStringContainsString($constraints, $failedRules[$expectedFailedRule]);
         }

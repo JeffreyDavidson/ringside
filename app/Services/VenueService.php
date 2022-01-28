@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\VenueData;
 use App\Models\Venue;
 use App\Repositories\VenueRepository;
 
@@ -27,34 +28,33 @@ class VenueService
     /**
      * Create a new venue with given data.
      *
-     * @param  array $data
-     * @return \App\Models\Venue $venue
+     * @param  \App\DataTransferObjects\VenueData $venueData
+     *
+     * @return \App\Models\Venue
      */
-    public function create(array $data)
+    public function create(VenueData $venueData)
     {
-        $venue = $this->venueRepository->create($data);
-
-        return $venue;
+        return $this->venueRepository->create($venueData);
     }
 
     /**
      * Update a given venue with given data.
      *
      * @param  \App\Models\Venue $venue
-     * @param  array $data
-     * @return \App\Models\Venue $venue
+     * @param  \App\DataTransferObjects\VenueData $venueData
+     *
+     * @return \App\Models\Venue
      */
-    public function update(Venue $venue, array $data)
+    public function update(Venue $venue, VenueData $venueData)
     {
-        $venue = $this->venueRepository->update($venue, $data);
-
-        return $venue;
+        return $this->venueRepository->update($venue, $venueData);
     }
 
     /**
      * Delete a given venue.
      *
      * @param  \App\Models\Venue $venue
+     *
      * @return void
      */
     public function delete(Venue $venue)
@@ -66,6 +66,7 @@ class VenueService
      * Restore a given venue.
      *
      * @param  \App\Models\Venue $venue
+     *
      * @return void
      */
     public function restore(Venue $venue)

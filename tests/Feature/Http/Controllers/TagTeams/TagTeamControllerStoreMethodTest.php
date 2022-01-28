@@ -7,6 +7,7 @@ use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\Employment;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Tests\Factories\TagTeamRequestDataFactory;
 use Tests\TestCase;
 
@@ -95,17 +96,20 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->post(
                 action([TagTeamsController::class, 'store']),
                 TagTeamRequestDataFactory::new()->create([
-                    'started_at' => $startDate->toDateString(),
-                    'wrestlers' => $wrestlers->pluck('id')->toArray(),
+                    'started_at' => $startDate->toDateTimeString(),
+                    'wrestlers' => $wrestlers->modelKeys(),
                 ])
             );
 
         tap(TagTeam::first(), function ($tagTeam) use ($startDate) {
             $this->assertCount(1, $tagTeam->employments);
-            $this->assertEquals($startDate->toDateString(), $tagTeam->employments->first()->started_at->toDateString());
+            $this->assertEquals(
+                $startDate->toDateTimeString(),
+                $tagTeam->employments->first()->started_at->toDateTimeString()
+            );
 
             foreach ($tagTeam->wrestlers as $wrestler) {
-                $this->assertSame($startDate->toDateString(), $wrestler->pivot->joined_at);
+                $this->assertEquals($startDate->toDateTimeString(), $wrestler->pivot->joined_at);
                 $this->assertInstanceOf(Wrestler::class, $wrestler);
                 $this->assertCount(1, $wrestler->employments);
             }
@@ -118,6 +122,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
     public function unemployed_wrestlers_are_employed_on_the_same_date_if_started_at_is_filled_in_request()
     {
         $startDate = now();
+        Carbon::setTestNow($startDate);
         $wrestlers = Wrestler::factory()
             ->unemployed()
             ->count(2)
@@ -129,7 +134,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->post(
                 action([TagTeamsController::class, 'store']),
                 TagTeamRequestDataFactory::new()->create([
-                    'started_at' => $startDate->toDateString(),
+                    'started_at' => $startDate->toDateTimeString(),
                     'wrestlers' => $wrestlers->pluck('id')->toArray(),
                 ])
             );
@@ -138,7 +143,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             $this->assertCount(1, $tagTeam->employments);
 
             foreach ($tagTeam->wrestlers as $wrestler) {
-                $this->assertSame($startDate->toDateString(), $wrestler->pivot->joined_at);
+                $this->assertEquals($startDate->toDateTimeString(), $wrestler->pivot->joined_at);
                 $this->assertInstanceOf(Wrestler::class, $wrestler);
                 $this->assertCount(1, $wrestler->employments);
             }
@@ -151,6 +156,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
     public function unemployed_wrestlers_are_joined_at_the_current_date_if_started_at_is_not_filled_in_request()
     {
         $startDate = now();
+        Carbon::setTestNow($startDate);
         $wrestlers = Wrestler::factory()
             ->unemployed()
             ->count(2)
@@ -170,7 +176,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             $this->assertCount(0, $tagTeam->employments);
 
             foreach ($tagTeam->wrestlers as $wrestler) {
-                $this->assertSame($startDate->toDateString(), $wrestler->pivot->joined_at);
+                $this->assertEquals($startDate, $wrestler->pivot->joined_at);
                 $this->assertInstanceOf(Wrestler::class, $wrestler);
             }
         });

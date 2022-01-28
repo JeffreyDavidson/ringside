@@ -11,9 +11,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use Concerns\Unguarded,
-        HasFactory,
-        SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['name', 'date', 'venue_id', 'preview', 'status'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 
     /**
      * The "boot" method of the model.
@@ -28,19 +43,11 @@ class Event extends Model
     }
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'date' => 'datetime',
-    ];
-
-    /**
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     *
+     * @return \App\Builders\EventQueryBuilder
      */
     public function newEloquentBuilder($query)
     {
@@ -50,7 +57,7 @@ class Event extends Model
     /**
      * Present the event model.
      *
-     * @return App\Presenters\EventPresenter
+     * @return \App\Presenters\EventPresenter
      */
     public function present()
     {

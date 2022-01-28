@@ -4,20 +4,39 @@ namespace App\Models;
 
 use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
-use App\Models\Contracts\StableMember;
+use App\Models\Concerns\CanJoinStables;
+use App\Models\Concerns\HasFullName;
+use App\Models\Concerns\Manageables;
+use App\Models\Concerns\OwnedByUser;
+use App\Models\Contracts\CanBeAStableMember;
 use App\Observers\ManagerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Manager extends SingleRosterMember implements StableMember
+class Manager extends SingleRosterMember implements CanBeAStableMember
 {
-    use Concerns\HasFullName,
-        Concerns\Manageables,
-        Concerns\OwnedByUser,
-        Concerns\StableMember,
-        Concerns\Unguarded,
+    use CanJoinStables,
         HasFactory,
+        HasFullName,
+        Manageables,
+        OwnedByUser,
         SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['user_id', 'first_name', 'last_name', 'status'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => ManagerStatus::class,
+    ];
 
     /**
      * The "boot" method of the model.
@@ -35,21 +54,13 @@ class Manager extends SingleRosterMember implements StableMember
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     *
+     * @return \App\Builders\ManagerQueryBuilder
      */
     public function newEloquentBuilder($query)
     {
         return new ManagerQueryBuilder($query);
     }
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'status' => ManagerStatus::class,
-    ];
 
     /**
      * Determine if the manager is available.
@@ -59,5 +70,25 @@ class Manager extends SingleRosterMember implements StableMember
     public function isAvailable()
     {
         return $this->currentEmployment()->exists();
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeRetired()
+    {
+        return $this->isAvailable() || $this->isInjured();
+    }
+
+    /**
+     * Determine if the model can be unretired.
+     *
+     * @return bool
+     */
+    public function canBeUnretired()
+    {
+        return $this->isRetired();
     }
 }

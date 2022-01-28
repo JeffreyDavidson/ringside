@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\TagTeams;
 
+use App\DataTransferObjects\TagTeamData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TagTeams\StoreRequest;
 use App\Http\Requests\TagTeams\UpdateRequest;
@@ -38,26 +39,33 @@ class TagTeamsController extends Controller
     /**
      * Show the form for creating a new tag team.
      *
-     * @return \Illuminate\Http\Response
+     * @param TagTeam $tagTeam
+     *
+     * @return \Illuminate\View\View
      */
     public function create(TagTeam $tagTeam)
     {
         $this->authorize('create', TagTeam::class);
 
-        $wrestlers = Wrestler::get()->pluck('name', 'id');
+        $wrestlers = Wrestler::select('name', 'id')->get();
 
-        return view('tagteams.create', compact('tagTeam', 'wrestlers'));
+        return view('tagteams.create', [
+            'tagTeam' => $tagTeam,
+            'wrestlers' => $wrestlers,
+        ]);
     }
 
     /**
      * Create a new tag team.
      *
      * @param  \App\Http\Requests\TagTeams\StoreRequest  $request
+     * @param  \App\DataTransferObjects\TagTeamData  $tagTeamData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, TagTeamData $tagTeamData)
     {
-        $this->tagTeamService->create($request->only(['name', 'signature_move', 'started_at', 'wrestlers']));
+        $this->tagTeamService->create($tagTeamData->fromStoreRequest($request));
 
         return redirect()->route('tag-teams.index');
     }
@@ -66,20 +74,24 @@ class TagTeamsController extends Controller
      * Show the profile of a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function show(TagTeam $tagTeam)
     {
         $this->authorize('view', $tagTeam);
 
-        return view('tagteams.show', compact('tagTeam'));
+        return view('tagteams.show', [
+            'tagTeam' => $tagTeam,
+        ]);
     }
 
     /**
      * Show the form for editing a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(TagTeam $tagTeam)
     {
@@ -87,7 +99,10 @@ class TagTeamsController extends Controller
 
         $wrestlers = Wrestler::all();
 
-        return view('tagteams.edit', compact('tagTeam', 'wrestlers'));
+        return view('tagteams.edit', [
+            'tagTeam' => $tagTeam,
+            'wrestlers' => $wrestlers,
+        ]);
     }
 
     /**
@@ -95,14 +110,13 @@ class TagTeamsController extends Controller
      *
      * @param  \App\Http\Requests\TagTeams\UpdateRequest  $request
      * @param  \App\Models\TagTeam  $tagTeam
+     * @param  \App\DataTransferObjects\TagTeamData  $tagTeamData
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, TagTeam $tagTeam)
+    public function update(UpdateRequest $request, TagTeam $tagTeam, TagTeamData $tagTeamData)
     {
-        $this->tagTeamService->update(
-            $tagTeam,
-            $request->only(['name', 'signature_move', 'started_at', 'wrestlers'])
-        );
+        $this->tagTeamService->update($tagTeam, $tagTeamData->fromUpdateRequest($request));
 
         return redirect()->route('tag-teams.index');
     }
@@ -111,6 +125,7 @@ class TagTeamsController extends Controller
      * Delete a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(TagTeam $tagTeam)

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Builders\RefereeQueryBuilder;
 use App\Enums\RefereeStatus;
+use App\Models\Concerns\HasFullName;
 use App\Models\Contracts\Bookable;
 use App\Observers\RefereeObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,11 +12,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referee extends SingleRosterMember implements Bookable
 {
-    use Concerns\Bookable,
-        Concerns\HasFullName,
-        Concerns\Unguarded,
-        HasFactory,
+    use HasFactory,
+        HasFullName,
         SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['first_name', 'last_name', 'status'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => RefereeStatus::class,
+    ];
 
     /**
      * The "boot" method of the model.
@@ -29,11 +45,34 @@ class Referee extends SingleRosterMember implements Bookable
     }
 
     /**
-     * The attributes that should be cast to native types.
+     * Create a new Eloquent query builder for the model.
      *
-     * @var array
+     * @param  \Illuminate\Database\Query\Builder  $query
+     *
+     * @return \App\Builders\RefereeQueryBuilder
      */
-    protected $casts = [
-        'status' => RefereeStatus::class,
-    ];
+    public function newEloquentBuilder($query)
+    {
+        return new RefereeQueryBuilder($query);
+    }
+
+    /**
+     * Determine if the model can be retired.
+     *
+     * @return bool
+     */
+    public function canBeRetired()
+    {
+        return $this->isBookable() || $this->isInjured() || $this->isSuspended();
+    }
+
+    /**
+     * Determine if the model can be unretired.
+     *
+     * @return bool
+     */
+    public function canBeUnretired()
+    {
+        return $this->isRetired();
+    }
 }

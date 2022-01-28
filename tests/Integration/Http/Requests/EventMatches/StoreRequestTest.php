@@ -8,7 +8,6 @@ use App\Models\Title;
 use App\Models\User;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
@@ -46,7 +45,6 @@ class StoreRequestTest extends TestCase
      */
     public function a_non_administrator_is_not_authorized_to_make_this_request()
     {
-        /** @var Authenticatable */
         $user = User::factory()->create();
 
         $this->createRequest(StoreRequest::class)
@@ -269,9 +267,9 @@ class StoreRequestTest extends TestCase
             ->validate(EventMatchRequestDataFactory::new()->create([
                 'match_type_id' => MatchType::factory()->create(['number_of_sides' => 2])->id,
                 'competitors' => [
-                    [1],
-                    [2],
-                    [3],
+                    ['competitor_id' => 1, 'competitor_type' => 'wrestler'],
+                    ['competitor_id' => 2, 'competitor_type' => 'wrestler'],
+                    ['competitor_id' => 3, 'competitor_type' => 'wrestler'],
                 ],
             ]))->assertFailsValidation([
                 'competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype',

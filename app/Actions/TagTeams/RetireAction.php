@@ -2,7 +2,9 @@
 
 namespace App\Actions\TagTeams;
 
+use App\Actions\Wrestlers\RetireAction as WrestlersRetireAction;
 use App\Models\TagTeam;
+use Carbon\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class RetireAction extends BaseTagTeamAction
@@ -13,25 +15,21 @@ class RetireAction extends BaseTagTeamAction
      * Retire a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
+     * @param  \Carbon\Carbon|null  $retirementDate
+     *
      * @return void
      */
-    public function handle(TagTeam $tagTeam): void
+    public function handle(TagTeam $tagTeam, ?Carbon $retirementDate = null): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate ??= now();
 
         if ($tagTeam->isSuspended()) {
-            $this->tagTeamRepository->reinstate($tagTeam, $retirementDate);
-
-            foreach ($tagTeam->currentWrestlers as $wrestler) {
-                $this->wrestlerRepository->reinstate($wrestler, $retirementDate);
-            }
+            ReinstateAction::run($tagTeam, $retirementDate);
         }
 
-        foreach ($tagTeam->currentWrestlers as $wrestler) {
-            $this->wrestlerRepository->release($wrestler, $retirementDate);
-            $this->wrestlerRepository->retire($wrestler, $retirementDate);
-            $wrestler->save();
-        }
+        $tagTeam->currentWrestlers->each(function ($wrestler) use ($retirementDate) {
+            WrestlersRetireAction::run($wrestler, $retirementDate);
+        });
 
         $this->tagTeamRepository->release($tagTeam, $retirementDate);
         $this->tagTeamRepository->retire($tagTeam, $retirementDate);

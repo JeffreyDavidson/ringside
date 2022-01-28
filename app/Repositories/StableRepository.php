@@ -2,24 +2,26 @@
 
 namespace App\Repositories;
 
-use App\Models\Contracts\Activatable;
-use App\Models\Contracts\Deactivatable;
+use App\DataTransferObjects\StableData;
 use App\Models\Stable;
-use App\Repositories\Contracts\ActivationRepositoryInterface;
-use App\Repositories\Contracts\DeactivationRepositoryInterface;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
-class StableRepository implements ActivationRepositoryInterface, DeactivationRepositoryInterface
+class StableRepository
 {
     /**
      * Create a new stable with the given data.
      *
-     * @param  array $data
+     * @param  \App\DataTransferObjects\StableData $stableData
+     *
      * @return \App\Models\Stable
      */
-    public function create(array $data)
+    public function create(StableData $stableData)
     {
         return Stable::create([
-            'name' => $data['name'],
+            'name' => $stableData->name,
         ]);
     }
 
@@ -27,20 +29,24 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * Update the given stable with the given data.
      *
      * @param  \App\Models\Stable $stable
-     * @param  array $data
-     * @return \App\Models\Stable $stable
+     * @param  \App\DataTransferObjects\StableData $stableData
+     *
+     * @return \App\Models\Stable
      */
-    public function update(Stable $stable, array $data)
+    public function update(Stable $stable, StableData $stableData)
     {
-        return $stable->update([
-            'name' => $data['name'],
+        $stable->update([
+            'name' => $stableData->name,
         ]);
+
+        return $stable;
     }
 
     /**
      * Delete a given stable.
      *
      * @param  \App\Models\Stable $stable
+     *
      * @return void
      */
     public function delete(Stable $stable)
@@ -52,6 +58,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * Restore a given stable.
      *
      * @param  \App\Models\Stable $stable
+     *
      * @return void
      */
     public function restore(Stable $stable)
@@ -62,69 +69,89 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
     /**
      * Activate a given stable on a given date.
      *
-     * @param  \App\Models\Contracts\Activatable $stable
-     * @param  string $activationDate
-     * @return \App\Models\Stable $stable
+     * @param  \App\Models\Stable $stable
+     * @param  \Carbon\Carbon $activationDate
+     *
+     * @return \App\Models\Stable
      */
-    public function activate(Activatable $stable, string $activationDate)
+    public function activate(Stable $stable, Carbon $activationDate)
     {
-        return $stable->activations()->updateOrCreate(['ended_at' => null], ['started_at' => $activationDate]);
+        $stable->activations()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $activationDate->toDateTimeString()]
+        );
+
+        return $stable;
     }
 
     /**
      * Deactivate a given stable on a given date.
      *
-     * @param  \App\Models\Contracts\Deactivatable $stable
-     * @param  string $deactivationDate
-     * @return \App\Models\Stable $stable
+     * @param  \App\Models\Stable $stable
+     * @param  \Carbon\Carbon $deactivationDate
+     *
+     * @return \App\Models\Stable
      */
-    public function deactivate(Deactivatable $stable, string $deactivationDate)
+    public function deactivate(Stable $stable, Carbon $deactivationDate)
     {
-        return $stable->currentActivation()->update(['ended_at' => $deactivationDate]);
+        $stable->currentActivation()->update(['ended_at' => $deactivationDate->toDateTimeString()]);
+
+        return $stable;
     }
 
     /**
      * Retire a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  string $retirementDate
-     * @return \App\Models\Stable $stable
+     * @param  \Carbon\Carbon $retirementDate
+     *
+     * @return \App\Models\Stable
      */
-    public function retire(Stable $stable, string $retirementDate)
+    public function retire(Stable $stable, Carbon $retirementDate)
     {
-        return $stable->retirements()->create(['started_at' => $retirementDate]);
+        $stable->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+
+        return $stable;
     }
 
     /**
      * Unretire a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  string $unretireDate
-     * @return \App\Models\Stable $stable
+     * @param  \Carbon\Carbon $unretireDate
+     *
+     * @return \App\Models\Stable
      */
-    public function unretire(Stable $stable, string $unretireDate)
+    public function unretire(Stable $stable, Carbon $unretireDate)
     {
-        return $stable->currentRetirement()->update(['ended_at' => $unretireDate]);
+        $stable->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+
+        return $stable;
     }
 
     /**
      * Unretire a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  string $unretireDate
-     * @return \App\Models\Stable $stable
+     * @param  \Carbon\Carbon $disassembleDate
+     *
+     * @return \App\Models\Stable
      */
-    public function disassemble(Stable $stable, string $deactivationDate)
+    public function disassemble(Stable $stable, Carbon $disassembleDate)
     {
-        foreach ($stable->currentWrestlers as $wrestler) {
-            $stable->currentWrestlers()->updateExistingPivot($wrestler, ['left_at' => $deactivationDate]);
-            $wrestler->save();
-        }
+        $stable->currentWrestlers()->each(
+            fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot(
+                $wrestler->id,
+                ['left_at' => $disassembleDate->toDateTimeString()]
+            )
+        );
 
-        foreach ($stable->currentTagTeams as $tagTeam) {
-            $stable->currentTagTeams()->updateExistingPivot($wrestler, ['left_at' => $deactivationDate]);
-            $tagTeam->save();
-        }
+        $stable->currentTagTeams()->each(
+            fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot(
+                $tagTeam->id,
+                ['left_at' => $disassembleDate->toDateTimeString()]
+            )
+        );
 
         return $stable;
     }
@@ -133,59 +160,69 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * Add wrestlers to a given stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  array  $wrestlerIds
-     * @param  string  $joinDate
+     * @param  \Illuminate\Support\Collection  $wrestlers
+     * @param  \Carbon\Carbon  $joinDate
+     *
      * @return void
      */
-    public function addWrestlers(Stable $stable, array $wrestlerIds, string $joinDate)
+    public function addWrestlers(Stable $stable, Collection $wrestlers, Carbon $joinDate)
     {
-        foreach ($wrestlerIds as $wrestlerId) {
-            $stable->currentWrestlers()->attach($wrestlerId, ['joined_at' => $joinDate]);
-        }
+        $wrestlers->each(function ($wrestler) use ($stable, $joinDate) {
+            $stable->currentWrestlers()->attach($wrestler->id, ['joined_at' => $joinDate->toDateTimeString()]);
+        });
     }
 
     /**
      * Add tag teams to a given stable at a given date.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  array  $tagTeamIds
-     * @param  string  $joinDate
+     * @param  \Illuminate\Support\Collection  $tagTeams
+     * @param  \Carbon\Carbon  $joinDate
+     *
      * @return void
      */
-    public function addTagTeams(Stable $stable, array $tagTeamIds, string $joinDate)
+    public function addTagTeams(Stable $stable, Collection $tagTeams, Carbon $joinDate)
     {
-        foreach ($tagTeamIds as $tagTeamId) {
-            $stable->currentTagTeams()->attach($tagTeamId, ['joined_at' => $joinDate]);
-        }
+        $tagTeams->each(function (TagTeam $tagTeam) use ($stable, $joinDate) {
+            $stable->currentTagTeams()->attach($tagTeam->id, ['joined_at' => $joinDate->toDateTimeString()]);
+        });
     }
 
     /**
      * Undocumented function.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  array $currentWrestlerIds
-     * @param  string $removalDate
+     * @param  \Illuminate\Support\Collection $currentWrestlers
+     * @param  \Carbon\Carbon $removalDate
+     *
      * @return void
      */
-    public function removeWrestlers(Stable $stable, array $currentWrestlerIds, string $removalDate)
+    public function removeWrestlers(Stable $stable, Collection $currentWrestlers, Carbon $removalDate)
     {
-        foreach ($currentWrestlerIds as $wrestlerId) {
-            $stable->currentWrestlers()->updateExistingPivot($wrestlerId, ['left_at' => $removalDate]);
-        }
+        $currentWrestlers->each(function (Wrestler $wrestler) use ($stable, $removalDate) {
+            $stable->currentWrestlers()->updateExistingPivot(
+                $wrestler->id,
+                ['left_at' => $removalDate->toDateTimeString()]
+            );
+        });
     }
 
     /**
      * Undocumented function.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  array $currentTagTeamIds
-     * @param  string $removalDate
+     * @param  \Illuminate\Support\Collection $currentTagTeams
+     * @param  \Carbon\Carbon $removalDate
+     *
      * @return void
      */
-    public function removeTagTeams(Stable $stable, array $currentTagTeamIds, string $removalDate)
+    public function removeTagTeams(Stable $stable, Collection $currentTagTeams, Carbon $removalDate)
     {
-        foreach ($currentTagTeamIds as $tagTeamId) {
-            $stable->currentTagTeams()->updateExistingPivot($tagTeamId, ['left_at' => $removalDate]);
-        }
+        $currentTagTeams->each(function (TagTeam $tagTeam) use ($stable, $removalDate) {
+            $stable->currentTagTeams()->updateExistingPivot(
+                $tagTeam->id,
+                ['left_at' => $removalDate->toDateTimeString()]
+            );
+        });
     }
 }

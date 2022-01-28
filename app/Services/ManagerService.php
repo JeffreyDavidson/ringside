@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Actions\Managers\EmployAction;
+use App\DataTransferObjects\ManagerData;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
 
@@ -27,15 +29,17 @@ class ManagerService
     /**
      * Create a manager with given data.
      *
-     * @param  array $data
-     * @return \App\Models\Manager $manager
+     * @param  \App\DataTransferObjects\ManagerData $managerData
+     *
+     * @return \App\Models\Manager
      */
-    public function create(array $data)
+    public function create(ManagerData $managerData)
     {
-        $manager = $this->managerRepository->create($data);
+        /** @var \App\Models\Manager $manager */
+        $manager = $this->managerRepository->create($managerData);
 
-        if (isset($data['started_at'])) {
-            $this->managerRepository->employ($manager, $data['started_at']);
+        if (isset($managerData->start_date)) {
+            EmployAction::run($manager, $managerData->start_date);
         }
 
         return $manager;
@@ -45,42 +49,30 @@ class ManagerService
      * Update a given manager with given data.
      *
      * @param  \App\Models\Manager $manager
-     * @param  array $data
-     * @return \App\Models\Manager $manager
+     * @param  \App\DataTransferObjects\ManagerData $managerData
+     *
+     * @return \App\Models\Manager
      */
-    public function update(Manager $manager, array $data)
+    public function update(Manager $manager, ManagerData $managerData)
     {
-        $this->managerRepository->update($manager, $data);
+        $this->managerRepository->update($manager, $managerData);
 
-        if ($manager->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
-            $this->employOrUpdateEmployment($manager, $data['started_at']);
+        if (isset($managerData->start_date)) {
+            if ($manager->canBeEmployed()
+                || $manager->canHaveEmploymentStartDateChanged($managerData->start_date)
+            ) {
+                EmployAction::run($manager, $managerData->start_date);
+            }
         }
 
         return $manager;
     }
 
     /**
-     * Employ a given manager or update the given manager's employment date.
-     *
-     * @param  \App\Models\Manager $manager
-     * @param  string $employmentDate
-     * @return void
-     */
-    private function employOrUpdateEmployment(Manager $manager, string $employmentDate)
-    {
-        if ($manager->isNotInEmployment()) {
-            return $this->managerRepository->employ($manager, $employmentDate);
-        }
-
-        if ($manager->hasFutureEmployment() && ! $manager->employedOn($employmentDate)) {
-            return $this->managerRepository->updateEmployment($manager, $employmentDate);
-        }
-    }
-
-    /**
      * Delete a given manager.
      *
      * @param  \App\Models\Manager $manager
+     *
      * @return void
      */
     public function delete(Manager $manager)
@@ -92,6 +84,7 @@ class ManagerService
      * Restore a given manager.
      *
      * @param  \App\Models\Manager $manager
+     *
      * @return void
      */
     public function restore(Manager $manager)

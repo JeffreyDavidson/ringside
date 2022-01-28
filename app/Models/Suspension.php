@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Suspension extends Model
 {
-    use HasFactory,
-        Concerns\Unguarded;
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['suspendable_id', 'suspendable_type', 'started_at', 'ended_at'];
 
     /**
      * The attributes that should be cast to native types.
