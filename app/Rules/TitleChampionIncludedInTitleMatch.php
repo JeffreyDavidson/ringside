@@ -27,6 +27,7 @@ class TitleChampionIncludedInTitleMatch implements Rule
      *
      * @param  string  $attribute
      * @param  mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -40,6 +41,9 @@ class TitleChampionIncludedInTitleMatch implements Rule
                 break;
             }
 
+            foreach ($value as $competitor) {
+                dd($competitor);
+            }
             if (! in_array($title->currentChampionship->champion->id, $value)) {
                 $titlesNotHavingChampionsInvoled->push($title->id);
             }

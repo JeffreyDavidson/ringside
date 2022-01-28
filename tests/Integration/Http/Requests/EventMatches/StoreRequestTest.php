@@ -5,6 +5,7 @@ namespace Tests\Integration\Http\Requests\EventMatches;
 use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\MatchType;
 use App\Models\Title;
+use App\Models\TitleChampionship;
 use App\Models\User;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
@@ -299,7 +300,10 @@ class StoreRequestTest extends TestCase
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
                 'titles' => [$title->id],
-                'competitors' => [[$wrestlerB->id], [$wrestlerC->id]],
+                'competitors' => [
+                    ['competitor_id' => $wrestlerB->id, 'competitor_type' => 'wrestler'],
+                    ['competitor_id' => $wrestlerC->id, 'competitor_type' => 'wrestler'],
+                ],
             ]))
             ->assertFailsValidation([
                 'competitors' => 'app\rules\titlechampionincludedintitlematch',
@@ -311,13 +315,21 @@ class StoreRequestTest extends TestCase
      */
     public function title_with_champion_must_be_included_in_competitors_for_title_match_two()
     {
-        $title = Title::factory()->active()->withChampion(Wrestler::factory()->bookable())->create();
+        $champion = Wrestler::factory()->bookable()->create();
+        $title = Title::factory()
+            ->active()
+            ->has(
+                TitleChampionship::factory()->for($champion, 'champion'),
+                'championships'
+            )->create();
         $nonChampionWrestler = Wrestler::factory()->bookable()->create();
-
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
                 'titles' => [$title->id],
-                'competitors' => [[$title->currentChampionship->champion->id], [$nonChampionWrestler->id]],
+                'competitors' => [
+                    ['competitor_id' => $champion->id, 'competitor_type' => 'wrestler'],
+                    ['competitor_id' => $nonChampionWrestler->id, 'competitor_type' => 'wrestler'],
+                ],
             ]))
             ->assertPassesValidation();
     }

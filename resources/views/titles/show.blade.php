@@ -50,7 +50,7 @@
             <div class="flex-row-fluid ml-lg-8">
                 <div class="row">
                     <x-portlet title="Championships" headBorder="false">
-                        <x-data-table :collection="$title->championships">
+                        <x-data-table :collection="$title->championships()->paginate()">
                             <thead>
                                 <th>New Champion</th>
                                 <th>Previous Champion</th>

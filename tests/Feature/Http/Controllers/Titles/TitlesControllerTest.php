@@ -57,6 +57,7 @@ class TitlesControllerTest extends TestCase
      */
     public function a_title_can_be_viewed()
     {
+        $this->withoutExceptionHandling();
         $title = Title::factory()->create();
 
         $this
@@ -96,7 +97,7 @@ class TitlesControllerTest extends TestCase
             ->create();
 
         $response = $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([TitlesController::class, 'show'], $title));
 
         $response->assertSeeInOrder([

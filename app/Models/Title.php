@@ -97,7 +97,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
 
     public function isVacant()
     {
-        return is_null($this->currentChampionship->champion);
+        return $this->currentChampionship?->champion === null;
     }
 
     /**

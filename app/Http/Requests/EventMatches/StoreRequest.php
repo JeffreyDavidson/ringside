@@ -56,7 +56,7 @@ class StoreRequest extends FormRequest
             if ($validator->errors()->isEmpty()) {
                 $ruleA = new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id'));
 
-                if (! $rule->passes('competitors', $this->input('competitors'))) {
+                if (! $ruleA->passes('competitors', $this->input('competitors'))) {
                     $validator->addFailure(
                         'competitors',
                         CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class

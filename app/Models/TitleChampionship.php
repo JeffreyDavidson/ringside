@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TitleChampionship extends Model
 {
-    use HasFactory,
-        Unguarded;
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['title_id', 'event_match_id', 'champion_id', 'champion_type', 'won_at', 'lost_at'];
 
     /**
      * The table associated with the model.
