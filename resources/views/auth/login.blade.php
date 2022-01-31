@@ -8,7 +8,7 @@
             <!--begin::Heading-->
             <div class="mb-10 text-center">
                 <!--begin::Title-->
-                <h1 class="mb-3 text-dark">Sign In to Metronic</h1>
+                <h1 class="mb-3 text-dark">Sign In to Ringside</h1>
                 <!--end::Title-->
             </div>
             <!--begin::Heading-->
@@ -29,9 +29,6 @@
                     <!--begin::Label-->
                     <label class="mb-0 form-label fw-bolder text-dark fs-6">Password</label>
                     <!--end::Label-->
-                    <!--begin::Link-->
-                    <a href="../../demo1/dist/authentication/layouts/basic/password-reset.html" class="link-primary fs-6 fw-bolder">Forgot Password ?</a>
-                    <!--end::Link-->
                 </div>
                 <!--end::Wrapper-->
                 <!--begin::Input-->
@@ -42,11 +39,7 @@
             <!--begin::Actions-->
             <div class="text-center">
                 <!--begin::Submit button-->
-                <button type="submit" id="kt_sign_in_submit" class="mb-5 btn btn-lg btn-primary w-100">
-                    <span class="indicator-label">Continue</span>
-                    <span class="indicator-progress">Please wait...
-                    <span class="align-middle spinner-border spinner-border-sm ms-2"></span></span>
-                </button>
+                <button type="submit" id="kt_sign_in_submit" class="mb-5 btn btn-lg btn-primary w-100">Continue</button>
                 <!--end::Submit button-->
             </div>
             <!--end::Actions-->
