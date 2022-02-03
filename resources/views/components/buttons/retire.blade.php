@@ -1,10 +1,8 @@
-<li class="kt-nav__item">
-    <form action="{{ $route }}" method="post" class="kt-nav__link">
+<x-menu-link>
+    <form action="{{ $route }}" method="post">
         @csrf
-        @method('PUT')
-        <button class="btn w-100 text-left p-0">
-            <i class="kt-nav__link-icon flaticon2-time"></i>
-            <span class="kt-nav__link-text">Retire</span>
-        </button>
+        @method('PATCH')
+        <button class="px-3 menu-link">Retire</button>
     </form>
-</li>
+    <a href="{{ $route }}" class="px-3 menu-link">Retire</a>
+</x-menu-link>

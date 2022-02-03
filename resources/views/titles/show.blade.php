@@ -1,11 +1,9 @@
 <x-layouts.app>
-    <x-sub-header :title="$title->name">
-        <x-slot name="actions">
-            <a href="{{ route('titles.index') }}" class="btn btn-label-brand btn-bold">
-                Back To Titles
-            </a>
-        </x-slot>
-    </x-subheader>
+    <x-slot name="toolbar">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            {{ $title->name }} Page
+        </h2>
+    </x-slot>
     <x-content>
         @empty($title->activated_at)
             <div class="alert alert-warning" role="alert">
