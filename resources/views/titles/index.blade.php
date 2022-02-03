@@ -7,5 +7,8 @@
 
     <x-content>
         <livewire:titles.active-titles>
+        <livewire:titles.future-activation-and-unactivated-titles>
+        <livewire:titles.inactive-titles>
+        <livewire:titles.retired-titles>
     </x-content>
 </x-layouts.app>

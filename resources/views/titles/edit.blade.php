@@ -4,30 +4,21 @@
             Edit Title
         </h2>
     </x-slot>
+
     <x-content>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Title Form</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('titles.update', $title) }}" method="post">
-                    @method('PATCH')
-                    @csrf
+                <x-form.form
+                    action="{{ route('titles.update', $title) }}"
+                    method="PATCH"
+                    backTo="{{ route('titles.index') }}"
+                    resource="Titles"
+                >
                     @include('titles.partials.form')
-                    <div class="row">
-                        <div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start">
-                            <button type="submit" class="me-2 btn btn-primary">Submit</button>
-                            <button type="reset" class="btn btn-secondary">Cancel</button>
-                        </div>
-
-                        <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
-                            <a href="{{ route('titles.index') }}" class="btn btn-md btn-secondary">
-                                <x-icons.arrow />
-                                Back to Titles
-                            </a>
-                        </div>
-                    </div>
-                </form>
+                </x-form.form>
             </div>
         </div>
     </x-content>

@@ -1,3 +1,5 @@
 <x-menu-link>
-    <a href="{{ $route }}" class="px-3 menu-link">Reinstate</a>
+    <x-menu-item-form action="{{ $attributes->get('route') }}>
+        <x-menu-item-button text="Reinstate">
+    </x-menu-item-form>
 </x-menu-link>

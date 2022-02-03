@@ -1,3 +1,3 @@
 <x-menu-link>
-    <a {{ $attributes->merge(['class' => 'px-3 menu-link']) }}>Delete</a>
+    <x-menu-item-button text="Delete" {{ $attributes->whereStartsWith('wire:click') }} />
 </x-menu-link>
