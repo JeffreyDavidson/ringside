@@ -32,15 +32,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event)
     {
-        if (! $user->isAdministrator()) {
-            return false;
-        }
-
-        if (isset($event->date) && $event->date->isPast()) {
-            return false;
-        }
-
-        return true;
+        return $user->isAdministrator();
     }
 
     /**
