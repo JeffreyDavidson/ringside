@@ -16,7 +16,7 @@
                         <x-table.cell-checkbox value="{{ $event->id }}" />
                         <x-table.cell-link link="{{ route('events.show', $event) }}" text="{{ $event->name }}" />
                         <td><div class="badge badge-light-info">{{ $event->status->label }}</div></td>
-                        <td>{{ $event->date->toDateString() }}</td>
+                        <td>{{ $event->date->format('Y-m-j g:i A') }}</td>
                         <x-table.actions-cell>
                             @include('events.partials.action-cell', [
                                 'event' => $event,

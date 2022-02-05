@@ -82,4 +82,16 @@ class EventPolicy
     {
         return $user->isAdministrator();
     }
+
+    /**
+     * Determine whether the user can add matches to an event.
+     *
+     * @param  \App\Models\Event  $event
+     *
+     * @return bool
+     */
+    public function addMatches(User $user)
+    {
+        return $user->isAdministrator();
+    }
 }

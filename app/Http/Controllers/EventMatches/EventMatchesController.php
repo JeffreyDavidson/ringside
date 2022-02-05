@@ -18,12 +18,13 @@ class EventMatchesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create(Event $event)
+    public function create(Event $event, EventMatch $match)
     {
         $this->authorize('create', EventMatch::class);
 
         return view('matches.create', [
             'event' => $event,
+            'match' => $match,
         ]);
     }
 
