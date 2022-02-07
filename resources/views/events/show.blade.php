@@ -73,9 +73,9 @@
                 @forelse($event->matches as $match)
                     <div class="mb-12">
                         @if ($loop->last)
-                            Main Event
+                            <h3>Main Event</h3>
                         @else
-                            Match #{{ $loop->iteration }}
+                            <h3>Match #{{ $loop->iteration }}</h3>
                         @endif
 
                         <p>Refereed By {{ $match->referees->pluck('full_name')->implode(', ') }}</p>
