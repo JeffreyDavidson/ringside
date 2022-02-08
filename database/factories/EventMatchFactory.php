@@ -8,6 +8,9 @@ use App\Models\MatchType;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EventMatch>
+ */
 class EventMatchFactory extends Factory
 {
     /**
