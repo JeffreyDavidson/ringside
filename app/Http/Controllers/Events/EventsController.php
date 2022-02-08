@@ -11,7 +11,7 @@ use App\Services\EventService;
 
 class EventsController extends Controller
 {
-    public EventService $eventService;
+    private EventService $eventService;
 
     /**
      * Create a new events controller instance.
@@ -77,12 +77,8 @@ class EventsController extends Controller
     {
         $this->authorize('view', $event);
 
-        if ($event->venue_id !== null) {
-            $event->load('venue');
-        }
-
         return view('events.show', [
-            'event' => $event,
+            'event' => $event->load('venue'),
         ]);
     }
 

@@ -6,7 +6,6 @@ use App\Collections\EventMatchCompetitorsCollection;
 use App\Enums\Role;
 use App\Http\Controllers\EventMatches\EventMatchesController;
 use App\Models\Event;
-use App\Models\EventMatch;
 use App\Models\Referee;
 use App\Models\Title;
 use App\Models\Wrestler;

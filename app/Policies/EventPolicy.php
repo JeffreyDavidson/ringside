@@ -32,7 +32,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event)
     {
-        return $user->isAdministrator();
+        return $user->isAdministrator() && ! $event->isPast();
     }
 
     /**

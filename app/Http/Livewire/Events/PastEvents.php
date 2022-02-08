@@ -3,19 +3,19 @@
 namespace App\Http\Livewire\Events;
 
 use App\Http\Livewire\BaseComponent;
-use App\Http\Livewire\DataTable\WithBulkActions;
-use App\Http\Livewire\DataTable\WithSorting;
+use App\Http\Livewire\Datatable\WithBulkActions;
+use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Event;
 
 class PastEvents extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
-    public $showDeleteModal = false;
+    private $showDeleteModal = false;
 
-    public $showFilters = false;
+    private $showFilters = false;
 
-    public $filters = [
+    private $filters = [
         'search' => '',
     ];
 

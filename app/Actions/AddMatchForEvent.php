@@ -40,34 +40,69 @@ class AddMatchForEvent
         /** @var \App\Models\EventMatch $createdMatch */
         $createdMatch = $this->eventMatchRepository->createForEvent($event, $eventMatchData);
 
-        if ($eventMatchData->titles) {
-            $eventMatchData->titles->map(
-                fn (Title $title) => $this->eventMatchRepository->addTitleToMatch(
-                    $createdMatch,
-                    $title
-                )
-            );
-        }
+        $eventMatchData->referees->whenNotEmpty(function ($referees) use ($createdMatch) {
+            $this->addRefereesToMatch($createdMatch, $referees);
+        });
 
-        $eventMatchData->referees->map(
-            fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch(
-                $createdMatch,
-                $referee
-            )
+        $eventMatchData->titles->whenNotEmpty(function ($titles) use ($createdMatch) {
+            $this->addTitlesToMatch($createdMatch, $titles);
+        });
+
+        $this->addCompetitorsToMatch($createdMatch, $eventMatchData->competitors);
+
+        return $createdMatch;
+    }
+
+    /**
+     * Add titles to an event match.
+     *
+     * @param \App\Models\EventMatch $createdMatch
+     * @param \Illuminate\Database\Eloquent\Collection $titles
+     *
+     * @return void
+     */
+    private function addTitlesToMatch($eventMatch, $titles)
+    {
+        $titles->map(
+            fn (Title $title) => $this->eventMatchRepository->addTitleToMatch($eventMatch, $title)
         );
+    }
 
-        $eventMatchData->competitors->each(function ($sideCompetitors, $sideNumber) use ($createdMatch) {
+    /**
+     * Add referees to an event match.
+     *
+     * @param \App\Models\EventMatch $createdMatch
+     * @param \Illuminate\Database\Eloquent\Collection $referees
+     *
+     * @return void
+     */
+    private function addRefereesToMatch($eventMatch, $referees)
+    {
+        $referees->map(
+            fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch($eventMatch, $referee)
+        );
+    }
+
+    /**
+     * Add competitors to an event match.
+     *
+     * @param \App\Models\EventMatch $createdMatch
+     * @param \Illuminate\Database\Eloquent\Collection $competitors
+     *
+     * @return void
+     */
+    private function addCompetitorsToMatch($eventMatch, $competitors)
+    {
+        $competitors->each(function ($sideCompetitors, $sideNumber) use ($eventMatch) {
             if (array_key_exists('wrestlers', $sideCompetitors)) {
                 foreach ($sideCompetitors['wrestlers'] as $wrestler) {
-                    $this->eventMatchRepository->addWrestlerToMatch($createdMatch, $wrestler, $sideNumber);
+                    $this->eventMatchRepository->addWrestlerToMatch($eventMatch, $wrestler, $sideNumber);
                 }
             } elseif (array_key_exists('wrestlers', $sideCompetitors)) {
                 foreach ($sideCompetitors['tag_teams'] as $wrestler) {
-                    $this->eventMatchRepository->addTagTeamToMatch($createdMatch, $wrestler, $sideNumber);
+                    $this->eventMatchRepository->addTagTeamToMatch($eventMatch, $wrestler, $sideNumber);
                 }
             }
         });
-
-        return $createdMatch;
     }
 }

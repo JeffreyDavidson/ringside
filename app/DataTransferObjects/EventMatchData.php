@@ -17,35 +17,35 @@ class EventMatchData
      *
      * @var \App\Models\MatchType
      */
-    public MatchType $matchType;
+    private MatchType $matchType;
 
     /**
      * The referees assigned to the match.
      *
      * @var \Illuminate\Database\Eloquent\Collection
      */
-    public Collection $referees;
+    private Collection $referees;
 
     /**
      * The titles being contended for the match.
      *
      * @var \Illuminate\Database\Eloquent\Collection|null
      */
-    public ?Collection $titles;
+    private ?Collection $titles;
 
     /**
      * The competitors competing in the event match.
      *
      * @var \Illuminate\Database\Eloquent\Collection
      */
-    public Collection $competitors;
+    private Collection $competitors;
 
     /**
      * The preview description for the match.
      *
      * @var string|null
      */
-    public ?string $preview;
+    private ?string $preview;
 
     /**
      * Retrieve data from the store request.
