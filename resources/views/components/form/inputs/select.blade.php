@@ -1,7 +1,7 @@
 <label for="{{ $name }}">{{ $label }}:</label>
 
 <select
-    class="form-control @error($name) is-invalid @enderror"
+    class="form-control form-select @error($name) is-invalid @enderror"
     name="{{ $name }}"
     id="{{ $name }}-dropdown"
     {{ $attributes->whereStartsWith('wire:click') }}
