@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Events;
 
 use App\DataTransferObjects\EventMatchData;
 use App\Models\Event;
@@ -94,14 +94,22 @@ class AddMatchForEvent
     private function addCompetitorsToMatch($eventMatch, $competitors)
     {
         $competitors->each(function ($sideCompetitors, $sideNumber) use ($eventMatch) {
-            if (array_key_exists('wrestlers', $sideCompetitors)) {
-                foreach ($sideCompetitors['wrestlers'] as $wrestler) {
-                    $this->eventMatchRepository->addWrestlerToMatch($eventMatch, $wrestler, $sideNumber);
-                }
-            } elseif (array_key_exists('wrestlers', $sideCompetitors)) {
-                foreach ($sideCompetitors['tag_teams'] as $wrestler) {
-                    $this->eventMatchRepository->addTagTeamToMatch($eventMatch, $wrestler, $sideNumber);
-                }
+            if ($sideCompetitors->has('wrestlers')) {
+                $sideCompetitors->get('wrestlers')->each(
+                    fn ($wrestler) => $this->eventMatchRepository->addWrestlerToMatch(
+                        $eventMatch,
+                        $wrestler,
+                        $sideNumber
+                    )
+                );
+            } elseif ($sideCompetitors->has('tag_teams')) {
+                $sideCompetitors->get('tag_teams')->each(
+                    fn ($tagTeam) => $this->eventMatchRepository->addTagTeamToMatch(
+                        $eventMatch,
+                        $tagTeam,
+                        $sideNumber
+                    )
+                );
             }
         });
     }

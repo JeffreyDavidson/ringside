@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Events;
 
-use App\DataTransferObjects\EventData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
@@ -55,13 +54,12 @@ class EventsController extends Controller
      * Create a new event.
      *
      * @param  \App\Http\Requests\Events\StoreRequest  $request
-     * @param  \App\DataTransferObjects\EventData $eventData
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request, EventData $eventData)
+    public function store(StoreRequest $request)
     {
-        $this->eventService->create($eventData->fromStoreRequest($request));
+        $this->eventService->create($request->validated());
 
         return redirect()->route('events.index');
     }
@@ -103,13 +101,12 @@ class EventsController extends Controller
      *
      * @param  \App\Http\Requests\Events\UpdateRequest  $request
      * @param  \App\Models\Event  $event
-     * @param  \App\DataTransferObjects\EventData $eventData
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Event $event, EventData $eventData)
+    public function update(UpdateRequest $request, Event $event)
     {
-        $this->eventService->update($event, $eventData->fromUpdateRequest($request));
+        $this->eventService->update($event, $request->validated());
 
         return redirect()->route('events.index');
     }

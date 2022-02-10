@@ -6,36 +6,37 @@ use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
 use App\Models\Venue;
 use Carbon\Carbon;
+use Spatie\DataTransferObject\DataTransferObject;
 
-class EventData
+class EventData extends DataTransferObject
 {
     /**
      * The name of the event.
      *
      * @var string
      */
-    private string $name;
+    public string $name;
 
     /**
      * The date of the event.
      *
      * @var \Carbon\Carbon|null
      */
-    private ?Carbon $date;
+    public ?Carbon $date;
 
     /**
      * The venue to hold the event.
      *
      * @var \App\Models\Venue|null
      */
-    private ?Venue $venue;
+    public ?Venue $venue;
 
     /**
      * The preview description for the event.
      *
      * @var string|null
      */
-    private ?string $preview;
+    public ?string $preview;
 
     /**
      * Retrieve data from the store request.
