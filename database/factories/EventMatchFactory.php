@@ -20,6 +20,11 @@ class EventMatchFactory extends Factory
      */
     protected $model = EventMatch::class;
 
+    /**
+     * Undocumented function
+     *
+     * @return static
+     */
     public function configure()
     {
         $this->hasAttached(Wrestler::factory()->bookable(), ['side_number' => 0], 'wrestlers');
@@ -31,7 +36,7 @@ class EventMatchFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {

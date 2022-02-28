@@ -33,8 +33,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
     {
         $event = Event::factory()->scheduled()->create();
         $referee = Referee::factory()->bookable()->create();
-        $wrestlerA = Wrestler::factory()->bookable()->create();
-        $wrestlerB = Wrestler::factory()->bookable()->create();
+        [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
 
         $this
             ->actAs(Role::administrator())
@@ -69,23 +68,13 @@ class EventMatchControllerStoreMethodTest extends TestCase
 
             $this->assertTrue(
                 $match->competitors
-                    ->groupedBySide()
                     ->first()
-                    ->groupedByCompetitorType()
-                    ->first()
-                    ->first()
-                    ->competitor
                     ->is($wrestlerA)
             );
 
             $this->assertTrue(
                 $match->competitors
-                    ->groupedBySide()
                     ->last()
-                    ->groupedByCompetitorType()
-                    ->first()
-                    ->first()
-                    ->competitor
                     ->is($wrestlerB)
             );
 

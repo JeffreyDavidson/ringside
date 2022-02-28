@@ -5,7 +5,9 @@ namespace App\Actions\Events;
 use App\DataTransferObjects\EventMatchData;
 use App\Models\Event;
 use App\Models\Referee;
+use App\Models\TagTeam;
 use App\Models\Title;
+use App\Models\Wrestler;
 use App\Repositories\EventMatchRepository;
 
 class AddMatchForEvent
@@ -56,8 +58,8 @@ class AddMatchForEvent
     /**
      * Add titles to an event match.
      *
-     * @param \App\Models\EventMatch $createdMatch
-     * @param \Illuminate\Database\Eloquent\Collection $titles
+     * @param \App\Models\EventMatch $eventMatch
+     * @param \Illuminate\Database\Eloquent\Collection<Title> $titles
      *
      * @return void
      */
@@ -71,8 +73,8 @@ class AddMatchForEvent
     /**
      * Add referees to an event match.
      *
-     * @param \App\Models\EventMatch $createdMatch
-     * @param \Illuminate\Database\Eloquent\Collection $referees
+     * @param \App\Models\EventMatch $eventMatch
+     * @param \Illuminate\Database\Eloquent\Collection<Referee> $referees
      *
      * @return void
      */
@@ -86,7 +88,7 @@ class AddMatchForEvent
     /**
      * Add competitors to an event match.
      *
-     * @param \App\Models\EventMatch $createdMatch
+     * @param \App\Models\EventMatch $eventMatch
      * @param \Illuminate\Database\Eloquent\Collection $competitors
      *
      * @return void
@@ -96,15 +98,17 @@ class AddMatchForEvent
         $competitors->each(function ($sideCompetitors, $sideNumber) use ($eventMatch) {
             if ($sideCompetitors->has('wrestlers')) {
                 $sideCompetitors->get('wrestlers')->each(
-                    fn ($wrestler) => $this->eventMatchRepository->addWrestlerToMatch(
+                    fn (Wrestler $wrestler) => $this->eventMatchRepository->addWrestlerToMatch(
                         $eventMatch,
                         $wrestler,
                         $sideNumber
                     )
                 );
-            } elseif ($sideCompetitors->has('tag_teams')) {
+            }
+
+            if ($sideCompetitors->has('tag_teams')) {
                 $sideCompetitors->get('tag_teams')->each(
-                    fn ($tagTeam) => $this->eventMatchRepository->addTagTeamToMatch(
+                    fn (TagTeam $tagTeam) => $this->eventMatchRepository->addTagTeamToMatch(
                         $eventMatch,
                         $tagTeam,
                         $sideNumber

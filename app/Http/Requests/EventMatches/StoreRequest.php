@@ -109,7 +109,12 @@ class StoreRequest extends FormRequest
                         $validator->addFailure('titles', TitlesMustBeActive::class);
                     }
 
-                    if (! (new TitleChampionIncludedInTitleMatch($this->input('titles')))->passes('competitors', $this->input('competitors'))) {
+                    if (! (new TitleChampionIncludedInTitleMatch($this->input('titles')))
+                        ->passes(
+                            'competitors',
+                            $this->input('competitors')
+                        )
+                    ) {
                         $validator->addFailure('competitors', TitleChampionIncludedInTitleMatch::class);
                     }
                 }
