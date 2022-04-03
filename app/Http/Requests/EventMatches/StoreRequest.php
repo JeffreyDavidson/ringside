@@ -47,6 +47,7 @@ class StoreRequest extends FormRequest
             'titles' => [
                 'nullable',
                 'array',
+                new TitlesMustBeActive(),
             ],
             'titles.*' => [
                 'integer',
@@ -104,10 +105,6 @@ class StoreRequest extends FormRequest
                 }
 
                 if ($this->input('titles')) {
-                    if (! (new TitlesMustBeActive)->passes('titles', $this->input('titles'))) {
-                        $validator->addFailure('titles', TitlesMustBeActive::class);
-                    }
-
                     if (! (new TitleChampionIncludedInTitleMatch($this->input('titles')))
                         ->passes(
                             'competitors',
