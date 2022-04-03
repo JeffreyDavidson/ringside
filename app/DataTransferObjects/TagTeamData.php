@@ -42,7 +42,6 @@ class TagTeamData
      * Create a DTO from the store request.
      *
      * @param  \App\Http\Requests\TagTeams\StoreRequest $request
-     *
      * @return self
      */
     public static function fromStoreRequest(StoreRequest $request): self
@@ -61,7 +60,6 @@ class TagTeamData
      * Create a DTO from the store request.
      *
      * @param  \App\Http\Requests\TagTeams\UpdateRequest $request
-     *
      * @return self
      */
     public static function fromUpdateRequest(UpdateRequest $request): self

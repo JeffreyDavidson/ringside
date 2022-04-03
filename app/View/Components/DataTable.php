@@ -18,7 +18,6 @@ class DataTable extends Component
      * Create a new component instance.
      *
      * @param  \Illuminate\Pagination\LengthAwarePaginator $collection
-     *
      * @return void
      */
     public function __construct(LengthAwarePaginator $collection)

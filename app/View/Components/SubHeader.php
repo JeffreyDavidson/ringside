@@ -17,7 +17,6 @@ class SubHeader extends Component
      * Create a new component instance.
      *
      * @param  string $title
-     *
      * @return void
      */
     public function __construct(string $title)

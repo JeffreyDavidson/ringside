@@ -43,7 +43,6 @@ class StableData
      * Create a DTO from the store request.
      *
      * @param  \App\Http\Requests\Stables\StoreRequest $request
-     *
      * @return self
      */
     public static function fromStoreRequest(StoreRequest $request): self
@@ -62,7 +61,6 @@ class StableData
      * Create a DTO from the update request.
      *
      * @param  \App\Http\Requests\Stables\UpdateRequest $request
-     *
      * @return self
      */
     public static function fromUpdateRequest(UpdateRequest $request): self

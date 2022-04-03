@@ -20,7 +20,6 @@ class CompetitorsAreValid implements Rule
      *
      * @param  string  $attribute
      * @param  array  $value
-     *
      * @return bool
      */
     public function passes($attribute, $value)
