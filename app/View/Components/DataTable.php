@@ -12,7 +12,7 @@ class DataTable extends Component
      *
      * @var \Illuminate\Pagination\LengthAwarePaginator
      */
-    public $collection;
+    protected $collection;
 
     /**
      * Create a new component instance.

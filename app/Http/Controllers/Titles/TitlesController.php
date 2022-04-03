@@ -11,7 +11,7 @@ use App\Services\TitleService;
 
 class TitlesController extends Controller
 {
-    public TitleService $titleService;
+    private TitleService $titleService;
 
     /**
      * Create a new titles controller instance.

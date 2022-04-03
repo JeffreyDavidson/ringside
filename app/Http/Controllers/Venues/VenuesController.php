@@ -11,7 +11,7 @@ use App\Services\VenueService;
 
 class VenuesController extends Controller
 {
-    public VenueService $venueService;
+    private VenueService $venueService;
 
     /**
      * Create a new venues controller instance.

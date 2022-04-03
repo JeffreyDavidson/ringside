@@ -11,7 +11,7 @@ use App\Services\ManagerService;
 
 class ManagersController extends Controller
 {
-    public ManagerService $managerService;
+    private ManagerService $managerService;
 
     /**
      * Create a new managers controller instance.

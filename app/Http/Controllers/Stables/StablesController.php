@@ -11,7 +11,7 @@ use App\Services\StableService;
 
 class StablesController extends Controller
 {
-    public StableService $stableService;
+    private StableService $stableService;
 
     /**
      * Create a new stables controller instance.

@@ -12,7 +12,7 @@ use App\Services\TagTeamService;
 
 class TagTeamsController extends Controller
 {
-    public TagTeamService $tagTeamService;
+    private TagTeamService $tagTeamService;
 
     /**
      * Create a new tag teams controller instance.

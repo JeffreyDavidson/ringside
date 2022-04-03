@@ -11,7 +11,7 @@ use App\Services\RefereeService;
 
 class RefereesController extends Controller
 {
-    public RefereeService $refereeService;
+    private RefereeService $refereeService;
 
     /**
      * Create a new referees controller instance.

@@ -11,7 +11,7 @@ class SubHeader extends Component
      *
      * @var string
      */
-    public $title;
+    protected $title;
 
     /**
      * Create a new component instance.

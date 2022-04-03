@@ -11,7 +11,7 @@ use App\Services\WrestlerService;
 
 class WrestlersController extends Controller
 {
-    public WrestlerService $wrestlerService;
+    private WrestlerService $wrestlerService;
 
     /**
      * Create a new wrestlers controller instance.
