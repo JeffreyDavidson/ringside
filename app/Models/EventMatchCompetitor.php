@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 class EventMatchCompetitor extends MorphPivot
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'event_match_competitors';
 
     /**
