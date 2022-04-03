@@ -24,7 +24,7 @@ class CompetitorsAreValid implements Rule
      */
     public function passes($attribute, $value)
     {
-        foreach ($value as $sideNumber => $sideCompetitors) {
+        foreach ($value as $sideCompetitors) {
             $wrestlers = array_filter(
                 $sideCompetitors,
                 static fn ($contestant) => $contestant['competitor_type'] === 'wrestler'
