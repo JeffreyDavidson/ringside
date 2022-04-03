@@ -35,14 +35,14 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'name', 'signature_move', 'status'];
 
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'status' => TagTeamStatus::class,

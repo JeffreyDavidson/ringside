@@ -27,14 +27,14 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'name', 'height', 'weight', 'hometown', 'signature_move', 'status'];
 
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'status' => WrestlerStatus::class,
