@@ -86,8 +86,6 @@ class UpdateRequest extends FormRequest
 
                     $validator->addFailure('started_at', 'employment_date_cannot_be_changed');
                 }
-
-                $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);
             }
         });
     }
