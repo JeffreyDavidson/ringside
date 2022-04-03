@@ -37,7 +37,7 @@ class ManagerData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->first_name = $request->input('first_name');
         $dto->last_name = $request->input('last_name');
@@ -54,7 +54,7 @@ class ManagerData
      */
     public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->first_name = $request->input('first_name');
         $dto->last_name = $request->input('last_name');

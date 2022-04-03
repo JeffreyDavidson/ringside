@@ -97,7 +97,7 @@ class StoreRequest extends FormRequest
                     );
                 }
 
-                $rule2 = new CompetitorsAreValid;
+                $rule2 = new CompetitorsAreValid();
 
                 if (! $rule2->passes('competitors', $this->input('competitors'))) {
                     $validator->addFailure('competitors', CompetitorsAreValid::class);

@@ -57,7 +57,7 @@ class VenueData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->address1 = $request->input('address1');
@@ -77,7 +77,7 @@ class VenueData
      */
     public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->address1 = $request->input('address1');

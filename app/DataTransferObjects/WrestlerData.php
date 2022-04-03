@@ -58,10 +58,10 @@ class WrestlerData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
-        $dto->height = $request->input('height');
+        $dto->height = ($request->input('feet') * 12) + $request->input('inches');
         $dto->weight = $request->input('weight');
         $dto->hometown = $request->input('hometown');
         $dto->signature_move = $request->input('signature_move');
@@ -78,7 +78,7 @@ class WrestlerData
      */
     public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->height = $request->input('height');

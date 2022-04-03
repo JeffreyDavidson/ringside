@@ -46,7 +46,7 @@ class TagTeamData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->signature_move = $request->input('signature_move');
@@ -64,7 +64,7 @@ class TagTeamData
      */
     public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->signature_move = $request->input('signature_move');

@@ -56,7 +56,7 @@ class EventMatchData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->matchType = MatchType::query()->whereKey($request->input('match_type_id'))->sole();
         $dto->referees = Referee::query()->findMany($request->collect('referees'));

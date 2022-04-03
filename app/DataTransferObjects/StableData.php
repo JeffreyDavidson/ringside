@@ -47,7 +47,7 @@ class StableData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->start_date = $request->date('started_at');
@@ -65,7 +65,7 @@ class StableData
      */
     public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self;
+        $dto = new self();
 
         $dto->name = $request->input('name');
         $dto->start_date = $request->date('started_at');
