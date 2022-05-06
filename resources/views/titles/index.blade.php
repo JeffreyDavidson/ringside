@@ -6,9 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:titles.active-titles>
-        <livewire:titles.future-activation-and-unactivated-titles>
-        <livewire:titles.inactive-titles>
-        <livewire:titles.retired-titles>
+        <livewire:titles.all-titles>
     </x-content>
 </x-layouts.app>

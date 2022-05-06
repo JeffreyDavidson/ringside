@@ -7,11 +7,9 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Title;
 
-class InactiveTitles extends BaseComponent
+class AllTitles extends BaseComponent
 {
     use WithBulkActions, WithSorting;
-
-    protected $showDeleteModal = false;
 
     protected $showFilters = false;
 
@@ -19,23 +17,10 @@ class InactiveTitles extends BaseComponent
         'search' => '',
     ];
 
-    public function deleteSelected()
-    {
-        $deleteCount = $this->selectedRowsQuery->count();
-
-        $this->selectedRowsQuery->delete();
-
-        $this->showDeleteModal = false;
-
-        $this->notify('You\'ve deleted '.$deleteCount.' titles');
-    }
-
     public function getRowsQueryProperty()
     {
         $query = Title::query()
-            ->inactive()
-            ->withLastDeactivationDate()
-            ->orderByLastDeactivationDate()
+            ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
             ->orderBy('name');
 
         return $this->applySorting($query);
@@ -53,8 +38,8 @@ class InactiveTitles extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.titles.inactive-titles', [
-            'inactiveTitles' => $this->rows,
+        return view('livewire.titles.all-titles', [
+            'titles' => $this->rows,
         ]);
     }
 }
