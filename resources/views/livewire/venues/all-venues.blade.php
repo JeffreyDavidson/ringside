@@ -1,45 +1,73 @@
 <div class="card">
     @include('livewire.venues.partials.header')
     <div class="py-4 card-body">
-        <x-data-table :collection="$venues">
-            <thead>
-                <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                    <th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" style="width: 29.25px;" aria-label="">
-                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                            <input class="form-check-input" type="checkbox" wire:model="selectPage">
-                        </div>
-                    </th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Zip Code</th>
-                    <th class="text-end min-w-100px sorting_disabled">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-600 fw-bold">
-                @forelse ($venues as $venue)
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="{{ $venue->id }}" wire:model="selected">
-                            </div>
-                        </td>
-                        <td><a class="mb-1 text-gray-800 text-hover-primary" href="{{ route('venues.show', $venue) }}">{{ $venue->name }}</a></td>
-                        <td>{{ $venue->address1 }}</td>
-                        <td>{{ $venue->city }}</td>
-                        <td>{{ $venue->state }}</td>
-                        <td>{{ $venue->zip }}</td>
-                        <td class="text-end">
-                            @include('venues.partials.action-cell', ['venue' => $venue])
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7">No matching records found</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </x-data-table>
+        <div class="table-responsive">
+            <x-table class="table-row-dashed fs-6 gy-5 dataTable no-footer">
+                <x-slot name="head">
+                    <x-table.heading class="w-10px pe-2 sorting_disabled">
+                        <x-input.checkbox wire:model="selectPage" />
+                    </x-table.heading>
+                    <x-table.heading sortable multi-column wire:click="sortBy('name')" :direction="$sorts['name'] ?? null" class="min-w-125px sorting">Venue Name</x-table.heading>
+                    <x-table.heading class="min-w-70px sorting_disabled">Address</x-table.heading>
+                    <x-table.heading class="min-w-70px sorting_disabled">City</x-table.heading>
+                    <x-table.heading class="min-w-70px sorting_disabled">State</x-table.heading>
+                    <x-table.heading class="min-w-70px sorting_disabled">Zip Code</x-table.heading>
+                    <x-table.heading class="min-w-70px sorting_disabled">Created At</x-table.heading>
+                    <x-table.heading class="text-end min-w-70px sorting_disabled">Actions</x-table.heading>
+                </x-slot>
+                <x-slot name="body">
+                    @forelse ($venues as $venue)
+                        <x-table.row :class="$loop->odd ? 'odd' : 'even'" wire:loading.class.delay="opacity-50" wire:key="row-{{ $venue->id }}">
+                            <x-table.cell>
+                                <x-input.checkbox wire:model="selected" value="{{ $venue->id }}" />
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                <a class="mb-1 text-gray-800 text-hover-primary" href="{{ route('venues.show', $venue) }}">{{ $venue->address1 }} {{ $venue->address2 }}</a>
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                {{ $venue->address1 }} {{ $venue->address2 }}
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                {{ $venue->city }}
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                {{ $venue->state }}
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                {{ $venue->zip }}
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                {{ $venue->created_at->toFormattedDateString() }}
+                            </x-table.cell>
+
+                            <x-table.cell class="text-end">
+                                @include('livewire.venues.partials.action-cell')
+                            </x-table.cell>
+                        </x-table.row>
+                    @empty
+                        <x-table.row>
+                            <x-table.cell colspan="6">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <span class="py-8 text-xl font-medium text-cool-gray-400">No venues found...</span>
+                                </div>
+                            </x-table.cell>
+                        </x-table.row>
+                    @endforelse
+                </x-slot>
+            </x-table>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div>
+            <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
+                {{ $venues->links() }}
+            </div>
+        </div>
     </div>
 </div>
