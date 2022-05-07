@@ -1,39 +1,27 @@
 <?php
 
-namespace App\Http\Livewire\Events;
+namespace App\Http\Livewire;
 
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Event;
 
-class UnscheduledEvents extends BaseComponent
+class EventList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
-    private $showDeleteModal = false;
+    public $showFilters = false;
 
-    private $showFilters = false;
-
-    private $filters = [
+    public $filters = [
         'search' => '',
     ];
-
-    public function deleteSelected()
-    {
-        $deleteCount = $this->selectedRowsQuery->count();
-
-        $this->selectedRowsQuery->delete();
-
-        $this->showDeleteModal = false;
-
-        $this->notify('You\'ve deleted '.$deleteCount.' titles');
-    }
 
     public function getRowsQueryProperty()
     {
         $query = Event::query()
-            ->unscheduled();
+            ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->orderBy('name');
 
         return $this->applySorting($query);
     }
@@ -50,8 +38,8 @@ class UnscheduledEvents extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.events.unscheduled-events', [
-            'unscheduledEvents' => $this->rows,
+        return view('livewire.events.event-list', [
+            'events' => $this->rows,
         ]);
     }
 }

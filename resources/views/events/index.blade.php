@@ -6,8 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:events.scheduled-events>
-        <livewire:events.unscheduled-events>
-        <livewire:events.past-events>
+        <livewire:event-list>
     </x-content>
 </x-layouts.app>
