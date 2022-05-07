@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Events;
 
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Event;
 
-class EventList extends BaseComponent
+class EventsList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -38,7 +38,7 @@ class EventList extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.events.event-list', [
+        return view('livewire.events.events-list', [
             'events' => $this->rows,
         ]);
     }

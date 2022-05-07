@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:event-list>
+        <livewire:events.events-list>
     </x-content>
 </x-layouts.app>
