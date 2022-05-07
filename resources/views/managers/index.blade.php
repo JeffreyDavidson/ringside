@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:managers.all-managers>
+        <livewire:managers.managers-list>
     </x-content>
 </x-layouts.app>

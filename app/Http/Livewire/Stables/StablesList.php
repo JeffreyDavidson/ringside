@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Referees;
+namespace App\Http\Livewire\Stables;
 
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
-use App\Models\Referee;
+use App\Models\Stable;
 
-class AllReferees extends BaseComponent
+class StablesList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -19,11 +19,9 @@ class AllReferees extends BaseComponent
 
     public function getRowsQueryProperty()
     {
-        $query = Referee::query()
-            ->when($this->filters['search'], function ($query, $search) {
-                $query->where('first_name', 'like', '%'.$search.'%')->orWhere('last_name', 'like', '%'.$search.'%');
-            })
-            ->orderBy('last_name');
+        $query = Stable::query()
+            ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->orderBy('name');
 
         return $this->applySorting($query);
     }
@@ -40,8 +38,8 @@ class AllReferees extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.referees.all-referees', [
-            'referees' => $this->rows,
+        return view('livewire.stables.stables-list', [
+            'stables' => $this->rows,
         ]);
     }
 }

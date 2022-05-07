@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Wrestlers;
+namespace App\Http\Livewire\Referees;
 
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
-use App\Models\Wrestler;
+use App\Models\Referee;
 
-class AllWrestlers extends BaseComponent
+class RefereesList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -19,9 +19,11 @@ class AllWrestlers extends BaseComponent
 
     public function getRowsQueryProperty()
     {
-        $query = Wrestler::query()
-            ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
-            ->orderBy('name');
+        $query = Referee::query()
+            ->when($this->filters['search'], function ($query, $search) {
+                $query->where('first_name', 'like', '%'.$search.'%')->orWhere('last_name', 'like', '%'.$search.'%');
+            })
+            ->orderBy('last_name');
 
         return $this->applySorting($query);
     }
@@ -38,8 +40,8 @@ class AllWrestlers extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.wrestlers.all-wrestlers', [
-            'wrestlers' => $this->rows,
+        return view('livewire.referees.referees-list', [
+            'referees' => $this->rows,
         ]);
     }
 }

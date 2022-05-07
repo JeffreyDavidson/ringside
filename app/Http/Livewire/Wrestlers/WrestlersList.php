@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Stables;
+namespace App\Http\Livewire\Wrestlers;
 
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
-use App\Models\Stable;
+use App\Models\Wrestler;
 
-class AllStables extends BaseComponent
+class WrestlersList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -19,7 +19,7 @@ class AllStables extends BaseComponent
 
     public function getRowsQueryProperty()
     {
-        $query = Stable::query()
+        $query = Wrestler::query()
             ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
             ->orderBy('name');
 
@@ -38,8 +38,8 @@ class AllStables extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.stables.all-stables', [
-            'stables' => $this->rows,
+        return view('livewire.wrestlers.wrestlers-list', [
+            'wrestlers' => $this->rows,
         ]);
     }
 }

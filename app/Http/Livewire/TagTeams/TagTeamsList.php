@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Managers;
+namespace App\Http\Livewire\TagTeams;
 
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
-use App\Models\Manager;
+use App\Models\TagTeam;
 
-class AllManagers extends BaseComponent
+class TagTeamsList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -19,11 +19,9 @@ class AllManagers extends BaseComponent
 
     public function getRowsQueryProperty()
     {
-        $query = Manager::query()
-            ->when($this->filters['search'], function ($query, $search) {
-                $query->where('first_name', 'like', '%'.$search.'%')->orWhere('last_name', 'like', '%'.$search.'%');
-            })
-            ->orderBy('last_name');
+        $query = TagTeam::query()
+            ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->orderBy('name');
 
         return $this->applySorting($query);
     }
@@ -40,8 +38,8 @@ class AllManagers extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.managers.all-managers', [
-            'managers' => $this->rows,
+        return view('livewire.tagteams.tagteams-list', [
+            'tagTeams' => $this->rows,
         ]);
     }
 }

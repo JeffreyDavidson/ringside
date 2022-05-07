@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-       <livewire:stables.all-stables>
+       <livewire:stables.stables-list>
     </x-content>
 </x-layouts.app>

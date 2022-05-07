@@ -7,7 +7,7 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Title;
 
-class AllTitles extends BaseComponent
+class TitlesList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -38,7 +38,7 @@ class AllTitles extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.titles.all-titles', [
+        return view('livewire.titles.titles-list', [
             'titles' => $this->rows,
         ]);
     }

@@ -7,7 +7,7 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Venue;
 
-class AllVenues extends BaseComponent
+class VenuesList extends BaseComponent
 {
     use WithBulkActions, WithSorting;
 
@@ -51,7 +51,7 @@ class AllVenues extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.venues.all-venues', [
+        return view('livewire.venues.venues-list', [
             'venues' => $this->rows,
         ]);
     }

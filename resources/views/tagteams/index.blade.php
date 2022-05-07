@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:tag-teams.all-tag-teams>
+        <livewire:tag-teams.tag-teams-list>
     </x-content>
 </x-layouts.app>

@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:wrestlers.all-wrestlers>
+        <livewire:wrestlers.wrestlers-list>
     </x-content>
 </x-layouts.app>

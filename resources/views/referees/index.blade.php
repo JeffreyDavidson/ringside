@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:referees.all-referees>
+        <livewire:referees.referees-list>
     </x-content>
 </x-layouts.app>

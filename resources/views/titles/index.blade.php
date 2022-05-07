@@ -6,6 +6,6 @@
     </x-slot>
 
     <x-content>
-        <livewire:titles.all-titles>
+        <livewire:titles.titles-list>
     </x-content>
 </x-layouts.app>
