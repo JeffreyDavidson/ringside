@@ -1,8 +1,8 @@
 <x-layouts.app>
     <x-slot name="toolbar">
-        <a href="{{ route('stables.create') }}" class="btn btn-label-brand btn-bold">
-            Create Stables
-        </a>
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            Stables List
+        </h2>
     </x-slot>
 
     <x-content>
