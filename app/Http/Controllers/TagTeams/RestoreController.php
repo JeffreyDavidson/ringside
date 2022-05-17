@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $tagTeamService->restore($tagTeam);
 
-        return redirect()->route('tag-teams.index');
+        return to_route('tag-teams.index');
     }
 }

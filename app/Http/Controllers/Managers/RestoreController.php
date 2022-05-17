@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $managerService->restore($manager);
 
-        return redirect()->route('managers.index');
+        return to_route('managers.index');
     }
 }

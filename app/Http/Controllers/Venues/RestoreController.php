@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $venueService->restore($venue);
 
-        return redirect()->route('venues.index');
+        return to_route('venues.index');
     }
 }

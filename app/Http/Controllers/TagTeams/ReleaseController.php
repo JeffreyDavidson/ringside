@@ -23,6 +23,6 @@ class ReleaseController extends Controller
 
         ReleaseAction::run($tagTeam);
 
-        return redirect()->route('tag-teams.index');
+        return to_route('tag-teams.index');
     }
 }

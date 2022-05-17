@@ -23,6 +23,6 @@ class EmployController extends Controller
 
         EmployAction::run($manager);
 
-        return redirect()->route('managers.index');
+        return to_route('managers.index');
     }
 }

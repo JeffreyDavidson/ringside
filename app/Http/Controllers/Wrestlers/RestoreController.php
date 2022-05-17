@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $wrestlerService->restore($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

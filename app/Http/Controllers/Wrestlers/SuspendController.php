@@ -23,6 +23,6 @@ class SuspendController extends Controller
 
         SuspendAction::run($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

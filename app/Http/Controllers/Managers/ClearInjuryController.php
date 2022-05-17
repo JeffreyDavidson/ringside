@@ -23,6 +23,6 @@ class ClearInjuryController extends Controller
 
         ClearInjuryAction::run($manager);
 
-        return redirect()->route('managers.index');
+        return to_route('managers.index');
     }
 }

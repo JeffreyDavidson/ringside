@@ -23,6 +23,6 @@ class ClearInjuryController extends Controller
 
         ClearInjuryAction::run($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

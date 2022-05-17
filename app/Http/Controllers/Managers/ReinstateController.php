@@ -23,6 +23,6 @@ class ReinstateController extends Controller
 
         ReinstateAction::run($manager);
 
-        return redirect()->route('managers.index');
+        return to_route('managers.index');
     }
 }

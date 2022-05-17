@@ -23,6 +23,6 @@ class UnretireController extends Controller
 
         UnretireAction::run($tagTeam);
 
-        return redirect()->route('tag-teams.index');
+        return to_route('tag-teams.index');
     }
 }

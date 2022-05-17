@@ -23,6 +23,6 @@ class UnretireController extends Controller
 
         UnretireAction::run($stable);
 
-        return redirect()->route('stables.index');
+        return to_route('stables.index');
     }
 }

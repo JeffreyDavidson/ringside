@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $stableService->restore($stable);
 
-        return redirect()->route('stables.index');
+        return to_route('stables.index');
     }
 }

@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $titleService->restore($title);
 
-        return redirect()->route('titles.index');
+        return to_route('titles.index');
     }
 }

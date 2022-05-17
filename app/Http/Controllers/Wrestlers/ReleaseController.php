@@ -23,6 +23,6 @@ class ReleaseController extends Controller
 
         ReleaseAction::run($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

@@ -23,6 +23,6 @@ class RetireController extends Controller
 
         RetireAction::run($title);
 
-        return redirect()->route('titles.index');
+        return to_route('titles.index');
     }
 }

@@ -23,6 +23,6 @@ class DeactivateController extends Controller
 
         DeactivateAction::run($title);
 
-        return redirect()->route('titles.index');
+        return to_route('titles.index');
     }
 }

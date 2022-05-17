@@ -23,6 +23,6 @@ class DeactivateController extends Controller
 
         DeactivateAction::run($stable);
 
-        return redirect()->route('stables.index');
+        return to_route('stables.index');
     }
 }

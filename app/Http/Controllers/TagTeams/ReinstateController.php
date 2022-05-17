@@ -23,6 +23,6 @@ class ReinstateController extends Controller
 
         ReinstateAction::run($tagTeam);
 
-        return redirect()->route('tag-teams.index');
+        return to_route('tag-teams.index');
     }
 }

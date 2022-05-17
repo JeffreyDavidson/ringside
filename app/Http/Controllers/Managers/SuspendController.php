@@ -23,6 +23,6 @@ class SuspendController extends Controller
 
         SuspendAction::run($manager);
 
-        return redirect()->route('managers.index');
+        return to_route('managers.index');
     }
 }

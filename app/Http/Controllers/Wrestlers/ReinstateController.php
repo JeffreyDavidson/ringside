@@ -23,6 +23,6 @@ class ReinstateController extends Controller
 
         ReinstateAction::run($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $refereeService->restore($referee);
 
-        return redirect()->route('referees.index');
+        return to_route('referees.index');
     }
 }

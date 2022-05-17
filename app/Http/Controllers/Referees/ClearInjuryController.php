@@ -23,6 +23,6 @@ class ClearInjuryController extends Controller
 
         ClearInjuryAction::run($referee);
 
-        return redirect()->route('referees.index');
+        return to_route('referees.index');
     }
 }

@@ -23,6 +23,6 @@ class UnretireController extends Controller
 
         UnretireAction::run($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

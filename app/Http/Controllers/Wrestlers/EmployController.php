@@ -23,6 +23,6 @@ class EmployController extends Controller
 
         EmployAction::run($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

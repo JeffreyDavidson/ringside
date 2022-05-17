@@ -23,6 +23,6 @@ class SuspendController extends Controller
 
         SuspendAction::run($tagTeam);
 
-        return redirect()->route('tag-teams.index');
+        return to_route('tag-teams.index');
     }
 }

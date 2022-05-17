@@ -23,6 +23,6 @@ class RetireController extends Controller
 
         RetireAction::run($tagTeam);
 
-        return redirect()->route('tag-teams.index');
+        return to_route('tag-teams.index');
     }
 }

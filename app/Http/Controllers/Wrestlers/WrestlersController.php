@@ -60,7 +60,7 @@ class WrestlersController extends Controller
     {
         $this->wrestlerService->create(WrestlerData::fromStoreRequest($request));
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 
     /**
@@ -104,7 +104,7 @@ class WrestlersController extends Controller
     {
         $this->wrestlerService->update($wrestler, WrestlerData::fromUpdateRequest($request));
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 
     /**
@@ -119,6 +119,6 @@ class WrestlersController extends Controller
 
         $this->wrestlerService->delete($wrestler);
 
-        return redirect()->route('wrestlers.index');
+        return to_route('wrestlers.index');
     }
 }

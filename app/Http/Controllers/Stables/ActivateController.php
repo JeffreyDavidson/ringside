@@ -23,6 +23,6 @@ class ActivateController extends Controller
 
         ActivateAction::run($stable);
 
-        return redirect()->route('stables.index');
+        return to_route('stables.index');
     }
 }

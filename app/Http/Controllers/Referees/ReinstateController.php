@@ -23,6 +23,6 @@ class ReinstateController extends Controller
 
         ReinstateAction::run($referee);
 
-        return redirect()->route('referees.index');
+        return to_route('referees.index');
     }
 }

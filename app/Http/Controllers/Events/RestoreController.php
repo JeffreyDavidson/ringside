@@ -23,6 +23,6 @@ class RestoreController extends Controller
 
         $eventService->restore($event);
 
-        return redirect()->route('events.index');
+        return to_route('events.index');
     }
 }

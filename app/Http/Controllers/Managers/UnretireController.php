@@ -23,6 +23,6 @@ class UnretireController extends Controller
 
         UnretireAction::run($manager);
 
-        return redirect()->route('managers.index');
+        return to_route('managers.index');
     }
 }
