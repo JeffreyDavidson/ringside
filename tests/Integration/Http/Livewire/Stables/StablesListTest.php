@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Http\Livewire\Stables;
 
 use App\Http\Livewire\Stables\StablesList;

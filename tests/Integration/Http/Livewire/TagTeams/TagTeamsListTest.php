@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Http\Livewire\TagTeams;
 
 use App\Http\Livewire\TagTeams\TagTeamsList;

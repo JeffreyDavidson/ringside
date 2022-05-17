@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\EventMatch;
 use Illuminate\Database\Migrations\Migration;
 use Staudenmeir\LaravelMergedRelations\Facades\Schema;

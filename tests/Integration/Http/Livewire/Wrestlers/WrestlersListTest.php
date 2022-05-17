@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Http\Livewire\Wrestlers;
 
 use App\Http\Livewire\Wrestlers\WrestlersList;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Http\Requests\TagTeams;
 
 use App\Http\Requests\TagTeams\UpdateRequest;
