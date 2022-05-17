@@ -21,7 +21,7 @@ class EventsList extends BaseComponent
     {
         $query = Event::query()
             ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
-            ->orderBy('name');
+            ->oldest('name');
 
         return $this->applySorting($query);
     }

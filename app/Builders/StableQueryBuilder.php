@@ -67,7 +67,7 @@ class StableQueryBuilder extends Builder
             'last_deactivated_at' => Activation::select('ended_at')
                 ->whereColumn('activatable_id', $this->qualifyColumn('id'))
                 ->where('activatable_type', $this->model)
-                ->orderBy('ended_at', 'desc')
+                ->latest('ended_at')
                 ->limit(1),
         ])->withCasts(['last_deactivated_at' => 'datetime']);
     }

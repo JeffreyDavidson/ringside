@@ -21,7 +21,7 @@ class TitleChampionshipsList extends BaseComponent
 
     public function getRowsQueryProperty()
     {
-        return TitleChampionship::where('title_id', $this->title->id)->orderByDesc('won_at');
+        return TitleChampionship::where('title_id', $this->title->id)->latest('won_at');
     }
 
     public function getRowsProperty()

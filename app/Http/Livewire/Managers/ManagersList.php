@@ -23,7 +23,7 @@ class ManagersList extends BaseComponent
             ->when($this->filters['search'], function ($query, $search) {
                 $query->where('first_name', 'like', '%'.$search.'%')->orWhere('last_name', 'like', '%'.$search.'%');
             })
-            ->orderBy('last_name');
+            ->oldest('last_name');
 
         return $this->applySorting($query);
     }
