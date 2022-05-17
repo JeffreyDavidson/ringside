@@ -6,7 +6,7 @@ use App\Models\Stable;
 use Illuminate\Database\Migrations\Migration;
 use Staudenmeir\LaravelMergedRelations\Facades\Schema;
 
-class CreateAllStableMembersView extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,4 +30,4 @@ class CreateAllStableMembersView extends Migration
     {
         Schema::dropView('all_stable_members');
     }
-}
+};
