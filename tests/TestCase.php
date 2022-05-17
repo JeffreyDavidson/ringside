@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, LazilyRefreshDatabase;
     use RefreshDatabase;
 
     protected bool $dropViews = true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Integration\Http\Livewire\Stables;
 
 use App\Http\Livewire\Stables\StablesList;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -15,8 +14,6 @@ use Tests\TestCase;
  */
 class StablesListTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

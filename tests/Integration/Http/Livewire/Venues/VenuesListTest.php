@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Integration\Http\Livewire\Venues;
 
 use App\Http\Livewire\Venues\VenuesList;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -15,8 +14,6 @@ use Tests\TestCase;
  */
 class VenuesListTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
