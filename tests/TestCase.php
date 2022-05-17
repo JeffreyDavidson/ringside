@@ -13,7 +13,6 @@ use Illuminate\Testing\TestResponse;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, LazilyRefreshDatabase;
-    use RefreshDatabase;
 
     protected bool $dropViews = true;
 
