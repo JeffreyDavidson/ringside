@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\EventMatch;
 use App\Models\Title;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TitleChampionshipFactory extends Factory

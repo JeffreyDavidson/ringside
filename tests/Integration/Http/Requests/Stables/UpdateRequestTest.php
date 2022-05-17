@@ -7,7 +7,7 @@ use App\Models\Activation;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\StableRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;

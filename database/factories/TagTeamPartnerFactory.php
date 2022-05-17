@@ -8,7 +8,7 @@ use App\Models\Injury;
 use App\Models\Retirement;
 use App\Models\Suspension;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TagTeamPartnerFactory extends Factory

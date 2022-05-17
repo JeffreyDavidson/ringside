@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Data\TitleData;
 use App\Models\Title;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class TitleRepository
 {
@@ -63,7 +63,7 @@ class TitleRepository
      * Activate a given title on a given date.
      *
      * @param  \App\Models\Title $title
-     * @param  \Carbon\Carbon $activationDate
+     * @param  \Illuminate\Support\Carbon $activationDate
      * @return \App\Models\Title
      */
     public function activate(Title $title, Carbon $activationDate)
@@ -80,7 +80,7 @@ class TitleRepository
      * Deactivate a given title on a given date.
      *
      * @param  \App\Models\Title $title
-     * @param  \Carbon\Carbon $deactivationDate
+     * @param  \Illuminate\Support\Carbon $deactivationDate
      * @return \App\Models\Title
      */
     public function deactivate(Title $title, Carbon $deactivationDate)
@@ -94,7 +94,7 @@ class TitleRepository
      * Retire a given title on a given date.
      *
      * @param  \App\Models\Title $title
-     * @param  \Carbon\Carbon $retirementDate
+     * @param  \Illuminate\Support\Carbon $retirementDate
      * @return \App\Models\Title
      */
     public function retire(Title $title, Carbon $retirementDate)
@@ -108,7 +108,7 @@ class TitleRepository
      * Unretire a given title on a given date.
      *
      * @param  \App\Models\Title $title
-     * @param  \Carbon\Carbon $unretireDate
+     * @param  \Illuminate\Support\Carbon $unretireDate
      * @return \App\Models\Title
      */
     public function unretire(Title $title, Carbon $unretireDate)

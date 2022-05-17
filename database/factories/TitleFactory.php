@@ -7,7 +7,7 @@ use App\Models\Activation;
 use App\Models\Retirement;
 use App\Models\Title;
 use App\Models\TitleChampionship;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

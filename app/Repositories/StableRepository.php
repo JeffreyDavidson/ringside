@@ -6,7 +6,7 @@ use App\Data\StableData;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class StableRepository
@@ -66,7 +66,7 @@ class StableRepository
      * Activate a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \Carbon\Carbon $activationDate
+     * @param  \Illuminate\Support\Carbon $activationDate
      * @return \App\Models\Stable
      */
     public function activate(Stable $stable, Carbon $activationDate)
@@ -83,7 +83,7 @@ class StableRepository
      * Deactivate a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \Carbon\Carbon $deactivationDate
+     * @param  \Illuminate\Support\Carbon $deactivationDate
      * @return \App\Models\Stable
      */
     public function deactivate(Stable $stable, Carbon $deactivationDate)
@@ -97,7 +97,7 @@ class StableRepository
      * Retire a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \Carbon\Carbon $retirementDate
+     * @param  \Illuminate\Support\Carbon $retirementDate
      * @return \App\Models\Stable
      */
     public function retire(Stable $stable, Carbon $retirementDate)
@@ -111,7 +111,7 @@ class StableRepository
      * Unretire a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \Carbon\Carbon $unretireDate
+     * @param  \Illuminate\Support\Carbon $unretireDate
      * @return \App\Models\Stable
      */
     public function unretire(Stable $stable, Carbon $unretireDate)
@@ -125,7 +125,7 @@ class StableRepository
      * Unretire a given stable on a given date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \Carbon\Carbon $disassembleDate
+     * @param  \Illuminate\Support\Carbon $disassembleDate
      * @return \App\Models\Stable
      */
     public function disassemble(Stable $stable, Carbon $disassembleDate)
@@ -152,7 +152,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection  $wrestlers
-     * @param  \Carbon\Carbon  $joinDate
+     * @param  \Illuminate\Support\Carbon  $joinDate
      * @return void
      */
     public function addWrestlers(Stable $stable, Collection $wrestlers, Carbon $joinDate)
@@ -167,7 +167,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection  $tagTeams
-     * @param  \Carbon\Carbon  $joinDate
+     * @param  \Illuminate\Support\Carbon  $joinDate
      * @return void
      */
     public function addTagTeams(Stable $stable, Collection $tagTeams, Carbon $joinDate)
@@ -182,7 +182,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection $currentWrestlers
-     * @param  \Carbon\Carbon $removalDate
+     * @param  \Illuminate\Support\Carbon $removalDate
      * @return void
      */
     public function removeWrestlers(Stable $stable, Collection $currentWrestlers, Carbon $removalDate)
@@ -200,7 +200,7 @@ class StableRepository
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection $currentTagTeams
-     * @param  \Carbon\Carbon $removalDate
+     * @param  \Illuminate\Support\Carbon $removalDate
      * @return void
      */
     public function removeTagTeams(Stable $stable, Collection $currentTagTeams, Carbon $removalDate)

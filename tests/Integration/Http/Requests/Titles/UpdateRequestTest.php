@@ -5,7 +5,7 @@ namespace Tests\Integration\Http\Requests\Titles;
 use App\Http\Requests\Titles\UpdateRequest;
 use App\Models\Activation;
 use App\Models\Title;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\TitleRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;

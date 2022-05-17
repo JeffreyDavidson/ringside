@@ -7,7 +7,7 @@ use App\Actions\Wrestlers\EmployAction as WrestlerEmployAction;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ActivateAction extends BaseStableAction
@@ -18,7 +18,7 @@ class ActivateAction extends BaseStableAction
      * Activate a stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  \Carbon\Carbon|null  $activationDate
+     * @param  \Illuminate\Support\Carbon|null  $activationDate
      * @return void
      */
     public function handle(Stable $stable, ?Carbon $activationDate = null): void

@@ -7,7 +7,7 @@ use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\Employment;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\TagTeamRequestDataFactory;
 use Tests\TestCase;
 

@@ -5,7 +5,7 @@ namespace Tests\Integration\Http\Requests\TagTeams;
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\Employment;
 use App\Models\TagTeam;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\TagTeamRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;

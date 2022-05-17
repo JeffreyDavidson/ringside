@@ -5,7 +5,7 @@ namespace Tests\Integration\Http\Requests\Wrestlers;
 use App\Http\Requests\Wrestlers\UpdateRequest;
 use App\Models\Employment;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\WrestlerRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;

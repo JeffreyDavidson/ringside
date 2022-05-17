@@ -2,7 +2,7 @@
 
 namespace App\Models\Contracts;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 interface Activatable
 {
@@ -100,7 +100,7 @@ interface Activatable
     /**
      * Check to see if the model was activated on a given date.
      *
-     * @param  \Carbon\Carbon  $activationDate
+     * @param  \Illuminate\Support\Carbon  $activationDate
      * @return bool
      */
     public function activatedOn(Carbon $activationDate);

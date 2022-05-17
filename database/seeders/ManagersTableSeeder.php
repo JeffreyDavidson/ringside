@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Employment;
 use App\Models\Manager;
 use App\Models\Retirement;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 
 class ManagersTableSeeder extends Seeder

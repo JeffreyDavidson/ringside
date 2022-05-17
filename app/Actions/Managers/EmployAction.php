@@ -3,7 +3,7 @@
 namespace App\Actions\Managers;
 
 use App\Models\Manager;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class EmployAction extends BaseManagerAction
@@ -14,7 +14,7 @@ class EmployAction extends BaseManagerAction
      * Employ a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \Carbon\Carbon|null  $startDate
+     * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
      */
     public function handle(Manager $manager, ?Carbon $startDate = null): void

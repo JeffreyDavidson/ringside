@@ -3,7 +3,7 @@
 namespace App\Actions\Titles;
 
 use App\Models\Title;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ActivateAction extends BaseTitleAction
@@ -14,7 +14,7 @@ class ActivateAction extends BaseTitleAction
      * Activate a title.
      *
      * @param  \App\Models\Title  $title
-     * @param  \Carbon\Carbon|null  $activationDate
+     * @param  \Illuminate\Support\Carbon|null  $activationDate
      * @return void
      */
     public function handle(Title $title, ?Carbon $activationDate = null): void

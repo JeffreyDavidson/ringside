@@ -6,7 +6,7 @@ use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EmploymentFactory extends Factory
@@ -29,7 +29,7 @@ class EmploymentFactory extends Factory
     }
 
     /**
-     * @param \Carbon\Carbon $employmentDate
+     * @param \Illuminate\Support\Carbon $employmentDate
      */
     public function started(Carbon $employmentDate)
     {

@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Models\Concerns;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 trait EmployableContractTests
 {

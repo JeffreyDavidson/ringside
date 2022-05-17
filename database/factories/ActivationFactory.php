@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Stable;
 use App\Models\Title;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ActivationFactory extends Factory

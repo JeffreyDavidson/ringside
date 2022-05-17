@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,7 +40,7 @@ class Activation extends Model
     /**
      * Determine an activation started before a given date.
      *
-     * @param  \Carbon\Carbon $date
+     * @param  \Illuminate\Support\Carbon $date
      * @return bool
      */
     public function startedBefore(Carbon $date)

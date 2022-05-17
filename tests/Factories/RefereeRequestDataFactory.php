@@ -3,7 +3,7 @@
 namespace Tests\Factories;
 
 use App\Models\Referee;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class RefereeRequestDataFactory
 {

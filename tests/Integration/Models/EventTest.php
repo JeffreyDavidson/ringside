@@ -4,7 +4,7 @@ namespace Tests\Integration\Models;
 
 use App\Models\Event;
 use App\Models\Venue;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 /**

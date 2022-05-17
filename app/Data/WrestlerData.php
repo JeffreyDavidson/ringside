@@ -4,7 +4,7 @@ namespace App\Data;
 
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class WrestlerData
 {

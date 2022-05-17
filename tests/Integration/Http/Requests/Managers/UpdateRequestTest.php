@@ -5,7 +5,7 @@ namespace Tests\Integration\Http\Requests\Managers;
 use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Employment;
 use App\Models\Manager;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\ManagerRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;

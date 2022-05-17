@@ -6,7 +6,7 @@ use App\Enums\Role;
 use App\Http\Controllers\Events\EventsController;
 use App\Models\Event;
 use App\Models\Venue;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Tests\Factories\EventRequestDataFactory;
 use Tests\TestCase;
 

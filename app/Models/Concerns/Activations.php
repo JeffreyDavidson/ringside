@@ -3,7 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Activation;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait Activations
@@ -163,7 +163,7 @@ trait Activations
     /**
      * Get the model's first activation date.
      *
-     * @param  \Carbon\Carbon $activationDate
+     * @param  \Illuminate\Support\Carbon $activationDate
      * @return bool|null
      */
     public function activatedOn(Carbon $activationDate)
@@ -174,7 +174,7 @@ trait Activations
     /**
      * Check to see if activatable can have their start date changed.
      *
-     * @param  \Carbon\Carbon $activationDate
+     * @param  \Illuminate\Support\Carbon $activationDate
      * @return bool
      */
     public function canHaveActivationStartDateChanged(Carbon $activationDate)

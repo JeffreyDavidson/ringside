@@ -3,7 +3,7 @@
 namespace App\Actions\Managers;
 
 use App\Models\Manager;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ClearInjuryAction extends BaseManagerAction
@@ -14,7 +14,7 @@ class ClearInjuryAction extends BaseManagerAction
      * Clear an injury of a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @param  \Carbon\Carbon|null $recoveryDate
+     * @param  \Illuminate\Support\Carbon|null $recoveryDate
      * @return void
      */
     public function handle(Manager $manager, ?Carbon $recoveryDate = null): void

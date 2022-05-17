@@ -8,7 +8,7 @@ use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Title;
 use App\Models\Wrestler;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RetirementFactory extends Factory
