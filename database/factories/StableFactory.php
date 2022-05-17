@@ -13,7 +13,6 @@ use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class StableFactory extends Factory
 {
@@ -25,7 +24,7 @@ class StableFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => Str::title($this->faker->words(2, true)),
+            'name' => str($this->faker->words(2, true))->title(),
             'status' => StableStatus::unactivated(),
         ];
     }

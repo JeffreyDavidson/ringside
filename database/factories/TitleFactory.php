@@ -11,7 +11,6 @@ use App\Models\Title;
 use App\Models\TitleChampionship;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class TitleFactory extends Factory
 {
@@ -23,7 +22,7 @@ class TitleFactory extends Factory
     public function definition()
     {
         return [
-            'name' => Str::title($this->faker->unique()->words(2, true)).' Title',
+            'name' => str($this->faker->unique()->words(2, true))->title().' Title',
             'status' => TitleStatus::unactivated(),
         ];
     }

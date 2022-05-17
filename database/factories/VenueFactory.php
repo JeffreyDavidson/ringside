@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class VenueFactory extends Factory
 {
@@ -22,7 +21,7 @@ class VenueFactory extends Factory
             'address2' => $this->faker->optional()->secondaryAddress(),
             'city' => $this->faker->city(),
             'state' => $this->faker->state(),
-            'zip' => Str::substr($this->faker->postcode(), 0, 5),
+            'zip' => str($this->faker->postcode())->substr(0, 5),
         ];
     }
 
