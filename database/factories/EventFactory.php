@@ -14,13 +14,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class EventFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $modelClass = Event::class;
-
-    /**
      * Configure the model factory.
      *
      * @return static

@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Manager;
 use App\Models\Referee;
-use App\Models\Suspension;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Carbon\Carbon;
@@ -12,13 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SuspensionFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $modelClass = Suspension::class;
-
     /**
      * Define the model's default state.
      *

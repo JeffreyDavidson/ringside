@@ -14,13 +14,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class TagTeamPartnerFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $modelClass = TagTeamPartner::class;
-
-    /**
      * Define the model's default state.
      *
      * @return array

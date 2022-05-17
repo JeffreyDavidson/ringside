@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Employment;
 use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\TagTeam;
@@ -12,13 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EmploymentFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $modelClass = Employment::class;
-
     /**
      * Define the model's default state.
      *

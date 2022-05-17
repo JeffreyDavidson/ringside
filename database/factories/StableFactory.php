@@ -16,13 +16,6 @@ use Illuminate\Support\Str;
 class StableFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $modelClass = Stable::class;
-
-    /**
      * Define the model's default state.
      *
      * @return array
