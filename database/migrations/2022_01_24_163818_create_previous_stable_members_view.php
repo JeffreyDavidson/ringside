@@ -20,14 +20,4 @@ return new class extends Migration
             [(new Stable)->previousTagTeams(), (new Stable)->previousWrestlers()]
         );
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropView('previous_stable_members');
-    }
 };

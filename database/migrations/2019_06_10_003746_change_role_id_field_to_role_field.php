@@ -23,20 +23,4 @@ return new class extends Migration
             $table->string('role', 15)->change();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('role', 'role_id')->change();
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedInteger('role_id')->change();
-        });
-    }
 };

@@ -25,14 +25,4 @@ return new class extends Migration
             $table->index('status');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('titles');
-    }
 };

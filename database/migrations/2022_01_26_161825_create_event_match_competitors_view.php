@@ -20,14 +20,4 @@ return new class extends Migration
             [(new EventMatch)->wrestlers(), (new EventMatch)->tagTeams()]
         );
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropView('all_match_competitors');
-    }
 };
