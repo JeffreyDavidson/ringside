@@ -27,6 +27,6 @@ class CannotBeSuspendedException extends Exception
             return response()->json(['message' => $this->message], 400);
         }
 
-        return back()->withError($this->message);
+        return redirect()->back()->withError($this->message);
     }
 }
