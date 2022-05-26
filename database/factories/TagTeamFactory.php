@@ -177,14 +177,6 @@ class TagTeamFactory extends Factory
             });
     }
 
-    public function softDeleted()
-    {
-        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
-            ->afterCreating(function (TagTeam $tagTeam) {
-                $tagTeam->save();
-            });
-    }
-
     public function withoutTagTeamPartners()
     {
         return $this->afterCreating(function (TagTeam $tagTeam) {

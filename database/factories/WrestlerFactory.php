@@ -122,12 +122,4 @@ class WrestlerFactory extends Factory
                 $wrestler->load('injuries');
             });
     }
-
-    public function softDeleted()
-    {
-        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
-            ->afterCreating(function (Wrestler $wrestler) {
-                $wrestler->save();
-            });
-    }
 }

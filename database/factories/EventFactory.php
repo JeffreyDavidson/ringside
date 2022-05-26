@@ -129,14 +129,4 @@ class EventFactory extends Factory
     {
         return $this->state(['preview' => $preview]);
     }
-
-    /**
-     * Define the event's soft deleted state.
-     *
-     * @return static
-     */
-    public function softDeleted()
-    {
-        return $this->state(['deleted_at' => now()]);
-    }
 }
