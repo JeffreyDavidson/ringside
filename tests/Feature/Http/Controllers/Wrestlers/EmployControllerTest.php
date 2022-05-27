@@ -1,136 +1,74 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\Wrestlers;
-
-use App\Enums\Role;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Wrestlers\EmployController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\Wrestler;
-use Tests\TestCase;
 
-/**
- * @group wrestlers
- * @group feature-wrestlers
- * @group roster
- * @group feature-roster
- */
-class EmployControllerTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function invoke_employs_an_unemployed_wrestler_and_redirects()
-    {
-        $wrestler = Wrestler::factory()->unemployed()->create();
+test('invoke employs an unemployed wrestler and redirects', function () {
+    $wrestler = Wrestler::factory()->unemployed()->create();
 
-        $this->assertCount(0, $wrestler->employments);
-        $this->assertEquals(WrestlerStatus::UNEMPLOYED, $wrestler->status);
+    $this->actingAs(administrator())
+        ->patch(action([EmployController::class], $wrestler))
+        ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([EmployController::class], $wrestler))
-            ->assertRedirect(action([WrestlersController::class, 'index']));
+    tap($wrestler->fresh(), function ($wrestler) {
+        $this->assertCount(1, $wrestler->employments);
+        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+    });
+});
 
-        tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertCount(1, $wrestler->employments);
-            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-        });
-    }
+test('invoke employs a future employed wrestler and redirects', function () {
+    $wrestler = Wrestler::factory()->withFutureEmployment()->create();
+    $startedAt = $wrestler->employments->last()->started_at;
 
-    /**
-     * @test
-     */
-    public function invoke_employs_a_future_employed_wrestler_and_redirects()
-    {
-        $wrestler = Wrestler::factory()->withFutureEmployment()->create();
-        $startedAt = $wrestler->employments->last()->started_at;
+    $this->actingAs(administrator())
+        ->patch(action([EmployController::class], $wrestler))
+        ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        $this->assertTrue(now()->lt($startedAt));
-        $this->assertEquals(WrestlerStatus::FUTURE_EMPLOYMENT, $wrestler->status);
+    tap($wrestler->fresh(), function ($wrestler) use ($startedAt) {
+        $this->assertTrue($wrestler->currentEmployment->started_at->lt($startedAt));
+        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+    });
+});
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([EmployController::class], $wrestler))
-            ->assertRedirect(action([WrestlersController::class, 'index']));
+test('invoke employs a released wrestler and redirects', function () {
+    $wrestler = Wrestler::factory()->released()->create();
 
-        tap($wrestler->fresh(), function ($wrestler) use ($startedAt) {
-            $this->assertTrue($wrestler->currentEmployment->started_at->lt($startedAt));
-            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-        });
-    }
+    $this->actingAs(administrator())
+        ->patch(action([EmployController::class], $wrestler))
+        ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    /**
-     * @test
-     */
-    public function invoke_employs_a_released_wrestler_and_redirects()
-    {
-        $wrestler = Wrestler::factory()->released()->create();
+    tap($wrestler->fresh(), function ($wrestler) {
+        $this->assertCount(2, $wrestler->employments);
+        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+    });
+});
 
-        $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
+test('a basic user cannot employ a wrestler', function () {
+    $wrestler = Wrestler::factory()->create();
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([EmployController::class], $wrestler))
-            ->assertRedirect(action([WrestlersController::class, 'index']));
+    $this->actingAs(basicUser())
+        ->patch(action([EmployController::class], $wrestler))
+        ->assertForbidden();
+});
 
-        tap($wrestler->fresh(), function ($wrestler) {
-            $this->assertCount(2, $wrestler->employments);
-            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-        });
-    }
+test('a guest user cannot injure a wrestler', function () {
+    $wrestler = Wrestler::factory()->create();
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_employ_a_wrestler()
-    {
-        $wrestler = Wrestler::factory()->create();
+    $this->patch(action([EmployController::class], $wrestler))
+        ->assertRedirect(route('login'));
+});
 
-        $this
-            ->actAs(ROLE::BASIC)
-            ->patch(action([EmployController::class], $wrestler))
-            ->assertForbidden();
-    }
+test('invoke throws exception for injuring a non injurable wrestler', function ($factoryState) {
+    $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_employ_a_wrestler()
-    {
-        $wrestler = Wrestler::factory()->create();
-
-        $this
-            ->patch(action([EmployController::class], $wrestler))
-            ->assertRedirect(route('login'));
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider nonemployableWrestlerTypes
-     */
-    public function invoke_throws_exception_for_employing_a_non_employable_wrestler($factoryState)
-    {
-        $this->expectException(CannotBeEmployedException::class);
-        $this->withoutExceptionHandling();
-
-        $wrestler = Wrestler::factory()->{$factoryState}()->create();
-
-        $this->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([EmployController::class], $wrestler));
-    }
-
-    public function nonemployableWrestlerTypes()
-    {
-        return [
-            'suspended wrestler' => ['suspended'],
-            'injured wrestler' => ['injured'],
-            'bookable wrestler' => ['bookable'],
-            'retired wrestler' => ['retired'],
-        ];
-    }
-}
+    $this->actingAs(administrator())
+        ->patch(action([EmployController::class], $wrestler));
+})->throws(CannotBeEmployedException::class)->with([
+    'suspended',
+    'injured',
+    'bookable',
+    'retired',
+]);

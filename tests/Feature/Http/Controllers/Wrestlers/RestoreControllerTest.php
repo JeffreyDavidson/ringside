@@ -1,63 +1,30 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\Wrestlers;
-
-use App\Enums\Role;
 use App\Http\Controllers\Wrestlers\RestoreController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\Wrestler;
-use Tests\TestCase;
 
-/**
- * @group wrestlers
- * @group feature-wrestlers
- * @group roster
- * @group feature-roster
- */
-class RestoreControllerTest extends TestCase
-{
-    public Wrestler $wrestler;
+test('invoke restores a deleted wrestler and redirects', function () {
+    $wrestler = Wrestler::factory()->trashed()->create();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $this->actingAs(administrator())
+        ->patch(action([RestoreController::class], $wrestler))
+        ->assertRedirect(action([WrestlersController::class, 'index']));
 
-        $this->wrestler = Wrestler::factory()->softDeleted()->create();
-    }
+    $this->assertNull($wrestler->fresh()->deleted_at);
+});
 
-    /**
-     * @test
-     */
-    public function invoke_restores_a_deleted_wrestler_and_redirects()
-    {
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([RestoreController::class], $this->wrestler))
-            ->assertRedirect(action([WrestlersController::class, 'index']));
+test('a basic user cannot restore a deleted wrestler', function () {
+    $wrestler = Wrestler::factory()->trashed()->create();
 
-        $this->assertNull($this->wrestler->fresh()->deleted_at);
-    }
+    $this->actingAs(basicUser())
+        ->patch(action([RestoreController::class], $wrestler))
+        ->assertForbidden();
+});
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_restore_a_wrestler()
-    {
-        $this
-            ->actAs(ROLE::BASIC)
-            ->patch(action([RestoreController::class], $this->wrestler))
-            ->assertForbidden();
-    }
+test('a guest cannot restore a deleted wrestler', function () {
+    $wrestler = Wrestler::factory()->trashed()->create();
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_restore_a_wrestler()
-    {
-        $this
-            ->patch(action([RestoreController::class], $this->wrestler))
-            ->assertRedirect(route('login'));
-    }
-}
+    $this->patch(action([RestoreController::class], $wrestler))
+        ->assertRedirect(route('login'));
+});
