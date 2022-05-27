@@ -1,61 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Feature\Http\Controllers\Venues;
 
-use App\Enums\Role;
 use App\Http\Controllers\Venues\RestoreController;
 use App\Http\Controllers\Venues\VenuesController;
 use App\Models\Venue;
-use Tests\TestCase;
 
-/**
- * @group venues
- * @group feature-venues
- */
-class RestoreControllerTest extends TestCase
-{
-    public Venue $venue;
+test('invoke restores a deleted venue and redirects', function () {
+    $venue = Venue::factory()->trashed()->create();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $this->actingAs(administrator())
+        ->patch(action([RestoreController::class], $venue))
+        ->assertRedirect(action([VenuesController::class, 'index']));
 
-        $this->venue = Venue::factory()->softDeleted()->create();
-    }
+    $this->assertNull($venue->fresh()->deleted_at);
+});
 
-    /**
-     * @test
-     */
-    public function invoke_restores_a_deleted_venue_and_redirects()
-    {
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([RestoreController::class], $this->venue))
-            ->assertRedirect(action([VenuesController::class, 'index']));
+test('a basic user cannot restore a venue', function () {
+    $venue = Venue::factory()->trashed()->create();
 
-        $this->assertNull($this->venue->fresh()->deleted_at);
-    }
+    $this->actingAs(basicUser())
+        ->patch(action([RestoreController::class], $venue))
+        ->assertForbidden();
+});
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_restore_a_venue()
-    {
-        $this
-            ->actAs(ROLE::BASIC)
-            ->patch(action([RestoreController::class], $this->venue))
-            ->assertForbidden();
-    }
+test('a guest cannot restore a venue', function () {
+    $venue = Venue::factory()->trashed()->create();
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_restore_a_venue()
-    {
-        $this
-            ->patch(action([RestoreController::class], $this->venue))
-            ->assertRedirect(route('login'));
-    }
-}
+    $this->patch(action([RestoreController::class], $venue))
+        ->assertRedirect(route('login'));
+});
