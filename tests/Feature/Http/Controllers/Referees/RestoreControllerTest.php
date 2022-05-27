@@ -1,63 +1,30 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\Referees;
-
-use App\Enums\Role;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Controllers\Referees\RestoreController;
 use App\Models\Referee;
-use Tests\TestCase;
 
-/**
- * @group referees
- * @group feature-referees
- * @group roster
- * @group feature-roster
- */
-class RestoreControllerTest extends TestCase
-{
-    public Referee $referee;
+test('invoke restores a deleted referee and redirects', function () {
+    $referee = Referee::factory()->trashed()->create();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $this->actingAs(administrator())
+        ->patch(action([RestoreController::class], $referee))
+        ->assertRedirect(action([RefereesController::class, 'index']));
 
-        $this->referee = Referee::factory()->softDeleted()->create();
-    }
+    $this->assertNull($referee->fresh()->deleted_at);
+});
 
-    /**
-     * @test
-     */
-    public function invoke_restores_a_soft_deleted_referee_and_redirects()
-    {
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([RestoreController::class], $this->referee))
-            ->assertRedirect(action([RefereesController::class, 'index']));
+test('a basic user cannot restore a deleted referee', function () {
+    $referee = Referee::factory()->trashed()->create();
 
-        $this->assertNull($this->referee->fresh()->deleted_at);
-    }
+    $this->actingAs(basicUser())
+        ->patch(action([RestoreController::class], $referee))
+        ->assertForbidden();
+});
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_restore_a_referee()
-    {
-        $this
-            ->actAs(ROLE::BASIC)
-            ->patch(action([RestoreController::class], $this->referee))
-            ->assertForbidden();
-    }
+test('a guest cannot restore a deleted referee', function () {
+    $referee = Referee::factory()->trashed()->create();
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_restore_a_referee()
-    {
-        $this
-            ->patch(action([RestoreController::class], $this->referee))
-            ->assertRedirect(route('login'));
-    }
-}
+    $this->patch(action([RestoreController::class], $referee))
+        ->assertRedirect(route('login'));
+});
