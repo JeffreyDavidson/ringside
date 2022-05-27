@@ -1,232 +1,115 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\Managers;
-
-use App\Enums\Role;
 use App\Http\Controllers\Managers\ManagersController;
+use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Manager;
-use Tests\Factories\ManagerRequestDataFactory;
-use Tests\TestCase;
 
-/**
- * @group managers
- * @group feature-managers
- * @group roster
- * @group feature-roster
- */
-class ManagerControllerUpdateMethodTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function edit_returns_a_view()
-    {
-        $manager = Manager::factory()->create();
+test('edit returns a view', function () {
+    $manager = Manager::factory()->create();
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->get(action([ManagersController::class, 'edit'], $manager))
-            ->assertViewIs('managers.edit')
-            ->assertViewHas('manager', $manager);
-    }
+    $this->actingAs(administrator())
+        ->get(action([ManagersController::class, 'edit'], $manager))
+        ->assertStatus(200)
+        ->assertViewIs('managers.edit')
+        ->assertViewHas('manager', $manager);
+});
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_view_the_form_for_editing_a_manager()
-    {
-        $manager = Manager::factory()->create();
+test('a basic user cannot view the form for editing a manager', function () {
+    $manager = Manager::factory()->create();
 
-        $this
-            ->actAs(ROLE::BASIC)
-            ->get(action([ManagersController::class, 'edit'], $manager))
-            ->assertForbidden();
-    }
+    $this->actingAs(basicUser())
+        ->get(action([ManagersController::class, 'edit'], $manager))
+        ->assertForbidden();
+});
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_view_the_form_for_editing_a_manager()
-    {
-        $manager = Manager::factory()->create();
+test('a guest cannot view the form for editing a manager', function () {
+    $manager = Manager::factory()->create();
 
-        $this
-            ->get(action([ManagersController::class, 'edit'], $manager))
-            ->assertRedirect(route('login'));
-    }
+    $this->get(action([ManagersController::class, 'edit'], $manager))
+        ->assertRedirect(route('login'));
+});
 
-    /**
-     * @test
-     */
-    public function update_a_manager_and_redirects()
-    {
-        $manager = Manager::factory()->create(['first_name' => 'John', 'last_name' => 'Smith']);
+test('updates a manager and redirects', function () {
+    $manager = Manager::factory()->create([
+        'first_name' => 'Dries',
+        'last_name' => 'Vints',
+    ]);
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()->withManager($manager)->create([
-                    'first_name' => 'Paul',
-                    'last_name' => 'Williams',
-                ])
-            )
-            ->assertRedirect(route('managers.index'));
+    $data = UpdateRequest::factory()->create([
+        'first_name' => 'Taylor',
+        'last_name' => 'Otwell',
+        'started_at' => null,
+    ]);
 
-        tap($manager->fresh(), function ($manager) {
-            $this->assertEquals('Paul', $manager->first_name);
-            $this->assertEquals('Williams', $manager->last_name);
-        });
-    }
+    $this->actingAs(administrator())
+        ->from(action([ManagersController::class, 'edit'], $manager))
+        ->patch(action([ManagersController::class, 'update'], $manager), $data)
+        ->assertValid()
+        ->assertRedirect(action([ManagersController::class, 'index']));
 
-    /**
-     * @test
-     */
-    public function update_can_employ_an_unemployed_manager_when_started_at_is_filled()
-    {
-        $now = now();
-        $manager = Manager::factory()->unemployed()->create();
+    expect($manager->fresh()->first_name)->toBe('Taylor');
+    expect($manager->fresh()->last_name)->toBe('Otwell');
 
-        $this->assertCount(0, $manager->employments);
+    expect($manager->fresh()->employments)->toBeEmpty();
+});
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()
-                    ->withManager($manager)
-                    ->create(['started_at' => $now->toDateTimeString()])
-            )
-            ->assertRedirect(action([ManagersController::class, 'index']));
+test('update can employ an unemployed manager when started at is filled', function () {
+    $now = now();
+    $manager = Manager::factory()->unemployed()->create();
+    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertCount(1, $manager->employments);
-            $this->assertEquals($now, $manager->employments->first()->started_at->toDateTimeString());
-        });
-    }
+    $this->actingAs(administrator())
+        ->from(action([ManagersController::class, 'edit'], $manager))
+        ->patch(action([ManagersController::class, 'update'], $manager), $data)
+        ->assertValid()
+        ->assertRedirect(action([ManagersController::class, 'index']));
 
-    /**
-     * @test
-     */
-    public function update_can_employ_a_future_employed_manager_when_started_at_is_filled()
-    {
-        $now = now();
-        $manager = Manager::factory()->withFutureEmployment()->create();
+    expect($manager->fresh()->employments)->toHaveCount(1);
+    expect($manager->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+});
 
-        $this->assertTrue($manager->employments()->first()->started_at->isFuture());
+test('update can employ a future employed manager when started at is filled', function () {
+    $now = now();
+    $manager = Manager::factory()->withFutureEmployment()->create();
+    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()
-                    ->withManager($manager)
-                    ->create(['started_at' => $now->toDateTimeString()])
-            )
-            ->assertRedirect(action([ManagersController::class, 'index']));
+    $this->actingAs(administrator())
+        ->from(action([ManagersController::class, 'edit'], $manager))
+        ->patch(action([ManagersController::class, 'update'], $manager), $data)
+        ->assertValid()
+        ->assertRedirect(action([ManagersController::class, 'index']));
 
-        tap($manager->fresh(), function ($manager) use ($now) {
-            $this->assertCount(1, $manager->employments);
-            $this->assertEquals(
-                $now->toDateTimeString(),
-                $manager->employments()->first()->started_at->toDateTimeString()
-            );
-        });
-    }
+    expect($manager->fresh()->employments)->toHaveCount(1);
+    expect($manager->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+});
 
-    /**
-     * @test
-     */
-    public function update_cannot_reemploy_a_released_manager()
-    {
-        $manager = Manager::factory()->released()->create();
-        $startDate = $manager->startedAt->toDateTimeString();
+test('updating cannot employ an available manager when started at is filled', function () {
+    $now = now();
+    $manager = Manager::factory()->available()->create();
+    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
 
-        $this->assertCount(1, $manager->employments);
+    $this->actingAs(administrator())
+        ->from(action([ManagersController::class, 'edit'], $manager))
+        ->patch(action([ManagersController::class, 'update'], $manager), $data)
+        ->assertValid()
+        ->assertRedirect(action([ManagersController::class, 'index']));
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()
-                    ->withManager($manager)
-                    ->create([
-                        'started_at' => now()->toDateTimeString(),
-                    ])
-            )
-            ->assertSessionHasErrors(['started_at']);
+    expect($manager->fresh()->employments)->toHaveCount(1);
+});
 
-        tap($manager->fresh(), function ($manager) use ($startDate) {
-            $this->assertSame($startDate, $manager->employments->last()->started_at->toDateTimeString());
-        });
-    }
+test('a basic user cannot update a manager', function () {
+    $manager = Manager::factory()->create();
+    $data = UpdateRequest::factory()->create();
 
-    /**
-     * @test
-     */
-    public function updating_cannot_employ_an_available_manager_when_started_at_is_filled()
-    {
-        $manager = Manager::factory()->available()->create();
-        $startDate = $manager->startedAt->toDateTimeString();
+    $this->actingAs(basicUser())
+        ->patch(action([ManagersController::class, 'update'], $manager), $data)
+        ->assertForbidden();
+});
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()
-                    ->withManager($manager)
-                    ->create([
-                        'started_at' => now()->toDateTimeString(),
-                    ])
-            )
-            ->assertSessionHasErrors(['started_at']);
+test('a guest cannot update a manager', function () {
+    $manager = Manager::factory()->create();
+    $data = UpdateRequest::factory()->create();
 
-        tap($manager->fresh(), function ($manager) use ($startDate) {
-            $this->assertSame($startDate, $manager->employments->first()->started_at->toDateTimeString());
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_update_a_manager()
-    {
-        $manager = Manager::factory()->create();
-
-        $this
-            ->actAs(ROLE::BASIC)
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()
-                    ->withManager($manager)
-                    ->create()
-            )
-            ->assertForbidden();
-    }
-
-    /**
-     * @test
-     */
-    public function a_guest_cannot_update_a_manager()
-    {
-        $manager = Manager::factory()->create();
-
-        $this
-            ->from(action([ManagersController::class, 'edit'], $manager))
-            ->put(
-                action([ManagersController::class, 'update'], $manager),
-                ManagerRequestDataFactory::new()
-                    ->withManager($manager)
-                    ->create()
-            )
-            ->assertRedirect(route('login'));
-    }
-}
+    $this->patch(action([ManagersController::class, 'update'], $manager), $data)
+        ->assertRedirect(route('login'));
+});
