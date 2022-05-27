@@ -1,9 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\Stables;
-
 use App\Enums\Role;
 use App\Http\Controllers\Stables\RestoreController;
 use App\Http\Controllers\Stables\StablesController;
@@ -24,7 +20,7 @@ class RestoreControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->stable = Stable::factory()->softDeleted()->create();
+        $this->stable = Stable::factory()->trashed()->create();
     }
 
     /**
