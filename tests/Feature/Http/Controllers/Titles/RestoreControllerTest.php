@@ -1,63 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Feature\Http\Controllers\Titles;
 
-use App\Enums\Role;
 use App\Http\Controllers\Titles\RestoreController;
 use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
-use Tests\TestCase;
 
-/**
- * @group titles
- * @group feature-titles
- */
-class RestoreControllerTest extends TestCase
-{
-    public Title $title;
+test('invoke restores a deleted title and redirects', function () {
+    $title = Title::factory()->trashed()->create();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $this->actingAs(administrator())
+        ->patch(action([RestoreController::class], $title))
+        ->assertRedirect(action([TitlesController::class, 'index']));
 
-        $this->title = Title::factory()->softDeleted()->create();
-    }
+    $this->assertNull($this->title->fresh()->deleted_at);
+});
 
-    /**
-     * @test
-     */
-    public function invoke_restores_a_deleted_title_and_redirects()
-    {
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([RestoreController::class], $this->title))
-            ->assertRedirect(action([TitlesController::class, 'index']));
+test('a basic user cannot restore a title', function () {
+    $title = Title::factory()->trashed()->create();
 
-        tap($this->title->fresh(), function ($title) {
-            $this->assertNull($title->deleted_at);
-        });
-    }
+    $this->actingAs(basicUser())
+        ->patch(action([RestoreController::class], $title))
+        ->assertForbidden();
+});
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_restore_a_title()
-    {
-        $this
-            ->actAs(ROLE::BASIC)
-            ->patch(action([RestoreController::class], $this->title))
-            ->assertForbidden();
-    }
+test('a guest cannot restore a title', function () {
+    $title = Title::factory()->trashed()->create();
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_restore_a_title()
-    {
-        $this
-            ->patch(action([RestoreController::class], $this->title))
-            ->assertRedirect(route('login'));
-    }
-}
+    $this->patch(action([RestoreController::class], $title))
+        ->assertRedirect(route('login'));
+});
