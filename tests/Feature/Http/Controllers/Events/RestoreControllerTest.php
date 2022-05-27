@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Feature\Http\Controllers\Events;
 
 use App\Enums\Role;
@@ -22,7 +20,7 @@ class RestoreControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->event = Event::factory()->softDeleted()->create();
+        $this->event = Event::factory()->trashed()->create();
     }
 
     /**
