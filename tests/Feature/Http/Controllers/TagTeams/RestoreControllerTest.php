@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\TagTeams;
+namespace Tests\Feature\Http\Controllers\Stables;
 
 use App\Enums\Role;
 use App\Http\Controllers\TagTeams\RestoreController;
@@ -24,7 +22,7 @@ class RestoreControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->tagTeam = TagTeam::factory()->softDeleted()->create();
+        $this->tagTeam = TagTeam::factory()->trashed()->create();
     }
 
     /**
