@@ -13,10 +13,9 @@ test('invoke releases a bookable referee and redirects', function () {
         ->patch(action([ReleaseController::class], $referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertNotNull($referee->employments->last()->ended_at);
-        $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
-    });
+    expect($referee->fresh())
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(RefereeStatus::RELEASED);
 });
 
 test('invoke releases an injured referee and redirects', function () {
@@ -26,11 +25,10 @@ test('invoke releases an injured referee and redirects', function () {
         ->patch(action([ReleaseController::class], $referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertNotNull($referee->injuries->last()->ended_at);
-        $this->assertNotNull($referee->employments->last()->ended_at);
-        $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
-    });
+    expect($referee->fresh())
+        ->injuries->last()->ended_at->not->toBeNull()
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(RefereeStatus::RELEASED);
 });
 
 test('invoke releases an suspended referee and redirects', function () {
@@ -40,11 +38,10 @@ test('invoke releases an suspended referee and redirects', function () {
         ->patch(action([ReleaseController::class], $referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertNotNull($referee->suspensions->last()->ended_at);
-        $this->assertNotNull($referee->employments->last()->ended_at);
-        $this->assertEquals(RefereeStatus::RELEASED, $referee->status);
-    });
+    expect($referee->fresh())
+        ->suspensions->last()->ended_at->not->toBeNull()
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(RefereeStatus::RELEASED);
 });
 
 test('a basic user cannot release a bookable referee', function () {
@@ -67,9 +64,8 @@ test('invoke throws an exception for releasing a non releasable referee', functi
 
     $referee = Referee::factory()->{$factoryState}()->create();
 
-    $response = $this->actingAs(administrator())
+    $this->actingAs(administrator())
         ->patch(action([ReleaseController::class], $referee));
-    dd($response);
 })->throws(CannotBeReleasedException::class)->with([
     'unemployed',
     'withFutureEmployment',

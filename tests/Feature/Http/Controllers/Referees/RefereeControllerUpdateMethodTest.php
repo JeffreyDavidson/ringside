@@ -47,10 +47,10 @@ test('updates a referee and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    expect($referee->fresh()->first_name)->toBe('Taylor');
-    expect($referee->fresh()->last_name)->toBe('Otwell');
-
-    expect($referee->fresh()->employments)->toBeEmpty();
+    expect(Referee::latest()->first())
+        ->first_name->toBe('Taylor')
+        ->last_name->toBe('Otwell')
+        ->employments->toBeEmpty();
 });
 
 test('update can employ an unemployed referee when started at is filled', function () {
@@ -64,8 +64,9 @@ test('update can employ an unemployed referee when started at is filled', functi
         ->assertValid()
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    expect($referee->fresh()->employments)->toHaveCount(1);
-    expect($referee->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+    expect($referee->fresh())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($now->toDateTimeString());
 });
 
 test('update can employ a future employed referee when started at is filled', function () {
@@ -79,8 +80,9 @@ test('update can employ a future employed referee when started at is filled', fu
         ->assertValid()
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    expect($referee->fresh()->employments)->toHaveCount(1);
-    expect($referee->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+    expect($referee->fresh())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($now->toDateTimeString());
 });
 
 test('a basic user cannot update a referee', function () {

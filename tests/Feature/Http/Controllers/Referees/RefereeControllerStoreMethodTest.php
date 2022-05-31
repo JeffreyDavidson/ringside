@@ -37,10 +37,10 @@ test('store creates a referee and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    expect(Referee::latest()->first()->first_name)->toBe('Taylor');
-    expect(Referee::latest()->first()->last_name)->toBe('Otwell');
-
-    expect(Referee::latest()->first()->employments)->toBeEmpty();
+    expect(Referee::latest()->first())
+        ->first_name->toBe('Taylor')
+        ->last_name->toBe('Otwell')
+        ->employments->toBeEmpty();
 });
 
 test('an employment is created for the referee if started at is filled in request', function () {
@@ -55,8 +55,9 @@ test('an employment is created for the referee if started at is filled in reques
         ->assertValid()
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    expect(Referee::latest()->first()->employments)->toHaveCount(1);
-    expect(Referee::latest()->first()->employments->first()->started_at->toDateTimeString())->toBe($dateTime);
+    expect(Referee::latest()->first())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($dateTime);
 });
 
 test('a basic user cannot create a referee', function () {

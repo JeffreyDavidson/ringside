@@ -13,10 +13,9 @@ test('invoke employs an unemployed referee and redirects', function () {
         ->patch(action([EmployController::class], $referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertCount(1, $referee->employments);
-        $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-    });
+    expect($referee->fresh())
+        ->employments->toHaveCount(1)
+        ->status->toBe(RefereeStatus::BOOKABLE);
 });
 
 test('invoke employs a future employed referee and redirects', function () {
@@ -27,10 +26,9 @@ test('invoke employs a future employed referee and redirects', function () {
         ->patch(action([EmployController::class], $referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) use ($startedAt) {
-        $this->assertTrue($referee->currentEmployment->started_at->lt($startedAt));
-        $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-    });
+    expect($referee->fresh())
+        ->currentEmployment->started_at->toBeLessThan($startedAt)
+        ->status->toBe(RefereeStatus::BOOKABLE);
 });
 
 test('invoke employs a released referee and redirects', function () {
@@ -40,10 +38,9 @@ test('invoke employs a released referee and redirects', function () {
         ->patch(action([EmployController::class], $referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertCount(2, $referee->employments);
-        $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-    });
+    expect($referee->fresh())
+        ->employments->toHaveCount(2)
+        ->status->toBe(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot employ a referee', function () {

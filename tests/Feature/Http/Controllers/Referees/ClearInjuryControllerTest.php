@@ -6,31 +6,28 @@ use App\Http\Controllers\Referees\ClearInjuryController;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Models\Referee;
 
-test('invoke marks an injured referee as being cleared from injury and redirects', function () {
-    $referee = Referee::factory()->injured()->create();
+beforeEach(function () {
+    $this->referee = Referee::factory()->injured()->create();
+});
 
+test('invoke marks an injured referee as being cleared from injury and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([ClearInjuryController::class], $referee))
+        ->patch(action([ClearInjuryController::class], $this->referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertNotNull($referee->injuries->last()->ended_at);
-        $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-    });
+    expect($this->referee->fresh())
+        ->injuries->last()->ended_at->not->toBeNull()
+        ->status->toBe(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot mark an injured referee as cleared', function () {
-    $referee = Referee::factory()->injured()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([ClearInjuryController::class], $referee))
+        ->patch(action([ClearInjuryController::class], $this->referee))
         ->assertForbidden();
 });
 
 test('a guest cannot mark an injured referee as cleared', function () {
-    $referee = Referee::factory()->injured()->create();
-
-    $this->patch(action([ClearInjuryController::class], $referee))
+    $this->patch(action([ClearInjuryController::class], $this->referee))
         ->assertRedirect(route('login'));
 });
 

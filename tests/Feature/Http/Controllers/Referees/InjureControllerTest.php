@@ -6,31 +6,28 @@ use App\Http\Controllers\Referees\InjureController;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Models\Referee;
 
-test('invoke injures a bookable referee and redirects', function () {
-    $referee = Referee::factory()->bookable()->create();
+beforeEach(function () {
+    $this->referee = Referee::factory()->bookable()->create();
+});
 
+test('invoke injures a bookable referee and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([InjureController::class], $referee))
+        ->patch(action([InjureController::class], $this->referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertCount(1, $referee->injuries);
-        $this->assertEquals(RefereeStatus::INJURED, $referee->status);
-    });
+    expect($this->referee->fresh())
+        ->injuries->toHaveCount(1)
+        ->status->toBe(RefereeStatus::INJURED);
 });
 
 test('a basic user cannot injure a bookable referee', function () {
-    $referee = Referee::factory()->bookable()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([InjureController::class], $referee))
+        ->patch(action([InjureController::class], $this->referee))
         ->assertForbidden();
 });
 
 test('a guest user cannot injure a bookable referee', function () {
-    $referee = Referee::factory()->bookable()->create();
-
-    $this->patch(action([InjureController::class], $referee))
+    $this->patch(action([InjureController::class], $this->referee))
         ->assertRedirect(route('login'));
 });
 

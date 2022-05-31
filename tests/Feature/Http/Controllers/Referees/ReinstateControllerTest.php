@@ -6,31 +6,28 @@ use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Controllers\Referees\ReinstateController;
 use App\Models\Referee;
 
-test('invoke reinstates a suspended referee and redirects', function () {
-    $referee = Referee::factory()->suspended()->create();
+beforeEach(function () {
+    $this->referee = Referee::factory()->suspended()->create();
+});
 
+test('invoke reinstates a suspended referee and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([ReinstateController::class], $referee))
+        ->patch(action([ReinstateController::class], $this->referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertNotNull($referee->suspensions->last()->ended_at);
-        $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-    });
+    expect($this->referee->fresh())
+        ->suspensions->last()->ended_at->not->toBeNull()
+        ->status->toBe(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot reinstate a suspended referee', function () {
-    $referee = Referee::factory()->suspended()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([ReinstateController::class], $referee))
+        ->patch(action([ReinstateController::class], $this->referee))
         ->assertForbidden();
 });
 
 test('a guest cannot reinstate a suspended referee', function () {
-    $referee = Referee::factory()->suspended()->create();
-
-    $this->patch(action([ReinstateController::class], $referee))
+    $this->patch(action([ReinstateController::class], $this->referee))
         ->assertRedirect(route('login'));
 });
 

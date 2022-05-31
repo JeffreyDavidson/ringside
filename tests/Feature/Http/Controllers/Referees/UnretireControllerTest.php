@@ -6,31 +6,28 @@ use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Controllers\Referees\UnretireController;
 use App\Models\Referee;
 
-test('invoke unretires a retired referee and redirects', function () {
-    $referee = Referee::factory()->retired()->create();
+beforeEach(function () {
+    $this->referee = Referee::factory()->retired()->create();
+});
 
+test('invoke unretires a retired referee and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([UnretireController::class], $referee))
+        ->patch(action([UnretireController::class], $this->referee))
         ->assertRedirect(action([RefereesController::class, 'index']));
 
-    tap($referee->fresh(), function ($referee) {
-        $this->assertNotNull($referee->retirements->last()->ended_at);
-        $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
-    });
+    expect($this->referee->fresh())
+        ->retirements->last()->ended_at->not->toBeNull()
+        ->status->toBe(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot unretire a referee', function () {
-    $referee = Referee::factory()->retired()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([UnretireController::class], $referee))
+        ->patch(action([UnretireController::class], $this->referee))
         ->assertForbidden();
 });
 
 test('a guest cannot unretire a referee', function () {
-    $referee = Referee::factory()->retired()->create();
-
-    $this->patch(action([UnretireController::class], $referee))
+    $this->patch(action([UnretireController::class], $this->referee))
         ->assertRedirect(route('login'));
 });
 
