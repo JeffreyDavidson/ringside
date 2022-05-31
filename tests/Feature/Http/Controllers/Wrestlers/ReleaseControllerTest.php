@@ -15,10 +15,9 @@ test('invoke releases a bookable wrestler and redirects', function () {
         ->patch(action([ReleaseController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertNotNull($wrestler->employments->last()->ended_at);
-        $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(WrestlerStatus::RELEASED);
 });
 
 test('invoke releases an injured wrestler and redirects', function () {
@@ -28,11 +27,10 @@ test('invoke releases an injured wrestler and redirects', function () {
         ->patch(action([ReleaseController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertNotNull($wrestler->injuries->last()->ended_at);
-        $this->assertNotNull($wrestler->employments->last()->ended_at);
-        $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->employments->last()->ended_at->not->toBeNull()
+        ->injuries->last()->ended_at->not->toBeNull()
+        ->status->toBe(WrestlerStatus::RELEASED);
 });
 
 test('invoke releases an suspended wrestler and redirects', function () {
@@ -42,11 +40,10 @@ test('invoke releases an suspended wrestler and redirects', function () {
         ->patch(action([ReleaseController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertNotNull($wrestler->suspensions->last()->ended_at);
-        $this->assertNotNull($wrestler->employments->last()->ended_at);
-        $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->employments->last()->ended_at->not->toBeNull()
+        ->suspensions->last()->ended_at->not->toBeNull()
+        ->status->toBe(WrestlerStatus::RELEASED);
 });
 
 test('releasing a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -59,9 +56,8 @@ test('releasing a bookable wrestler on a bookable tag team makes tag team unbook
         ->patch(action([ReleaseController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($tagTeam->fresh(), function ($tagTeam) {
-        $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->status);
-    });
+    expect($tagTeam->fresh())
+        ->status->toBe(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot release a bookable wrestler', function () {

@@ -15,10 +15,9 @@ test('invoke retires a bookable wrestler and redirects', function () {
         ->patch(action([RetireController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(1, $wrestler->retirements);
-        $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->retirements->toHaveCount(1)
+        ->status->toBe(WrestlerStatus::RETIRED);
 });
 
 test('invoke retires an injured wrestler and redirects', function () {
@@ -28,10 +27,9 @@ test('invoke retires an injured wrestler and redirects', function () {
         ->patch(action([RetireController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(1, $wrestler->retirements);
-        $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->retirements->toHaveCount(1)
+        ->status->toBe(WrestlerStatus::RETIRED);
 });
 
 test('invoke retires a suspended wrestler and redirects', function () {
@@ -41,10 +39,9 @@ test('invoke retires a suspended wrestler and redirects', function () {
         ->patch(action([RetireController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(1, $wrestler->retirements);
-        $this->assertEquals(WrestlerStatus::RETIRED, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->retirements->toHaveCount(1)
+        ->status->toBe(WrestlerStatus::RETIRED);
 });
 
 test('retiring a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -55,9 +52,8 @@ test('retiring a bookable wrestler on a bookable tag team makes tag team unbooka
         ->patch(action([RetireController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($tagTeam->fresh(), function ($tagTeam) {
-        $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->status);
-    });
+    expect($tagTeam->fresh())
+        ->status->toBe(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot retire a bookable wrestler', function () {

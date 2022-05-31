@@ -6,31 +6,28 @@ use App\Http\Controllers\Wrestlers\UnretireController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\Wrestler;
 
-test('invoke unretires a retired wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->retired()->create();
+beforeEach(function () {
+    $this->wrestler = Wrestler::factory()->retired()->create();
+});
 
+test('invoke unretires a retired wrestler and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([UnretireController::class], $wrestler))
+        ->patch(action([UnretireController::class], $this->wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertNotNull($wrestler->retirements->last()->ended_at);
-        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-    });
+    expect($this->wrestler->fresh())
+        ->retirements->last()->ended_at->not->toBeNull()
+        ->status->toBe(WrestlerStatus::BOOKABLE);
 });
 
 test('a basic user cannot unretire a wrestler', function () {
-    $wrestler = Wrestler::factory()->retired()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([UnretireController::class], $wrestler))
+        ->patch(action([UnretireController::class], $this->wrestler))
         ->assertForbidden();
 });
 
 test('a guest cannot unretire a wrestler', function () {
-    $wrestler = Wrestler::factory()->retired()->create();
-
-    $this->patch(action([UnretireController::class], $wrestler))
+    $this->patch(action([UnretireController::class], $this->wrestler))
         ->assertRedirect(route('login'));
 });
 

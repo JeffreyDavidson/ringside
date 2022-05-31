@@ -8,17 +8,18 @@ use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 
-test('invoke suspends a bookable wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->bookable()->create();
+beforeEach(function () {
+    $this->wrestler = Wrestler::factory()->bookable()->create();
+});
 
+test('invoke suspends a bookable wrestler and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([SuspendController::class], $wrestler))
+        ->patch(action([SuspendController::class], $this->wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(1, $wrestler->suspensions);
-        $this->assertEquals(WrestlerStatus::SUSPENDED, $wrestler->status);
-    });
+    expect($this->wrestler->fresh())
+        ->suspensions->toHaveCount(1)
+        ->status->toBe(WrestlerStatus::SUSPENDED);
 });
 
 test('suspending a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -32,17 +33,13 @@ test('suspending a bookable wrestler on a bookable tag team makes tag team unboo
 });
 
 test('a basic user cannot suspend a bookable wrestler', function () {
-    $wrestler = Wrestler::factory()->bookable()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([SuspendController::class], $wrestler))
+        ->patch(action([SuspendController::class], $this->wrestler))
         ->assertForbidden();
 });
 
 test('a guest cannot suspend a bookable wrestler', function () {
-    $wrestler = Wrestler::factory()->bookable()->create();
-
-    $this->patch(action([SuspendController::class], $wrestler))
+    $this->patch(action([SuspendController::class], $this->wrestler))
         ->assertRedirect(route('login'));
 });
 

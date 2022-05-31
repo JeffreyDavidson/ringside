@@ -8,17 +8,18 @@ use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 
-test('invoke injures a bookable wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->bookable()->create();
+beforeEach(function () {
+    $this->wrestler = Wrestler::factory()->bookable()->create();
+});
 
+test('invoke injures a bookable wrestler and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([InjureController::class], $wrestler))
+        ->patch(action([InjureController::class], $this->wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(1, $wrestler->injuries);
-        $this->assertEquals(WrestlerStatus::INJURED, $wrestler->status);
-    });
+    expect($this->wrestler->fresh())
+        ->injuries->toHaveCount(1)
+        ->status->toBe(WrestlerStatus::INJURED);
 });
 
 test('injuring a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -29,23 +30,18 @@ test('injuring a bookable wrestler on a bookable tag team makes tag team unbooka
         ->patch(action([InjureController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($tagTeam->fresh(), function ($tagTeam) {
-        $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->status);
-    });
+    expect($tagTeam->fresh())
+        ->status->toBe(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot injure a bookable wrestler', function () {
-    $wrestler = Wrestler::factory()->bookable()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([InjureController::class], $wrestler))
+        ->patch(action([InjureController::class], $this->wrestler))
         ->assertForbidden();
 });
 
 test('a guest user cannot injure a bookable wrestler', function () {
-    $wrestler = Wrestler::factory()->bookable()->create();
-
-    $this->patch(action([InjureController::class], $wrestler))
+    $this->patch(action([InjureController::class], $this->wrestler))
         ->assertRedirect(route('login'));
 });
 

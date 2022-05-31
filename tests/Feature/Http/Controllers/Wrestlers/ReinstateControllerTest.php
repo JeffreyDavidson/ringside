@@ -8,17 +8,18 @@ use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 
-test('invoke reinstates a suspended wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->suspended()->create();
+beforeEach(function () {
+    $this->wrestler = Wrestler::factory()->suspended()->create();
+});
 
+test('invoke reinstates a suspended wrestler and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([ReinstateController::class], $wrestler))
+        ->patch(action([ReinstateController::class], $this->wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertNotNull($wrestler->suspensions->last()->ended_at);
-        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-    });
+    expect($this->wrestler->fresh())
+        ->suspensions->last()->ended_at->not->toBeNull()
+        ->status->toBe(WrestlerStatus::BOOKABLE);
 });
 
 test('reinstating a suspended wrestler on an unbookable tag team makes tag team bookable', function () {
@@ -28,23 +29,18 @@ test('reinstating a suspended wrestler on an unbookable tag team makes tag team 
     $this->actingAs(administrator())
         ->patch(action([ReinstateController::class], $wrestler));
 
-    tap($tagTeam->fresh(), function ($tagTeam) {
-        $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
-    });
+    expect($tagTeam->fresh())
+        ->status->toBe(TagTeamStatus::BOOKABLE);
 });
 
 test('a basic user cannot reinstate a suspended wrestler', function () {
-    $wrestler = Wrestler::factory()->suspended()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([ReinstateController::class], $wrestler))
+        ->patch(action([ReinstateController::class], $this->wrestler))
         ->assertForbidden();
 });
 
 test('a guest cannot reinstate a suspended wrestler', function () {
-    $wrestler = Wrestler::factory()->suspended()->create();
-
-    $this->patch(action([ReinstateController::class], $wrestler))
+    $this->patch(action([ReinstateController::class], $this->wrestler))
         ->assertRedirect(route('login'));
 });
 

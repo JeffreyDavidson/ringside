@@ -41,13 +41,13 @@ test('store creates a wrestler and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect(Wrestler::latest()->first()->name)->toBe('Example Wrestler Name');
-    expect(Wrestler::latest()->first()->height)->toBe(82);
-    expect(Wrestler::latest()->first()->weight)->toBe(300);
-    expect(Wrestler::latest()->first()->hometown)->toBe('Laraville, New York');
-    expect(Wrestler::latest()->first()->signature_move)->toBeNull();
-
-    expect(Wrestler::latest()->first()->employments)->toBeEmpty();
+    expect(Wrestler::latest()->first())
+        ->name->toBe('Example Wrestler Name')
+        ->height->toBe(82)
+        ->weight->toBe(300)
+        ->hometown->toBe('Laraville, New York')
+        ->signature_move->toBeNull()
+        ->employments->toBeEmpty();
 });
 
 test('store creates a wrestler with a signature move and redirects', function () {
@@ -61,7 +61,8 @@ test('store creates a wrestler with a signature move and redirects', function ()
         ->assertValid()
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect(Wrestler::latest()->first()->signature_move)->toBe('Example Finishing Move');
+    expect(Wrestler::latest()->first())
+        ->signature_move->toBe('Example Finishing Move');
 });
 
 test('an employment is created for the wrestler if started at is filled in request', function () {
@@ -76,8 +77,9 @@ test('an employment is created for the wrestler if started at is filled in reque
         ->assertValid()
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect(Wrestler::latest()->first()->employments)->toHaveCount(1);
-    expect(Wrestler::latest()->first()->employments->first()->started_at->toDateTimeString())->toBe($dateTime);
+    expect(Wrestler::latest()->first())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($dateTime);
 });
 
 test('a basic user cannot create a wrestler', function () {

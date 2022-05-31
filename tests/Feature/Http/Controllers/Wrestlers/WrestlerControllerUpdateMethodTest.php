@@ -53,12 +53,12 @@ test('updates a wrestler and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect($wrestler->fresh()->name)->toBe('Example Wrestler Name');
-    expect($wrestler->fresh()->height)->toBe(82);
-    expect($wrestler->fresh()->weight)->toBe(300);
-    expect($wrestler->fresh()->hometown)->toBe('Laraville, New York');
-
-    expect($wrestler->fresh()->employments)->toBeEmpty();
+    expect($wrestler->fresh())
+        ->name->toBe('Example Wrestler Name')
+        ->height->toBe(82)
+        ->weight->toBe(300)
+        ->hometown->toBe('Laraville, New York')
+        ->employments->toBeEmpty();
 });
 
 test('update can employ an unemployed wrestler when started at is filled', function () {
@@ -72,8 +72,9 @@ test('update can employ an unemployed wrestler when started at is filled', funct
         ->assertValid()
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect($wrestler->fresh()->employments)->toHaveCount(1);
-    expect($wrestler->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+    expect($wrestler->fresh())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($now->toDateTimeString());
 });
 
 test('update can employ a future employed wrestler when started at is filled', function () {
@@ -87,8 +88,9 @@ test('update can employ a future employed wrestler when started at is filled', f
         ->assertValid()
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect($wrestler->fresh()->employments)->toHaveCount(1);
-    expect($wrestler->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+    expect($wrestler->fresh())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($now->toDateTimeString());
 });
 
 test('a basic user cannot update a wrestler', function () {

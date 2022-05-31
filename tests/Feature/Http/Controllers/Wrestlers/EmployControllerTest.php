@@ -13,10 +13,9 @@ test('invoke employs an unemployed wrestler and redirects', function () {
         ->patch(action([EmployController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(1, $wrestler->employments);
-        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->employments->toHaveCount(1)
+        ->status->toBe(WrestlerStatus::BOOKABLE);
 });
 
 test('invoke employs a future employed wrestler and redirects', function () {
@@ -27,10 +26,9 @@ test('invoke employs a future employed wrestler and redirects', function () {
         ->patch(action([EmployController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) use ($startedAt) {
-        $this->assertTrue($wrestler->currentEmployment->started_at->lt($startedAt));
-        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->currentEmployment->started_at->toBeLessThan($startedAt)
+        ->status->toBe(WrestlerStatus::BOOKABLE);
 });
 
 test('invoke employs a released wrestler and redirects', function () {
@@ -40,10 +38,9 @@ test('invoke employs a released wrestler and redirects', function () {
         ->patch(action([EmployController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    tap($wrestler->fresh(), function ($wrestler) {
-        $this->assertCount(2, $wrestler->employments);
-        $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
-    });
+    expect($wrestler->fresh())
+        ->employments->toHaveCount(2)
+        ->status->toBe(WrestlerStatus::BOOKABLE);
 });
 
 test('a basic user cannot employ a wrestler', function () {
