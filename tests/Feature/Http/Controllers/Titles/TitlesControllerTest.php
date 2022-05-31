@@ -8,7 +8,7 @@ test('index returns a view', function () {
         ->get(action([TitlesController::class, 'index']))
         ->assertOk()
         ->assertViewIs('titles.index')
-        ->assertSeeLivewire('titles.title-list');
+        ->assertSeeLivewire('titles.titles-list');
 });
 
 test('a basic user cannot view titles index page', function () {
@@ -51,7 +51,7 @@ test('a guest cannot view a title', function () {
 test('deletes a title and redirects', function () {
     $title = Title::factory()->create();
 
-    $this->actingAs(basicUser())
+    $this->actingAs(administrator())
         ->delete(action([TitlesController::class, 'destroy'], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 

@@ -3,6 +3,7 @@
 use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Titles\DeactivateController;
+use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
 
 test('invoke deactivates an active title and redirects', function () {
@@ -34,6 +35,8 @@ test('a guest cannot deactivates a titles', function () {
 });
 
 test('invoke throws exception for deactivating a non deactivatable title', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $title = Title::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

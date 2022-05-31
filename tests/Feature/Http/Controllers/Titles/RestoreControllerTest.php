@@ -13,7 +13,7 @@ test('invoke restores a deleted title and redirects', function () {
         ->patch(action([RestoreController::class], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    $this->assertNull($this->title->fresh()->deleted_at);
+    $this->assertNull($title->fresh()->deleted_at);
 });
 
 test('a basic user cannot restore a title', function () {

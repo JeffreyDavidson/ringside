@@ -82,7 +82,7 @@ test('update can activate an inactive title', function () {
 
     expect(Title::latest()->first()->activations)->toHaveCount(2);
 
-    expect(Title::latest()->first()->activations->first()->started_at->toDateTimeString())->toBe($activatedAt);
+    expect(Title::latest()->first()->activations->last()->started_at->toDateTimeString())->toBe($activatedAt);
 });
 
 test('update cannot activate an active title', function () {

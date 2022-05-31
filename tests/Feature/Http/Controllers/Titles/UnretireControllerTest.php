@@ -31,10 +31,12 @@ test('a guest cannot unretire a title', function () {
     $title = Title::factory()->retired()->create();
 
     $this->patch(action([UnretireController::class], $title))
-        ->assertRedirect([TitlesController::class, 'index']);
+        ->assertRedirect(route('login'));
 });
 
 test('invoke throws exception for unretiring a non unretirable title', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $title = Title::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

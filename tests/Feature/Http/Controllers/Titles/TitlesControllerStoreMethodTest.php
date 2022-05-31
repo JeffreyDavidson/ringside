@@ -24,7 +24,7 @@ test('a guest cannot view the form for creating a title', function () {
 
 test('store creates a title and redirects', function () {
     $data = StoreRequest::factory()->create([
-        'name' => 'Example Title Name',
+        'name' => 'Example Title',
         'activated_at' => null,
     ]);
 
@@ -34,7 +34,7 @@ test('store creates a title and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    expect(Title::latest()->first()->name)->toBe('Example Title Name');
+    expect(Title::latest()->first()->name)->toBe('Example Title');
 
     expect(Title::latest()->first()->activations)->toBeEmpty();
 });
