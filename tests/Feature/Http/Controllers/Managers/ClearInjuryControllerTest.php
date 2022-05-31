@@ -35,6 +35,8 @@ test('a guest cannot mark an injured manager as cleared', function () {
 });
 
 test('invoke throws exception for injuring a non injurable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

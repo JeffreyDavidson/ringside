@@ -62,6 +62,8 @@ test('a guest user cannot injure a manager', function () {
 });
 
 test('invoke throws exception for injuring a non injurable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

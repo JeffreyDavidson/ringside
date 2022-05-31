@@ -35,6 +35,8 @@ test('a guest cannot unretire a manager', function () {
 });
 
 test('invoke throws exception for unretiring a non unretirable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

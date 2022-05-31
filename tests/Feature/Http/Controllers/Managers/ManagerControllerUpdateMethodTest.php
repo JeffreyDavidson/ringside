@@ -83,20 +83,6 @@ test('update can employ a future employed manager when started at is filled', fu
     expect($manager->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
 });
 
-test('updating cannot employ an available manager when started at is filled', function () {
-    $now = now();
-    $manager = Manager::factory()->available()->create();
-    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
-
-    $this->actingAs(administrator())
-        ->from(action([ManagersController::class, 'edit'], $manager))
-        ->patch(action([ManagersController::class, 'update'], $manager), $data)
-        ->assertValid()
-        ->assertRedirect(action([ManagersController::class, 'index']));
-
-    expect($manager->fresh()->employments)->toHaveCount(1);
-});
-
 test('a basic user cannot update a manager', function () {
     $manager = Manager::factory()->create();
     $data = UpdateRequest::factory()->create();

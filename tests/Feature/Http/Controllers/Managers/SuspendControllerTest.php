@@ -35,6 +35,8 @@ test('a guest cannot suspend an available manager', function () {
 });
 
 test('invoke throws exception for suspending a non suspendable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

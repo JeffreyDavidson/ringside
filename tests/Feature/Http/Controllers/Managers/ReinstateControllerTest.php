@@ -35,6 +35,8 @@ test('a guest cannot reinstate a suspended manager', function () {
 });
 
 test('invoke throws exception for reinstating a non reinstatable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

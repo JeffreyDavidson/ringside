@@ -88,6 +88,8 @@ test('a guest cannot release a available manager', function () {
 });
 
 test('invoke throws an exception for releasing a non releasable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

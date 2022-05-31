@@ -87,6 +87,8 @@ test('a guest cannot suspend a available manager', function () {
 });
 
 test('invoke throws exception for retiring a non retirable manager', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $manager = Manager::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())
