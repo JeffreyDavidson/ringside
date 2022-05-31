@@ -38,12 +38,13 @@ test('store creates a venue and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([VenuesController::class, 'index']));
 
-    expect(Venue::latest()->first()->name)->toBe('Example Venue');
-    expect(Venue::latest()->first()->address1)->toBe('123 Main Street');
-    expect(Venue::latest()->first()->address2)->toBe('Suite 100');
-    expect(Venue::latest()->first()->city)->toBe('Laraville');
-    expect(Venue::latest()->first()->state)->toBe('New York');
-    expect(Venue::latest()->first()->zip)->toBe('12345');
+    expect(Venue::latest()->first())
+        ->name->toBe('Example Venue')
+        ->address1->toBe('123 Main Street')
+        ->address2->toBe('Suite 100')
+        ->city->toBe('Laraville')
+        ->state->toBe('New York')
+        ->zip->toBe('12345');
 });
 
 test('a basic user cannot create a venue', function () {

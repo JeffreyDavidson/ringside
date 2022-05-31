@@ -51,12 +51,13 @@ test('updates a venue and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([VenuesController::class, 'index']));
 
-    expect($venue->fresh()->name)->toBe('New Venue Name');
-    expect($venue->fresh()->address1)->toBe('456 1st Avenue');
-    expect($venue->fresh()->address2)->toBeNull();
-    expect($venue->fresh()->city)->toBe('Laraville');
-    expect($venue->fresh()->state)->toBe('California');
-    expect($venue->fresh()->zip)->toBe('67890');
+    expect($venue->fresh())
+        ->name->toBe('New Venue Name')
+        ->address1->toBe('456 1st Avenue')
+        ->address2->toBeNull()
+        ->city->toBe('Laraville')
+        ->state->toBe('California')
+        ->zip->toBe('67890');
 });
 
 test('a basic user cannot update a venue', function () {
