@@ -13,10 +13,9 @@ test('invoke unretires a retired manager and redirects', function () {
         ->patch(action([UnretireController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertNotNull($manager->retirements->last()->ended_at);
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-    });
+    expect($manager->fresh())
+        ->retirements->last()->ended_at->not->toBeNull()
+        ->status->toBe(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot unretire a manager', function () {

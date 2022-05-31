@@ -15,10 +15,9 @@ test('invoke releases a available manager and redirects', function () {
         ->patch(action([ReleaseController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertNotNull($manager->employments->last()->ended_at);
-        $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
-    });
+    expect($manager->fresh())
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(ManagerStatus::RELEASED);
 });
 
 test('invoke releases an injured manager and redirects', function () {
@@ -28,11 +27,10 @@ test('invoke releases an injured manager and redirects', function () {
         ->patch(action([ReleaseController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertNotNull($manager->injuries->last()->ended_at);
-        $this->assertNotNull($manager->employments->last()->ended_at);
-        $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
-    });
+    expect($manager->fresh())
+        ->injuries->last()->ended_at->not->toBeNull()
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(ManagerStatus::RELEASED);
 });
 
 test('invoke releases an suspended manager and redirects', function () {
@@ -42,11 +40,10 @@ test('invoke releases an suspended manager and redirects', function () {
         ->patch(action([ReleaseController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertNotNull($manager->suspensions->last()->ended_at);
-        $this->assertNotNull($manager->employments->last()->ended_at);
-        $this->assertEquals(ManagerStatus::RELEASED, $manager->status);
-    });
+    expect($manager->fresh())
+        ->suspensions->last()->ended_at->not->toBeNull()
+        ->employments->last()->ended_at->not->toBeNull()
+        ->status->toBe(ManagerStatus::RELEASED);
 });
 
 test('invoke_releases_a_manager_leaving_their_current_tag_teams_and_managers_and_redirects', function () {
@@ -62,14 +59,9 @@ test('invoke_releases_a_manager_leaving_their_current_tag_teams_and_managers_and
         ->patch(action([ReleaseController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) use ($tagTeam, $wrestler) {
-        $this->assertNotNull(
-            $manager->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at
-        );
-        $this->assertNotNull(
-            $manager->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at
-        );
-    });
+    expect($manager->fresh())
+        ->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at->not->toBeNull()
+        ->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at->not->toBeNull();
 });
 
 test('a basic user cannot release a available manager', function () {

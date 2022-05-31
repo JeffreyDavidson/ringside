@@ -13,24 +13,22 @@ test('invoke employs an unemployed manager and redirects', function () {
         ->patch(action([EmployController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(1, $manager->employments);
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-    });
+    expect($manager->fresh())
+        ->employments->toHaveCount(1)
+        ->status->toBe(ManagerStatus::AVAILABLE);
 });
 
 test('invoke employs a future employed manager and redirects', function () {
     $manager = Manager::factory()->withFutureEmployment()->create();
-    $startedAt = $manager->employments->last()->started_at;
+    $startedAt = $manager->employments->first()->started_at;
 
     $this->actingAs(administrator())
         ->patch(action([EmployController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) use ($startedAt) {
-        $this->assertTrue($manager->currentEmployment->started_at->lt($startedAt));
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-    });
+    expect($manager->fresh())
+        ->currentEmployment->started_at->toBeLessThan($startedAt)
+        ->status->toBe(ManagerStatus::AVAILABLE);
 });
 
 test('invoke employs a released manager and redirects', function () {
@@ -40,10 +38,9 @@ test('invoke employs a released manager and redirects', function () {
         ->patch(action([EmployController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(2, $manager->employments);
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-    });
+    expect($manager->fresh())
+        ->employments->toHaveCount(2)
+        ->status->toBe(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot employ a manager', function () {

@@ -61,14 +61,9 @@ test('invoke retires a manager leaving their current tag teams and managers and 
         ->patch(action([RetireController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) use ($tagTeam, $wrestler) {
-        $this->assertNotNull(
-            $manager->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at
-        );
-        $this->assertNotNull(
-            $manager->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at
-        );
-    });
+    expect($manager->fresh())
+        ->tagTeams()->where('manageable_id', $tagTeam->id)->get()->last()->pivot->left_at->not->toBeNull()
+        ->wrestlers()->where('manageable_id', $wrestler->id)->get()->last()->pivot->left_at->not->toBeNull();
 });
 
 test('a basic user cannot retire a available manager', function () {

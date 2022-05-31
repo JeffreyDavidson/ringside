@@ -47,16 +47,16 @@ test('updates a manager and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    expect($manager->fresh()->first_name)->toBe('Taylor');
-    expect($manager->fresh()->last_name)->toBe('Otwell');
-
-    expect($manager->fresh()->employments)->toBeEmpty();
+    expect($manager->fresh())
+        ->first_name->toBe('Taylor')
+        ->last_name->toBe('Otwell')
+        ->employments->toBeEmpty();
 });
 
 test('update can employ an unemployed manager when started at is filled', function () {
-    $now = now();
+    $dateTime = now()->toDateTimeString();
     $manager = Manager::factory()->unemployed()->create();
-    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
+    $data = UpdateRequest::factory()->create(['started_at' => $dateTime]);
 
     $this->actingAs(administrator())
         ->from(action([ManagersController::class, 'edit'], $manager))
@@ -64,14 +64,15 @@ test('update can employ an unemployed manager when started at is filled', functi
         ->assertValid()
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    expect($manager->fresh()->employments)->toHaveCount(1);
-    expect($manager->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+    expect($manager->fresh())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($dateTime);
 });
 
 test('update can employ a future employed manager when started at is filled', function () {
-    $now = now();
+    $dateTime = now()->toDateTimeString();
     $manager = Manager::factory()->withFutureEmployment()->create();
-    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
+    $data = UpdateRequest::factory()->create(['started_at' => $dateTime]);
 
     $this->actingAs(administrator())
         ->from(action([ManagersController::class, 'edit'], $manager))
@@ -79,8 +80,9 @@ test('update can employ a future employed manager when started at is filled', fu
         ->assertValid()
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    expect($manager->fresh()->employments)->toHaveCount(1);
-    expect($manager->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
+    expect($manager->fresh())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toDateTimeString()->toBe($dateTime);
 });
 
 test('a basic user cannot update a manager', function () {

@@ -6,31 +6,28 @@ use App\Http\Controllers\Managers\InjureController;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Models\Manager;
 
-test('invoke injures an available manager and redirects', function () {
-    $manager = Manager::factory()->available()->create();
+beforeEach(function () {
+    $this->manager = Manager::factory()->available()->create();
+});
 
+test('invoke injures an available manager and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([InjureController::class], $manager))
+        ->patch(action([InjureController::class], $this->manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(1, $manager->injuries);
-        $this->assertEquals(ManagerStatus::INJURED, $manager->status);
-    });
+    expect($this->manager->fresh())
+        ->injuries->toHaveCount(1)
+        ->status->toBe(ManagerStatus::INJURED);
 });
 
 test('a basic user cannot injure an available manager', function () {
-    $manager = Manager::factory()->available()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([InjureController::class], $manager))
+        ->patch(action([InjureController::class], $this->manager))
         ->assertForbidden();
 });
 
 test('a guest user cannot injure an available manager', function () {
-    $manager = Manager::factory()->available()->create();
-
-    $this->patch(action([InjureController::class], $manager))
+    $this->patch(action([InjureController::class], $this->manager))
         ->assertRedirect(route('login'));
 });
 

@@ -13,10 +13,9 @@ test('invoke reinstates a suspended manager and redirects', function () {
         ->patch(action([ReinstateController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertNotNull($manager->suspensions->last()->ended_at);
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-    });
+    expect($manager->fresH())
+        ->suspensions->last()->ended_at->not->toBeNull()
+        ->status->toBe(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot reinstate a suspended manager', function () {

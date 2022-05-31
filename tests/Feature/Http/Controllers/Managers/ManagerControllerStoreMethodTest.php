@@ -37,10 +37,10 @@ test('store creates a manager and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    expect(Manager::latest()->first()->first_name)->toBe('Taylor');
-    expect(Manager::latest()->first()->last_name)->toBe('Otwell');
-
-    expect(Manager::latest()->first()->employments)->toBeEmpty();
+    expect(Manager::latest()->first())
+        ->first_name->toBe('Taylor')
+        ->last_name->toBe('Otwell')
+        ->employments->toBeEmpty();
 });
 
 test('an employment is created for the manager if started at is filled in request', function () {
@@ -55,8 +55,9 @@ test('an employment is created for the manager if started at is filled in reques
         ->assertValid()
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    expect(Manager::latest()->first()->employments)->toHaveCount(1);
-    expect(Manager::latest()->first()->employments->first()->started_at->toDateTimeString())->toBe($dateTime);
+    expect(Manager::latest()->first())
+        ->employments->toHaveCount(1)
+        ->employments->first()->started_at->toEqual($dateTime);
 });
 
 test('a basic user cannot create a manager', function () {

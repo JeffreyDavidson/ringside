@@ -13,10 +13,9 @@ test('invoke suspends an available manager and redirects', function () {
         ->patch(action([SuspendController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(1, $manager->suspensions);
-        $this->assertEquals(ManagerStatus::SUSPENDED, $manager->status);
-    });
+    expect($manager->fresh())
+        ->suspensions->toHaveCount(1)
+        ->status->toBe(ManagerStatus::SUSPENDED);
 });
 
 test('a basic user cannot suspend an available manager', function () {

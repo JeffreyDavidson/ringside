@@ -6,31 +6,28 @@ use App\Http\Controllers\Managers\ClearInjuryController;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Models\Manager;
 
-test('invoke marks an injured manager as being cleared from injury and redirects', function () {
-    $manager = Manager::factory()->injured()->create();
+beforeEach(function () {
+    $this->manager = Manager::factory()->injured()->create();
+});
 
+test('invoke marks an injured manager as being cleared from injury and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([ClearInjuryController::class], $manager))
+        ->patch(action([ClearInjuryController::class], $this->manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertNotNull($manager->injuries->last()->ended_at);
-        $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
-    });
+    expect($this->manager->fresh())
+        ->injuries->last()->ended_at->not->toBeNull()
+        ->status->toBe(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot mark an injured manager as cleared', function () {
-    $manager = Manager::factory()->injured()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([ClearInjuryController::class], $manager))
+        ->patch(action([ClearInjuryController::class], $this->manager))
         ->assertForbidden();
 });
 
 test('a guest cannot mark an injured manager as cleared', function () {
-    $manager = Manager::factory()->injured()->create();
-
-    $this->patch(action([ClearInjuryController::class], $manager))
+    $this->patch(action([ClearInjuryController::class], $this->manager))
         ->assertRedirect(route('login'));
 });
 
