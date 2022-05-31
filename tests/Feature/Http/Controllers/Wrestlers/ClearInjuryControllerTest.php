@@ -56,6 +56,8 @@ test('a guest cannot mark an injured wrestler as cleared', function () {
 });
 
 test('invoke throws exception for injuring a non injurable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

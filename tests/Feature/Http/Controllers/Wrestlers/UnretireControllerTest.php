@@ -35,6 +35,8 @@ test('a guest cannot unretire a wrestler', function () {
 });
 
 test('invoke throws exception for unretiring a non unretirable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

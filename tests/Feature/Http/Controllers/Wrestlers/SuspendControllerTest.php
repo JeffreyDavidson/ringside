@@ -47,6 +47,8 @@ test('a guest cannot suspend a bookable wrestler', function () {
 });
 
 test('invoke throws exception for suspending a non suspendable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

@@ -2,6 +2,7 @@
 
 use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
+use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Wrestlers\ReinstateController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\TagTeam;
@@ -48,6 +49,8 @@ test('a guest cannot reinstate a suspended wrestler', function () {
 });
 
 test('invoke throws exception for reinstating a non reinstatable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

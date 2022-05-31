@@ -50,6 +50,8 @@ test('invoke releases an suspended wrestler and redirects', function () {
 });
 
 test('releasing a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
+    $this->withoutExceptionHandling();
+
     $tagTeam = TagTeam::factory()->bookable()->create();
     $wrestler = $tagTeam->currentWrestlers()->first();
 
@@ -78,6 +80,8 @@ test('a guest cannot release a bookable wrestler', function () {
 });
 
 test('invoke throws an exception for releasing a non releasable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

@@ -62,6 +62,8 @@ test('a guest user cannot injure a wrestler', function () {
 });
 
 test('invoke throws exception for injuring a non injurable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

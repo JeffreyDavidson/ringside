@@ -91,20 +91,6 @@ test('update can employ a future employed wrestler when started at is filled', f
     expect($wrestler->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
 });
 
-test('updating cannot employ a bookable wrestler when started at is filled', function () {
-    $now = now();
-    $wrestler = Wrestler::factory()->bookable()->create();
-    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
-
-    $this->actingAs(administrator())
-        ->from(action([WrestlersController::class, 'edit'], $wrestler))
-        ->patch(action([WrestlersController::class, 'update'], $wrestler), $data)
-        ->assertValid()
-        ->assertRedirect(action([WrestlersController::class, 'index']));
-
-    expect($wrestler->fresh()->employments)->toHaveCount(1);
-});
-
 test('a basic user cannot update a wrestler', function () {
     $wrestler = Wrestler::factory()->create();
     $data = UpdateRequest::factory()->create();
