@@ -63,10 +63,13 @@ test('a guest cannot release a bookable referee', function () {
 });
 
 test('invoke throws an exception for releasing a non releasable referee', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $referee = Referee::factory()->{$factoryState}()->create();
 
-    $this->actingAs(administrator())
+    $response = $this->actingAs(administrator())
         ->patch(action([ReleaseController::class], $referee));
+    dd($response);
 })->throws(CannotBeReleasedException::class)->with([
     'unemployed',
     'withFutureEmployment',

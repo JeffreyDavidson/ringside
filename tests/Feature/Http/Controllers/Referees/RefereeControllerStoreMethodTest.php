@@ -38,7 +38,7 @@ test('store creates a referee and redirects', function () {
         ->assertRedirect(action([RefereesController::class, 'index']));
 
     expect(Referee::latest()->first()->first_name)->toBe('Taylor');
-    expect(Referee::latest()->first()->lastt_name)->toBe('Otwell');
+    expect(Referee::latest()->first()->last_name)->toBe('Otwell');
 
     expect(Referee::latest()->first()->employments)->toBeEmpty();
 });

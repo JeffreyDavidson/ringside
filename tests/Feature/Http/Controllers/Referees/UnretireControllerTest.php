@@ -35,6 +35,8 @@ test('a guest cannot unretire a referee', function () {
 });
 
 test('invoke throws exception for unretiring a non unretirable referee', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $referee = Referee::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

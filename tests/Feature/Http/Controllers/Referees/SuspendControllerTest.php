@@ -19,16 +19,6 @@ test('invoke suspends a bookable referee and redirects', function () {
     });
 });
 
-test('suspending a bookable referee on a bookable tag team makes tag team unbookable', function () {
-    $tagTeam = TagTeam::factory()->bookable()->create();
-    $referee = $tagTeam->currentReferees()->first();
-
-    $this->actingAs(administrator())
-        ->patch(action([SuspendController::class], $referee));
-
-    $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->fresh()->status);
-});
-
 test('a basic user cannot suspend a bookable referee', function () {
     $referee = Referee::factory()->bookable()->create();
 
@@ -45,6 +35,8 @@ test('a guest cannot suspend a bookable referee', function () {
 });
 
 test('invoke throws exception for suspending a non suspendable referee', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $referee = Referee::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

@@ -83,20 +83,6 @@ test('update can employ a future employed referee when started at is filled', fu
     expect($referee->fresh()->employments->first()->started_at->toDateTimeString())->toBe($now->toDateTimeString());
 });
 
-test('updating cannot employ an available referee when started at is filled', function () {
-    $now = now();
-    $referee = Referee::factory()->bookable()->create();
-    $data = UpdateRequest::factory()->create(['started_at' => $now->toDateTimeString()]);
-
-    $this->actingAs(administrator())
-        ->from(action([RefereesController::class, 'edit'], $referee))
-        ->patch(action([RefereesController::class, 'update'], $referee), $data)
-        ->assertValid()
-        ->assertRedirect(action([RefereesController::class, 'index']));
-
-    expect($referee->fresh()->employments)->toHaveCount(1);
-});
-
 test('a basic user cannot update a referee', function () {
     $referee = Referee::factory()->create();
     $data = UpdateRequest::factory()->create();

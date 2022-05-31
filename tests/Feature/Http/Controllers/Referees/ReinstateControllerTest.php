@@ -35,6 +35,8 @@ test('a guest cannot reinstate a suspended referee', function () {
 });
 
 test('invoke throws exception for reinstating a non reinstatable referee', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $referee = Referee::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())

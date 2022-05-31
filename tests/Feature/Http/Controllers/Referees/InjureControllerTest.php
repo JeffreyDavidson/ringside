@@ -35,6 +35,8 @@ test('a guest user cannot injure a bookable referee', function () {
 });
 
 test('invoke throws exception for injuring a non injurable referee', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
     $referee = Referee::factory()->{$factoryState}()->create();
 
     $this->actingAs(administrator())
