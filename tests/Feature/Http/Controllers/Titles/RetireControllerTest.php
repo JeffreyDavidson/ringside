@@ -13,10 +13,9 @@ test('invoke retires an active title and redirects', function () {
         ->patch(action([RetireController::class], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    tap($title->fresh(), function ($title) {
-        $this->assertCount(1, $title->retirements);
-        $this->assertEquals(TitleStatus::RETIRED, $title->status);
-    });
+    expect($title->fresh())
+        ->retirements->toHaveCount(1)
+        ->status->toBe(TitleStatus::RETIRED);
 });
 
 test('invoke retires an inactive title and redirects', function () {
@@ -26,10 +25,9 @@ test('invoke retires an inactive title and redirects', function () {
         ->patch(action([RetireController::class], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    tap($title->fresh(), function ($title) {
-        $this->assertCount(1, $title->retirements);
-        $this->assertEquals(TitleStatus::RETIRED, $title->status);
-    });
+    expect($title->fresh())
+        ->retirements->toHaveCount(1)
+        ->status->toBe(TitleStatus::RETIRED);
 });
 
 test('a basic user cannot retire an active title', function () {

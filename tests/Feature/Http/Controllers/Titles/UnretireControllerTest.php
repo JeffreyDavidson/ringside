@@ -6,31 +6,28 @@ use App\Http\Controllers\Titles\TitlesController;
 use App\Http\Controllers\Titles\UnretireController;
 use App\Models\Title;
 
-test('invoke unretires a retired title and redirects', function () {
-    $title = Title::factory()->retired()->create();
+beforeEach(function () {
+    $this->title = Title::factory()->retired()->create();
+});
 
+test('invoke unretires a retired title and redirects', function () {
     $this->actingAs(administrator())
-        ->patch(action([UnretireController::class], $title))
+        ->patch(action([UnretireController::class], $this->title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    tap($title->fresh(), function ($title) {
-        $this->assertNotNull($title->retirements->last()->ended_at);
-        $this->assertEquals(TitleStatus::ACTIVE, $title->status);
-    });
+    expect($this->title->fresh())
+        ->retirements->last()->ended_at->not->toBeNull()
+        ->status->toBe(TitleStatus::ACTIVE);
 });
 
 test('a basic user cannot unretire a title', function () {
-    $title = Title::factory()->retired()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([UnretireController::class], $title))
+        ->patch(action([UnretireController::class], $this->title))
         ->assertForbidden();
 });
 
 test('a guest cannot unretire a title', function () {
-    $title = Title::factory()->retired()->create();
-
-    $this->patch(action([UnretireController::class], $title))
+    $this->patch(action([UnretireController::class], $this->title))
         ->assertRedirect(route('login'));
 });
 

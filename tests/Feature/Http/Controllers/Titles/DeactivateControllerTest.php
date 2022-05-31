@@ -13,10 +13,9 @@ test('invoke deactivates an active title and redirects', function () {
         ->patch(action([DeactivateController::class], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    tap($title->fresh(), function ($title) {
-        $this->assertNotNull($title->activations->last()->ended_at);
-        $this->assertEquals(TitleStatus::INACTIVE, $title->status);
-    });
+    expect($title->fresh())
+        ->activations->last()->ended_at->not->toBeNull()
+        ->status->toBe(TitleStatus::INACTIVE);
 });
 
 test('a basic user cannot deactivate an active title', function () {

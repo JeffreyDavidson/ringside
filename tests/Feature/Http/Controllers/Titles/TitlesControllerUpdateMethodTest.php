@@ -44,9 +44,9 @@ test('updates a title and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    expect($title->fresh()->name)->toBe('New Example Title');
-
-    expect(Title::latest()->first()->activations)->toBeEmpty();
+    expect($title->fresh())
+        ->name->toBe('New Example Title')
+        ->activations->toBeEmpty();
 });
 
 test('update can activate an unactivated title when activated at is filled', function () {
@@ -62,9 +62,9 @@ test('update can activate an unactivated title when activated at is filled', fun
         ->assertValid()
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    expect(Title::latest()->first()->activations)->toHaveCount(1);
-
-    expect(Title::latest()->first()->activations->first()->started_at->toDateTimeString())->toBe($activatedAt);
+    expect($title->fresh())
+        ->activations->toHaveCount(1)
+        ->activations->first()->started_at->toDateTimeString()->toBe($activatedAt);
 });
 
 test('update can activate an inactive title', function () {
@@ -80,9 +80,9 @@ test('update can activate an inactive title', function () {
         ->assertValid()
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    expect(Title::latest()->first()->activations)->toHaveCount(2);
-
-    expect(Title::latest()->first()->activations->last()->started_at->toDateTimeString())->toBe($activatedAt);
+    expect(Title::latest()->first())
+        ->activations->toHaveCount(2)
+        ->activations->last()->started_at->toDateTimeString()->toBe($activatedAt);
 });
 
 test('update cannot activate an active title', function () {

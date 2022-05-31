@@ -13,10 +13,9 @@ test('invoke activates an unactivated title and redirects', function () {
         ->patch(action([ActivateController::class], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    tap($title->fresh(), function ($title) {
-        $this->assertCount(1, $title->activations);
-        $this->assertEquals(TitleStatus::ACTIVE, $title->status);
-    });
+    expect($title->fresh())
+        ->activations->toHaveCount(1)
+        ->status->toBe(TitleStatus::ACTIVE);
 });
 
 test('invoke activates a future activated title and redirects', function () {
@@ -26,10 +25,9 @@ test('invoke activates a future activated title and redirects', function () {
         ->patch(action([ActivateController::class], $title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    tap($title->fresh(), function ($title) {
-        $this->assertCount(1, $title->activations);
-        $this->assertEquals(TitleStatus::ACTIVE, $title->status);
-    });
+    expect($title->fresh())
+        ->activations->toHaveCount(1)
+        ->status->toBe(TitleStatus::ACTIVE);
 });
 
 test('a basic user cannot activate an unactivated title', function () {
@@ -40,8 +38,8 @@ test('a basic user cannot activate an unactivated title', function () {
         ->assertForbidden();
 });
 
-test('a guest cannot unretire a title', function () {
-    $title = Title::factory()->retired()->create();
+test('a guest cannot activate an unactivated title', function () {
+    $title = Title::factory()->unactivated()->create();
 
     $this->patch(action([ActivateController::class], $title))
         ->assertRedirect(route('login'));

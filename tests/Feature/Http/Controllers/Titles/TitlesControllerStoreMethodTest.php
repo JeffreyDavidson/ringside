@@ -34,9 +34,9 @@ test('store creates a title and redirects', function () {
         ->assertValid()
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    expect(Title::latest()->first()->name)->toBe('Example Title');
-
-    expect(Title::latest()->first()->activations)->toBeEmpty();
+    expect(Title::latest()->first())
+        ->name->toBe('Example Title')
+        ->activations->toBeEmpty();
 });
 
 test('an activation is created for the title if activated at is filled in request', function () {
@@ -51,8 +51,9 @@ test('an activation is created for the title if activated at is filled in reques
         ->assertValid()
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    expect(Title::latest()->first()->activations)->toHaveCount(1);
-    expect(Title::latest()->first()->activations->first()->started_at->toDateTimeString())->toBe($activatedAt);
+    expect(Title::latest()->first())
+        ->activations->toHaveCount(1)
+        ->activations->first()->started_at->toDateTimeString()->toBe($activatedAt);
 });
 
 test('a basic user cannot create a title', function () {
