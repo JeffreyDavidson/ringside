@@ -1,97 +1,54 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Tests\Feature\Http\Controllers\Stables;
-
-use App\Enums\Role;
 use App\Enums\StableStatus;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Stables\StablesController;
 use App\Http\Controllers\Stables\UnretireController;
 use App\Models\Stable;
-use Illuminate\Support\Carbon;
-use Tests\TestCase;
 
-/**
- * @group stables
- * @group feature-stables
- * @group roster
- * @group feature-roster
- */
-class UnretireControllerTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function invoke_unretires_a_retired_stable_and_its_members_and_redirects()
-    {
-        $now = now();
-        Carbon::setTestNow($now);
+beforeEach(function () {
+    $this->stable = Stable::factory()->retired()->create();
+});
 
-        $stable = Stable::factory()->retired()->create();
+test('invoke unretires a retired stable and its members and redirects', function () {
+    $this->actingAs(administrator())
+        ->patch(action([UnretireController::class], $this->stable))
+        ->assertRedirect(action([StablesController::class, 'index']));
 
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([UnretireController::class], $stable))
-            ->assertRedirect(action([StablesController::class, 'index']));
-
-        tap($stable->fresh(), function ($stable) use ($now) {
-            $this->assertEquals(StableStatus::ACTIVE, $stable->status);
-            $this->assertCount(1, $stable->retirements);
-            $this->assertEquals($now->toDateTimeString(), $stable->fresh()->retirements()->latest()->first()->ended_at);
+    expect($this->stable->fresh())
+        ->retirements->last()->ended_at->not->toBeNull()
+        ->status->toBe(StableStatus::ACTIVE)
+        ->currentWrestlers->each(function ($wrestler) {
+            $wrestler->retirements->last()->ended_at->not->toBeNull()
+                ->status->toBe(WrestlerStatus::BOOKABLE);
+        })
+        ->currentTagTeams->each(function ($tagTeam) {
+            $tagTeam->retirements->last()->ended_at->not->toBeNull()
+                ->status->toBe(TagTeamStatus::BOOKABLE);
         });
-    }
+});
 
-    /**
-     * @test
-     */
-    public function a_basic_user_cannot_unretire_a_stable()
-    {
-        $stable = Stable::factory()->create();
+test('a basic user cannot unretire a stable', function () {
+    $this->actingAs(basicUser())
+        ->patch(action([UnretireController::class], $this->stable))
+        ->assertForbidden();
+});
 
-        $this
-            ->actAs(ROLE::BASIC)
-            ->patch(action([UnretireController::class], $stable))
-            ->assertForbidden();
-    }
+test('a guest cannot unretire a stable', function () {
+    $this->patch(action([UnretireController::class], $this->stable))
+        ->assertRedirect(route('login'));
+});
 
-    /**
-     * @test
-     */
-    public function a_guest_cannot_unretire_a_stable()
-    {
-        $stable = Stable::factory()->create();
+test('invoke throws exception for unretiring a non unretirable stable', function ($factoryState) {
+    $this->withoutExceptionHandling();
 
-        $this
-            ->patch(action([UnretireController::class], $stable))
-            ->assertRedirect(route('login'));
-    }
+    $stable = Stable::factory()->{$factoryState}()->create();
 
-    /**
-     * @test
-     *
-     * @dataProvider nonunretirableStableTypes
-     */
-    public function invoke_throws_exception_for_unretiring_a_non_unretirable_stable($factoryState)
-    {
-        $this->expectException(CannotBeUnretiredException::class);
-        $this->withoutExceptionHandling();
-
-        $stable = Stable::factory()->{$factoryState}()->create();
-
-        $this
-            ->actAs(ROLE::ADMINISTRATOR)
-            ->patch(action([UnretireController::class], $stable));
-    }
-
-    public function nonunretirableStableTypes()
-    {
-        return [
-            'active stable' => ['active'],
-            'with future activated stable' => ['withFutureActivation'],
-            'inactive stable' => ['inactive'],
-            'unactivated stable' => ['unactivated'],
-        ];
-    }
-}
+    $this->actingAs(administrator())
+        ->patch(action([UnretireController::class], $stable));
+})->throws(CannotBeUnretiredException::class)->with([
+    'active',
+    'withFutureActivation',
+    'inactive',
+    'unactivated',
+]);
