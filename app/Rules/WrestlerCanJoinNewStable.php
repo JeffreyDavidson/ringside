@@ -2,9 +2,10 @@
 
 namespace App\Rules;
 
+use App\Models\Wrestler;
 use Illuminate\Contracts\Validation\Rule;
 
-class WrestlerCanJoinStable implements Rule
+class WrestlerCanJoinNewStable implements Rule
 {
     /**
      * @var array
@@ -32,17 +33,19 @@ class WrestlerCanJoinStable implements Rule
     {
         $wrestler = Wrestler::with(['currentStable', 'currentTagTeam'])->whereKey($value)->sole();
 
-        if ($this->tagTeamIds !== 0) {
-            collect($this->tagTeamIds)->map(function ($id) use ($wrestler) {
-                if ($id === $wrestler->currentTagTeam->id) {
-                    return false;
-                }
-            });
+        if (count($this->tagTeamIds) === 0 || is_null($wrestler->currentTagTeam)) {
+            return true;
         }
 
-        if ($wrestler->currentStable !== null && $wrestler->currentStable->exists()) {
+        if (collect($this->tagTeamIds)->doesntContain($wrestler->currentTagTeam->id)) {
+            return true;
+        }
+
+        if (! is_null($wrestler->currentStable) && $wrestler->currentStable->exists()) {
             return false;
         }
+
+        return true;
     }
 
     /**

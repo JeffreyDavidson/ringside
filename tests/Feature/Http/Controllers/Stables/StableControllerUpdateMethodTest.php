@@ -1,11 +1,9 @@
 <?php
 
-use App\Enums\Role;
 use App\Http\Controllers\Stables\StablesController;
+use App\Http\Requests\Stables\UpdateRequest;
 use App\Models\Stable;
 use App\Models\Wrestler;
-use Tests\Factories\StableRequestDataFactory;
-use Tests\TestCase;
 
 test('edit returns a view', function () {
     $stable = Stable::factory()->create();
@@ -40,8 +38,8 @@ test('updates a stable and redirects', function () {
     $data = UpdateRequest::factory()->create([
         'name' => 'New Stable Name',
         'started_at' => null,
-        'wrestlers' => null,
-        'tag_teams' => null
+        'wrestlers' => [],
+        'tag_teams' => [],
     ]);
 
     $this->actingAs(administrator())

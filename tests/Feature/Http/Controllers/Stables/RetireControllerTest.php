@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Role;
 use App\Enums\StableStatus;
 use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
@@ -8,12 +7,11 @@ use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Stables\RetireController;
 use App\Http\Controllers\Stables\StablesController;
 use App\Models\Stable;
-use Tests\TestCase;
 
 test('invoke retires a retirable stable and its members and redirects', function ($factoryState) {
     $stable = Stable::factory()->$factoryState()->create();
 
-    $this->actAs(administrator())
+    $this->actingAs(administrator())
         ->patch(action([RetireController::class], $stable))
         ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -38,7 +36,7 @@ test('invoke retires a retirable stable and its members and redirects', function
 test('a basic user cannot activate a stable', function () {
     $stable = Stable::factory()->create();
 
-    $this->actAs(basicUser())
+    $this->actingAs(basicUser())
         ->patch(action([RetireController::class], $stable))
         ->assertForbidden();
 });

@@ -1,10 +1,8 @@
 <?php
 
-use App\Enums\Role;
 use App\Http\Controllers\Stables\StablesController;
 use App\Models\Stable;
 use App\Models\User;
-use Tests\TestCase;
 
 test('index returns a view', function () {
     $this->actingAs(administrator())

@@ -11,7 +11,7 @@ use App\Models\Stable;
 test('invoke activates an unactivated stable and employs its unemployed members and redirects', function () {
     $stable = Stable::factory()->unactivated()->withUnemployedDefaultMembers()->create();
 
-    $this->actAs(administrator())
+    $this->actingAs(administrator())
         ->patch(action([ActivateController::class], $stable))
         ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -20,7 +20,7 @@ test('invoke activates an unactivated stable and employs its unemployed members 
         ->status->toBe(StableStatus::ACTIVE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->employments->toHaveCount(1)
-                ->status->toHaveCount(WrestlerStatus::BOOKABLE);
+                ->status->toBe(WrestlerStatus::BOOKABLE);
         })
         ->currentTagTeams->each(function ($tagTeam) {
             $tagTeam->employments->toHaveCount(1)
@@ -32,7 +32,7 @@ test('invoke activates a future activated stable with members and redirects', fu
     $stable = Stable::factory()->withFutureActivation()->create();
     $startedAt = $stable->activations->last()->started_at;
 
-    $this->actAs(administrator())
+    $this->actingAs(administrator())
         ->patch(action([ActivateController::class], $stable))
         ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -52,7 +52,7 @@ test('invoke activates a future activated stable with members and redirects', fu
 test('a basic user cannot activate a stable', function () {
     $stable = Stable::factory()->create();
 
-    $this->actAs(basicUser())
+    $this->actingAs(basicUser())
         ->patch(action([ActivateController::class], $stable))
         ->assertForbidden();
 });

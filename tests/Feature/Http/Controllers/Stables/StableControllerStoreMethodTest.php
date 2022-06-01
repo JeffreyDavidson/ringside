@@ -8,7 +8,7 @@ use App\Models\Wrestler;
 
 test('create returns a view', function () {
     $this->actingAs(administrator())
-        ->get(action([StablesController::class, 'stable']))
+        ->get(action([StablesController::class, 'create']))
         ->assertStatus(200)
         ->assertViewIs('stables.create')
         ->assertViewHas('stable', new Stable);
@@ -29,8 +29,8 @@ test('store creates a stable and redirects', function () {
     $data = StoreRequest::factory()->create([
         'name' => 'Example Stable Name',
         'started_at' => null,
-        'wrestlers' => null,
-        'tag_teams' => null,
+        'wrestlers' => [],
+        'tag_teams' => [],
     ]);
 
     $this->actingAs(administrator())
@@ -47,12 +47,12 @@ test('store creates a stable and redirects', function () {
 });
 
 test('an activation is created for the stable if started at is filled in request', function () {
-    $dateTime = now();
+    $dateTime = now()->toDateTimeString();
     $wrestlers = Wrestler::factory()->count(3)->create();
 
     $data = StoreRequest::factory()->create([
-        'started_at' => $dateTime->toDateTimeString(),
-        'wrestlers' => $wrestlers,
+        'started_at' => $dateTime,
+        'wrestlers' => $wrestlers->modelKeys(),
     ]);
 
     $this->actingAs(administrator())
@@ -63,14 +63,14 @@ test('an activation is created for the stable if started at is filled in request
 
     expect(Stable::latest()->first())
         ->activations->toHaveCount(1)
-        ->activations->last()->first()->activated_at->toBe($dateTime);
+        ->activations->last()->started_at->toDateTimeString()->toBe($dateTime);
 });
 
 test('wrestlers are added to stable if present', function () {
-    $wrestlers = Wrestler::factory()->count(3)->create()->pluck('id')->toArray();
+    $wrestlers = Wrestler::factory()->count(3)->create();
 
     $data = StoreRequest::factory()->create([
-        'wrestlers' => $wrestlers,
+        'wrestlers' => $wrestlers->modelKeys(),
     ]);
 
     $this->actingAs(administrator())
@@ -85,10 +85,10 @@ test('wrestlers are added to stable if present', function () {
 });
 
 test('tag teams are added to stable if present', function () {
-    $tagTeams = TagTeam::factory()->count(2)->create()->pluck('id')->toArray();
+    $tagTeams = TagTeam::factory()->count(2)->create();
 
     $data = StoreRequest::factory()->create([
-        'tag_teams' => $tagTeams,
+        'tag_teams' => $tagTeams->modelKeys(),
     ]);
 
     $this->actingAs(administrator())
@@ -103,7 +103,7 @@ test('tag teams are added to stable if present', function () {
 });
 
 test('a stables members join when stable is started if filled', function () {
-    $dateTime = now()->toDteTimeString();
+    $dateTime = now()->toDateTimeString();
     $wrestlers = Wrestler::factory()->count(1)->create();
     $tagTeam = TagTeam::factory()->count(1)->create();
 
@@ -120,12 +120,12 @@ test('a stables members join when stable is started if filled', function () {
         ->assertRedirect(action([StablesController::class, 'index']));
 
     expect(Stable::latest()->first())
-        ->currentWrestlers->each(fn ($wrestler) => $wrestler->pivot->joined_at->toBe($dateTime))
-        ->currentTagTeams->each(fn ($tagTeam) => $tagTeam->pivot->joined_at->toBe($dateTime));
+        ->currentWrestlers->each(fn ($wrestler) => $wrestler->pivot->joined_at->toDateTimeString()->toBe($dateTime))
+        ->currentTagTeams->each(fn ($tagTeam) => $tagTeam->pivot->joined_at->toDateTimeString()->toBe($dateTime));
 });
 
 test('a stables members join at the current time when stable is created if started at is not filled', function () {
-    $dateTime = now()->toDteTimeString();
+    $dateTime = now()->toDateTimeString();
     $wrestlers = Wrestler::factory()->count(1)->create();
     $tagTeam = TagTeam::factory()->count(1)->create();
 
@@ -142,8 +142,8 @@ test('a stables members join at the current time when stable is created if start
         ->assertRedirect(action([StablesController::class, 'index']));
 
     expect(Stable::latest()->first())
-        ->currentWrestlers->each(fn ($wrestler) => $wrestler->pivot->joined_at->toBe($dateTime))
-        ->currentTagTeams->each(fn ($tagTeam) => $tagTeam->pivot->joined_at->toBe($dateTime));
+        ->currentWrestlers->each(fn ($wrestler) => $wrestler->pivot->joined_at->toDateTimeString()->toBe($dateTime))
+        ->currentTagTeams->each(fn ($tagTeam) => $tagTeam->pivot->joined_at->toDateTimeString()->toBe($dateTime));
 });
 
 test('a basic user cannot create a stable', function () {
