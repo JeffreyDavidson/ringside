@@ -60,8 +60,12 @@ class TagTeamFactory extends Factory
         return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::BOOKABLE])
             ->has(Employment::factory()->started($start))
             ->hasAttached($wrestlers, ['joined_at' => $start])
-            ->afterCreating(function (TagTeam $tagTeam) {
+            ->afterCreating(function (TagTeam $tagTeam) use ($wrestlers) {
                 $tagTeam->save();
+
+                foreach ($wrestlers as $wrestler) {
+                    $wrestler->update(['current_tag_team_id' => $tagTeam->id]);
+                }
             });
     }
 
