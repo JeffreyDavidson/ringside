@@ -29,7 +29,8 @@ test('suspending a bookable wrestler on a bookable tag team makes tag team unboo
     $this->actingAs(administrator())
         ->patch(action([SuspendController::class], $wrestler));
 
-    $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->fresh()->status);
+    expect($tagTeam->fresh())
+        ->status->toBe(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot suspend a bookable wrestler', function () {

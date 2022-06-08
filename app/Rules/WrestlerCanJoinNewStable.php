@@ -31,7 +31,7 @@ class WrestlerCanJoinNewStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestler = Wrestler::with(['currentStable', 'currentTagTeam'])->whereKey($value)->sole();
+        $wrestler = Wrestler::with(['currentStable'])->whereKey($value)->sole();
 
         if (count($this->tagTeamIds) === 0 || is_null($wrestler->currentTagTeam)) {
             return true;

@@ -8,44 +8,21 @@ use App\Models\Manager;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 
-test('invoke retires a available manager and redirects', function () {
-    $manager = Manager::factory()->available()->create();
+test('invoke retires a retirable manager and redirects', function ($factoryState) {
+    $manager = Manager::factory()->$factoryState()->create();
 
     $this->actingAs(administrator())
         ->patch(action([RetireController::class], $manager))
         ->assertRedirect(action([ManagersController::class, 'index']));
 
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(1, $manager->retirements);
-        $this->assertEquals(ManagerStatus::RETIRED, $manager->status);
-    });
-});
-
-test('invoke retires an injured manager and redirects', function () {
-    $manager = Manager::factory()->injured()->create();
-
-    $this->actingAs(administrator())
-        ->patch(action([RetireController::class], $manager))
-        ->assertRedirect(action([ManagersController::class, 'index']));
-
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(1, $manager->retirements);
-        $this->assertEquals(ManagerStatus::RETIRED, $manager->status);
-    });
-});
-
-test('invoke retires a suspended manager and redirects', function () {
-    $manager = Manager::factory()->suspended()->create();
-
-    $this->actingAs(administrator())
-        ->patch(action([RetireController::class], $manager))
-        ->assertRedirect(action([ManagersController::class, 'index']));
-
-    tap($manager->fresh(), function ($manager) {
-        $this->assertCount(1, $manager->retirements);
-        $this->assertEquals(ManagerStatus::RETIRED, $manager->status);
-    });
-});
+    expect($manager->fresh())
+        ->retirements->toHaveCount(1)
+        ->status->toBe(ManagerStatus::RETIRED);
+})->with([
+    'available',
+    'injured',
+    'suspended',
+]);
 
 test('invoke retires a manager leaving their current tag teams and managers and redirects', function () {
     $tagTeam = TagTeam::factory()->bookable()->create();

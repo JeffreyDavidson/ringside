@@ -31,7 +31,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      *
      * @var array<int, string>
      */
-    protected $fillable = ['user_id', 'name', 'height', 'weight', 'hometown', 'signature_move', 'status', 'current_tag_team_id'];
+    protected $fillable = ['user_id', 'name', 'height', 'weight', 'hometown', 'signature_move', 'status'];
 
     /**
      * The attributes that should be cast to native types.

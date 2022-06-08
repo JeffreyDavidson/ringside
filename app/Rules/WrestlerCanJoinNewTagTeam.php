@@ -22,7 +22,7 @@ class WrestlerCanJoinNewTagTeam implements Rule
             return false;
         }
 
-        if (($wrestler->currentTagTeam() !== null && $wrestler->currentTagTeam()->exists())) {
+        if (($wrestler->currentTagTeam !== null && $wrestler->currentTagTeam->exists())) {
             return false;
         }
 
