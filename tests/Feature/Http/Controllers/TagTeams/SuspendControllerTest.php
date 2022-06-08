@@ -6,9 +6,15 @@ use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\TagTeams\SuspendController;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
+use App\Models\Wrestler;
 
 test('invoke suspends a tag team and their tag team partners and redirects', function () {
-    $tagTeam = TagTeam::factory()->bookable()->create();
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
+    $tagTeam = TagTeam::factory()
+        ->hasAttached($wrestlerA, ['joined_at' => now()->toDateTimeString()])
+        ->hasAttached($wrestlerB, ['joined_at' => now()->toDateTimeString()])
+        ->bookable()
+        ->create();
 
     $this->actingAs(administrator())
         ->patch(action([SuspendController::class], $tagTeam))
@@ -16,9 +22,9 @@ test('invoke suspends a tag team and their tag team partners and redirects', fun
 
     expect($tagTeam->fresh())
         ->suspensions->toHaveCount(1)
-        ->status->toBe(TagTeamStatus::SUSPENDED)
+        ->status->toMatchObject(TagTeamStatus::SUSPENDED)
         ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toBe(WrestlerStatus::SUSPENDED, $wrestler->status);
+            $wrestler->status->toMatchObject(WrestlerStatus::SUSPENDED);
         });
 });
 
@@ -45,7 +51,6 @@ test('invoke throws exception for retiring a non retirable tag team', function (
     $this->actingAs(administrator())
         ->patch(action([SuspendController::class], $tagTeam));
 })->throws(CannotBeSuspendedException::class)->with([
-    'suspended',
     'unemployed',
     'released',
     'withFutureEmployment',

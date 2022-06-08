@@ -24,21 +24,6 @@ test('invoke retires a bookable tag team and its tag team partners and redirects
         });
 });
 
-test('invoke retires a suspended tag team and its tag team partners and redirects', function () {
-    $tagTeam = TagTeam::factory()->suspended()->create();
-
-    $this->actingAs(administrator())
-        ->patch(action([RetireController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
-
-    expect($tagTeam->fresh())
-        ->retirements->toHaveCount(1)
-        ->status->toBe(TagTeamStatus::RETIRED)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toBe(WrestlerStatus::RETIRED, $wrestler->status);
-        });
-});
-
 test('invoke retires an unbookable tag team and its tag team partners and redirects', function () {
     $tagTeam = TagTeam::factory()->unbookable()->create();
 

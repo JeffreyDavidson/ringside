@@ -22,7 +22,7 @@ test('invoke releases a bookable tag team and tag team partners and redirects', 
         });
 });
 
-test('invoke releases a suspended tag team and tag team partners redirects', function () {
+test('invoke releases an suspended tag team and tag team partners redirects', function () {
     $tagTeam = TagTeam::factory()->suspended()->create();
 
     $this->actingAs(administrator())
@@ -32,9 +32,9 @@ test('invoke releases a suspended tag team and tag team partners redirects', fun
     expect($tagTeam->fresh())
         ->suspensions->last()->ended_at->not->toBeNull()
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(TagTeamStatus::RELEASED)
+        ->status->toMatchObject(TagTeamStatus::RELEASED)
         ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toBe(WrestlerStatus::RELEASED);
+            $wrestler->status->toMatchObject(WrestlerStatus::RELEASED);
         });
 });
 

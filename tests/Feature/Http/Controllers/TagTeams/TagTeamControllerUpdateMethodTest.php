@@ -31,7 +31,7 @@ test('a guest cannot view the form for editing a tag team', function () {
 });
 
 test('updates a tag team and redirects', function () {
-    $tagTeam = TagTeam::factory()->withoutTagTeamPartners()->create([
+    $tagTeam = TagTeam::factory()->create([
         'name' => 'Old Tag Team Name',
     ]);
 
@@ -52,7 +52,7 @@ test('updates a tag team and redirects', function () {
 });
 
 test('wrestlers of tag team are synced when tag team is updated', function () {
-    $tagTeam = TagTeam::factory()->withTagTeamPartners()->create();
+    $tagTeam = TagTeam::factory()->bookable()->create();
     $formerTagTeamPartners = $tagTeam->currentWrestlers;
     $newTagTeamPartners = Wrestler::factory()->count(2)->create();
 
@@ -67,12 +67,13 @@ test('wrestlers of tag team are synced when tag team is updated', function () {
 
     expect($tagTeam->fresh())
         ->wrestlers->toHaveCount(4)
-        ->currentWrestlers->toHaveCount(2);
-    // ->currentWrestlers->toContain($newTagTeamPartners[0])
-        // ->currentWrestlers->toContain($newTagTeamPartners[1])
-        // ->currentWrestlers->not->toContain($formerTagTeamPartners[1])
-        // ->currentWrestlers->not->toContain($formerTagTeamPartners[1]);
-})->skip();
+        ->currentWrestlers
+            ->toHaveCount(2)
+            ->toContain($newTagTeamPartners->first())
+            ->toContain($newTagTeamPartners->last())
+            ->not->toContain($formerTagTeamPartners->first())
+            ->not->toContain($formerTagTeamPartners->last());
+})->skip(true, 'Need to figure out how to check collection items');
 
 test('a basic user cannot update a tag team', function () {
     $tagTeam = TagTeam::factory()->create();
