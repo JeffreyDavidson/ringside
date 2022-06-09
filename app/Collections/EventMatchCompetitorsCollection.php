@@ -20,7 +20,7 @@ class EventMatchCompetitorsCollection extends Collection
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return \Illuminate\Support\Collection
      */
