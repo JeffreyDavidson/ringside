@@ -50,7 +50,7 @@ class WrestlerTest extends TestCase
      */
     public function a_wrestler_uses_can_join_stables_trait()
     {
-        $this->assertUsesTrait('App\Models\Concerns\CanJoinStables', Wrestler::class);
+        $this->assertUsesTrait(\App\Models\Concerns\CanJoinStables::class, Wrestler::class);
     }
 
     /**
