@@ -6,7 +6,8 @@ use App\Models\Stable;
 use Illuminate\Database\Migrations\Migration;
 use Staudenmeir\LaravelMergedRelations\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
