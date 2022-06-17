@@ -7,6 +7,7 @@ namespace App\Http\Requests\Stables;
 use App\Models\Stable;
 use App\Rules\Stables\ActivationStartDateCanBeChanged;
 use App\Rules\Stables\HasMinimumAmountOfMembers;
+use App\Rules\StartedAt;
 use App\Rules\TagTeamCanJoinExistingStable;
 use App\Rules\WrestlerCanJoinExistingStable;
 use Illuminate\Foundation\Http\FormRequest;
@@ -41,19 +42,11 @@ class UpdateRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'min:3', Rule::unique('stables')->ignore($stable->id)],
-            'started_at' => [
-                'nullable',
-                Rule::requiredIf(fn () => ! $stable->isUnactivated()),
-                'string',
-                'date',
-                new ActivationStartDateCanBeChanged($stable),
+            'started_at' => [StartedAt::class,
+                // Rule::requiredIf(fn () => ! $stable->isUnactivated()),
+                // new ActivationStartDateCanBeChanged($stable),
             ],
-            'members_count' => [
-                'nullable',
-                'integer',
-                Rule::when($this->input('started_at'), 'min:3'),
-                new HasMinimumAmountOfMembers,
-            ],
+            'members_count' => ['integer', Rule::when($this->input('started_at'), new HasMinimumAmountOfMembers)],
             'wrestlers' => ['array'],
             'tag_teams' => ['array'],
             'wrestlers.*' => [
