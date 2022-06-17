@@ -23,6 +23,5 @@ class DeactivateAction extends BaseStableAction
 
         $this->stableRepository->deactivate($stable, $deactivationDate);
         $this->stableRepository->disassemble($stable, $deactivationDate);
-        $stable->save();
     }
 }

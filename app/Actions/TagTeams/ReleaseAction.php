@@ -27,10 +27,7 @@ class ReleaseAction extends BaseTagTeamAction
         }
 
         $this->tagTeamRepository->release($tagTeam, $releaseDate);
-        $tagTeam->save();
 
-        $tagTeam->currentWrestlers->each(function ($wrestler) use ($releaseDate) {
-            WrestlersReleaseAction::run($wrestler, $releaseDate);
-        });
+        $tagTeam->currentWrestlers->each(fn ($wrestler) => WrestlersReleaseAction::run($wrestler, $releaseDate));
     }
 }

@@ -22,6 +22,5 @@ class SuspendAction extends BaseRefereeAction
         $suspensionDate = now();
 
         $this->refereeRepository->suspend($referee, $suspensionDate);
-        $referee->save();
     }
 }

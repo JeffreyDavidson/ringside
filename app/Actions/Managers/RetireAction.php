@@ -31,7 +31,6 @@ class RetireAction extends BaseManagerAction
 
         $this->managerRepository->release($manager, $retirementDate);
         $this->managerRepository->retire($manager, $retirementDate);
-        $manager->save();
 
         $manager->currentTagTeams
             ->whenNotEmpty(fn () => $this->managerRepository->removeFromCurrentTagTeams($manager));

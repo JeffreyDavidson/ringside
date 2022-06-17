@@ -20,6 +20,5 @@ class InjureAction extends BaseManagerAction
     public function handle(Manager $manager): void
     {
         $this->managerRepository->injure($manager, now());
-        $manager->save();
     }
 }

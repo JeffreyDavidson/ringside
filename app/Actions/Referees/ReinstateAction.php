@@ -20,6 +20,5 @@ class ReinstateAction extends BaseRefereeAction
     public function handle(Referee $referee): void
     {
         $this->refereeRepository->reinstate($referee, now());
-        $referee->save();
     }
 }

@@ -20,6 +20,5 @@ class ClearInjuryAction extends BaseRefereeAction
     public function handle(Referee $referee): void
     {
         $this->refereeRepository->clearInjury($referee, now());
-        $referee->save();
     }
 }

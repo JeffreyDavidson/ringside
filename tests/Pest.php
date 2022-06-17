@@ -55,7 +55,7 @@ expect()->extend('toBeOne', function () {
 expect()->extend('collectionHas', function ($collection, $entity) {
     if (is_array($entity) || $entity instanceof Collection) {
         foreach ($entity as $test) {
-            assertContains($collection, $test);
+            $this->assertContains($collection, $test);
         }
 
         return $this;
@@ -69,7 +69,7 @@ expect()->extend('collectionHas', function ($collection, $entity) {
 expect()->extend('collectionDoesntHave', function ($collection, $entity) {
     if (is_array($entity) || $entity instanceof Collection) {
         foreach ($entity as $test) {
-            assertNotContains($collection, $test);
+            $this->assertNotContains($collection, $test);
         }
 
         return $this;
@@ -81,7 +81,9 @@ expect()->extend('collectionDoesntHave', function ($collection, $entity) {
 });
 
 expect()->extend('assertUsesTrait', function ($trait) {
-    $this->assertContains($trait, class_uses($this));
+    dd($this);
+
+    return $this->assertContains($trait, class_uses($this->value));
 });
 
 /*

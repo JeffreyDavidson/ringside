@@ -20,6 +20,5 @@ class SuspendAction extends BaseManagerAction
     public function handle(Manager $manager): void
     {
         $this->managerRepository->suspend($manager, now());
-        $manager->save();
     }
 }

@@ -22,6 +22,5 @@ class DeactivateAction extends BaseTitleAction
         $deactivationDate = now();
 
         $this->titleRepository->deactivate($title, $deactivationDate);
-        $title->save();
     }
 }

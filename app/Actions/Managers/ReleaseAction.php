@@ -30,7 +30,6 @@ class ReleaseAction extends BaseManagerAction
         }
 
         $this->managerRepository->release($manager, $releaseDate);
-        $manager->save();
 
         if ($manager->currentTagTeams->isNotEmpty()) {
             $this->managerRepository->removeFromCurrentTagTeams($manager);

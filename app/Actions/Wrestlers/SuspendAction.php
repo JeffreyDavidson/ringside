@@ -22,7 +22,6 @@ class SuspendAction extends BaseWrestlerAction
         $suspensionDate = now();
 
         $this->wrestlerRepository->suspend($wrestler, $suspensionDate);
-        $wrestler->save();
 
         if ($wrestler->isAMemberOfCurrentTagTeam()) {
             $wrestler->currentTagTeam->save();

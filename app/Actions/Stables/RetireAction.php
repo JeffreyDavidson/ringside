@@ -26,19 +26,16 @@ class RetireAction extends BaseStableAction
         $retirementDate = now();
 
         if ($stable->currentTagTeams->isNotEmpty()) {
-            $stable->currentTagTeams->each(function (TagTeam $tagTeam) use ($retirementDate) {
-                TagTeamsRetireAction::run($tagTeam, $retirementDate);
-            });
+            $stable->currentTagTeams
+                ->each(fn (TagTeam $tagTeam) => TagTeamsRetireAction::run($tagTeam, $retirementDate));
         }
 
         if ($stable->currentWrestlers->isNotEmpty()) {
-            $stable->currentWrestlers->each(function (Wrestler $wrestler) use ($retirementDate) {
-                WrestlersRetireAction::run($wrestler, $retirementDate);
-            });
+            $stable->currentWrestlers
+                ->each(fn (Wrestler $wrestler) => WrestlersRetireAction::run($wrestler, $retirementDate));
         }
 
         $this->stableRepository->deactivate($stable, $retirementDate);
         $this->stableRepository->retire($stable, $retirementDate);
-        $stable->save();
     }
 }

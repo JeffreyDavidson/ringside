@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
+use App\Actions\Wrestlers\UnretireAction as WrestlersUnretireAction;
 use App\Models\TagTeam;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -23,13 +24,8 @@ class UnretireAction extends BaseTagTeamAction
 
         $this->tagTeamRepository->unretire($tagTeam, $unretiredDate);
 
-        $tagTeam->currentWrestlers->each(function ($wrestler) use ($unretiredDate) {
-            $this->wrestlerRepository->unretire($wrestler, $unretiredDate);
-            $this->wrestlerRepository->employ($wrestler, $unretiredDate);
-            $wrestler->save();
-        });
+        $tagTeam->currentWrestlers->each(fn ($wrestler) =>  WrestlersUnretireAction::run($wrestler, $unretiredDate));
 
         $this->tagTeamRepository->employ($tagTeam, $unretiredDate);
-        $tagTeam->save();
     }
 }

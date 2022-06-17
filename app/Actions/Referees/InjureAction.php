@@ -20,6 +20,5 @@ class InjureAction extends BaseRefereeAction
     public function handle(Referee $referee): void
     {
         $this->refereeRepository->injure($referee, now());
-        $referee->save();
     }
 }

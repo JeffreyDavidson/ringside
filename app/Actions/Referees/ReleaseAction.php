@@ -30,6 +30,5 @@ class ReleaseAction extends BaseRefereeAction
         }
 
         $this->refereeRepository->release($referee, $releaseDate);
-        $referee->save();
     }
 }

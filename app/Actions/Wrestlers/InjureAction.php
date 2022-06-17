@@ -22,7 +22,6 @@ class InjureAction extends BaseWrestlerAction
         $injureDate = now();
 
         $this->wrestlerRepository->injure($wrestler, $injureDate);
-        $wrestler->save();
 
         if ($wrestler->isAMemberOfCurrentTagTeam()) {
             $wrestler->currentTagTeam->save();

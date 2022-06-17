@@ -31,6 +31,5 @@ class RetireAction extends BaseRefereeAction
 
         $this->refereeRepository->release($referee, $retirementDate);
         $this->refereeRepository->retire($referee, $retirementDate);
-        $referee->save();
     }
 }
