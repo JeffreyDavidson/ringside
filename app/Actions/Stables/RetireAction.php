@@ -9,6 +9,7 @@ use App\Actions\Wrestlers\RetireAction as WrestlersRetireAction;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class RetireAction extends BaseStableAction
@@ -19,11 +20,12 @@ class RetireAction extends BaseStableAction
      * Retire a stable.
      *
      * @param  \App\Models\Stable  $stable
+     * @param  \Illuminate\Support\Carbon|null  $retirementDate
      * @return void
      */
-    public function handle(Stable $stable): void
+    public function handle(Stable $stable, ?Carbon $retirementDate = null): void
     {
-        $retirementDate = now();
+        $retirementDate ??= now();
 
         if ($stable->currentTagTeams->isNotEmpty()) {
             $stable->currentTagTeams
