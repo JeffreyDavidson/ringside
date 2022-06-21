@@ -41,7 +41,7 @@ class StoreRequest extends FormRequest
             'match_type_id' => ['required', 'integer', Rule::exists('match_types', 'id')],
             'referees' => ['required', 'array'],
             'referees.*' => ['integer', 'distinct', Rule::exists('referees', 'id')],
-            'titles' => ['nullable', 'array', new TitlesMustBeActive()],
+            'titles' => ['array', new TitlesMustBeActive()],
             'titles.*' => ['integer', 'distinct', Rule::exists('titles', 'id')],
             'competitors' => [
                 'required',
@@ -52,8 +52,8 @@ class StoreRequest extends FormRequest
                 new TitleChampionIncludedInTitleMatch($this->input('titles')),
             ],
             'competitors.*' => ['required', 'array', 'min:1'],
-            'competitors.*.*.competitor_id' => ['required', 'integer'],
-            'competitors.*.*.competitor_type' => ['required', Rule::in(['wrestler', 'tag_team'])],
+            'competitors.*.wrestlers' => ['array'],
+            'competitors.*.tagteams' => ['array'],
             'preview' => ['nullable', 'string'],
         ];
     }

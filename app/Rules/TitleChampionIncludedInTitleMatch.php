@@ -14,14 +14,14 @@ class TitleChampionIncludedInTitleMatch implements Rule
     /**
      * @var array
      */
-    protected $titleIds;
+    protected $titleIds = [];
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(array $titleIds)
+    public function __construct(array $titleIds = [])
     {
         $this->titleIds = $titleIds;
     }
