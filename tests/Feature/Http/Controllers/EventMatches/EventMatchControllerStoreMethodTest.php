@@ -11,7 +11,7 @@ beforeEach(function () {
     $this->event = Event::factory()->scheduled()->create();
 });
 
-test('store creates a non title singles match for an event and redirects', function () {
+test('store creates a match for a scheduled event and redirects', function () {
     $data = StoreRequest::factory()->create();
 
     $this

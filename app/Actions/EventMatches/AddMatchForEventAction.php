@@ -25,9 +25,7 @@ class AddMatchForEventAction extends BaseEventMatchAction
         /** @var \App\Models\EventMatch $createdMatch */
         $createdMatch = $this->eventMatchRepository->createForEvent($event, $eventMatchData);
 
-        $eventMatchData->referees->whenNotEmpty(function ($referees) use ($createdMatch) {
-            AddRefereesToMatchAction::run($createdMatch, $referees);
-        });
+        AddRefereesToMatchAction::run($createdMatch, $eventMatchData->referees);
 
         $eventMatchData->titles->whenNotEmpty(function ($titles) use ($createdMatch) {
             AddTitlesToMatchAction::run($createdMatch, $titles);

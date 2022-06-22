@@ -8,7 +8,6 @@ use App\Models\Event;
 test('store creates a non title singles match for an event and redirects', function () {
     $event = Event::factory()->create();
     $request = StoreRequest::factory()->create();
-    dd($request);
     $data = EventMatchData::fromStoreRequest($request);
 
     $match = AddMatchForEventAction::run($event, $data);
@@ -30,10 +29,10 @@ test('store creates a title match for an event and redirects', function () {
         'titles' => [$title->id],
     ]);
 
-    dd($this
+    $this
         ->actingAs(administrator())
         ->from(action([EventMatchesController::class, 'create'], $this->event))
-        ->post(action([EventMatchesController::class, 'store'], $this->event), $data));
+        ->post(action([EventMatchesController::class, 'store'], $this->event), $data);
 
     expect($this->event->fresh())
         ->matches->toHaveCount(1)
