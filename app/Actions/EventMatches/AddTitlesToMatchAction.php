@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\EventMatches;
 
-use App\Actions\EventMatches\BaseEventMatchAction;
 use App\Models\EventMatch;
 use App\Models\Title;
 use Lorisleiva\Actions\Concerns\AsAction;
