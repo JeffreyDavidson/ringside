@@ -78,8 +78,8 @@ expect()->extend('collectionDoesntHave', function ($entity) {
     return $this;
 });
 
-expect()->extend('assertUsesTrait', function ($trait) {
-    assertContains($trait, class_uses($this->value));
+expect()->extend('usesTrait', function ($trait) {
+    expect(class_uses($this->value))->toContain($trait);
 
     return $this;
 });
