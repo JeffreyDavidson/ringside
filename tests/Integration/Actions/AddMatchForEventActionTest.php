@@ -37,5 +37,5 @@ test('store creates a title match for an event and redirects', function () {
     expect($this->event->fresh())
         ->matches->toHaveCount(1)
         ->first()
-        ->titles->toHaveCount(1)->assertCollectionHas($title);
+        ->titles->toHaveCount(1)->collectionHas($title);
 });
