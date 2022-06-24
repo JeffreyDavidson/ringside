@@ -21,7 +21,7 @@ class TitleChampionIncludedInTitleMatch implements Rule
      *
      * @return void
      */
-    public function __construct(array $titleIds = [])
+    public function __construct($titleIds = [])
     {
         $this->titleIds = $titleIds;
     }
@@ -35,6 +35,10 @@ class TitleChampionIncludedInTitleMatch implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (! is_array($this->titleIds)) {
+            return false;
+        }
+
         if (count($this->titleIds) === 0) {
             return true;
         }

@@ -13,7 +13,7 @@ class AddRefereesToMatchAction extends BaseEventMatchAction
     use AsAction;
 
     /**
-     * Add titles to an event match.
+     * Add referees to an event match.
      *
      * @param \App\Models\EventMatch $eventMatch
      * @param \Illuminate\Database\Eloquent\Collection<Referee> $referees

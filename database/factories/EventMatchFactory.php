@@ -15,17 +15,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class EventMatchFactory extends Factory
 {
-    /**
-     * Undocumented function.
-     *
-     * @return static
-     */
-    public function configure()
+    public function withReferees($referees)
     {
-        $this->hasAttached(Wrestler::factory()->bookable(), ['side_number' => 0], 'wrestlers');
-        $this->hasAttached(Wrestler::factory()->bookable(), ['side_number' => 1], 'wrestlers');
+        $this->hasAttached($referees);
+    }
 
-        return $this;
+    public function withTitles($titles)
+    {
+        $this->hasAttached($titles);
+    }
+
+    public function withCompetitors($competitors)
+    {
+        $this->hasAttached($competitors, ['side_number' => 0]);
     }
 
     /**
@@ -38,9 +40,6 @@ class EventMatchFactory extends Factory
         return [
             'event_id' => Event::factory(),
             'match_type_id' => MatchType::first()->id,
-            'referees' => Referee::factory(),
-            'titles' => [],
-            'competitors' => '',
             'preview' => null,
         ];
     }

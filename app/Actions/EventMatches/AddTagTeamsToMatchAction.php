@@ -6,6 +6,7 @@ namespace App\Actions\EventMatches;
 
 use App\Models\EventMatch;
 use App\Models\TagTeam;
+use Illuminate\Support\Collection;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class AddTagTeamsToMatchAction extends BaseEventMatchAction
@@ -16,7 +17,7 @@ class AddTagTeamsToMatchAction extends BaseEventMatchAction
      * Add titles to an event match.
      *
      * @param \App\Models\EventMatch $eventMatch
-     * @param \Illuminate\Database\Eloquent\Collection<TagTeam> $titles
+     * @param \Illuminate\Support\Collection<TagTeam> $tagTeams
      * @param int $sideNumber
      * @return void
      */
