@@ -22,14 +22,14 @@ class MatchForm extends BaseComponent
      *
      * @var string
      */
-    private string $subViewToUse;
+    private string $subViewToUse = '';
 
     /**
      * Subview to load competitors.
      *
      * @var int
      */
-    private int $matchTypeId;
+    private int $matchTypeId = 0;
 
     /**
      * Apply the EventMatch to the Match form instance.

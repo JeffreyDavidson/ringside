@@ -152,7 +152,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
             return false;
         }
 
-        return $this->currentWrestlers->every->canBeReinstated();
+        return true;
     }
 
     /**
