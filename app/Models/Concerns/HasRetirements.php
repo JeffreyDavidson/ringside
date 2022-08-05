@@ -83,7 +83,7 @@ trait HasRetirements
     public function retiredAt(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->currentRetirement->started_at
+            get: fn () => $this->currentRetirement?->started_at
         );
     }
 }

@@ -99,6 +99,10 @@ trait HasEmployments
      */
     public function startDateWas(Carbon $startDate)
     {
+        if (is_null($this->firstEmployment)) {
+            return false;
+        }
+
         return $this->firstEmployment->started_at->ne($startDate);
     }
 
@@ -189,6 +193,10 @@ trait HasEmployments
      */
     public function employedOn(Carbon $employmentDate)
     {
+        if (is_null($this->currentEmployment)) {
+            return false;
+        }
+
         return $this->currentEmployment->started_at->eq($employmentDate);
     }
 
@@ -200,6 +208,10 @@ trait HasEmployments
      */
     public function scheduledToBeEmployedOn(Carbon $employmentDate)
     {
+        if (is_null($this->futureEmployment)) {
+            return false;
+        }
+
         return $this->futureEmployment->started_at->eq($employmentDate);
     }
 
@@ -211,6 +223,10 @@ trait HasEmployments
      */
     public function employedBefore(Carbon $employmentDate)
     {
+        if (is_null($this->currentEmployment)) {
+            return false;
+        }
+
         return $this->currentEmployment->started_at->lte($employmentDate);
     }
 
@@ -222,6 +238,10 @@ trait HasEmployments
      */
     public function employedAfter(Carbon $employmentDate)
     {
+        if (is_null($this->currentEmployment)) {
+            return false;
+        }
+
         return $this->currentEmployment->started_at->gt($employmentDate);
     }
 
@@ -233,6 +253,10 @@ trait HasEmployments
      */
     public function futureEmploymentIsBefore(Carbon $date)
     {
+        if (is_null($this->futureEmployment)) {
+            return false;
+        }
+
         return $this->futureEmployment->started_at->lt($date);
     }
 
