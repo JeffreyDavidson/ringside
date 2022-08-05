@@ -31,7 +31,7 @@ class RefereesList extends BaseComponent
     ];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -47,7 +47,7 @@ class RefereesList extends BaseComponent
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
