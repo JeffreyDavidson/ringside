@@ -10,6 +10,16 @@ use Illuminate\Support\Carbon;
 
 class WrestlerData
 {
+    /**
+     * Create a new wrestler data instance.
+     *
+     * @param  string  $name
+     * @param  int|null  $height
+     * @param  int|null  $weight
+     * @param  string|null  $hometown
+     * @param  string|null  $signature_move
+     * @param  \Illuminate\Support\Carbon|null  $start_date
+     */
     public function __construct(
         public string $name,
         public ?int $height,

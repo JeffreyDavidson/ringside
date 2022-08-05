@@ -12,6 +12,14 @@ use Illuminate\Support\Carbon;
 
 class TagTeamData
 {
+    /**
+     * Create a new tag team data instance.
+     *
+     * @param  string  $name
+     * @param  string|null  $signature_move
+     * @param  \Illuminate\Support\Carbon|null  $start_date
+     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler>  $wrestlers
+     */
     public function __construct(
         public string $name,
         public ?string $signature_move,

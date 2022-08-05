@@ -10,6 +10,14 @@ use App\Models\Venue;
 
 class EventData
 {
+    /**
+     * Create a new event data instance.
+     *
+     * @param  string  $name
+     * @param  string|null  $date
+     * @param  \App\Models\Venue|null  $venue
+     * @param  string|null $preview
+     */
     public function __construct(
         public string $name,
         public ?string $date,

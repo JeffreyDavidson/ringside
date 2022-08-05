@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 class StableData
 {
     /**
-     * Undocumented function
+     * Create a new stable data instance.
      *
      * @param  string  $name
      * @param  Carbon|null  $start_date
