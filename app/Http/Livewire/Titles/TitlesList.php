@@ -31,7 +31,7 @@ class TitlesList extends BaseComponent
     ];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */

@@ -7,28 +7,28 @@ namespace App\Http\Livewire\Datatable;
 trait WithBulkActions
 {
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var bool
      */
     public $selectPage = false;
 
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var bool
      */
     public $selectAll = false;
 
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var array
      */
     public $selected = [];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -40,7 +40,7 @@ trait WithBulkActions
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -51,7 +51,7 @@ trait WithBulkActions
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param [type] $value
      * @return void

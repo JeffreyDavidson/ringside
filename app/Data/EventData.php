@@ -16,7 +16,7 @@ class EventData
      * @param  string  $name
      * @param  string|null  $date
      * @param  \App\Models\Venue|null  $venue
-     * @param  string|null $preview
+     * @param  string|null  $preview
      */
     public function __construct(
         public string $name,

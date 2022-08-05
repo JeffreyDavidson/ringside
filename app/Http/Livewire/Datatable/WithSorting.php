@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Datatable;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 
 trait WithSorting
 {
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
-     * @var array<string, string>
+     * @var array
      */
     private $sorts = [];
 
     /**
-     * Undocumented function
+     * Sorts a field by a given key.
      *
-     * @param  string  $field
-     * @return mixed
+     * @param  string $field
+     * @return string
      */
-    public function sortBy(string $field)
+    public function sortBy($field)
     {
         if (! isset($this->sorts[$field])) {
             return $this->sorts[$field] = 'asc';
@@ -35,10 +35,10 @@ trait WithSorting
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  \Illuminate\Database\Query\Builder $query
+     * @return void
      */
     public function applySorting(Builder $query)
     {

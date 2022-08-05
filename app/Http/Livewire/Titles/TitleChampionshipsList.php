@@ -10,10 +10,15 @@ use App\Models\TitleChampionship;
 
 class TitleChampionshipsList extends BaseComponent
 {
+    /**
+     * Undocumented variable.
+     *
+     * @var \App\Models\Title
+     */
     public Title $title;
 
     /**
-     * Shows list of accepted filters and direction to be displayed.
+     * List of filters that are allowed.
      *
      * @var array<string, string>
      */
@@ -22,7 +27,7 @@ class TitleChampionshipsList extends BaseComponent
     ];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param  \App\Models\Title  $title
      * @return void
@@ -32,11 +37,21 @@ class TitleChampionshipsList extends BaseComponent
         $this->title = $title;
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return void
+     */
     public function getRowsQueryProperty()
     {
         return TitleChampionship::where('title_id', $this->title->id)->latest('won_at');
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return void
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);
