@@ -16,7 +16,7 @@ class TagTeamData
         public string $name,
         public ?string $signature_move,
         public ?Carbon $start_date,
-        public ?Collection $wrestlers
+        public Collection $wrestlers
     ) {
     }
 

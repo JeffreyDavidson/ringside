@@ -24,8 +24,8 @@ class StableData
     public function __construct(
         public string $name,
         public ?Carbon $start_date,
-        public ?Collection $tagTeams,
-        public ?Collection $wrestlers
+        public Collection $tagTeams,
+        public Collection $wrestlers
     ) {
     }
 

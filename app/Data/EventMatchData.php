@@ -18,7 +18,7 @@ class EventMatchData
     public function __construct(
         public MatchType $matchType,
         public Collection $referees,
-        public ?Collection $titles,
+        public Collection $titles,
         public Collection $competitors,
         public ?string $preview
     ) {
