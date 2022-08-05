@@ -30,15 +30,6 @@ class VenuesList extends BaseComponent
         'search' => '',
     ];
 
-    public function deleteSelected()
-    {
-        $deleteCount = $this->selectedRowsQuery->count();
-
-        $this->selectedRowsQuery->delete();
-
-        $this->showDeleteModal = false;
-    }
-
     public function getRowsQueryProperty()
     {
         $query = Venue::query()
