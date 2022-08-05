@@ -12,10 +12,21 @@ class TitleChampionshipsList extends BaseComponent
 {
     public Title $title;
 
+    /**
+     * Shows list of accepted filters and direction to be displayed.
+     *
+     * @var array<string, string>
+     */
     public $filters = [
         'search' => '',
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @param  \App\Models\Title  $title
+     * @return void
+     */
     public function mount(Title $title)
     {
         $this->title = $title;

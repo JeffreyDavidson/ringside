@@ -30,7 +30,7 @@ class TitleChampionship extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'won_at' => 'datetime',
@@ -58,7 +58,7 @@ class TitleChampionship extends Model
     }
 
     /**
-     * Undocumented function.
+     * Retrieve the champion of title championship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */

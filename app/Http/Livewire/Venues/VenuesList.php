@@ -14,10 +14,18 @@ class VenuesList extends BaseComponent
     use WithBulkActions;
     use WithSorting;
 
-    public $showDeleteModal = false;
-
+    /**
+     * Determines if the filters should be shown.
+     *
+     * @var bool
+     */
     public $showFilters = false;
 
+    /**
+     * Shows list of accepted filters and direction to be displayed.
+     *
+     * @var array<string, string>
+     */
     public $filters = [
         'search' => '',
     ];

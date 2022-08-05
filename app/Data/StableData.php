@@ -13,6 +13,14 @@ use Illuminate\Support\Collection;
 
 class StableData
 {
+    /**
+     * Undocumented function
+     *
+     * @param  string  $name
+     * @param  Carbon|null  $start_date
+     * @param  Collection<int, \App\Models\TagTeam>  $tagTeams
+     * @param  Collection<int, \App\Models\Wrestler>  $wrestlers
+     */
     public function __construct(
         public string $name,
         public ?Carbon $start_date,

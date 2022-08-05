@@ -15,6 +15,7 @@ class UpdateRequest extends FormRequest
 {
     use HasFactory;
 
+    /** @var class-string */
     public static $factory = TitleRequestFactory::class;
 
     /**

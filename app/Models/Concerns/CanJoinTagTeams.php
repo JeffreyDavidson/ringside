@@ -44,6 +44,11 @@ trait CanJoinTagTeams
         );
     }
 
+    /**
+     * Determine if wrestler can is a member of a current tag team.
+     *
+     * @return bool
+     */
     public function isAMemberOfCurrentTagTeam()
     {
         return $this->currentTagTeam !== null && $this->currentTagTeam->exists();
