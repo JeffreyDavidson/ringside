@@ -10,6 +10,8 @@ class EmploymentStartDateCanBeChanged implements Rule
 {
     private $rosterMember;
 
+    private $message;
+
     /**
      * Create a new rule instance.
      *

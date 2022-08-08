@@ -35,10 +35,6 @@ class CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (is_null($this->matchTypeId)) {
-            return false;
-        }
-
         return MatchType::find($this->matchTypeId)?->number_of_sides === count($value);
     }
 

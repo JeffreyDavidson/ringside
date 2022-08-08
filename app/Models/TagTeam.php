@@ -52,9 +52,9 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \App\Builders\TagTeamQueryBuilder
+     * @return \App\Builders\TagTeamQueryBuilder<TagTeam>
      */
-    public function newEloquentBuilder($query)
+    public function newEloquentBuilder($query): TagTeamQueryBuilder
     {
         return new TagTeamQueryBuilder($query);
     }

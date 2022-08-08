@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Datatable;
 
-use Illuminate\Database\Query\Builder;
-
 trait WithSorting
 {
     /**
-     * Undocumented variable.
+     * The list of fields and direction to be sorted.
      *
-     * @var array
+     * @var array<string, string>
      */
     private $sorts = [];
 
@@ -37,10 +35,10 @@ trait WithSorting
     /**
      * Undocumented function.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param    $query
      * @return void
      */
-    public function applySorting(Builder $query)
+    public function applySorting($query)
     {
         foreach ($this->sorts as $field => $direction) {
             $query->orderBy($field, $direction);

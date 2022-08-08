@@ -14,7 +14,9 @@ use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Manageable;
 use App\Models\Contracts\TagTeamMember;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Manageable, TagTeamMember
@@ -46,9 +48,9 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \App\Builders\WrestlerQueryBuilder
+     * @return \App\Builders\WrestlerQueryBuilder<Wrestler>
      */
-    public function newEloquentBuilder($query)
+    public function newEloquentBuilder($query): WrestlerQueryBuilder
     {
         return new WrestlerQueryBuilder($query);
     }
@@ -81,5 +83,28 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     public function canBeUnretired()
     {
         return $this->isRetired();
+    }
+
+    /**
+     * Get the tag teams the model has been belonged to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tagTeams(): BelongsToMany
+    {
+        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')
+            ->withPivot(['joined_at', 'left_at']);
+    }
+
+    /**
+     * Get the model's current tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function currentTagTeam(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->tagTeams()->wherePivotNull('left_at')->first(),
+        );
     }
 }

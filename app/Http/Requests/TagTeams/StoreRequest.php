@@ -39,9 +39,8 @@ class StoreRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', Rule::unique('tag_teams', 'name')],
             'signature_move' => ['nullable', 'string'],
             'started_at' => ['nullable', 'string', 'date'],
-            'wrestlers' => ['nullable', 'array', 'required_with:signature_move'],
+            'wrestlers' => ['array', 'required_with:signature_move'],
             'wrestlers.*' => [
-                'nullable',
                 'bail',
                 'integer',
                 'distinct',

@@ -75,6 +75,8 @@ class WrestlerCanJoinExistingStable implements Rule
         if ($wrestler->currentStable !== null && $wrestler->currentStable->exists()) {
             return false;
         }
+
+        return true;
     }
 
     /**

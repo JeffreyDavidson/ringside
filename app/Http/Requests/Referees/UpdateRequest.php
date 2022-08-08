@@ -34,6 +34,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        /** @var \App\Models\Referee */
         $referee = $this->route()->parameter('referee');
 
         return [

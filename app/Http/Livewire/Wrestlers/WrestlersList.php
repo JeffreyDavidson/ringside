@@ -30,6 +30,11 @@ class WrestlersList extends BaseComponent
         'search' => '',
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function getRowsQueryProperty()
     {
         $query = Wrestler::query()
@@ -39,6 +44,11 @@ class WrestlersList extends BaseComponent
         return $this->applySorting($query);
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return void
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

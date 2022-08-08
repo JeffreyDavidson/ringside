@@ -36,7 +36,7 @@ class WrestlerCanJoinExistingTagTeam implements Rule
         }
 
         if ($wrestler->currentTagTeam() !== null
-            && ! $wrestler->currentTagTeam()->isNot($this->tag_team)
+            && ! $wrestler->currentTagTeam()->isNot($this->tagTeam)
         ) {
             return false;
         }

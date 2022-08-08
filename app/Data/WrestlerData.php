@@ -33,7 +33,7 @@ class WrestlerData
     /**
      * Create a DTO from the update request.
      *
-     * @param  \App\Http\Requests\Wrestlers\UpdateRequest  $request
+     * @param  \App\Http\Requests\Wrestlers\StoreRequest  $request
      * @return self
      */
     public static function fromStoreRequest(StoreRequest $request): self

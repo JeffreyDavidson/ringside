@@ -34,6 +34,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        /** @var \App\Models\Manager */
         $manager = $this->route()->parameter('manager');
 
         return [

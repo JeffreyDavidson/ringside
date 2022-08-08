@@ -30,6 +30,11 @@ class TagTeamsList extends BaseComponent
         'search' => '',
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @return \App\Builders\TagTeamQueryBuilder
+     */
     public function getRowsQueryProperty()
     {
         $query = TagTeam::query()
@@ -39,6 +44,11 @@ class TagTeamsList extends BaseComponent
         return $this->applySorting($query);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

@@ -35,6 +35,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        /** @var \App\Models\Wrestler */
         $wrestler = $this->route()->parameter('wrestler');
 
         return [

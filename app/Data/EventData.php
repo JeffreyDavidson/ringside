@@ -7,6 +7,7 @@ namespace App\Data;
 use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
 use App\Models\Venue;
+use Illuminate\Support\Carbon;
 
 class EventData
 {
@@ -14,13 +15,13 @@ class EventData
      * Create a new event data instance.
      *
      * @param  string  $name
-     * @param  string|null  $date
+     * @param  \Illuminate\Support\Carbon|null  $date
      * @param  \App\Models\Venue|null  $venue
      * @param  string|null  $preview
      */
     public function __construct(
         public string $name,
-        public ?string $date,
+        public ?Carbon $date,
         public ?Venue $venue,
         public ?string $preview
     ) {

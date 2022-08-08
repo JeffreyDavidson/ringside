@@ -44,6 +44,11 @@ class TitlesList extends BaseComponent
         return $this->applySorting($query);
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return void
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

@@ -35,6 +35,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        /** @var \App\Models\Title */
         $title = $this->route()->parameter('title');
 
         return [

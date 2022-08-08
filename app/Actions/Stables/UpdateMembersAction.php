@@ -30,7 +30,7 @@ class UpdateMembersAction extends BaseStableAction
     }
 
     /**
-     * Undocumented function.
+     * Update wrestlers attached to a stable.
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler>  $wrestlers
@@ -52,7 +52,7 @@ class UpdateMembersAction extends BaseStableAction
     }
 
     /**
-     * Undocumented function.
+     * Update tag teams attached to a stable.
      *
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam>  $tagTeams

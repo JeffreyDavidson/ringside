@@ -17,7 +17,7 @@ class StableData
      * Create a new stable data instance.
      *
      * @param  string  $name
-     * @param  Carbon|null  $start_date
+     * @param  \Illuminate\Support\Carbon|null  $start_date
      * @param  Collection<int, \App\Models\TagTeam>  $tagTeams
      * @param  Collection<int, \App\Models\Wrestler>  $wrestlers
      */
