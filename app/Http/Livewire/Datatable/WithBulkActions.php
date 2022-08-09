@@ -23,9 +23,9 @@ trait WithBulkActions
     /**
      * Undocumented variable.
      *
-     * @var array
+     * @var \Illuminate\Support\Collection<int, string>
      */
-    public $selected = [];
+    public $selected;
 
     /**
      * Undocumented function.
@@ -53,19 +53,26 @@ trait WithBulkActions
     /**
      * Undocumented function.
      *
-     * @param [type] $value
+     * @param  int  $value
      * @return void
      */
     public function updatedSelectPage($value)
     {
         if ($value) {
-            return $this->selectPageRows();
+            $this->selectPageRows();
+
+            return;
         }
 
         $this->selectAll = false;
-        $this->selected = [];
+        $this->selected = collect();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function selectPageRows()
     {
         $this->selected = $this->rows->pluck('id')->map(fn ($id) => (string) $id);
@@ -84,7 +91,7 @@ trait WithBulkActions
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return \Illuminate\Database\Query\Builder
      */
     public function getSelectedRowsQueryProperty()
     {

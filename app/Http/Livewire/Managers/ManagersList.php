@@ -9,6 +9,10 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Manager;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $rows
+ * @property \Illuminate\Database\Eloquent\Builder $rowsQuery
+ */
 class ManagersList extends BaseComponent
 {
     use WithBulkActions;
@@ -30,6 +34,11 @@ class ManagersList extends BaseComponent
         'search' => '',
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
     public function getRowsQueryProperty()
     {
         $query = Manager::query()

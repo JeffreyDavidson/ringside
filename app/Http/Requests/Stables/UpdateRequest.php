@@ -53,12 +53,16 @@ class UpdateRequest extends FormRequest
             'members_count' => [
                 'bail',
                 'integer',
-                Rule::when($this->input('started_at'),
-                new HasMinimumAmountOfMembers(
-                    $stable,
+                Rule::when(
                     $this->input('started_at'),
-                    $this->collect('wrestlers'),
-                    $this->collect('tag_teams'))
+                    function () use ($stable) {
+                        new HasMinimumAmountOfMembers(
+                            $stable,
+                            $this->input('started_at'),
+                            $this->collect('wrestlers'),
+                            $this->collect('tag_teams')
+                        );
+                    }
                 ),
             ],
             'wrestlers' => ['array'],
@@ -75,7 +79,7 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('tag_teams', 'id'),
-                new TagTeamCanJoinExistingStable(),
+                new TagTeamCanJoinExistingStable($this->date('started_at')),
             ],
         ];
     }

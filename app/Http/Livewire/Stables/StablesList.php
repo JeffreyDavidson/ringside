@@ -9,6 +9,10 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Stable;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $rows
+ * @property \Illuminate\Database\Eloquent\Builder $rowsQuery
+ */
 class StablesList extends BaseComponent
 {
     use WithBulkActions;
@@ -33,7 +37,7 @@ class StablesList extends BaseComponent
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return  \Illuminate\Database\Query\Builder
      */
     public function getRowsQueryProperty()
     {
@@ -47,7 +51,7 @@ class StablesList extends BaseComponent
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getRowsProperty()
     {

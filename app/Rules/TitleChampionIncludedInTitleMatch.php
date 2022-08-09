@@ -19,6 +19,7 @@ class TitleChampionIncludedInTitleMatch implements Rule
     /**
      * Create a new rule instance.
      *
+     * @param  array  $titleIds
      * @return void
      */
     public function __construct($titleIds = [])

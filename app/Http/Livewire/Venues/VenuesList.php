@@ -9,6 +9,10 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Venue;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $rows
+ * @property \Illuminate\Database\Eloquent\Builder $rowsQuery
+ */
 class VenuesList extends BaseComponent
 {
     use WithBulkActions;

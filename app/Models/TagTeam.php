@@ -132,7 +132,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return bool
      */
-    public function canBeReleased()
+    public function canBeReleased(): bool
     {
         if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;

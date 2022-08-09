@@ -8,11 +8,17 @@ use Illuminate\Support\Carbon;
 
 class ActivationStartDateCanBeChanged implements Rule
 {
+    /**
+     * Undocumented variable
+     *
+     * @var \App\Models\Title
+     */
     private $title;
 
     /**
      * Create a new rule instance.
      *
+     * @param  \App\Models\Title  $title
      * @return void
      */
     public function __construct(Title $title)

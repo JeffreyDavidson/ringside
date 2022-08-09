@@ -20,13 +20,6 @@ class MatchForm extends BaseComponent
     /**
      * Subview to load competitors.
      *
-     * @var string
-     */
-    private string $subViewToUse = '';
-
-    /**
-     * Subview to load competitors.
-     *
      * @var int
      */
     private int $matchTypeId = 0;
@@ -51,7 +44,7 @@ class MatchForm extends BaseComponent
     {
         $matchTypeSlug = MatchType::find($this->matchTypeId)->slug;
 
-        return $this->subViewToUse = 'matches.types.'.$matchTypeSlug;
+        return 'matches.types.'.$matchTypeSlug;
     }
 
     /**

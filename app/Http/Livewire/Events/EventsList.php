@@ -9,6 +9,10 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Event;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $rows
+ * @property \Illuminate\Database\Eloquent\Builder $rowsQuery
+ */
 class EventsList extends BaseComponent
 {
     use WithBulkActions;
@@ -33,7 +37,7 @@ class EventsList extends BaseComponent
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return \Illuminate\Database\Query\Builder
      */
     public function getRowsQueryProperty()
     {
@@ -47,7 +51,7 @@ class EventsList extends BaseComponent
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getRowsProperty()
     {

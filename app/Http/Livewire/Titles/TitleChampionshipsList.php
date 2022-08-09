@@ -8,6 +8,10 @@ use App\Http\Livewire\BaseComponent;
 use App\Models\Title;
 use App\Models\TitleChampionship;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $rows
+ * @property \Illuminate\Database\Eloquent\Builder $rowsQuery
+ */
 class TitleChampionshipsList extends BaseComponent
 {
     /**
@@ -40,7 +44,7 @@ class TitleChampionshipsList extends BaseComponent
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function getRowsQueryProperty()
     {
@@ -50,7 +54,7 @@ class TitleChampionshipsList extends BaseComponent
     /**
      * Undocumented function.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getRowsProperty()
     {

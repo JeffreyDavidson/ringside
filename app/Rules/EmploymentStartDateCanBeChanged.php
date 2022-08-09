@@ -8,13 +8,24 @@ use Illuminate\Support\Carbon;
 
 class EmploymentStartDateCanBeChanged implements Rule
 {
-    private $rosterMember;
+    /**
+     * Undocumented variable
+     *
+     * @var \App\Models\Contracts\Employable
+     */
+    private Employable $rosterMember;
 
+    /**
+     * Undocumented variable
+     *
+     * @var string
+     */
     private $message;
 
     /**
      * Create a new rule instance.
      *
+     * @param  \App\Models\Contracts\Employable  $rosterMember
      * @return void
      */
     public function __construct(Employable $rosterMember)

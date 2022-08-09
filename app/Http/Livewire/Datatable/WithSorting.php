@@ -17,7 +17,7 @@ trait WithSorting
      * Sorts a field by a given key.
      *
      * @param  string  $field
-     * @return string
+     * @return string|null
      */
     public function sortBy($field)
     {
@@ -35,8 +35,8 @@ trait WithSorting
     /**
      * Undocumented function.
      *
-     * @param    $query
-     * @return void
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return  \Illuminate\Database\Query\Builder
      */
     public function applySorting($query)
     {
