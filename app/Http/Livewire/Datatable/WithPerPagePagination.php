@@ -41,7 +41,7 @@ trait WithPerPagePagination
     /**
      * Apply pagination to query results.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function applyPagination($query)

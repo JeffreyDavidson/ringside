@@ -34,6 +34,11 @@ class VenuesList extends BaseComponent
         'search' => '',
     ];
 
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
     public function getRowsQueryProperty()
     {
         $query = Venue::query()
@@ -43,6 +48,11 @@ class VenuesList extends BaseComponent
         return $this->applySorting($query);
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

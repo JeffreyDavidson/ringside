@@ -24,6 +24,14 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
+        if (is_null($this->user()) || is_null($this->route())) {
+            return false;
+        }
+
+        if (! $this->route()->hasParameter('referee') || is_null($this->route()->parameter('referee'))) {
+            return false;
+        }
+
         return $this->user()->can('update', Referee::class);
     }
 
@@ -34,6 +42,10 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        if (is_null($this->route()->parameter('referee'))) {
+            return [];
+        }
+
         /** @var \App\Models\Referee */
         $referee = $this->route()->parameter('referee');
 

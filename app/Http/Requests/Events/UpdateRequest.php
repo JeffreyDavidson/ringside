@@ -24,6 +24,10 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
+        if (is_null($this->user())) {
+            return false;
+        }
+
         $event = $this->route()->parameter('event');
 
         return $this->user()->can('update', $event);

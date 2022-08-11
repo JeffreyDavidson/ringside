@@ -50,6 +50,11 @@ class ManagersList extends BaseComponent
         return $this->applySorting($query);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

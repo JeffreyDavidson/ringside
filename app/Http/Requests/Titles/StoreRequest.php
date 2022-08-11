@@ -24,6 +24,10 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
+        if (is_null($this->user())) {
+            return false;
+        }
+
         return $this->user()->can('create', Title::class);
     }
 

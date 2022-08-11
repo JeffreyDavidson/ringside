@@ -42,7 +42,7 @@ class MatchForm extends BaseComponent
      */
     public function updatedMatchTypeId()
     {
-        $matchTypeSlug = MatchType::find($this->matchTypeId)->slug;
+        $matchTypeSlug = MatchType::findOrFail($this->matchTypeId)->slug;
 
         return 'matches.types.'.$matchTypeSlug;
     }
