@@ -8,7 +8,7 @@
                         <x-input.checkbox wire:model="selectPage" />
                     </x-table.heading>
                     <x-table.heading sortable multi-column wire:click="sortBy('name')" :direction="$sorts['name'] ?? null"
-                        class="min-w-125px sorting">TagTeam Name</x-table.heading>
+                        class="min-w-125px sorting">Tag Team Name</x-table.heading>
                     <x-table.heading sortable multi-column wire:click="sortBy('status')" :direction="$sorts['status'] ?? null"
                         class="min-w-125px sorting">Status</x-table.heading>
                     <x-table.heading class="min-w-70px sorting_disabled">Created At</x-table.heading>
@@ -28,8 +28,8 @@
                             </x-table.cell>
 
                             <x-table.cell>
-                                <div class="badge badge-{{ $tagTeam->status->getBadgeColor() }}">
-                                    {{ $tagTeam->status->label }}
+                                <div class="badge badge-{{ $tagTeam->status->color() }}">
+                                    {{ $tagTeam->status->label() }}
                                 </div>
                             </x-table.cell>
 

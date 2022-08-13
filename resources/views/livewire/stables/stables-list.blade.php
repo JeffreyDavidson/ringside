@@ -24,8 +24,8 @@
                             </x-table.cell>
 
                             <x-table.cell>
-                                <div class="badge badge-{{ $stable->status->getBadgeColor() }}">
-                                    {{ $stable->status->label }}
+                                <div class="badge badge-{{ $stable->status->color() }}">
+                                    {{ $stable->status->label() }}
                                 </div>
                             </x-table.cell>
 

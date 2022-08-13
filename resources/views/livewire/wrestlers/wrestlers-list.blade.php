@@ -1,3 +1,4 @@
+
 <div class="card">
     @include('livewire.wrestlers.partials.header')
     <div class="py-4 card-body">
@@ -21,12 +22,12 @@
                             </x-table.cell>
 
                             <x-table.cell>
-                                <a class="mb-1 text-gray-800 text-hover-primary" href="{{ route('wrestlers.show', $wrestler) }}">{{ $wrestler->name }}</a>
+                                <a class="text-gray-800 text-hover-primary" href="{{ route('wrestlers.show', $wrestler) }}">{{ $wrestler->name }}</a>
                             </x-table.cell>
 
                             <x-table.cell>
-                                <div class="badge badge-{{ $wrestler->status->getBadgeColor() }}">
-                                    {{ $wrestler->status->label }}
+                                <div class="badge badge-{{ $wrestler->status->color() }}">
+                                    {{ $wrestler->status->label() }}
                                 </div>
                             </x-table.cell>
 

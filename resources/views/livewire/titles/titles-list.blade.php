@@ -20,12 +20,12 @@
                             </x-table.cell>
 
                             <x-table.cell>
-                                <a class="mb-1 text-gray-800 text-hover-primary" href="{{ route('titles.show', $title) }}">{{ $title->name }}</a>
+                                <a class="text-gray-800 text-hover-primary" href="{{ route('titles.show', $title) }}">{{ $title->name }}</a>
                             </x-table.cell>
 
                             <x-table.cell>
-                                <div class="badge badge-{{ $title->status->getBadgeColor() }}">
-                                    {{ $title->status->label }}
+                                <div class="badge badge-{{ $title->status->color() }}">
+                                    {{ $title->status->label() }}
                                 </div>
                             </x-table.cell>
 

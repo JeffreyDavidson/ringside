@@ -20,12 +20,12 @@
                             </x-table.cell>
 
                             <x-table.cell>
-                                <a class="mb-1 text-gray-800 text-hover-primary" href="{{ route('referees.show', $referee) }}">{{ $referee->full_name }}</a>
+                                <a class="text-gray-800 text-hover-primary" href="{{ route('referees.show', $referee) }}">{{ $referee->full_name }}</a>
                             </x-table.cell>
 
                             <x-table.cell>
-                                <div class="badge badge-{{ $referee->status->getBadgeColor() }}">
-                                    {{ $referee->status->label }}
+                                <div class="badge badge-{{ $referee->status->color() }}">
+                                    {{ $referee->status->label() }}
                                 </div>
                             </x-table.cell>
 
