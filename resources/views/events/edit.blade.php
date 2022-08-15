@@ -1,64 +1,41 @@
 <x-layouts.app>
     <x-slot name="toolbar">
-        <div id="kt_app_toolbar" class="py-3 app-toolbar py-lg-6">
-            <!--begin::Toolbar container-->
-            <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
-                <!--begin::Page title-->
-                <div class="flex-wrap page-title d-flex flex-column justify-content-center me-3">
-                    <!--begin::Title-->
-                    <h1 class="my-0 page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center">Events</h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="pt-1 my-0 breadcrumb breadcrumb-separatorless fw-semibold fs-7">
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">
-                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item">
-                            <span class="bg-gray-400 bullet w-5px h-2px"></span>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">
-                            <a href="{{ route('events.index') }}" class="text-muted text-hover-primary">Events</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <span class="bg-gray-400 bullet w-5px h-2px"></span>
-                        </li>
-                        <li class="breadcrumb-item text-muted">
-                            <a href="{{ route('events.show', $event) }}" class="text-muted text-hover-primary">{{ $event->name }}</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <span class="bg-gray-400 bullet w-5px h-2px"></span>
-                        </li>
-                        <li class="breadcrumb-item text-muted">Edit</li>
-                        <!--end::Item-->
-                    </ul>
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
-            </div>
-            <!--end::Toolbar container-->
-        </div>
+        <x-toolbar title="Events">
+            <x-breadcrumbs.item :url="route('dashboard')" label="Home" />
+            <x-breadcrumbs.separator />
+            <x-breadcrumbs.item :url="route('events.index')" label="Events" />
+            <x-breadcrumbs.separator />
+            <x-breadcrumbs.item :url="route('events.show', $event)" :label="$event->name" />
+            <x-breadcrumbs.separator />
+            <x-breadcrumbs.item label="Edit" />
+        </x-toolbar>
     </x-slot>
 
-    <x-content>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Event Form</h3>
-            </div>
-            <div class="card-body">
-                <x-form.form
-                    action="{{ route('events.update', $event) }}"
-                    method="PATCH"
-                    backTo="{{ route('events.index') }}"
-                    resource="Events"
-                >
-                    @include('events.partials.form')
-                </x-form.form>
-            </div>
+    <div class="shadow-sm card">
+        <div class="card-header">
+            <h3 class="card-title">Edit Event Form</h3>
         </div>
-    </x-content>
+        <div class="card-body">
+            <form method="post" action="{{ route('events.update', $event) }}">
+                @method('patch')
+                @csrf
+                <div class="mb-10">
+                    <x-form.inputs.text label="Name:" name="name" placeholder="Event Name Here" value="{{ $event->name }}" />
+                </div>
+                <div class="mb-10">
+                    <x-form.inputs.date label="Date:" name="date" value="{{ $event->date?->format('Y-m-d') }}" />
+                </div>
+                <div class="mb-10">
+                    <x-form.inputs.select label="Venue:" name="venue_id" :options="$venues" :selected="old('venue_id', $event->venue_id)" />
+                </div>
+                <div class="mb-10">
+                    <x-form.inputs.textarea label="Preview:" name="preview" placeholder="Enter a preview description of the event." value="{{ $event->preview }}" />
+                </div>
+        </div>
+        <div class="card-footer">
+            <x-form.buttons.submit />
+            <x-form.buttons.reset />
+        </div>
+        </form>
+    </div>
 </x-layouts.app>
