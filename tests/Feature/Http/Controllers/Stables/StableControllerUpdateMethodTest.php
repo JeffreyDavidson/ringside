@@ -3,6 +3,7 @@
 use App\Http\Controllers\Stables\StablesController;
 use App\Http\Requests\Stables\UpdateRequest;
 use App\Models\Stable;
+use App\Models\TagTeam;
 use App\Models\Wrestler;
 
 test('edit returns a view', function () {
@@ -54,12 +55,14 @@ test('updates a stable and redirects', function () {
 });
 
 test('wrestlers of stable are synced when stable is updated', function () {
-    $stable = Stable::factory()->withStablePartners()->create();
-    $formerStableWrestlers = $stable->currentWrestlers;
-    $newWrestlerMembers = Wrestler::factory()->count(2)->create();
+    $formerStableWrestlers = Wrestler::factory()->count(2)->create();
+    $stable = Stable::factory()
+        ->hasAttached($formerStableWrestlers, ['joined_at' => now()->toDateTimeString()])
+        ->create();
+    $newStableWrestlers = Wrestler::factory()->count(2)->create();
 
     $data = UpdateRequest::factory()->create([
-        'wrestlers' => $newWrestlerMembers->modelKeys(),
+        'wrestlers' => $newStableWrestlers->modelKeys(),
     ]);
 
     $this->actingAs(administrator())
@@ -69,20 +72,20 @@ test('wrestlers of stable are synced when stable is updated', function () {
 
     expect($stable->fresh())
         ->wrestlers->toHaveCount(4)
-        ->currentWrestlers->toHaveCount(2);
-    // ->currentWrestlers->toContain($newStablePartners[0])
-        // ->currentWrestlers->toContain($newStablePartners[1])
-        // ->currentWrestlers->not->toContain($formerStablePartners[1])
-        // ->currentWrestlers->not->toContain($formerStablePartners[1]);
-})->skip();
+        ->currentWrestlers->toHaveCount(2)
+        ->toContain(...$newStableWrestlers)
+        ->not->toContain($formerStableWrestlers->modelKeys());
+});
 
 test('tag teams of stable are synced when stable is updated', function () {
-    $stable = Stable::factory()->withStablePartners()->create();
-    $formerTagTeamMembers = $stable->currentTagTeams;
-    $newTagTeamMembers = TagTeam::factory()->count(2)->create();
+    $formerStableTagTeams = TagTeam::factory()->count(2)->create();
+    $stable = Stable::factory()
+        ->hasAttached($formerStableTagTeams, ['joined_at' => now()->toDateTimeString()])
+        ->create();
+    $newStableTagTeams = TagTeam::factory()->count(2)->create();
 
     $data = UpdateRequest::factory()->create([
-        'wrestlers' => $newTagTeamMembers->modelKeys(),
+        'tag_teams' => $newStableTagTeams->modelKeys(),
     ]);
 
     $this->actingAs(administrator())
@@ -91,13 +94,11 @@ test('tag teams of stable are synced when stable is updated', function () {
         ->assertRedirect(action([StablesController::class, 'index']));
 
     expect($stable->fresh())
-        ->wrestlers->toHaveCount(4)
-        ->currentWrestlers->toHaveCount(2);
-    // ->currentWrestlers->toContain($newStablePartners[0])
-        // ->currentWrestlers->toContain($newStablePartners[1])
-        // ->currentWrestlers->not->toContain($formerStablePartners[1])
-        // ->currentWrestlers->not->toContain($formerStablePartners[1]);
-})->skip();
+        ->tagTeams->toHaveCount(4)
+        ->currentTagTeams->toHaveCount(2)
+        ->pluck('id')->toContain($newStableTagTeams->modelKeys())
+        ->not->toContain($formerStableTagTeams->modelKeys());
+});
 
 test('a basic user cannot update a stable', function () {
     $stable = Stable::factory()->create();
