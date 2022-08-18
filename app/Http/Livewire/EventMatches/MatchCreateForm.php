@@ -5,34 +5,35 @@ declare(strict_types=1);
 namespace App\Http\Livewire\EventMatches;
 
 use App\Http\Livewire\BaseComponent;
+use App\Models\Event;
 use App\Models\EventMatch;
 use App\Models\MatchType;
+use App\Models\Referee;
+use App\Models\Title;
 
-class MatchForm extends BaseComponent
+class MatchCreateForm extends BaseComponent
 {
-    /**
-     * Event match to be loaded.
-     *
-     * @var EventMatch
-     */
-    private EventMatch $match;
+    public Event $event;
+
+    public EventMatch $match;
 
     /**
      * Subview to load competitors.
      *
      * @var int
      */
-    private int $matchTypeId = 0;
+    public int $matchTypeId = 0;
+
+    public $subviewToUse;
 
     /**
-     * Apply the EventMatch to the Match form instance.
-     *
-     * @param  \App\Models\EventMatch  $match
      * @return void
      */
     public function mount(EventMatch $match)
     {
+        $this->event = request()->route()->parameter('event');
         $this->match = $match;
+        $this->subViewToUse = '';
     }
 
     /**
@@ -44,7 +45,7 @@ class MatchForm extends BaseComponent
     {
         $matchTypeSlug = MatchType::findOrFail($this->matchTypeId)->slug;
 
-        return 'matches.types.'.$matchTypeSlug;
+        return $this->subViewToUse = 'matches.types.'.$matchTypeSlug;
     }
 
     /**
@@ -54,8 +55,14 @@ class MatchForm extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.matches.form', [
+        return view('livewire.matches.create', [
             'match' => $this->match,
+            'matchTypes' => MatchType::pluck('name', 'id'),
+            'referees' => Referee::query()
+                ->get()
+                ->map(fn ($referee) => ['id' => $referee->id, 'full_name' => $referee->first_name.' '.$referee->last_name])
+                ->pluck('full_name', 'id'),
+            'titles' => Title::pluck('name', 'id'),
         ]);
     }
 }
