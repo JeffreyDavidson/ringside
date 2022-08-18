@@ -41,10 +41,6 @@ class TitleChampionIncludedInTitleMatch implements Rule
             return true;
         }
 
-        $titles = Title::with('currentChampionship.champion')
-            ->findMany($this->titleIds)
-            ->filter(fn ($title) => ! $title->isVacant());
-
         $competitors = collect($value)->flatten(1);
 
         $wrestlers = Wrestler::query()
@@ -57,13 +53,10 @@ class TitleChampionIncludedInTitleMatch implements Rule
 
         $competitors = $wrestlers->merge($tagTeams);
 
-        foreach ($titles as $title) {
-            if (! $competitors->contains($title->currentChampionship->champion)) {
-                return false;
-            }
-        }
-
-        return true;
+        return Title::with('currentChampionship.champion')
+            ->findMany($this->titleIds)
+            ->reject(fn ($title) => $title->isVacant())
+            ->every(fn ($title) => $competitors->contains($title->currentChampionship->champion));
     }
 
     /**

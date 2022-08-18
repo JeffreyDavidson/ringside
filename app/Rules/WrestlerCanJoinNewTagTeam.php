@@ -16,6 +16,10 @@ class WrestlerCanJoinNewTagTeam implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (is_null($value)) {
+            return false;
+        }
+
         /** @var \App\Models\Wrestler $wrestler */
         $wrestler = Wrestler::query()->with(['currentEmployment', 'futureEmployment'])->whereKey($value)->sole();
 
