@@ -25,11 +25,12 @@
                     />
                 </div>
                 <div class="mb-10">
-                    <div class="mb-5 row gx-10">
-                        <div class="col-lg-8">
-                            <x-form.inputs.text label="Street Address:" name="street_address" placeholder="Street Address Here" />
-                        </div>
-                    </div>
+                    <x-form.inputs.text
+                        label="Street Address:"
+                        name="street_address"
+                        placeholder="Street Address Here"
+                        :value="old('street_address')"
+                    />
                 </div>
                 <div class="mb-10">
                     <div class="mb-5 row gx-10">
