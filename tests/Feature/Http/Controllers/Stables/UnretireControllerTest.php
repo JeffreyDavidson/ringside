@@ -17,7 +17,7 @@ test('invoke unretires a retired stable and its members and redirects', function
 
     expect($this->stable->fresh())
         ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toBe(StableStatus::ACTIVE);
+        ->status->toMatchObject(StableStatus::ACTIVE);
 });
 
 test('a basic user cannot unretire a stable', function () {

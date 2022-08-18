@@ -17,7 +17,7 @@ test('invoke injures a bookable referee and redirects', function () {
 
     expect($this->referee->fresh())
         ->injuries->toHaveCount(1)
-        ->status->toBe(RefereeStatus::INJURED);
+        ->status->toMatchObject(RefereeStatus::INJURED);
 });
 
 test('a basic user cannot injure a bookable referee', function () {

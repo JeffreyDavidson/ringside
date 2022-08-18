@@ -15,7 +15,7 @@ test('invoke deactivates an active title and redirects', function () {
 
     expect($title->fresh())
         ->activations->last()->ended_at->not->toBeNull()
-        ->status->toBe(TitleStatus::INACTIVE);
+        ->status->toMatchObject(TitleStatus::INACTIVE);
 });
 
 test('a basic user cannot deactivate an active title', function () {

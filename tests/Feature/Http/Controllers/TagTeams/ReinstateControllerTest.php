@@ -18,10 +18,10 @@ test('invoke reinstates a suspended tag team and its tag team partners and redir
 
     expect($this->tagTeam->fresh())
         ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toBe(TagTeamStatus::BOOKABLE)
+        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->suspensions->last()->not->toBeNull();
-            $wrestler->status->toBe(WrestlerStatus::BOOKABLE);
+            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
         });
 });
 

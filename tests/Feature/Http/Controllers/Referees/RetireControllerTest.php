@@ -15,7 +15,7 @@ test('invoke retires a retirable referee and redirects', function ($factoryState
 
     expect($referee->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(RefereeStatus::RETIRED);
+        ->status->toMatchObject(RefereeStatus::RETIRED);
 })->with([
     'bookable',
     'injured',

@@ -15,7 +15,7 @@ test('invoke suspends an available manager and redirects', function () {
 
     expect($manager->fresh())
         ->suspensions->toHaveCount(1)
-        ->status->toBe(ManagerStatus::SUSPENDED);
+        ->status->toMatchObject(ManagerStatus::SUSPENDED);
 });
 
 test('a basic user cannot suspend an available manager', function () {

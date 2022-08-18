@@ -17,7 +17,7 @@ test('invoke releases a available manager and redirects', function () {
 
     expect($manager->fresh())
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(ManagerStatus::RELEASED);
+        ->status->toMatchObject(ManagerStatus::RELEASED);
 });
 
 test('invoke releases an injured manager and redirects', function () {
@@ -30,7 +30,7 @@ test('invoke releases an injured manager and redirects', function () {
     expect($manager->fresh())
         ->injuries->last()->ended_at->not->toBeNull()
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(ManagerStatus::RELEASED);
+        ->status->toMatchObject(ManagerStatus::RELEASED);
 });
 
 test('invoke releases an suspended manager and redirects', function () {
@@ -43,7 +43,7 @@ test('invoke releases an suspended manager and redirects', function () {
     expect($manager->fresh())
         ->suspensions->last()->ended_at->not->toBeNull()
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(ManagerStatus::RELEASED);
+        ->status->toMatchObject(ManagerStatus::RELEASED);
 });
 
 test('invoke_releases_a_manager_leaving_their_current_tag_teams_and_managers_and_redirects', function () {

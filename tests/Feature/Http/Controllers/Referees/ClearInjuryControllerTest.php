@@ -17,7 +17,7 @@ test('invoke marks an injured referee as being cleared from injury and redirects
 
     expect($this->referee->fresh())
         ->injuries->last()->ended_at->not->toBeNull()
-        ->status->toBe(RefereeStatus::BOOKABLE);
+        ->status->toMatchObject(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot mark an injured referee as cleared', function () {

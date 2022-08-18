@@ -17,7 +17,7 @@ test('invoke injures an available manager and redirects', function () {
 
     expect($this->manager->fresh())
         ->injuries->toHaveCount(1)
-        ->status->toBe(ManagerStatus::INJURED);
+        ->status->toMatchObject(ManagerStatus::INJURED);
 });
 
 test('a basic user cannot injure an available manager', function () {

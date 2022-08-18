@@ -16,9 +16,9 @@ test('invoke releases a bookable tag team and tag team partners and redirects', 
 
     expect($tagTeam->fresh())
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(TagTeamStatus::RELEASED)
+        ->status->toMatchObject(TagTeamStatus::RELEASED)
         ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toBe(WrestlerStatus::RELEASED);
+            $wrestler->status->toMatchObject(WrestlerStatus::RELEASED);
         });
 });
 

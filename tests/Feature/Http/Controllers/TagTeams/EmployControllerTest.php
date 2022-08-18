@@ -25,7 +25,7 @@ test('invoke employs an unemployed tag team and their unemployed wrestlers and r
         ->status->toMatchObject(TagTeamStatus::BOOKABLE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->employments->toHaveCount(1);
-            $wrestler->status->toBe(WrestlerStatus::BOOKABLE);
+            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
         });
 });
 
@@ -46,7 +46,7 @@ test('invoke employs an unemployed tag team with bookable wrestlers and redirect
         ->status->toMatchObject(TagTeamStatus::BOOKABLE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->employments->toHaveCount(1);
-            $wrestler->status->toBe(WrestlerStatus::BOOKABLE);
+            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
         });
 });
 
@@ -60,10 +60,10 @@ test('invoke employs a future employed tag team and their tag team partners and 
 
     expect($tagTeam->fresh())
         ->currentEmployment->started_at->toBeLessThan($startDate)
-        ->status->toBe(TagTeamStatus::BOOKABLE)
+        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
         ->currentWrestlers->each(function ($wrestler) use ($startDate) {
             $wrestler->currentEmployment->started_at->toBeLessThan($startDate);
-            $wrestler->status->toBe(WrestlerStatus::BOOKABLE);
+            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
         });
 });
 
@@ -76,10 +76,10 @@ test('invoke employs a released tag team and their tag team partners redirects',
 
     expect($tagTeam->fresh())
         ->employments->toHaveCount(2)
-        ->status->toBe(TagTeamStatus::BOOKABLE)
+        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->employments->toHaveCount(2);
-            $wrestler->status->toBe(WrestlerStatus::BOOKABLE);
+            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
         });
 });
 

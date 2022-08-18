@@ -19,7 +19,7 @@ test('invoke injures a bookable wrestler and redirects', function () {
 
     expect($this->wrestler->fresh())
         ->injuries->toHaveCount(1)
-        ->status->toBe(WrestlerStatus::INJURED);
+        ->status->toMatchObject(WrestlerStatus::INJURED);
 });
 
 test('injuring a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -31,7 +31,7 @@ test('injuring a bookable wrestler on a bookable tag team makes tag team unbooka
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
     expect($tagTeam->fresh())
-        ->status->toBe(TagTeamStatus::UNBOOKABLE);
+        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot injure a bookable wrestler', function () {

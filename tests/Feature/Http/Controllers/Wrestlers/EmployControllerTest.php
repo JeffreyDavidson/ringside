@@ -15,7 +15,7 @@ test('invoke employs an unemployed wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->employments->toHaveCount(1)
-        ->status->toBe(WrestlerStatus::BOOKABLE);
+        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
 });
 
 test('invoke employs a future employed wrestler and redirects', function () {
@@ -28,7 +28,7 @@ test('invoke employs a future employed wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->currentEmployment->started_at->toBeLessThan($startDate)
-        ->status->toBe(WrestlerStatus::BOOKABLE);
+        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
 });
 
 test('invoke employs a released wrestler and redirects', function () {
@@ -40,7 +40,7 @@ test('invoke employs a released wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->employments->toHaveCount(2)
-        ->status->toBe(WrestlerStatus::BOOKABLE);
+        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
 });
 
 test('a basic user cannot employ a wrestler', function () {

@@ -17,7 +17,7 @@ test('invoke marks an injured manager as being cleared from injury and redirects
 
     expect($this->manager->fresh())
         ->injuries->last()->ended_at->not->toBeNull()
-        ->status->toBe(ManagerStatus::AVAILABLE);
+        ->status->toMatchObject(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot mark an injured manager as cleared', function () {

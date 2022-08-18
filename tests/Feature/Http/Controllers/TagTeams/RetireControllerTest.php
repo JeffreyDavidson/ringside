@@ -16,11 +16,11 @@ test('invoke retires a bookable tag team and its tag team partners and redirects
 
     expect($tagTeam->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(TagTeamStatus::RETIRED)
+        ->status->toMatchObject(TagTeamStatus::RETIRED)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler
                 ->retirements->toHaveCount(1)
-                ->status->toBe(WrestlerStatus::RETIRED, $wrestler->status);
+                ->status->toMatchObject(WrestlerStatus::RETIRED, $wrestler->status);
         });
 });
 
@@ -32,9 +32,9 @@ test('invoke retires an unbookable tag team and its tag team partners and redire
         ->assertRedirect(action([TagTeamsController::class, 'index']));
 
     expect($tagTeam->fresh())
-        ->status->toBe(TagTeamStatus::RETIRED)
+        ->status->toMatchObject(TagTeamStatus::RETIRED)
         ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toBe(WrestlerStatus::RETIRED, $wrestler->status);
+            $wrestler->status->toMatchObject(WrestlerStatus::RETIRED, $wrestler->status);
         });
 });
 

@@ -17,16 +17,16 @@ test('invoke retires a retirable stable and its members and redirects', function
 
     expect($stable->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(StableStatus::RETIRED)
+        ->status->toMatchObject(StableStatus::RETIRED)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler
                 ->retirements->toHaveCount(1)
-                ->status->toBe(WrestlerStatus::RETIRED, $wrestler->status);
+                ->status->toMatchObject(WrestlerStatus::RETIRED, $wrestler->status);
         })
         ->currentTagTeams->each(function ($tagTeam) {
             $tagTeam
                 ->retirements->toHaveCount(1)
-                ->status->toBe(TagTeamStatus::RETIRED, $tagTeam->status);
+                ->status->toMatchObject(TagTeamStatus::RETIRED, $tagTeam->status);
         });
 })->with([
     'active',
