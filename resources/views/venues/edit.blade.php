@@ -21,28 +21,58 @@
                 @method('patch')
                 @csrf
                 <div class="mb-10">
-                    <x-form.inputs.text label="Name:" name="name" placeholder="Venue Name Here" value="{{ $venue->name }}" />
+                    <x-form.inputs.text
+                        label="Name:"
+                        name="name"
+                        placeholder="Venue Name Here"
+                        :value="old('name', $venue->name)"
+                    />
                 </div>
                 <div class="mb-10">
                     <div class="mb-5 row gx-10">
                         <div class="col-lg-8">
-                            <x-form.inputs.text label="Street Address:" name="address1" placeholder="Street Address Here" value="{{ $venue->address1 }}" />
+                            <x-form.inputs.text
+                                label="Street Address:"
+                                name="address1"
+                                placeholder="Street Address Here"
+                                :value="old('address1', $venue->address1)"
+                            />
                         </div>
                         <div class="col-lg-4">
-                            <x-form.inputs.text label="Suite Number:" name="address2" placeholder="Suite Number Here" value="{{ $venue->address2 }}" />
+                            <x-form.inputs.text
+                                label="Suite Number:"
+                                name="address2"
+                                placeholder="Suite Number Here"
+                                :value="old('address2', $venue->address2)"
+                            />
                         </div>
                     </div>
                 </div>
                 <div class="mb-10">
                     <div class="mb-5 row gx-10">
                         <div class="col-lg-4">
-                            <x-form.inputs.text label="City:" name="city" placeholder="Orlando" value="{{ $venue->city }}" />
+                            <x-form.inputs.text
+                                label="City:"
+                                name="city"
+                                placeholder="Orlando"
+                                :value="old('city', $venue->city)"
+                            />
                         </div>
                         <div class="col-lg-4">
-                            <x-form.inputs.text label="State:" name="state" placeholder="Florida" value="{{ $venue->state }}" />
+                            <x-form.inputs.text
+                                label="State:"
+                                name="state"
+                                placeholder="Florida"
+                                :value="old('state', $venue->state)"
+                            />
                         </div>
                         <div class="col-lg-4">
-                            <x-form.inputs.text label="Zip:" name="zip" placeholder="12345" value="{{ $venue->zip }}" />
+                            <x-form.inputs.text
+                                label="Zip:"
+                                 name="zip"
+                                placeholder="12345"
+                                :value="old('zip', $venue->zip)"
+                            />
                         </div>
                     </div>
                 </div>
