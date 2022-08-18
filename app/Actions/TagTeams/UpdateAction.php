@@ -6,7 +6,6 @@ namespace App\Actions\TagTeams;
 
 use App\Data\TagTeamData;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class UpdateAction extends BaseTagTeamAction
@@ -24,8 +23,18 @@ class UpdateAction extends BaseTagTeamAction
     {
         $this->tagTeamRepository->update($tagTeam, $tagTeamData);
 
+        $wrestlers = collect([]);
+
+        if ($tagTeamData->wrestlerA) {
+            $wrestlers->push($tagTeamData->wrestlerA);
+        }
+
+        if ($tagTeamData->wrestlerB) {
+            $wrestlers->push($tagTeamData->wrestlerB);
+        }
+
         $tagTeam->currentWrestlers
-            ->diff(Wrestler::whereIn('id', [$tagTeamData->wrestlerA->id, $tagTeamData->wrestlerB->id])->get())
+            ->diff($wrestlers)
             ->each(fn ($wrestler) => RemoveTagTeamPartnerAction::run($tagTeam, $wrestler));
 
         if ($tagTeamData->wrestlerA && $tagTeam->currentWrestlers->doesntContain('id', $tagTeamData->wrestlerA->id)) {
