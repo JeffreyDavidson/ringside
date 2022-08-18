@@ -15,7 +15,8 @@ class TagTeamRequestFactory extends RequestFactory
             'name' => Str::title($this->faker->words(3, true)),
             'signature_move' => null,
             'start_date' => null,
-            'wrestlers' => [],
+            'wrestlerA' => null,
+            'wrestlerB' => null,
         ];
     }
 }
