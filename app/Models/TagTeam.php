@@ -202,7 +202,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function canBeRetired()
     {
-        return $this->isBookable() || $this->isUnbookable();
+        return $this->isBookable() || $this->isSuspended();
     }
 
     /**
