@@ -57,7 +57,8 @@ test('wrestlers of tag team are synced when tag team is updated', function () {
     $newTagTeamPartners = Wrestler::factory()->count(2)->create();
 
     $data = UpdateRequest::factory()->create([
-        'wrestlers' => $newTagTeamPartners->modelKeys(),
+        'wrestlerA' => $newTagTeamPartners->first()->id,
+        'wrestlerB' => $newTagTeamPartners->last()->id,
     ]);
 
     $this->actingAs(administrator())
