@@ -69,11 +69,9 @@ test('wrestlers of tag team are synced when tag team is updated', function () {
         ->wrestlers->toHaveCount(4)
         ->currentWrestlers
             ->toHaveCount(2)
-            ->toContain($newTagTeamPartners->first())
-            ->toContain($newTagTeamPartners->last())
-            ->not->toContain($formerTagTeamPartners->first())
-            ->not->toContain($formerTagTeamPartners->last());
-})->skip(true, 'Need to figure out how to check collection items');
+            ->toContain($newTagTeamPartners->modelKeys())
+            ->not->toContain($formerTagTeamPartners->modelKeys());
+});
 
 test('a basic user cannot update a tag team', function () {
     $tagTeam = TagTeam::factory()->create();
