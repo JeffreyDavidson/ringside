@@ -13,16 +13,14 @@ class VenueData
      * Create a new venue data instance.
      *
      * @param  string  $name
-     * @param  string  $address1
-     * @param  string|null  $address2
+     * @param  string  $street_address
      * @param  string  $city
      * @param  string  $state
      * @param  string  $zip
      */
     public function __construct(
         public string $name,
-        public string $address1,
-        public ?string $address2,
+        public string $street_address,
         public string $city,
         public string $state,
         public string $zip,
@@ -39,8 +37,7 @@ class VenueData
     {
         return new self(
             $request->input('name'),
-            $request->input('address1'),
-            $request->input('address2'),
+            $request->input('street_address'),
             $request->input('city'),
             $request->input('state'),
             $request->input('zip')
@@ -57,8 +54,7 @@ class VenueData
     {
         return new self(
             $request->input('name'),
-            $request->input('address1'),
-            $request->input('address2'),
+            $request->input('street_address'),
             $request->input('city'),
             $request->input('state'),
             $request->input('zip')
