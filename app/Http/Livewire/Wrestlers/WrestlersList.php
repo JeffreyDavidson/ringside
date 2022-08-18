@@ -39,7 +39,7 @@ class WrestlersList extends BaseComponent
     {
         $query = Wrestler::query()
             ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
-            ->oldest('name');
+            ->orderBy('name');
 
         return $this->applySorting($query);
     }
