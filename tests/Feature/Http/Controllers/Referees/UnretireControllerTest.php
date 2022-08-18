@@ -17,7 +17,7 @@ test('invoke unretires a retired referee and redirects', function () {
 
     expect($this->referee->fresh())
         ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toBe(RefereeStatus::BOOKABLE);
+        ->status->toMatchObject(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot unretire a referee', function () {

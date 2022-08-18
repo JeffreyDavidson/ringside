@@ -15,7 +15,7 @@ test('invoke activates an unactivated title and redirects', function () {
 
     expect($title->fresh())
         ->activations->toHaveCount(1)
-        ->status->toBe(TitleStatus::ACTIVE);
+        ->status->toMatchObject(TitleStatus::ACTIVE);
 });
 
 test('invoke activates a future activated title and redirects', function () {
@@ -27,7 +27,7 @@ test('invoke activates a future activated title and redirects', function () {
 
     expect($title->fresh())
         ->activations->toHaveCount(1)
-        ->status->toBe(TitleStatus::ACTIVE);
+        ->status->toMatchObject(TitleStatus::ACTIVE);
 });
 
 test('a basic user cannot activate an unactivated title', function () {

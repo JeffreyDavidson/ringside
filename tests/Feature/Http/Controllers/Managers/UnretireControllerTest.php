@@ -15,7 +15,7 @@ test('invoke unretires a retired manager and redirects', function () {
 
     expect($manager->fresh())
         ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toBe(ManagerStatus::AVAILABLE);
+        ->status->toMatchObject(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot unretire a manager', function () {

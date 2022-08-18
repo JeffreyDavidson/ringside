@@ -15,7 +15,7 @@ test('invoke employs an unemployed referee and redirects', function () {
 
     expect($referee->fresh())
         ->employments->toHaveCount(1)
-        ->status->toBe(RefereeStatus::BOOKABLE);
+        ->status->toMatchObject(RefereeStatus::BOOKABLE);
 });
 
 test('invoke employs a future employed referee and redirects', function () {
@@ -28,7 +28,7 @@ test('invoke employs a future employed referee and redirects', function () {
 
     expect($referee->fresh())
         ->currentEmployment->started_at->toBeLessThan($startDate)
-        ->status->toBe(RefereeStatus::BOOKABLE);
+        ->status->toMatchObject(RefereeStatus::BOOKABLE);
 });
 
 test('invoke employs a released referee and redirects', function () {
@@ -40,7 +40,7 @@ test('invoke employs a released referee and redirects', function () {
 
     expect($referee->fresh())
         ->employments->toHaveCount(2)
-        ->status->toBe(RefereeStatus::BOOKABLE);
+        ->status->toMatchObject(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot employ a referee', function () {

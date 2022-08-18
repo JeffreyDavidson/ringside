@@ -15,7 +15,7 @@ test('invoke employs an unemployed manager and redirects', function () {
 
     expect($manager->fresh())
         ->employments->toHaveCount(1)
-        ->status->toBe(ManagerStatus::AVAILABLE);
+        ->status->toMatchObject(ManagerStatus::AVAILABLE);
 });
 
 test('invoke employs a future employed manager and redirects', function () {
@@ -28,7 +28,7 @@ test('invoke employs a future employed manager and redirects', function () {
 
     expect($manager->fresh())
         ->currentEmployment->started_at->toBeLessThan($startDate)
-        ->status->toBe(ManagerStatus::AVAILABLE);
+        ->status->toMatchObject(ManagerStatus::AVAILABLE);
 });
 
 test('invoke employs a released manager and redirects', function () {
@@ -40,7 +40,7 @@ test('invoke employs a released manager and redirects', function () {
 
     expect($manager->fresh())
         ->employments->toHaveCount(2)
-        ->status->toBe(ManagerStatus::AVAILABLE);
+        ->status->toMatchObject(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot employ a manager', function () {

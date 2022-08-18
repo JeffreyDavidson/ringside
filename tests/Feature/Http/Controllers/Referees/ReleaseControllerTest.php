@@ -15,7 +15,7 @@ test('invoke releases a bookable referee and redirects', function () {
 
     expect($referee->fresh())
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(RefereeStatus::RELEASED);
+        ->status->toMatchObject(RefereeStatus::RELEASED);
 });
 
 test('invoke releases an injured referee and redirects', function () {
@@ -28,7 +28,7 @@ test('invoke releases an injured referee and redirects', function () {
     expect($referee->fresh())
         ->injuries->last()->ended_at->not->toBeNull()
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(RefereeStatus::RELEASED);
+        ->status->toMatchObject(RefereeStatus::RELEASED);
 });
 
 test('invoke releases an suspended referee and redirects', function () {
@@ -41,7 +41,7 @@ test('invoke releases an suspended referee and redirects', function () {
     expect($referee->fresh())
         ->suspensions->last()->ended_at->not->toBeNull()
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(RefereeStatus::RELEASED);
+        ->status->toMatchObject(RefereeStatus::RELEASED);
 });
 
 test('a basic user cannot release a bookable referee', function () {

@@ -19,7 +19,7 @@ test('invoke suspends a bookable wrestler and redirects', function () {
 
     expect($this->wrestler->fresh())
         ->suspensions->toHaveCount(1)
-        ->status->toBe(WrestlerStatus::SUSPENDED);
+        ->status->toMatchObject(WrestlerStatus::SUSPENDED);
 });
 
 test('suspending a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -30,7 +30,7 @@ test('suspending a bookable wrestler on a bookable tag team makes tag team unboo
         ->patch(action([SuspendController::class], $wrestler));
 
     expect($tagTeam->fresh())
-        ->status->toBe(TagTeamStatus::UNBOOKABLE);
+        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot suspend a bookable wrestler', function () {

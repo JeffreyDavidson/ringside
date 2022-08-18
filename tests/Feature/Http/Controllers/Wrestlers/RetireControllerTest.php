@@ -17,7 +17,7 @@ test('invoke retires a bookable wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(WrestlerStatus::RETIRED);
+        ->status->toMatchObject(WrestlerStatus::RETIRED);
 });
 
 test('invoke retires an injured wrestler and redirects', function () {
@@ -29,7 +29,7 @@ test('invoke retires an injured wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(WrestlerStatus::RETIRED);
+        ->status->toMatchObject(WrestlerStatus::RETIRED);
 });
 
 test('invoke retires a suspended wrestler and redirects', function () {
@@ -41,7 +41,7 @@ test('invoke retires a suspended wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(WrestlerStatus::RETIRED);
+        ->status->toMatchObject(WrestlerStatus::RETIRED);
 });
 
 test('retiring a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -53,7 +53,7 @@ test('retiring a bookable wrestler on a bookable tag team makes tag team unbooka
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
     expect($tagTeam->fresh())
-        ->status->toBe(TagTeamStatus::UNBOOKABLE);
+        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot retire a bookable wrestler', function () {

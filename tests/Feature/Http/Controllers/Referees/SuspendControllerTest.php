@@ -17,7 +17,7 @@ test('invoke suspends a bookable referee and redirects', function () {
 
     expect($this->referee->fresh())
         ->suspensions->toHaveCount(1)
-        ->status->toBe(RefereeStatus::SUSPENDED);
+        ->status->toMatchObject(RefereeStatus::SUSPENDED);
 });
 
 test('a basic user cannot suspend a bookable referee', function () {

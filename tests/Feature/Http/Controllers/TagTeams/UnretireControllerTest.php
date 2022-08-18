@@ -18,10 +18,10 @@ test('invoke unretires a retired tag team and its tag team partners and redirect
 
     expect($this->tagTeam->fresh())
         ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toBe(TagTeamStatus::BOOKABLE)
+        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->retirements->last()->ended_at->not->toBeNull()
-                ->status->toBe(WrestlerStatus::BOOKABLE);
+                ->status->toMatchObject(WrestlerStatus::BOOKABLE);
         });
 });
 

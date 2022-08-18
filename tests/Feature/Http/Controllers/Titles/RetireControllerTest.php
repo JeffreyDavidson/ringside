@@ -15,7 +15,7 @@ test('invoke retires an active title and redirects', function () {
 
     expect($title->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(TitleStatus::RETIRED);
+        ->status->toMatchObject(TitleStatus::RETIRED);
 });
 
 test('invoke retires an inactive title and redirects', function () {
@@ -27,7 +27,7 @@ test('invoke retires an inactive title and redirects', function () {
 
     expect($title->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(TitleStatus::RETIRED);
+        ->status->toMatchObject(TitleStatus::RETIRED);
 });
 
 test('a basic user cannot retire an active title', function () {

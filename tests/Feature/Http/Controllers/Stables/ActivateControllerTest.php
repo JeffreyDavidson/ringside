@@ -17,14 +17,14 @@ test('invoke activates an unactivated stable and employs its unemployed members 
 
     expect($stable->fresh())
         ->activations->toHaveCount(1)
-        ->status->toBe(StableStatus::ACTIVE)
+        ->status->toMatchObject(StableStatus::ACTIVE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->employments->toHaveCount(1)
-                ->status->toBe(WrestlerStatus::BOOKABLE);
+                ->status->toMatchObject(WrestlerStatus::BOOKABLE);
         })
         ->currentTagTeams->each(function ($tagTeam) {
             $tagTeam->employments->toHaveCount(1)
-                ->status->toBe(TagTeamStatus::BOOKABLE);
+                ->status->toMatchObject(TagTeamStatus::BOOKABLE);
         });
 });
 
@@ -38,14 +38,14 @@ test('invoke activates a future activated stable with members and redirects', fu
 
     expect($stable->fresh())
         ->currentActivation->started_at->toBeLessThan($activationDate)
-        ->status->toBe(StableStatus::ACTIVE)
+        ->status->toMatchObject(StableStatus::ACTIVE)
         ->currentWrestlers->each(function ($wrestler) {
             $wrestler->employments->toHaveCount(1)
                 ->status->toHaveCount(WrestlerStatus::BOOKABLE);
         })
         ->currentTagTeams->each(function ($tagTeam) {
             $tagTeam->employments->toHaveCount(1)
-                ->status->toBe(TagTeamStatus::BOOKABLE);
+                ->status->toMatchObject(TagTeamStatus::BOOKABLE);
         });
 });
 

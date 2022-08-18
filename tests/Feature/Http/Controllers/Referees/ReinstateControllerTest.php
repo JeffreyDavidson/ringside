@@ -17,7 +17,7 @@ test('invoke reinstates a suspended referee and redirects', function () {
 
     expect($this->referee->fresh())
         ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toBe(RefereeStatus::BOOKABLE);
+        ->status->toMatchObject(RefereeStatus::BOOKABLE);
 });
 
 test('a basic user cannot reinstate a suspended referee', function () {

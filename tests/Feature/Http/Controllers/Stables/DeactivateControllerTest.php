@@ -17,9 +17,9 @@ test('invoke deactivates an active stable and its members and redirects', functi
 
     expect($stable->fresh())
         ->activations->last()->ended_at->not->toBeNull()
-        ->status->toBe(StableStatus::INACTIVE)
-        ->currentWrestlers->each(fn ($wrestler) => $wrestler->status->toBe(WrestlerStatus::RELEASED))
-        ->currentTagTeams->each(fn ($tagTeam) => $tagTeam->status->toBe(TagTeamStatus::RELEASED));
+        ->status->toMatchObject(StableStatus::INACTIVE)
+        ->currentWrestlers->each(fn ($wrestler) => $wrestler->status->toMatchObject(WrestlerStatus::RELEASED))
+        ->currentTagTeams->each(fn ($tagTeam) => $tagTeam->status->toMatchObject(TagTeamStatus::RELEASED));
 });
 
 test('a basic user cannot deactivate a stable', function () {

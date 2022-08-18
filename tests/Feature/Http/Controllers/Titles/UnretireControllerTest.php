@@ -17,7 +17,7 @@ test('invoke unretires a retired title and redirects', function () {
 
     expect($this->title->fresh())
         ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toBe(TitleStatus::ACTIVE);
+        ->status->toMatchObject(TitleStatus::ACTIVE);
 });
 
 test('a basic user cannot unretire a title', function () {

@@ -15,7 +15,7 @@ test('invoke reinstates a suspended manager and redirects', function () {
 
     expect($manager->fresH())
         ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toBe(ManagerStatus::AVAILABLE);
+        ->status->toMatchObject(ManagerStatus::AVAILABLE);
 });
 
 test('a basic user cannot reinstate a suspended manager', function () {

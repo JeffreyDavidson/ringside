@@ -17,7 +17,7 @@ test('invoke releases a bookable wrestler and redirects', function () {
 
     expect($wrestler->fresh())
         ->employments->last()->ended_at->not->toBeNull()
-        ->status->toBe(WrestlerStatus::RELEASED);
+        ->status->toMatchObject(WrestlerStatus::RELEASED);
 });
 
 test('invoke releases an injured wrestler and redirects', function () {
@@ -30,7 +30,7 @@ test('invoke releases an injured wrestler and redirects', function () {
     expect($wrestler->fresh())
         ->employments->last()->ended_at->not->toBeNull()
         ->injuries->last()->ended_at->not->toBeNull()
-        ->status->toBe(WrestlerStatus::RELEASED);
+        ->status->toMatchObject(WrestlerStatus::RELEASED);
 });
 
 test('invoke releases an suspended wrestler and redirects', function () {
@@ -43,7 +43,7 @@ test('invoke releases an suspended wrestler and redirects', function () {
     expect($wrestler->fresh())
         ->employments->last()->ended_at->not->toBeNull()
         ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toBe(WrestlerStatus::RELEASED);
+        ->status->toMatchObject(WrestlerStatus::RELEASED);
 });
 
 test('releasing a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
@@ -57,7 +57,7 @@ test('releasing a bookable wrestler on a bookable tag team makes tag team unbook
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
     expect($tagTeam->fresh())
-        ->status->toBe(TagTeamStatus::UNBOOKABLE);
+        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 });
 
 test('a basic user cannot release a bookable wrestler', function () {

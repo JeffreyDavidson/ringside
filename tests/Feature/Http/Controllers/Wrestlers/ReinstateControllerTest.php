@@ -21,7 +21,7 @@ test('invoke reinstates a suspended wrestler and redirects', function () {
 
     expect($this->wrestler->fresh())
         ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toBe(WrestlerStatus::BOOKABLE);
+        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
 });
 
 test('reinstating a suspended wrestler on an unbookable tag team makes tag team bookable', function () {
@@ -35,7 +35,7 @@ test('reinstating a suspended wrestler on an unbookable tag team makes tag team 
         ->patch(action([ReinstateController::class], $suspendedWrestler));
 
     expect($tagTeam->fresh())
-        ->status->toBe(TagTeamStatus::BOOKABLE);
+        ->status->toMatchObject(TagTeamStatus::BOOKABLE);
 });
 
 test('a basic user cannot reinstate a suspended wrestler', function () {

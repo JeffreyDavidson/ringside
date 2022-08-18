@@ -17,7 +17,7 @@ test('invoke unretires a retired wrestler and redirects', function () {
 
     expect($this->wrestler->fresh())
         ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toBe(WrestlerStatus::BOOKABLE);
+        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
 });
 
 test('a basic user cannot unretire a wrestler', function () {

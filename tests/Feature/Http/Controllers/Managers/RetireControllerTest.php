@@ -17,7 +17,7 @@ test('invoke retires a retirable manager and redirects', function ($factoryState
 
     expect($manager->fresh())
         ->retirements->toHaveCount(1)
-        ->status->toBe(ManagerStatus::RETIRED);
+        ->status->toMatchObject(ManagerStatus::RETIRED);
 })->with([
     'available',
     'injured',
