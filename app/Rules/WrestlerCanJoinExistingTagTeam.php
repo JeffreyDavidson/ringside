@@ -37,11 +37,23 @@ class WrestlerCanJoinExistingTagTeam implements Rule
         /** @var \App\Models\Wrestler $wrestler */
         $wrestler = Wrestler::query()->with(['currentEmployment', 'futureEmployment'])->whereKey($value)->sole();
 
+        if ($this->tagTeam->currentWrestlers->contains($wrestler)) {
+            return true;
+        }
+
         if ($wrestler->isSuspended() || $wrestler->isInjured()) {
             return false;
         }
 
-        if ($wrestler->currentTagTeam !== null && $wrestler->currentTagTeam->exists() && ! $wrestler->currentTagTeam->isNot($this->tagTeam)) {
+        $bookableTagTeams = TagTeam::query()->bookable()->whereNotIn('id', [$this->tagTeam->id])->get();
+
+        $bookableTagTeams->each(function ($tagTeam) use ($wrestler) {
+            if ($tagTeam->currentWrestlers->contains($wrestler)) {
+                return false;
+            }
+        });
+
+        if ($wrestler->currentTagTeam !== null && $wrestler->currentTagTeam->exists() && $wrestler->currentTagTeam->is($this->tagTeam)) {
             return false;
         }
 
