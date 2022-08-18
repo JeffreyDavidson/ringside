@@ -5,6 +5,7 @@ use App\Http\Requests\Stables\StoreRequest;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use function Spatie\PestPluginTestTime\testTime;
 
 test('create returns a view', function () {
     $this->actingAs(administrator())
@@ -47,6 +48,7 @@ test('store creates a stable and redirects', function () {
 });
 
 test('an activation is created for the stable if start date is filled in request', function () {
+    testTime()->freeze();
     $dateTime = now()->toDateTimeString();
     $wrestlers = Wrestler::factory()->count(3)->create();
 
