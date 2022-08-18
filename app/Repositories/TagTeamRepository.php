@@ -231,14 +231,16 @@ class TagTeamRepository
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  int  $tagTeamPartnerId
-     * @param  \Illuminate\Support\Carbon  $date
+     * @param  \Illuminate\Support\Carbon|null  $removalDate
      * @return void
      */
-    public function removeTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date)
+    public function removeTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, ?Carbon $removalDate = null)
     {
+        $removalDate ??= now();
+
         $tagTeam->currentWrestlers()->updateExistingPivot(
             $tagTeamPartnerId,
-            ['left_at' => $date->toDateTimeString()]
+            ['left_at' => $removalDate->toDateTimeString()]
         );
     }
 
@@ -247,14 +249,16 @@ class TagTeamRepository
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  int  $tagTeamPartnerId
-     * @param  \Illuminate\Support\Carbon  $date
+     * @param  \Illuminate\Support\Carbon|null  $joinDate
      * @return void
      */
-    public function addTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, Carbon $date)
+    public function addTagTeamPartner(TagTeam $tagTeam, int $tagTeamPartnerId, ?Carbon $joinDate = null)
     {
+        $joinDate ??= now();
+
         $tagTeam->currentWrestlers()->attach(
             $tagTeamPartnerId,
-            ['joined_at' => $date->toDateTimeString()]
+            ['joined_at' => $joinDate->toDateTimeString()]
         );
     }
 }
