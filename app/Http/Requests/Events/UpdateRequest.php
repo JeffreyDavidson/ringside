@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Events;
 
 use App\Rules\EventDateCanBeChanged;
+use App\Rules\LetterSpace;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Tests\RequestFactories\EventRequestFactory;
@@ -46,7 +47,7 @@ class UpdateRequest extends FormRequest
         $event = $this->route()->parameter('event');
 
         return [
-            'name' => ['required', 'string', 'min:3', Rule::unique('events')->ignore($event)],
+            'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('events')->ignore($event)],
             'date' => ['nullable', 'string', 'date', new EventDateCanBeChanged($event)],
             'venue_id' => ['nullable', 'integer', Rule::exists('venues', 'id')],
             'preview' => ['nullable', 'string'],
