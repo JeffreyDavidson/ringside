@@ -215,7 +215,9 @@ class WrestlerRepository
      */
     public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate)
     {
-        $wrestler->tagTeams()->updateExistingPivot($wrestler->currentTagTeam->id, [
+        $wrestler->update(['current_tag_team_id' => null]);
+
+        $wrestler->tagTeams()->wherePivotNull('left_at')->updateExistingPivot($wrestler->currentTagTeam->id, [
             'left_at' => $removalDate->toDateTimeString(),
         ]);
     }
