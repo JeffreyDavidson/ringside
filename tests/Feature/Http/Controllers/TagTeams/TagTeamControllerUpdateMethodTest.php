@@ -54,11 +54,11 @@ test('updates a tag team and redirects', function () {
 test('wrestlers of tag team are synced when tag team is updated', function () {
     $tagTeam = TagTeam::factory()->bookable()->create();
     $formerTagTeamPartners = $tagTeam->currentWrestlers;
-    $newTagTeamPartners = Wrestler::factory()->count(2)->create();
+    [$newTagTeamPartnerA, $newTagTeamPartnerB] = Wrestler::factory()->bookable()->count(2)->create();
 
     $data = UpdateRequest::factory()->create([
-        'wrestlerA' => $newTagTeamPartners->first()->id,
-        'wrestlerB' => $newTagTeamPartners->last()->id,
+        'wrestlerA' => $newTagTeamPartnerA->getKey(),
+        'wrestlerB' => $newTagTeamPartnerB->getKey(),
     ]);
 
     $this->actingAs(administrator())
@@ -70,7 +70,7 @@ test('wrestlers of tag team are synced when tag team is updated', function () {
         ->wrestlers->toHaveCount(4)
         ->currentWrestlers
             ->toHaveCount(2)
-            ->toContain($newTagTeamPartners->modelKeys())
+            ->toContain([$newTagTeamPartnerA, $newTagTeamPartnerB])
             ->not->toContain($formerTagTeamPartners->modelKeys());
 });
 

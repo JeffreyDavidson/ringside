@@ -23,30 +23,23 @@ class UpdateAction extends BaseTagTeamAction
     {
         $this->tagTeamRepository->update($tagTeam, $tagTeamData);
 
-        $wrestlers = collect([]);
-
-        if ($tagTeamData->wrestlerA) {
-            $wrestlers->push($tagTeamData->wrestlerA);
+        if ($tagTeamData->wrestlerA && $tagTeamData->wrestlerA->currentTagTeam?->isNot($tagTeam)) {
+            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlers);
         }
 
-        if ($tagTeamData->wrestlerB) {
-            $wrestlers->push($tagTeamData->wrestlerB);
+        if ($tagTeamData->wrestlerA && $tagTeamData->wrestlerA->currentTagTeam?->isNot($tagTeam)) {
+            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlers);
         }
 
-        $tagTeam->currentWrestlers
-            ->diff($wrestlers)
-            ->each(fn ($wrestler) => RemoveTagTeamPartnerAction::run($tagTeam, $wrestler));
-
-        if ($tagTeamData->wrestlerA && $tagTeam->currentWrestlers->doesntContain('id', $tagTeamData->wrestlerA->id)) {
-            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerA);
-        }
-
-        if ($tagTeamData->wrestlerB && $tagTeam->currentWrestlers->doesntContain('id', $tagTeamData->wrestlerB->id)) {
-            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerB);
+        if ($tagTeam->currentWrestlers) {
+            $tagTeam->currentWrestlers->reject([$tagTeamData->wrestlerA, $tagTeamData->wrestlerB])
+                ->each(fn ($wrestler) => RemoveTagTeamPartnerAction::run($tagTeam, $wrestler));
         }
 
         if (isset($tagTeamData->start_date)) {
-            if ($tagTeam->canBeEmployed() || $tagTeam->canHaveEmploymentStartDateChanged($tagTeamData->start_date)) {
+            if ($tagTeam->canBeEmployed()
+                || $tagTeam->canHaveEmploymentStartDateChanged($tagTeamData->start_date)
+            ) {
                 EmployAction::run($tagTeam, $tagTeamData->start_date);
             }
         }

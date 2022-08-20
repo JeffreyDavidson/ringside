@@ -6,6 +6,7 @@ use App\Models\Employment;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
+use function Spatie\PestPluginTestTime\testTime;
 
 test('create returns a view', function () {
     $this->actingAs(administrator())
@@ -31,7 +32,8 @@ test('store creates a tag team and redirects', function () {
         'name' => 'Example Tag Team Name',
         'signature_move' => null,
         'start_date' => null,
-        'wrestlers' => null,
+        'wrestlerA' => null,
+        'wrestlerB' => null,
     ]);
 
     $this->actingAs(administrator())
@@ -47,16 +49,17 @@ test('store creates a tag team and redirects', function () {
         ->wrestlers->toBeEmpty();
 });
 
-test('an employment is created only for the tag team if start date is filled in request', function () {
-    $startDate = now();
-    $wrestlers = Wrestler::factory()
+test('an employment is created only for the tag team if start date is filled in request and wrestlers already have active employment', function () {
+    testTime()->freeze($startDate = Carbon::now());
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()
         ->has(Employment::factory()->started($startDate->copy()->subWeek()))
         ->count(2)
         ->create();
 
     $data = StoreRequest::factory()->create([
         'start_date' => $startDate->toDateTimeString(),
-        'wrestlers' => $wrestlers->modelKeys(),
+        'wrestlerA' => $wrestlerA->getKey(),
+        'wrestlerB' => $wrestlerB->getKey(),
     ]);
 
     $this->actingAs(administrator())
@@ -72,16 +75,16 @@ test('an employment is created only for the tag team if start date is filled in 
 });
 
 test('unemployed wrestlers are employed on the same date if start date is filled in request', function () {
-    $startDate = now();
-    Carbon::setTestNow($startDate);
-    $wrestlers = Wrestler::factory()
+    testTime()->freeze($startDate = Carbon::now());
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()
         ->unemployed()
         ->count(2)
         ->create();
 
     $data = StoreRequest::factory()->create([
         'start_date' => $startDate->toDateTimeString(),
-        'wrestlers' => $wrestlers->pluck('id')->toArray(),
+        'wrestlerA' => $wrestlerA->getKey(),
+        'wrestlerB' => $wrestlerB->getKey(),
     ]);
 
     $this->actingAs(administrator())
@@ -97,15 +100,15 @@ test('unemployed wrestlers are employed on the same date if start date is filled
 });
 
 test('unemployed wrestlers are joined at the current date if start date is not filled in request', function () {
-    $startDate = now();
-    Carbon::setTestNow($startDate);
-    $wrestlers = Wrestler::factory()
+    testTime()->freeze($startDate = Carbon::now());
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()
         ->unemployed()
         ->count(2)
         ->create();
 
     $data = StoreRequest::factory()->create([
-        'wrestlers' => $wrestlers->pluck('id')->toArray(),
+        'wrestlerA' => $wrestlerA->getKey(),
+        'wrestlerB' => $wrestlerB->getKey(),
     ]);
 
     $this->actingAs(administrator())

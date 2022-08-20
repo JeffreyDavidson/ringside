@@ -30,7 +30,7 @@ test('injuring a bookable wrestler on a bookable tag team makes tag team unbooka
         ->patch(action([InjureController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']));
 
-    expect($tagTeam->fresh())
+    expect($wrestler->currentTagTeam->fresh())
         ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 });
 
