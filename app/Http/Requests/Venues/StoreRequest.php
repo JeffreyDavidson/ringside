@@ -39,7 +39,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3'],
+            'name' => ['required', 'string', new LetterSpace, 'min:3'],
             'street_address' => ['required', 'string'],
             'city' => ['required', 'string'],
             'state' => ['required', 'string'],
