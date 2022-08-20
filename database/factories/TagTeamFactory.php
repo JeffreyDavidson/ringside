@@ -16,10 +16,6 @@ use Illuminate\Support\Str;
 
 class TagTeamFactory extends Factory
 {
-    private $wrestlerA;
-
-    private $wrestlerB;
-
     /**
      * Define the model's default state.
      *
