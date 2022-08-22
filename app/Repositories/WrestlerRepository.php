@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Data\WrestlerData;
-use App\Enums\TagTeamStatus;
 use App\Enums\WrestlerStatus;
 use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
@@ -241,10 +240,7 @@ class WrestlerRepository
             ->orWhere(function ($query) {
                 $query->employed()
                     ->where('status', WrestlerStatus::BOOKABLE)
-                    ->whereDoesntHave('currentTagTeam', function ($query) {
-                        // $query->whereNotIn('status', [TagTeamStatus::BOOKABLE, TagTeamStatus::FUTURE_EMPLOYMENT]);
-                        $query->where('status', '!=', TagTeamStatus::BOOKABLE)->orWhere('status', '!=', TagTeamStatus::FUTURE_EMPLOYMENT);
-                    });
+                    ->whereDoesntHave('currentTagTeam');
             });
     }
 }
