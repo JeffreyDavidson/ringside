@@ -14,8 +14,7 @@ test('create returns a view', function () {
         ->get(action([TagTeamsController::class, 'create']))
         ->assertStatus(200)
         ->assertViewIs('tagteams.create')
-        ->assertViewHas('wrestlers')
-        ->assertViewHas('tagTeam', new TagTeam);
+        ->assertViewHas('wrestlers');
 });
 
 test('create returns a view2', function () {

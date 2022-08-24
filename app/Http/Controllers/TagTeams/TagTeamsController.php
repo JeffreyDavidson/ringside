@@ -32,15 +32,13 @@ class TagTeamsController extends Controller
     /**
      * Show the form for creating a new tag team.
      *
-     * @param  TagTeam  $tagTeam
      * @return \Illuminate\View\View
      */
-    public function create(TagTeam $tagTeam)
+    public function create()
     {
         $this->authorize('create', TagTeam::class);
 
         return view('tagteams.create', [
-            'tagTeam' => $tagTeam,
             'wrestlers' => WrestlerRepository::getAvailableWrestlersForNewTagTeam()->pluck('name', 'id'),
         ]);
     }
