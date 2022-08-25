@@ -15,7 +15,7 @@ class WrestlerCanJoinNewStable implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  array $tagTeamIds
+     * @param  array  $tagTeamIds
      * @return void
      */
     public function __construct($tagTeamIds)
