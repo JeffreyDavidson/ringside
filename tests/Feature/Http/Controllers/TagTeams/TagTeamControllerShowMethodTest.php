@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\TagTeams;
 
+use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
 use App\Models\User;
 

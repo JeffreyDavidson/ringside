@@ -5,50 +5,8 @@ use App\Http\Requests\TagTeams\StoreRequest;
 use App\Models\Employment;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use App\Repositories\WrestlerRepository;
 use Illuminate\Support\Carbon;
 use function Spatie\PestPluginTestTime\testTime;
-
-test('create returns a view', function () {
-    $this->actingAs(administrator())
-        ->get(action([TagTeamsController::class, 'create']))
-        ->assertStatus(200)
-        ->assertViewIs('tagteams.create')
-        ->assertViewHas('wrestlers');
-});
-
-test('create returns a view2', function () {
-    $unemployedWrestler = Wrestler::factory()->unemployed()->create();
-    $futureEmployedWrestler = Wrestler::factory()->withFutureEmployment()->create();
-    $bookableWrestlerNotOnBookableTagTeam = Wrestler::factory()->bookable()->create();
-    // $bookableWrestlerOnBookableTagTeam = Wrestler::factory()->bookable()->hasAttached($tagTeam, ['joined_at' => now()])->create(['current_tag_team_id' => $tagTeam->id]);
-    $bookableWrestlerOnBookableTagTeam = Wrestler::factory()->bookable()->onCurrentTagTeam()->create();
-    dd($bookableWrestlerOnBookableTagTeam->currentTagTeam);
-    $injuredWrestlerNotOnTagTeam = Wrestler::factory()->injured()->create();
-    $suspendedWrestlerNotOnTagTeam = Wrestler::factory()->suspended()->create();
-    $releasedWrestler = Wrestler::factory()->released()->create();
-    $retiredWrestler = Wrestler::factory()->retired()->create();
-
-    $wrestlersAbleToBeAddedToNewTagTeam = WrestlerRepository::getAvailableWrestlersForNewTagTeam()->pluck('name', 'id');
-
-    $this->actingAs(administrator())
-        ->get(action([TagTeamsController::class, 'create']))
-        ->assertStatus(200)
-        ->assertViewIs('tagteams.create')
-        ->assertViewHas('wrestlers', $wrestlersAbleToBeAddedToNewTagTeam)
-        ->assertViewHas('tagTeam', new TagTeam);
-});
-
-test('a basic user cannot view the form for creating a tag team', function () {
-    $this->actingAs(basicUser())
-        ->get(action([TagTeamsController::class, 'create']))
-        ->assertForbidden();
-});
-
-test('a guest cannot view the form for creating a tag team', function () {
-    $this->get(action([TagTeamsController::class, 'create']))
-        ->assertRedirect(route('login'));
-});
 
 test('store creates a tag team and redirects', function () {
     $data = StoreRequest::factory()->create([
