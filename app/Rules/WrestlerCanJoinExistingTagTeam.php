@@ -9,14 +9,14 @@ use Illuminate\Contracts\Validation\Rule;
 class WrestlerCanJoinExistingTagTeam implements Rule
 {
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var \App\Models\TagTeam
      */
     protected $tagTeam;
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param  \App\Models\TagTeam  $tagTeam
      */

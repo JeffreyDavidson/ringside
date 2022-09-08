@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 class ActivationStartDateCanBeChanged implements Rule
 {
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var \App\Models\Stable
      */

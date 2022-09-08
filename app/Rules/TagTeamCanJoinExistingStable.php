@@ -14,14 +14,14 @@ class TagTeamCanJoinExistingStable implements Rule
     protected $messages;
 
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var \Illuminate\Support\Carbon|null
      */
     protected $startDate;
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param  \Illuminate\Support\Carbon|null  $startDate
      */

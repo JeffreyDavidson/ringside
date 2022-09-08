@@ -107,7 +107,7 @@ class WrestlerFactory extends Factory
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param  [type] $tagTeam
      * @return void

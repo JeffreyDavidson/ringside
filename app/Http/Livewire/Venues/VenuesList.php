@@ -31,7 +31,7 @@ class VenuesList extends BaseComponent
     ];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -45,7 +45,7 @@ class VenuesList extends BaseComponent
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */

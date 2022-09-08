@@ -31,7 +31,7 @@ class WrestlersList extends BaseComponent
     ];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -44,6 +44,11 @@ class WrestlersList extends BaseComponent
         return $this->applySorting($query);
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return void
+     */
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

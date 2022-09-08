@@ -9,14 +9,14 @@ use Illuminate\Support\Carbon;
 class EmploymentStartDateCanBeChanged implements Rule
 {
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var \App\Models\Contracts\Employable
      */
     protected Employable $rosterMember;
 
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var string
      */
