@@ -22,6 +22,8 @@ class UnretireAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam, ?Carbon $unretiredDate = null): void
     {
+        throw_unless($tagTeam->canBeUnretired(), CannotBeUnretiredException::class);
+
         $unretiredDate ??= now();
 
         $this->tagTeamRepository->unretire($tagTeam, $unretiredDate);

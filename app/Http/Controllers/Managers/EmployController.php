@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\EmployAction;
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,8 +19,6 @@ class EmployController extends Controller
     public function __invoke(Manager $manager)
     {
         $this->authorize('employ', $manager);
-
-        throw_unless($manager->canBeEmployed(), CannotBeEmployedException::class);
 
         EmployAction::run($manager);
 

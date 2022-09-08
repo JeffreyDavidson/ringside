@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\SuspendAction;
-use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,8 +19,6 @@ class SuspendController extends Controller
     public function __invoke(Manager $manager)
     {
         $this->authorize('suspend', $manager);
-
-        throw_unless($manager->canBeSuspended(), CannotBeSuspendedException::class);
 
         SuspendAction::run($manager);
 

@@ -22,6 +22,8 @@ class RetireAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam, ?Carbon $retirementDate = null): void
     {
+        throw_unless($tagTeam->canBeRetired(), CannotBeRetiredException::class);
+
         $retirementDate ??= now();
 
         if ($tagTeam->isSuspended()) {

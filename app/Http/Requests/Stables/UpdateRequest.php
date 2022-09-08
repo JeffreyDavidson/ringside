@@ -109,7 +109,5 @@ class UpdateRequest extends FormRequest
         $this->merge([
             'members_count' => ($this->collect('tag_teams')->count() * 2) + $this->collect('wrestlers')->count(),
         ]);
-
-        // dd($this->all());
     }
 }

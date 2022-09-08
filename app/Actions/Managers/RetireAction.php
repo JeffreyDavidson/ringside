@@ -21,6 +21,8 @@ class RetireAction extends BaseManagerAction
      */
     public function handle(Manager $manager, ?Carbon $retirementDate = null): void
     {
+        throw_unless($manager->canBeRetired(), CannotBeRetiredException::class);
+
         $retirementDate ??= now();
 
         if ($manager->isSuspended()) {

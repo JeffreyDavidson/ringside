@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\TagTeams;
-
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
 use App\Models\User;
 
-test('show returns a view', function () {
-    $tagTeam = TagTeam::factory()->create();
+beforeEach(function () {
+    $this->tagTeam = TagTeam::factory()->create();
+});
 
+test('show returns a view', function () {
     $this->actingAs(administrator())
-        ->get(action([TagTeamsController::class, 'show'], $tagTeam))
+        ->get(action([TagTeamsController::class, 'show'], $this->tagTeam))
         ->assertViewIs('tagteams.show')
-        ->assertViewHas('tagTeam', $tagTeam);
+        ->assertViewHas('tagTeam', $this->tagTeam);
 });
 
 test('a basic user can view their tag team profile', function () {
@@ -32,8 +32,6 @@ test('a basic user cannot view another users tag team profile', function () {
 });
 
 test('a guest cannot view a tag team profile', function () {
-    $tagTeam = TagTeam::factory()->create();
-
-    $this->get(action([TagTeamsController::class, 'show'], $tagTeam))
+    $this->get(action([TagTeamsController::class, 'show'], $this->tagTeam))
         ->assertRedirect(route('login'));
 });

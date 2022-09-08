@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\EmployAction;
-use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,8 +19,6 @@ class EmployController extends Controller
     public function __invoke(Referee $referee)
     {
         $this->authorize('employ', $referee);
-
-        throw_unless($referee->canBeEmployed(), CannotBeEmployedException::class);
 
         EmployAction::run($referee);
 

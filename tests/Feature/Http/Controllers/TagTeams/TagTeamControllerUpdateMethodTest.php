@@ -1,67 +1,34 @@
 <?php
 
+use App\Actions\TagTeams\UpdateAction;
+use App\Data\TagTeamData;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 
-test('updates a tag team and redirects', function () {
-    $tagTeam = TagTeam::factory()->create([
-        'name' => 'Old Tag Team Name',
-    ]);
+beforeEach(function () {
+    $this->tagTeam = TagTeam::factory()->create();
+    $this->data = UpdateRequest::factory()->create();
+    $this->request = UpdateRequest::create(action([TagTeamsController::class, 'update'], $this->tagTeam), 'PATCH', $this->data);
+});
 
-    $data = UpdateRequest::factory()->create([
-        'name' => 'New Tag Team Name',
-        'start_date' => null,
-    ]);
-
+test('update calls update action and redirects', function () {
     $this->actingAs(administrator())
-        ->from(action([TagTeamsController::class, 'edit'], $tagTeam))
-        ->patch(action([TagTeamsController::class, 'update'], $tagTeam), $data)
+        ->from(action([TagTeamsController::class, 'edit'], $this->tagTeam))
+        ->patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
         ->assertValid()
         ->assertRedirect(action([TagTeamsController::class, 'index']));
 
-    expect($tagTeam->fresh())
-        ->name->toBe('New Tag Team Name')
-        ->employments->toBeEmpty();
-});
-
-test('wrestlers of tag team are synced when tag team is updated', function () {
-    $tagTeam = TagTeam::factory()->bookable()->create();
-    $formerTagTeamPartners = $tagTeam->currentWrestlers;
-    [$newTagTeamPartnerA, $newTagTeamPartnerB] = Wrestler::factory()->bookable()->count(2)->create();
-
-    $data = UpdateRequest::factory()->create([
-        'wrestlerA' => $newTagTeamPartnerA->getKey(),
-        'wrestlerB' => $newTagTeamPartnerB->getKey(),
-    ]);
-
-    $this->actingAs(administrator())
-        ->from(action([TagTeamsController::class, 'edit'], $tagTeam))
-        ->patch(action([TagTeamsController::class, 'update'], $tagTeam), $data)
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
-
-    expect($tagTeam->fresh())
-        ->wrestlers->toHaveCount(4)
-        ->currentWrestlers
-            ->toHaveCount(2)
-            ->toContain([$newTagTeamPartnerA, $newTagTeamPartnerB])
-            ->not->toContain($formerTagTeamPartners->modelKeys());
+    UpdateAction::shouldRun()->with($this->tagTeam, TagTeamData::fromUpdateRequest($this->request));
 });
 
 test('a basic user cannot update a tag team', function () {
-    $tagTeam = TagTeam::factory()->create();
-    $data = UpdateRequest::factory()->create();
-
     $this->actingAs(basicUser())
-        ->patch(action([TagTeamsController::class, 'update'], $tagTeam), $data)
+        ->patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
         ->assertForbidden();
 });
 
 test('a guest cannot update a tag team', function () {
-    $tagTeam = TagTeam::factory()->create();
-    $data = UpdateRequest::factory()->create();
-
-    $this->patch(action([TagTeamsController::class, 'update'], $tagTeam), $data)
+    $this->patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
         ->assertRedirect(route('login'));
 });

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\ReinstateAction;
-use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,8 +19,6 @@ class ReinstateController extends Controller
     public function __invoke(Referee $referee)
     {
         $this->authorize('reinstate', $referee);
-
-        throw_unless($referee->canBeReinstated(), CannotBeReinstatedException::class);
 
         ReinstateAction::run($referee);
 

@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\TagTeams;
-
 use App\Http\Controllers\TagTeams\TagTeamsController;
 
 test('index returns a view', function () {

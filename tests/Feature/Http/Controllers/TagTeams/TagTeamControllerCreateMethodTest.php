@@ -34,9 +34,7 @@ test('the correct wrestlers are available to join a new tag team', function () {
         ->get(action([TagTeamsController::class, 'create']))
         ->assertStatus(200)
         ->assertViewIs('tagteams.create')
-        // ->assertViewHas('wrestlers', fn ($data) => dd($data->keys()))
-        // ->assertViewHas('wrestlers', fn ($data) => dd($wrestlers->modelKeys()))
-        ->assertViewHas('wrestlers', fn ($data) => $data->keys() == $wrestlers->modelKeys())
+        ->assertViewHas('wrestlers', fn ($data) => $data->keys()->all() == $wrestlers->modelKeys())
         ->assertSeeText('Hulk Hogan')
         ->assertSeeText('The Rock')
         ->assertSeeText('Stone Cold Steve Austin');

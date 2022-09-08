@@ -22,6 +22,8 @@ class ReinstateAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam, ?Carbon $reinstatementDate = null): void
     {
+        throw_unless($tagTeam->canBeReinstated(), CannotBeReinstatedException::class);
+
         $reinstatementDate ??= now();
 
         $tagTeam->currentWrestlers

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Managers;
 
+use App\Exceptions\CannotBeReinstatedException;
 use App\Models\Manager;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -21,6 +22,8 @@ class ReinstateAction extends BaseManagerAction
      */
     public function handle(Manager $manager, ?Carbon $reinstatementDate = null): void
     {
+        throw_unless($manager->canBeReinstated(), CannotBeReinstatedException::class);
+
         $reinstatementDate ??= now();
 
         $this->managerRepository->reinstate($manager, $reinstatementDate);

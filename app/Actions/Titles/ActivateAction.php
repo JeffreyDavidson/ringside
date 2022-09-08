@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Titles;
 
+use App\Exceptions\CannotBeActivatedException;
 use App\Models\Title;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -21,6 +22,8 @@ class ActivateAction extends BaseTitleAction
      */
     public function handle(Title $title, ?Carbon $activationDate = null): void
     {
+        throw_unless($title->canBeActivated(), CannotBeActivatedException::class);
+
         $activationDate ??= now();
 
         $this->titleRepository->activate($title, $activationDate);

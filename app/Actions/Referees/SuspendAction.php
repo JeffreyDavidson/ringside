@@ -21,6 +21,8 @@ class SuspendAction extends BaseRefereeAction
      */
     public function handle(Referee $referee, ?Carbon $suspensionDate = null): void
     {
+        throw_unless($referee->canBeSuspended(), CannotBeSuspendedException::class);
+
         $suspensionDate ??= now();
 
         $this->refereeRepository->suspend($referee, $suspensionDate);

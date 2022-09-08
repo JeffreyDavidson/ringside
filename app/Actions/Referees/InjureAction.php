@@ -21,6 +21,8 @@ class InjureAction extends BaseRefereeAction
      */
     public function handle(Referee $referee, ?Carbon $injureDate = null): void
     {
+        throw_unless($referee->canBeInjured(), CannotBeInjuredException::class);
+
         $injureDate ??= now();
 
         $this->refereeRepository->injure($referee, $injureDate);

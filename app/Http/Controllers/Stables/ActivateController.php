@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Stables;
 
 use App\Actions\Stables\ActivateAction;
-use App\Exceptions\CannotBeActivatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Stable;
 
@@ -20,8 +19,6 @@ class ActivateController extends Controller
     public function __invoke(Stable $stable)
     {
         $this->authorize('activate', $stable);
-
-        throw_unless($stable->canBeActivated(), CannotBeActivatedException::class);
 
         ActivateAction::run($stable);
 

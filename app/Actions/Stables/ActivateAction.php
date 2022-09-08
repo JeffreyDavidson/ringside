@@ -6,6 +6,7 @@ namespace App\Actions\Stables;
 
 use App\Actions\TagTeams\EmployAction as TagTeamEmployAction;
 use App\Actions\Wrestlers\EmployAction as WrestlerEmployAction;
+use App\Exceptions\CannotBeActivatedException;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
@@ -25,6 +26,8 @@ class ActivateAction extends BaseStableAction
      */
     public function handle(Stable $stable, ?Carbon $startDate = null): void
     {
+        throw_unless($stable->canBeActivated(), CannotBeActivatedException::class);
+
         $startDate ??= now();
 
         if ($stable->currentWrestlers->isNotEmpty()) {

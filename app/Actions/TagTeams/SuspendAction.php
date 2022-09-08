@@ -22,6 +22,8 @@ class SuspendAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam, ?Carbon $suspensionDate = null): void
     {
+        throw_unless($tagTeam->canBeSuspended(), CannotBeSuspendedException::class);
+
         $suspensionDate ??= now();
 
         $tagTeam->currentWrestlers->each(fn ($wrestler) => WrestlerSuspendAction::run($wrestler, $suspensionDate));

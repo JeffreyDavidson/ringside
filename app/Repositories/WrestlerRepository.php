@@ -243,4 +243,29 @@ class WrestlerRepository
                     ->whereDoesntHave('currentTagTeam');
             });
     }
+
+    public static function getAvailableWrestlersForExistingTagTeam($tagTeam)
+    {
+        // Each wrestler must be either:
+        // have a currentEmployment (scope called employed) AND have a status of bookable and not belong to another employed tag team where the tag team is bookable OR the tag team has a future employment
+        // or have a future employment (scope called futureEmployment)
+        // or has not been employed (scope called unemployed)
+        // or is currently on the tag team
+
+        return Wrestler::query()
+            ->where(function ($query) {
+                $query->unemployed();
+            })
+            ->orWhere(function ($query) {
+                $query->futureEmployed();
+            })
+            ->orWhere(function ($query) {
+                $query->employed()
+                    ->where('status', WrestlerStatus::BOOKABLE)
+                    ->whereDoesntHave('currentTagTeam');
+            })
+            ->orWhere(function ($query) use ($tagTeam) {
+                $query->where('current_tag_team_id', $tagTeam->id);
+            });
+    }
 }

@@ -21,6 +21,8 @@ class ReleaseAction extends BaseManagerAction
      */
     public function handle(Manager $manager, ?Carbon $releaseDate = null): void
     {
+        throw_unless($manager->canBeReleased(), CannotBeReleasedException::class);
+
         $releaseDate ??= now();
 
         if ($manager->isSuspended()) {

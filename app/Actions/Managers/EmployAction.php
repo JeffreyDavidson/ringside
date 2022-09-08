@@ -21,6 +21,8 @@ class EmployAction extends BaseManagerAction
      */
     public function handle(Manager $manager, ?Carbon $startDate = null): void
     {
+        throw_unless($manager->canBeEmployed(), CannotBeEmployedException::class);
+
         $startDate ??= now();
 
         $this->managerRepository->employ($manager, $startDate);

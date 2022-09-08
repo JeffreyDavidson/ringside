@@ -21,6 +21,8 @@ class UnretireAction extends BaseManagerAction
      */
     public function handle(Manager $manager, ?Carbon $unretiredDate = null): void
     {
+        throw_unless($manager->canBeUnretired(), CannotBeUnretiredException::class);
+
         $unretiredDate ??= now();
 
         $this->managerRepository->unretire($manager, $unretiredDate);

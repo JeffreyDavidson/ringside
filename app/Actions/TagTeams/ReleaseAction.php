@@ -22,6 +22,8 @@ class ReleaseAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam, ?Carbon $releaseDate = null): void
     {
+        throw_unless($tagTeam->canBeReleased(), CannotBeReleasedException::class);
+
         $releaseDate ??= now();
 
         if ($tagTeam->isSuspended()) {

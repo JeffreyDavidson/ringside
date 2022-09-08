@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Referees;
 
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Referee;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -21,6 +22,8 @@ class ClearInjuryAction extends BaseRefereeAction
      */
     public function handle(Referee $referee, ?Carbon $recoveryDate = null): void
     {
+        throw_unless($referee->canBeClearedFromInjury(), CannotBeClearedFromInjuryException::class);
+
         $recoveryDate ??= now();
 
         $this->refereeRepository->clearInjury($referee, $recoveryDate);
