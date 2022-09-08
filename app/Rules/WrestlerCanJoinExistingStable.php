@@ -19,7 +19,7 @@ class WrestlerCanJoinExistingStable implements Rule
     protected $date;
 
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var string
      */
