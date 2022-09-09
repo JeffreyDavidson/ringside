@@ -21,6 +21,8 @@ class ReinstateAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler, ?Carbon $reinstatementDate = null): void
     {
+        throw_unless($wrestler->canBeReinstated(), CannotBeReinstatedException::class);
+
         $reinstatementDate ??= now();
 
         $this->wrestlerRepository->reinstate($wrestler, $reinstatementDate);

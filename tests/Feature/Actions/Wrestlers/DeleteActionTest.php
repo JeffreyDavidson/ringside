@@ -1,11 +1,12 @@
 <?php
 
-test('deletes a wrestler and redirects', function () {
+use App\Actions\Wrestlers\DeleteAction;
+use App\Models\Wrestler;
+
+test('it deletes a wrestler', function () {
     $wrestler = Wrestler::factory()->create();
 
-    $this->actingAs(administrator())
-        ->delete(action([WrestlersController::class, 'destroy'], $wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+    DeleteAction::run($wrestler);
 
     $this->assertSoftDeleted($wrestler);
 });

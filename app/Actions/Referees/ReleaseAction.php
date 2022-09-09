@@ -27,11 +27,11 @@ class ReleaseAction extends BaseRefereeAction
         $releaseDate ??= now();
 
         if ($referee->isSuspended()) {
-            $this->refereeRepository->reinstate($referee, $releaseDate);
+            ReinstateAction::run($referee, $releaseDate);
         }
 
         if ($referee->isInjured()) {
-            $this->refereeRepository->clearInjury($referee, $releaseDate);
+            ClearInjuryAction::run($referee, $releaseDate);
         }
 
         $this->refereeRepository->release($referee, $releaseDate);

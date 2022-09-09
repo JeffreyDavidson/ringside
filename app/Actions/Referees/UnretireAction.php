@@ -26,6 +26,7 @@ class UnretireAction extends BaseRefereeAction
         $unretiredDate ??= now();
 
         $this->refereeRepository->unretire($referee, $unretiredDate);
-        $this->refereeRepository->employ($referee, $unretiredDate);
+
+        EmployAction::run($referee, $unretiredDate);
     }
 }

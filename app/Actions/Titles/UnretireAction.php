@@ -27,6 +27,7 @@ class UnretireAction extends BaseTitleAction
         $unretiredDate ??= now();
 
         $this->titleRepository->unretire($title, $unretiredDate);
-        $this->titleRepository->activate($title, $unretiredDate);
+
+        ActivateAction::run($title, $unretiredDate);
     }
 }

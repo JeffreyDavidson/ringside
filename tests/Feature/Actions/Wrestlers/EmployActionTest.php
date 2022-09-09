@@ -1,38 +1,33 @@
 <?php
 
-test('invoke employs an unemployed wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->unemployed()->create();
+use App\Actions\Wrestlers\EmployAction;
+use App\Enums\WrestlerStatus;
+use App\Exceptions\CannotBeEmployedException;
+use App\Models\Wrestler;
 
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+test('it employs an employable wrestler and redirects', function ($factoryState) {
+    $wrestler = Wrestler::factory()->{$factoryState}()->create();
+
+    EmployAction::run($wrestler);
 
     expect($wrestler->fresh())
         ->employments->toHaveCount(1)
         ->status->toMatchObject(WrestlerStatus::BOOKABLE);
-});
+})->with([
+    'unemployed',
+    'withFutureEmployment',
+    'released',
+]);
 
-test('invoke employs a future employed wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->withFutureEmployment()->create();
-    $startDate = $wrestler->employments->last()->started_at;
+test('invoke throws exception for employing a non employable wrestler', function ($factoryState) {
+    $this->withoutExceptionHandling();
 
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+    $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
-    expect($wrestler->fresh())
-        ->currentEmployment->started_at->toBeLessThan($startDate)
-        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
-});
-
-test('invoke employs a released wrestler and redirects', function () {
-    $wrestler = Wrestler::factory()->released()->create();
-
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
-
-    expect($wrestler->fresh())
-        ->employments->toHaveCount(2)
-        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
-});
+    EmployAction::run($wrestler);
+})->throws(CannotBeEmployedException::class)->with([
+    'suspended',
+    'injured',
+    'bookable',
+    'retired',
+]);

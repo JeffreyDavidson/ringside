@@ -33,13 +33,14 @@ class RetireAction extends BaseManagerAction
             ClearInjuryAction::run($manager, $retirementDate);
         }
 
-        $this->managerRepository->release($manager, $retirementDate);
+        ReleaseAction::run($manager, $retirementDate);
+
         $this->managerRepository->retire($manager, $retirementDate);
 
         $manager->currentTagTeams
-            ->whenNotEmpty(fn () => $this->managerRepository->removeFromCurrentTagTeams($manager));
+            ->whenNotEmpty(fn () => RemoveFromCurrentTagTeamsAction::run($manager));
 
         $manager->currentWrestlers
-            ->whenNotEmpty(fn () => $this->managerRepository->removeFromCurrentWrestlers($manager));
+            ->whenNotEmpty(fn () => RemoveFromCurrentWrestlersAction::run($manager));
     }
 }

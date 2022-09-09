@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Wrestlers;
 
 use App\Actions\Wrestlers\ReinstateAction;
-use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
 
@@ -20,8 +19,6 @@ class ReinstateController extends Controller
     public function __invoke(Wrestler $wrestler)
     {
         $this->authorize('reinstate', $wrestler);
-
-        throw_unless($wrestler->canBeReinstated(), CannotBeReinstatedException::class);
 
         ReinstateAction::run($wrestler);
 

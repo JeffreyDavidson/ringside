@@ -1,7 +1,14 @@
 <?php
 
-test('store creates a wrestler and redirects', function () {
-    $data = StoreRequest::factory()->create([
+use App\Actions\Wrestlers\CreateAction;
+use App\Data\WrestlerData;
+use App\Http\Requests\Wrestlers\StoreRequest;
+use App\Models\Wrestler;
+use Illuminate\Support\Carbon;
+use function Spatie\PestPluginTestTime\testTime;
+
+test('it creates a wrestler', function () {
+    $requestData = StoreRequest::factory()->create([
         'name' => 'Example Wrestler Name',
         'feet' => 6,
         'inches' => 10,
@@ -10,12 +17,9 @@ test('store creates a wrestler and redirects', function () {
         'signature_move' => null,
         'start_date' => null,
     ]);
+    $data = WrestlerData::fromStoreRequest($requestData);
 
-    $this->actingAs(administrator())
-        ->from(action([WrestlersController::class, 'create']))
-        ->post(action([WrestlersController::class, 'store']), $data)
-        ->assertValid()
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+    CreateAction::run($data);
 
     expect(Wrestler::latest()->first())
         ->name->toBe('Example Wrestler Name')
@@ -26,48 +30,27 @@ test('store creates a wrestler and redirects', function () {
         ->employments->toBeEmpty();
 });
 
-test('store creates a wrestler with a signature move and redirects', function () {
+test('it creates a wrestler with a signature move and redirects', function () {
     $data = StoreRequest::factory()->create([
         'signature_move' => 'Example Finishing Move',
     ]);
 
-    $this->actingAs(administrator())
-        ->from(action([WrestlersController::class, 'create']))
-        ->post(action([WrestlersController::class, 'store']), $data)
-        ->assertValid()
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+    CreateAction::run($data);
 
     expect(Wrestler::latest()->first())
         ->signature_move->toBe('Example Finishing Move');
 });
 
 test('an employment is created for the wrestler if start date is filled in request', function () {
-    $dateTime = Carbon::now()->toDateTimeString();
+    testTime()->freeze();
+    $dateTime = Carbon::now();
     $data = StoreRequest::factory()->create([
         'start_date' => $dateTime,
     ]);
 
-    $this->actingAs(administrator())
-        ->from(action([WrestlersController::class, 'create']))
-        ->post(action([WrestlersController::class, 'store']), $data)
-        ->assertValid()
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+    CreateAction::run($data);
 
     expect(Wrestler::latest()->first())
         ->employments->toHaveCount(1)
         ->employments->first()->started_at->toDateTimeString()->toBe($dateTime);
 });
-
-test('invoke throws exception for employing a non employable wrestler', function ($factoryState) {
-    $this->withoutExceptionHandling();
-
-    $wrestler = Wrestler::factory()->{$factoryState}()->create();
-
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $wrestler));
-})->throws(CannotBeEmployedException::class)->with([
-    'suspended',
-    'injured',
-    'bookable',
-    'retired',
-]);

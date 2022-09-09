@@ -26,7 +26,8 @@ class RetireAction extends BaseTitleAction
 
         $retirementDate ??= now();
 
-        $this->titleRepository->deactivate($title, $retirementDate);
+        DeactivateAction::run($title, $retirementDate);
+
         $this->titleRepository->retire($title, $retirementDate);
     }
 }

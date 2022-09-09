@@ -27,14 +27,15 @@ class RetireAction extends BaseRefereeAction
         $retirementDate ??= now();
 
         if ($referee->isSuspended()) {
-            $this->refereeRepository->reinstate($referee, $retirementDate);
+            ReinstateAction::run($referee, $retirementDate);
         }
 
         if ($referee->isInjured()) {
-            $this->refereeRepository->clearInjury($referee, $retirementDate);
+            ClearInjuryAction::run($referee, $retirementDate);
         }
 
-        $this->refereeRepository->release($referee, $retirementDate);
+        ReleaseAction::run($referee, $retirementDate);
+
         $this->refereeRepository->retire($referee, $retirementDate);
     }
 }

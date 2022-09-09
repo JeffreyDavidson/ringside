@@ -35,12 +35,10 @@ class ReleaseAction extends BaseManagerAction
 
         $this->managerRepository->release($manager, $releaseDate);
 
-        if ($manager->currentTagTeams->isNotEmpty()) {
-            $this->managerRepository->removeFromCurrentTagTeams($manager);
-        }
+        $manager->currentTagTeams
+            ->whenNotEmpty(fn () => RemoveFromCurrentTagTeamsAction::run($manager));
 
-        if ($manager->currentWrestlers->isNotEmpty()) {
-            $this->managerRepository->removeFromCurrentWrestlers($manager);
-        }
+        $manager->currentWrestlers
+            ->whenNotEmpty(fn () => RemoveFromCurrentWrestlersAction::run($manager));
     }
 }

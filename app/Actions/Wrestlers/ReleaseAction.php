@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Wrestlers;
 
+use App\Exceptions\CannotBeReleasedException;
 use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -21,6 +22,8 @@ class ReleaseAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler, ?Carbon $releaseDate = null): void
     {
+        throw_unless($wrestler->canBeReleased(), CannotBeReleasedException::class);
+
         $releaseDate ??= now();
 
         if ($wrestler->isSuspended()) {
