@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\SuspendAction;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,7 +21,10 @@ class SuspendController extends Controller
     {
         $this->authorize('suspend', $manager);
 
-        SuspendAction::run($manager);
+        try {
+            SuspendAction::run($manager);
+        } catch (CannotBeSuspendedException $e) {
+        }
 
         return to_route('managers.index');
     }

@@ -24,7 +24,7 @@ class RestoreController extends Controller
 
         try {
             RestoreAction::run($wrestler);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
         }
 
         return to_route('wrestlers.index');

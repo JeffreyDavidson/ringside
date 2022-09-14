@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\RetireAction;
+use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,7 +21,10 @@ class RetireController extends Controller
     {
         $this->authorize('retire', $manager);
 
-        RetireAction::run($manager);
+        try {
+            RetireAction::run($manager);
+        } catch (CannotBeRetiredException $e) {
+        }
 
         return to_route('managers.index');
     }

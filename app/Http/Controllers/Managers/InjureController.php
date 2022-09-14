@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\InjureAction;
+use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,7 +21,10 @@ class InjureController extends Controller
     {
         $this->authorize('injure', $manager);
 
-        InjureAction::run($manager);
+        try {
+            InjureAction::run($manager);
+        } catch (CannotBeInjuredException $e) {
+        }
 
         return to_route('managers.index');
     }

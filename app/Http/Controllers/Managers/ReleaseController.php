@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\ReleaseAction;
+use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,7 +21,10 @@ class ReleaseController extends Controller
     {
         $this->authorize('release', $manager);
 
-        ReleaseAction::run($manager);
+        try {
+            ReleaseAction::run($manager);
+        } catch (CannotBeReleasedException $e) {
+        }
 
         return to_route('managers.index');
     }

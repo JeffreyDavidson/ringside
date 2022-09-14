@@ -22,7 +22,10 @@ class RestoreController extends Controller
 
         $this->authorize('restore', $manager);
 
-        RestoreAction::run($manager);
+        try {
+            RestoreAction::run($manager);
+        } catch (\Exception $e) {
+        }
 
         return to_route('managers.index');
     }

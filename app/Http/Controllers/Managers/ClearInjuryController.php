@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\ClearInjuryAction;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,7 +21,10 @@ class ClearInjuryController extends Controller
     {
         $this->authorize('clearFromInjury', $manager);
 
-        ClearInjuryAction::run($manager);
+        try {
+            ClearInjuryAction::run($manager);
+        } catch (CannotBeClearedFromInjuryException $e) {
+        }
 
         return to_route('managers.index');
     }

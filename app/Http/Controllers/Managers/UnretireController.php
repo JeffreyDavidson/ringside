@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Managers;
 
 use App\Actions\Managers\UnretireAction;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 
@@ -20,7 +21,10 @@ class UnretireController extends Controller
     {
         $this->authorize('unretire', $manager);
 
-        UnretireAction::run($manager);
+        try {
+            UnretireAction::run($manager);
+        } catch (CannotBeUnretiredException $e) {
+        }
 
         return to_route('managers.index');
     }
