@@ -22,7 +22,10 @@ class RestoreController extends Controller
 
         $this->authorize('restore', $stable);
 
-        RestoreAction::run($stable);
+        try {
+            RestoreAction::run($stable);
+        } catch (\Exception $e) {
+        }
 
         return to_route('stables.index');
     }

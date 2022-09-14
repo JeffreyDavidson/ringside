@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\InjureAction;
+use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,7 +21,10 @@ class InjureController extends Controller
     {
         $this->authorize('injure', $referee);
 
-        InjureAction::run($referee);
+        try {
+            InjureAction::run($referee);
+        } catch (CannotBeInjuredException $e) {
+        }
 
         return to_route('referees.index');
     }

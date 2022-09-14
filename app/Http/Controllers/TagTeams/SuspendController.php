@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\TagTeams;
 
 use App\Actions\TagTeams\SuspendAction;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Models\TagTeam;
 
@@ -20,7 +21,10 @@ class SuspendController extends Controller
     {
         $this->authorize('suspend', $tagTeam);
 
-        SuspendAction::run($tagTeam);
+        try {
+            SuspendAction::run($tagTeam);
+        } catch (CannotBeSuspendedException $e) {
+        }
 
         return to_route('tag-teams.index');
     }

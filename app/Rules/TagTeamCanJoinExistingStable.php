@@ -36,6 +36,8 @@ class TagTeamCanJoinExistingStable implements Rule
      * @param  string  $attribute
      * @param  mixed  $value
      * @return bool
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
     public function passes($attribute, $value)
     {
@@ -52,7 +54,10 @@ class TagTeamCanJoinExistingStable implements Rule
             return false;
         }
 
-        if ($tagTeam->isCurrentlyEmployed() && isset($this->startDate) && ! $tagTeam->employedBefore($this->startDate)) {
+        if ($tagTeam->isCurrentlyEmployed()
+            && isset($this->startDate)
+            && ! $tagTeam->employedBefore($this->startDate)
+        ) {
             $this->messages = "{$tagTeam->name} cannot have an employment start date after stable's start date.";
 
             return false;

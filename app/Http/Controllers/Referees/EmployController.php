@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\EmployAction;
+use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,7 +21,10 @@ class EmployController extends Controller
     {
         $this->authorize('employ', $referee);
 
-        EmployAction::run($referee);
+        try {
+            EmployAction::run($referee);
+        } catch (CannotBeEmployedException $e) {
+        }
 
         return to_route('referees.index');
     }

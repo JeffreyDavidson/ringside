@@ -31,6 +31,8 @@ class WrestlerCanJoinExistingTagTeam implements Rule
      * @param  string  $attribute
      * @param  mixed  $value
      * @return bool
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
     public function passes($attribute, $value)
     {
@@ -53,7 +55,11 @@ class WrestlerCanJoinExistingTagTeam implements Rule
             }
         });
 
-        if ($wrestler->currentTagTeam !== null && $wrestler->currentTagTeam->exists() && $wrestler->currentTagTeam->is($this->tagTeam)) {
+        if (
+            $wrestler->currentTagTeam !== null
+              && $wrestler->currentTagTeam->exists()
+              && $wrestler->currentTagTeam->is($this->tagTeam)
+        ) {
             return false;
         }
 

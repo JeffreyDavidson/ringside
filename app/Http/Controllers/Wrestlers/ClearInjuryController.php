@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Wrestlers;
 
 use App\Actions\Wrestlers\ClearInjuryAction;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
 
@@ -20,7 +21,10 @@ class ClearInjuryController extends Controller
     {
         $this->authorize('clearFromInjury', $wrestler);
 
-        ClearInjuryAction::run($wrestler);
+        try {
+            ClearInjuryAction::run($wrestler);
+        } catch (CannotBeClearedFromInjuryException $e) {
+        }
 
         return to_route('wrestlers.index');
     }

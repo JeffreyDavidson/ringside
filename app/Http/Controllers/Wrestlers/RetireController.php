@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Wrestlers;
 
 use App\Actions\Wrestlers\RetireAction;
+use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
 
@@ -20,7 +21,11 @@ class RetireController extends Controller
     {
         $this->authorize('retire', $wrestler);
 
-        RetireAction::run($wrestler);
+        try {
+            RetireAction::run($wrestler);
+        } catch (CannotBeRetiredException $e) {
+            //throw $e;
+        }
 
         return to_route('wrestlers.index');
     }

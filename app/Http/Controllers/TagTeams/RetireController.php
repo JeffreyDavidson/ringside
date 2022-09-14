@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\TagTeams;
 
 use App\Actions\TagTeams\RetireAction;
+use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
 use App\Models\TagTeam;
 
@@ -20,7 +21,10 @@ class RetireController extends Controller
     {
         $this->authorize('retire', $tagTeam);
 
-        RetireAction::run($tagTeam);
+        try {
+            RetireAction::run($tagTeam);
+        } catch (CannotBeRetiredException $e) {
+        }
 
         return to_route('tag-teams.index');
     }

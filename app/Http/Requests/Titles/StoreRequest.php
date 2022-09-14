@@ -39,7 +39,14 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s\']+$/', 'min:3', 'ends_with:Title,Titles', Rule::unique('titles', 'name')],
+            'name' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z\s\']+$/',
+                'min:3',
+                'ends_with:Title,Titles',
+                Rule::unique('titles', 'name'),
+            ],
             'activation_date' => ['nullable', 'string', 'date'],
         ];
     }

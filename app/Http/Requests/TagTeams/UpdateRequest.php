@@ -45,15 +45,29 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        /** @var \App\Models\TagTeam */
+        /** @var \App\Models\TagTeam $tagTeam */
         $tagTeam = $this->route()->parameter('tag_team');
 
         return [
             'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('tag_teams')->ignore($tagTeam->id)],
             'signature_move' => ['nullable', 'string', 'regex:/^[a-zA-Z\s\']+$/'],
             'start_date' => ['nullable', 'string', 'date', new EmploymentStartDateCanBeChanged($tagTeam)],
-            'wrestlerA' => ['nullable', 'integer', 'different:wrestlerB', 'required_with:wrestlerB', Rule::exists('wrestlers', 'id'), new WrestlerCanJoinExistingTagTeam($tagTeam)],
-            'wrestlerB' => ['nullable', 'integer', 'different:wrestlerA', 'required_with:wrestlerB', Rule::exists('wrestlers', 'id'), new WrestlerCanJoinExistingTagTeam($tagTeam)],
+            'wrestlerA' => [
+                'nullable',
+                'integer',
+                'different:wrestlerB',
+                'required_with:wrestlerB',
+                Rule::exists('wrestlers', 'id'),
+                new WrestlerCanJoinExistingTagTeam($tagTeam),
+            ],
+            'wrestlerB' => [
+                'nullable',
+                'integer',
+                'different:wrestlerA',
+                'required_with:wrestlerB',
+                Rule::exists('wrestlers', 'id'),
+                new WrestlerCanJoinExistingTagTeam($tagTeam),
+            ],
         ];
     }
 

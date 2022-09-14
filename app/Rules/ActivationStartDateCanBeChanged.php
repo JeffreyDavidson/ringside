@@ -32,6 +32,8 @@ class ActivationStartDateCanBeChanged implements Rule
      * @param  string  $attribute
      * @param  string  $value
      * @return bool
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
     public function passes($attribute, $value)
     {

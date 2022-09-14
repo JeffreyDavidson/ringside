@@ -39,65 +39,60 @@ class UpdateRequest extends FormRequest
         return $this->user()->can('update', Stable::class);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        /** @var \App\Models\Stable */
-        $stable = $this->route()->parameter('stable');
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+    /** @var \App\Models\Stable $stable */
+    $stable = $this->route()->parameter('stable');
 
-        return [
-            'name' => ['required', 'string', 'min:3', Rule::unique('stables')->ignore($stable->id)],
-            'start_date' => [
-                'nullable',
-                Rule::requiredIf($stable->isCurrentlyActivated()),
-                'string',
-                'date',
-                new ActivationStartDateCanBeChanged($stable),
-            ],
-            'members_count' => [
-                'bail',
-                'integer',
-                Rule::when(
-                    $this->input('start_date'),
-                    function () use ($stable) {
-                        new HasMinimumAmountOfMembers(
-                            $stable,
-                            $this->date('start_date'),
-                            $this->collect('wrestlers'),
-                            $this->collect('tag_teams')
-                        );
-                    }
-                ),
-            ],
-            'wrestlers' => ['array'],
-            'tag_teams' => ['array'],
-            'managers' => ['array'],
-            'wrestlers.*' => [
-                'bail',
-                'integer',
-                'distinct',
-                Rule::exists('wrestlers', 'id'),
-                new WrestlerCanJoinExistingStable($this->input('tag_teams'), $this->input('start_date')),
-            ],
-            'tag_teams.*' => [
-                'bail',
-                'integer',
-                'distinct',
-                Rule::exists('tag_teams', 'id'),
-                new TagTeamCanJoinExistingStable($this->date('start_date')),
-            ],
-            'managers' => [
-                'bail',
-                'integer',
-                'distinct',
-                Rule::exists('managers', 'id'),
-            ],
-        ];
-    }
+    return [
+        'name' => ['required', 'string', 'min:3', Rule::unique('stables')->ignore($stable->id)],
+        'start_date' => [
+            'nullable',
+            Rule::requiredIf($stable->isCurrentlyActivated()),
+            'string',
+            'date',
+            new ActivationStartDateCanBeChanged($stable),
+        ],
+        'members_count' => [
+            'bail',
+            'integer',
+            Rule::when(
+                $this->input('start_date'),
+                function () use ($stable) {
+                    new HasMinimumAmountOfMembers(
+                        $stable,
+                        $this->date('start_date'),
+                        $this->collect('wrestlers'),
+                        $this->collect('tag_teams')
+                    );
+                }
+            ),
+        ],
+        'wrestlers' => ['array'],
+        'tag_teams' => ['array'],
+        'managers' => ['array'],
+        'wrestlers.*' => [
+            'bail',
+            'integer',
+            'distinct',
+            Rule::exists('wrestlers', 'id'),
+            new WrestlerCanJoinExistingStable($this->input('tag_teams'), $this->input('start_date')),
+        ],
+        'tag_teams.*' => [
+            'bail',
+            'integer',
+            'distinct',
+            Rule::exists('tag_teams', 'id'),
+            new TagTeamCanJoinExistingStable($this->date('start_date')),
+        ],
+        'managers' => ['bail', 'integer', 'distinct', Rule::exists('managers', 'id')],
+    ];
+}
 
     /**
      * Prepare the data for validation.

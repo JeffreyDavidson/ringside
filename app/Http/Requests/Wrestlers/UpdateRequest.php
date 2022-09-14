@@ -44,11 +44,17 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        /** @var \App\Models\Wrestler */
+        /** @var \App\Models\Wrestler $wrestler */
         $wrestler = $this->route()->parameter('wrestler');
 
         return [
-            'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('wrestlers')->ignore($wrestler->id)],
+            'name' => [
+                'required',
+                'string',
+                new LetterSpace,
+                'min:3',
+                Rule::unique('wrestlers')->ignore($wrestler->id),
+            ],
             'feet' => ['required', 'integer', 'max:8'],
             'inches' => ['required', 'integer', 'max:11'],
             'weight' => ['required', 'integer', 'digits:3'],

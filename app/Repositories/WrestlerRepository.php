@@ -226,7 +226,9 @@ class WrestlerRepository
     public static function getAvailableWrestlersForNewTagTeam()
     {
         // Each wrestler must be either:
-        // have a currentEmployment (scope called employed) AND have a status of bookable and not belong to another employed tag team where the tag team is bookable OR the tag team has a future employment
+        // have a currentEmployment (scope called employed)
+        // AND have a status of bookable and not belong to another employed tag team where the tag team is bookable
+        // OR the tag team has a future employment
         // or have a future employment (scope called futureEmployment)
         // or has not been employed (scope called unemployed)
 
@@ -247,7 +249,9 @@ class WrestlerRepository
     public static function getAvailableWrestlersForExistingTagTeam($tagTeam)
     {
         // Each wrestler must be either:
-        // have a currentEmployment (scope called employed) AND have a status of bookable and not belong to another employed tag team where the tag team is bookable OR the tag team has a future employment
+        // have a currentEmployment (scope called employed)
+        // AND have a status of bookable and not belong to another employed tag team where the tag team is bookable
+        // OR the tag team has a future employment
         // or have a future employment (scope called futureEmployment)
         // or has not been employed (scope called unemployed)
         // or is currently on the tag team

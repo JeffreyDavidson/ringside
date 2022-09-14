@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Stables;
 
 use App\Actions\Stables\RetireAction;
+use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Stable;
 
@@ -20,7 +21,10 @@ class RetireController extends Controller
     {
         $this->authorize('retire', $stable);
 
-        RetireAction::run($stable);
+        try {
+            RetireAction::run($stable);
+        } catch (CannotBeRetiredException $e) {
+        }
 
         return to_route('stables.index');
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Wrestlers;
 
 use App\Actions\Wrestlers\ReinstateAction;
+use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
 
@@ -20,7 +21,11 @@ class ReinstateController extends Controller
     {
         $this->authorize('reinstate', $wrestler);
 
-        ReinstateAction::run($wrestler);
+        try {
+            ReinstateAction::run($wrestler);
+        } catch (CannotBeReinstatedException $e) {
+            //throw $th;
+        }
 
         return to_route('wrestlers.index');
     }

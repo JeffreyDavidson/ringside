@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\TagTeams;
 
 use App\Actions\TagTeams\UnretireAction;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
 use App\Models\TagTeam;
 
@@ -20,7 +21,10 @@ class UnretireController extends Controller
     {
         $this->authorize('unretire', $tagTeam);
 
-        UnretireAction::run($tagTeam);
+        try {
+            UnretireAction::run($tagTeam);
+        } catch (CannotBeUnretiredException $e) {
+        }
 
         return to_route('tag-teams.index');
     }

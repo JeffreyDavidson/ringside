@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\TagTeams;
 
 use App\Actions\TagTeams\EmployAction;
+use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\Controller;
 use App\Models\TagTeam;
 
@@ -20,7 +21,10 @@ class EmployController extends Controller
     {
         $this->authorize('employ', $tagTeam);
 
-        EmployAction::run($tagTeam);
+        try {
+            EmployAction::run($tagTeam);
+        } catch (CannotBeEmployedException $e) {
+        }
 
         return to_route('tag-teams.index');
     }

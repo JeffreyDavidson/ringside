@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\UnretireAction;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,7 +21,10 @@ class UnretireController extends Controller
     {
         $this->authorize('unretire', $referee);
 
-        UnretireAction::run($referee);
+        try {
+            UnretireAction::run($referee);
+        } catch (CannotBeUnretiredException $e) {
+        }
 
         return to_route('referees.index');
     }

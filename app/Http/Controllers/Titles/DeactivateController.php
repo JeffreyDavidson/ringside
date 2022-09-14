@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Titles;
 
 use App\Actions\Titles\DeactivateAction;
+use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Title;
 
@@ -20,7 +21,10 @@ class DeactivateController extends Controller
     {
         $this->authorize('deactivate', $title);
 
-        DeactivateAction::run($title);
+        try {
+            DeactivateAction::run($title);
+        } catch (CannotBeDeactivatedException $e) {
+        }
 
         return to_route('titles.index');
     }

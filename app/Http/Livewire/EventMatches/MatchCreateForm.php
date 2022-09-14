@@ -58,10 +58,7 @@ class MatchCreateForm extends BaseComponent
         return view('livewire.matches.create', [
             'match' => $this->match,
             'matchTypes' => MatchType::pluck('name', 'id'),
-            'referees' => Referee::query()
-                ->get()
-                ->map(fn ($referee) => ['id' => $referee->id, 'full_name' => $referee->first_name.' '.$referee->last_name])
-                ->pluck('full_name', 'id'),
+            'referees' => Referee::query()->get()->pluck('full_name', 'id'),
             'titles' => Title::pluck('name', 'id'),
         ]);
     }

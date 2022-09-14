@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Titles;
 
 use App\Actions\Titles\UnretireAction;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Title;
 
@@ -20,7 +21,10 @@ class UnretireController extends Controller
     {
         $this->authorize('unretire', $title);
 
-        UnretireAction::run($title);
+        try {
+            UnretireAction::run($title);
+        } catch (CannotBeUnretiredException $e) {
+        }
 
         return to_route('titles.index');
     }

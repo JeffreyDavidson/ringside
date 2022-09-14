@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\SuspendAction;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,7 +21,10 @@ class SuspendController extends Controller
     {
         $this->authorize('suspend', $referee);
 
-        SuspendAction::run($referee);
+        try {
+            SuspendAction::run($referee);
+        } catch (CannotBeSuspendedException $e) {
+        }
 
         return to_route('referees.index');
     }

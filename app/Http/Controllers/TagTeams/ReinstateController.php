@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\TagTeams;
 
 use App\Actions\TagTeams\ReinstateAction;
+use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Controller;
 use App\Models\TagTeam;
 
@@ -20,7 +21,10 @@ class ReinstateController extends Controller
     {
         $this->authorize('reinstate', $tagTeam);
 
-        ReinstateAction::run($tagTeam);
+        try {
+            ReinstateAction::run($tagTeam);
+        } catch (CannotBeReinstatedException $e) {
+        }
 
         return to_route('tag-teams.index');
     }

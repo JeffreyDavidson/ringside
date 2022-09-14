@@ -43,7 +43,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        /** @var \App\Models\Event */
+        /** @var \App\Models\Event $event */
         $event = $this->route()->parameter('event');
 
         return [

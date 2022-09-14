@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Stables;
 
 use App\Actions\Stables\ActivateAction;
+use App\Exceptions\CannotBeActivatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Stable;
 
@@ -20,7 +21,10 @@ class ActivateController extends Controller
     {
         $this->authorize('activate', $stable);
 
-        ActivateAction::run($stable);
+        try {
+            ActivateAction::run($stable);
+        } catch (CannotBeActivatedException $e) {
+        }
 
         return to_route('stables.index');
     }

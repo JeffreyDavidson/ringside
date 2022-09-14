@@ -13,6 +13,8 @@ class LetterSpace implements InvokableRule
      * @param  mixed  $value
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      * @return void
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
     public function __invoke($attribute, $value, $fail)
     {

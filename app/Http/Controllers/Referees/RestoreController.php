@@ -22,7 +22,10 @@ class RestoreController extends Controller
 
         $this->authorize('restore', Referee::class);
 
-        RestoreAction::run($referee);
+        try {
+            RestoreAction::run($referee);
+        } catch (\Exception $e) {
+        }
 
         return to_route('referees.index');
     }

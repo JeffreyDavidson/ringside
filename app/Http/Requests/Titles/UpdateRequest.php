@@ -43,11 +43,18 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        /** @var \App\Models\Title */
+        /** @var \App\Models\Title $title */
         $title = $this->route()->parameter('title');
 
         return [
-            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s\']+$/', 'min:3', 'ends_with:Title,Titles', Rule::unique('titles')->ignore($title->id)],
+            'name' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z\s\']+$/',
+                'min:3',
+                'ends_with:Title,Titles',
+                Rule::unique('titles')->ignore($title->id),
+            ],
             'activation_date' => ['nullable', 'string', 'date', new ActivationStartDateCanBeChanged($title)],
         ];
     }

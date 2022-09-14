@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Wrestlers;
 
 use App\Actions\Wrestlers\UnretireAction;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
 
@@ -20,7 +21,12 @@ class UnretireController extends Controller
     {
         $this->authorize('unretire', $wrestler);
 
-        UnretireAction::run($wrestler);
+        try {
+            UnretireAction::run($wrestler);
+        } catch (CannotBeUnretiredException $e) {
+            //throw $e;
+            session()->with('error', 'This wrestler cannot be unretired.');
+        }
 
         return to_route('wrestlers.index');
     }

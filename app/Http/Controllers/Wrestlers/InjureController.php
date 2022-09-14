@@ -21,7 +21,11 @@ class InjureController extends Controller
     {
         $this->authorize('injure', $wrestler);
 
-        InjureAction::run($wrestler);
+        try {
+            InjureAction::run($wrestler);
+        } catch (CannotBeInjuredException $e) {
+            //throw $e;
+        }
 
         return to_route('wrestlers.index');
     }

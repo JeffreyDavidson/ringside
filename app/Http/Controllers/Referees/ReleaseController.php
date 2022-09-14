@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Referees;
 
 use App\Actions\Referees\ReleaseAction;
+use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
 
@@ -20,7 +21,10 @@ class ReleaseController extends Controller
     {
         $this->authorize('release', $referee);
 
-        ReleaseAction::run($referee);
+        try {
+            ReleaseAction::run($referee);
+        } catch (CannotBeReleasedException $e) {
+        }
 
         return to_route('referees.index');
     }
