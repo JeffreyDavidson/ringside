@@ -24,6 +24,7 @@ class UnretireController extends Controller
         try {
             UnretireAction::run($manager);
         } catch (CannotBeUnretiredException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('managers.index');

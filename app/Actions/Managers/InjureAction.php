@@ -19,10 +19,12 @@ class InjureAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $injureDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeInjuredException
      */
     public function handle(Manager $manager, ?Carbon $injureDate = null): void
     {
-        throw_unless($manager->canBeInjured(), CannotBeInjuredException::class);
+        throw_if($manager->canBeInjured(), CannotBeInjuredException::class);
 
         $injureDate ??= now();
 

@@ -24,6 +24,7 @@ class DeactivateController extends Controller
         try {
             DeactivateAction::run($stable);
         } catch (CannotBeDeactivatedException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('stables.index');

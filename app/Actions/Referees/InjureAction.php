@@ -18,10 +18,12 @@ class InjureAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $injureDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeInjuredException
      */
     public function handle(Referee $referee, ?Carbon $injureDate = null): void
     {
-        throw_unless($referee->canBeInjured(), CannotBeInjuredException::class);
+        throw_if($referee->canBeInjured(), CannotBeInjuredException::class);
 
         $injureDate ??= now();
 

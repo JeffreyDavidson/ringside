@@ -23,10 +23,12 @@ class ActivateAction extends BaseStableAction
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeActivatedException
      */
     public function handle(Stable $stable, ?Carbon $startDate = null): void
     {
-        throw_unless($stable->canBeActivated(), CannotBeActivatedException::class);
+        throw_if($stable->canBeActivated(), CannotBeActivatedException::class);
 
         $startDate ??= now();
 

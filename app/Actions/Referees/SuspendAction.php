@@ -18,10 +18,12 @@ class SuspendAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $suspensionDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeSuspendedException
      */
     public function handle(Referee $referee, ?Carbon $suspensionDate = null): void
     {
-        throw_unless($referee->canBeSuspended(), CannotBeSuspendedException::class);
+        throw_if($referee->canBeSuspended(), CannotBeSuspendedException::class);
 
         $suspensionDate ??= now();
 

@@ -18,10 +18,12 @@ class EmployAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeEmployedException
      */
     public function handle(Manager $manager, ?Carbon $startDate = null): void
     {
-        throw_unless($manager->canBeEmployed(), CannotBeEmployedException::class);
+        throw_if($manager->canBeEmployed(), CannotBeEmployedException::class);
 
         $startDate ??= now();
 

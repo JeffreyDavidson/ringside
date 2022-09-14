@@ -19,10 +19,12 @@ class RetireAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $retirementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeRetiredException
      */
     public function handle(Referee $referee, ?Carbon $retirementDate = null): void
     {
-        throw_unless($referee->canBeRetired(), CannotBeRetiredException::class);
+        throw_if($referee->canBeRetired(), CannotBeRetiredException::class);
 
         $retirementDate ??= now();
 

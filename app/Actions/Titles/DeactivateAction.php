@@ -19,10 +19,12 @@ class DeactivateAction extends BaseTitleAction
      * @param  \App\Models\Title  $title
      * @param  \Illuminate\Support\Carbon|null  $deactivationDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeDeactivatedException
      */
     public function handle(Title $title, ?Carbon $deactivationDate = null): void
     {
-        throw_unless($title->canBeDeactivated(), CannotBeDeactivatedException::class);
+        throw_if(! $title->isCurrentlyActivated(), CannotBeDeactivatedException::class, $title.' is not currently active and cannot be deactivated.');
 
         $deactivationDate ??= now();
 

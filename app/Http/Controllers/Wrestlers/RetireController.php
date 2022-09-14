@@ -24,7 +24,7 @@ class RetireController extends Controller
         try {
             RetireAction::run($wrestler);
         } catch (CannotBeRetiredException $e) {
-            //throw $e;
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('wrestlers.index');

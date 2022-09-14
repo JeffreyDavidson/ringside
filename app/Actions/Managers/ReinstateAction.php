@@ -19,10 +19,12 @@ class ReinstateAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $reinstatementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeReinstatedException
      */
     public function handle(Manager $manager, ?Carbon $reinstatementDate = null): void
     {
-        throw_unless($manager->canBeReinstated(), CannotBeReinstatedException::class);
+        throw_if($manager->canBeReinstated(), CannotBeReinstatedException::class);
 
         $reinstatementDate ??= now();
 

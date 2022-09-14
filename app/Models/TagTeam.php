@@ -104,56 +104,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     }
 
     /**
-     * Determine if the tag team can be employed.
-     *
-     * @return bool
-     */
-    public function canBeEmployed()
-    {
-        if ($this->isCurrentlyEmployed()) {
-            return false;
-        }
-
-        if ($this->isRetired()) {
-            return false;
-        }
-
-        if ($this->currentWrestlers->count() !== self::NUMBER_OF_WRESTLERS_ON_TEAM) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine if the tag team can be released.
-     *
-     * @return bool
-     */
-    public function canBeReleased(): bool
-    {
-        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine if the tag team can be reinstated.
-     *
-     * @return bool
-     */
-    public function canBeReinstated()
-    {
-        if (! $this->isSuspended()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Check to see if the tag team is bookable.
      *
      * @return bool
@@ -175,44 +125,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     public function isUnbookable()
     {
         return ! $this->currentWrestlers->every->isBookable();
-    }
-
-    /**
-     * Determine if the model can be suspended.
-     *
-     * @return bool
-     */
-    public function canBeSuspended()
-    {
-        if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
-            return false;
-        }
-
-        if ($this->isSuspended()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine if the model can be retired.
-     *
-     * @return bool
-     */
-    public function canBeRetired()
-    {
-        return $this->isBookable() || $this->isSuspended();
-    }
-
-    /**
-     * Determine if the model can be unretired.
-     *
-     * @return bool
-     */
-    public function canBeUnretired()
-    {
-        return $this->isRetired();
     }
 
     /**

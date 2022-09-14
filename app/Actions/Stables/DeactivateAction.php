@@ -19,10 +19,12 @@ class DeactivateAction extends BaseStableAction
      * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Carbon|null  $deactivationDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeDeactivatedException
      */
     public function handle(Stable $stable, ?Carbon $deactivationDate = null): void
     {
-        throw_unless($stable->canBeDeactivated(), CannotBeDeactivatedException::class);
+        throw_if($stable->canBeDeactivated(), CannotBeDeactivatedException::class);
 
         $deactivationDate ??= now();
 

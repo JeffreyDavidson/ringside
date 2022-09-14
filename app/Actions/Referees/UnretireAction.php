@@ -18,10 +18,12 @@ class UnretireAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $unretiredDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeUnretiredException
      */
     public function handle(Referee $referee, ?Carbon $unretiredDate = null): void
     {
-        throw_unless($referee->canBeUnretired(), CannotBeUnretiredException::class);
+        throw_if($referee->canBeUnretired(), CannotBeUnretiredException::class);
 
         $unretiredDate ??= now();
 

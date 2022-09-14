@@ -19,10 +19,12 @@ class SuspendAction extends BaseTagTeamAction
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \Illuminate\Support\Carbon|null  $suspensionDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeSuspendedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $suspensionDate = null): void
     {
-        throw_unless($tagTeam->canBeSuspended(), CannotBeSuspendedException::class);
+        throw_if($tagTeam->canBeSuspended(), CannotBeSuspendedException::class);
 
         $suspensionDate ??= now();
 

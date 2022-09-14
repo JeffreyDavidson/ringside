@@ -24,6 +24,7 @@ class InjureController extends Controller
         try {
             InjureAction::run($referee);
         } catch (CannotBeInjuredException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('referees.index');

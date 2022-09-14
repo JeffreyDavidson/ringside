@@ -24,7 +24,7 @@ class EmployController extends Controller
         try {
             EmployAction::run($wrestler);
         } catch (CannotBeEmployedException $e) {
-            return back()->with('error', 'This wrestler cannot be employed.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('wrestlers.index');

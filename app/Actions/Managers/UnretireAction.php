@@ -18,6 +18,8 @@ class UnretireAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $unretiredDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeUnretiredException
      */
     public function handle(Manager $manager, ?Carbon $unretiredDate = null): void
     {

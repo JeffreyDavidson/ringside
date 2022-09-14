@@ -24,6 +24,7 @@ class SuspendController extends Controller
         try {
             SuspendAction::run($referee);
         } catch (CannotBeSuspendedException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('referees.index');

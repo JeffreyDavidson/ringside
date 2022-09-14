@@ -19,10 +19,15 @@ class ReleaseAction extends BaseWrestlerAction
      * @param  \App\Models\Wrestler  $wrestler
      * @param  \Illuminate\Support\Carbon|null  $releaseDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeReleasedException
      */
     public function handle(Wrestler $wrestler, ?Carbon $releaseDate = null): void
     {
-        throw_unless($wrestler->canBeReleased(), CannotBeReleasedException::class);
+        throw_if($wrestler->isUnemployed(), CannotBeReleasedException::class, $wrestler.' is unemployed and cannot be released.');
+        throw_if($wrestler->isReleased(), CannotBeReleasedException::class, $wrestler.' is already released.');
+        throw_if($wrestler->hasFutureEmployment(), CannotBeReleasedException::class, $wrestler.' has not been officially employed and cannot be released.');
+        throw_if($wrestler->isRetired(), CannotBeReleasedException::class, $wrestler.' has is retired and cannot be released.');
 
         $releaseDate ??= now();
 

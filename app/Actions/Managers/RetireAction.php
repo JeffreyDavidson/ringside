@@ -18,10 +18,12 @@ class RetireAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $retirementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeRetiredException
      */
     public function handle(Manager $manager, ?Carbon $retirementDate = null): void
     {
-        throw_unless($manager->canBeRetired(), CannotBeRetiredException::class);
+        throw_if($manager->canBeRetired(), CannotBeRetiredException::class);
 
         $retirementDate ??= now();
 

@@ -19,10 +19,15 @@ class RetireAction extends BaseWrestlerAction
      * @param  \App\Models\Wrestler  $wrestler
      * @param  \Illuminate\Support\Carbon|null  $retirementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeRetiredException
      */
     public function handle(Wrestler $wrestler, ?Carbon $retirementDate = null): void
     {
-        throw_unless($wrestler->canBeRetired(), CannotBeRetiredException::class);
+        throw_if($wrestler->isUnemployed(), CannotBeRetiredException::class, $wrestler.' is unemployed and cannot be retired.');
+        throw_if($wrestler->hasFutureEmployment(), CannotBeRetiredException::class, $wrestler.' has not been officially employed and cannot be retired');
+        throw_if($wrestler->isRetired(), CannotBeRetiredException::class, $wrestler.' is already retired.');
+        throw_if($wrestler->isReleased(), CannotBeRetiredException::class, $wrestler.' was released and cannot be retired. Re-employ this wrestler to retire them.');
 
         $retirementDate ??= now();
 

@@ -24,7 +24,7 @@ class ReinstateController extends Controller
         try {
             ReinstateAction::run($wrestler);
         } catch (CannotBeReinstatedException $e) {
-            //throw $th;
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('wrestlers.index');

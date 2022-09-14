@@ -19,10 +19,12 @@ class UnretireAction extends BaseTitleAction
      * @param  \App\Models\Title  $title
      * @param  \Illuminate\Support\Carbon|null  $unretiredDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeUnretiredException
      */
     public function handle(Title $title, ?Carbon $unretiredDate = null): void
     {
-        throw_unless($title->canBeUnretired(), CannotBeUnretiredException::class);
+        throw_if(! $title->isRetired(), CannotBeUnretiredException::class, $title.' is not retired and cannot be unretired.');
 
         $unretiredDate ??= now();
 

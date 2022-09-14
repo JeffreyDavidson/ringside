@@ -19,10 +19,12 @@ class ActivateAction extends BaseTitleAction
      * @param  \App\Models\Title  $title
      * @param  \Illuminate\Support\Carbon|null  $activationDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeActivatedException
      */
     public function handle(Title $title, ?Carbon $activationDate = null): void
     {
-        throw_unless($title->canBeActivated(), CannotBeActivatedException::class);
+        throw_if($title->isCurrentlyActivated(), CannotBeActivatedException::class, $title.' is already activated.');
 
         $activationDate ??= now();
 

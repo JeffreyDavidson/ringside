@@ -19,10 +19,12 @@ class ReleaseAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $releaseDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeReleasedException
      */
     public function handle(Referee $referee, ?Carbon $releaseDate = null): void
     {
-        throw_unless($referee->canBeReleased(), CannotBeReleasedException::class);
+        throw_if($referee->canBeReleased(), CannotBeReleasedException::class);
 
         $releaseDate ??= now();
 

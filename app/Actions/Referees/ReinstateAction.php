@@ -19,10 +19,12 @@ class ReinstateAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $reinstatementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeReinstatedException
      */
     public function handle(Referee $referee, ?Carbon $reinstatementDate = null): void
     {
-        throw_unless($referee->canBeReinstated(), CannotBeReinstatedException::class);
+        throw_if($referee->canBeReinstated(), CannotBeReinstatedException::class);
 
         $reinstatementDate ??= now();
 

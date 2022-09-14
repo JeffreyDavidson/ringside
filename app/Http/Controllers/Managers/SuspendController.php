@@ -24,6 +24,7 @@ class SuspendController extends Controller
         try {
             SuspendAction::run($manager);
         } catch (CannotBeSuspendedException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('managers.index');

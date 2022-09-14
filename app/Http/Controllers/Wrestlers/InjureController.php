@@ -24,7 +24,7 @@ class InjureController extends Controller
         try {
             InjureAction::run($wrestler);
         } catch (CannotBeInjuredException $e) {
-            //throw $e;
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('wrestlers.index');

@@ -54,16 +54,6 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     }
 
     /**
-     * Determine if the model can be retired.
-     *
-     * @return bool
-     */
-    public function canBeRetired()
-    {
-        return $this->isCurrentlyActivated() || $this->isDeactivated();
-    }
-
-    /**
      * Retrieve the championships of the title.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -91,15 +81,5 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     public function isVacant()
     {
         return $this->currentChampionship?->champion === null;
-    }
-
-    /**
-     * Determine if the title can be unretired.
-     *
-     * @return bool
-     */
-    public function canBeUnretired()
-    {
-        return $this->isRetired();
     }
 }

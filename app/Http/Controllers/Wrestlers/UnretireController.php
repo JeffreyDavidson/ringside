@@ -24,8 +24,7 @@ class UnretireController extends Controller
         try {
             UnretireAction::run($wrestler);
         } catch (CannotBeUnretiredException $e) {
-            //throw $e;
-            session()->with('error', 'This wrestler cannot be unretired.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('wrestlers.index');

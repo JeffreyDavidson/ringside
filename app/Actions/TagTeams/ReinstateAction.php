@@ -19,10 +19,12 @@ class ReinstateAction extends BaseTagTeamAction
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \Illuminate\Support\Carbon|null  $reinstatementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeReinstatedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $reinstatementDate = null): void
     {
-        throw_unless($tagTeam->canBeReinstated(), CannotBeReinstatedException::class);
+        throw_if($tagTeam->canBeReinstated(), CannotBeReinstatedException::class);
 
         $reinstatementDate ??= now();
 

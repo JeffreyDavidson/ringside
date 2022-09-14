@@ -19,10 +19,12 @@ class ClearInjuryAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $recoveryDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeClearedFromInjuryException
      */
     public function handle(Referee $referee, ?Carbon $recoveryDate = null): void
     {
-        throw_unless($referee->canBeClearedFromInjury(), CannotBeClearedFromInjuryException::class);
+        throw_if(! $referee->isInjured(), CannotBeClearedFromInjuryException::class, $referee.' is not injured and cannot be cleared from injury.');
 
         $recoveryDate ??= now();
 

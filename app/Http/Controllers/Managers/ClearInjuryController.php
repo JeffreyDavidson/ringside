@@ -24,6 +24,7 @@ class ClearInjuryController extends Controller
         try {
             ClearInjuryAction::run($manager);
         } catch (CannotBeClearedFromInjuryException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('managers.index');

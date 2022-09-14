@@ -24,6 +24,7 @@ class EmployController extends Controller
         try {
             EmployAction::run($tagTeam);
         } catch (CannotBeEmployedException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('tag-teams.index');

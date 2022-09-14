@@ -15,15 +15,17 @@ class EmployAction extends BaseTagTeamAction
     use AsAction;
 
     /**
-     * Employ a tagTeam.
+     * Employ a tag team.
      *
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeEmployedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $startDate = null): void
     {
-        throw_unless($tagTeam->canBeEmployed(), CannotBeEmployedException::class);
+        throw_if($tagTeam->canBeEmployed(), CannotBeEmployedException::class);
 
         $startDate ??= now();
 

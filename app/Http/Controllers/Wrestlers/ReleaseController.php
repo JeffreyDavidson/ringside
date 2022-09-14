@@ -24,7 +24,7 @@ class ReleaseController extends Controller
         try {
             ReleaseAction::run($wrestler);
         } catch (CannotBeReleasedException $e) {
-            //throw $e;
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('wrestlers.index');

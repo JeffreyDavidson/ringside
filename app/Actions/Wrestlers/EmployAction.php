@@ -19,10 +19,12 @@ class EmployAction extends BaseWrestlerAction
      * @param  \App\Models\Wrestler  $wrestler
      * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeEmployedException
      */
     public function handle(Wrestler $wrestler, ?Carbon $startDate = null): void
     {
-        throw_unless($wrestler->canBeEmployed(), CannotBeEmployedException::class);
+        throw_if($wrestler->isCurrentlyEmployed(), CannotBeEmployedException::class, $wrestler.' is already employed.');
 
         $startDate ??= now();
 

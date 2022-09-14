@@ -19,10 +19,12 @@ class EmployAction extends BaseRefereeAction
      * @param  \App\Models\Referee  $referee
      * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeEmployedException
      */
     public function handle(Referee $referee, ?Carbon $startDate = null): void
     {
-        throw_unless($referee->canBeEmployed(), CannotBeEmployedException::class);
+        throw_if($referee->canBeEmployed(), CannotBeEmployedException::class);
 
         $startDate ??= now();
 

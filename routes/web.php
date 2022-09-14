@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
-Auth::loginUsingId(1);
+// Auth::loginUsingId(1);
 
 Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');

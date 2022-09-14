@@ -123,24 +123,4 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     {
         return $this->retirements()->count() > 0;
     }
-
-    /**
-     * Determine if the model can be retired.
-     *
-     * @return bool
-     */
-    public function canBeRetired()
-    {
-        return $this->isCurrentlyActivated() || $this->isDeactivated();
-    }
-
-    /**
-     * Determine if the model can be unretired.
-     *
-     * @return bool
-     */
-    public function canBeUnretired()
-    {
-        return $this->isRetired();
-    }
 }

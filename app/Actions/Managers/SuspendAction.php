@@ -19,10 +19,12 @@ class SuspendAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $suspensionDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeSuspendedException
      */
     public function handle(Manager $manager, ?Carbon $suspensionDate = null): void
     {
-        throw_unless($manager->canBeSuspended(), CannotBeSuspendedException::class);
+        throw_if($manager->canBeSuspended(), CannotBeSuspendedException::class);
 
         $suspensionDate ??= now();
 

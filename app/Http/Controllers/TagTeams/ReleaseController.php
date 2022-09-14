@@ -24,6 +24,7 @@ class ReleaseController extends Controller
         try {
             ReleaseAction::run($tagTeam);
         } catch (CannotBeReleasedException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('tag-teams.index');

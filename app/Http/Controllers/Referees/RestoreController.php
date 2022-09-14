@@ -25,6 +25,7 @@ class RestoreController extends Controller
         try {
             RestoreAction::run($referee);
         } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('referees.index');

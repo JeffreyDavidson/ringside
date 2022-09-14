@@ -24,6 +24,7 @@ class RetireController extends Controller
         try {
             RetireAction::run($manager);
         } catch (CannotBeRetiredException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('managers.index');

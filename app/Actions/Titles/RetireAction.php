@@ -19,10 +19,12 @@ class RetireAction extends BaseTitleAction
      * @param  \App\Models\Title  $title
      * @param  \Illuminate\Support\Carbon|null  $retirementDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeRetiredException
      */
     public function handle(Title $title, ?Carbon $retirementDate = null): void
     {
-        throw_unless($title->canBeRetired(), CannotBeRetiredException::class);
+        throw_if($title->isRetired(), CannotBeRetiredException::class, $title.' is already retired.');
 
         $retirementDate ??= now();
 

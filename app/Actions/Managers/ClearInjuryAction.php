@@ -18,10 +18,12 @@ class ClearInjuryAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $recoveryDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeClearedFromInjuryException
      */
     public function handle(Manager $manager, ?Carbon $recoveryDate = null): void
     {
-        throw_unless($manager->canBeClearedFromInjury(), CannotBeClearedFromInjuryException::class);
+        throw_if($manager->canBeClearedFromInjury(), CannotBeClearedFromInjuryException::class);
 
         $recoveryDate ??= now();
 

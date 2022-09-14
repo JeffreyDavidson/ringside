@@ -19,10 +19,12 @@ class UnretireAction extends BaseTagTeamAction
      * @param  \App\Models\TagTeam  $tagTeam
      * @param  \Illuminate\Support\Carbon|null  $unretiredDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeUnretiredException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $unretiredDate = null): void
     {
-        throw_unless($tagTeam->canBeUnretired(), CannotBeUnretiredException::class);
+        throw_if($tagTeam->canBeUnretired(), CannotBeUnretiredException::class);
 
         $unretiredDate ??= now();
 

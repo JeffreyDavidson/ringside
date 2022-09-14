@@ -24,6 +24,7 @@ class ActivateController extends Controller
         try {
             ActivateAction::run($stable);
         } catch (CannotBeActivatedException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return to_route('stables.index');

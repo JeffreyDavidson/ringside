@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Wrestlers\ClearInjuryAction;
+use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Wrestlers\ClearInjuryController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\Wrestler;
@@ -26,4 +27,13 @@ test('a basic user cannot mark an injured wrestler as cleared', function () {
 test('a guest cannot mark an injured wrestler as cleared', function () {
     $this->patch(action([ClearInjuryController::class], $this->wrestler))
         ->assertRedirect(route('login'));
+});
+
+test('invoke returns error message if exception is thrown', function () {
+    $this->actingAs(administrator())
+        ->patch(action([ClearInjuryController::class], $this->wrestler))
+        ->assertRedirect(action([WrestlersController::class, 'index']))
+        ->assertSessionHas('error');
+
+    ClearInjuryAction::shouldRun()->with($this->wrestler)->andThrow(CannotBeClearedFromInjuryException::class);
 });

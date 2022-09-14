@@ -18,10 +18,12 @@ class ReleaseAction extends BaseManagerAction
      * @param  \App\Models\Manager  $manager
      * @param  \Illuminate\Support\Carbon|null  $releaseDate
      * @return void
+     *
+     * @throws \App\Exceptions\CannotBeReleasedException
      */
     public function handle(Manager $manager, ?Carbon $releaseDate = null): void
     {
-        throw_unless($manager->canBeReleased(), CannotBeReleasedException::class);
+        throw_if($manager->canBeReleased(), CannotBeReleasedException::class);
 
         $releaseDate ??= now();
 
