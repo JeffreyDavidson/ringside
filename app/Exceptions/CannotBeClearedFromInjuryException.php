@@ -8,10 +8,4 @@ use Exception;
 
 class CannotBeClearedFromInjuryException extends Exception
 {
-    /**
-     * The default message for sending with exception.
-     *
-     * @var string
-     */
-    protected $message = 'This entity could not be cleared from an injury.';
 }
