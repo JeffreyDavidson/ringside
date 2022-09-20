@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\TagTeams;
 
 use App\Actions\Wrestlers\RetireAction as WrestlersRetireAction;
+use App\Exceptions\CannotBeRetiredException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;

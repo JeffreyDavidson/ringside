@@ -6,10 +6,6 @@ namespace App\Models;
 
 use App\Builders\WrestlerQueryBuilder;
 use App\Enums\WrestlerStatus;
-use App\Models\Concerns\CanJoinStables;
-use App\Models\Concerns\CanJoinTagTeams;
-use App\Models\Concerns\HasManagers;
-use App\Models\Concerns\OwnedByUser;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Manageable;
@@ -19,11 +15,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Manageable, TagTeamMember
 {
-    use CanJoinStables;
-    use CanJoinTagTeams;
+    use Concerns\CanJoinStables;
+    use Concerns\CanJoinTagTeams;
+    use Concerns\HasManagers;
+    use Concerns\OwnedByUser;
     use HasFactory;
-    use HasManagers;
-    use OwnedByUser;
     use SoftDeletes;
 
     /**

@@ -24,15 +24,17 @@ class UpdateAction extends BaseTagTeamAction
         $this->tagTeamRepository->update($tagTeam, $tagTeamData);
 
         if ($tagTeamData->wrestlerA && $tagTeamData->wrestlerA->currentTagTeam?->isNot($tagTeam)) {
-            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlers);
+            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerA);
         }
 
-        if ($tagTeamData->wrestlerA && $tagTeamData->wrestlerA->currentTagTeam?->isNot($tagTeam)) {
-            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlers);
+        if ($tagTeamData->wrestlerB && $tagTeamData->wrestlerB->currentTagTeam?->isNot($tagTeam)) {
+            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerB);
         }
 
-        if ($tagTeam->currentWrestlers) {
-            $tagTeam->currentWrestlers->reject([$tagTeamData->wrestlerA, $tagTeamData->wrestlerB])
+        if ($tagTeam->currentWrestlers->isNotEmpty()) {
+            $tagTeam
+                ->currentWrestlers
+                ->reject(fn ($wrestler) => in_array($wrestler, [$tagTeamData->wrestlerA, $tagTeamData->wrestlerB]))
                 ->each(fn ($wrestler) => RemoveTagTeamPartnerAction::run($tagTeam, $wrestler));
         }
 

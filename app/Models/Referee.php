@@ -6,15 +6,14 @@ namespace App\Models;
 
 use App\Builders\RefereeQueryBuilder;
 use App\Enums\RefereeStatus;
-use App\Models\Concerns\HasFullName;
 use App\Models\Contracts\Bookable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referee extends SingleRosterMember implements Bookable
 {
+    use Concerns\HasFullName;
     use HasFactory;
-    use HasFullName;
     use SoftDeletes;
 
     /**
@@ -22,7 +21,11 @@ class Referee extends SingleRosterMember implements Bookable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['first_name', 'last_name', 'status'];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'status',
+    ];
 
     /**
      * The attributes that should be cast to native types.

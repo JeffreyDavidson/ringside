@@ -6,9 +6,6 @@ namespace App\Models;
 
 use App\Builders\TagTeamQueryBuilder;
 use App\Enums\TagTeamStatus;
-use App\Models\Concerns\CanJoinStables;
-use App\Models\Concerns\HasManagers;
-use App\Models\Concerns\OwnedByUser;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Competitor;
@@ -20,11 +17,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor, Manageable
 {
-    use CanJoinStables;
+    use Concerns\CanJoinStables;
+    use Concerns\HasManagers;
+    use Concerns\OwnedByUser;
     use HasFactory;
-    use HasManagers;
     use HasMorphToOne;
-    use OwnedByUser;
     use SoftDeletes;
 
     /**

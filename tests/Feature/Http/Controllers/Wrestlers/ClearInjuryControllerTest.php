@@ -30,10 +30,13 @@ test('a guest cannot mark an injured wrestler as cleared', function () {
 });
 
 test('invoke returns error message if exception is thrown', function () {
+    $wrestler = Wrestler::factory()->unemployed()->create();
+
     $this->actingAs(administrator())
-        ->patch(action([ClearInjuryController::class], $this->wrestler))
+        ->from(action([WrestlersController::class, 'index']))
+        ->patch(action([ClearInjuryController::class], $wrestler))
         ->assertRedirect(action([WrestlersController::class, 'index']))
         ->assertSessionHas('error');
 
-    ClearInjuryAction::shouldRun()->with($this->wrestler)->andThrow(CannotBeClearedFromInjuryException::class);
+    ClearInjuryAction::shouldRun()->with($wrestler)->andThrow(CannotBeClearedFromInjuryException::class);
 });

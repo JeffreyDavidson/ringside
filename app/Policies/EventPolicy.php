@@ -26,7 +26,6 @@ class EventPolicy
      * Determine whether the user can update an event.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      * @return bool
      */
     public function update(User $user)

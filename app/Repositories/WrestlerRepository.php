@@ -223,6 +223,11 @@ class WrestlerRepository
         ]);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \App\Builders\WrestlerQueryBuilder
+     */
     public static function getAvailableWrestlersForNewTagTeam()
     {
         // Each wrestler must be either:
@@ -246,6 +251,12 @@ class WrestlerRepository
             });
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param  \App\Models\TagTeam  $tagTeam
+     * @return \App\Builders\WrestlerQueryBuilder
+     */
     public static function getAvailableWrestlersForExistingTagTeam($tagTeam)
     {
         // Each wrestler must be either:

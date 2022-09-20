@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\TagTeams;
 
 use App\Actions\Wrestlers\ReleaseAction as WrestlersReleaseAction;
+use App\Exceptions\CannotBeReleasedException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;

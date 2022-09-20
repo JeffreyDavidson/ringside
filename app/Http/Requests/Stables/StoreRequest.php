@@ -62,7 +62,7 @@ class StoreRequest extends FormRequest
                 Rule::exists('tag_teams', 'id'),
                 new TagTeamCanJoinNewStable(),
             ],
-            'managers' => [
+            'managers.*' => [
                 'bail',
                 'integer',
                 'distinct',

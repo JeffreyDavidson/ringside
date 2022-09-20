@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Stables;
 
+use App\Exceptions\CannotBeUnretiredException;
 use App\Models\Stable;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
