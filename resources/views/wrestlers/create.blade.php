@@ -30,7 +30,6 @@
                             <x-form.inputs.number
                                 label="Height (Feet):"
                                 name="feet"
-                                placeholder="6"
                                 max="8"
                                 :value="old('feet')"
                             />
@@ -39,7 +38,6 @@
                             <x-form.inputs.number
                                 label="Height (Inches):"
                                 name="inches"
-                                placeholder="2"
                                 max="11"
                                 :value="old('inches')"
                             />
@@ -48,7 +46,6 @@
                             <x-form.inputs.number
                                 label="Weight:"
                                 name="weight"
-                                placeholder="220"
                                 :value="old('weight')"
                             />
                         </div>
