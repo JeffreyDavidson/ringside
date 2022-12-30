@@ -49,7 +49,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('events')->ignore($event)],
             'date' => ['nullable', 'string', 'date', new EventDateCanBeChanged($event)],
-            'venue_id' => ['nullable', 'integer', Rule::exists('venues', 'id')],
+            'venue_id' => ['nullable', 'required_with:date', 'integer', Rule::exists('venues', 'id')],
             'preview' => ['nullable', 'string'],
         ];
     }
