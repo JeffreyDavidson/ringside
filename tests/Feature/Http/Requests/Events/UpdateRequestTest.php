@@ -45,6 +45,17 @@ test('event name must be a string', function () {
         ->assertFailsValidation(['name' => 'string']);
 });
 
+test('event name can only be letters and spaces', function () {
+    $event = Event::factory()->create();
+
+    $this->createRequest(UpdateRequest::class)
+        ->withParam('event', $event)
+        ->validate(EventRequestFactory::new()->create([
+            'name' => 'Invalid!%%# Event Name',
+        ]))
+        ->assertFailsValidation(['name' => 'letterspace']);
+});
+
 test('event name must be a at least characters', function () {
     $event = Event::factory()->create();
 
@@ -109,7 +120,7 @@ test('event date cannot be changed if event date has past', function () {
         ->validate(EventRequestFactory::new()->create([
             'date' => '2021-02-01',
         ]))
-        ->assertFailsValidation(['date' => 'app\rules\eventdatecanbechanged']);
+        ->assertFailsValidation(['date' => 'eventdatecanbechanged']);
 });
 
 test('event date can be changed if activation start date is in the future', function () {
@@ -132,6 +143,18 @@ test('event venue id is optional', function () {
             'venue_id' => null,
         ]))
         ->assertPassesValidation();
+});
+
+test('event venue id required when date is provided', function () {
+    $event = Event::factory()->create();
+
+    $this->createRequest(UpdateRequest::class)
+        ->withParam('event', $event)
+        ->validate(EventRequestFactory::new()->create([
+            'date' => Carbon::tomorrow()->toDateTimeString(),
+            'venue_id' => null,
+        ]))
+        ->assertFailsValidation(['venue_id' => 'required_with:date']);
 });
 
 test('event venue id must be an integer if provided', function () {
