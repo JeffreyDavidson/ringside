@@ -57,7 +57,13 @@ class TestValidationResult
                 } else {
                     assertArrayHasKey($constraints, $failedRules->all());
                 }
+            } elseif (str($constraints)->contains('_')) {
+                dd($expectedFailedRule, $constraints);
+                assertArrayHasKey($constraints, $failedRules->all());
+
+                // $this->assertFailsValidation($constraints, $expectedFailedRule);
             }
+
             assertArrayHasKey($expectedFailedRule, $failedRules);
             assertStringContainsString($constraints, $failedRules[$expectedFailedRule]);
         }
@@ -90,7 +96,7 @@ class TestValidationResult
 
         $failedRules = collect($this->validator->failed())
             ->map(fn ($details) => collect($details)->reduce(function ($aggregateRule, $constraints, $ruleName) {
-                $failedRule = str($ruleName)->snake()->lower();
+                $failedRule = str($ruleName)->lower()->remove('app\rules\\');
 
                 if (count($constraints)) {
                     $failedRule .= ':'.implode(',', $constraints);
