@@ -46,6 +46,17 @@ test('title name must be a string', function () {
         ->assertFailsValidation(['name' => 'string']);
 });
 
+test('title name can only be letters and spaces', function () {
+    $title = Title::factory()->create();
+
+    $this->createRequest(UpdateRequest::class)
+        ->withParam('title', $title)
+        ->validate(TitleRequestFactory::new()->create([
+            'name' => 'Invalid!%%# Name Title',
+        ]))
+        ->assertFailsValidation(['name' => LetterSpace::class]);
+});
+
 test('title name must be at least 3 characters', function () {
     $title = Title::factory()->create();
 
