@@ -10,12 +10,7 @@ use Illuminate\Support\Carbon;
 
 class TitleRepository
 {
-    /**
-     * Create a new title with the given data.
-     *
-     * @param  \App\Data\TitleData  $titleData
-     * @return \App\Models\Title
-     */
+    public function create(TitleData $titleData): Model
     public function create(TitleData $titleData)
     {
         return Title::create([

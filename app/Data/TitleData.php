@@ -12,22 +12,12 @@ class TitleData
 {
     /**
      * Create a new title data instance.
-     *
-     * @param  string  $name
-     * @param  \Illuminate\Support\Carbon|null  $activation_date
-     */
     public function __construct(
         public string $name,
         public ?Carbon $activation_date
     ) {
     }
 
-    /**
-     * Create a DTO from the store request.
-     *
-     * @param  \App\Http\Requests\Titles\StoreRequest  $request
-     * @return self
-     */
     public static function fromStoreRequest(StoreRequest $request): self
     {
         return new self(
