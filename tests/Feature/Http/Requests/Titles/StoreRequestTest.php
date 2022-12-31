@@ -48,6 +48,14 @@ test('title name must be at least 3 characters', function () {
         ->assertFailsValidation(['name' => 'min:3']);
 });
 
+test('title name must end with title or titles', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TitleRequestFactory::new()->create([
+            'name' => 'Example Name',
+        ]))
+        ->assertFailsValidation(['name' => 'ends_with:Title,Titles']);
+});
+
 test('title name must be unique', function () {
     Title::factory()->create(['name' => 'Example Name Title']);
 
@@ -56,14 +64,6 @@ test('title name must be unique', function () {
             'name' => 'Example Name Title',
         ]))
         ->assertFailsValidation(['name' => 'unique:titles,name,NULL,id']);
-});
-
-test('title name must end with title or titles', function () {
-    $this->createRequest(StoreRequest::class)
-        ->validate(TitleRequestFactory::new()->create([
-            'name' => 'Example Name',
-        ]))
-        ->assertFailsValidation(['name' => 'endswith:Title,Titles']);
 });
 
 test('title activation date is optional', function () {
