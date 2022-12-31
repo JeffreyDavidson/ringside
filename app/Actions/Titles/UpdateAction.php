@@ -16,10 +16,10 @@ class UpdateAction extends BaseTitleAction
     {
         $this->titleRepository->update($title, $titleData);
 
-        if (isset($titleData->activation_date)) {
-            if ($title->canBeActivated() || $title->canHaveActivationStartDateChanged($titleData->activation_date)) {
-                ActivateAction::run($title, $titleData->activation_date);
-            }
+        if (isset($titleData->activation_date)
+            && ($title->canBeActivated() || $title->canHaveActivationStartDateChanged($titleData->activation_date))
+        ) {
+            ActivateAction::run($title, $titleData->activation_date);
         }
 
         return $title;
