@@ -3,6 +3,7 @@
 use App\Http\Requests\Titles\UpdateRequest;
 use App\Models\Activation;
 use App\Models\Title;
+use App\Rules\ActivationStartDateCanBeChanged;
 use Illuminate\Support\Carbon;
 use Tests\RequestFactories\TitleRequestFactory;
 
@@ -132,7 +133,7 @@ test('title activation date cannot be changed if activation start date has past'
         ->validate(TitleRequestFactory::new()->create([
             'activation_date' => Carbon::now()->toDateTimeString(),
         ]))
-        ->assertFailsValidation(['activation_date' => 'app\rules\activationstartdatecanbechanged']);
+        ->assertFailsValidation(['activation_date' => ActivationStartDateCanBeChanged::class]);
 });
 
 test('title activation date can be changed if activation start date is in the future', function () {
