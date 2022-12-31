@@ -76,7 +76,7 @@ test('title name must end with title or titles', function () {
         ->validate(TitleRequestFactory::new()->create([
             'name' => 'Example Name',
         ]))
-        ->assertFailsValidation(['name' => 'endswith:Title,Titles']);
+        ->assertFailsValidation(['name' => 'ends_with:Title,Titles']);
 });
 
 test('title name must be unique', function () {
