@@ -10,20 +10,13 @@ use Illuminate\Support\Carbon;
 
 class TitleData
 {
-    /**
-     * Create a new title data instance.
-    public function __construct(
-        public string $name,
-        public ?Carbon $activation_date
-    ) {
+    public function __construct(public string $name, public ?Carbon $activation_date)
+    {
     }
 
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        return new self(
-            $request->input('name'),
-            $request->date('activation_date'),
-        );
+        return new self($request->input('name'), $request->date('activation_date'));
     }
 
     /**
