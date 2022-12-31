@@ -23,8 +23,7 @@ class TitlesController extends Controller
         return view('titles.index');
     }
 
-    /**
-    public function create(Title $title)
+    public function create(Title $title): View
     {
         $this->authorize('create', Title::class);
 
