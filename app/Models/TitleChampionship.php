@@ -64,12 +64,7 @@ class TitleChampionship extends Model
         return $this->mergedRelation('all_title_champions');
     }
 
-    /**
-     * Retrieve the champion of title championship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function champion()
+    public function champion(): MorphTo
     {
         return $this->morphTo();
     }
