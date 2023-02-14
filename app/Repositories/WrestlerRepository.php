@@ -16,9 +16,6 @@ class WrestlerRepository
 {
     /**
      * Create a new wrestler with the given data.
-     *
-     * @param  \App\Data\WrestlerData  $wrestlerData
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(WrestlerData $wrestlerData): Model
     {
@@ -33,10 +30,6 @@ class WrestlerRepository
 
     /**
      * Update a given wrestler with given data.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Data\WrestlerData  $wrestlerData
-     * @return \App\Models\Wrestler
      */
     public function update(Wrestler $wrestler, WrestlerData $wrestlerData): Wrestler
     {
@@ -53,9 +46,6 @@ class WrestlerRepository
 
     /**
      * Delete a given wrestler.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return void
      */
     public function delete(Wrestler $wrestler): void
     {
@@ -64,9 +54,6 @@ class WrestlerRepository
 
     /**
      * Restore a given wrestler.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return void
      */
     public function restore(Wrestler $wrestler): void
     {
@@ -75,10 +62,6 @@ class WrestlerRepository
 
     /**
      * Employ a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $employmentDate
-     * @return \App\Models\Wrestler
      */
     public function employ(Wrestler $wrestler, Carbon $employmentDate): Wrestler
     {
@@ -93,10 +76,6 @@ class WrestlerRepository
 
     /**
      * Release a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $releaseDate
-     * @return \App\Models\Wrestler
      */
     public function release(Wrestler $wrestler, Carbon $releaseDate): Wrestler
     {
@@ -108,10 +87,6 @@ class WrestlerRepository
 
     /**
      * Injure a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $injureDate
-     * @return \App\Models\Wrestler
      */
     public function injure(Wrestler $wrestler, Carbon $injureDate): Wrestler
     {
@@ -123,10 +98,6 @@ class WrestlerRepository
 
     /**
      * Clear the injury of a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $recoveryDate
-     * @return \App\Models\Wrestler
      */
     public function clearInjury(Wrestler $wrestler, Carbon $recoveryDate): Wrestler
     {
@@ -138,10 +109,6 @@ class WrestlerRepository
 
     /**
      * Retire a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $retirementDate
-     * @return \App\Models\Wrestler
      */
     public function retire(Wrestler $wrestler, Carbon $retirementDate): Wrestler
     {
@@ -153,10 +120,6 @@ class WrestlerRepository
 
     /**
      * Unretire a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $unretireDate
-     * @return \App\Models\Wrestler
      */
     public function unretire(Wrestler $wrestler, Carbon $unretireDate): Wrestler
     {
@@ -168,10 +131,6 @@ class WrestlerRepository
 
     /**
      * Suspend a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $suspensionDate
-     * @return \App\Models\Wrestler
      */
     public function suspend(Wrestler $wrestler, Carbon $suspensionDate): Wrestler
     {
@@ -183,10 +142,6 @@ class WrestlerRepository
 
     /**
      * Reinstate a given wrestler on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $reinstateDate
-     * @return \App\Models\Wrestler
      */
     public function reinstate(Wrestler $wrestler, Carbon $reinstateDate): Wrestler
     {
@@ -198,10 +153,6 @@ class WrestlerRepository
 
     /**
      * Get the model's first employment date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $employmentDate
-     * @return \App\Models\Wrestler
      */
     public function updateEmployment(Wrestler $wrestler, Carbon $employmentDate): Wrestler
     {
@@ -212,10 +163,6 @@ class WrestlerRepository
 
     /**
      * Remove the given wrestler from their current tag team on a given date.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @param  \Illuminate\Support\Carbon  $removalDate
-     * @return void
      */
     public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate): void
     {
@@ -228,8 +175,6 @@ class WrestlerRepository
 
     /**
      * Undocumented function
-     *
-     * @return \App\Builders\WrestlerQueryBuilder
      */
     public static function getAvailableWrestlersForNewTagTeam(): WrestlerQueryBuilder
     {
@@ -256,9 +201,6 @@ class WrestlerRepository
 
     /**
      * Undocumented function
-     *
-     * @param  \App\Models\TagTeam  $tagTeam
-     * @return \App\Builders\WrestlerQueryBuilder
      */
     public static function getAvailableWrestlersForExistingTagTeam(TagTeam $tagTeam): WrestlerQueryBuilder
     {

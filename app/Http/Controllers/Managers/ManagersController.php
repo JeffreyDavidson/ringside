@@ -19,8 +19,6 @@ class ManagersController extends Controller
 {
     /**
      * View a list of managers.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -31,9 +29,6 @@ class ManagersController extends Controller
 
     /**
      * Show the form for creating a manager.
-     *
-     * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\View\View
      */
     public function create(Manager $manager): View
     {
@@ -46,9 +41,6 @@ class ManagersController extends Controller
 
     /**
      * Create a new manager.
-     *
-     * @param  \App\Http\Requests\Managers\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -59,9 +51,6 @@ class ManagersController extends Controller
 
     /**
      * Show the profile of a manager.
-     *
-     * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\View\View
      */
     public function show(Manager $manager): View
     {
@@ -74,9 +63,6 @@ class ManagersController extends Controller
 
     /**
      * Show the form for editing a manager.
-     *
-     * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\View\View
      */
     public function edit(Manager $manager): View
     {
@@ -89,10 +75,6 @@ class ManagersController extends Controller
 
     /**
      * Update a given manager.
-     *
-     * @param  \App\Http\Requests\Managers\UpdateRequest  $request
-     * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Manager $manager): RedirectResponse
     {
@@ -103,9 +85,6 @@ class ManagersController extends Controller
 
     /**
      * Delete a manager.
-     *
-     * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Manager $manager): RedirectResponse
     {

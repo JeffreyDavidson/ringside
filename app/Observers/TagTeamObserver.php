@@ -11,9 +11,6 @@ class TagTeamObserver
 {
     /**
      * Handle the TagTeam "saved" event.
-     *
-     * @param  \App\Models\TagTeam  $tagTeam
-     * @return void
      */
     public function saving(TagTeam $tagTeam): void
     {

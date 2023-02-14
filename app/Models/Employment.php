@@ -37,8 +37,6 @@ class Employment extends Model
 
     /**
      * Get the employed model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function employable(): MorphTo
     {
@@ -47,9 +45,6 @@ class Employment extends Model
 
     /**
      * Determine if employment start date was started before a given date.
-     *
-     * @param  \Illuminate\Support\Carbon  $date
-     * @return bool
      */
     public function startedBefore(Carbon $date): bool
     {
@@ -58,9 +53,6 @@ class Employment extends Model
 
     /**
      * Determine if employment start date was started after a given date.
-     *
-     * @param  \Illuminate\Support\Carbon  $date
-     * @return bool
      */
     public function startedAfter(Carbon $date): bool
     {

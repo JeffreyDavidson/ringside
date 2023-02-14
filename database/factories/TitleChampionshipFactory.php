@@ -14,9 +14,6 @@ class TitleChampionshipFactory extends Factory
 {
     /**
      * Indicate the date the title was won.
-     *
-     * @param  string  $date
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function wonOn(string $date): Factory
     {
@@ -25,9 +22,6 @@ class TitleChampionshipFactory extends Factory
 
     /**
      * Indicate the date the title was lost.
-     *
-     * @param  ?string  $date
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function lostOn(?string $date): Factory
     {
@@ -36,8 +30,6 @@ class TitleChampionshipFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {

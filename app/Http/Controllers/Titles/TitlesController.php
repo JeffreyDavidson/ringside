@@ -35,9 +35,6 @@ class TitlesController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Titles\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -48,9 +45,6 @@ class TitlesController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Title  $title
-     * @return \Illuminate\View\View
      */
     public function show(Title $title): View
     {
@@ -79,9 +73,6 @@ class TitlesController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Title  $title
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Title $title): RedirectResponse
     {

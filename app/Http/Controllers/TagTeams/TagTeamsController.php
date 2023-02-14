@@ -20,8 +20,6 @@ class TagTeamsController extends Controller
 {
     /**
      * View a list of tag teams.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -32,8 +30,6 @@ class TagTeamsController extends Controller
 
     /**
      * Show the form for creating a new tag team.
-     *
-     * @return \Illuminate\View\View
      */
     public function create(): View
     {
@@ -46,9 +42,6 @@ class TagTeamsController extends Controller
 
     /**
      * Create a new tag team.
-     *
-     * @param  \App\Http\Requests\TagTeams\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -59,9 +52,6 @@ class TagTeamsController extends Controller
 
     /**
      * Show the profile of a tag team.
-     *
-     * @param  \App\Models\TagTeam  $tagTeam
-     * @return \Illuminate\View\View
      */
     public function show(TagTeam $tagTeam): View
     {
@@ -74,9 +64,6 @@ class TagTeamsController extends Controller
 
     /**
      * Show the form for editing a tag team.
-     *
-     * @param  \App\Models\TagTeam  $tagTeam
-     * @return \Illuminate\View\View
      */
     public function edit(TagTeam $tagTeam): View
     {
@@ -90,10 +77,6 @@ class TagTeamsController extends Controller
 
     /**
      * Update a given tag team.
-     *
-     * @param  \App\Http\Requests\TagTeams\UpdateRequest  $request
-     * @param  \App\Models\TagTeam  $tagTeam
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, TagTeam $tagTeam): RedirectResponse
     {
@@ -104,9 +87,6 @@ class TagTeamsController extends Controller
 
     /**
      * Delete a tag team.
-     *
-     * @param  \App\Models\TagTeam  $tagTeam
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(TagTeam $tagTeam): RedirectResponse
     {

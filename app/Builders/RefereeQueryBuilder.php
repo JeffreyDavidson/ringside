@@ -15,8 +15,6 @@ class RefereeQueryBuilder extends SingleRosterMemberQueryBuilder
 {
     /**
      * Scope a query to only include bookable models.
-     *
-     * @return \App\Builders\RefereeQueryBuilder
      */
     public function bookable(): RefereeQueryBuilder
     {

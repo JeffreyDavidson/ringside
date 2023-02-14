@@ -13,9 +13,6 @@ class RestoreController extends Controller
 {
     /**
      * Restore a deleted wrestler.
-     *
-     * @param  int  $wrestlerId
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(int $wrestlerId): RedirectResponse
     {

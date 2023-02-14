@@ -12,8 +12,6 @@ trait Manageables
 {
     /**
      * Get all of the wrestlers that have been managed by model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function wrestlers(): MorphToMany
     {
@@ -23,8 +21,6 @@ trait Manageables
 
     /**
      * Get the current wrestlers that is managed by model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentWrestlers(): MorphToMany
     {
@@ -34,8 +30,6 @@ trait Manageables
 
     /**
      * Get all previous wrestlers that have been managed by model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousWrestlers(): MorphToMany
     {
@@ -45,8 +39,6 @@ trait Manageables
 
     /**
      * Get all of the tag teams that have been managed by model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tagTeams(): MorphToMany
     {
@@ -56,8 +48,6 @@ trait Manageables
 
     /**
      * Get all previous tag teams that have been managed by model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentTagTeams(): MorphToMany
     {
@@ -68,8 +58,6 @@ trait Manageables
 
     /**
      * Get all previous tag teams that have been managed by model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousTagTeams(): MorphToMany
     {

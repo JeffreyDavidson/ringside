@@ -8,8 +8,6 @@ trait Deactivations
 {
     /**
      * Check to see if the model is deactivated.
-     *
-     * @return bool
      */
     public function isDeactivated(): bool
     {
@@ -30,8 +28,6 @@ trait Deactivations
 
     /**
      * Check to see if the model is not in activation.
-     *
-     * @return bool
      */
     public function isNotInActivation(): bool
     {

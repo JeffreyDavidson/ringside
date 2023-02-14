@@ -39,8 +39,6 @@ class DeletedEventsList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Database\Query\Builder
      */
     public function getRowsQueryProperty(): Builder
     {
@@ -54,8 +52,6 @@ class DeletedEventsList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getRowsProperty(): LengthAwarePaginator
     {
@@ -64,8 +60,6 @@ class DeletedEventsList extends BaseComponent
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {

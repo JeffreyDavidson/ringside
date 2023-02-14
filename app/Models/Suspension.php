@@ -36,8 +36,6 @@ class Suspension extends Model
 
     /**
      * Retrieve the suspended model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function suspendable(): MorphTo
     {

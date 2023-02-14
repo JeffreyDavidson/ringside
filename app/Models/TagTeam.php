@@ -57,7 +57,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     /**
      * Create a new Eloquent query builder for the model.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\TagTeamQueryBuilder<TagTeam>
      */
     public function newEloquentBuilder(Builder $query): TagTeamQueryBuilder
@@ -67,8 +66,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Get the wrestlers that have been tag team partners of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function wrestlers(): BelongsToMany
     {
@@ -78,8 +75,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Get current wrestlers of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function currentWrestlers(): HasMany
     {
@@ -88,8 +83,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Get previous tag team partners of the tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function previousWrestlers(): BelongsToMany
     {
@@ -99,8 +92,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Get the combined weight of both tag team partners in a tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function combinedWeight(): Attribute
     {
@@ -111,8 +102,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Check to see if the tag team is bookable.
-     *
-     * @return bool
      */
     public function isBookable(): bool
     {
@@ -125,8 +114,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Check to see if the tag team is unbookable.
-     *
-     * @return bool
      */
     public function isUnbookable(): bool
     {
@@ -135,8 +122,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function eventMatches(): MorphToMany
     {

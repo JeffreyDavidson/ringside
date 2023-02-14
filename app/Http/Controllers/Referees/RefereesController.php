@@ -19,8 +19,6 @@ class RefereesController extends Controller
 {
     /**
      * View a list of referees.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -31,9 +29,6 @@ class RefereesController extends Controller
 
     /**
      * Show the form for creating a new referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\View\View
      */
     public function create(Referee $referee): View
     {
@@ -46,9 +41,6 @@ class RefereesController extends Controller
 
     /**
      * Create a new referee.
-     *
-     * @param  \App\Http\Requests\Referees\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -59,9 +51,6 @@ class RefereesController extends Controller
 
     /**
      * Show the profile of a referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\View\View
      */
     public function show(Referee $referee): View
     {
@@ -74,9 +63,6 @@ class RefereesController extends Controller
 
     /**
      * Show the form for editing a referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\View\View
      */
     public function edit(Referee $referee): View
     {
@@ -89,10 +75,6 @@ class RefereesController extends Controller
 
     /**
      * Update a given referee.
-     *
-     * @param  \App\Http\Requests\Referees\UpdateRequest  $request
-     * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Referee $referee): RedirectResponse
     {
@@ -103,9 +85,6 @@ class RefereesController extends Controller
 
     /**
      * Delete a referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Referee $referee): RedirectResponse
     {

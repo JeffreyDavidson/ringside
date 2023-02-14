@@ -21,8 +21,6 @@ trait WithPerPagePagination
 
     /**
      * Apply number of records pages from session.
-     *
-     * @return void
      */
     public function mountWithPerPagePagination(): void
     {
@@ -31,9 +29,6 @@ trait WithPerPagePagination
 
     /**
      * Update session with user selected per page value.
-     *
-     * @param  int  $value
-     * @return void
      */
     public function updatedPerPage(int $value): void
     {
@@ -42,9 +37,6 @@ trait WithPerPagePagination
 
     /**
      * Apply pagination to query results.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function applyPagination(Builder $query): LengthAwarePaginator
     {

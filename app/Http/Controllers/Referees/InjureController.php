@@ -14,9 +14,6 @@ class InjureController extends Controller
 {
     /**
      * Injure a referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Referee $referee): RedirectResponse
     {

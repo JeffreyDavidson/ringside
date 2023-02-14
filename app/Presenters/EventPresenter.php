@@ -15,8 +15,6 @@ class EventPresenter extends Presenter
 
     /**
      * Retrieve the formatted event date.
-     *
-     * @return ?string
      */
     public function date(): ?string
     {

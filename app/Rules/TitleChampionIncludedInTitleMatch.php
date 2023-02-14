@@ -20,7 +20,6 @@ class TitleChampionIncludedInTitleMatch implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Illuminate\Support\Collection  $titleIds
      * @return void
      */
     public function __construct(Collection $titleIds)
@@ -31,9 +30,7 @@ class TitleChampionIncludedInTitleMatch implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -63,8 +60,6 @@ class TitleChampionIncludedInTitleMatch implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

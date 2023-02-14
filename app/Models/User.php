@@ -57,8 +57,6 @@ class User extends Authenticatable
 
     /**
      * Check to see if the user is an administrator.
-     *
-     * @return bool
      */
     public function isAdministrator(): bool
     {
@@ -67,8 +65,6 @@ class User extends Authenticatable
 
     /**
      * Get the user's wrestler.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function wrestler(): HasOne
     {

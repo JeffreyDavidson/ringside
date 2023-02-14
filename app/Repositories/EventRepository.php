@@ -12,9 +12,6 @@ class EventRepository
 {
     /**
      * Create a new event with the given data.
-     *
-     * @param  \App\Data\EventData  $eventData
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(EventData $eventData): Model
     {
@@ -40,9 +37,6 @@ class EventRepository
 
     /**
      * Delete a given event.
-     *
-     * @param  \App\Models\Event  $event
-     * @return void
      */
     public function delete(Event $event): void
     {
@@ -51,9 +45,6 @@ class EventRepository
 
     /**
      * Restore a given event.
-     *
-     * @param  \App\Models\Event  $event
-     * @return void
      */
     public function restore(Event $event): void
     {

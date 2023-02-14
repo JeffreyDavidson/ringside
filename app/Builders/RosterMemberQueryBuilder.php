@@ -19,8 +19,6 @@ class RosterMemberQueryBuilder extends Builder
 {
     /**
      * Scope a query to include suspended models.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function suspended(): RosterMemberQueryBuilder
     {
@@ -29,8 +27,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include current suspension date.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withCurrentSuspendedAtDate(): RosterMemberQueryBuilder
     {
@@ -45,9 +41,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to order by the model's current suspension date.
-     *
-     * @param  string  $direction
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByCurrentSuspendedAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
@@ -56,8 +49,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to only include retired models.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function retired(): RosterMemberQueryBuilder
     {
@@ -66,8 +57,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include current retirement date.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withCurrentRetiredAtDate(): RosterMemberQueryBuilder
     {
@@ -82,9 +71,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to order by the model's current retirement date.
-     *
-     * @param  string  $direction
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByCurrentRetiredAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
@@ -93,8 +79,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include released models.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function released(): RosterMemberQueryBuilder
     {
@@ -105,8 +89,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include released date.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withReleasedAtDate(): RosterMemberQueryBuilder
     {
@@ -121,9 +103,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to order by the model's current released date.
-     *
-     * @param  string  $direction
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByCurrentReleasedAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
@@ -132,8 +111,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include employed models.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function employed(): RosterMemberQueryBuilder
     {
@@ -142,8 +119,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to only include future employed models.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function futureEmployed(): RosterMemberQueryBuilder
     {
@@ -152,8 +127,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include unemployed models.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function unemployed(): RosterMemberQueryBuilder
     {
@@ -162,8 +135,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to include first employment date.
-     *
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withFirstEmployedAtDate(): RosterMemberQueryBuilder
     {
@@ -178,9 +149,6 @@ class RosterMemberQueryBuilder extends Builder
 
     /**
      * Scope a query to order by the model's first employment date.
-     *
-     * @param  string  $direction
-     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByFirstEmployedAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {

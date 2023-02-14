@@ -17,8 +17,6 @@ class EventQueryBuilder extends Builder
 {
     /**
      * Scope a query to include scheduled events.
-     *
-     * @return \App\Builders\EventQueryBuilder
      */
     public function scheduled(): EventQueryBuilder
     {
@@ -27,8 +25,6 @@ class EventQueryBuilder extends Builder
 
     /**
      * Scope a query to include unscheduled events.
-     *
-     * @return \App\Builders\EventQueryBuilder
      */
     public function unscheduled(): EventQueryBuilder
     {
@@ -37,8 +33,6 @@ class EventQueryBuilder extends Builder
 
     /**
      * Scope a query to include past events.
-     *
-     * @return \App\Builders\EventQueryBuilder
      */
     public function past(): EventQueryBuilder
     {

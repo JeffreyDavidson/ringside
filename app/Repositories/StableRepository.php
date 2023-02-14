@@ -16,9 +16,6 @@ class StableRepository
 {
     /**
      * Create a new stable with the given data.
-     *
-     * @param  \App\Data\StableData  $stableData
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(StableData $stableData): Model
     {
@@ -29,10 +26,6 @@ class StableRepository
 
     /**
      * Update the given stable with the given data.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @param  \App\Data\StableData  $stableData
-     * @return \App\Models\Stable
      */
     public function update(Stable $stable, StableData $stableData): Stable
     {
@@ -45,9 +38,6 @@ class StableRepository
 
     /**
      * Delete a given stable.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @return void
      */
     public function delete(Stable $stable): void
     {
@@ -56,9 +46,6 @@ class StableRepository
 
     /**
      * Restore a given stable.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @return void
      */
     public function restore(Stable $stable): void
     {
@@ -67,10 +54,6 @@ class StableRepository
 
     /**
      * Activate a given stable on a given date.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @param  \Illuminate\Support\Carbon  $activationDate
-     * @return \App\Models\Stable
      */
     public function activate(Stable $stable, Carbon $activationDate): Stable
     {
@@ -85,10 +68,6 @@ class StableRepository
 
     /**
      * Deactivate a given stable on a given date.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @param  \Illuminate\Support\Carbon  $deactivationDate
-     * @return \App\Models\Stable
      */
     public function deactivate(Stable $stable, Carbon $deactivationDate): Stable
     {
@@ -100,10 +79,6 @@ class StableRepository
 
     /**
      * Retire a given stable on a given date.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @param  \Illuminate\Support\Carbon  $retirementDate
-     * @return \App\Models\Stable
      */
     public function retire(Stable $stable, Carbon $retirementDate): Stable
     {
@@ -115,10 +90,6 @@ class StableRepository
 
     /**
      * Unretire a given stable on a given date.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @param  \Illuminate\Support\Carbon  $unretireDate
-     * @return \App\Models\Stable
      */
     public function unretire(Stable $stable, Carbon $unretireDate): Stable
     {
@@ -129,10 +100,6 @@ class StableRepository
 
     /**
      * Unretire a given stable on a given date.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @param  \Illuminate\Support\Carbon  $disassembleDate
-     * @return \App\Models\Stable
      */
     public function disassemble(Stable $stable, Carbon $disassembleDate): Stable
     {
@@ -157,10 +124,7 @@ class StableRepository
     /**
      * Add wrestlers to a given stable.
      *
-     * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection<int, \App\Models\Wrestler>  $wrestlers
-     * @param  \Illuminate\Support\Carbon  $joinDate
-     * @return void
      */
     public function addWrestlers(Stable $stable, Collection $wrestlers, Carbon $joinDate): void
     {
@@ -172,10 +136,7 @@ class StableRepository
     /**
      * Add tag teams to a given stable at a given date.
      *
-     * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection<int, \App\Models\TagTeam>  $tagTeams
-     * @param  \Illuminate\Support\Carbon  $joinDate
-     * @return void
      */
     public function addTagTeams(Stable $stable, Collection $tagTeams, Carbon $joinDate): void
     {
@@ -187,10 +148,7 @@ class StableRepository
     /**
      * Undocumented function.
      *
-     * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection<int, \App\Models\Wrestler>  $currentWrestlers
-     * @param  \Illuminate\Support\Carbon  $removalDate
-     * @return void
      */
     public function removeWrestlers(Stable $stable, Collection $currentWrestlers, Carbon $removalDate): void
     {
@@ -205,10 +163,7 @@ class StableRepository
     /**
      * Undocumented function.
      *
-     * @param  \App\Models\Stable  $stable
      * @param  \Illuminate\Support\Collection<int, \App\Models\TagTeam>  $currentTagTeams
-     * @param  \Illuminate\Support\Carbon  $removalDate
-     * @return void
      */
     public function removeTagTeams(Stable $stable, Collection $currentTagTeams, Carbon $removalDate): void
     {

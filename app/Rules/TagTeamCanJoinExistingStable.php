@@ -22,8 +22,6 @@ class TagTeamCanJoinExistingStable implements Rule
 
     /**
      * Undocumented function.
-     *
-     * @param  \Illuminate\Support\Carbon|null  $startDate
      */
     public function __construct(?Carbon $startDate)
     {
@@ -33,9 +31,7 @@ class TagTeamCanJoinExistingStable implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -68,8 +64,6 @@ class TagTeamCanJoinExistingStable implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

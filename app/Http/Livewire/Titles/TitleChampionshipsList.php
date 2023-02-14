@@ -35,9 +35,6 @@ class TitleChampionshipsList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @param  \App\Models\Title  $title
-     * @return void
      */
     public function mount(Title $title): void
     {
@@ -46,8 +43,6 @@ class TitleChampionshipsList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function getRowsQueryProperty(): Builder
     {
@@ -56,8 +51,6 @@ class TitleChampionshipsList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getRowsProperty(): LengthAwarePaginator
     {
@@ -66,8 +59,6 @@ class TitleChampionshipsList extends BaseComponent
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {

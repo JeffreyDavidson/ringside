@@ -15,8 +15,6 @@ class TagTeamQueryBuilder extends RosterMemberQueryBuilder
 {
     /**
      * Scope a query to only include bookable tag teams.
-     *
-     * @return \App\Builders\TagTeamQueryBuilder
      */
     public function bookable(): TagTeamQueryBuilder
     {
@@ -25,8 +23,6 @@ class TagTeamQueryBuilder extends RosterMemberQueryBuilder
 
     /**
      * Scope a query to only include bookable tag teams.
-     *
-     * @return \App\Builders\TagTeamQueryBuilder
      */
     public function unbookable(): TagTeamQueryBuilder
     {

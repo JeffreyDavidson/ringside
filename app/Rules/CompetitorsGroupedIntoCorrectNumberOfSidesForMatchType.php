@@ -19,8 +19,6 @@ class CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType implements Rule
 
     /**
      * Create a new rule instance.
-     *
-     * @param  int  $matchTypeId
      */
     public function __construct(int $matchTypeId)
     {
@@ -30,9 +28,7 @@ class CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
      * @param  array|Countable  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -43,8 +39,6 @@ class CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

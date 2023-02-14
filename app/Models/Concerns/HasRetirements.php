@@ -13,8 +13,6 @@ trait HasRetirements
 {
     /**
      * Get the retirements of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function retirements(): MorphMany
     {
@@ -23,8 +21,6 @@ trait HasRetirements
 
     /**
      * Get the current retirement of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function currentRetirement(): MorphOne
     {
@@ -36,8 +32,6 @@ trait HasRetirements
 
     /**
      * Get the previous retirements of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function previousRetirements(): MorphMany
     {
@@ -47,8 +41,6 @@ trait HasRetirements
 
     /**
      * Get the previous retirement of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function previousRetirement(): MorphOne
     {
@@ -59,8 +51,6 @@ trait HasRetirements
 
     /**
      * Check to see if the model is retired.
-     *
-     * @return bool
      */
     public function isRetired(): bool
     {
@@ -69,8 +59,6 @@ trait HasRetirements
 
     /**
      * Check to see if the model has been activated.
-     *
-     * @return bool
      */
     public function hasRetirements(): bool
     {
@@ -88,8 +76,6 @@ trait HasRetirements
 
     /**
      * Retrieve the retirement start date.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function retiredAt(): Attribute
     {

@@ -18,8 +18,6 @@ class WrestlerFactory extends Factory
 {
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -37,8 +35,6 @@ class WrestlerFactory extends Factory
 
     /**
      * Configure the model factory.
-     *
-     * @return $this
      */
     public function configure(): static
     {
@@ -110,7 +106,6 @@ class WrestlerFactory extends Factory
      * Undocumented function.
      *
      * @param  [type] $tagTeam
-     * @return void
      */
     public function onCurrentTagTeam($tagTeam = null): void
     {

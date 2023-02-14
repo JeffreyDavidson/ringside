@@ -31,8 +31,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function bootWithSorting(): void
     {
@@ -41,8 +39,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function renderingWithBulkActions(): void
     {
@@ -53,8 +49,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function updatedSelected(): void
     {
@@ -64,9 +58,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @param  int  $value
-     * @return void
      */
     public function updatedSelectPage(int $value): void
     {
@@ -82,8 +73,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function selectPageRows(): void
     {
@@ -92,8 +81,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function selectAll(): void
     {
@@ -102,8 +89,6 @@ trait WithBulkActions
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Database\Query\Builder
      */
     public function getSelectedRowsQueryProperty(): Builder
     {

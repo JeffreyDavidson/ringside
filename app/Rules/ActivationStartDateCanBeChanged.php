@@ -18,7 +18,6 @@ class ActivationStartDateCanBeChanged implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \App\Models\Title  $title
      * @return void
      */
     public function __construct(Title $title)
@@ -29,9 +28,6 @@ class ActivationStartDateCanBeChanged implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  string  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -46,8 +42,6 @@ class ActivationStartDateCanBeChanged implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

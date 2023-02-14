@@ -13,9 +13,6 @@ class RestoreController extends Controller
 {
     /**
      * Restore a deleted tag team.
-     *
-     * @param  int  $tagTeamId
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(int $tagTeamId): RedirectResponse
     {

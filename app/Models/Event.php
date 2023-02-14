@@ -45,7 +45,6 @@ class Event extends Model
     /**
      * Create a new Eloquent query builder for the model.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\EventQueryBuilder<Event>
      */
     public function newEloquentBuilder(Builder $query): EventQueryBuilder
@@ -55,8 +54,6 @@ class Event extends Model
 
     /**
      * Present the event model.
-     *
-     * @return \App\Presenters\EventPresenter
      */
     public function present(): EventPresenter
     {
@@ -65,8 +62,6 @@ class Event extends Model
 
     /**
      * Retrieve the venue of the event.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function venue(): BelongsTo
     {
@@ -75,8 +70,6 @@ class Event extends Model
 
     /**
      * Retrieve the matches for the event.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function matches(): HasMany
     {
@@ -85,8 +78,6 @@ class Event extends Model
 
     /**
      * Checks to see if the event is scheduled for a future date.
-     *
-     * @return bool
      */
     public function isScheduled(): bool
     {
@@ -99,8 +90,6 @@ class Event extends Model
 
     /**
      * Checks to see if the event has already taken place.
-     *
-     * @return bool
      */
     public function isPast(): bool
     {
@@ -113,8 +102,6 @@ class Event extends Model
 
     /**
      * Checks to see if the event is unscheduled.
-     *
-     * @return bool
      */
     public function isUnscheduled(): bool
     {

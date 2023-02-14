@@ -17,9 +17,6 @@ trait WithSorting
 
     /**
      * Sorts a field by a given key.
-     *
-     * @param  string  $field
-     * @return string|null
      */
     public function sortBy(string $field): ?string
     {
@@ -36,9 +33,6 @@ trait WithSorting
 
     /**
      * Undocumented function.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Query\Builder
      */
     public function applySorting(Builder $query): Builder
     {

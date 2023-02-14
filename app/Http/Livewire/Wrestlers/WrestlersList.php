@@ -33,8 +33,6 @@ class WrestlersList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function getRowsQueryProperty(): void
     {
@@ -47,8 +45,6 @@ class WrestlersList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function getRowsProperty(): void
     {
@@ -57,8 +53,6 @@ class WrestlersList extends BaseComponent
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {

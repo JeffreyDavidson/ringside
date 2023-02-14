@@ -20,8 +20,6 @@ class EventsController extends Controller
 {
     /**
      * View a list of events.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -32,9 +30,6 @@ class EventsController extends Controller
 
     /**
      * Show the form for creating a new event.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\View\View
      */
     public function create(Event $event): View
     {
@@ -48,9 +43,6 @@ class EventsController extends Controller
 
     /**
      * Create a new event.
-     *
-     * @param  \App\Http\Requests\Events\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -61,9 +53,6 @@ class EventsController extends Controller
 
     /**
      * Show the event.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\View\View
      */
     public function show(Event $event): View
     {
@@ -76,9 +65,6 @@ class EventsController extends Controller
 
     /**
      * Show the form for editing a given event.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\View\View
      */
     public function edit(Event $event): View
     {
@@ -92,10 +78,6 @@ class EventsController extends Controller
 
     /**
      * Update an event.
-     *
-     * @param  \App\Http\Requests\Events\UpdateRequest  $request
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Event $event): RedirectResponse
     {
@@ -106,9 +88,6 @@ class EventsController extends Controller
 
     /**
      * Delete an event.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Event $event): RedirectResponse
     {

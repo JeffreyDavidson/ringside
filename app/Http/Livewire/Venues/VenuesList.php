@@ -33,8 +33,6 @@ class VenuesList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function getRowsQueryProperty(): void
     {
@@ -47,8 +45,6 @@ class VenuesList extends BaseComponent
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
     public function getRowsProperty(): void
     {
@@ -57,8 +53,6 @@ class VenuesList extends BaseComponent
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {

@@ -31,8 +31,6 @@ class EventMatchCompetitor extends MorphPivot
 
     /**
      * Retreive the model as the competitor.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function competitor(): MorphTo
     {
@@ -41,9 +39,6 @@ class EventMatchCompetitor extends MorphPivot
 
     /**
      * Create a new Eloquent Collection instance.
-     *
-     * @param  array  $models
-     * @return \App\Collections\EventMatchCompetitorsCollection
      */
     public function newCollection(array $models = []): EventMatchCompetitorsCollection
     {

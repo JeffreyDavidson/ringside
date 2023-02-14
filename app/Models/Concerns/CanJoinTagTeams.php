@@ -15,8 +15,6 @@ trait CanJoinTagTeams
 {
     /**
      * Get the tag teams the model has been belonged to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tagTeams(): BelongsToMany
     {
@@ -26,8 +24,6 @@ trait CanJoinTagTeams
 
     /**
      * Get the previous tag teams the member has belonged to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function previousTagTeams(): BelongsToMany
     {
@@ -38,8 +34,6 @@ trait CanJoinTagTeams
 
     /**
      * Get the model's current tag team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function currentTagTeam(): BelongsTo
     {
@@ -48,8 +42,6 @@ trait CanJoinTagTeams
 
     /**
      * Determine if wrestler can is a member of a current tag team.
-     *
-     * @return bool
      */
     public function isAMemberOfCurrentTagTeam(): bool
     {

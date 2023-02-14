@@ -17,8 +17,6 @@ trait HasMembers
 
     /**
      * Get the wrestlers belonging to the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function wrestlers(): MorphToMany
     {
@@ -29,8 +27,6 @@ trait HasMembers
 
     /**
      * Get all current wrestlers that are members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentWrestlers(): MorphToMany
     {
@@ -40,8 +36,6 @@ trait HasMembers
 
     /**
      * Get all previous wrestlers that were members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousWrestlers(): MorphToMany
     {
@@ -51,8 +45,6 @@ trait HasMembers
 
     /**
      * Get the tag teams belonging to the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tagTeams(): MorphToMany
     {
@@ -63,8 +55,6 @@ trait HasMembers
 
     /**
      * Get all current tag teams that are members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentTagTeams(): MorphToMany
     {
@@ -74,8 +64,6 @@ trait HasMembers
 
     /**
      * Get all previous tag teams that were members of the stable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousTagTeams(): MorphToMany
     {
@@ -85,8 +73,6 @@ trait HasMembers
 
     /**
      * Get the members belonging to the stable.
-     *
-     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
     public function allMembers(): MergedRelation
     {
@@ -95,8 +81,6 @@ trait HasMembers
 
     /**
      * Get all current members of the stable.
-     *
-     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
     public function currentMembers(): MergedRelation
     {
@@ -105,8 +89,6 @@ trait HasMembers
 
     /**
      * Get all previous members of the stable.
-     *
-     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
     public function previousMembers(): MergedRelation
     {

@@ -13,9 +13,6 @@ class RefereeRepository
 {
     /**
      * Create a new referee with the given data.
-     *
-     * @param  \App\Data\RefereeData  $refereeData
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(RefereeData $refereeData): Model
     {
@@ -27,10 +24,6 @@ class RefereeRepository
 
     /**
      * Update a given referee with the given data.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \App\Data\RefereeData  $refereeData
-     * @return \App\Models\Referee
      */
     public function update(Referee $referee, RefereeData $refereeData): Referee
     {
@@ -44,9 +37,6 @@ class RefereeRepository
 
     /**
      * Delete a given referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return void
      */
     public function delete(Referee $referee): void
     {
@@ -55,9 +45,6 @@ class RefereeRepository
 
     /**
      * Restore a given referee.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @return void
      */
     public function restore(Referee $referee): void
     {
@@ -66,10 +53,6 @@ class RefereeRepository
 
     /**
      * Employ a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $employmentDate
-     * @return \App\Models\Referee
      */
     public function employ(Referee $referee, Carbon $employmentDate): Referee
     {
@@ -84,10 +67,6 @@ class RefereeRepository
 
     /**
      * Release a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $releaseDate
-     * @return \App\Models\Referee
      */
     public function release(Referee $referee, Carbon $releaseDate): Referee
     {
@@ -99,10 +78,6 @@ class RefereeRepository
 
     /**
      * Injure a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $injureDate
-     * @return \App\Models\Referee
      */
     public function injure(Referee $referee, Carbon $injureDate): Referee
     {
@@ -114,10 +89,6 @@ class RefereeRepository
 
     /**
      * Clear the current injury of a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $recoveryDate
-     * @return \App\Models\Referee
      */
     public function clearInjury(Referee $referee, Carbon $recoveryDate): Referee
     {
@@ -129,10 +100,6 @@ class RefereeRepository
 
     /**
      * Retire a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $retirementDate
-     * @return \App\Models\Referee
      */
     public function retire(Referee $referee, Carbon $retirementDate): Referee
     {
@@ -144,10 +111,6 @@ class RefereeRepository
 
     /**
      * Unretire a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $unretireDate
-     * @return \App\Models\Referee
      */
     public function unretire(Referee $referee, Carbon $unretireDate): Referee
     {
@@ -159,10 +122,6 @@ class RefereeRepository
 
     /**
      * Suspend a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $suspensionDate
-     * @return \App\Models\Referee
      */
     public function suspend(Referee $referee, Carbon $suspensionDate): Referee
     {
@@ -174,10 +133,6 @@ class RefereeRepository
 
     /**
      * Reinstate a given referee on a given date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $reinstateDate
-     * @return \App\Models\Referee
      */
     public function reinstate(Referee $referee, Carbon $reinstateDate): Referee
     {
@@ -189,10 +144,6 @@ class RefereeRepository
 
     /**
      * Get the model's first employment date.
-     *
-     * @param  \App\Models\Referee  $referee
-     * @param  \Illuminate\Support\Carbon  $employmentDate
-     * @return \App\Models\Referee
      */
     public function updateEmployment(Referee $referee, Carbon $employmentDate): Referee
     {

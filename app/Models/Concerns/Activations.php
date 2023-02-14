@@ -14,8 +14,6 @@ trait Activations
 {
     /**
      * Get all of the activations of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function activations(): MorphMany
     {
@@ -24,8 +22,6 @@ trait Activations
 
     /**
      * Get the current activation of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function currentActivation(): MorphOne
     {
@@ -37,8 +33,6 @@ trait Activations
 
     /**
      * Get the first activation of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function firstActivation(): MorphOne
     {
@@ -48,8 +42,6 @@ trait Activations
 
     /**
      * Get the future activation of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function futureActivation(): MorphOne
     {
@@ -61,8 +53,6 @@ trait Activations
 
     /**
      * Get the previous activation of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function previousActivation(): MorphOne
     {
@@ -73,8 +63,6 @@ trait Activations
 
     /**
      * Get the previous activations of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function previousActivations(): MorphMany
     {
@@ -84,8 +72,6 @@ trait Activations
 
     /**
      * Check to see if the model is currently active.
-     *
-     * @return bool
      */
     public function isCurrentlyActivated(): bool
     {
@@ -94,8 +80,6 @@ trait Activations
 
     /**
      * Check to see if the model has been activated.
-     *
-     * @return bool
      */
     public function hasActivations(): bool
     {
@@ -104,8 +88,6 @@ trait Activations
 
     /**
      * Check to see if the model is unactivated.
-     *
-     * @return bool
      */
     public function isUnactivated(): bool
     {
@@ -114,8 +96,6 @@ trait Activations
 
     /**
      * Check to see if the model is unactivated.
-     *
-     * @return bool
      */
     public function isInactive(): bool
     {
@@ -124,8 +104,6 @@ trait Activations
 
     /**
      * Check to see if the model has a future activation.
-     *
-     * @return bool
      */
     public function hasFutureActivation(): bool
     {
@@ -139,8 +117,6 @@ trait Activations
 
     /**
      * Retrieve the model's first activation date.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function activatedAt(): Attribute
     {
@@ -151,8 +127,6 @@ trait Activations
 
     /**
      * Check to see if the model is not in activation.
-     *
-     * @return bool
      */
     public function isNotActivation(): bool
     {
@@ -161,9 +135,6 @@ trait Activations
 
     /**
      * Get the model's first activation date.
-     *
-     * @param  \Illuminate\Support\Carbon  $activationDate
-     * @return bool|null
      */
     public function activatedOn(Carbon $activationDate): ?bool
     {
@@ -172,9 +143,6 @@ trait Activations
 
     /**
      * Check to see if activatable can have their start date changed.
-     *
-     * @param  \Illuminate\Support\Carbon  $activationDate
-     * @return bool
      */
     public function canHaveActivationStartDateChanged(Carbon $activationDate): bool
     {

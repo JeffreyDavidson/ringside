@@ -36,8 +36,6 @@ class Injury extends Model
 
     /**
      * Retrieve the injured model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function injurable(): MorphTo
     {

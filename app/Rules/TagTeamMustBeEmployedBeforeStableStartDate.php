@@ -20,7 +20,6 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Illuminate\Support\Carbon  $stableStartDate
      * @return void
      */
     public function __construct(Carbon $stableStartDate)
@@ -31,9 +30,7 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -58,8 +55,6 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

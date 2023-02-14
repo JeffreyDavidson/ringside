@@ -13,9 +13,6 @@ class RestoreController extends Controller
 {
     /**
      * Restore a deleted scheduled event.
-     *
-     * @param  int  $eventId
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(int $eventId): RedirectResponse
     {

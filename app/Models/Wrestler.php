@@ -53,7 +53,6 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     /**
      * Create a new Eloquent query builder for the model.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\WrestlerQueryBuilder<Wrestler>
      */
     public function newEloquentBuilder(Builder $query): WrestlerQueryBuilder
@@ -63,8 +62,6 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
 
     /**
      * Retrieve the event matches participated by the wrestler.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function eventMatches(): MorphToMany
     {

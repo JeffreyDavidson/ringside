@@ -19,8 +19,6 @@ class EventDateCanBeChanged implements Rule
 
     /**
      * Create a new event date can be changed rule instance.
-     *
-     * @param  \App\Models\Event  $event
      */
     public function __construct(Event $event)
     {
@@ -30,9 +28,6 @@ class EventDateCanBeChanged implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  \Illuminate\Support\Carbon  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -51,8 +46,6 @@ class EventDateCanBeChanged implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

@@ -22,8 +22,6 @@ class StablesController extends Controller
 {
     /**
      * View a list of stables.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -34,9 +32,6 @@ class StablesController extends Controller
 
     /**
      * Show the form for creating a stable.
-     *
-     * @param  Stable  $stable
-     * @return \Illuminate\View\View
      */
     public function create(Stable $stable): View
     {
@@ -52,9 +47,6 @@ class StablesController extends Controller
 
     /**
      * Create a new stable.
-     *
-     * @param  \App\Http\Requests\Stables\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -65,9 +57,6 @@ class StablesController extends Controller
 
     /**
      * Show the profile of a tag team.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @return \Illuminate\View\View
      */
     public function show(Stable $stable): View
     {
@@ -80,9 +69,6 @@ class StablesController extends Controller
 
     /**
      * Show the form for editing a stable.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @return \Illuminate\View\View
      */
     public function edit(Stable $stable): View
     {
@@ -98,10 +84,6 @@ class StablesController extends Controller
 
     /**
      * Update a given stable.
-     *
-     * @param  \App\Http\Requests\Stables\UpdateRequest  $request
-     * @param  \App\Models\Stable  $stable
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Stable $stable): RedirectResponse
     {
@@ -112,9 +94,6 @@ class StablesController extends Controller
 
     /**
      * Delete a stable.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Stable $stable): RedirectResponse
     {

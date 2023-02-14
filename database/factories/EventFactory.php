@@ -17,8 +17,6 @@ class EventFactory extends Factory
 {
     /**
      * Configure the model factory.
-     *
-     * @return static
      */
     public function configure(): static
     {
@@ -45,8 +43,6 @@ class EventFactory extends Factory
 
     /**
      * Define the model's unscheduled state.
-     *
-     * @return static
      */
     public function unscheduled(): static
     {
@@ -58,8 +54,6 @@ class EventFactory extends Factory
 
     /**
      * Define the model's scheduled state.
-     *
-     * @return static
      */
     public function scheduled(): static
     {
@@ -71,8 +65,6 @@ class EventFactory extends Factory
 
     /**
      * Define the model's past state.
-     *
-     * @return static
      */
     public function past(): static
     {
@@ -84,9 +76,6 @@ class EventFactory extends Factory
 
     /**
      * Define the venue the event takes place at.
-     *
-     * @param  \App\Models\Venue  $venue
-     * @return static
      */
     public function atVenue(Venue $venue): static
     {
@@ -95,9 +84,6 @@ class EventFactory extends Factory
 
     /**
      * Define the event's date.
-     *
-     * @param  string  $date
-     * @return static
      */
     public function scheduledOn(string $date): static
     {
@@ -108,7 +94,6 @@ class EventFactory extends Factory
      * Define the event's preview.
      *
      * @param  string  $preview
-     * @return static
      */
     public function withPreview(): static
     {
@@ -119,7 +104,6 @@ class EventFactory extends Factory
      * Define the event's preview.
      *
      * @param  string  $preview
-     * @return static
      */
     public function withVenue(): static
     {

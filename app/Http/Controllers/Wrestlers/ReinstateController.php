@@ -14,9 +14,6 @@ class ReinstateController extends Controller
 {
     /**
      * Reinstate a wrestler.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Wrestler $wrestler): RedirectResponse
     {

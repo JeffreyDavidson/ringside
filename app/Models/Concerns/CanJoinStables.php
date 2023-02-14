@@ -18,8 +18,6 @@ trait CanJoinStables
 
     /**
      * Get the stables the model has been belonged to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function stables(): MorphToMany
     {
@@ -29,8 +27,6 @@ trait CanJoinStables
 
     /**
      * Get the current stable the member belongs to.
-     *
-     * @return \Fidum\EloquentMorphToOne\MorphToOne
      */
     public function currentStable(): MorphToOne
     {
@@ -41,8 +37,6 @@ trait CanJoinStables
 
     /**
      * Get the previous stables the member has belonged to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousStables(): MorphToMany
     {
@@ -53,9 +47,6 @@ trait CanJoinStables
 
     /**
      * Undocumented function.
-     *
-     * @param  \App\Models\Stable  $stable
-     * @return bool
      */
     public function isNotCurrentlyInStable(Stable $stable): bool
     {

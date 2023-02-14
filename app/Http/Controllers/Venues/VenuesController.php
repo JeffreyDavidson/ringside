@@ -19,8 +19,6 @@ class VenuesController extends Controller
 {
     /**
      * View a list of venues.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -31,9 +29,6 @@ class VenuesController extends Controller
 
     /**
      * Show the form for creating a venue.
-     *
-     * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\View\View
      */
     public function create(Venue $venue): View
     {
@@ -46,9 +41,6 @@ class VenuesController extends Controller
 
     /**
      * Create a new venue.
-     *
-     * @param  \App\Http\Requests\Venues\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -59,9 +51,6 @@ class VenuesController extends Controller
 
     /**
      * Show the venue.
-     *
-     * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\View\View
      */
     public function show(Venue $venue): View
     {
@@ -74,9 +63,6 @@ class VenuesController extends Controller
 
     /**
      * Show the form for editing a venue.
-     *
-     * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\View\View
      */
     public function edit(Venue $venue): View
     {
@@ -89,10 +75,6 @@ class VenuesController extends Controller
 
     /**
      * Update a given venue.
-     *
-     * @param  \App\Http\Requests\Venues\UpdateRequest  $request
-     * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Venue $venue): RedirectResponse
     {
@@ -103,9 +85,6 @@ class VenuesController extends Controller
 
     /**
      * Delete a venue.
-     *
-     * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Venue $venue): RedirectResponse
     {

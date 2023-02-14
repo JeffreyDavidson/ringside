@@ -47,7 +47,6 @@ class Manager extends SingleRosterMember implements CanBeAStableMember, Employab
     /**
      * Create a new Eloquent query builder for the model.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\ManagerQueryBuilder<Manager>
      */
     public function newEloquentBuilder(Builder $query): ManagerQueryBuilder
@@ -57,8 +56,6 @@ class Manager extends SingleRosterMember implements CanBeAStableMember, Employab
 
     /**
      * Determine if the manager is available.
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {

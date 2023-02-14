@@ -19,8 +19,6 @@ class WrestlersController extends Controller
 {
     /**
      * View a list of employed wrestlers.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -31,9 +29,6 @@ class WrestlersController extends Controller
 
     /**
      * Show the form for creating a new wrestler.
-     *
-     * @param  Wrestler  $wrestler
-     * @return \Illuminate\View\View
      */
     public function create(Wrestler $wrestler): View
     {
@@ -46,9 +41,6 @@ class WrestlersController extends Controller
 
     /**
      * Create a new wrestler.
-     *
-     * @param  \App\Http\Requests\Wrestlers\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request): RedirectResponse
     {
@@ -59,9 +51,6 @@ class WrestlersController extends Controller
 
     /**
      * Show the profile of a wrestler.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return \Illuminate\View\View
      */
     public function show(Wrestler $wrestler): View
     {
@@ -74,9 +63,6 @@ class WrestlersController extends Controller
 
     /**
      * Show the form for editing a wrestler.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return \Illuminate\View\View
      */
     public function edit(Wrestler $wrestler): View
     {
@@ -89,10 +75,6 @@ class WrestlersController extends Controller
 
     /**
      * Update a given wrestler.
-     *
-     * @param  \App\Http\Requests\Wrestlers\UpdateRequest  $request
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Wrestler $wrestler): RedirectResponse
     {
@@ -103,9 +85,6 @@ class WrestlersController extends Controller
 
     /**
      * Delete a wrestler.
-     *
-     * @param  \App\Models\Wrestler  $wrestler
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Wrestler $wrestler): RedirectResponse
     {

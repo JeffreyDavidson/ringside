@@ -49,8 +49,6 @@ class TitleChampionship extends Model
 
     /**
      * Undocumented function.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function title(): BelongsTo
     {
@@ -59,8 +57,6 @@ class TitleChampionship extends Model
 
     /**
      * Retrieve all title champions for championships.
-     *
-     * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
     public function allTitleChampions(): MergedRelation
     {

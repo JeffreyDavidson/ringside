@@ -14,9 +14,6 @@ class TitlesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param  mixed|null  $dateToStart
-     * @return void
      */
     public function run(?mixed $dateToStart = null): void
     {

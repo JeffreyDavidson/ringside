@@ -27,9 +27,6 @@ class MatchCreateForm extends BaseComponent
 
     public $subviewToUse;
 
-    /**
-     * @return void
-     */
     public function mount(EventMatch $match): void
     {
         $this->event = request()->route()->parameter('event');
@@ -39,8 +36,6 @@ class MatchCreateForm extends BaseComponent
 
     /**
      * Run action hook when match type id is changed.
-     *
-     * @return string
      */
     public function updatedMatchTypeId(): string
     {
@@ -51,8 +46,6 @@ class MatchCreateForm extends BaseComponent
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {

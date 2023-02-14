@@ -36,8 +36,6 @@ class Retirement extends Model
 
     /**
      * Retrieve the retired model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function retiree(): MorphTo
     {

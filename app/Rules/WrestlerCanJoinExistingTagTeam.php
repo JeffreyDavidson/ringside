@@ -17,8 +17,6 @@ class WrestlerCanJoinExistingTagTeam implements Rule
 
     /**
      * Undocumented function.
-     *
-     * @param  \App\Models\TagTeam  $tagTeam
      */
     public function __construct(TagTeam $tagTeam)
     {
@@ -28,9 +26,7 @@ class WrestlerCanJoinExistingTagTeam implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -68,8 +64,6 @@ class WrestlerCanJoinExistingTagTeam implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

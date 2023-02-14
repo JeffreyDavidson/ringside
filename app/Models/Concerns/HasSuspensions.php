@@ -12,8 +12,6 @@ trait HasSuspensions
 {
     /**
      * Get the suspensions of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function suspensions(): MorphMany
     {
@@ -22,8 +20,6 @@ trait HasSuspensions
 
     /**
      * Get the current suspension of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function currentSuspension(): MorphOne
     {
@@ -34,8 +30,6 @@ trait HasSuspensions
 
     /**
      * Get the current suspension of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function previousSuspensions(): MorphMany
     {
@@ -45,8 +39,6 @@ trait HasSuspensions
 
     /**
      * Get the previous suspension of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function previousSuspension(): MorphOne
     {
@@ -57,8 +49,6 @@ trait HasSuspensions
 
     /**
      * Check to see if the model has been suspended.
-     *
-     * @return bool
      */
     public function isSuspended(): bool
     {
@@ -67,8 +57,6 @@ trait HasSuspensions
 
     /**
      * Check to see if the model has been suspended.
-     *
-     * @return bool
      */
     public function hasSuspensions(): bool
     {
