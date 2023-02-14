@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use App\Models\Suspension;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use App\Models\Suspension;
 
 trait HasSuspensions
 {

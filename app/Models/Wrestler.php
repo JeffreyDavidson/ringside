@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Builders\WrestlerQueryBuilder;
 use App\Enums\WrestlerStatus;
 use App\Models\Contracts\Bookable;
@@ -14,7 +12,9 @@ use App\Models\Contracts\Manageable;
 use App\Models\Contracts\TagTeamMember;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Manageable, TagTeamMember
 {

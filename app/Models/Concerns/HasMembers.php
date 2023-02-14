@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use App\Models\StableMember;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
+use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 
 trait HasMembers
 {

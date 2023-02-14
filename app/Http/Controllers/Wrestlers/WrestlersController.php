@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Wrestlers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Wrestlers\CreateAction;
 use App\Actions\Wrestlers\DeleteAction;
 use App\Actions\Wrestlers\UpdateAction;
@@ -14,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
 use App\Models\Wrestler;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class WrestlersController extends Controller
 {

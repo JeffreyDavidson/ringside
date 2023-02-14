@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Managers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Managers\CreateAction;
 use App\Actions\Managers\DeleteAction;
 use App\Actions\Managers\UpdateAction;
@@ -14,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
 use App\Models\Manager;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ManagersController extends Controller
 {

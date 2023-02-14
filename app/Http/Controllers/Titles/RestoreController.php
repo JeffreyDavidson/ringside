@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Titles;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Titles\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Title;
+use Illuminate\Http\RedirectResponse;
 
 class RestoreController extends Controller
 {

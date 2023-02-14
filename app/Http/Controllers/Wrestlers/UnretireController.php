@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Wrestlers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Wrestlers\UnretireAction;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
+use Illuminate\Http\RedirectResponse;
 
 class UnretireController extends Controller
 {

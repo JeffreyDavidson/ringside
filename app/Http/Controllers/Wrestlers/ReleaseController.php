@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Wrestlers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Wrestlers\ReleaseAction;
 use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
+use Illuminate\Http\RedirectResponse;
 
 class ReleaseController extends Controller
 {

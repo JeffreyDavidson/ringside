@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Collections;
 
-use Illuminate\Support\Collection;
 use App\Models\EventMatchCompetitor;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class EventMatchCompetitorsCollection extends Collection
 {

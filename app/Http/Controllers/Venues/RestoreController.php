@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Venues;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Venues\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
+use Illuminate\Http\RedirectResponse;
 
 class RestoreController extends Controller
 {

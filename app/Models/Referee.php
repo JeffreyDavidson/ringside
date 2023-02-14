@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Query\Builder;
 use App\Builders\RefereeQueryBuilder;
 use App\Enums\RefereeStatus;
 use App\Models\Contracts\Bookable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 class Referee extends SingleRosterMember implements Bookable
 {

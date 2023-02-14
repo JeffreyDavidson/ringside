@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
-use App\Builders\RosterMemberQueryBuilder;
 use App\Models\Employment;
 use App\Models\Retirement;
 use App\Models\Suspension;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Query\Builder;
 use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
 use App\Models\Contracts\CanBeAStableMember;
@@ -12,6 +11,7 @@ use App\Models\Contracts\Employable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 class Manager extends SingleRosterMember implements CanBeAStableMember, Employable
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions\EventMatches;
 
-use App\Models\EventMatch;
 use App\Data\EventMatchData;
 use App\Models\Event;
+use App\Models\EventMatch;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class AddMatchForEventAction extends BaseEventMatchAction

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait Manageables
 {

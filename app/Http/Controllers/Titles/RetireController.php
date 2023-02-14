@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Titles;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Titles\RetireAction;
 use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
 use App\Models\Title;
+use Illuminate\Http\RedirectResponse;
 
 class RetireController extends Controller
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Stables;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Stables\DeactivateAction;
 use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Controller;
 use App\Models\Stable;
+use Illuminate\Http\RedirectResponse;
 
 class DeactivateController extends Controller
 {

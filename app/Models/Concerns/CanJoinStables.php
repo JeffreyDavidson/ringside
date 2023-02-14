@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
-use Fidum\EloquentMorphToOne\MorphToOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Models\Stable;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
+use Fidum\EloquentMorphToOne\MorphToOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @property ?Stable $currentStable

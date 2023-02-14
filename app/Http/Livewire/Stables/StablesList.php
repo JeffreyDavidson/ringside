@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Stables;
 
-use Illuminate\Database\Query\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Stable;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder;
+use Illuminate\View\View;
 
 /**
  * @property \Illuminate\Database\Eloquent\Collection $rows

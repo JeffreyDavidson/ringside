@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Builders\TagTeamQueryBuilder;
 use App\Enums\TagTeamStatus;
 use App\Models\Contracts\Bookable;
@@ -17,7 +13,11 @@ use App\Models\Contracts\Manageable;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor, Manageable
 {

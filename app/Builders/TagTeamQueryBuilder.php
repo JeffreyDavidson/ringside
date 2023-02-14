@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
-use App\Builders\TagTeamQueryBuilder;
-
 /**
  * @template TModelClass of \App\Models\TagTeam
  *

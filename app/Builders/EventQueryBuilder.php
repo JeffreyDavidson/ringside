@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
-use App\Builders\EventQueryBuilder;
 use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
 

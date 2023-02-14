@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Referees;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Referees\SuspendAction;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
+use Illuminate\Http\RedirectResponse;
 
 class SuspendController extends Controller
 {

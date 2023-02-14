@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Titles;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Models\Title;
 use App\Models\TitleChampionship;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\View;
 
 /**
  * @property \Illuminate\Database\Eloquent\Collection $rows

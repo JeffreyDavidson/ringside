@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Referees;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Referees\CreateAction;
 use App\Actions\Referees\DeleteAction;
 use App\Actions\Referees\UpdateAction;
@@ -14,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Referees\StoreRequest;
 use App\Http\Requests\Referees\UpdateRequest;
 use App\Models\Referee;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class RefereesController extends Controller
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Managers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Managers\ReleaseAction;
 use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
+use Illuminate\Http\RedirectResponse;
 
 class ReleaseController extends Controller
 {

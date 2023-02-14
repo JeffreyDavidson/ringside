@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
-use App\Builders\StableQueryBuilder;
 use App\Models\Activation;
 use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Builder;

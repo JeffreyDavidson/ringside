@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
-use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Activation;
 use App\Models\Retirement;

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wrestlers;
 
-use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Wrestler;
+use Illuminate\View\View;
 
 class WrestlersList extends BaseComponent
 {

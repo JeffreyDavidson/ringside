@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Query\Builder;
 use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
@@ -15,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {

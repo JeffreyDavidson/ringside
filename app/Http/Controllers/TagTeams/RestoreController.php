@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\TagTeams;
 
-use Illuminate\Http\RedirectResponse;
 use App\Actions\TagTeams\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\TagTeam;
+use Illuminate\Http\RedirectResponse;
 
 class RestoreController extends Controller
 {

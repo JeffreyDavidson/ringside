@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\TagTeams;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\TagTeams\CreateAction;
 use App\Actions\TagTeams\DeleteAction;
 use App\Actions\TagTeams\UpdateAction;
@@ -15,6 +13,8 @@ use App\Http\Requests\TagTeams\StoreRequest;
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\TagTeam;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class TagTeamsController extends Controller
 {

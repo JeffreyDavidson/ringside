@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Builders\WrestlerQueryBuilder;
-use App\Models\TagTeam;
 use App\Data\WrestlerData;
 use App\Enums\WrestlerStatus;
+use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 class WrestlerRepository

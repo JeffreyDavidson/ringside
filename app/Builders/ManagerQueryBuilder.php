@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
-use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
 
 /**

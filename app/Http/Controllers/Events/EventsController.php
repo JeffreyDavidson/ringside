@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Events;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Events\CreateAction;
 use App\Actions\Events\DeleteAction;
 use App\Actions\Events\UpdateAction;
@@ -15,6 +13,8 @@ use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
 use App\Models\Event;
 use App\Models\Venue;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EventsController extends Controller
 {

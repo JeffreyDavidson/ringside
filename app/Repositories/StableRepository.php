@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Data\StableData;
 use App\Models\Stable;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 

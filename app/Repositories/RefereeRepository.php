@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Data\RefereeData;
 use App\Models\Referee;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 class RefereeRepository

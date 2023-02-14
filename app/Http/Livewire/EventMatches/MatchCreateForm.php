@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\EventMatches;
 
-use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Models\Event;
 use App\Models\EventMatch;
 use App\Models\MatchType;
 use App\Models\Referee;
 use App\Models\Title;
+use Illuminate\View\View;
 
 class MatchCreateForm extends BaseComponent
 {
