@@ -107,7 +107,7 @@ class WrestlerFactory extends Factory
      *
      * @param  [type] $tagTeam
      */
-    public function onCurrentTagTeam($tagTeam = null): void
+    public function onCurrentTagTeam($tagTeam = null): static
     {
         $tagTeam ??= TagTeam::factory()->create();
 

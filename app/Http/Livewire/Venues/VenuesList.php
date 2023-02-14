@@ -8,6 +8,8 @@ use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Venue;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder;
 use Illuminate\View\View;
 
 class VenuesList extends BaseComponent
@@ -34,7 +36,7 @@ class VenuesList extends BaseComponent
     /**
      * Undocumented function.
      */
-    public function getRowsQueryProperty(): void
+    public function getRowsQueryProperty(): Builder
     {
         $query = Venue::query()
             ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
@@ -46,7 +48,7 @@ class VenuesList extends BaseComponent
     /**
      * Undocumented function.
      */
-    public function getRowsProperty(): void
+    public function getRowsProperty(): LengthAwarePaginator
     {
         return $this->applyPagination($this->rowsQuery);
     }

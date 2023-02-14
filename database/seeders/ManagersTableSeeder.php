@@ -15,7 +15,7 @@ class ManagersTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(?mixed $dateToStart = null): void
+    public function run(mixed $dateToStart = null): void
     {
         $eNum = 1;
         $now = Carbon::now();
