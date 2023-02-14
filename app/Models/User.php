@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -59,7 +60,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isAdministrator()
+    public function isAdministrator(): bool
     {
         return $this->role === Role::ADMINISTRATOR;
     }
@@ -69,7 +70,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function wrestler()
+    public function wrestler(): HasOne
     {
         return $this->hasOne(Wrestler::class);
     }

@@ -15,7 +15,7 @@ class EventObserver
      * @param  \App\Models\Event  $event
      * @return void
      */
-    public function saving(Event $event)
+    public function saving(Event $event): void
     {
         $event->status = match (true) {
             $event->isScheduled() => EventStatus::SCHEDULED,

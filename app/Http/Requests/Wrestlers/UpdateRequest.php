@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user()) || is_null($this->route())) {
             return false;
@@ -42,7 +42,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         /** @var \App\Models\Wrestler $wrestler */
         $wrestler = $this->route()->parameter('wrestler');
@@ -69,7 +69,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'signature_move.regex' => 'The signature move only allows for letters, spaces, and apostrophes',
@@ -81,7 +81,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'start_date' => 'start date',

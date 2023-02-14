@@ -35,7 +35,7 @@ class TagTeamFactory extends Factory
      *
      * @return $this
      */
-    public function configure()
+    public function configure(): static
     {
         return $this->afterCreating(function (TagTeam $tagTeam) {
             $tagTeam->save();

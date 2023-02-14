@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\EventMatches;
 
+use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Models\Event;
 use App\Models\EventMatch;
@@ -29,7 +30,7 @@ class MatchCreateForm extends BaseComponent
     /**
      * @return void
      */
-    public function mount(EventMatch $match)
+    public function mount(EventMatch $match): void
     {
         $this->event = request()->route()->parameter('event');
         $this->match = $match;
@@ -41,7 +42,7 @@ class MatchCreateForm extends BaseComponent
      *
      * @return string
      */
-    public function updatedMatchTypeId()
+    public function updatedMatchTypeId(): string
     {
         $matchTypeSlug = MatchType::findOrFail($this->matchTypeId)->slug;
 
@@ -53,7 +54,7 @@ class MatchCreateForm extends BaseComponent
      *
      * @return \Illuminate\View\View
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.matches.create', [
             'match' => $this->match,

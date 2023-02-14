@@ -34,7 +34,7 @@ class WrestlerCanJoinExistingTagTeam implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         /** @var \App\Models\Wrestler $wrestler */
         $wrestler = Wrestler::query()->with(['currentEmployment', 'futureEmployment'])->whereKey($value)->sole();
@@ -71,7 +71,7 @@ class WrestlerCanJoinExistingTagTeam implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This wrestler cannot join the tag team.';
     }

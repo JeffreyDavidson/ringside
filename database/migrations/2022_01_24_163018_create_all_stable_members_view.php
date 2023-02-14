@@ -13,7 +13,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::createOrReplaceMergeView(
             'all_stable_members',

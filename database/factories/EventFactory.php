@@ -20,7 +20,7 @@ class EventFactory extends Factory
      *
      * @return static
      */
-    public function configure()
+    public function configure(): static
     {
         return $this->afterCreating(function (Event $event) {
             $event->save();
@@ -48,7 +48,7 @@ class EventFactory extends Factory
      *
      * @return static
      */
-    public function unscheduled()
+    public function unscheduled(): static
     {
         return $this->state([
             'status' => EventStatus::UNSCHEDULED,
@@ -61,7 +61,7 @@ class EventFactory extends Factory
      *
      * @return static
      */
-    public function scheduled()
+    public function scheduled(): static
     {
         return $this->state([
             'status' => EventStatus::SCHEDULED,
@@ -74,7 +74,7 @@ class EventFactory extends Factory
      *
      * @return static
      */
-    public function past()
+    public function past(): static
     {
         return $this->state([
             'status' => EventStatus::PAST,
@@ -88,7 +88,7 @@ class EventFactory extends Factory
      * @param  \App\Models\Venue  $venue
      * @return static
      */
-    public function atVenue(Venue $venue)
+    public function atVenue(Venue $venue): static
     {
         return $this->state(['venue_id' => $venue->id]);
     }
@@ -99,7 +99,7 @@ class EventFactory extends Factory
      * @param  string  $date
      * @return static
      */
-    public function scheduledOn(string $date)
+    public function scheduledOn(string $date): static
     {
         return $this->state(['date' => $date]);
     }
@@ -110,7 +110,7 @@ class EventFactory extends Factory
      * @param  string  $preview
      * @return static
      */
-    public function withPreview()
+    public function withPreview(): static
     {
         return $this->state(['preview' => $this->faker->paragraphs(3, true)]);
     }
@@ -121,7 +121,7 @@ class EventFactory extends Factory
      * @param  string  $preview
      * @return static
      */
-    public function withVenue()
+    public function withVenue(): static
     {
         return $this->state(['venue_id' => Venue::inRandomOrder()->first()]);
     }

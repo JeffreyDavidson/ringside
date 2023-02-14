@@ -36,7 +36,7 @@ class EventDateCanBeChanged implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, Carbon $value): bool
     {
         if ($this->event->date === null) {
             return true;
@@ -54,7 +54,7 @@ class EventDateCanBeChanged implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'The validation error message.';
     }

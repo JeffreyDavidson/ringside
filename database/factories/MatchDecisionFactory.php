@@ -13,7 +13,7 @@ class MatchDecisionFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $name = $this->faker->words(2, true);
 

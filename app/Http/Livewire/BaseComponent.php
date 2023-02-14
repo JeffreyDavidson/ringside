@@ -23,7 +23,7 @@ class BaseComponent extends Component
      *
      * @return string
      */
-    public function paginationView()
+    public function paginationView(): string
     {
         return 'pagination.base';
     }

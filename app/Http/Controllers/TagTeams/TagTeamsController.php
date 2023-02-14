@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\TagTeams;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\TagTeams\CreateAction;
 use App\Actions\TagTeams\DeleteAction;
 use App\Actions\TagTeams\UpdateAction;
@@ -21,7 +23,7 @@ class TagTeamsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', TagTeam::class);
 
@@ -33,7 +35,7 @@ class TagTeamsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', TagTeam::class);
 
@@ -48,7 +50,7 @@ class TagTeamsController extends Controller
      * @param  \App\Http\Requests\TagTeams\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(TagTeamData::fromStoreRequest($request));
 
@@ -61,7 +63,7 @@ class TagTeamsController extends Controller
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\View\View
      */
-    public function show(TagTeam $tagTeam)
+    public function show(TagTeam $tagTeam): View
     {
         $this->authorize('view', $tagTeam);
 
@@ -76,7 +78,7 @@ class TagTeamsController extends Controller
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\View\View
      */
-    public function edit(TagTeam $tagTeam)
+    public function edit(TagTeam $tagTeam): View
     {
         $this->authorize('update', $tagTeam);
 
@@ -93,7 +95,7 @@ class TagTeamsController extends Controller
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, TagTeam $tagTeam)
+    public function update(UpdateRequest $request, TagTeam $tagTeam): RedirectResponse
     {
         UpdateAction::run($tagTeam, TagTeamData::fromUpdateRequest($request));
 
@@ -106,7 +108,7 @@ class TagTeamsController extends Controller
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(TagTeam $tagTeam)
+    public function destroy(TagTeam $tagTeam): RedirectResponse
     {
         $this->authorize('delete', $tagTeam);
 

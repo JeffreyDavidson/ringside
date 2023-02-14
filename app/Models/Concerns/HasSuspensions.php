@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use App\Models\Suspension;
 
 trait HasSuspensions
@@ -13,7 +15,7 @@ trait HasSuspensions
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function suspensions()
+    public function suspensions(): MorphMany
     {
         return $this->morphMany(Suspension::class, 'suspendable');
     }
@@ -23,7 +25,7 @@ trait HasSuspensions
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function currentSuspension()
+    public function currentSuspension(): MorphOne
     {
         return $this->morphOne(Suspension::class, 'suspendable')
             ->whereNull('ended_at')
@@ -35,7 +37,7 @@ trait HasSuspensions
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function previousSuspensions()
+    public function previousSuspensions(): MorphMany
     {
         return $this->suspensions()
             ->whereNotNull('ended_at');
@@ -46,7 +48,7 @@ trait HasSuspensions
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function previousSuspension()
+    public function previousSuspension(): MorphOne
     {
         return $this->morphOne(Suspension::class, 'suspendable')
             ->latest('ended_at')
@@ -58,7 +60,7 @@ trait HasSuspensions
      *
      * @return bool
      */
-    public function isSuspended()
+    public function isSuspended(): bool
     {
         return $this->currentSuspension()->exists();
     }
@@ -68,7 +70,7 @@ trait HasSuspensions
      *
      * @return bool
      */
-    public function hasSuspensions()
+    public function hasSuspensions(): bool
     {
         return $this->suspensions()->count() > 0;
     }

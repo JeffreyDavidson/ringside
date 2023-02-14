@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\SingleRosterMemberQueryBuilder;
 use App\Models\Injury;
 
 /**
@@ -18,7 +19,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
      *
      * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
-    public function injured()
+    public function injured(): SingleRosterMemberQueryBuilder
     {
         return $this->whereHas('currentInjury');
     }
@@ -28,7 +29,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
      *
      * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
-    public function withCurrentInjuredAtDate()
+    public function withCurrentInjuredAtDate(): SingleRosterMemberQueryBuilder
     {
         return $this->addSelect([
             'current_injured_at' => Injury::select('started_at')
@@ -45,7 +46,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
      * @param  string  $direction
      * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
-    public function orderByCurrentInjuredAtDate(string $direction = 'asc')
+    public function orderByCurrentInjuredAtDate(string $direction = 'asc'): SingleRosterMemberQueryBuilder
     {
         return $this->orderByRaw("DATE(current_injured_at) {$direction}");
     }
@@ -55,7 +56,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
      *
      * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
-    public function bookable()
+    public function bookable(): SingleRosterMemberQueryBuilder
     {
         return $this->whereHas('currentEmployment')
             ->whereDoesntHave('currentSuspension')

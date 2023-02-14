@@ -21,7 +21,7 @@ class TitleMustBeActive implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         $title = Title::query()->whereKey($value)->sole();
 
@@ -37,7 +37,7 @@ class TitleMustBeActive implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This title is not active and cannot be added to the match.';
     }

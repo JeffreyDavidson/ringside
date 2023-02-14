@@ -40,7 +40,7 @@ class WrestlerFactory extends Factory
      *
      * @return $this
      */
-    public function configure()
+    public function configure(): static
     {
         return $this->afterCreating(function (Wrestler $wrestler) {
             $wrestler->save();
@@ -112,7 +112,7 @@ class WrestlerFactory extends Factory
      * @param  [type] $tagTeam
      * @return void
      */
-    public function onCurrentTagTeam($tagTeam = null)
+    public function onCurrentTagTeam($tagTeam = null): void
     {
         $tagTeam ??= TagTeam::factory()->create();
 

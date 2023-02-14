@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\TagTeamQueryBuilder;
+
 /**
  * @template TModelClass of \App\Models\TagTeam
  *
@@ -16,7 +18,7 @@ class TagTeamQueryBuilder extends RosterMemberQueryBuilder
      *
      * @return \App\Builders\TagTeamQueryBuilder
      */
-    public function bookable()
+    public function bookable(): TagTeamQueryBuilder
     {
         return $this->where('status', 'bookable');
     }
@@ -26,7 +28,7 @@ class TagTeamQueryBuilder extends RosterMemberQueryBuilder
      *
      * @return \App\Builders\TagTeamQueryBuilder
      */
-    public function unbookable()
+    public function unbookable(): TagTeamQueryBuilder
     {
         return $this->where('status', 'unbookable');
     }

@@ -37,7 +37,7 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         $tagTeam = TagTeam::with(['futureEmployment'])->whereKey($value)->sole();
 
@@ -61,7 +61,7 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This tag team is not employed before the stable\'s activation date';
     }

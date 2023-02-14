@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Builders\EventQueryBuilder;
 use App\Enums\EventStatus;
 use App\Presenters\EventPresenter;
@@ -45,7 +48,7 @@ class Event extends Model
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\EventQueryBuilder<Event>
      */
-    public function newEloquentBuilder($query): EventQueryBuilder
+    public function newEloquentBuilder(Builder $query): EventQueryBuilder
     {
         return new EventQueryBuilder($query);
     }
@@ -55,7 +58,7 @@ class Event extends Model
      *
      * @return \App\Presenters\EventPresenter
      */
-    public function present()
+    public function present(): EventPresenter
     {
         return new EventPresenter($this);
     }
@@ -65,7 +68,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function venue()
+    public function venue(): BelongsTo
     {
         return $this->belongsTo(Venue::class);
     }
@@ -75,7 +78,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function matches()
+    public function matches(): HasMany
     {
         return $this->hasMany(EventMatch::class);
     }
@@ -85,7 +88,7 @@ class Event extends Model
      *
      * @return bool
      */
-    public function isScheduled()
+    public function isScheduled(): bool
     {
         if (is_null($this->date)) {
             return false;
@@ -99,7 +102,7 @@ class Event extends Model
      *
      * @return bool
      */
-    public function isPast()
+    public function isPast(): bool
     {
         if (is_null($this->date)) {
             return false;
@@ -113,7 +116,7 @@ class Event extends Model
      *
      * @return bool
      */
-    public function isUnscheduled()
+    public function isUnscheduled(): bool
     {
         return $this->date === null;
     }

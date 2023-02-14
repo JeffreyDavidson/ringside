@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\EventMatches;
 
+use App\Models\EventMatch;
 use App\Data\EventMatchData;
 use App\Models\Event;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -19,7 +20,7 @@ class AddMatchForEventAction extends BaseEventMatchAction
      * @param  \App\Data\EventMatchData  $eventMatchData
      * @return \App\Models\EventMatch $cratedMatch
      */
-    public function handle(Event $event, EventMatchData $eventMatchData)
+    public function handle(Event $event, EventMatchData $eventMatchData): EventMatch
     {
         /** @var \App\Models\EventMatch $createdMatch */
         $createdMatch = $this->eventMatchRepository->createForEvent($event, $eventMatchData);

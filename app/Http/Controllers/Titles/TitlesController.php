@@ -39,7 +39,7 @@ class TitlesController extends Controller
      * @param  \App\Http\Requests\Titles\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(TitleData::fromStoreRequest($request));
 
@@ -52,7 +52,7 @@ class TitlesController extends Controller
      * @param  \App\Models\Title  $title
      * @return \Illuminate\View\View
      */
-    public function show(Title $title)
+    public function show(Title $title): View
     {
         $this->authorize('view', Title::class);
 
@@ -83,7 +83,7 @@ class TitlesController extends Controller
      * @param  \App\Models\Title  $title
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Title $title)
+    public function destroy(Title $title): RedirectResponse
     {
         $this->authorize('delete', $title);
 

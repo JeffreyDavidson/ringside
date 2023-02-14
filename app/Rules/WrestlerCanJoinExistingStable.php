@@ -32,7 +32,7 @@ class WrestlerCanJoinExistingStable implements Rule
      * @param  string  $date
      * @return void
      */
-    public function __construct($tagTeamIds, $date)
+    public function __construct(array $tagTeamIds, string $date)
     {
         $this->tagTeamIds = $tagTeamIds;
         $this->date = $date;
@@ -47,7 +47,7 @@ class WrestlerCanJoinExistingStable implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         if (! is_array($this->tagTeamIds)) {
             return false;
@@ -94,7 +94,7 @@ class WrestlerCanJoinExistingStable implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return $this->messages;
     }

@@ -18,7 +18,7 @@ class TitleChampionshipFactory extends Factory
      * @param  string  $date
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function wonOn(string $date)
+    public function wonOn(string $date): Factory
     {
         return $this->state(['won_at' => $date]);
     }
@@ -29,7 +29,7 @@ class TitleChampionshipFactory extends Factory
      * @param  ?string  $date
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function lostOn(?string $date)
+    public function lostOn(?string $date): Factory
     {
         return $this->state(['lost_at' => $date]);
     }
@@ -39,7 +39,7 @@ class TitleChampionshipFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $wrestler = Wrestler::factory()->create();
 

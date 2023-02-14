@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -50,7 +52,7 @@ class TitleChampionship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function title()
+    public function title(): BelongsTo
     {
         return $this->belongsTo(Title::class);
     }
@@ -60,7 +62,7 @@ class TitleChampionship extends Model
      *
      * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
-    public function allTitleChampions()
+    public function allTitleChampions(): MergedRelation
     {
         return $this->mergedRelation('all_title_champions');
     }

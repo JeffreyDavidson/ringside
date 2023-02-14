@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Managers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Managers\CreateAction;
 use App\Actions\Managers\DeleteAction;
 use App\Actions\Managers\UpdateAction;
@@ -20,7 +22,7 @@ class ManagersController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', Manager::class);
 
@@ -33,7 +35,7 @@ class ManagersController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\View\View
      */
-    public function create(Manager $manager)
+    public function create(Manager $manager): View
     {
         $this->authorize('create', Manager::class);
 
@@ -48,7 +50,7 @@ class ManagersController extends Controller
      * @param  \App\Http\Requests\Managers\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(ManagerData::fromStoreRequest($request));
 
@@ -61,7 +63,7 @@ class ManagersController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\View\View
      */
-    public function show(Manager $manager)
+    public function show(Manager $manager): View
     {
         $this->authorize('view', $manager);
 
@@ -76,7 +78,7 @@ class ManagersController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\View\View
      */
-    public function edit(Manager $manager)
+    public function edit(Manager $manager): View
     {
         $this->authorize('update', $manager);
 
@@ -92,7 +94,7 @@ class ManagersController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Manager $manager)
+    public function update(UpdateRequest $request, Manager $manager): RedirectResponse
     {
         UpdateAction::run($manager, ManagerData::fromUpdateRequest($request));
 
@@ -105,7 +107,7 @@ class ManagersController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Manager $manager)
+    public function destroy(Manager $manager): RedirectResponse
     {
         $this->authorize('delete', $manager);
 

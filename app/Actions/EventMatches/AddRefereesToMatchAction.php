@@ -19,7 +19,7 @@ class AddRefereesToMatchAction extends BaseEventMatchAction
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Referee>  $referees
      * @return void
      */
-    public function handle(EventMatch $eventMatch, $referees): void
+    public function handle(EventMatch $eventMatch, \Illuminate\Database\Eloquent\Collection<int,\App\Models\Referee> $referees): void
     {
         $referees->map(
             fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch($eventMatch, $referee)

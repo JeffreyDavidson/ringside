@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Events;
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
@@ -39,7 +42,7 @@ class DeletedEventsList extends BaseComponent
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function getRowsQueryProperty()
+    public function getRowsQueryProperty(): Builder
     {
         $query = Event::query()
             ->onlyTrashed()
@@ -54,7 +57,7 @@ class DeletedEventsList extends BaseComponent
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getRowsProperty()
+    public function getRowsProperty(): LengthAwarePaginator
     {
         return $this->applyPagination($this->rowsQuery);
     }
@@ -64,7 +67,7 @@ class DeletedEventsList extends BaseComponent
      *
      * @return \Illuminate\View\View
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.events.deleted-events-list', [
             'events' => $this->rows,

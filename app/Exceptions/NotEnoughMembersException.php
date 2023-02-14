@@ -14,7 +14,7 @@ class NotEnoughMembersException extends Exception
      *
      * @return self
      */
-    public static function forTagTeam()
+    public static function forTagTeam(): self
     {
         return new self(sprintf(
             'A tag team must contain %u wrestlers to be on a tag team.',

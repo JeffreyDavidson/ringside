@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Manager;
 
 trait HasManagers
@@ -13,7 +14,7 @@ trait HasManagers
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function managers()
+    public function managers(): BelongsToMany
     {
         return $this->belongsToMany(Manager::class);
     }
@@ -23,7 +24,7 @@ trait HasManagers
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function currentManagers()
+    public function currentManagers(): BelongsToMany
     {
         return $this->belongsToMany(Manager::class)
             ->wherePivotNull('left_at');
@@ -34,7 +35,7 @@ trait HasManagers
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function previousManagers()
+    public function previousManagers(): BelongsToMany
     {
         return $this->belongsToMany(Manager::class)
             ->wherePivotNotNull('left_at');

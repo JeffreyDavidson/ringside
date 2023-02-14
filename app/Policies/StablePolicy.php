@@ -18,7 +18,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -29,7 +29,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -40,7 +40,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function delete(User $user)
+    public function delete(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -51,7 +51,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function restore(User $user)
+    public function restore(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -62,7 +62,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function activate(User $user)
+    public function activate(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -73,7 +73,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function deactivate(User $user)
+    public function deactivate(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -84,7 +84,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function retire(User $user)
+    public function retire(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -95,7 +95,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function unretire(User $user)
+    public function unretire(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -106,7 +106,7 @@ class StablePolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function viewList(User $user)
+    public function viewList(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -118,7 +118,7 @@ class StablePolicy
      * @param  \App\Models\Stable  $stable
      * @return bool
      */
-    public function view(User $user, Stable $stable)
+    public function view(User $user, Stable $stable): bool
     {
         if ($stable->user !== null && $stable->user->is($user)) {
             return true;

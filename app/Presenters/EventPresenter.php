@@ -18,7 +18,7 @@ class EventPresenter extends Presenter
      *
      * @return ?string
      */
-    public function date()
+    public function date(): ?string
     {
         return $this->model->date?->format('F j, Y');
     }

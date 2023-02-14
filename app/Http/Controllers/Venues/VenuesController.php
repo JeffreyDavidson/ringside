@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Venues;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Venues\CreateAction;
 use App\Actions\Venues\DeleteAction;
 use App\Actions\Venues\UpdateAction;
@@ -20,7 +22,7 @@ class VenuesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', Venue::class);
 
@@ -33,7 +35,7 @@ class VenuesController extends Controller
      * @param  \App\Models\Venue  $venue
      * @return \Illuminate\View\View
      */
-    public function create(Venue $venue)
+    public function create(Venue $venue): View
     {
         $this->authorize('create', Venue::class);
 
@@ -48,7 +50,7 @@ class VenuesController extends Controller
      * @param  \App\Http\Requests\Venues\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(VenueData::fromStoreRequest($request));
 
@@ -61,7 +63,7 @@ class VenuesController extends Controller
      * @param  \App\Models\Venue  $venue
      * @return \Illuminate\View\View
      */
-    public function show(Venue $venue)
+    public function show(Venue $venue): View
     {
         $this->authorize('view', $venue);
 
@@ -76,7 +78,7 @@ class VenuesController extends Controller
      * @param  \App\Models\Venue  $venue
      * @return \Illuminate\View\View
      */
-    public function edit(Venue $venue)
+    public function edit(Venue $venue): View
     {
         $this->authorize('update', Venue::class);
 
@@ -92,7 +94,7 @@ class VenuesController extends Controller
      * @param  \App\Models\Venue  $venue
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Venue $venue)
+    public function update(UpdateRequest $request, Venue $venue): RedirectResponse
     {
         UpdateAction::run($venue, VenueData::fromUpdateRequest($request));
 
@@ -105,7 +107,7 @@ class VenuesController extends Controller
      * @param  \App\Models\Venue  $venue
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Venue $venue)
+    public function destroy(Venue $venue): RedirectResponse
     {
         $this->authorize('delete', $venue);
 

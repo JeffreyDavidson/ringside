@@ -11,7 +11,7 @@ trait Deactivations
      *
      * @return bool
      */
-    public function isDeactivated()
+    public function isDeactivated(): bool
     {
         return $this->previousActivation()->exists()
                 && $this->currentActivation()->doesntExist()
@@ -33,7 +33,7 @@ trait Deactivations
      *
      * @return bool
      */
-    public function isNotInActivation()
+    public function isNotInActivation(): bool
     {
         return $this->isNotActivation() || $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }

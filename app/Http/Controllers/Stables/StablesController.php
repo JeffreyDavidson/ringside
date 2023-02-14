@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Stables;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Stables\CreateAction;
 use App\Actions\Stables\DeleteAction;
 use App\Actions\Stables\UpdateAction;
@@ -23,7 +25,7 @@ class StablesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', Stable::class);
 
@@ -36,7 +38,7 @@ class StablesController extends Controller
      * @param  Stable  $stable
      * @return \Illuminate\View\View
      */
-    public function create(Stable $stable)
+    public function create(Stable $stable): View
     {
         $this->authorize('create', Stable::class);
 
@@ -54,7 +56,7 @@ class StablesController extends Controller
      * @param  \App\Http\Requests\Stables\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(StableData::fromStoreRequest($request));
 
@@ -67,7 +69,7 @@ class StablesController extends Controller
      * @param  \App\Models\Stable  $stable
      * @return \Illuminate\View\View
      */
-    public function show(Stable $stable)
+    public function show(Stable $stable): View
     {
         $this->authorize('view', $stable);
 
@@ -82,7 +84,7 @@ class StablesController extends Controller
      * @param  \App\Models\Stable  $stable
      * @return \Illuminate\View\View
      */
-    public function edit(Stable $stable)
+    public function edit(Stable $stable): View
     {
         $this->authorize('update', $stable);
 
@@ -101,7 +103,7 @@ class StablesController extends Controller
      * @param  \App\Models\Stable  $stable
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Stable $stable)
+    public function update(UpdateRequest $request, Stable $stable): RedirectResponse
     {
         UpdateAction::run($stable, StableData::fromUpdateRequest($request));
 
@@ -114,7 +116,7 @@ class StablesController extends Controller
      * @param  \App\Models\Stable  $stable
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Stable $stable)
+    public function destroy(Stable $stable): RedirectResponse
     {
         $this->authorize('delete', Stable::class);
 

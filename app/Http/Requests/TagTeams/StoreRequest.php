@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user())) {
             return false;
@@ -38,7 +38,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('tag_teams', 'name')],
@@ -70,7 +70,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'signature_move.regex' => 'The signature move only allows for letters, spaces, and apostrophes',
@@ -82,7 +82,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'signature_move' => 'signature move',

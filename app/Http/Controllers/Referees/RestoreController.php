@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Referees;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Referees\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Referee;
@@ -16,7 +17,7 @@ class RestoreController extends Controller
      * @param  int  $refereeId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(int $refereeId)
+    public function __invoke(int $refereeId): RedirectResponse
     {
         $referee = Referee::onlyTrashed()->findOrFail($refereeId);
 

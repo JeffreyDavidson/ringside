@@ -13,7 +13,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('event_match_referee', function (Blueprint $table) {
             $table->id();

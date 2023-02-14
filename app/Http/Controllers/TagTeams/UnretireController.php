@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\TagTeams;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\TagTeams\UnretireAction;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class UnretireController extends Controller
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(TagTeam $tagTeam)
+    public function __invoke(TagTeam $tagTeam): RedirectResponse
     {
         $this->authorize('unretire', $tagTeam);
 

@@ -15,7 +15,7 @@ class RefereeObserver
      * @param  \App\Models\Referee  $referee
      * @return void
      */
-    public function saving(Referee $referee)
+    public function saving(Referee $referee): void
     {
         $referee->status = match (true) {
             $referee->isCurrentlyEmployed() => match (true) {

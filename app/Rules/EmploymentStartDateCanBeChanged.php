@@ -42,7 +42,7 @@ class EmploymentStartDateCanBeChanged implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, string $value): bool
     {
         $name = $this->rosterMember->name;
 
@@ -66,7 +66,7 @@ class EmploymentStartDateCanBeChanged implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return $this->message;
     }

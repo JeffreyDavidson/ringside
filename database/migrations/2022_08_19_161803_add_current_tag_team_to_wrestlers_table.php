@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('wrestlers', function (Blueprint $table) {
             $table->foreignId('current_tag_team_id')->after('status')->nullable()->constrained('tag_teams');
@@ -23,7 +23,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('wrestlers', function (Blueprint $table) {
             //

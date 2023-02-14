@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -39,7 +40,7 @@ class Activation extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function activatable()
+    public function activatable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -50,7 +51,7 @@ class Activation extends Model
      * @param  \Illuminate\Support\Carbon  $date
      * @return bool
      */
-    public function startedBefore(Carbon $date)
+    public function startedBefore(Carbon $date): bool
     {
         return $this->started_at->lt($date);
     }

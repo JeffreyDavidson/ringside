@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -14,7 +16,7 @@ trait HasRetirements
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function retirements()
+    public function retirements(): MorphMany
     {
         return $this->morphMany(Retirement::class, 'retiree');
     }
@@ -24,7 +26,7 @@ trait HasRetirements
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function currentRetirement()
+    public function currentRetirement(): MorphOne
     {
         return $this->morphOne(Retirement::class, 'retiree')
             ->where('started_at', '<=', now())
@@ -37,7 +39,7 @@ trait HasRetirements
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function previousRetirements()
+    public function previousRetirements(): MorphMany
     {
         return $this->retirements()
             ->whereNotNull('ended_at');
@@ -48,7 +50,7 @@ trait HasRetirements
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function previousRetirement()
+    public function previousRetirement(): MorphOne
     {
         return $this->morphOne(Retirement::class, 'retiree')
             ->latest('ended_at')
@@ -60,7 +62,7 @@ trait HasRetirements
      *
      * @return bool
      */
-    public function isRetired()
+    public function isRetired(): bool
     {
         return $this->currentRetirement()->exists();
     }
@@ -70,7 +72,7 @@ trait HasRetirements
      *
      * @return bool
      */
-    public function hasRetirements()
+    public function hasRetirements(): bool
     {
         return $this->retirements()->count() > 0;
     }

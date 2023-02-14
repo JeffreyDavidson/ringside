@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Fidum\EloquentMorphToOne\MorphToOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Models\Stable;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
 
@@ -19,7 +21,7 @@ trait CanJoinStables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function stables()
+    public function stables(): MorphToMany
     {
         return $this->morphToMany(Stable::class, 'member', 'stable_members')
             ->withPivot(['joined_at', 'left_at']);
@@ -30,7 +32,7 @@ trait CanJoinStables
      *
      * @return \Fidum\EloquentMorphToOne\MorphToOne
      */
-    public function currentStable()
+    public function currentStable(): MorphToOne
     {
         return $this->morphToOne(Stable::class, 'member', 'stable_members')
             ->withPivot(['joined_at', 'left_at'])
@@ -42,7 +44,7 @@ trait CanJoinStables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function previousStables()
+    public function previousStables(): MorphToMany
     {
         return $this->stables()
             ->wherePivot('joined_at', '<', now())
@@ -55,7 +57,7 @@ trait CanJoinStables
      * @param  \App\Models\Stable  $stable
      * @return bool
      */
-    public function isNotCurrentlyInStable(Stable $stable)
+    public function isNotCurrentlyInStable(Stable $stable): bool
     {
         return ! $this->currentStable || $this->currentStable->isNot($stable);
     }

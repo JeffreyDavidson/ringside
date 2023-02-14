@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
 use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
@@ -49,7 +50,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\TitleQueryBuilder<Title>
      */
-    public function newEloquentBuilder($query): TitleQueryBuilder
+    public function newEloquentBuilder(Builder $query): TitleQueryBuilder
     {
         return new TitleQueryBuilder($query);
     }

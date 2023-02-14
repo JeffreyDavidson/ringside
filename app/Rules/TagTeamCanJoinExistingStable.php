@@ -39,7 +39,7 @@ class TagTeamCanJoinExistingStable implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         /** @var \App\Models\TagTeam $tagTeam */
         $tagTeam = TagTeam::with(['currentWrestlers', 'currentStable'])->whereKey($value)->sole();
@@ -71,7 +71,7 @@ class TagTeamCanJoinExistingStable implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return $this->messages;
     }

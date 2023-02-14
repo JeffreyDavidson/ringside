@@ -29,7 +29,7 @@ trait CanJoinTagTeams
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function previousTagTeams()
+    public function previousTagTeams(): BelongsToMany
     {
         return $this->tagTeams()
             ->withPivot(['joined_at', 'left_at'])
@@ -51,7 +51,7 @@ trait CanJoinTagTeams
      *
      * @return bool
      */
-    public function isAMemberOfCurrentTagTeam()
+    public function isAMemberOfCurrentTagTeam(): bool
     {
         return $this->currentTagTeam !== null && $this->currentTagTeam->exists();
     }

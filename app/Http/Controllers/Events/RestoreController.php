@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Events;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Events\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
@@ -16,7 +17,7 @@ class RestoreController extends Controller
      * @param  int  $eventId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(int $eventId)
+    public function __invoke(int $eventId): RedirectResponse
     {
         $event = Event::onlyTrashed()->findOrFail($eventId);
 

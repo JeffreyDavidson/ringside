@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -39,7 +40,7 @@ class Employment extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function employable()
+    public function employable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -50,7 +51,7 @@ class Employment extends Model
      * @param  \Illuminate\Support\Carbon  $date
      * @return bool
      */
-    public function startedBefore(Carbon $date)
+    public function startedBefore(Carbon $date): bool
     {
         return $this->started_at->lte($date);
     }
@@ -61,7 +62,7 @@ class Employment extends Model
      * @param  \Illuminate\Support\Carbon  $date
      * @return bool
      */
-    public function startedAfter(Carbon $date)
+    public function startedAfter(Carbon $date): bool
     {
         return $this->started_at->gt($date);
     }

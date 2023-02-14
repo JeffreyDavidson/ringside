@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use App\Models\StableMember;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
@@ -18,7 +20,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function wrestlers()
+    public function wrestlers(): MorphToMany
     {
         return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
             ->using(StableMember::class)
@@ -30,7 +32,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function currentWrestlers()
+    public function currentWrestlers(): MorphToMany
     {
         return $this->wrestlers()
             ->wherePivotNull('left_at');
@@ -41,7 +43,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function previousWrestlers()
+    public function previousWrestlers(): MorphToMany
     {
         return $this->wrestlers()
             ->wherePivotNotNull('left_at');
@@ -52,7 +54,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function tagTeams()
+    public function tagTeams(): MorphToMany
     {
         return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
             ->using(StableMember::class)
@@ -64,7 +66,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function currentTagTeams()
+    public function currentTagTeams(): MorphToMany
     {
         return $this->tagTeams()
             ->wherePivotNull('left_at');
@@ -75,7 +77,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function previousTagTeams()
+    public function previousTagTeams(): MorphToMany
     {
         return $this->tagTeams()
             ->wherePivotNotNull('left_at');
@@ -86,7 +88,7 @@ trait HasMembers
      *
      * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
-    public function allMembers()
+    public function allMembers(): MergedRelation
     {
         return $this->mergedRelation('all_stable_members');
     }
@@ -96,7 +98,7 @@ trait HasMembers
      *
      * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
-    public function currentMembers()
+    public function currentMembers(): MergedRelation
     {
         return $this->mergedRelation('current_stable_members');
     }
@@ -106,7 +108,7 @@ trait HasMembers
      *
      * @return \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
      */
-    public function previousMembers()
+    public function previousMembers(): MergedRelation
     {
         return $this->mergedRelation('previous_stable_members');
     }

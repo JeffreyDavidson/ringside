@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Titles;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Titles\UnretireAction;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class UnretireController extends Controller
      * @param  \App\Models\Title  $title
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Title $title)
+    public function __invoke(Title $title): RedirectResponse
     {
         $this->authorize('unretire', $title);
 

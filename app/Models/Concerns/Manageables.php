@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 
@@ -14,7 +15,7 @@ trait Manageables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function wrestlers()
+    public function wrestlers(): MorphToMany
     {
         return $this->morphedByMany(Wrestler::class, 'manageable')
             ->withPivot(['hired_at', 'left_at']);
@@ -25,7 +26,7 @@ trait Manageables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function currentWrestlers()
+    public function currentWrestlers(): MorphToMany
     {
         return $this->morphedByMany(Wrestler::class, 'manageable')
             ->wherePivotNull('left_at');
@@ -36,7 +37,7 @@ trait Manageables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function previousWrestlers()
+    public function previousWrestlers(): MorphToMany
     {
         return $this->morphedByMany(Wrestler::class, 'manageable')
             ->wherePivotNotNull('left_at');
@@ -47,7 +48,7 @@ trait Manageables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function tagTeams()
+    public function tagTeams(): MorphToMany
     {
         return $this->morphedByMany(TagTeam::class, 'manageable')
             ->withPivot(['hired_at', 'left_at']);
@@ -58,7 +59,7 @@ trait Manageables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function currentTagTeams()
+    public function currentTagTeams(): MorphToMany
     {
         return $this->morphedByMany(TagTeam::class, 'manageable')
             ->withPivot(['hired_at', 'left_at'])
@@ -70,7 +71,7 @@ trait Manageables
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function previousTagTeams()
+    public function previousTagTeams(): MorphToMany
     {
         return $this->morphedByMany(TagTeam::class, 'manageable')
             ->withPivot(['hired_at', 'left_at'])

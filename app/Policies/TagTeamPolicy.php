@@ -18,7 +18,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -29,7 +29,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -40,7 +40,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function delete(User $user)
+    public function delete(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -51,7 +51,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function restore(User $user)
+    public function restore(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -62,7 +62,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function suspend(User $user)
+    public function suspend(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -73,7 +73,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function reinstate(User $user)
+    public function reinstate(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -84,7 +84,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function employ(User $user)
+    public function employ(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -95,7 +95,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function release(User $user)
+    public function release(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -106,7 +106,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function retire(User $user)
+    public function retire(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -117,7 +117,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function unretire(User $user)
+    public function unretire(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -128,7 +128,7 @@ class TagTeamPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function viewList(User $user)
+    public function viewList(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -140,7 +140,7 @@ class TagTeamPolicy
      * @param  \App\Models\TagTeam  $tagTeam
      * @return bool
      */
-    public function view(User $user, TagTeam $tagTeam)
+    public function view(User $user, TagTeam $tagTeam): bool
     {
         if ($tagTeam->user !== null && $tagTeam->user->is($user)) {
             return true;

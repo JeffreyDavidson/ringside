@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\StableQueryBuilder;
 use App\Models\Activation;
 use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,7 +21,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function retired()
+    public function retired(): StableQueryBuilder
     {
         return $this->whereHas('currentRetirement');
     }
@@ -30,7 +31,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function withCurrentRetiredAtDate()
+    public function withCurrentRetiredAtDate(): StableQueryBuilder
     {
         return $this->addSelect([
             'current_retired_at' => Retirement::select('started_at')
@@ -47,7 +48,7 @@ class StableQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\StableQueryBuilder
      */
-    public function orderByCurrentRetiredAtDate($direction = 'asc')
+    public function orderByCurrentRetiredAtDate(string $direction = 'asc'): StableQueryBuilder
     {
         return $this->orderByRaw("DATE(current_retired_at) {$direction}");
     }
@@ -57,7 +58,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function deactivated()
+    public function deactivated(): StableQueryBuilder
     {
         return $this->whereDoesntHave('currentActivation')
             ->orWhereDoesntHave('previousActivations');
@@ -68,7 +69,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function withLastDeactivationDate()
+    public function withLastDeactivationDate(): StableQueryBuilder
     {
         return $this->addSelect([
             'last_deactivated_at' => Activation::select('ended_at')
@@ -85,7 +86,7 @@ class StableQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\StableQueryBuilder
      */
-    public function orderByLastDeactivationDate(string $direction = 'asc')
+    public function orderByLastDeactivationDate(string $direction = 'asc'): StableQueryBuilder
     {
         return $this->orderByRaw("DATE(last_deactivated_at) {$direction}");
     }
@@ -95,7 +96,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function active()
+    public function active(): StableQueryBuilder
     {
         return $this->whereHas('currentActivation');
     }
@@ -105,7 +106,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function withFutureActivation()
+    public function withFutureActivation(): StableQueryBuilder
     {
         return $this->whereHas('futureActivation');
     }
@@ -115,7 +116,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function inactive()
+    public function inactive(): StableQueryBuilder
     {
         return $this->whereHas('previousActivation')
             ->whereDoesntHave('futureActivation')
@@ -128,7 +129,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function unactivated()
+    public function unactivated(): StableQueryBuilder
     {
         return $this->whereDoesntHave('activations');
     }
@@ -138,7 +139,7 @@ class StableQueryBuilder extends Builder
      *
      * @return \App\Builders\StableQueryBuilder
      */
-    public function withFirstActivatedAtDate()
+    public function withFirstActivatedAtDate(): StableQueryBuilder
     {
         return $this->addSelect([
             'first_activated_at' => Activation::select('started_at')
@@ -155,7 +156,7 @@ class StableQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\StableQueryBuilder
      */
-    public function orderByFirstActivatedAtDate(string $direction = 'asc')
+    public function orderByFirstActivatedAtDate(string $direction = 'asc'): StableQueryBuilder
     {
         return $this->orderByRaw("DATE(first_activated_at) {$direction}");
     }

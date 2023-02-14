@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Events;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Events\CreateAction;
 use App\Actions\Events\DeleteAction;
 use App\Actions\Events\UpdateAction;
@@ -21,7 +23,7 @@ class EventsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', Event::class);
 
@@ -34,7 +36,7 @@ class EventsController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\View\View
      */
-    public function create(Event $event)
+    public function create(Event $event): View
     {
         $this->authorize('create', Event::class);
 
@@ -50,7 +52,7 @@ class EventsController extends Controller
      * @param  \App\Http\Requests\Events\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(EventData::fromStoreRequest($request));
 
@@ -63,7 +65,7 @@ class EventsController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\View\View
      */
-    public function show(Event $event)
+    public function show(Event $event): View
     {
         $this->authorize('view', $event);
 
@@ -78,7 +80,7 @@ class EventsController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\View\View
      */
-    public function edit(Event $event)
+    public function edit(Event $event): View
     {
         $this->authorize('update', $event);
 
@@ -95,7 +97,7 @@ class EventsController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Event $event)
+    public function update(UpdateRequest $request, Event $event): RedirectResponse
     {
         UpdateAction::run($event, EventData::fromUpdateRequest($request));
 
@@ -108,7 +110,7 @@ class EventsController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Event $event)
+    public function destroy(Event $event): RedirectResponse
     {
         $this->authorize('delete', $event);
 

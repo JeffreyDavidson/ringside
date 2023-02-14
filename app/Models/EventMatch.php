@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
@@ -29,7 +33,7 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function matchType()
+    public function matchType(): BelongsTo
     {
         return $this->belongsTo(MatchType::class);
     }
@@ -39,7 +43,7 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function referees()
+    public function referees(): BelongsToMany
     {
         return $this->belongsToMany(Referee::class);
     }
@@ -49,7 +53,7 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function titles()
+    public function titles(): BelongsToMany
     {
         return $this->belongsToMany(Title::class);
     }
@@ -59,7 +63,7 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function competitors()
+    public function competitors(): HasMany
     {
         return $this->mergedRelationWithModel(EventMatchCompetitor::class, 'all_match_competitors');
     }
@@ -69,7 +73,7 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function wrestlers()
+    public function wrestlers(): MorphToMany
     {
         return $this->morphedByMany(Wrestler::class, 'competitor', 'event_match_competitors')
             ->using(EventMatchCompetitor::class);
@@ -80,7 +84,7 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function tagTeams()
+    public function tagTeams(): MorphToMany
     {
         return $this->morphedByMany(TagTeam::class, 'competitor', 'event_match_competitors')
             ->using(EventMatchCompetitor::class);

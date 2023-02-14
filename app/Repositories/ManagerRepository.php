@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
 use App\Data\ManagerData;
 use App\Models\Manager;
 use App\Models\TagTeam;
@@ -18,7 +19,7 @@ class ManagerRepository
      * @param  \App\Data\ManagerData  $managerData
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create(ManagerData $managerData)
+    public function create(ManagerData $managerData): Model
     {
         return Manager::create([
             'first_name' => $managerData->first_name,
@@ -33,7 +34,7 @@ class ManagerRepository
      * @param  \App\Data\ManagerData  $managerData
      * @return \App\Models\Manager
      */
-    public function update(Manager $manager, ManagerData $managerData)
+    public function update(Manager $manager, ManagerData $managerData): Manager
     {
         $manager->update([
             'first_name' => $managerData->first_name,
@@ -49,7 +50,7 @@ class ManagerRepository
      * @param  \App\Models\Manager  $manager
      * @return void
      */
-    public function delete(Manager $manager)
+    public function delete(Manager $manager): void
     {
         $manager->delete();
     }
@@ -60,7 +61,7 @@ class ManagerRepository
      * @param  \App\Models\Manager  $manager
      * @return void
      */
-    public function restore(Manager $manager)
+    public function restore(Manager $manager): void
     {
         $manager->restore();
     }
@@ -72,7 +73,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $employmentDate
      * @return \App\Models\Manager
      */
-    public function employ(Manager $manager, Carbon $employmentDate)
+    public function employ(Manager $manager, Carbon $employmentDate): Manager
     {
         $manager->employments()->updateOrCreate(
             ['ended_at' => null],
@@ -90,7 +91,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $releaseDate
      * @return \App\Models\Manager
      */
-    public function release(Manager $manager, Carbon $releaseDate)
+    public function release(Manager $manager, Carbon $releaseDate): Manager
     {
         $manager->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
         $manager->save();
@@ -105,7 +106,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $injureDate
      * @return \App\Models\Manager
      */
-    public function injure(Manager $manager, Carbon $injureDate)
+    public function injure(Manager $manager, Carbon $injureDate): Manager
     {
         $manager->injuries()->create(['started_at' => $injureDate->toDateTimeString()]);
         $manager->save();
@@ -120,7 +121,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $recoveryDate
      * @return \App\Models\Manager
      */
-    public function clearInjury(Manager $manager, Carbon $recoveryDate)
+    public function clearInjury(Manager $manager, Carbon $recoveryDate): Manager
     {
         $manager->currentInjury()->update(['ended_at' => $recoveryDate->toDateTimeString()]);
         $manager->save();
@@ -135,7 +136,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $retirementDate
      * @return \App\Models\Manager
      */
-    public function retire(Manager $manager, Carbon $retirementDate)
+    public function retire(Manager $manager, Carbon $retirementDate): Manager
     {
         $manager->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
         $manager->save();
@@ -150,7 +151,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $unretireDate
      * @return \App\Models\Manager
      */
-    public function unretire(Manager $manager, Carbon $unretireDate)
+    public function unretire(Manager $manager, Carbon $unretireDate): Manager
     {
         $manager->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
         $manager->save();
@@ -165,7 +166,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $suspensionDate
      * @return \App\Models\Manager
      */
-    public function suspend(Manager $manager, Carbon $suspensionDate)
+    public function suspend(Manager $manager, Carbon $suspensionDate): Manager
     {
         $manager->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
         $manager->save();
@@ -180,7 +181,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $reinstateDate
      * @return \App\Models\Manager
      */
-    public function reinstate(Manager $manager, Carbon $reinstateDate)
+    public function reinstate(Manager $manager, Carbon $reinstateDate): Manager
     {
         $manager->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
         $manager->save();
@@ -195,7 +196,7 @@ class ManagerRepository
      * @param  \Illuminate\Support\Carbon  $employmentDate
      * @return \App\Models\Manager
      */
-    public function updateEmployment(Manager $manager, Carbon $employmentDate)
+    public function updateEmployment(Manager $manager, Carbon $employmentDate): Manager
     {
         $manager->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
 
@@ -208,7 +209,7 @@ class ManagerRepository
      * @param  \App\Models\Manager  $manager
      * @return void
      */
-    public function removeFromCurrentTagTeams(Manager $manager)
+    public function removeFromCurrentTagTeams(Manager $manager): void
     {
         $manager->currentTagTeams->each(function (TagTeam $tagTeam) use ($manager) {
             $manager->currentTagTeams()->updateExistingPivot($tagTeam->id, [
@@ -223,7 +224,7 @@ class ManagerRepository
      * @param  \App\Models\Manager  $manager
      * @return void
      */
-    public function removeFromCurrentWrestlers(Manager $manager)
+    public function removeFromCurrentWrestlers(Manager $manager): void
     {
         $manager->currentWrestlers->each(function (Wrestler $wrestler) use ($manager) {
             $manager->currentWrestlers()->updateExistingPivot($wrestler->id, [

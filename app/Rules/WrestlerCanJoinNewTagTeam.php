@@ -16,7 +16,7 @@ class WrestlerCanJoinNewTagTeam implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         if (is_null($value)) {
             return false;
@@ -41,7 +41,7 @@ class WrestlerCanJoinNewTagTeam implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This wrestler cannot join the tag team.';
     }

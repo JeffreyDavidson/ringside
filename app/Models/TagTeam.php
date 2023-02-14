@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Builders\TagTeamQueryBuilder;
 use App\Enums\TagTeamStatus;
 use App\Models\Contracts\Bookable;
@@ -56,7 +60,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\TagTeamQueryBuilder<TagTeam>
      */
-    public function newEloquentBuilder($query): TagTeamQueryBuilder
+    public function newEloquentBuilder(Builder $query): TagTeamQueryBuilder
     {
         return new TagTeamQueryBuilder($query);
     }
@@ -66,7 +70,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function wrestlers()
+    public function wrestlers(): BelongsToMany
     {
         return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler')
             ->withPivot('joined_at', 'left_at');
@@ -77,7 +81,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function currentWrestlers()
+    public function currentWrestlers(): HasMany
     {
         return $this->hasMany(Wrestler::class, 'current_tag_team_id');
     }
@@ -87,7 +91,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function previousWrestlers()
+    public function previousWrestlers(): BelongsToMany
     {
         return $this->wrestlers()
             ->wherePivotNotNull('left_at');
@@ -110,7 +114,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return bool
      */
-    public function isBookable()
+    public function isBookable(): bool
     {
         if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
@@ -124,7 +128,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return bool
      */
-    public function isUnbookable()
+    public function isUnbookable(): bool
     {
         return ! $this->currentWrestlers->every->isBookable();
     }
@@ -134,7 +138,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function eventMatches()
+    public function eventMatches(): MorphToMany
     {
         return $this->morphToMany(EventMatch::class, 'event_match_competitor');
     }

@@ -23,7 +23,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user()) || is_null($this->route())) {
             return false;
@@ -41,7 +41,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         /** @var \App\Models\Event $event */
         $event = $this->route()->parameter('event');

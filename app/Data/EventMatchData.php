@@ -57,7 +57,7 @@ class EventMatchData
      * @param  \Illuminate\Support\Collection  $competitors
      * @return \Illuminate\Support\Collection
      */
-    private static function getCompetitors(Collection $competitors)
+    private static function getCompetitors(Collection $competitors): Collection
     {
         /** @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter */
         return $competitors->transform(function ($sideCompetitors, $sideNumber) {

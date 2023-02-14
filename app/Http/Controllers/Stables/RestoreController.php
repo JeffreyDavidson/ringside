@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Stables;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Stables\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Stable;
@@ -16,7 +17,7 @@ class RestoreController extends Controller
      * @param  int  $stableId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(int $stableId)
+    public function __invoke(int $stableId): RedirectResponse
     {
         $stable = Stable::onlyTrashed()->findOrFail($stableId);
 

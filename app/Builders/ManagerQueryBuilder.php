@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
 
 /**
@@ -18,7 +19,7 @@ class ManagerQueryBuilder extends SingleRosterMemberQueryBuilder
      *
      * @return \App\Builders\ManagerQueryBuilder
      */
-    public function available()
+    public function available(): ManagerQueryBuilder
     {
         return $this->where('status', ManagerStatus::AVAILABLE);
     }

@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user())) {
             return false;
@@ -37,7 +37,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -57,7 +57,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.regex' => 'The name only allows for letters, spaces, and apostrophes',
@@ -69,7 +69,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'activation_date' => 'activation date',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
 use App\Builders\RefereeQueryBuilder;
 use App\Enums\RefereeStatus;
 use App\Models\Contracts\Bookable;
@@ -42,7 +43,7 @@ class Referee extends SingleRosterMember implements Bookable
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\RefereeQueryBuilder<Referee>
      */
-    public function newEloquentBuilder($query): RefereeQueryBuilder
+    public function newEloquentBuilder(Builder $query): RefereeQueryBuilder
     {
         return new RefereeQueryBuilder($query);
     }

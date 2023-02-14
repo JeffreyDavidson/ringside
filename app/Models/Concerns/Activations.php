@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Models\Activation;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
@@ -15,7 +17,7 @@ trait Activations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function activations()
+    public function activations(): MorphMany
     {
         return $this->morphMany(Activation::class, 'activatable');
     }
@@ -25,7 +27,7 @@ trait Activations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function currentActivation()
+    public function currentActivation(): MorphOne
     {
         return $this->morphOne(Activation::class, 'activatable')
             ->where('started_at', '<=', now())
@@ -38,7 +40,7 @@ trait Activations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function firstActivation()
+    public function firstActivation(): MorphOne
     {
         return $this->morphOne(Activation::class, 'activatable')
             ->oldestOfMany('started_at');
@@ -49,7 +51,7 @@ trait Activations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function futureActivation()
+    public function futureActivation(): MorphOne
     {
         return $this->morphOne(Activation::class, 'activatable')
             ->where('started_at', '>', now())
@@ -62,7 +64,7 @@ trait Activations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function previousActivation()
+    public function previousActivation(): MorphOne
     {
         return $this->morphOne(Activation::class, 'activatable')
             ->latest('ended_at')
@@ -74,7 +76,7 @@ trait Activations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function previousActivations()
+    public function previousActivations(): MorphMany
     {
         return $this->activations()
             ->whereNotNull('ended_at');
@@ -85,7 +87,7 @@ trait Activations
      *
      * @return bool
      */
-    public function isCurrentlyActivated()
+    public function isCurrentlyActivated(): bool
     {
         return $this->currentActivation()->exists();
     }
@@ -95,7 +97,7 @@ trait Activations
      *
      * @return bool
      */
-    public function hasActivations()
+    public function hasActivations(): bool
     {
         return $this->activations()->count() > 0;
     }
@@ -105,7 +107,7 @@ trait Activations
      *
      * @return bool
      */
-    public function isUnactivated()
+    public function isUnactivated(): bool
     {
         return $this->activations()->count() === 0;
     }
@@ -115,7 +117,7 @@ trait Activations
      *
      * @return bool
      */
-    public function isInactive()
+    public function isInactive(): bool
     {
         return $this->currentActivation()->count() === 0;
     }
@@ -125,7 +127,7 @@ trait Activations
      *
      * @return bool
      */
-    public function hasFutureActivation()
+    public function hasFutureActivation(): bool
     {
         return $this->futureActivation()->exists();
     }
@@ -152,7 +154,7 @@ trait Activations
      *
      * @return bool
      */
-    public function isNotActivation()
+    public function isNotActivation(): bool
     {
         return $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }
@@ -163,7 +165,7 @@ trait Activations
      * @param  \Illuminate\Support\Carbon  $activationDate
      * @return bool|null
      */
-    public function activatedOn(Carbon $activationDate)
+    public function activatedOn(Carbon $activationDate): ?bool
     {
         return $this->currentActivation?->started_at->eq($activationDate);
     }
@@ -174,7 +176,7 @@ trait Activations
      * @param  \Illuminate\Support\Carbon  $activationDate
      * @return bool
      */
-    public function canHaveActivationStartDateChanged(Carbon $activationDate)
+    public function canHaveActivationStartDateChanged(Carbon $activationDate): bool
     {
         return $this->hasFutureActivation() && ! $this->activatedOn($activationDate);
     }

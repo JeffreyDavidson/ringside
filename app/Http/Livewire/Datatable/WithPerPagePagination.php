@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Datatable;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
 
 trait WithPerPagePagination
@@ -22,7 +24,7 @@ trait WithPerPagePagination
      *
      * @return void
      */
-    public function mountWithPerPagePagination()
+    public function mountWithPerPagePagination(): void
     {
         $this->perPage = session()->get('perPage', $this->perPage);
     }
@@ -33,7 +35,7 @@ trait WithPerPagePagination
      * @param  int  $value
      * @return void
      */
-    public function updatedPerPage($value)
+    public function updatedPerPage(int $value): void
     {
         session()->put('perPage', $value);
     }
@@ -44,7 +46,7 @@ trait WithPerPagePagination
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function applyPagination($query)
+    public function applyPagination(Builder $query): LengthAwarePaginator
     {
         return $query->paginate($this->perPage);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Managers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Managers\SuspendAction;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class SuspendController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Manager $manager)
+    public function __invoke(Manager $manager): RedirectResponse
     {
         $this->authorize('suspend', $manager);
 

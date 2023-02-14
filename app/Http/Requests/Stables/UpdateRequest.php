@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user()) || is_null($this->route())) {
             return false;
@@ -44,7 +44,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         /** @var \App\Models\Stable $stable */
         $stable = $this->route()->parameter('stable');
@@ -99,7 +99,7 @@ class UpdateRequest extends FormRequest
      *
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'members_count' => ($this->collect('tag_teams')->count() * 2) + $this->collect('wrestlers')->count(),

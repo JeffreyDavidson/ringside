@@ -37,7 +37,7 @@ class TitleChampionIncludedInTitleMatch implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         if ($this->titleIds->isEmpty()) {
             return true;
@@ -66,7 +66,7 @@ class TitleChampionIncludedInTitleMatch implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This match requires the champion to be involved.';
     }

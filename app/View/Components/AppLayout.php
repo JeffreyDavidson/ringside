@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
+use Illuminate\View\View;
 use Illuminate\View\Component;
 
 class AppLayout extends Component
@@ -13,7 +14,7 @@ class AppLayout extends Component
      *
      * @return \Illuminate\View\View
      */
-    public function render()
+    public function render(): View
     {
         return view('components.layouts.app');
     }

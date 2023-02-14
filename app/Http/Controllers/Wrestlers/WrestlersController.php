@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Wrestlers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Wrestlers\CreateAction;
 use App\Actions\Wrestlers\DeleteAction;
 use App\Actions\Wrestlers\UpdateAction;
@@ -20,7 +22,7 @@ class WrestlersController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', Wrestler::class);
 
@@ -33,7 +35,7 @@ class WrestlersController extends Controller
      * @param  Wrestler  $wrestler
      * @return \Illuminate\View\View
      */
-    public function create(Wrestler $wrestler)
+    public function create(Wrestler $wrestler): View
     {
         $this->authorize('create', Wrestler::class);
 
@@ -48,7 +50,7 @@ class WrestlersController extends Controller
      * @param  \App\Http\Requests\Wrestlers\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(WrestlerData::fromStoreRequest($request));
 
@@ -61,7 +63,7 @@ class WrestlersController extends Controller
      * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\View\View
      */
-    public function show(Wrestler $wrestler)
+    public function show(Wrestler $wrestler): View
     {
         $this->authorize('view', $wrestler);
 
@@ -76,7 +78,7 @@ class WrestlersController extends Controller
      * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\View\View
      */
-    public function edit(Wrestler $wrestler)
+    public function edit(Wrestler $wrestler): View
     {
         $this->authorize('update', $wrestler);
 
@@ -92,7 +94,7 @@ class WrestlersController extends Controller
      * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Wrestler $wrestler)
+    public function update(UpdateRequest $request, Wrestler $wrestler): RedirectResponse
     {
         UpdateAction::run($wrestler, WrestlerData::fromUpdateRequest($request));
 
@@ -105,7 +107,7 @@ class WrestlersController extends Controller
      * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Wrestler $wrestler)
+    public function destroy(Wrestler $wrestler): RedirectResponse
     {
         $this->authorize('delete', $wrestler);
 

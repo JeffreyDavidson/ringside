@@ -19,7 +19,7 @@ class AddTitlesToMatchAction extends BaseEventMatchAction
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Title>  $titles
      * @return void
      */
-    public function handle(EventMatch $eventMatch, $titles): void
+    public function handle(EventMatch $eventMatch, \Illuminate\Database\Eloquent\Collection<int,\App\Models\Title> $titles): void
     {
         $titles->map(
             fn (Title $title) => $this->eventMatchRepository->addTitleToMatch($eventMatch, $title)

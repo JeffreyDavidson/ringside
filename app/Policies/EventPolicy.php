@@ -17,7 +17,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -28,7 +28,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -39,7 +39,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function delete(User $user)
+    public function delete(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -50,7 +50,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function restore(User $user)
+    public function restore(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -61,7 +61,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function viewList(User $user)
+    public function viewList(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -72,7 +72,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function view(User $user)
+    public function view(User $user): bool
     {
         return $user->isAdministrator();
     }
@@ -83,7 +83,7 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function addMatches(User $user)
+    public function addMatches(User $user): bool
     {
         return $user->isAdministrator();
     }

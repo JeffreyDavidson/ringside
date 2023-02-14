@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Referees;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Referees\CreateAction;
 use App\Actions\Referees\DeleteAction;
 use App\Actions\Referees\UpdateAction;
@@ -20,7 +22,7 @@ class RefereesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewList', Referee::class);
 
@@ -33,7 +35,7 @@ class RefereesController extends Controller
      * @param  \App\Models\Referee  $referee
      * @return \Illuminate\View\View
      */
-    public function create(Referee $referee)
+    public function create(Referee $referee): View
     {
         $this->authorize('create', Referee::class);
 
@@ -48,7 +50,7 @@ class RefereesController extends Controller
      * @param  \App\Http\Requests\Referees\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         CreateAction::run(RefereeData::fromStoreRequest($request));
 
@@ -61,7 +63,7 @@ class RefereesController extends Controller
      * @param  \App\Models\Referee  $referee
      * @return \Illuminate\View\View
      */
-    public function show(Referee $referee)
+    public function show(Referee $referee): View
     {
         $this->authorize('view', $referee);
 
@@ -76,7 +78,7 @@ class RefereesController extends Controller
      * @param  \App\Models\Referee  $referee
      * @return \Illuminate\View\View
      */
-    public function edit(Referee $referee)
+    public function edit(Referee $referee): View
     {
         $this->authorize('update', $referee);
 
@@ -92,7 +94,7 @@ class RefereesController extends Controller
      * @param  \App\Models\Referee  $referee
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Referee $referee)
+    public function update(UpdateRequest $request, Referee $referee): RedirectResponse
     {
         UpdateAction::run($referee, RefereeData::fromUpdateRequest($request));
 
@@ -105,7 +107,7 @@ class RefereesController extends Controller
      * @param  \App\Models\Referee  $referee
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Referee $referee)
+    public function destroy(Referee $referee): RedirectResponse
     {
         $this->authorize('delete', $referee);
 

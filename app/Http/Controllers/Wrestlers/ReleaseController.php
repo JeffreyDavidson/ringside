@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Wrestlers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Wrestlers\ReleaseAction;
 use App\Exceptions\CannotBeReleasedException;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class ReleaseController extends Controller
      * @param  \App\Models\Wrestler  $wrestler
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Wrestler $wrestler)
+    public function __invoke(Wrestler $wrestler): RedirectResponse
     {
         $this->authorize('release', $wrestler);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Venues;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Venues\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
@@ -16,7 +17,7 @@ class RestoreController extends Controller
      * @param  int  $venueId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke($venueId)
+    public function __invoke(int $venueId): RedirectResponse
     {
         $venue = Venue::onlyTrashed()->findOrFail($venueId);
 

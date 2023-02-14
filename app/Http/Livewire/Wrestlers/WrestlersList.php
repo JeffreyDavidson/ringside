@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wrestlers;
 
+use Illuminate\View\View;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
@@ -35,7 +36,7 @@ class WrestlersList extends BaseComponent
      *
      * @return void
      */
-    public function getRowsQueryProperty()
+    public function getRowsQueryProperty(): void
     {
         $query = Wrestler::query()
             ->when($this->filters['search'], fn ($query, $search) => $query->where('name', 'like', '%'.$search.'%'))
@@ -49,7 +50,7 @@ class WrestlersList extends BaseComponent
      *
      * @return void
      */
-    public function getRowsProperty()
+    public function getRowsProperty(): void
     {
         return $this->applyPagination($this->rowsQuery);
     }
@@ -59,7 +60,7 @@ class WrestlersList extends BaseComponent
      *
      * @return \Illuminate\View\View
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.wrestlers.wrestlers-list', [
             'wrestlers' => $this->rows,

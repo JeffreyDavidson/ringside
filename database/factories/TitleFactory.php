@@ -19,7 +19,7 @@ class TitleFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => str($this->faker->unique()->words(2, true))->title().' Title',

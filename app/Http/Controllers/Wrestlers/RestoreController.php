@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Wrestlers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Wrestlers\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Wrestler;
@@ -16,7 +17,7 @@ class RestoreController extends Controller
      * @param  int  $wrestlerId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(int $wrestlerId)
+    public function __invoke(int $wrestlerId): RedirectResponse
     {
         $wrestler = Wrestler::onlyTrashed()->findOrFail($wrestlerId);
 

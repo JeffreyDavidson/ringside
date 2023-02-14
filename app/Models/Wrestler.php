@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Builders\WrestlerQueryBuilder;
 use App\Enums\WrestlerStatus;
 use App\Models\Contracts\Bookable;
@@ -54,7 +56,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\WrestlerQueryBuilder<Wrestler>
      */
-    public function newEloquentBuilder($query): WrestlerQueryBuilder
+    public function newEloquentBuilder(Builder $query): WrestlerQueryBuilder
     {
         return new WrestlerQueryBuilder($query);
     }
@@ -64,7 +66,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function eventMatches()
+    public function eventMatches(): MorphToMany
     {
         return $this->morphToMany(EventMatch::class, 'event_match_competitor');
     }

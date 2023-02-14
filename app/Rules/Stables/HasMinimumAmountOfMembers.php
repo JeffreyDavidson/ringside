@@ -62,7 +62,7 @@ class HasMinimumAmountOfMembers implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         if ($this->stable->isCurrentlyActivated()) {
             $tagTeamsCountFromRequest = $this->tagTeams->count();
@@ -83,7 +83,7 @@ class HasMinimumAmountOfMembers implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return "{$this->stable->name} is currently activated and the activation date cannot be changed.";
     }

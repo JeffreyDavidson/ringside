@@ -27,7 +27,7 @@ class CompetitorsAreValid implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, array $value): bool
     {
         $diffWrestlers = [];
         $diffTagTeams = [];
@@ -63,7 +63,7 @@ class CompetitorsAreValid implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return $this->message;
     }

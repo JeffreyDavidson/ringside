@@ -35,7 +35,7 @@ class ActivationStartDateCanBeChanged implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, Carbon $value): bool
     {
         if ($this->stable->isCurrentlyActivated() && ! $this->stable->activatedOn(Carbon::parse($value))) {
             return false;
@@ -49,7 +49,7 @@ class ActivationStartDateCanBeChanged implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return "{$this->stable->name} is currently activated and the activation date cannot be changed.";
     }

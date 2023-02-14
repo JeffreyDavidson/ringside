@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Stables;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Stables\RetireAction;
 use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class RetireController extends Controller
      * @param  \App\Models\Stable  $stable
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Stable $stable)
+    public function __invoke(Stable $stable): RedirectResponse
     {
         $this->authorize('retire', $stable);
 

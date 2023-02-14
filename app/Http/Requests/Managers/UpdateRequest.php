@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user()) || is_null($this->route())) {
             return false;
@@ -40,7 +40,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         /** @var \App\Models\Manager $manager */
         $manager = $this->route()->parameter('manager');
@@ -57,7 +57,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'first_name' => 'first name',

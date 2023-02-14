@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\RosterMemberQueryBuilder;
 use App\Models\Employment;
 use App\Models\Retirement;
 use App\Models\Suspension;
@@ -21,7 +22,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function suspended()
+    public function suspended(): RosterMemberQueryBuilder
     {
         return $this->whereHas('currentSuspension');
     }
@@ -31,7 +32,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function withCurrentSuspendedAtDate()
+    public function withCurrentSuspendedAtDate(): RosterMemberQueryBuilder
     {
         return $this->addSelect([
             'current_suspended_at' => Suspension::select('started_at')
@@ -48,7 +49,7 @@ class RosterMemberQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function orderByCurrentSuspendedAtDate(string $direction = 'asc')
+    public function orderByCurrentSuspendedAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
         return $this->orderByRaw("DATE(current_suspended_at) {$direction}");
     }
@@ -58,7 +59,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function retired()
+    public function retired(): RosterMemberQueryBuilder
     {
         return $this->whereHas('currentRetirement');
     }
@@ -68,7 +69,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function withCurrentRetiredAtDate()
+    public function withCurrentRetiredAtDate(): RosterMemberQueryBuilder
     {
         return $this->addSelect([
             'current_retired_at' => Retirement::select('started_at')
@@ -85,7 +86,7 @@ class RosterMemberQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function orderByCurrentRetiredAtDate(string $direction = 'asc')
+    public function orderByCurrentRetiredAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
         return $this->orderByRaw("DATE(current_retired_at) {$direction}");
     }
@@ -95,7 +96,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function released()
+    public function released(): RosterMemberQueryBuilder
     {
         return $this->whereHas('previousEmployment')
             ->whereDoesntHave('currentEmployment')
@@ -107,7 +108,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function withReleasedAtDate()
+    public function withReleasedAtDate(): RosterMemberQueryBuilder
     {
         return $this->addSelect([
             'released_at' => Employment::select('ended_at')
@@ -124,7 +125,7 @@ class RosterMemberQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function orderByCurrentReleasedAtDate(string $direction = 'asc')
+    public function orderByCurrentReleasedAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
         return $this->orderByRaw("DATE(current_released_at) {$direction}");
     }
@@ -134,7 +135,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function employed()
+    public function employed(): RosterMemberQueryBuilder
     {
         return $this->whereHas('currentEmployment');
     }
@@ -144,7 +145,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function futureEmployed()
+    public function futureEmployed(): RosterMemberQueryBuilder
     {
         return $this->whereHas('futureEmployment');
     }
@@ -154,7 +155,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function unemployed()
+    public function unemployed(): RosterMemberQueryBuilder
     {
         return $this->whereDoesntHave('employments');
     }
@@ -164,7 +165,7 @@ class RosterMemberQueryBuilder extends Builder
      *
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function withFirstEmployedAtDate()
+    public function withFirstEmployedAtDate(): RosterMemberQueryBuilder
     {
         return $this->addSelect([
             'first_employed_at' => Employment::select('started_at')
@@ -181,7 +182,7 @@ class RosterMemberQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\RosterMemberQueryBuilder
      */
-    public function orderByFirstEmployedAtDate(string $direction = 'asc')
+    public function orderByFirstEmployedAtDate(string $direction = 'asc'): RosterMemberQueryBuilder
     {
         return $this->orderByRaw("DATE(first_employed_at) {$direction}");
     }

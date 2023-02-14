@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\WrestlerQueryBuilder;
+
 /**
  * @template TModelClass of \App\Models\Wrestler
  *
@@ -16,7 +18,7 @@ class WrestlerQueryBuilder extends SingleRosterMemberQueryBuilder
      *
      * @return \App\Builders\WrestlerQueryBuilder
      */
-    public function bookable()
+    public function bookable(): WrestlerQueryBuilder
     {
         return $this->whereHas('currentEmployment')
             ->whereDoesntHave('currentSuspension')

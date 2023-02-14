@@ -11,7 +11,7 @@ trait Competable
      *
      * @return bool
      */
-    public function isCompetable()
+    public function isCompetable(): bool
     {
         if ($this->isNotActivation() || $this->isDeactivated() || $this->isRetired() || $this->hasFutureActivation()) {
             return false;

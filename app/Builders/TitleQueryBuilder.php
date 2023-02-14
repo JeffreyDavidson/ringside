@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Activation;
 use App\Models\Retirement;
@@ -23,7 +24,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function retired()
+    public function retired(): TitleQueryBuilder
     {
         return $this->whereHas('currentRetirement');
     }
@@ -33,7 +34,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function withCurrentRetiredAtDate()
+    public function withCurrentRetiredAtDate(): TitleQueryBuilder
     {
         return $this->addSelect([
             'current_retired_at' => Retirement::select('started_at')
@@ -50,7 +51,7 @@ class TitleQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function orderByCurrentRetiredAtDate($direction = 'asc')
+    public function orderByCurrentRetiredAtDate(string $direction = 'asc'): TitleQueryBuilder
     {
         return $this->orderByRaw("DATE(current_retired_at) {$direction}");
     }
@@ -60,7 +61,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function deactivated()
+    public function deactivated(): TitleQueryBuilder
     {
         return $this->whereDoesntHave('currentActivation')
             ->orWhereDoesntHave('previousActivations');
@@ -71,7 +72,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function withLastDeactivationDate()
+    public function withLastDeactivationDate(): TitleQueryBuilder
     {
         return $this->addSelect([
             'last_deactivated_at' => Activation::select('ended_at')
@@ -88,7 +89,7 @@ class TitleQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function orderByLastDeactivationDate(string $direction = 'asc')
+    public function orderByLastDeactivationDate(string $direction = 'asc'): TitleQueryBuilder
     {
         return $this->orderByRaw("DATE(last_deactivated_at) {$direction}");
     }
@@ -98,7 +99,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function active()
+    public function active(): TitleQueryBuilder
     {
         return $this->whereHas('currentActivation');
     }
@@ -108,7 +109,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function withFutureActivation()
+    public function withFutureActivation(): TitleQueryBuilder
     {
         return $this->whereHas('futureActivation');
     }
@@ -118,7 +119,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function inactive()
+    public function inactive(): TitleQueryBuilder
     {
         return $this->whereHas('previousActivation')
             ->whereDoesntHave('futureActivation')
@@ -131,7 +132,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function unactivated()
+    public function unactivated(): TitleQueryBuilder
     {
         return $this->whereDoesntHave('activations');
     }
@@ -141,7 +142,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function withFirstActivatedAtDate()
+    public function withFirstActivatedAtDate(): TitleQueryBuilder
     {
         return $this->addSelect([
             'first_activated_at' => Activation::select('started_at')
@@ -158,7 +159,7 @@ class TitleQueryBuilder extends Builder
      * @param  string  $direction
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function orderByFirstActivatedAtDate(string $direction = 'asc')
+    public function orderByFirstActivatedAtDate(string $direction = 'asc'): TitleQueryBuilder
     {
         return $this->orderByRaw("DATE(first_activated_at) {$direction}");
     }
@@ -168,7 +169,7 @@ class TitleQueryBuilder extends Builder
      *
      * @return \App\Builders\TitleQueryBuilder
      */
-    public function competable()
+    public function competable(): TitleQueryBuilder
     {
         return $this->where('status', TitleStatus::ACTIVE);
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\RefereeQueryBuilder;
+
 /**
  * @template TModelClass of \App\Models\Referee
  *
@@ -16,7 +18,7 @@ class RefereeQueryBuilder extends SingleRosterMemberQueryBuilder
      *
      * @return \App\Builders\RefereeQueryBuilder
      */
-    public function bookable()
+    public function bookable(): RefereeQueryBuilder
     {
         return $this->whereHas('currentEmployment')
             ->whereDoesntHave('currentSuspension')

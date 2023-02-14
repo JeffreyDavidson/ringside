@@ -14,7 +14,7 @@ class EventsTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $eNum = 1;
 

@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (is_null($this->user())) {
             return false;
@@ -39,7 +39,7 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('stables', 'name')],
@@ -76,7 +76,7 @@ class StoreRequest extends FormRequest
      *
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $wrestlersCount = count($this->input('wrestlers', []));
         $tagTeamsCount = count($this->input('tag_teams', [])) * 2;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Builders;
 
+use App\Builders\EventQueryBuilder;
 use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,7 +20,7 @@ class EventQueryBuilder extends Builder
      *
      * @return \App\Builders\EventQueryBuilder
      */
-    public function scheduled()
+    public function scheduled(): EventQueryBuilder
     {
         return $this->where('status', EventStatus::SCHEDULED)->whereNotNull('date');
     }
@@ -29,7 +30,7 @@ class EventQueryBuilder extends Builder
      *
      * @return \App\Builders\EventQueryBuilder
      */
-    public function unscheduled()
+    public function unscheduled(): EventQueryBuilder
     {
         return $this->where('status', EventStatus::UNSCHEDULED)->whereNull('date');
     }
@@ -39,7 +40,7 @@ class EventQueryBuilder extends Builder
      *
      * @return \App\Builders\EventQueryBuilder
      */
-    public function past()
+    public function past(): EventQueryBuilder
     {
         return $this->where('status', EventStatus::PAST)->where('date', '<', now()->toDateString());
     }

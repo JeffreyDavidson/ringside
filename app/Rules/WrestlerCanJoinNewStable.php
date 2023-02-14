@@ -18,7 +18,7 @@ class WrestlerCanJoinNewStable implements Rule
      * @param  array  $tagTeamIds
      * @return void
      */
-    public function __construct($tagTeamIds)
+    public function __construct(array $tagTeamIds)
     {
         $this->tagTeamIds = $tagTeamIds;
     }
@@ -32,7 +32,7 @@ class WrestlerCanJoinNewStable implements Rule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function passes($attribute, $value)
+    public function passes(string $attribute, $value): bool
     {
         /** @var \App\Models\Wrestler $wrestler */
         $wrestler = Wrestler::with(['currentStable'])->find($value);
@@ -57,7 +57,7 @@ class WrestlerCanJoinNewStable implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         return 'This wrestler is already a member of a stable.';
     }

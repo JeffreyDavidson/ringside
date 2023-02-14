@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Managers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Managers\RestoreAction;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
@@ -16,7 +17,7 @@ class RestoreController extends Controller
      * @param  int  $managerId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(int $managerId)
+    public function __invoke(int $managerId): RedirectResponse
     {
         $manager = Manager::onlyTrashed()->findOrFail($managerId);
 

@@ -23,7 +23,7 @@ class TitleRepository
      * @param  \App\Data\TitleData  $titleData
      * @return \App\Models\Title
      */
-    public function update(Title $title, TitleData $titleData)
+    public function update(Title $title, TitleData $titleData): Title
     {
         $title->update([
             'name' => $titleData->name,
@@ -38,7 +38,7 @@ class TitleRepository
      * @param  \App\Models\Title  $title
      * @return void
      */
-    public function delete(Title $title)
+    public function delete(Title $title): void
     {
         $title->delete();
     }
@@ -49,7 +49,7 @@ class TitleRepository
      * @param  \App\Models\Title  $title
      * @return void
      */
-    public function restore(Title $title)
+    public function restore(Title $title): void
     {
         $title->restore();
     }
@@ -61,7 +61,7 @@ class TitleRepository
      * @param  \Illuminate\Support\Carbon  $activationDate
      * @return \App\Models\Title
      */
-    public function activate(Title $title, Carbon $activationDate)
+    public function activate(Title $title, Carbon $activationDate): Title
     {
         $title->activations()->updateOrCreate(
             ['ended_at' => null],
@@ -79,7 +79,7 @@ class TitleRepository
      * @param  \Illuminate\Support\Carbon  $deactivationDate
      * @return \App\Models\Title
      */
-    public function deactivate(Title $title, Carbon $deactivationDate)
+    public function deactivate(Title $title, Carbon $deactivationDate): Title
     {
         $title->currentActivation()->update(['ended_at' => $deactivationDate->toDateTimeString()]);
         $title->save();
@@ -94,7 +94,7 @@ class TitleRepository
      * @param  \Illuminate\Support\Carbon  $retirementDate
      * @return \App\Models\Title
      */
-    public function retire(Title $title, Carbon $retirementDate)
+    public function retire(Title $title, Carbon $retirementDate): Title
     {
         $title->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
         $title->save();
@@ -109,7 +109,7 @@ class TitleRepository
      * @param  \Illuminate\Support\Carbon  $unretireDate
      * @return \App\Models\Title
      */
-    public function unretire(Title $title, Carbon $unretireDate)
+    public function unretire(Title $title, Carbon $unretireDate): Title
     {
         $title->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
         $title->save();

@@ -37,7 +37,7 @@ class UpdateMembersAction extends BaseStableAction
      * @param  \Illuminate\Support\Carbon  $now
      * @return void
      */
-    protected function updateWrestlers(Stable $stable, Collection $wrestlers, Carbon $now)
+    protected function updateWrestlers(Stable $stable, Collection $wrestlers, Carbon $now): void
     {
         if ($stable->currentWrestlers->isEmpty()) {
             $this->stableRepository->addWrestlers($stable, $wrestlers, $now);
@@ -59,7 +59,7 @@ class UpdateMembersAction extends BaseStableAction
      * @param  \Illuminate\Support\Carbon  $now
      * @return void
      */
-    protected function updateTagTeams(Stable $stable, Collection $tagTeams, Carbon $now)
+    protected function updateTagTeams(Stable $stable, Collection $tagTeams, Carbon $now): void
     {
         if ($stable->currentTagTeams->isEmpty()) {
             $this->stableRepository->addTagTeams($stable, $tagTeams, $now);

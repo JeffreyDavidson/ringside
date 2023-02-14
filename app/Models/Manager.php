@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
 use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
 use App\Models\Contracts\CanBeAStableMember;
@@ -49,7 +50,7 @@ class Manager extends SingleRosterMember implements CanBeAStableMember, Employab
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\ManagerQueryBuilder<Manager>
      */
-    public function newEloquentBuilder($query): ManagerQueryBuilder
+    public function newEloquentBuilder(Builder $query): ManagerQueryBuilder
     {
         return new ManagerQueryBuilder($query);
     }
@@ -59,7 +60,7 @@ class Manager extends SingleRosterMember implements CanBeAStableMember, Employab
      *
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
         return $this->currentEmployment()->exists();
     }

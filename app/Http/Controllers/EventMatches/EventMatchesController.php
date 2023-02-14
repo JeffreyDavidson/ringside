@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EventMatches;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\EventMatches\AddMatchForEventAction;
 use App\Data\EventMatchData;
 use App\Http\Controllers\Controller;
@@ -19,7 +21,7 @@ class EventMatchesController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\View\View
      */
-    public function create(Event $event, EventMatch $match)
+    public function create(Event $event, EventMatch $match): View
     {
         $this->authorize('create', EventMatch::class);
 
@@ -36,7 +38,7 @@ class EventMatchesController extends Controller
      * @param  \App\Http\Requests\EventMatches\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Event $event, StoreRequest $request)
+    public function store(Event $event, StoreRequest $request): RedirectResponse
     {
         AddMatchForEventAction::run($event, EventMatchData::fromStoreRequest($request));
 

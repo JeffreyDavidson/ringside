@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
+use App\Builders\WrestlerQueryBuilder;
+use App\Models\TagTeam;
 use App\Data\WrestlerData;
 use App\Enums\WrestlerStatus;
 use App\Models\Wrestler;
@@ -17,7 +20,7 @@ class WrestlerRepository
      * @param  \App\Data\WrestlerData  $wrestlerData
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create(WrestlerData $wrestlerData)
+    public function create(WrestlerData $wrestlerData): Model
     {
         return Wrestler::create([
             'name' => $wrestlerData->name,
@@ -35,7 +38,7 @@ class WrestlerRepository
      * @param  \App\Data\WrestlerData  $wrestlerData
      * @return \App\Models\Wrestler
      */
-    public function update(Wrestler $wrestler, WrestlerData $wrestlerData)
+    public function update(Wrestler $wrestler, WrestlerData $wrestlerData): Wrestler
     {
         $wrestler->update([
             'name' => $wrestlerData->name,
@@ -54,7 +57,7 @@ class WrestlerRepository
      * @param  \App\Models\Wrestler  $wrestler
      * @return void
      */
-    public function delete(Wrestler $wrestler)
+    public function delete(Wrestler $wrestler): void
     {
         $wrestler->delete();
     }
@@ -65,7 +68,7 @@ class WrestlerRepository
      * @param  \App\Models\Wrestler  $wrestler
      * @return void
      */
-    public function restore(Wrestler $wrestler)
+    public function restore(Wrestler $wrestler): void
     {
         $wrestler->restore();
     }
@@ -77,7 +80,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $employmentDate
      * @return \App\Models\Wrestler
      */
-    public function employ(Wrestler $wrestler, Carbon $employmentDate)
+    public function employ(Wrestler $wrestler, Carbon $employmentDate): Wrestler
     {
         $wrestler->employments()->updateOrCreate(
             ['ended_at' => null],
@@ -95,7 +98,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $releaseDate
      * @return \App\Models\Wrestler
      */
-    public function release(Wrestler $wrestler, Carbon $releaseDate)
+    public function release(Wrestler $wrestler, Carbon $releaseDate): Wrestler
     {
         $wrestler->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
         $wrestler->save();
@@ -110,7 +113,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $injureDate
      * @return \App\Models\Wrestler
      */
-    public function injure(Wrestler $wrestler, Carbon $injureDate)
+    public function injure(Wrestler $wrestler, Carbon $injureDate): Wrestler
     {
         $wrestler->injuries()->create(['started_at' => $injureDate->toDateTimeString()]);
         $wrestler->save();
@@ -125,7 +128,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $recoveryDate
      * @return \App\Models\Wrestler
      */
-    public function clearInjury(Wrestler $wrestler, Carbon $recoveryDate)
+    public function clearInjury(Wrestler $wrestler, Carbon $recoveryDate): Wrestler
     {
         $wrestler->currentInjury()->update(['ended_at' => $recoveryDate->toDateTimeString()]);
         $wrestler->save();
@@ -140,7 +143,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $retirementDate
      * @return \App\Models\Wrestler
      */
-    public function retire(Wrestler $wrestler, Carbon $retirementDate)
+    public function retire(Wrestler $wrestler, Carbon $retirementDate): Wrestler
     {
         $wrestler->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
         $wrestler->save();
@@ -155,7 +158,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $unretireDate
      * @return \App\Models\Wrestler
      */
-    public function unretire(Wrestler $wrestler, Carbon $unretireDate)
+    public function unretire(Wrestler $wrestler, Carbon $unretireDate): Wrestler
     {
         $wrestler->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
         $wrestler->save();
@@ -170,7 +173,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $suspensionDate
      * @return \App\Models\Wrestler
      */
-    public function suspend(Wrestler $wrestler, Carbon $suspensionDate)
+    public function suspend(Wrestler $wrestler, Carbon $suspensionDate): Wrestler
     {
         $wrestler->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
         $wrestler->save();
@@ -185,7 +188,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $reinstateDate
      * @return \App\Models\Wrestler
      */
-    public function reinstate(Wrestler $wrestler, Carbon $reinstateDate)
+    public function reinstate(Wrestler $wrestler, Carbon $reinstateDate): Wrestler
     {
         $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
         $wrestler->save();
@@ -200,7 +203,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $employmentDate
      * @return \App\Models\Wrestler
      */
-    public function updateEmployment(Wrestler $wrestler, Carbon $employmentDate)
+    public function updateEmployment(Wrestler $wrestler, Carbon $employmentDate): Wrestler
     {
         $wrestler->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
 
@@ -214,7 +217,7 @@ class WrestlerRepository
      * @param  \Illuminate\Support\Carbon  $removalDate
      * @return void
      */
-    public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate)
+    public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate): void
     {
         $wrestler->update(['current_tag_team_id' => null]);
 
@@ -228,7 +231,7 @@ class WrestlerRepository
      *
      * @return \App\Builders\WrestlerQueryBuilder
      */
-    public static function getAvailableWrestlersForNewTagTeam()
+    public static function getAvailableWrestlersForNewTagTeam(): WrestlerQueryBuilder
     {
         // Each wrestler must be either:
         // have a currentEmployment (scope called employed)
@@ -257,7 +260,7 @@ class WrestlerRepository
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \App\Builders\WrestlerQueryBuilder
      */
-    public static function getAvailableWrestlersForExistingTagTeam($tagTeam)
+    public static function getAvailableWrestlersForExistingTagTeam(TagTeam $tagTeam): WrestlerQueryBuilder
     {
         // Each wrestler must be either:
         // have a currentEmployment (scope called employed)
