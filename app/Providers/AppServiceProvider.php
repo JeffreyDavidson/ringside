@@ -36,10 +36,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Relation::enforceMorphMap([
-            'wrestler' => 'App\Models\Wrestler',
-            'manager' => 'App\Models\Manager',
-            'title' => 'App\Models\Title',
-            'tagteam' => 'App\Models\TagTeam',
+            'wrestler' => \App\Models\Wrestler::class,
+            'manager' => \App\Models\Manager::class,
+            'title' => \App\Models\Title::class,
+            'tagteam' => \App\Models\TagTeam::class,
         ]);
     }
 }
