@@ -55,7 +55,7 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      *
      * @return \App\Builders\WrestlerQueryBuilder<Wrestler>
      */
-    public function newEloquentBuilder(Builder $query): WrestlerQueryBuilder
+    public function newEloquentBuilder($query): WrestlerQueryBuilder
     {
         return new WrestlerQueryBuilder($query);
     }

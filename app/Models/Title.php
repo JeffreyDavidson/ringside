@@ -49,7 +49,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      *
      * @return \App\Builders\TitleQueryBuilder<Title>
      */
-    public function newEloquentBuilder(Builder $query): TitleQueryBuilder
+    public function newEloquentBuilder( $query): TitleQueryBuilder
     {
         return new TitleQueryBuilder($query);
     }

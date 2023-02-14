@@ -56,7 +56,7 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \App\Builders\StableQueryBuilder<Stable>
      */
-    public function newEloquentBuilder(Builder $query): \App\Builders\StableQueryBuilder<\Stable>
+    public function newEloquentBuilder($query): StableQueryBuilder
     {
         return new StableQueryBuilder($query);
     }

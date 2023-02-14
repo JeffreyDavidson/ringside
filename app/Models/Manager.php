@@ -49,7 +49,7 @@ class Manager extends SingleRosterMember implements CanBeAStableMember, Employab
      *
      * @return \App\Builders\ManagerQueryBuilder<Manager>
      */
-    public function newEloquentBuilder(Builder $query): ManagerQueryBuilder
+    public function newEloquentBuilder($query): ManagerQueryBuilder
     {
         return new ManagerQueryBuilder($query);
     }

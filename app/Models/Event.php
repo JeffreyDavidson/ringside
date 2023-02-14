@@ -47,7 +47,7 @@ class Event extends Model
      *
      * @return \App\Builders\EventQueryBuilder<Event>
      */
-    public function newEloquentBuilder(Builder $query): EventQueryBuilder
+    public function newEloquentBuilder($query): EventQueryBuilder
     {
         return new EventQueryBuilder($query);
     }
