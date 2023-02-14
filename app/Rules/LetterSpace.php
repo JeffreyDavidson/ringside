@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use Closure;
 use Illuminate\Contracts\Validation\InvokableRule;
 
 class LetterSpace implements InvokableRule
@@ -16,7 +17,7 @@ class LetterSpace implements InvokableRule
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function __invoke($attribute, $value, $fail)
+    public function __invoke(string $attribute, mixed $value, Closure $fail)
     {
         if (! preg_match('/^[a-zA-Z\s,]+$/', $value)) {
             $fail('The :attribute only allows for letters and spaces.');
