@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Managers\ManagersController;
+use App\Models\Manager;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
@@ -8,7 +9,8 @@ test('create returns a view', function () {
     actingAs(administrator())
         ->get(action([ManagersController::class, 'create']))
         ->assertSuccessful()
-        ->assertViewIs('managers.create');
+        ->assertViewIs('managers.create')
+        ->assertViewHas('manager', new Manager);;
 });
 
 test('a basic user cannot view the form for creating a manager', function () {
