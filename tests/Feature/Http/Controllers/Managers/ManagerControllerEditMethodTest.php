@@ -2,13 +2,15 @@
 
 use App\Http\Controllers\Managers\ManagersController;
 use App\Models\Manager;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
 
 beforeEach(function () {
     $this->manager = Manager::factory()->create();
 });
 
 test('edit returns a view', function () {
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->get(action([ManagersController::class, 'edit'], $this->manager))
         ->assertStatus(200)
         ->assertViewIs('managers.edit')
