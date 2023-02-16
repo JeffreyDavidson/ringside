@@ -12,7 +12,7 @@ beforeEach(function () {
 test('edit returns a view', function () {
     actingAs(administrator())
         ->get(action([ManagersController::class, 'edit'], $this->manager))
-        ->assertStatus(200)
+        ->assertSuccessful()
         ->assertViewIs('managers.edit')
         ->assertViewHas('manager', $this->manager);
 });
