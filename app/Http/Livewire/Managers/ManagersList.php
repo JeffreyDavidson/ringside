@@ -38,7 +38,7 @@ class ManagersList extends BaseComponent
     ];
 
     /**
-     * Undocumented function.
+     * Get a collection of managers.
      */
     public function getRowsQueryProperty(): Builder
     {
@@ -52,7 +52,7 @@ class ManagersList extends BaseComponent
     }
 
     /**
-     * Undocumented function.
+     * Retreive the rows for the table.
      */
     public function getRowsProperty(): LengthAwarePaginator
     {
