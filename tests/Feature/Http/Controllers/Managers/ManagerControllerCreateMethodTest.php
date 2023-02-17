@@ -10,7 +10,7 @@ test('create returns a view', function () {
         ->get(action([ManagersController::class, 'create']))
         ->assertSuccessful()
         ->assertViewIs('managers.create')
-        ->assertViewHas('manager', new Manager);;
+        ->assertViewHas('manager', new Manager);
 });
 
 test('a basic user cannot view the form for creating a manager', function () {

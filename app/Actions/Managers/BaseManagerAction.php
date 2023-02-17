@@ -12,8 +12,6 @@ abstract class BaseManagerAction
 
     /**
      * Create a new base manager action instance.
-     *
-     * @param  \App\Repositories\ManagerRepository  $managerRepository
      */
     public function __construct(ManagerRepository $managerRepository)
     {

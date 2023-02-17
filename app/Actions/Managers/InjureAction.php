@@ -16,7 +16,6 @@ class InjureAction extends BaseManagerAction
     /**
      * Injure a manager.
      *
-     *
      * @throws \App\Exceptions\CannotBeInjuredException
      */
     public function handle(Manager $manager, ?Carbon $injureDate = null): void
