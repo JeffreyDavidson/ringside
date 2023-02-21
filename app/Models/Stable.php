@@ -62,8 +62,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
 
     /**
      * Get the retirements of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function retirements(): MorphMany
     {
@@ -72,8 +70,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
 
     /**
      * Get the current retirement of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function currentRetirement(): MorphOne
     {
@@ -85,8 +81,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
 
     /**
      * Get the previous retirements of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function previousRetirements(): MorphMany
     {
@@ -96,8 +90,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
 
     /**
      * Get the previous retirement of the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function previousRetirement(): MorphOne
     {
@@ -108,8 +100,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
 
     /**
      * Check to see if the model is retired.
-     *
-     * @return bool
      */
     public function isRetired(): bool
     {
@@ -118,20 +108,24 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
 
     /**
      * Check to see if the model has been activated.
-     *
-     * @return bool
      */
     public function hasRetirements(): bool
     {
         return $this->retirements()->count() > 0;
     }
 
-    public function canBeRetired()
+    /**
+     * Determine if the stable can be retired.
+     */
+    public function canBeRetired(): bool
     {
         return $this->isCurrentlyActivated() || $this->isDeactivated();
     }
 
-    public function canBeUnretired()
+    /**
+     * Determine if the stable can be unretired.
+     */
+    public function canBeUnretired(): bool
     {
         return $this->isRetired();
     }

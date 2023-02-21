@@ -20,7 +20,6 @@ class ActivateAction extends BaseStableAction
     /**
      * Activate a stable.
      *
-     *
      * @throws \App\Exceptions\CannotBeActivatedException
      */
     public function handle(Stable $stable, ?Carbon $startDate = null): void
@@ -31,13 +30,13 @@ class ActivateAction extends BaseStableAction
 
         if ($stable->currentWrestlers->isNotEmpty()) {
             $stable->currentWrestlers->each(
-                fn (Wrestler $wrestler) => WrestlerEmployAction::run($wrestler, $startDate)
+                fn (Wrestler $wrestler, int $key) => WrestlerEmployAction::run($wrestler, $startDate)
             );
         }
 
         if ($stable->currentTagTeams->isNotEmpty()) {
             $stable->currentTagTeams->each(
-                fn (TagTeam $tagTeam) => TagTeamEmployAction::run($tagTeam, $startDate)
+                fn (TagTeam $tagTeam, int $key) => TagTeamEmployAction::run($tagTeam, $startDate)
             );
         }
 

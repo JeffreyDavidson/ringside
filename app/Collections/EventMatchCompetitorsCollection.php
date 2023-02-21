@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Collections;
 
 use App\Models\EventMatchCompetitor;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class EventMatchCompetitorsCollection extends Collection
 {
     /**
-     * Undocumented function.
-     *
-     * @return \Illuminate\Support\Collection
+     * Get all competitors for a match grouped by side.
      */
     public function groupedBySide(): Collection
     {
@@ -20,9 +18,7 @@ class EventMatchCompetitorsCollection extends Collection
     }
 
     /**
-     * Undocumented function.
-     *
-     * @return \Illuminate\Support\Collection
+     * Get all competitors for a match grouped by their type.
      */
     public function groupedByCompetitorType(): Collection
     {

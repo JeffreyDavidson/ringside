@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor, Manageable
 {
@@ -128,7 +127,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
         return $this->morphToMany(EventMatch::class, 'event_match_competitor');
     }
 
-    public function canBeEmployed()
+    /**
+     * Determine if the tag team can be employed.
+     */
+    public function canBeEmployed(): bool
     {
         if ($this->isCurrentlyEmployed()) {
             return false;
@@ -145,7 +147,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
         return true;
     }
 
-    public function canBeReleased()
+    /**
+     * Determine if the tag team can be released.
+     */
+    public function canBeReleased(): bool
     {
         if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
@@ -154,7 +159,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
         return true;
     }
 
-    public function canBeReinstated()
+    /**
+     * Determine if the tag team can be reinstated.
+     */
+    public function canBeReinstated(): bool
     {
         if (! $this->isSuspended()) {
             return false;
@@ -163,7 +171,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
         return true;
     }
 
-    public function canBeSuspended()
+    /**
+     * Determine if the tag team can be suspended.
+     */
+    public function canBeSuspended(): bool
     {
         if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
@@ -176,7 +187,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
         return true;
     }
 
-    public function canBeRetired()
+    /**
+     * Determine if the tag team can be retired.
+     */
+    public function canBeRetired(): bool
     {
         if ($this->isNotInEmployment()) {
             return false;
@@ -185,7 +199,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
         return $this->isBookable() || $this->isUnbookable();
     }
 
-    public function canBeUnretired()
+    /**
+     * Determinei if the tag team can be unretired.
+     */
+    public function canBeUnretired(): bool
     {
         if (! $this->isRetired()) {
             return false;

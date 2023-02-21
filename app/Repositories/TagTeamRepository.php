@@ -141,7 +141,7 @@ class TagTeamRepository
         $joinDate ??= now();
 
         $wrestlers->each(
-            fn (Wrestler $wrestler) => $this->addTagTeamPartner($tagTeam, $wrestler->id, $joinDate)
+            fn (Wrestler $wrestler) => $this->addTagTeamPartner($tagTeam, $wrestler, $joinDate)
         );
 
         return $tagTeam;
@@ -164,7 +164,7 @@ class TagTeamRepository
         $formerTagTeamPartners->each(
             fn (Wrestler $formerTagTeamPartner) => $this->removeTagTeamPartner(
                 $tagTeam,
-                $formerTagTeamPartner->id,
+                $formerTagTeamPartner,
                 $date
             )
         );
@@ -172,7 +172,7 @@ class TagTeamRepository
         $newTagTeamPartners->each(
             fn (Wrestler $newTagTeamPartner) => $this->addTagTeamPartner(
                 $tagTeam,
-                $newTagTeamPartner->id,
+                $newTagTeamPartner,
                 $date
             )
         );
