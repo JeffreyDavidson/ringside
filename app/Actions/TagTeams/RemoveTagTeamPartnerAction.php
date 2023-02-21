@@ -20,6 +20,6 @@ class RemoveTagTeamPartnerAction extends BaseTagTeamAction
     {
         $removalDate ??= now();
 
-        $this->tagTeamRepository->removeTagTeamPartner($tagTeam, $wrestler->id, $removalDate);
+        $this->tagTeamRepository->removeTagTeamPartner($tagTeam, $wrestler, $removalDate);
     }
 }
