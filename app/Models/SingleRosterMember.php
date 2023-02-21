@@ -19,7 +19,7 @@ abstract class SingleRosterMember extends RosterMember
         return new SingleRosterMemberQueryBuilder($query);
     }
 
-    public function canBeEmployed()
+    public function canBeEmployed(): bool
     {
         if ($this->isCurrentlyEmployed()) {
             return false;
@@ -32,7 +32,7 @@ abstract class SingleRosterMember extends RosterMember
         return true;
     }
 
-    public function canBeSuspended()
+    public function canBeSuspended(): bool
     {
         if ($this->isNotInEmployment() || $this->hasFutureEmployment()) {
             return false;
@@ -49,12 +49,12 @@ abstract class SingleRosterMember extends RosterMember
         return true;
     }
 
-    public function canBeReinstated()
+    public function canBeReinstated(): bool
     {
         return $this->isSuspended();
     }
 
-    public function canBeUnretired()
+    public function canBeUnretired(): bool
     {
         if (! $this->isRetired()) {
             return false;

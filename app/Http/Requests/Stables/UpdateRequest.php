@@ -59,7 +59,6 @@ class UpdateRequest extends FormRequest
                     function () use ($stable) {
                         new HasMinimumAmountOfMembers(
                             $stable,
-                            $this->date('start_date'),
                             $this->collect('wrestlers'),
                             $this->collect('tag_teams')
                         );
