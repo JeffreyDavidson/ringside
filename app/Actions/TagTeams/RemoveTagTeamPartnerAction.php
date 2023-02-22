@@ -14,7 +14,7 @@ class RemoveTagTeamPartnerAction extends BaseTagTeamAction
     use AsAction;
 
     /**
-     * Update a given tag team with given wrestlers.
+     * Remove the wrestler from the tag team.
      */
     public function handle(TagTeam $tagTeam, Wrestler $wrestler, ?Carbon $removalDate = null): void
     {
