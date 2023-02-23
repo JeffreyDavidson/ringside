@@ -179,7 +179,7 @@ class WrestlerRepository
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      */
     public static function getAvailableWrestlersForNewTagTeam(): WrestlerQueryBuilder
     {
@@ -205,7 +205,7 @@ class WrestlerRepository
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      */
     public static function getAvailableWrestlersForExistingTagTeam(TagTeam $tagTeam): WrestlerQueryBuilder
     {
