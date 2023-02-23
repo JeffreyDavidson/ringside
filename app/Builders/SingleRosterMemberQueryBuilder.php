@@ -8,7 +8,6 @@ use App\Models\Injury;
 
 /**
  * @template TModelClass of \App\Models\SingleRosterMember
- *
  * @extends RosterMemberQueryBuilder<\App\Models\SingleRosterMember>
  */
 class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder

@@ -183,7 +183,7 @@ class TagTeamRepository
     /**
      * Remove wrestler from a tag team.
      */
-    public function removeTagTeamPartner(TagTeam $tagTeam,  Wrestler $tagTeamPartner, ?Carbon $removalDate = null): void
+    public function removeTagTeamPartner(TagTeam $tagTeam, Wrestler $tagTeamPartner, ?Carbon $removalDate = null): void
     {
         $removalDate ??= now();
 

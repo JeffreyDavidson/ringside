@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
@@ -49,7 +48,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      *
      * @return \App\Builders\TitleQueryBuilder<Title>
      */
-    public function newEloquentBuilder( $query): TitleQueryBuilder
+    public function newEloquentBuilder($query): TitleQueryBuilder
     {
         return new TitleQueryBuilder($query);
     }
