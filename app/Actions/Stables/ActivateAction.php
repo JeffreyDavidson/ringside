@@ -30,13 +30,13 @@ class ActivateAction extends BaseStableAction
 
         if ($stable->currentWrestlers->isNotEmpty()) {
             $stable->currentWrestlers->each(
-                fn (Wrestler $wrestler, int $key) => WrestlerEmployAction::run($wrestler, $startDate)
+                fn ($wrestler) => WrestlerEmployAction::run($wrestler, $startDate)
             );
         }
 
         if ($stable->currentTagTeams->isNotEmpty()) {
             $stable->currentTagTeams->each(
-                fn (TagTeam $tagTeam, int $key) => TagTeamEmployAction::run($tagTeam, $startDate)
+                fn ($tagTeam) => TagTeamEmployAction::run($tagTeam, $startDate)
             );
         }
 
