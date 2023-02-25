@@ -16,17 +16,4 @@ class EventMatchCompetitorsCollection extends Collection
     {
         return EventMatchCompetitor::findMany($this->modelKeys())->groupBy('side_number');
     }
-
-    /**
-     * Get all competitors for a match grouped by their type.
-     */
-    public function groupedByCompetitorType(): Collection
-    {
-        return $this->groupBy(function ($group) {
-            return match ($group->competitor_type) {
-                \App\Models\Wrestler::class => 'wrestlers',
-                \App\Models\TagTeam::class => 'tag_teams'
-            };
-        });
-    }
 }
