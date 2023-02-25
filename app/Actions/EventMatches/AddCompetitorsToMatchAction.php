@@ -16,7 +16,7 @@ class AddCompetitorsToMatchAction extends BaseEventMatchAction
     /**
      * Add competitors to an event match.
      *
-     * @param Collection<int, array> $competitors
+     * @param  Collection<int, array>  $competitors
      */
     public function handle(EventMatch $eventMatch, Collection $competitors): void
     {

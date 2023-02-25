@@ -8,8 +8,6 @@ use App\Actions\TagTeams\RetireAction as TagTeamsRetireAction;
 use App\Actions\Wrestlers\RetireAction as WrestlersRetireAction;
 use App\Exceptions\CannotBeRetiredException;
 use App\Models\Stable;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 

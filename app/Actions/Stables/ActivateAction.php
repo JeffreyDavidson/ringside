@@ -8,8 +8,6 @@ use App\Actions\TagTeams\EmployAction as TagTeamEmployAction;
 use App\Actions\Wrestlers\EmployAction as WrestlerEmployAction;
 use App\Exceptions\CannotBeActivatedException;
 use App\Models\Stable;
-use App\Models\TagTeam;
-use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 

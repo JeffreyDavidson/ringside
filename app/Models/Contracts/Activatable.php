@@ -95,7 +95,6 @@ interface Activatable
     /**
      * Check to see if the model was activated on a given date.
      *
-     * @param  \Illuminate\Support\Carbon  $activationDate
      * @return bool
      */
     public function activatedOn(Carbon $activationDate);
