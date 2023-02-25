@@ -6,7 +6,6 @@ namespace App\Builders;
 
 /**
  * @template TModelClass of \App\Models\Wrestler
- *
  * @extends SingleRosterMemberQueryBuilder<\App\Models\Wrestler>
  */
 class WrestlerQueryBuilder extends SingleRosterMemberQueryBuilder

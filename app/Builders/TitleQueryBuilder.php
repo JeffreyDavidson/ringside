@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
  * The query builder attached to a title.
  *
  * @template TModelClass of \App\Models\Title
- *
  * @extends Builder<TModelClass>
  */
 class TitleQueryBuilder extends Builder
