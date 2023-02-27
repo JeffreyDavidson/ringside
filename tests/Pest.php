@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Collection;
 use Tests\CreatesApplication;
@@ -18,10 +19,9 @@ use Tests\ValidatesRequests;
 |
 */
 
-uses(TestCase::class, CreatesApplication::class, LazilyRefreshDatabase::class)->in('Feature', 'Unit');
+uses(TestCase::class, CreatesApplication::class)->in('Feature', 'Unit');
 uses(ValidatesRequests::class)->in('Feature/Http/Requests');
 
-uses()->group('wrestlers', 'feature-wrestlers', 'roster', 'feature-roster')->in('Feature/Http/Controllers/Wrestlers');
 uses()->group('managers', 'feature-managers', 'roster', 'feature-roster')
     ->in(
         'Feature/Http/Controllers/Managers',
@@ -73,6 +73,14 @@ uses()
         'Feature/Http/Livewire/Titles',
         'Feature/Http/Requests/Titles',
         'Feature/Http/Repositories/TitleRepositoryTest.php'
+    );
+uses()->group('wrestlers', 'feature-wrestlers', 'roster', 'feature-roster')
+    ->in(
+        'Feature/Http/Actions/Wrestlers',
+        'Feature/Http/Controllers/Wrestlers',
+        'Feature/Http/Livewire/Wrestlers',
+        'Feature/Http/Requests/Wrestlers',
+        'Feature/Http/Repositories/WrestlerRepositoryTest.php'
     );
 
 beforeEach(function () {

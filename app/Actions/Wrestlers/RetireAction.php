@@ -23,7 +23,6 @@ class RetireAction extends BaseWrestlerAction
         throw_if($wrestler->isUnemployed(), CannotBeRetiredException::class, $wrestler.' is unemployed and cannot be retired.');
         throw_if($wrestler->hasFutureEmployment(), CannotBeRetiredException::class, $wrestler.' has not been officially employed and cannot be retired');
         throw_if($wrestler->isRetired(), CannotBeRetiredException::class, $wrestler.' is already retired.');
-        throw_if($wrestler->isReleased(), CannotBeRetiredException::class, $wrestler.' was released and cannot be retired. Re-employ this wrestler to retire them.');
 
         $retirementDate ??= now();
 
@@ -35,7 +34,9 @@ class RetireAction extends BaseWrestlerAction
             ClearInjuryAction::run($wrestler, $retirementDate);
         }
 
-        ReleaseAction::run($wrestler, $retirementDate);
+        if ($wrestler->isCurrentlyEmployed()) {
+            ReleaseAction::run($wrestler, $retirementDate);
+        }
 
         $this->wrestlerRepository->retire($wrestler, $retirementDate);
 

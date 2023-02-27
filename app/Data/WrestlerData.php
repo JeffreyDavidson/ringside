@@ -15,9 +15,9 @@ class WrestlerData
      */
     public function __construct(
         public string $name,
-        public ?int $height,
-        public ?int $weight,
-        public ?string $hometown,
+        public int $height,
+        public int $weight,
+        public string $hometown,
         public ?string $signature_move,
         public ?Carbon $start_date,
     ) {
