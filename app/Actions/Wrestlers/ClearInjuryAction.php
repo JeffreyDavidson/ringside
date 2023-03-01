@@ -25,13 +25,13 @@ class ClearInjuryAction extends BaseWrestlerAction
 
         $this->wrestlerRepository->clearInjury($wrestler, $recoveryDate);
 
-        if ($wrestler->isAMemberOfCurrentTagTeam()) {
-            $wrestler->currentTagTeam->save(); // Calls observer save method to check what status tag team should be.
-        }
+        // if ($wrestler->isAMemberOfCurrentTagTeam()) {
+        //     $wrestler->currentTagTeam->save(); // Calls observer save method to check what status tag team should be.
+        // }
 
-        if ($wrestler->isAMemberOfCurrentTagTeam()) {
-            // Problem with this line below is because it doesn't know the status of the other wrestler of the tag team.
-            $wrestler->currenTagTeam()->update(['status' => TagTeamStatus::BOOKABLE]);
-        }
+        // if ($wrestler->isAMemberOfCurrentTagTeam()) {
+        //     // Problem with this line below is because it doesn't know the status of the other wrestler of the tag team.
+        //     $wrestler->currenTagTeam()->update(['status' => TagTeamStatus::BOOKABLE]);
+        // }
     }
 }

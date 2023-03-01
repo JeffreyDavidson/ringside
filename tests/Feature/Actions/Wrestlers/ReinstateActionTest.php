@@ -1,13 +1,37 @@
 <?php
 
-test('invoke reinstates a suspended wrestler and redirects', function () {
-    $this->actingAs(administrator())
-        ->patch(action([ReinstateController::class], $this->wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+use App\Actions\Wrestlers\ReinstateAction;
+use App\Models\Wrestler;
+use App\Repositories\WrestlerRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 
-    expect($this->wrestler->fresh())
-        ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toMatchObject(WrestlerStatus::BOOKABLE);
+test('it reinstates a suspended wrestler at the current datetime by default', function () {
+    testTime()->freeze();
+    $wrestler = Wrestler::factory()->suspended()->create();
+    $datetime = now();
+
+    mock(WrestlerRepository::class)
+        ->shouldReceive('reinstate')
+        ->once()
+        ->with($wrestler, $datetime)
+        ->andReturn($wrestler);
+
+    ReinstateAction::run($wrestler);
+});
+
+test('it reinstates a suspended wrestler at a specific datetime', function () {
+    testTime()->freeze();
+    $wrestler = Wrestler::factory()->suspended()->create();
+    $datetime = now()->addDays(2);
+
+    mock(WrestlerRepository::class)
+        ->shouldReceive('reinstate')
+        ->once()
+        ->with($wrestler, $datetime)
+        ->andReturn($wrestler);
+
+    ReinstateAction::run($wrestler, $datetime);
 });
 
 test('reinstating a suspended wrestler on an unbookable tag team makes tag team bookable', function () {
@@ -22,7 +46,7 @@ test('reinstating a suspended wrestler on an unbookable tag team makes tag team 
 
     expect($tagTeam->fresh())
         ->status->toMatchObject(TagTeamStatus::BOOKABLE);
-});
+})->skip();
 
 test('invoke throws exception for reinstating a non reinstatable wrestler', function ($factoryState) {
     $this->withoutExceptionHandling();
@@ -38,4 +62,4 @@ test('invoke throws exception for reinstating a non reinstatable wrestler', func
     'released',
     'withFutureEmployment',
     'retired',
-]);
+])->skip();

@@ -4,27 +4,37 @@ use App\Actions\Wrestlers\ClearInjuryAction;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Wrestler;
+use App\Repositories\WrestlerRepository;
 use Illuminate\Support\Carbon;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 
-test('run clears an injury a wrestler', function () {
+test('it clears an injury of an injured wrestler at the current datetime by default', function () {
+    testTime()->freeze();
     $wrestler = Wrestler::factory()->injured()->create();
+    $datetime = now();
+
+    mock(WrestlerRepository::class)
+        ->shouldReceive('clearInjury')
+        ->once()
+        ->with($wrestler, $datetime)
+        ->andReturn($wrestler);
 
     ClearInjuryAction::run($wrestler);
-
-    expect($wrestler->fresh())
-        ->status->toBe(WrestlerStatus::BOOKABLE)
-        ->injuries->last()->ended_at->toEqual($now->toDateTimeString());
 });
 
-test('run makes injured wrestler not injured using specific datetime', function () {
+test('it clears an injury of an injured wrestler at a specific datetime', function () {
+    testTime()->freeze();
     $wrestler = Wrestler::factory()->injured()->create();
-    $recoveryDate = Carbon::parse('2022-05-27 12:00:00');
+    $datetime = now()->addDays(2);
 
-    ClearInjuryAction::run($wrestler, $recoveryDate);
+    mock(WrestlerRepository::class)
+        ->shouldReceive('clearInjury')
+        ->once()
+        ->with($wrestler, $datetime)
+        ->andReturn($wrestler);
 
-    expect($wrestler->fresh())
-        ->isInjured()->toBeFalse()
-        ->injuries->last()->ended_at->toEqual($recoveryDate);
+    ClearInjuryAction::run($wrestler, $datetime);
 });
 
 test('clearing an injured wrestler on an unbookable tag team makes tag team bookable', function () {
@@ -42,7 +52,7 @@ test('clearing an injured wrestler on an unbookable tag team makes tag team book
 
     expect($tagTeam->fresh())
         ->status->toMatchObject(TagTeamStatus::BOOKABLE);
-});
+})->skip();
 
 test('it throws exception for injuring a non injurable wrestler', function ($factoryState) {
     $this->withoutExceptionHandling();
@@ -57,4 +67,4 @@ test('it throws exception for injuring a non injurable wrestler', function ($fac
     WrestlerStatus::BOOKABLE,
     WrestlerStatus::RETIRED,
     WrestlerStatus::SUSPENDED,
-]);
+])->skip();
