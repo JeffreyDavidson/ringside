@@ -6,7 +6,6 @@ use App\Data\WrestlerData;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
 use function Pest\Laravel\mock;
-use function Spatie\PestPluginTestTime\testTime;
 
 test('it updates a wrestler', function () {
     $data = new WrestlerData('Example Wrestler Name', 70, 220, 'Laraville, New York', null, null);

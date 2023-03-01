@@ -45,7 +45,7 @@ class EventServiceProvider extends ServiceProvider
         Manager::class => [ManagerObserver::class],
         Referee::class => [RefereeObserver::class],
         Stable::class => [StableObserver::class],
-        TagTeam::class => [TagTeamObserver::class],
+        // TagTeam::class => [TagTeamObserver::class],
         Title::class => [TitleObserver::class],
         Wrestler::class => [WrestlerObserver::class],
     ];

@@ -1,12 +1,18 @@
 <?php
 
 use App\Actions\Wrestlers\SuspendAction;
+use App\Events\Wrestlers\WrestlerSuspended;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
 test('it suspends a bookable wrestler at the current datetime by default', function () {
+    Event::fake();
+
     testTime()->freeze();
     $wrestler = Wrestler::factory()->bookable()->create();
     $datetime = now();
@@ -14,13 +20,22 @@ test('it suspends a bookable wrestler at the current datetime by default', funct
     mock(WrestlerRepository::class)
         ->shouldReceive('suspend')
         ->once()
-        ->with($wrestler, $datetime)
+        ->withArgs(function (Wrestler $unretireWrestler, Carbon $suspensionDate) use ($wrestler, $datetime) {
+            $this->assertTrue($unretireWrestler->is($wrestler));
+            $this->assertTrue($suspensionDate->equalTo($datetime));
+
+            return true;
+        })
         ->andReturn($wrestler);
 
     SuspendAction::run($wrestler);
+
+    Event::assertDispatched(WrestlerSuspended::class);
 });
 
 test('it suspends a bookable wrestler at a specific datetime', function () {
+    Event::fake();
+
     testTime()->freeze();
     $wrestler = Wrestler::factory()->bookable()->create();
     $datetime = now()->addDays(2);
@@ -32,26 +47,16 @@ test('it suspends a bookable wrestler at a specific datetime', function () {
         ->andReturn($wrestler);
 
     SuspendAction::run($wrestler, $datetime);
+
+    Event::assertDispatched(WrestlerSuspended::class);
 });
-
-test('suspending a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
-    $tagTeam = TagTeam::factory()->bookable()->create();
-    $wrestler = $tagTeam->currentWrestlers()->first();
-
-    $this->actingAs(administrator())
-        ->patch(action([SuspendController::class], $wrestler));
-
-    expect($tagTeam->fresh())
-        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
-})->skip();
 
 test('invoke throws exception for suspending a non suspendable wrestler', function ($factoryState) {
     $this->withoutExceptionHandling();
 
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
-    $this->actingAs(administrator())
-        ->patch(action([SuspendController::class], $wrestler));
+    SuspendAction::run($wrestler);
 })->throws(CannotBeSuspendedException::class)->with([
     'unemployed',
     'withFutureEmployment',
@@ -59,4 +64,4 @@ test('invoke throws exception for suspending a non suspendable wrestler', functi
     'released',
     'retired',
     'suspended',
-])->skip();
+]);

@@ -80,6 +80,8 @@ uses()->group('wrestlers', 'feature-wrestlers', 'roster', 'feature-roster')
         'Feature/Http/Controllers/Wrestlers',
         'Feature/Http/Livewire/Wrestlers',
         'Feature/Http/Requests/Wrestlers',
+        'Feature/Listeners/Wrestlers',
+        'Feature/Policies/WrestlerPolicyTest.php',
         'Feature/Http/Repositories/WrestlerRepositoryTest.php'
     );
 

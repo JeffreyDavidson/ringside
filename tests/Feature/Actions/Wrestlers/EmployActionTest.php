@@ -4,6 +4,7 @@ use App\Actions\Wrestlers\EmployAction;
 use App\Exceptions\CannotBeEmployedException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Carbon;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
 
@@ -15,7 +16,12 @@ test('it employs an unemployed wrestler at the current datetime by default', fun
     mock(WrestlerRepository::class)
         ->shouldReceive('employ')
         ->once()
-        ->with($wrestler, $datetime)
+        ->withArgs(function (Wrestler $unretireWrestler, Carbon $employmentDate) use ($wrestler, $datetime) {
+            $this->assertTrue($unretireWrestler->is($wrestler));
+            $this->assertTrue($employmentDate->equalTo($datetime));
+
+            return true;
+        })
         ->andReturn($wrestler);
 
     EmployAction::run($wrestler);

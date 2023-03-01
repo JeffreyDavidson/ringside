@@ -5,6 +5,7 @@ use App\Actions\Wrestlers\UnretireAction;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Carbon;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
 
@@ -16,10 +17,21 @@ test('it unretires a retired wrestler at the current datetime by default', funct
     mock(WrestlerRepository::class)
         ->shouldReceive('unretire')
         ->once()
-        ->with($wrestler, $datetime)
+        ->withArgs(function (Wrestler $unretireWrestler, Carbon $unretireDate) use ($wrestler, $datetime) {
+            $this->assertTrue($unretireWrestler->is($wrestler));
+            $this->assertTrue($unretireDate->equalTo($datetime));
+
+            return true;
+        })
         ->andReturn($wrestler);
 
-    EmployAction::shouldRun()->with($wrestler, $datetime);
+    EmployAction::shouldRun()
+        ->withArgs(function (Wrestler $unretireWrestler, Carbon $employmentDate) use ($wrestler, $datetime) {
+            $this->assertTrue($unretireWrestler->is($wrestler));
+            $this->assertTrue($employmentDate->equalTo($datetime));
+
+            return true;
+        });
 
     UnretireAction::run($wrestler);
 });

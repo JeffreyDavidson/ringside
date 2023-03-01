@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Wrestlers;
 
+use App\Events\Wrestlers\WrestlerRetired;
 use App\Exceptions\CannotBeRetiredException;
 use App\Models\Wrestler;
 use Illuminate\Support\Carbon;
@@ -40,8 +41,6 @@ class RetireAction extends BaseWrestlerAction
 
         $this->wrestlerRepository->retire($wrestler, $retirementDate);
 
-        if ($wrestler->isAMemberOfCurrentTagTeam()) {
-            $wrestler->currentTagTeam->save();
-        }
+        event(new WrestlerRetired($wrestler));
     }
 }

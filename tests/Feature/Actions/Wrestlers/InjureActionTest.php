@@ -1,12 +1,18 @@
 <?php
 
 use App\Actions\Wrestlers\InjureAction;
+use App\Events\Wrestlers\WrestlerInjured;
+use App\Exceptions\CannotBeInjuredException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
 
 test('it injures a bookable wrestler at the current datetime by default', function () {
+    Event::fake();
+
     testTime()->freeze();
     $wrestler = Wrestler::factory()->bookable()->create();
     $datetime = now();
@@ -14,13 +20,22 @@ test('it injures a bookable wrestler at the current datetime by default', functi
     mock(WrestlerRepository::class)
         ->shouldReceive('injure')
         ->once()
-        ->with($wrestler, $datetime)
+        ->withArgs(function (Wrestler $unretireWrestler, Carbon $injuryDate) use ($wrestler, $datetime) {
+            $this->assertTrue($unretireWrestler->is($wrestler));
+            $this->assertTrue($injuryDate->equalTo($datetime));
+
+            return true;
+        })
         ->andReturn($wrestler);
 
     InjureAction::run($wrestler);
+
+    Event::assertDispatched(WrestlerInjured::class);
 });
 
 test('it injures a bookable wrestler at a specific datetime', function () {
+    Event::fake();
+
     testTime()->freeze();
     $wrestler = Wrestler::factory()->bookable()->create();
     $datetime = now()->addDays(2);
@@ -32,17 +47,9 @@ test('it injures a bookable wrestler at a specific datetime', function () {
         ->andReturn($wrestler);
 
     InjureAction::run($wrestler, $datetime);
+
+    Event::assertDispatched(WrestlerInjured::class);
 });
-
-test('injuring a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
-    $tagTeam = TagTeam::factory()->bookable()->create();
-    $wrestler = $tagTeam->currentWrestlers()->first();
-
-    InjureAction::run($wrestler);
-
-    expect($wrestler->currentTagTeam->fresh())
-        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
-})->skip();
 
 test('invoke throws exception for injuring a non injurable wrestler', function ($factoryState) {
     $this->withoutExceptionHandling();
@@ -57,4 +64,4 @@ test('invoke throws exception for injuring a non injurable wrestler', function (
     'withFutureEmployment',
     'retired',
     'injured',
-])->skip();
+]);

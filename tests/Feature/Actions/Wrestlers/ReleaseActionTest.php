@@ -1,12 +1,18 @@
 <?php
 
 use App\Actions\Wrestlers\ReleaseAction;
+use App\Events\Wrestlers\WrestlerReleased;
+use App\Exceptions\CannotBeReleasedException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
 
 test('it releases an employed wrestler at the current datetime by default', function () {
+    Event::fake();
+
     testTime()->freeze();
     $wrestler = Wrestler::factory()->bookable()->create();
     $datetime = now();
@@ -14,13 +20,22 @@ test('it releases an employed wrestler at the current datetime by default', func
     mock(WrestlerRepository::class)
         ->shouldReceive('release')
         ->once()
-        ->with($wrestler, $datetime)
+        ->withArgs(function (Wrestler $unretireWrestler, Carbon $releaseDate) use ($wrestler, $datetime) {
+            $this->assertTrue($unretireWrestler->is($wrestler));
+            $this->assertTrue($releaseDate->equalTo($datetime));
+
+            return true;
+        })
         ->andReturn($wrestler);
 
     ReleaseAction::run($wrestler);
+
+    Event::assertDispatched(WrestlerReleased::class);
 });
 
 test('it releases an employed wrestler at a specific datetime', function () {
+    Event::fake();
+
     testTime()->freeze();
     $wrestler = Wrestler::factory()->bookable()->create();
     $datetime = now()->addDays(2);
@@ -32,32 +47,20 @@ test('it releases an employed wrestler at a specific datetime', function () {
         ->andReturn($wrestler);
 
     ReleaseAction::run($wrestler, $datetime);
+
+    Event::assertDispatched(WrestlerReleased::class);
 });
-
-test('releasing a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
-    $this->withoutExceptionHandling();
-
-    $tagTeam = TagTeam::factory()->bookable()->create();
-    $wrestler = $tagTeam->currentWrestlers()->first();
-
-    $this->actingAs(administrator())
-        ->patch(action([ReleaseController::class], $wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
-
-    expect($tagTeam->fresh())
-        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
-})->skip();
 
 test('invoke throws an exception for releasing a non releasable wrestler', function ($factoryState) {
     $this->withoutExceptionHandling();
 
     $wrestler = Wrestler::factory()->{$factoryState}()->create();
+    $datetime = now();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReleaseController::class], $wrestler));
+    ReleaseAction::run($wrestler, $datetime);
 })->throws(CannotBeReleasedException::class)->with([
     'unemployed',
     'withFutureEmployment',
     'released',
     'retired',
-])->skip();
+]);

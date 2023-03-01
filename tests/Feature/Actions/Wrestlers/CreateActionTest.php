@@ -5,9 +5,9 @@ use App\Actions\Wrestlers\EmployAction;
 use App\Data\WrestlerData;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Carbon;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
-use Illuminate\Support\Carbon;
 
 test('it creates a wrestler', function () {
     $data = new WrestlerData('Example Wrestler Name', 70, 220, 'Laraville, New York', null, null);
