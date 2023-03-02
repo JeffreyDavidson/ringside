@@ -20,8 +20,6 @@ class InjuredWrestlerSubscriber
 
     /**
      * Register the listeners for the subscriber.
-     *
-     * @return array<string, string>
      */
     public function subscribe(Dispatcher $events): void
     {
