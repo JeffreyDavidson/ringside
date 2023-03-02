@@ -12,13 +12,13 @@ class ReleasedWrestlerSubscriber
     /**
      * Handle tag team wrestler released events.
      */
-public function handleTagTeamWrestlerReleased(WrestlerReleased $event): void
-{
-    if ($event->wrestler->isAMemberOfCurrentTagTeam()) {
-        $event->wrestler->currentTagTeam->update(['status' => TagTeamStatus::UNBOOKABLE]);
-        app(WrestlerRepository::class)->removeFromCurrentTagTeam($event->wrestler, $event->releaseDate);
+    public function handleTagTeamWrestlerReleased(WrestlerReleased $event): void
+    {
+        if ($event->wrestler->isAMemberOfCurrentTagTeam()) {
+            $event->wrestler->currentTagTeam->update(['status' => TagTeamStatus::UNBOOKABLE]);
+            app(WrestlerRepository::class)->removeFromCurrentTagTeam($event->wrestler, $event->releaseDate);
+        }
     }
-}
 
     /**
      * Register the listeners for the subscriber.

@@ -1,7 +1,6 @@
 <?php
 
 use App\Actions\Wrestlers\ClearInjuryAction;
-use App\Enums\WrestlerStatus;
 use App\Events\Wrestlers\WrestlerClearedFromInjury;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Wrestler;

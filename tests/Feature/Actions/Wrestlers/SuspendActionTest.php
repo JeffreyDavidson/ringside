@@ -5,10 +5,10 @@ use App\Events\Wrestlers\WrestlerSuspended;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
-use function Pest\Laravel\mock;
-use function Spatie\PestPluginTestTime\testTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 
 test('it suspends a bookable wrestler at the current datetime by default', function () {
     Event::fake();

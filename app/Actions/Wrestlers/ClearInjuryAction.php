@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Wrestlers;
 
-use App\Enums\TagTeamStatus;
 use App\Events\Wrestlers\WrestlerClearedFromInjury;
 use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Models\Wrestler;

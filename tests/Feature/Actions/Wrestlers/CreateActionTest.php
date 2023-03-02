@@ -31,7 +31,7 @@ test('it employs a wrestler if start date is filled in request', function () {
         'name' => $data->name,
         'height' => $data->height,
         'weight' => 220,
-        'hometown' => $data->hometown
+        'hometown' => $data->hometown,
     ]);
 
     mock(WrestlerRepository::class)

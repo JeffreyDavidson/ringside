@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Builders\WrestlerQueryBuilder;
 use App\Data\WrestlerData;
 use App\Enums\WrestlerStatus;
 use App\Exceptions\WrestlerNotOnCurrentTagTeamException;
