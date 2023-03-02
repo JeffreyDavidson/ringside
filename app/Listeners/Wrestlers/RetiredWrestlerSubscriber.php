@@ -4,6 +4,7 @@ namespace App\Listeners\Wrestlers;
 
 use App\Enums\TagTeamStatus;
 use App\Events\Wrestlers\WrestlerRetired;
+use App\Repositories\WrestlerRepository;
 use Illuminate\Events\Dispatcher;
 
 class RetiredWrestlerSubscriber
