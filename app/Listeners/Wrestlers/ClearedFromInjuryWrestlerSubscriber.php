@@ -4,8 +4,6 @@ namespace App\Listeners\Wrestlers;
 
 use App\Enums\TagTeamStatus;
 use App\Events\Wrestlers\WrestlerClearedFromInjury;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Events\Dispatcher;
 
 class ClearedFromInjuryWrestlerSubscriber
@@ -15,7 +13,7 @@ class ClearedFromInjuryWrestlerSubscriber
      */
     public function handleTagTeamWrestlerClearedFromInjury(WrestlerClearedFromInjury $event): void
     {
-        if ($event->wrestler->isAMemberOfACurrentTagTeam()) {
+        if ($event->wrestler->isAMemberOfCurrentTagTeam()) {
             $event->wrestler->currentTagTeam->update(['status' => TagTeamStatus::BOOKABLE]);
         }
     }

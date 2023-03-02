@@ -1,15 +1,19 @@
 <?php
 
+use App\Enums\TagTeamStatus;
+use App\Events\Wrestlers\WrestlerReinstated;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
+
 test('reinstating a suspended wrestler on an unbookable tag team makes tag team bookable', function () {
-    $tagTeam = TagTeam::factory()
-        ->hasAttached($suspendedWrestler = Wrestler::factory()->suspended()->create())
-        ->hasAttached(Wrestler::factory()->bookable())
-        ->has(Employment::factory()->started(Carbon::yesterday()))
-        ->create();
+    $tagTeam = TagTeam::factory()->unbookable()->create();
+    $wrestler = Wrestler::factory()->suspended()->onCurrentTagTeam($tagTeam)->create();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReinstateController::class], $suspendedWrestler));
+    expect($wrestler->currentTagTeam)
+        ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 
-    expect($tagTeam->fresh())
+    WrestlerReinstated::dispatch($wrestler);
+
+    expect($wrestler->currentTagTeam->fresh())
         ->status->toMatchObject(TagTeamStatus::BOOKABLE);
-})->skip();
+});

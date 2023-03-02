@@ -4,8 +4,6 @@ namespace App\Listeners\Wrestlers;
 
 use App\Enums\TagTeamStatus;
 use App\Events\Wrestlers\WrestlerInjured;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Events\Dispatcher;
 
 class InjuredWrestlerSubscriber
@@ -15,7 +13,7 @@ class InjuredWrestlerSubscriber
      */
     public function handleTagTeamWrestlerInjured(WrestlerInjured $event): void
     {
-        if ($event->wrestler->isAMemberOfACurrentTagTeam()) {
+        if ($event->wrestler->isAMemberOfCurrentTagTeam()) {
             $event->wrestler->currentTagTeam->update(['status' => TagTeamStatus::UNBOOKABLE]);
         }
     }

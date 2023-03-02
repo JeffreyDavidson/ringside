@@ -38,6 +38,6 @@ class ReleaseAction extends BaseWrestlerAction
 
         $this->wrestlerRepository->release($wrestler, $releaseDate);
 
-        event(new WrestlerReleased($wrestler));
+        event(new WrestlerReleased($wrestler, $releaseDate));
     }
 }

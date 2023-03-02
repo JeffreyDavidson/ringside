@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Listeners\Wrestlers\ClearedFromInjuryWrestlerSubscriber;
+use App\Listeners\Wrestlers\InjuredWrestlerSubscriber;
+use App\Listeners\Wrestlers\ReinstatedWrestlerSubscriber;
+use App\Listeners\Wrestlers\ReleasedWrestlerSubscriber;
+use App\Listeners\Wrestlers\RetiredWrestlerSubscriber;
+use App\Listeners\Wrestlers\SuspendedWrestlerSubscriber;
 use App\Models\Event;
 use App\Models\Manager;
 use App\Models\Referee;
@@ -64,4 +70,18 @@ class EventServiceProvider extends ServiceProvider
     {
         return false;
     }
+
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        ClearedFromInjuryWrestlerSubscriber::class,
+        InjuredWrestlerSubscriber::class,
+        ReinstatedWrestlerSubscriber::class,
+        ReleasedWrestlerSubscriber::class,
+        RetiredWrestlerSubscriber::class,
+        SuspendedWrestlerSubscriber::class,
+    ];
 }

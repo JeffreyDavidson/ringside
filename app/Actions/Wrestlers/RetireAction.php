@@ -41,6 +41,6 @@ class RetireAction extends BaseWrestlerAction
 
         $this->wrestlerRepository->retire($wrestler, $retirementDate);
 
-        event(new WrestlerRetired($wrestler));
+        event(new WrestlerRetired($wrestler, $retirementDate));
     }
 }

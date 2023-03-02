@@ -1,16 +1,19 @@
 <?php
 
-test('clearing an injured wrestler on an unbookable tag team makes tag team bookable', function () {
-    $injuredWrestler = Wrestler::factory()
-        ->injured()
-        ->onCurrentTagTeam($tagTeam = TagTeam::factory()->unbookable()->create())
-        ->create();
+use App\Enums\TagTeamStatus;
+use App\Events\Wrestlers\WrestlerReinstated;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
 
-    expect($tagTeam->fresh())
+test('clearing an injured wrestler on an unbookable tag team makes tag team bookable', function () {
+    $tagTeam = TagTeam::factory()->unbookable()->create();
+    $wrestler = Wrestler::factory()->injured()->onCurrentTagTeam($tagTeam)->create();
+
+    expect($wrestler->currentTagTeam)
         ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
 
-    ClearInjuryAction::run($injuredWrestler);
+    WrestlerReinstated::dispatch($wrestler);
 
-    expect($tagTeam->fresh())
+    expect($wrestler->currentTagTeam->fresh())
         ->status->toMatchObject(TagTeamStatus::BOOKABLE);
 });

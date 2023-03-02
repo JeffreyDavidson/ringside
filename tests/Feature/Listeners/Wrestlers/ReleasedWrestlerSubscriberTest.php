@@ -1,15 +1,20 @@
 <?php
 
+use App\Enums\TagTeamStatus;
+use App\Events\Wrestlers\WrestlerReleased;
+use App\Models\TagTeam;
+use App\Models\Wrestler;
+
 test('releasing a bookable wrestler on a bookable tag team makes tag team unbookable', function () {
-    $this->withoutExceptionHandling();
-
     $tagTeam = TagTeam::factory()->bookable()->create();
-    $wrestler = $tagTeam->currentWrestlers()->first();
+    $wrestler = Wrestler::factory()->bookable()->onCurrentTagTeam($tagTeam)->create();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReleaseController::class], $wrestler))
-        ->assertRedirect(action([WrestlersController::class, 'index']));
+    expect($wrestler->currentTagTeam)
+        ->status->toMatchObject(TagTeamStatus::BOOKABLE);
 
-    expect($tagTeam->fresh())
+    WrestlerReleased::dispatch($wrestler, now());
+
+    expect($wrestler->fresh())->currentTagTeam->toBeNull();
+    expect($wrestler->fresh())->previousTagTeam
         ->status->toMatchObject(TagTeamStatus::UNBOOKABLE);
-})->skip();
+});
