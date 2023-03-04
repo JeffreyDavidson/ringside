@@ -83,6 +83,16 @@ uses()->group('wrestlers', 'feature-wrestlers', 'roster', 'feature-roster')
         'Feature/Policies/WrestlerPolicyTest.php',
         'Feature/Http/Repositories/WrestlerRepositoryTest.php'
     );
+uses()->group('tagteams', 'feature-tagteams', 'roster', 'feature-roster')
+    ->in(
+        'Feature/Http/Actions/TagTeams',
+        'Feature/Http/Controllers/TagTeams',
+        'Feature/Http/Livewire/TagTeams',
+        'Feature/Http/Requests/TagTeams',
+        'Feature/Listeners/TagTeams',
+        'Feature/Policies/TagTeamPolicyTest.php',
+        'Feature/Http/Repositories/TagTeamRepositoryTest.php'
+    );
 
 beforeEach(function () {
     TestResponse::macro('data', fn ($key) => $this->original->getData()[$key]);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
-use App\Actions\Wrestlers\ReinstateAction as WrestlersReinstateAction;
+use App\Events\TagTeams\TagTeamReinstated;
 use App\Exceptions\CannotBeReinstatedException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
@@ -16,18 +16,27 @@ class ReinstateAction extends BaseTagTeamAction
 
     /**
      * Reinstate a tag team.
-     *
-     * @throws \App\Exceptions\CannotBeReinstatedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $reinstatementDate = null): void
     {
-        throw_if($tagTeam->canBeReinstated(), CannotBeReinstatedException::class);
+        $this->ensureCanBeReinstated($tagTeam);
 
         $reinstatementDate ??= now();
 
-        $tagTeam->currentWrestlers
-            ->each(fn ($wrestler) => WrestlersReinstateAction::run($wrestler, $reinstatementDate));
-
         $this->tagTeamRepository->reinstate($tagTeam, $reinstatementDate);
+
+        event(new TagTeamReinstated($tagTeam, $reinstatementDate));
+    }
+
+    /**
+     * Ensure a tag team can be reinstated.
+     *
+     * @throws \App\Exceptions\CannotBeReinstatedException
+     */
+    private function ensureCanBeReinstated(TagTeam $tagTeam): void
+    {
+        if (! $tagTeam->canBeReinstated()) {
+            throw CannotBeReinstatedException::notSuspended($tagTeam);
+        }
     }
 }

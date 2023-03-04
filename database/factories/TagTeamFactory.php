@@ -168,4 +168,28 @@ class TagTeamFactory extends Factory
 
         return $this;
     }
+
+    public function withPreviousWrestler($wrestler)
+    {
+        // dd($wrestler);
+        $datetime = now();
+
+        $this->hasAttached($wrestler, ['joined_at' => $datetime->subDays(3)->toDateTimeString(), 'left_at' => $datetime->toDateTimeString()]);
+
+        return $this;
+    }
+
+    public function withWrestlers($wrestlerA, $wrestlerB)
+    {
+        $this
+            ->hasAttached($wrestlerA, ['joined_at' => now()->toDateTimeString()])
+            ->hasAttached($wrestlerB, ['joined_at' => now()->toDateTimeString()]);
+
+        $this->afterCreating(function (TagTeam $tagTeam) use ($wrestlerA, $wrestlerB) {
+            $wrestlerA->currentTagTeam()->associate($tagTeam)->save();
+            $wrestlerB->currentTagTeam()->associate($tagTeam)->save();
+        });
+
+        return $this;
+    }
 }

@@ -1,30 +1,63 @@
 <?php
 
-use App\Enums\TagTeamStatus;
-use App\Enums\WrestlerStatus;
+use App\Actions\TagTeams\ReinstateAction;
+use App\Events\TagTeams\TagTeamReinstated;
+use App\Exceptions\CannotBeReinstatedException;
 use App\Models\TagTeam;
+use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
-test('invoke reinstates a suspended tag team and its tag team partners and redirects', function () {
-    $this->actingAs(administrator())
-        ->patch(action([ReinstateController::class], $this->tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+test('it reinstates a suspended tag team at the current datetime by default', function () {
+    Event::fake();
 
-    expect($this->tagTeam->fresh())
-        ->suspensions->last()->ended_at->not->toBeNull()
-        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->suspensions->last()->not->toBeNull();
-            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
-        });
+    testTime()->freeze();
+    $tagTeam = TagTeam::factory()->suspended()->create();
+    $datetime = now();
+
+    mock(TagTeamRepository::class)
+        ->shouldReceive('reinstate')
+        ->once()
+        ->withArgs(function (TagTeam $suspendedTagTeam, Carbon $reinstatementDate) use ($tagTeam, $datetime) {
+            $this->assertTrue($suspendedTagTeam->is($tagTeam));
+            $this->assertTrue($reinstatementDate->equalTo($datetime));
+
+            return true;
+        })
+        ->andReturn($tagTeam);
+
+    ReinstateAction::run($tagTeam);
+
+    Event::assertDispatched(TagTeamReinstated::class);
+});
+
+test('it reinstates a suspended tag team at a specific datetime', function () {
+    Event::fake();
+
+    testTime()->freeze();
+    $tagTeam = TagTeam::factory()->suspended()->create();
+    $datetime = now()->addDays(2);
+
+    mock(TagTeamRepository::class)
+        ->shouldReceive('reinstate')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturn($tagTeam);
+
+    ReinstateAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamReinstated::class);
 });
 
 test('invoke throws exception for reinstating a non reinstatable tag team', function ($factoryState) {
     $this->withoutExceptionHandling();
 
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+    $datetime = now();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReinstateController::class], $tagTeam));
+    ReinstateAction::run($tagTeam, $datetime);
 })->throws(CannotBeReinstatedException::class)->with([
     'bookable',
     'withFutureEmployment',

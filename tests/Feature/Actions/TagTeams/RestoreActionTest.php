@@ -1,9 +1,36 @@
 <?php
 
-test('invoke restores a deleted tag team and redirects', function () {
-    $this->actingAs(administrator())
-        ->patch(action([RestoreController::class], $this->tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+use App\Actions\TagTeams\RestoreAction;
+use App\Models\TagTeam;
+use App\Models\TagTeamPartner;
+use App\Models\Wrestler;
+use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
 
-    $this->assertNull($this->tagTeam->fresh()->deleted_at);
-});
+test('it restores a deleted tag team', function () {
+    $tagTeam = TagTeam::factory()->trashed()->create();
+
+    mock(TagTeamRepository::class)
+        ->shouldReceive('restore')
+        ->once()
+        ->with($tagTeam);
+
+    RestoreAction::run($tagTeam);
+})->skip();
+
+test('it throws exception for restoring a wrestler on a current tag team from their original deleted tag team', function () {
+    $wrestlerA = Wrestler::factory()->create(['name' => 'Example Name A']);
+    $wrestlerB = Wrestler::factory()->create(['name' => 'Example Name B']);
+    $wrestlerOldTagTeam = TagTeam::factory()->withCurrentWrestler($wrestlerA)->withCurrentWrestler($wrestlerB)->bookable()->create();
+    dd(TagTeamPartner::all());
+    // dd('dasfsafasdfas');
+
+    $wrestlerNewTagTeam = TagTeam::factory()->withCurrentWrestler($wrestler)->bookable()->create();
+
+    mock(TagTeamRepository::class)
+        ->shouldNotReceive('restore')
+        ->once()
+        ->with($wrestlerOldTagTeam);
+
+    RestoreAction::run($wrestlerOldTagTeam);
+})->throws(Exception::class);

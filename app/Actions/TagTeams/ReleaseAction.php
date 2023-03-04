@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\TagTeams;
 
 use App\Actions\Wrestlers\ReleaseAction as WrestlersReleaseAction;
+use App\Events\TagTeams\TagTeamReleased;
 use App\Exceptions\CannotBeReleasedException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
@@ -16,12 +17,10 @@ class ReleaseAction extends BaseTagTeamAction
 
     /**
      * Release a tag team.
-     *
-     * @throws \App\Exceptions\CannotBeReleasedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $releaseDate = null): void
     {
-        throw_if($tagTeam->canBeReleased(), CannotBeReleasedException::class);
+        $this->ensureCanBeReleased($tagTeam);
 
         $releaseDate ??= now();
 
@@ -31,6 +30,18 @@ class ReleaseAction extends BaseTagTeamAction
 
         $this->tagTeamRepository->release($tagTeam, $releaseDate);
 
-        $tagTeam->currentWrestlers->each(fn ($wrestler) => WrestlersReleaseAction::run($wrestler, $releaseDate));
+        event(new TagTeamReleased($tagTeam, $releaseDate));
+    }
+
+    /**
+     * Ensure a tag tam can be released.
+     *
+     * @throws \App\Exceptions\CannotBeReleasedException
+     */
+    private function ensureCanBeReleased(TagTeam $tagTeam): void
+    {
+        if ($tagTeam->hasFutureEmployment()) {
+            throw CannotBeReleasedException::hasFutureEmployment($tagTeam);
+        }
     }
 }

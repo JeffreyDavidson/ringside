@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
-use App\Actions\Wrestlers\UnretireAction as WrestlersUnretireAction;
+use App\Events\TagTeams\TagTeamUnretired;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
@@ -16,19 +16,27 @@ class UnretireAction extends BaseTagTeamAction
 
     /**
      * Unretire a tag team.
-     *
-     * @throws \App\Exceptions\CannotBeUnretiredException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $unretiredDate = null): void
     {
-        throw_if($tagTeam->canBeUnretired(), CannotBeUnretiredException::class);
+        $this->ensureCanBeUnretired($tagTeam);
 
         $unretiredDate ??= now();
 
         $this->tagTeamRepository->unretire($tagTeam, $unretiredDate);
 
-        $tagTeam->currentWrestlers->each(fn ($wrestler) => WrestlersUnretireAction::run($wrestler, $unretiredDate));
+        event(new TagTeamUnretired($tagTeam, $unretiredDate));
+    }
 
-        $this->tagTeamRepository->employ($tagTeam, $unretiredDate);
+    /**
+     * Ensure a tag team can be unretired.
+     *
+     * @throws \App\Exceptions\CannotBeUnretiredException
+     */
+    private function ensureCanBeUnretired(TagTeam $tagTeam)
+    {
+        if (! $tagTeam->isRetired()) {
+            throw CannotBeUnretiredException::notRetired($tagTeam);
+        }
     }
 }
