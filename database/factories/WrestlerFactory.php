@@ -29,7 +29,6 @@ class WrestlerFactory extends Factory
             'hometown' => $this->faker->city().', '.$this->faker->state(),
             'signature_move' => null,
             'status' => WrestlerStatus::UNEMPLOYED,
-            'current_tag_team_id' => null,
         ];
     }
 
