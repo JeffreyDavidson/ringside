@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\TagTeams;
 
 use App\Actions\Wrestlers\EmployAction as WrestlersEmployAction;
+use App\Events\TagTeams\TagTeamEmployed;
 use App\Exceptions\CannotBeEmployedException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
@@ -16,17 +17,27 @@ class EmployAction extends BaseTagTeamAction
 
     /**
      * Employ a tag team.
-     *
-     * @throws \App\Exceptions\CannotBeEmployedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $startDate = null): void
     {
-        throw_if($tagTeam->canBeEmployed(), CannotBeEmployedException::class);
+        $this->ensureCanBeEmployed($tagTeam);
 
         $startDate ??= now();
 
-        $tagTeam->currentWrestlers->each(fn ($wrestler) => WrestlersEmployAction::run($wrestler, $startDate));
-
         $this->tagTeamRepository->employ($tagTeam, $startDate);
+
+        event(new TagTeamEmployed($tagTeam, $startDate));
+    }
+
+    /**
+     * Ensure a tag team can be employed.
+     *
+     * @throws \App\Exceptions\CannotBeEmployedException
+     */
+    private function ensureCanBeEmployed(TagTeam $tagTeam): void
+    {
+        if ($tagTeam->isCurrentlyEmployed()) {
+            throw CannotBeEmployedException::employed($tagTeam);
+        }
     }
 }

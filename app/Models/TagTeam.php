@@ -10,6 +10,8 @@ use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Competitor;
 use App\Models\Contracts\Manageable;
+use App\Models\Contracts\Retirable;
+use App\Models\Contracts\Suspendable;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor, Manageable
+class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor, Manageable, Retirable, Suspendable
 {
     use Concerns\CanJoinStables;
     use Concerns\HasManagers;

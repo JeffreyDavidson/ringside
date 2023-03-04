@@ -1,47 +1,63 @@
 <?php
 
-use App\Enums\TagTeamStatus;
-use App\Enums\WrestlerStatus;
+use App\Actions\TagTeams\ReleaseAction;
+use App\Events\TagTeams\TagTeamReleased;
+use App\Exceptions\CannotBeReleasedException;
 use App\Models\TagTeam;
+use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
-test('invoke releases a bookable tag team and tag team partners and redirects', function () {
+test('it releases an bookable tag team at the current datetime by default', function () {
+    Event::fake();
+
+    testTime()->freeze();
     $tagTeam = TagTeam::factory()->bookable()->create();
+    $datetime = now();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReleaseController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+    mock(TagTeamRepository::class)
+        ->shouldReceive('release')
+        ->once()
+        ->withArgs(function (TagTeam $releasedTagTeam, Carbon $releaseDate) use ($tagTeam, $datetime) {
+            $this->assertTrue($releasedTagTeam->is($tagTeam));
+            $this->assertTrue($releaseDate->equalTo($datetime));
 
-    expect($tagTeam->fresh())
-        ->employments->last()->ended_at->not->toBeNull()
-        ->status->toMatchObject(TagTeamStatus::RELEASED)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toMatchObject(WrestlerStatus::RELEASED);
-        });
+            return true;
+        })
+        ->andReturn($tagTeam);
+
+    ReleaseAction::run($tagTeam);
+
+    Event::assertDispatched(TagTeamReleased::class);
 });
 
-test('invoke releases an suspended tag team and tag team partners redirects', function () {
-    $tagTeam = TagTeam::factory()->suspended()->create();
+test('it releases an bookable tag team at a specific datetime', function () {
+    Event::fake();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReleaseController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+    testTime()->freeze();
+    $tagTeam = TagTeam::factory()->bookable()->create();
+    $datetime = now()->addDays(2);
 
-    expect($tagTeam->fresh())
-        ->suspensions->last()->ended_at->not->toBeNull()
-        ->employments->last()->ended_at->not->toBeNull()
-        ->status->toMatchObject(TagTeamStatus::RELEASED)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toMatchObject(WrestlerStatus::RELEASED);
-        });
+    mock(TagTeamRepository::class)
+        ->shouldReceive('release')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturn($tagTeam);
+
+    ReleaseAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamReleased::class);
 });
 
 test('invoke throws an exception for releasing a non releasable tag team', function ($factoryState) {
     $this->withoutExceptionHandling();
 
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+    $datetime = now();
 
-    $this->actingAs(administrator())
-        ->patch(action([ReleaseController::class], $tagTeam));
+    ReleaseAction::run($tagTeam, $datetime);
 })->throws(CannotBeReleasedException::class)->with([
     'unemployed',
     'withFutureEmployment',

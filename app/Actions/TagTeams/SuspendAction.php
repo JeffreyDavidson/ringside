@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
-use App\Actions\Wrestlers\SuspendAction as WrestlerSuspendAction;
+use App\Events\TagTeams\TagTeamSuspended;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
@@ -16,17 +16,43 @@ class SuspendAction extends BaseTagTeamAction
 
     /**
      * Suspend a tag team.
-     *
-     * @throws \App\Exceptions\CannotBeSuspendedException
      */
     public function handle(TagTeam $tagTeam, ?Carbon $suspensionDate = null): void
     {
-        throw_if($tagTeam->canBeSuspended(), CannotBeSuspendedException::class);
+        $this->ensureCanBeSuspended($tagTeam);
 
         $suspensionDate ??= now();
 
-        $tagTeam->currentWrestlers->each(fn ($wrestler) => WrestlerSuspendAction::run($wrestler, $suspensionDate));
-
         $this->tagTeamRepository->suspend($tagTeam, $suspensionDate);
+
+        event(new TagTeamSuspended($tagTeam, $suspensionDate));
+    }
+
+    /**
+     * Ensure a tag team can be suspended.
+     *
+     * @throws \App\Exceptions\CannotBeSuspendedException
+     */
+    private function ensureCanBeSuspended(TagTeam $tagTeam): void
+    {
+        if ($tagTeam->isUnemployed()) {
+            throw CannotBeSuspendedException::unemployed($tagTeam);
+        }
+
+        if ($tagTeam->isReleased()) {
+            throw CannotBeSuspendedException::released($tagTeam);
+        }
+
+        if ($tagTeam->isRetired()) {
+            throw CannotBeSuspendedException::retired($tagTeam);
+        }
+
+        if ($tagTeam->hasFutureEmployment()) {
+            throw CannotBeSuspendedException::hasFutureEmployment($tagTeam);
+        }
+
+        if ($tagTeam->isSuspended()) {
+            throw CannotBeSuspendedException::suspended($tagTeam);
+        }
     }
 }

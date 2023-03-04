@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
+use App\Events\TagTeams\TagTeamDeleted;
 use App\Models\TagTeam;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -17,5 +18,7 @@ class DeleteAction extends BaseTagTeamAction
     public function handle(TagTeam $tagTeam): void
     {
         $this->tagTeamRepository->delete($tagTeam);
+
+        event(new TagTeamDeleted($tagTeam));
     }
 }
