@@ -26,15 +26,15 @@ test('invoke calls employ action and redirects', function () {
 });
 
 test('invoke returns an error message when employing a non employable tag team', function () {
-    $tagTeam = mock(TagTeam::class);
+    $tagTeam = TagTeam::factory()->bookable()->create();
 
     actingAs(administrator())
         ->from(action([TagTeamsController::class, 'index']))
-        ->patch(action([EmployController::class], $this->tagTeam))
+        ->patch(action([EmployController::class], $tagTeam))
         ->assertRedirect(action([TagTeamsController::class, 'index']))
         ->assertSessionHas('error');
 
-    EmployAction::shouldRun()->with($this->tagTeam)->andThrows(CannotBeEmployedException::class);
+    EmployAction::shouldRun()->with($tagTeam)->andThrows(CannotBeEmployedException::class);
 });
 
 test('a basic user cannot employ a tag team', function () {
