@@ -39,7 +39,6 @@ uses()->group('referees', 'feature-referees', 'roster', 'feature-roster')
         'Feature/Policies/RefereePolicyTest',
         'Feature/Repositories/RefereeRepositoryTest',
     );
-uses()->group('tagteams', 'feature-tagteams', 'roster', 'feature-roster')->in('Feature/Http/Controllers/TagTeams');
 uses()->group('stables', 'feature-stables', 'roster', 'feature-roster')->in('Feature/Http/Controllers/Stables');
 uses()->group('venues', 'feature-venues')
     ->in(
@@ -91,6 +90,11 @@ uses()->group('tagteams', 'feature-tagteams', 'roster', 'feature-roster')
         'Feature/Listeners/TagTeams',
         'Feature/Policies/TagTeamPolicyTest.php',
         'Feature/Http/Repositories/TagTeamRepositoryTest.php'
+    );
+uses()->group('tagteams', 'roster')
+    ->in(
+        'Unit/Builders/TagTeamQueryBuilderTest.php',
+        'Unit/Models/TagTeamTest.php',
     );
 
 /*

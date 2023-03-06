@@ -51,9 +51,5 @@ class RetireAction extends BaseTagTeamAction
         if ($tagTeam->isRetired()) {
             throw CannotBeRetiredException::retired($tagTeam);
         }
-
-        if ($tagTeam->isReleased()) {
-            throw CannotBeRetiredException::released($tagTeam);
-        }
     }
 }

@@ -6,6 +6,7 @@ use App\Models\EventMatch;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Collection;
+use function PHPUnit\Framework\assertCount;
 
 test('a tag team has a name', function () {
     $tagTeam = TagTeam::factory()->create(['name' => 'Example Tag Team Name']);
@@ -108,5 +109,5 @@ test('it can get the combined weight of the current wrestlers on a tag team', fu
 test('it can get the the event matches for a tag team', function () {
     $eventMatch = EventMatch::factory()->tagTeamType()->create();
 
-    expect($tagTeam->eventMatches)->dd()->collectionHas($eventMatch);
+    expect($tagTeam->eventMatches)->collectionHas($eventMatch);
 });
