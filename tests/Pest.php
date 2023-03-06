@@ -21,8 +21,6 @@ use Tests\ValidatesRequests;
 uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)->in('Feature', 'Unit');
 uses(ValidatesRequests::class)->in('Feature/Http/Requests');
 
-
-
 uses()->group('managers', 'feature-managers', 'roster', 'feature-roster')
     ->in(
         'Feature/Http/Controllers/Managers',

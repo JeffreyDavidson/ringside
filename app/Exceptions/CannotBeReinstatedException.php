@@ -39,7 +39,7 @@ class CannotBeReinstatedException extends Exception
         return new static("`{$model->name}` is injured and cannot be reinstated.");
     }
 
-    public static function notSuspended(Suspendable $model):  self
+    public static function notSuspended(Suspendable $model): self
     {
         return new static("`{$model->name}` is not suspended and cannot be reinstated.");
     }

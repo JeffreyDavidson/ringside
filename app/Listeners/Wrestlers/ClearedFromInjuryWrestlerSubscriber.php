@@ -14,7 +14,6 @@ class ClearedFromInjuryWrestlerSubscriber
     public function handleTagTeamWrestlerClearedFromInjury(WrestlerClearedFromInjury $event): void
     {
         if ($event->wrestler->isAMemberOfCurrentTagTeam()) {
-            $tagTeamPartner = $event->wrestler->currentTagTeam->currentWrestlers->whereNotIn
             $event->wrestler->currentTagTeam->update(['status' => TagTeamStatus::BOOKABLE]);
         }
     }
