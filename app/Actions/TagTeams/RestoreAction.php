@@ -23,7 +23,6 @@ class RestoreAction extends BaseTagTeamAction
                     throw new \Exception('One or both of the previous wrestlers for this tag team are members of a current tag team so this tag team cannot be restored.');
                 }
 
-                return;
             });
 
         $this->tagTeamRepository->restore($tagTeam);

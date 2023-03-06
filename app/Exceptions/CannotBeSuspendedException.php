@@ -14,27 +14,27 @@ class CannotBeSuspendedException extends Exception
         return new static("`{$model->name}` is unemployed and cannot be suspended.");
     }
 
-    public static function hasFutureEmployment(Suspendable $model):  self
+    public static function hasFutureEmployment(Suspendable $model): self
     {
         return new static("`{$model->name}` has not been officially employed and cannot be suspended.");
     }
 
-    public static function retired(Suspendable $model):  self
+    public static function retired(Suspendable $model): self
     {
         return new static("`{$model->name}` is retired and cannot be suspended.");
     }
 
-    public static function released(Suspendable $model):  self
+    public static function released(Suspendable $model): self
     {
         return new static("`{$model->name}` is released and cannot be suspended.");
     }
 
-    public static function suspended(Suspendable $model):  self
+    public static function suspended(Suspendable $model): self
     {
         return new static("`{$model->name}` is already suspended.");
     }
 
-    public static function injured(Suspendable $model):  self
+    public static function injured(Suspendable $model): self
     {
         return new static("`{$model->name}` is injured and cannot be suspended.");
     }

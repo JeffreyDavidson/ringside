@@ -4,8 +4,8 @@ use App\Actions\TagTeams\DeleteAction;
 use App\Events\TagTeams\TagTeamDeleted;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use function Pest\Laravel\mock;
 use Illuminate\Support\Facades\Event;
+use function Pest\Laravel\mock;
 
 test('it deletes a tag team', function () {
     Event::fake();

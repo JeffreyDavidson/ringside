@@ -6,5 +6,4 @@ namespace App\Models\Contracts;
 
 interface Suspendable
 {
-
 }

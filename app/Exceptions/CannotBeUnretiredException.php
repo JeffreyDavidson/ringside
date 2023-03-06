@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Models\Contracts\Retirable;
-use App\Models\SingleRosterMember;
 use Exception;
 
 class CannotBeUnretiredException extends Exception

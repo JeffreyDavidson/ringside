@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
-use App\Actions\Wrestlers\EmployAction as WrestlersEmployAction;
 use App\Events\TagTeams\TagTeamEmployed;
 use App\Exceptions\CannotBeEmployedException;
 use App\Models\TagTeam;
