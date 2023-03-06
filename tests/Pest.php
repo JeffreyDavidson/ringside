@@ -21,6 +21,8 @@ use Tests\ValidatesRequests;
 uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)->in('Feature', 'Unit');
 uses(ValidatesRequests::class)->in('Feature/Http/Requests');
 
+
+
 uses()->group('managers', 'feature-managers', 'roster', 'feature-roster')
     ->in(
         'Feature/Http/Controllers/Managers',
@@ -51,7 +53,6 @@ uses()->group('venues', 'feature-venues')
         'Feature/Repositories/VenueRepositoryTest',
     );
 uses()->group('titles', 'feature-titles')->in('Feature/Http/Controllers/Titles');
-// uses()->group('events', 'feature-events')->in('Feature/Http/Controllers/Events');
 uses()->group('event-matches', 'feature-event-matches')
     ->in('Feature/Http/Controllers/EventMatches', 'Feature/Actions/EventMatches', 'Feature/Http/Requests/EventMatches');
 uses()->group('actions')->in('Feature/Actions');
@@ -93,11 +94,6 @@ uses()->group('tagteams', 'feature-tagteams', 'roster', 'feature-roster')
         'Feature/Policies/TagTeamPolicyTest.php',
         'Feature/Http/Repositories/TagTeamRepositoryTest.php'
     );
-
-beforeEach(function () {
-    TestResponse::macro('data', fn ($key) => $this->original->getData()[$key]);
-    $dropViews = true;
-});
 
 /*
 |--------------------------------------------------------------------------

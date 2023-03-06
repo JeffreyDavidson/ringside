@@ -120,7 +120,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     }
 
     /**
-     * Undocumented function.
+     * Get the event matches the tag team have participated in.
      */
     public function eventMatches(): MorphToMany
     {

@@ -15,7 +15,13 @@ test('bookable tag teams can be retrieved', function () {
 
     expect($bookableTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($bookableTagTeam);
+        ->collectionHas($bookableTagTeam)
+        ->collectionDoesntHave($futureEmployedTagTeam)
+        ->collectionDoesntHave($suspendedTagTeam)
+        ->collectionDoesntHave($retiredTagTeam)
+        ->collectionDoesntHave($releasedTagTeam)
+        ->collectionDoesntHave($unemployedTagTeam)
+        ->collectionDoesntHave($unbookableTagTeam);
 });
 
 test('future employed tag teams can be retrieved', function () {
@@ -31,7 +37,13 @@ test('future employed tag teams can be retrieved', function () {
 
     expect($futureEmployedTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($futureEmployedTagTeam);
+        ->collectionHas($futureEmployedTagTeam)
+        ->collectionDoesntHave($bookableTagTeam)
+        ->collectionDoesntHave($suspendedTagTeam)
+        ->collectionDoesntHave($retiredTagTeam)
+        ->collectionDoesntHave($releasedTagTeam)
+        ->collectionDoesntHave($unemployedTagTeam)
+        ->collectionDoesntHave($unbookableTagTeam);
 });
 
 test('unbookable tag teams can be retrieved', function () {
@@ -47,7 +59,13 @@ test('unbookable tag teams can be retrieved', function () {
 
     expect($unbookableTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($unbookableTagTeam);
+        ->collectionHas($unbookableTagTeam)
+        ->collectionDoesntHave($futureEmployedTagTeam)
+        ->collectionDoesntHave($bookableTagTeam)
+        ->collectionDoesntHave($suspendedTagTeam)
+        ->collectionDoesntHave($retiredTagTeam)
+        ->collectionDoesntHave($releasedTagTeam)
+        ->collectionDoesntHave($unemployedTagTeam);
 });
 
 test('released tag teams can be retrieved', function () {
@@ -63,7 +81,13 @@ test('released tag teams can be retrieved', function () {
 
     expect($releasedTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($releasedTagTeam);
+        ->collectionHas($releasedTagTeam)
+        ->collectionDoesntHave($futureEmployedTagTeam)
+        ->collectionDoesntHave($bookableTagTeam)
+        ->collectionDoesntHave($suspendedTagTeam)
+        ->collectionDoesntHave($retiredTagTeam)
+        ->collectionDoesntHave($unemployedTagTeam)
+        ->collectionDoesntHave($unbookableTagTeam);
 });
 
 test('suspended tag teams can be retrieved', function () {
@@ -79,7 +103,13 @@ test('suspended tag teams can be retrieved', function () {
 
     expect($suspendedTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($suspendedTagTeam);
+        ->collectionHas($suspendedTagTeam)
+        ->collectionDoesntHave($futureEmployedTagTeam)
+        ->collectionDoesntHave($bookableTagTeam)
+        ->collectionDoesntHave($retiredTagTeam)
+        ->collectionDoesntHave($releasedTagTeam)
+        ->collectionDoesntHave($unemployedTagTeam)
+        ->collectionDoesntHave($unbookableTagTeam);
 });
 
 test('retired tag teams can be retrieved', function () {
@@ -95,7 +125,13 @@ test('retired tag teams can be retrieved', function () {
 
     expect($retiredTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($retiredTagTeam);
+        ->collectionHas($retiredTagTeam)
+        ->collectionDoesntHave($futureEmployedTagTeam)
+        ->collectionDoesntHave($bookableTagTeam)
+        ->collectionDoesntHave($suspendedTagTeam)
+        ->collectionDoesntHave($releasedTagTeam)
+        ->collectionDoesntHave($unemployedTagTeam)
+        ->collectionDoesntHave($unbookableTagTeam);
 });
 
 test('unemployed tag teams can be retrieved', function () {
@@ -111,5 +147,11 @@ test('unemployed tag teams can be retrieved', function () {
 
     expect($unemployedTagTeams)
         ->toHaveCount(1)
-        ->collectionHas($unemployedTagTeam);
+        ->collectionHas($unemployedTagTeam)
+        ->collectionDoesntHave($futureEmployedTagTeam)
+        ->collectionDoesntHave($bookableTagTeam)
+        ->collectionDoesntHave($suspendedTagTeam)
+        ->collectionDoesntHave($retiredTagTeam)
+        ->collectionDoesntHave($releasedTagTeam)
+        ->collectionDoesntHave($unbookableTagTeam);
 });

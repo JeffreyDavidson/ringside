@@ -40,4 +40,16 @@ class EmployAction extends BaseTagTeamAction
             throw CannotBeEmployedException::employed($tagTeam);
         }
     }
+
+    /**
+     * Ensure a tag team can be employed.
+     *
+     * @throws \App\Exceptions\CannotBeEmployedException
+     */
+    private function ensureCanBeEmployed(TagTeam $tagTeam): void
+    {
+        if ($tagTeam->isCurrentlyEmployed()) {
+            throw CannotBeEmployedException::employed($tagTeam);
+        }
+    }
 }

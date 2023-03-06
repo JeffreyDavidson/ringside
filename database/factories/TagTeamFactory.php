@@ -28,16 +28,6 @@ class TagTeamFactory extends Factory
         ];
     }
 
-    /**
-     * Configure the model factory.
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
-    }
-
     public function bookable()
     {
         $now = now();
@@ -93,7 +83,7 @@ class TagTeamFactory extends Factory
             ->has(Suspension::factory()->started($suspensionStartDate))
             ->create();
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::UNBOOKABLE])
+        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::SUSPENDED])
             ->has(Employment::factory()->started($employmentStartDate))
             ->has(Suspension::factory()->started($suspensionStartDate))
             ->hasAttached($wrestlers, ['joined_at' => $employmentStartDate])
@@ -148,7 +138,10 @@ class TagTeamFactory extends Factory
 
     public function withCurrentWrestler($wrestler, $joinDate = null)
     {
-        $this->hasAttached($wrestler, ['joined_at' => $joinDate ?? now()]);
+        // $this->hasAttached($wrestler->id, ['joined_at' => $joinDate ?? now()]);
+        $this->afterCreating(function (TagTeam $tagTeam) use ($wrestler, $joinDate) {
+            $tagTeam->wrestlers()->attach($wrestler, ['joined_at' => $joinDate ?? now()]);
+        });
 
         return $this;
     }
