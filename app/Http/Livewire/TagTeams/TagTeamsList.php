@@ -9,7 +9,7 @@ use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\View\View;
 
 /**

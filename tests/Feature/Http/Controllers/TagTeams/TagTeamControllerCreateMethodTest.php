@@ -4,10 +4,12 @@ use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Mockery\MockInterface;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\mock;
+use function Pest\Laravel\get;
 
 test('create returns a view', function () {
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->get(action([TagTeamsController::class, 'create']))
         ->assertStatus(200)
         ->assertViewIs('tagteams.create')
@@ -26,11 +28,11 @@ test('the correct wrestlers are available to join a new tag team', function () {
 
     $wrestlers = (new Collection([$unemployedWrestler, $futureEmployedWrestler, $bookableWrestlerNotOnBookableTagTeam]));
 
-    $this->mock(WrestlerRepository::class, function (MockInterface $mock) use ($wrestlers) {
-        $mock->shouldReceive('getAvailableWrestlersForNewTagTeam')->andReturn($wrestlers);
-    });
+    mock(WrestlerRepository::class)
+        ->shouldReceive('getAvailableWrestlersForNewTagTeam')
+        ->andReturn($wrestlers);
 
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->get(action([TagTeamsController::class, 'create']))
         ->assertStatus(200)
         ->assertViewIs('tagteams.create')
@@ -41,12 +43,12 @@ test('the correct wrestlers are available to join a new tag team', function () {
 });
 
 test('a basic user cannot view the form for creating a tag team', function () {
-    $this->actingAs(basicUser())
+    actingAs(basicUser())
         ->get(action([TagTeamsController::class, 'create']))
         ->assertForbidden();
 });
 
 test('a guest cannot view the form for creating a tag team', function () {
-    $this->get(action([TagTeamsController::class, 'create']))
+    get(action([TagTeamsController::class, 'create']))
         ->assertRedirect(route('login'));
 });

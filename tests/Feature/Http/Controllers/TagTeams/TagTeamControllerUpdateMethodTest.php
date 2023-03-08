@@ -5,6 +5,8 @@ use App\Data\TagTeamData;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\TagTeam;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\patch;
 
 beforeEach(function () {
     $this->tagTeam = TagTeam::factory()->create();
@@ -13,7 +15,7 @@ beforeEach(function () {
 });
 
 test('update calls update action and redirects', function () {
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->from(action([TagTeamsController::class, 'edit'], $this->tagTeam))
         ->patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
         ->assertValid()
@@ -23,12 +25,12 @@ test('update calls update action and redirects', function () {
 });
 
 test('a basic user cannot update a tag team', function () {
-    $this->actingAs(basicUser())
+    actingAs(basicUser())
         ->patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
         ->assertForbidden();
 });
 
 test('a guest cannot update a tag team', function () {
-    $this->patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
+    patch(action([TagTeamsController::class, 'update'], $this->tagTeam), $this->data)
         ->assertRedirect(route('login'));
 });

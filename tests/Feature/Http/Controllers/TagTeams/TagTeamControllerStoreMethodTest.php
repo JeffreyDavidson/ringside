@@ -4,6 +4,8 @@ use App\Actions\TagTeams\CreateAction;
 use App\Data\TagTeamData;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Requests\TagTeams\StoreRequest;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\post;
 
 beforeEach(function () {
     $this->data = StoreRequest::factory()->create();
@@ -11,7 +13,7 @@ beforeEach(function () {
 });
 
 test('store calls create action and redirects', function () {
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->from(action([TagTeamsController::class, 'create']))
         ->post(action([TagTeamsController::class, 'store']), $this->data)
         ->assertValid()
@@ -21,12 +23,12 @@ test('store calls create action and redirects', function () {
 });
 
 test('a basic user cannot create a tag team', function () {
-    $this->actingAs(basicUser())
+    actingAs(basicUser())
         ->post(action([TagTeamsController::class, 'store']), $this->data)
         ->assertForbidden();
 });
 
 test('a guest cannot create a tag team', function () {
-    $this->post(action([TagTeamsController::class, 'store']), $this->data)
+    post(action([TagTeamsController::class, 'store']), $this->data)
         ->assertRedirect(route('login'));
 });

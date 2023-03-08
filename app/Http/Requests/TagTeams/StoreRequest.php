@@ -38,6 +38,7 @@ class StoreRequest extends FormRequest
             'signature_move' => ['nullable', 'string', 'regex:/^[a-zA-Z\s\']+$/'],
             'start_date' => ['nullable', 'string', 'date'],
             'wrestlerA' => [
+                'bail',
                 'nullable',
                 'integer',
                 'different:wrestlerB',
@@ -47,6 +48,7 @@ class StoreRequest extends FormRequest
                 new WrestlerCanJoinNewTagTeam,
             ],
             'wrestlerB' => [
+                'bail',
                 'nullable',
                 'integer',
                 'different:wrestlerA',

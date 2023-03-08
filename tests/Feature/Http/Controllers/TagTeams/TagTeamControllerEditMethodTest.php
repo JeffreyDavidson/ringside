@@ -4,14 +4,15 @@ use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Collection;
-use Mockery\MockInterface;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
 
 beforeEach(function () {
     $this->tagTeam = TagTeam::factory()->create();
 });
 
 test('edit returns a view', function () {
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->get(action([TagTeamsController::class, 'edit'], $this->tagTeam))
         ->assertStatus(200)
         ->assertViewIs('tagteams.edit')
@@ -20,14 +21,9 @@ test('edit returns a view', function () {
 
 test('the correct wrestlers are available to join an editable team', function () {
     $tagTeam = TagTeam::factory()
-        ->hasAttached($wrestlerA = Wrestler::factory()->create(['name' => 'Randy Orton']))
-        ->hasAttached($wrestlerB = Wrestler::factory()->create(['name' => 'Shawn Michaels']))
+        ->hasAttached($wrestlerA = Wrestler::factory()->create(['name' => 'Randy Orton']), ['joined_at' => now()])
+        ->hasAttached($wrestlerB = Wrestler::factory()->create(['name' => 'Shawn Michaels']), ['joined_at' => now()])
         ->create();
-
-    $wrestlerA->currentTagTeam()->associate($tagTeam);
-    $wrestlerA->save();
-    $wrestlerB->currentTagTeam()->associate($tagTeam);
-    $wrestlerB->save();
 
     $unemployedWrestler = Wrestler::factory()->unemployed()->create(['name' => 'Hulk Hogan']);
     $futureEmployedWrestler = Wrestler::factory()->withFutureEmployment()->create(['name' => 'The Rock']);
@@ -40,11 +36,11 @@ test('the correct wrestlers are available to join an editable team', function ()
 
     $wrestlers = (new Collection([$wrestlerA, $wrestlerB, $unemployedWrestler, $futureEmployedWrestler, $bookableWrestlerNotOnBookableTagTeam]));
 
-    $this->mock(WrestlerRepository::class, function (MockInterface $mock) use ($wrestlers) {
-        $mock->shouldReceive('getAvailableWrestlersForExistingTagTeam')->andReturn($wrestlers);
-    });
+    mock(WrestlerRepository::class)
+        ->shouldReceive('getAvailableWrestlersForExistingTagTeam')
+        ->andReturn($wrestlers);
 
-    $this->actingAs(administrator())
+    actingAs(administrator())
         ->get(action([TagTeamsController::class, 'edit'], $tagTeam))
         ->assertStatus(200)
         ->assertViewIs('tagteams.edit')
@@ -59,12 +55,12 @@ test('the correct wrestlers are available to join an editable team', function ()
 });
 
 test('a basic user cannot view the form for editing a tag team', function () {
-    $this->actingAs(basicUser())
+    actingAs(basicUser())
         ->get(action([TagTeamsController::class, 'edit'], $this->tagTeam))
         ->assertForbidden();
 });
 
 test('a guest cannot view the form for editing a tag team', function () {
-    $this->get(action([TagTeamsController::class, 'edit'], $this->tagTeam))
+    get(action([TagTeamsController::class, 'edit'], $this->tagTeam))
         ->assertRedirect(route('login'));
 });

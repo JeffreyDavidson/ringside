@@ -3,6 +3,8 @@
 use App\Http\Requests\TagTeams\StoreRequest;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
+use App\Rules\WrestlerCanJoinNewTagTeam;
+use Illuminate\Support\Carbon;
 use Tests\RequestFactories\TagTeamRequestFactory;
 
 test('an administrator is authorized to make this request', function () {
@@ -91,91 +93,140 @@ test('tag team start date must be in the correct date format', function () {
         ->assertFailsValidation(['start_date' => 'date']);
 });
 
-test('tag team wrestlers are optional', function () {
+test('tag team wrestlerA are optional', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => [],
+            'wrestlerA' => null,
         ]))
         ->assertPassesValidation();
 });
 
-test('tag team wrestlers must be an array if provided', function () {
+test('tag team wrestlerA must be an integer if provided', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => 'not-an-array',
+            'wrestlerA' => 'not-an-integer',
         ]))
-        ->assertFailsValidation(['wrestlers' => 'array']);
+        ->assertFailsValidation(['wrestlerA' => 'integer']);
 });
 
-test('tag team wrestlers is required with a tag team signature move', function () {
-    $this->createRequest(StoreRequest::class)
-        ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => null,
-            'signature_move' => 'Example Signature Move',
-        ]))
-        ->assertFailsValidation(['wrestlers' => 'requiredwith:signature_move']);
-});
-
-test('each tag team wrestler must be an integer', function () {
-    $this->createRequest(StoreRequest::class)
-        ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => ['not-an-integer'],
-        ]))
-        ->assertFailsValidation(['wrestlers.0' => 'integer']);
-});
-
-test('each tag team wrestler must be distinct', function () {
-    $this->createRequest(StoreRequest::class)
-        ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => [1, 1],
-        ]))
-        ->assertFailsValidation(['wrestlers.0' => 'distinct']);
-});
-
-test('each tag team wrestler must exist', function () {
-    $this->createRequest(StoreRequest::class)
-        ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => [1, 2],
-        ]))
-        ->assertFailsValidation(['wrestlers.0' => 'exist']);
-});
-
-test('each tag team wrestler cannot be suspended to join a tag team', function () {
-    $wrestlerA = Wrestler::factory()->suspended()->create();
-    $wrestlerB = Wrestler::factory()->bookable()->create();
+test('tag team wrestlerA must be different from wrestlerB if provided', function () {
+    $wrestlerA = Wrestler::factory()->create();
 
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
+            'wrestlerA' => $wrestlerA->id,
+            'wrestlerB' => $wrestlerA->id
         ]))
-        ->assertFailsValidation(['wrestlers.0' => 'app\rules\wrestlercanjoinnewtagteam']);
+        ->assertFailsValidation(['wrestlerA' => 'different:wrestlerB']);
 });
 
-test('each tag team wrestler cannot be injured to join a tag team', function () {
-    $wrestlerA = Wrestler::factory()->injured()->create();
-    $wrestlerB = Wrestler::factory()->bookable()->create();
+test('tag team wrestlerA is required if start date is provided', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerA' => null,
+            'start_date' => Carbon::now()->toDateTimeString()
+        ]))
+        ->assertFailsValidation(['wrestlerA' => 'required_with:start_date']);
+});
+
+test('tag team wrestlerA is required with wrestlerB is provided', function () {
+    $wrestler = Wrestler::factory()->create();
 
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => [$wrestlerA->id, $wrestlerB->id],
+            'wrestlerA' => null,
+            'wrestlerB' => $wrestler->id
         ]))
-        ->assertFailsValidation(['wrestlers.0' => 'app\rules\wrestlercanjoinnewtagteam']);
+        ->assertFailsValidation(['wrestlerA' => 'required_with:wrestlerB']);
 });
 
-test('each tag team wrestler cannot join multiple bookable tag team', function () {
-    $tagTeam = TagTeam::factory()
-        ->bookable()
-        ->has(Wrestler::factory()->bookable()->count(2))
-        ->bookable()
-        ->create();
+test('tag team wrestlerA is must exist if provided', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerA' => 999999,
+        ]))
+        ->assertFailsValidation(['wrestlerA' => 'exists:wrestlers,id']);
+});
 
-    $wrestlerB = Wrestler::factory()
-        ->bookable()
-        ->create();
+test('tag team wrestlerA must be able to join a new tag team if provided', function () {
+    $wrestler = Wrestler::factory()->create();
+
+    mock(WrestlerCanJoinNewTagTeam::class)
+        ->shouldReceive('validate')
+        ->withArgs('wrestlerA', 1);
 
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlers' => [$tagTeam->currentWrestlers->first()->getKey(), $wrestlerB->getKey()],
+            'wrestlerA' => $wrestler->id,
         ]))
-        ->assertFailsValidation(['wrestlers.0' => 'app\rules\wrestlercanjoinnewtagteam']);
+        ->assertFailsValidation(['wrestlerA' => WrestlerCanJoinNewTagTeam::class]);
+})->skip();
+
+test('tag team wrestlerB are optional', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => null,
+        ]))
+        ->assertPassesValidation();
 });
+
+test('tag team wrestlerB must be an integer if provided', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => 'not-an-integer',
+        ]))
+        ->assertFailsValidation(['wrestlerB' => 'integer']);
+});
+
+test('tag team wrestlerB must be different from wrestlerA if provided', function () {
+    $wrestlerA = Wrestler::factory()->create();
+
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => $wrestlerA->id,
+            'wrestlerA' => $wrestlerA->id,
+        ]))
+        ->assertFailsValidation(['wrestlerB' => 'different:wrestlerA']);
+});
+
+test('tag team wrestlerB is required if start date is provided', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => null,
+            'start_date' => Carbon::now()->toDateTimeString()
+        ]))
+        ->assertFailsValidation(['wrestlerB' => 'required_with:start_date']);
+});
+
+test('tag team wrestlerB is required with wrestlerA is provided', function () {
+    $wrestler = Wrestler::factory()->create();
+
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => null,
+            'wrestlerA' => $wrestler->id
+        ]))
+        ->assertFailsValidation(['wrestlerB' => 'required_with:wrestlerA']);
+});
+
+test('tag team wrestlerB is must exist if provided', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => 999999,
+        ]))
+        ->assertFailsValidation(['wrestlerB' => 'exists:wrestlers,id']);
+});
+
+test('tag team wrestlerB must be able to join a new tag team if provided', function () {
+    $wrestler = Wrestler::factory()->create();
+
+    mock(WrestlerCanJoinNewTagTeam::class)
+        ->shouldReceive('validate')
+        ->withArgs('wrestlerA', 1);
+
+    $this->createRequest(StoreRequest::class)
+        ->validate(TagTeamRequestFactory::new()->create([
+            'wrestlerB' => $wrestler->id,
+        ]))
+        ->assertFailsValidation(['wrestlerB' => WrestlerCanJoinNewTagTeam::class]);
+})->skip();

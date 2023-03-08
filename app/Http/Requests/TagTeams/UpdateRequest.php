@@ -46,6 +46,7 @@ class UpdateRequest extends FormRequest
             'signature_move' => ['nullable', 'string', 'regex:/^[a-zA-Z\s\']+$/'],
             'start_date' => ['nullable', 'string', 'date', new EmploymentStartDateCanBeChanged($tagTeam)],
             'wrestlerA' => [
+                'bail',
                 'nullable',
                 'integer',
                 'different:wrestlerB',
@@ -54,6 +55,7 @@ class UpdateRequest extends FormRequest
                 new WrestlerCanJoinExistingTagTeam($tagTeam),
             ],
             'wrestlerB' => [
+                'bail',
                 'nullable',
                 'integer',
                 'different:wrestlerA',

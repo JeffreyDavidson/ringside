@@ -3,6 +3,7 @@
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\Employment;
 use App\Models\TagTeam;
+use App\Rules\EmploymentStartDateCanBeChanged;
 use Illuminate\Support\Carbon;
 use Tests\RequestFactories\TagTeamRequestFactory;
 
@@ -133,10 +134,10 @@ test('tag team start date cannot be changed if employment start date has past', 
         ->validate(TagTeamRequestFactory::new()->create([
             'start_date' => Carbon::now()->toDateTImeString(),
         ]))
-        ->assertFailsValidation(['start_date' => 'app\rules\employmentstartdatecanbechanged']);
+        ->assertFailsValidation(['start_date' => EmploymentStartDateCanBeChanged::class]);
 });
 
-test('tag_team_start_date_can_be_changed_if_employment_start_date_is_in_the_future', function () {
+test('tag team start date can be changed if employment start date is in the future', function () {
     $tagTeam = TagTeam::factory()->has(Employment::factory()->started(Carbon::parse('+2 weeks')))->create();
 
     $this->createRequest(UpdateRequest::class)
