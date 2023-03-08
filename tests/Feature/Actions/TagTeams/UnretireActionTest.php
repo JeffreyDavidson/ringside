@@ -1,34 +1,80 @@
 <?php
 
-use App\Enums\TagTeamStatus;
-use App\Enums\WrestlerStatus;
+use App\Actions\TagTeams\UnretireAction;
+use App\Events\TagTeams\TagTeamUnretired;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Models\TagTeam;
+use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function PHPUnit\Framework\assertTrue;
+use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
-test('invoke unretires a retired tag team and its tag team partners and redirects', function () {
-    $this->actingAs(administrator())
-        ->patch(action([UnretireController::class], $this->tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+beforeEach(function () {
+    Event::fake();
 
-    expect($this->tagTeam->fresh())
-        ->retirements->last()->ended_at->not->toBeNull()
-        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->retirements->last()->ended_at->not->toBeNull()
-                ->status->toMatchObject(WrestlerStatus::BOOKABLE);
-        });
+    testTime()->freeze();
+
+    $this->tagTeamRepository = mock(TagTeamRepository::class);
 });
 
-test('invoke throws exception for unretiring a non unretirable tag team', function ($factoryState) {
+test('it unretires a retired tag team at the current datetime by default', function () {
+    $tagTeam = TagTeam::factory()->retired()->create();
+    $datetime = now();
+
+    $this->tagTeamRepository
+        ->shouldReceive('unretire')
+        ->once()
+        ->withArgs(function (TagTeam $unretiredTagTeam, Carbon $unretireDate) use ($tagTeam, $datetime) {
+            assertTrue($unretiredTagTeam->is($tagTeam));
+            assertTrue($unretireDate->equalTo($datetime));
+
+            return true;
+        })
+        ->andReturns($tagTeam);
+
+    UnretireAction::run($tagTeam);
+
+    Event::assertDispatched(TagTeamUnretired::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->unretireDate->is($datetime));
+
+        return true;
+    });
+});
+
+test('it unretires a retired tag team at a specific datetime', function () {
+    $tagTeam = TagTeam::factory()->retired()->create();
+    $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldReceive('unretire')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturns($tagTeam);
+
+    UnretireAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamUnretired::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->unretireDate->is($datetime));
+
+        return true;
+    });
+});
+
+test('it throws exception for unretiring a non retired tag team', function ($factoryState) {
     $this->withoutExceptionHandling();
 
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
 
-    $this->actingAs(administrator())
-        ->patch(action([UnretireController::class], $tagTeam));
+    UnretireAction::run($tagTeam);
 })->throws(CannotBeUnretiredException::class)->with([
     'bookable',
     'withFutureEmployment',
     'released',
     'suspended',
     'unemployed',
+    'unbookable',
 ]);

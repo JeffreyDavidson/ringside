@@ -1,83 +1,87 @@
 <?php
 
-use App\Enums\TagTeamStatus;
-use App\Enums\WrestlerStatus;
-use App\Http\Controllers\TagTeams\EmployController;
-use App\Http\Controllers\TagTeams\TagTeamsController;
+use App\Actions\TagTeams\EmployAction;
+use App\Events\TagTeams\TagTeamEmployed;
+use App\Exceptions\CannotBeEmployedException;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
+use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function PHPUnit\Framework\assertTrue;
+use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
-test('invoke employs an unemployed tag team and their unemployed wrestlers and redirects', function () {
-    [$wrestlerA, $wrestlerB] = Wrestler::factory()->unemployed()->count(2)->create();
-    $tagTeam = TagTeam::factory()
-        ->hasAttached($wrestlerA, ['joined_at' => now()->toDateTimeString()])
-        ->hasAttached($wrestlerB, ['joined_at' => now()->toDateTimeString()])
-        ->unemployed()
-        ->create();
+beforeEach(function () {
+    Event::fake();
 
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+    testTime()->freeze();
 
-    expect($tagTeam->fresh())
-        ->employments->toHaveCount(1)
-        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->employments->toHaveCount(1);
-            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
-        });
+    $this->tagTeamRepository = mock(TagTeamRepository::class);
 });
 
-test('invoke employs an unemployed tag team with bookable wrestlers and redirects', function () {
-    [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
-    $tagTeam = TagTeam::factory()
-        ->hasAttached($wrestlerA, ['joined_at' => now()->toDateTimeString()])
-        ->hasAttached($wrestlerB, ['joined_at' => now()->toDateTimeString()])
-        ->unemployed()
-        ->create();
+test('it employs an employable tag team at the current datetime by default', function ($factoryState) {
+    $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+    $datetime = now();
 
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+    $this->tagTeamRepository
+        ->shouldReceive('employ')
+        ->once()
+        ->withArgs(function (TagTeam $employedTagTeam, Carbon $employmentDate) use ($tagTeam, $datetime) {
+            assertTrue($employedTagTeam->is($tagTeam));
+            assertTrue($employmentDate->equalTo($datetime));
 
-    expect($tagTeam->fresh())
-        ->employments->toHaveCount(1)
-        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->employments->toHaveCount(1);
-            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
-        });
-});
+            return true;
+        })
+        ->andReturns($tagTeam);
 
-test('invoke employs a future employed tag team and their tag team partners and redirects', function () {
-    $tagTeam = TagTeam::factory()->withFutureEmployment()->create();
-    $startDate = $tagTeam->employments->last()->started_at;
+    EmployAction::run($tagTeam);
 
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+    Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->employmentDate->is($datetime));
 
-    expect($tagTeam->fresh())
-        ->currentEmployment->started_at->toBeLessThan($startDate)
-        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
-        ->currentWrestlers->each(function ($wrestler) use ($startDate) {
-            $wrestler->currentEmployment->started_at->toBeLessThan($startDate);
-            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
-        });
-});
+        return true;
+    });
+})->with([
+    'unemployed',
+    'released',
+    'retired',
+    'withFutureEmployment',
+]);
 
-test('invoke employs a released tag team and their tag team partners redirects', function () {
-    $tagTeam = TagTeam::factory()->released()->create();
+test('it employs an employable tag team at a specific datetime', function ($factoryState) {
+    $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+    $datetime = now()->addDays(2);
 
-    $this->actingAs(administrator())
-        ->patch(action([EmployController::class], $tagTeam))
-        ->assertRedirect(action([TagTeamsController::class, 'index']));
+    $this->tagTeamRepository
+        ->shouldReceive('employ')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturns($tagTeam);
 
-    expect($tagTeam->fresh())
-        ->employments->toHaveCount(2)
-        ->status->toMatchObject(TagTeamStatus::BOOKABLE)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->employments->toHaveCount(2);
-            $wrestler->status->toMatchObject(WrestlerStatus::BOOKABLE);
-        });
-});
+    EmployAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->employmentDate->is($datetime));
+
+        return true;
+    });
+})->with([
+    'unemployed',
+    'released',
+    'retired',
+    'withFutureEmployment',
+]);
+
+test('it throws exception for employing a non employable tag team', function ($factoryState) {
+    $this->withoutExceptionHandling();
+
+    $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+
+    EmployAction::run($tagTeam);
+})->throws(CannotBeEmployedException::class)->with([
+    'bookable',
+    'unbookable',
+    'suspended',
+]);

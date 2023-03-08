@@ -1,41 +1,79 @@
 <?php
 
 use App\Actions\TagTeams\SuspendAction;
-use App\Enums\TagTeamStatus;
-use App\Enums\WrestlerStatus;
+use App\Events\TagTeams\TagTeamSuspended;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
+use function Pest\Laravel\mock;
+use function PHPUnit\Framework\assertTrue;
+use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
+use App\Repositories\TagTeamRepository;
 
-test('invoke suspends a tag team and their tag team partners and redirects', function () {
-    [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
-    $tagTeam = TagTeam::factory()
-        ->hasAttached($wrestlerA, ['joined_at' => now()->toDateTimeString()])
-        ->hasAttached($wrestlerB, ['joined_at' => now()->toDateTimeString()])
-        ->bookable()
-        ->create();
+beforeEach(function () {
+    Event::fake();
+
+    testTime()->freeze();
+
+    $this->tagTeamRepository = mock(TagTeamRepository::class);
+});
+
+test('it suspends a bookable tag team at the current datetime by default', function () {
+    $tagTeam = TagTeam::factory()->bookable()->create();
+    $datetime = now();
+
+    $this->tagTeamRepository
+        ->shouldReceive('suspend')
+        ->once()
+        ->withArgs(function (TagTeam $suspendedTagTeam, Carbon $suspensionDate) use ($tagTeam, $datetime) {
+            assertTrue($suspendedTagTeam->is($tagTeam));
+            assertTrue($suspensionDate->equalTo($datetime));
+
+            return true;
+        })
+        ->andReturns($tagTeam);
 
     SuspendAction::run($tagTeam);
 
-    expect($tagTeam->fresh())
-        ->suspensions->toHaveCount(1)
-        ->status->toMatchObject(TagTeamStatus::SUSPENDED)
-        ->currentWrestlers->each(function ($wrestler) {
-            $wrestler->status->toMatchObject(WrestlerStatus::SUSPENDED);
-        });
+    Event::assertDispatched(TagTeamSuspended::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->suspensionDate->is($datetime));
+
+        return true;
+    });
 });
 
-test('invoke throws exception for retiring a non retirable tag team', function ($factoryState) {
+test('it suspends a bookable tag team at a specific datetime', function () {
+    $tagTeam = TagTeam::factory()->bookable()->create();
+    $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldReceive('suspend')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturns($tagTeam);
+
+    SuspendAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamSuspended::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->suspensionDate->is($datetime));
+
+        return true;
+    });
+});
+
+test('it throws exception for suspending a non suspendable tag team', function ($factoryState) {
     $this->withoutExceptionHandling();
 
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
 
-    $this->actingAs(administrator())
-        ->patch(action([SuspendController::class], $tagTeam));
-
-    SuspendAction::shouldNotRun();
+    SuspendAction::run($tagTeam);
 })->throws(CannotBeSuspendedException::class)->with([
     'unemployed',
     'released',
     'withFutureEmployment',
     'retired',
+    'suspended',
 ]);

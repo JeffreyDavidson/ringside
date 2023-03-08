@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Listeners\TagTeams\DeletedTagTeamSubscriber;
+use App\Listeners\TagTeams\RetiredTagTeamSubscriber;
 use App\Listeners\Wrestlers\ClearedFromInjuryWrestlerSubscriber;
 use App\Listeners\Wrestlers\InjuredWrestlerSubscriber;
 use App\Listeners\Wrestlers\ReinstatedWrestlerSubscriber;
@@ -85,5 +86,6 @@ class EventServiceProvider extends ServiceProvider
         RetiredWrestlerSubscriber::class,
         SuspendedWrestlerSubscriber::class,
         DeletedTagTeamSubscriber::class,
+        RetiredTagTeamSubscriber::class
     ];
 }

@@ -23,7 +23,7 @@ class RetiredTagTeamSubscriber
     public function subscribe(Dispatcher $events): void
     {
         $events->listen(
-            TagTeamReinstated::class,
+            TagTeamRetired::class,
             [RetiredTagTeamSubscriber::class, 'handleTagTeamRetired']
         );
     }
