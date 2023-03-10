@@ -16,7 +16,6 @@ use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor, Manageable, Retirable, Suspendable
@@ -24,6 +23,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     use Concerns\CanJoinStables;
     use Concerns\HasManagers;
     use Concerns\OwnedByUser;
+    use Concerns\HasMatches;
     use HasFactory;
     use HasMorphToOne;
     use SoftDeletes;
@@ -52,6 +52,15 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     protected $casts = [
         'status' => TagTeamStatus::class,
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => TagTeamStatus::UNBOOKABLE->value,
     ];
 
     /**
@@ -117,14 +126,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     public function isUnbookable(): bool
     {
         return ! $this->currentWrestlers->every->isBookable();
-    }
-
-    /**
-     * Get the event matches the tag team have participated in.
-     */
-    public function eventMatches(): MorphToMany
-    {
-        return $this->morphToMany(EventMatch::class, 'event_match_competitor');
     }
 
     /**

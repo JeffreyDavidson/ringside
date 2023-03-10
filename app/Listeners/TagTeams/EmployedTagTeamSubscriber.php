@@ -14,6 +14,7 @@ class EmployedTagTeamSubscriber
     public function handleTagTeamEmployed(TagTeamEmployed $event): void
     {
         $event->tagTeam->currentWrestlers
+            ->reject(fn ($wrestler) => $wrestler->isCurrentlyEmployed())
             ->each(fn ($wrestler) => EmployAction::run($wrestler, $event->employmentDate));
     }
 

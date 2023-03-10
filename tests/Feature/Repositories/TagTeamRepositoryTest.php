@@ -3,6 +3,7 @@
 use App\Data\TagTeamData;
 use App\Models\Employment;
 use App\Models\TagTeam;
+use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
 
 test('creates a tag team without a signature move', function () {
@@ -65,171 +66,162 @@ test('restores a tag team', function () {
         ->deleted_at->toBeNull();
 });
 
-test('employ a tag team', function () {
-    $tagTeam = TagTeam::factory()->create();
+test('it can employ a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->create();
     $datetime = now();
 
     $tagTeam = app(TagTeamRepository::class)->employ($tagTeam, $datetime);
 
     expect($tagTeam->fresh())->employments->toHaveCount(1);
-    expect($tagTeam->fresh()->employments->first())->started_at->toEqual($datetime->toDateTimeString());
+    expect($tagTeam->fresh()->employments->first())->started_at->equalTo($datetime);
 });
 
-// test('updates employment of a tagTeam', function () {
-//     $datetime = now();
-//     $tagTeam = TagTeam::factory()
-//         ->has(Employment::factory()->started($datetime->copy()->addDays(2)))
-//         ->create();
+test('it can update an employment of a tag team', function () {
+    $datetime = now();
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()
+        ->withCurrentWrestlers($wrestlers)
+        ->has(Employment::factory()->started($datetime->copy()->addDays(2)))
+        ->create();
 
-//     expect($tagTeam->fresh())->employments->toHaveCount(1);
-//     expect($tagTeam->fresh()->employments->first())
-//         ->started_at->toDateTimeString()->toEqual($datetime->copy()->addDays(2)->toDateTimeString());
+    expect($tagTeam->fresh())->employments->toHaveCount(1);
+    expect($tagTeam->fresh()->employments->first())
+        ->started_at->equalTo($datetime->copy()->addDays(2));
 
-//     $tagTeam = app(TagTeamRepository::class)->employ($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->employ($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->employments->toHaveCount(1);
-//     expect($tagTeam->fresh()->employments->first())
-//         ->started_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->employments->toHaveCount(1);
+    expect($tagTeam->fresh()->employments->first())
+        ->started_at->equalTo($datetime);
+});
 
-// test('release a tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->bookable()->create();
-//     $datetime = now();
+test('it can release a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->bookable()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->release($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->release($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->employments->toHaveCount(1);
-//     expect($tagTeam->fresh()->employments->first())
-//         ->ended_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->employments->toHaveCount(1);
+    expect($tagTeam->fresh()->employments->first())
+        ->ended_at->equalTo($datetime);
+});
 
-// test('injure a tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->bookable()->create();
-//     $datetime = now();
+test('it can retire a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->bookable()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->injure($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->retire($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->injuries->toHaveCount(1);
-//     expect($tagTeam->fresh()->injuries->first())
-//         ->started_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->retirements->toHaveCount(1);
+    expect($tagTeam->fresh()->retirements->first())
+        ->started_at->equalTo($datetime);
+});
 
-// test('clear an injured tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->injured()->create();
-//     $datetime = now();
+test('it can unretire a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withPreviousWrestlers($wrestlers)->retired()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->clearInjury($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->unretire($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->injuries->toHaveCount(1);
-//     expect($tagTeam->fresh()->injuries->first())
-//         ->ended_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->retirements->toHaveCount(1);
+    expect($tagTeam->fresh()->retirements->first())
+        ->ended_at->equalTo($datetime);
+});
 
-// test('retire a tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->bookable()->create();
-//     $datetime = now();
+test('it can suspend a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->bookable()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->retire($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->suspend($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->retirements->toHaveCount(1);
-//     expect($tagTeam->fresh()->retirements->first())
-//         ->started_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->suspensions->toHaveCount(1);
+    expect($tagTeam->fresh()->suspensions->first())
+        ->started_at->equalTo($datetime);
+});
 
-// test('unretire a tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->retired()->create();
-//     $datetime = now();
+test('it can reinstate a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->suspended()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->unretire($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->reinstate($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->retirements->toHaveCount(1);
-//     expect($tagTeam->fresh()->retirements->first())
-//         ->ended_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->suspensions->toHaveCount(1);
+    expect($tagTeam->fresh()->suspensions->first())
+        ->ended_at->equalTo($datetime);
+});
 
-// test('suspend a tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->bookable()->create();
-//     $datetime = now();
+test('it can update a future employment for a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->hasFutureEmployment()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->suspend($tagTeam, $datetime);
+    $tagTeam = app(TagTeamRepository::class)->updateEmployment($tagTeam, $datetime);
 
-//     expect($tagTeam->fresh())->suspensions->toHaveCount(1);
-//     expect($tagTeam->fresh()->suspensions->first())
-//         ->started_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->employments->toHaveCount(1);
+    expect($tagTeam->fresh()->employments->first())
+        ->started_at->equalTo($datetime);
+});
 
-// test('reinstate a tagTeam', function () {
-//     $tagTeam = TagTeam::factory()->suspended()->create();
-//     $datetime = now();
+test('it can add wrestlers to a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->create();
+    $datetime = now();
 
-//     $tagTeam = app(TagTeamRepository::class)->reinstate($tagTeam, $datetime);
+    app(TagTeamRepository::class)->addTagTeamPartners($tagTeam, $wrestlers, $datetime);
 
-//     expect($tagTeam->fresh())->suspensions->toHaveCount(1);
-//     expect($tagTeam->fresh()->suspensions->first())
-//         ->ended_at->toDateTimeString()->toEqual($datetime->toDateTimeString());
-// });
+    expect($tagTeam->fresh())->wrestlers->toHaveCount(2);
+    expect($tagTeam->fresh())->wrestlers->each->pivot->left_at->toBeNull();
+});
 
-// test('remove a tagTeam from their current tag team', function () {
-//     $tagTeam = TagTeam::factory()
-//         ->bookable()
-//         ->onCurrentTagTeam($tagTeam = TagTeam::factory()->bookable()->create())
-//         ->create();
-//     $datetime = now();
+test('it can add a wrestler to a tag team', function () {
+    $wrestler = Wrestler::factory()->create();
+    $tagTeam = TagTeam::factory()->create();
+    $datetime = now();
 
-//     expect($tagTeam->fresh())->currentTagTeam->id->toBe($tagTeam->id);
-//     expect($tagTeam->fresh()->tagTeams->first()->pivot)->left_at->toBeNull();
+    app(TagTeamRepository::class)->addTagTeamPartner($tagTeam, $wrestler, $datetime);
 
-//     app(TagTeamRepository::class)->removeFromCurrentTagTeam($tagTeam, $datetime);
+    expect($tagTeam->fresh())->wrestlers->toHaveCount(1);
+    expect($tagTeam->fresh())->wrestlers->where('id', $wrestler->id)->first()->pivot->left_at->toBeNull();
+});
 
-//     expect($tagTeam->fresh())->currentTagTeam->toBeNull();
-//     expect($tagTeam->fresh()->tagTeams->first()->pivot)->left_at->not->toBeNull();
-// });
+test('it can remove wrestlers from a tag team', function () {
+    $wrestlers = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->create();
+    $datetime = now();
 
-// test('it can query available tagTeams that can join a new tag team', function () {
-//     $bookableTagTeam = TagTeam::factory()->bookable()->create();
-//     $injuredTagTeam = TagTeam::factory()->injured()->create();
-//     $suspendedTagTeam = TagTeam::factory()->suspended()->create();
-//     $releasedTagTeam = TagTeam::factory()->released()->create();
-//     $retiredTagTeam = TagTeam::factory()->retired()->create();
-//     $unemployedTagTeam = TagTeam::factory()->unemployed()->create();
-//     $futureEmployedTagTeam = TagTeam::factory()->withFutureEmployment()->create();
-//     $tagTeamTagTeam = TagTeam::factory()->bookable()->onCurrentTagTeam()->create();
+    app(TagTeamRepository::class)->removeTagTeamPartners($tagTeam, $wrestlers, $datetime);
 
-//     $tagTeams = app(TagTeamRepository::class)->getAvailableTagTeamsForNewTagTeam();
+    expect($tagTeam->fresh())->wrestlers->toHaveCount(2);
+    expect($tagTeam->fresh())->wrestlers->each->pivot->left_at->toBeNull();
+});
 
-//     expect($tagTeams)
-//         ->toHaveCount(3)
-//         ->collectionHas($bookableTagTeam)
-//         ->collectionHas($unemployedTagTeam)
-//         ->collectionHas($futureEmployedTagTeam)
-//         ->collectionDoesntHave($injuredTagTeam)
-//         ->collectionDoesntHave($suspendedTagTeam)
-//         ->collectionDoesntHave($retiredTagTeam)
-//         ->collectionDoesntHave($releasedTagTeam)
-//         ->collectionDoesntHave($tagTeamTagTeam);
-// });
+test('it can remove a wrestler from a tag team', function () {
+    $wrestler = Wrestler::factory()->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestler($wrestler)->create();
+    $datetime = now();
 
-// test('it can query available tagTeams that can join an existing tag team', function () {
-//     $tagTeam = TagTeam::factory()->create();
-//     $bookableTagTeam = TagTeam::factory()->bookable()->create();
-//     $injuredTagTeam = TagTeam::factory()->injured()->create();
-//     $suspendedTagTeam = TagTeam::factory()->suspended()->create();
-//     $releasedTagTeam = TagTeam::factory()->released()->create();
-//     $retiredTagTeam = TagTeam::factory()->retired()->create();
-//     $unemployedTagTeam = TagTeam::factory()->unemployed()->create();
-//     $futureEmployedTagTeam = TagTeam::factory()->withFutureEmployment()->create();
-//     $tagTeamTagTeam = TagTeam::factory()->bookable()->onCurrentTagTeam($tagTeam)->create();
+    app(TagTeamRepository::class)->removeTagTeamPartner($tagTeam, $wrestler, $datetime);
 
-//     $tagTeams = app(TagTeamRepository::class)->getAvailableTagTeamsForExistingTagTeam($tagTeam);
+    expect($tagTeam->fresh())->previousWrestlers->toHaveCount(1);
+    expect($tagTeam->fresh())->previousWrestlers->where('id', $wrestler->id)->first()->pivot->left_at->not->toBeNull();
+});
 
-//     expect($tagTeams)
-//         ->toHaveCount(4)
-//         ->collectionHas($bookableTagTeam)
-//         ->collectionHas($unemployedTagTeam)
-//         ->collectionHas($futureEmployedTagTeam)
-//         ->collectionHas($tagTeamTagTeam)
-//         ->collectionDoesntHave($injuredTagTeam)
-//         ->collectionDoesntHave($suspendedTagTeam)
-//         ->collectionDoesntHave($retiredTagTeam)
-//         ->collectionDoesntHave($releasedTagTeam);
-// });
+test('it can sync wrestlers from a tag team', function () {
+    $currentTagTeamPartners = Wrestler::factory()->count(2)->create();
+    $newTagTeamPartners = Wrestler::factory()->count(2)->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($currentTagTeamPartners)->create();
+
+    app(TagTeamRepository::class)->syncTagTeamPartners($tagTeam, $currentTagTeamPartners, $newTagTeamPartners);
+
+    expect($tagTeam->fresh())->wrestlers->toHaveCount(4);
+    expect($tagTeam->fresh())->previousWrestlers->toHaveCount(2);
+    expect($tagTeam->fresh()->previousWrestlers->pluck('id')->toArray())->toMatchArray($currentTagTeamPartners->pluck('id')->toArray());
+    expect($tagTeam->fresh())->currentWrestlers->toHaveCount(2);
+    expect($tagTeam->fresh()->currentWrestlers->pluck('id')->toArray())->toMatchArray($newTagTeamPartners->pluck('id')->toArray());
+});

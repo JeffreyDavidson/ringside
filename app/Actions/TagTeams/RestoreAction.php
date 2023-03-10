@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
+use App\Exceptions\CannotJoinTagTeamException;
 use App\Models\TagTeam;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -17,9 +18,9 @@ class RestoreAction extends BaseTagTeamAction
     public function handle(TagTeam $tagTeam): void
     {
         $tagTeam->previousWrestlers
-            ->map(function ($wrestler) {
-                if ($wrestler->isAMemberOfCurrentTagTeam) {
-                    throw new \Exception('One or both of the previous wrestlers for this tag team are members of a current tag team so this tag team cannot be restored.');
+            ->each(function ($wrestler) {
+                if ($wrestler->isAMemberOfCurrentTagTeam()) {
+                    throw CannotJoinTagTeamException::alreadyInTagTeam();
                 }
             });
 

@@ -20,19 +20,19 @@ class UpdateTagTeamPartnersAction extends BaseTagTeamAction
     public function handle(TagTeam $tagTeam, Collection $wrestlers): void
     {
         if ($tagTeam->currentWrestlers->isEmpty()) {
-            if ($wrestlers->isNotEmpty()) {
-                $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers);
-            }
-        } else {
-            /** @var \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $formerTagTeamPartners */
-            $formerTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotNotIn(
-                'wrestler_id',
-                $wrestlers->modelKeys()
-            )->get();
+            $this->tagTeamRepository->addTagTeamPartners($tagTeam, $wrestlers);
 
-            $newTagTeamPartners = $wrestlers->except($formerTagTeamPartners->modelKeys());
-
-            $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
+            return;
         }
+
+        /** @var \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $formerTagTeamPartners */
+        $formerTagTeamPartners = $tagTeam->currentWrestlers()->wherePivotNotIn(
+            'wrestler_id',
+            $wrestlers->modelKeys()
+        )->get();
+
+        $newTagTeamPartners = $wrestlers->except($formerTagTeamPartners->modelKeys());
+
+        $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
     }
 }

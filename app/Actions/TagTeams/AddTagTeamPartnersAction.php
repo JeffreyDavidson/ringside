@@ -19,6 +19,6 @@ class AddTagTeamPartnersAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam, Collection $wrestlers): void
     {
-        $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers, now());
+        $this->tagTeamRepository->addTagTeamPartners($tagTeam, $wrestlers, now());
     }
 }

@@ -136,37 +136,38 @@ class TagTeamFactory extends Factory
             });
     }
 
-    public function withCurrentWrestler($wrestler, $joinDate = null)
+    public function withCurrentWrestler(Wrestler $wrestler, ?Carbon $joinDate = null)
     {
-        // $this->hasAttached($wrestler->id, ['joined_at' => $joinDate ?? now()]);
-        $this->afterCreating(function (TagTeam $tagTeam) use ($wrestler, $joinDate) {
-            $tagTeam->wrestlers()->attach($wrestler, ['joined_at' => $joinDate ?? now()]);
-        });
+        $joinDate ??= now();
 
-        return $this;
+        return $this->hasAttached($wrestler, [
+            'joined_at' => $joinDate
+        ]);
     }
 
-    public function withPreviousWrestler($wrestler)
+    public function withPreviousWrestler(Wrestler $wrestler, ?Carbon $leftDate = null)
     {
-        // dd($wrestler);
-        $datetime = now();
+        $leftDate ??= now();
 
-        $this->hasAttached($wrestler, ['joined_at' => $datetime->subDays(3)->toDateTimeString(), 'left_at' => $datetime->toDateTimeString()]);
-
-        return $this;
+        return $this->hasAttached($wrestler, [
+            'joined_at' => $leftDate->subDays(3)->toDateTimeString(),
+            'left_at' => $leftDate->toDateTimeString()
+        ]);
     }
 
-    public function withWrestlers($wrestlerA, $wrestlerB)
+    public function withPreviousWrestlers($wrestlers, ?Carbon $datetime = null)
     {
-        $this
-            ->hasAttached($wrestlerA, ['joined_at' => now()->toDateTimeString()])
-            ->hasAttached($wrestlerB, ['joined_at' => now()->toDateTimeString()]);
+        return collect($wrestlers)->reduce(
+            fn ($factory, $wrestler) => $factory->withPreviousWrestler($wrestler, $datetime),
+            $this,
+        );
+    }
 
-        $this->afterCreating(function (TagTeam $tagTeam) use ($wrestlerA, $wrestlerB) {
-            $wrestlerA->currentTagTeam()->associate($tagTeam)->save();
-            $wrestlerB->currentTagTeam()->associate($tagTeam)->save();
-        });
-
-        return $this;
+    public function withCurrentWrestlers($wrestlers, ?Carbon $datetime = null)
+    {
+        return collect($wrestlers)->reduce(
+            fn ($factory, $wrestler) => $factory->withCurrentWrestler($wrestler, $datetime),
+            $this,
+        );
     }
 }

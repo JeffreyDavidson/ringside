@@ -47,14 +47,10 @@ class EventMatchFactory extends Factory
     public function tagTeamMatch()
     {
         return $this
-            ->state(function (array $attributes) {
+            ->state(function () {
                 return ['match_type_id' => MatchType::where('slug', 'tagteam')->first()->id];
             })
-            ->afterCreating(function (EventMatch $eventMatch) {
-                $tagTeamsA = TagTeam::factory()->create();
-                $tagTeamsB = TagTeam::factory()->create();
-                $eventMatch->tagTeams()->attach($tagTeamsA, ['side_number' => 0]);
-                $eventMatch->tagTeams()->attach($tagTeamsB, ['side_number' => 1]);
-            });
+            ->hasAttached(TagTeam::factory(), ['side_number' => 0])
+            ->hasAttached(TagTeam::factory(), ['side_number' => 1]);
     }
 }

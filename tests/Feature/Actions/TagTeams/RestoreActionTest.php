@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\TagTeams\RestoreAction;
+use App\Exceptions\CannotJoinTagTeamException;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
@@ -25,16 +26,15 @@ test('it restores a deleted tag team', function () {
 });
 
 test('it throws exception for restoring a wrestler on a current tag team from their original deleted tag team', function () {
-    $wrestlerA = Wrestler::factory()->create(['name' => 'Example Name A']);
-    $wrestlerB = Wrestler::factory()->create(['name' => 'Example Name B']);
-    $wrestlerOldTagTeam = TagTeam::factory()->withCurrentWrestler($wrestlerA)->withCurrentWrestler($wrestlerB)->bookable()->create();
+    [$wrestlerA, $wrestlerB, $wrestlerC] = Wrestler::factory()->count(3)->create();
+    $datetime = now();
+    $wrestlerOldTagTeam = TagTeam::factory()
+        ->withPreviousWrestlers([$wrestlerA, $wrestlerB], $datetime)
+        ->trashed()
+        ->create();
 
-    $wrestlerNewTagTeam = TagTeam::factory()->withCurrentWrestler($wrestlerA)->bookable()->create();
-
-    $this->tagTeamRepository
-        ->shouldNotReceive('restore')
-        ->once()
-        ->with($wrestlerOldTagTeam);
+    $wrestlerNewTagTeam = TagTeam::factory()
+        ->withCurrentWrestlers([$wrestlerA, $wrestlerC], $datetime)->bookable()->create();
 
     RestoreAction::run($wrestlerOldTagTeam);
-})->throws(Exception::class);
+})->throws(CannotJoinTagTeamException::class);
