@@ -67,7 +67,7 @@ test('tag team name must be unique', function () {
         ->validate(TagTeamRequestFactory::new()->create([
             'name' => 'Example Tag Team Name B',
         ]))
-        ->assertFailsValidation(['name' => 'unique:tag_teams,NULL,1,id']);
+        ->assertFailsValidation(['name' => 'unique:tag_teams,NULL,'.$tagTeamA->id.',id']);
 });
 
 test('tag team signature move is optional if wrestlers are not provided', function () {

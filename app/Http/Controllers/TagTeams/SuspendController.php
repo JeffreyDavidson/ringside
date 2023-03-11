@@ -20,6 +20,7 @@ class SuspendController extends Controller
         $this->authorize('suspend', $tagTeam);
 
         try {
+            ray($tagTeam);
             SuspendAction::run($tagTeam);
         } catch (CannotBeSuspendedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
