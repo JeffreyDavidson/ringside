@@ -8,15 +8,15 @@
           "name": "Listen for XDebug",
           "type": "php",
           "request": "launch",
+          "port": 9000,
           "log": false,
           "externalConsole": false,
           "pathMappings": {
-              "/var/www/html": "/Users/jeffreydavidson/Projects/Ringside",
+              "/var/www/html": "${workspaceFolder}"
           },
           "ignore": [
               "**/vendor/**/*.php"
           ],
-          "port": 9000,
         },
         {
             "name": "Launch currently open script",
@@ -24,8 +24,6 @@
             "request": "launch",
             "progress": "${file}",
             "cwd": "${fileDirname}",
-            "port": 9000,
         }
     ],
-
 }
