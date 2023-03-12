@@ -17,6 +17,7 @@
         @endcan
     @endif
 
+    //TODO: Method no longer exists
     @if ($tagTeam->canBeUnretired())
         @can('unretire', $tagTeam)
             <x-buttons.unretire :route="route('tag-teams.unretire', $tagTeam)" />
@@ -29,18 +30,21 @@
         @endcan
     @endif
 
+    // TODO: Fix due to removal of this method
     @if ($tagTeam->canBeReleased())
         @can('release', $tagTeam)
             <x-buttons.release :route="route('tag-teams.release', $tagTeam)" />
         @endcan
     @endif
 
+    // TODO: Fix due to removal of this method
     @if ($tagTeam->canBeSuspended())
         @can('suspend', $tagTeam)
             <x-buttons.suspend :route="route('tag-teams.suspend', $tagTeam)" />
         @endcan
     @endif
 
+    // TODO: Fix due to removal of this method
     @if ($tagTeam->canBeReinstated())
         @can('reinstate', $tagTeam)
             <x-buttons.reinstate :route="route('tag-teams.reinstate', $tagTeam)" />

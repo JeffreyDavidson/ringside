@@ -14,7 +14,6 @@ beforeEach(function () {
 test('invoke calls suspend action and redirects', function () {
     actingAs(administrator())
         ->patch(action([SuspendController::class], $this->tagTeam))
-        ->ray()
         ->assertRedirect(action([TagTeamsController::class, 'index']));
 
     SuspendAction::shouldRun()->with($this->tagTeam);

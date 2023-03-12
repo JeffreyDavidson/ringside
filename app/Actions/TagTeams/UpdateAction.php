@@ -35,6 +35,7 @@ class UpdateAction extends BaseTagTeamAction
                 ->each(fn (Wrestler $wrestler) => RemoveTagTeamPartnerAction::run($tagTeam, $wrestler));
         }
 
+        // TODO: Fix due to removeal of canBeEmployed()
         if (isset($tagTeamData->start_date)) {
             if ($tagTeam->canBeEmployed()
                 || $tagTeam->canHaveEmploymentStartDateChanged($tagTeamData->start_date)

@@ -10,11 +10,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\patch;
 
 beforeEach(function () {
-    $wrestlers = Wrestler::factory()->unemployed()->count(2)->create();
-    $this->tagTeam = TagTeam::factory()
-        ->withCurrentWrestlers($wrestlers)
-        ->unemployed()
-        ->create();
+    $this->tagTeam = TagTeam::factory()->unemployed()->create();
 });
 
 test('invoke calls employ action and redirects', function () {

@@ -19,9 +19,12 @@ beforeEach(function () {
     $this->tagTeamRepository = mock(TagTeamRepository::class);
 });
 
-test('it releases an bookable tag team at the current datetime by default', function ($factoryState) {
-    $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+test('it releases a bookable tag team at the current datetime by default', function () {
+    $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now();
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('reinstate');
 
     $this->tagTeamRepository
         ->shouldReceive('release')
@@ -42,14 +45,14 @@ test('it releases an bookable tag team at the current datetime by default', func
 
         return true;
     });
-})->with([
-    'bookable',
-    'unbookable',
-]);
+});
 
-test('it releases an bookable tag team at a specific datetime', function ($factoryState) {
-    $tagTeam = TagTeam::factory()->{$factoryState}()->create();
+test('it releases an bookable tag team at a specific datetime', function () {
+    $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('reinstate');
 
     $this->tagTeamRepository
         ->shouldReceive('release')
@@ -65,10 +68,58 @@ test('it releases an bookable tag team at a specific datetime', function ($facto
 
         return true;
     });
-})->with([
-    'bookable',
-    'unbookable',
-]);
+});
+
+test('it releases a unbookable tag team at the current datetime by default', function () {
+    $tagTeam = TagTeam::factory()->unbookable()->create();
+    $datetime = now();
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('reinstate');
+
+    $this->tagTeamRepository
+        ->shouldReceive('release')
+        ->once()
+        ->withArgs(function (TagTeam $releasedTagTeam, Carbon $releaseDate) use ($tagTeam, $datetime) {
+            assertTrue($releasedTagTeam->is($tagTeam));
+            assertTrue($releaseDate->equalTo($datetime));
+
+            return true;
+        })
+        ->andReturn($tagTeam);
+
+    ReleaseAction::run($tagTeam);
+
+    Event::assertDispatched(TagTeamReleased::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->releaseDate->is($datetime));
+
+        return true;
+    });
+});
+
+test('it releases an unbookable tag team at a specific datetime', function () {
+    $tagTeam = TagTeam::factory()->unbookable()->create();
+    $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('reinstate');
+
+    $this->tagTeamRepository
+        ->shouldReceive('release')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturn($tagTeam);
+
+    ReleaseAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamReleased::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->releaseDate->is($datetime));
+
+        return true;
+    });
+});
 
 test('it releases a suspended tag team at the current datetime by default', function () {
     $tagTeam = TagTeam::factory()->suspended()->create();

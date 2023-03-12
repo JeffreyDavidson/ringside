@@ -24,7 +24,7 @@ class ReleaseAction extends BaseTagTeamAction
         $releaseDate ??= now();
 
         if ($tagTeam->isSuspended()) {
-            ReinstateAction::run($tagTeam, $releaseDate);
+            $this->tagTeamRepository->reinstate($tagTeam, $releaseDate);
         }
 
         $this->tagTeamRepository->release($tagTeam, $releaseDate);

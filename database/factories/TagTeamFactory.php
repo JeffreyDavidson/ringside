@@ -113,10 +113,10 @@ class TagTeamFactory extends Factory
 
     public function unemployed()
     {
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::UNEMPLOYED])
-            ->afterCreating(function (TagTeam $tagTeam) {
-                $tagTeam->save();
-            });
+        [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->unemployed()->create();
+
+        return $this->state(fn () => ['status' => TagTeamStatus::UNEMPLOYED])
+            ->withCurrentWrestlers([$wrestlerA, $wrestlerB]);
     }
 
     public function released()

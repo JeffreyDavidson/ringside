@@ -1,6 +1,5 @@
 <?php
 
-use App\Actions\TagTeams\ReinstateAction;
 use App\Actions\TagTeams\RetireAction;
 use App\Events\TagTeams\TagTeamRetired;
 use App\Exceptions\CannotBeRetiredException;
@@ -20,11 +19,9 @@ beforeEach(function () {
     $this->tagTeamRepository = mock(TagTeamRepository::class);
 });
 
-test('it retires a bookable tag team at the current datetime by default', function () {
-    $tagTeam = TagTeam::factory()->bookable()->create();
+test('it retires a currently employed tag team at the current datetime by default', function ($factoryState) {
+    $tagTeam = TagTeam::factory()->{$factoryState}()->create();
     $datetime = now();
-
-    ReinstateAction::shouldNotRun($tagTeam, $datetime);
 
     $this->tagTeamRepository
         ->shouldReceive('release')
@@ -56,13 +53,15 @@ test('it retires a bookable tag team at the current datetime by default', functi
 
         return true;
     });
-});
+})->with([
+    'bookable',
+    'suspended',
+    'unbookable',
+]);
 
-test('it retires a bookable tag team at a specific datetime', function () {
+test('it retires a currently employed tag team at a specific datetime', function () {
     $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now()->addDays(2);
-
-    ReinstateAction::shouldNotRun($tagTeam, $datetime);
 
    $this->tagTeamRepository
         ->shouldReceive('release')
@@ -84,19 +83,46 @@ test('it retires a bookable tag team at a specific datetime', function () {
 
         return true;
     });
-});
+})->with([
+    'bookable',
+    'suspended',
+    'unbookable',
+]);
 
-test('it retires a suspended tag team', function () {
-    $tagTeam = TagTeam::factory()->suspended()->create();
+test('it retires a released tag team at the current datetime by default', function () {
+    $tagTeam = TagTeam::factory()->released()->create();
     $datetime = now();
 
-    ReinstateAction::shouldRun($tagTeam, $datetime);
+    $this->tagTeamRepository
+        ->shouldNotReceive('release');
 
     $this->tagTeamRepository
-        ->shouldReceive('release')
+        ->shouldReceive('retire')
         ->once()
-        ->with($tagTeam, $datetime)
+        ->withArgs(function (TagTeam $retiredTagTeam, Carbon $retirementDate) use ($tagTeam, $datetime) {
+            assertTrue($retiredTagTeam->is($tagTeam));
+            assertTrue($retirementDate->equalTo($datetime));
+
+            return true;
+        })
         ->andReturns($tagTeam);
+
+    RetireAction::run($tagTeam);
+
+    Event::assertDispatched(TagTeamRetired::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->retirementDate->is($datetime));
+
+        return true;
+    });
+});
+
+test('it retires a released tag team at a specific datetime', function () {
+    $tagTeam = TagTeam::factory()->released()->create();
+    $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('release');
 
     $this->tagTeamRepository
         ->shouldReceive('retire')

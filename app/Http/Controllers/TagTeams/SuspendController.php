@@ -17,10 +17,10 @@ class SuspendController extends Controller
      */
     public function __invoke(TagTeam $tagTeam): RedirectResponse
     {
+        // dd($tagTeam);
         $this->authorize('suspend', $tagTeam);
 
         try {
-            ray($tagTeam);
             SuspendAction::run($tagTeam);
         } catch (CannotBeSuspendedException $e) {
             return redirect()->back()->with('error', $e->getMessage());

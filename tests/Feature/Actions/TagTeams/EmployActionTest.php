@@ -24,6 +24,9 @@ test('it employs an employable tag team at the current datetime by default', fun
     $datetime = now();
 
     $this->tagTeamRepository
+        ->shouldNotReceive('unretire');
+
+    $this->tagTeamRepository
         ->shouldReceive('employ')
         ->once()
         ->withArgs(function (TagTeam $employedTagTeam, Carbon $employmentDate) use ($tagTeam, $datetime) {
@@ -45,13 +48,15 @@ test('it employs an employable tag team at the current datetime by default', fun
 })->with([
     'unemployed',
     'released',
-    'retired',
     'withFutureEmployment',
 ]);
 
 test('it employs an employable tag team at a specific datetime', function ($factoryState) {
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
     $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('unretire');
 
     $this->tagTeamRepository
         ->shouldReceive('employ')
@@ -70,9 +75,70 @@ test('it employs an employable tag team at a specific datetime', function ($fact
 })->with([
     'unemployed',
     'released',
-    'retired',
     'withFutureEmployment',
 ]);
+
+test('it employs a retired tag team at the current datetime by default', function () {
+    $tagTeam = TagTeam::factory()->retired()->create();
+    $datetime = now();
+
+    $this->tagTeamRepository
+        ->shouldReceive('unretire')
+        ->withArgs(function (TagTeam $retiredTagTeam, Carbon $unretireDate) use ($tagTeam, $datetime) {
+            assertTrue($retiredTagTeam->is($tagTeam));
+            assertTrue($unretireDate->equalTo($datetime));
+
+            return true;
+        })
+        ->once()
+        ->andReturn($tagTeam);
+
+    $this->tagTeamRepository
+        ->shouldReceive('employ')
+        ->once()
+        ->withArgs(function (TagTeam $employedTagTeam, Carbon $employmentDate) use ($tagTeam, $datetime) {
+            assertTrue($employedTagTeam->is($tagTeam));
+            assertTrue($employmentDate->equalTo($datetime));
+
+            return true;
+        })
+        ->andReturns($tagTeam);
+
+    EmployAction::run($tagTeam);
+
+    Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->employmentDate->is($datetime));
+
+        return true;
+    });
+});
+
+test('it employs a retired tag team at a specific datetime', function () {
+    $tagTeam = TagTeam::factory()->retired()->create();
+    $datetime = now()->addDays(2);
+
+    $this->tagTeamRepository
+        ->shouldReceive('unretire')
+        ->with($tagTeam, $datetime)
+        ->once()
+        ->andReturn($tagTeam);
+
+    $this->tagTeamRepository
+        ->shouldReceive('employ')
+        ->once()
+        ->with($tagTeam, $datetime)
+        ->andReturns($tagTeam);
+
+    EmployAction::run($tagTeam, $datetime);
+
+    Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
+        assertTrue($event->tagTeam->is($tagTeam));
+        assertTrue($event->employmentDate->is($datetime));
+
+        return true;
+    });
+});
 
 test('it throws exception for employing a non employable tag team', function ($factoryState) {
     $this->withoutExceptionHandling();

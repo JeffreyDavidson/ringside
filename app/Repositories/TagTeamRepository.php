@@ -56,15 +56,15 @@ class TagTeamRepository
     /**
      * Employ a given tag team on a given date.
      */
-public function employ(TagTeam $tagTeam, Carbon $employmentDate): TagTeam
-{
-    $tagTeam->employments()->updateOrCreate(
-        ['ended_at' => null],
-        ['started_at' => $employmentDate->toDateTimeString()]
-    );
+    public function employ(TagTeam $tagTeam, Carbon $employmentDate): TagTeam
+    {
+        $tagTeam->employments()->updateOrCreate(
+            ['ended_at' => null],
+            ['started_at' => $employmentDate->toDateTimeString()]
+        );
 
-    return $tagTeam;
-}
+        return $tagTeam;
+    }
 
     /**
      * Release a given tag team on a given date.

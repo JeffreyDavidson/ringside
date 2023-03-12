@@ -23,11 +23,10 @@ class RetireAction extends BaseTagTeamAction
 
         $retirementDate ??= now();
 
-        if ($tagTeam->isSuspended()) {
-            ReinstateAction::run($tagTeam, $retirementDate);
+        if ($tagTeam->isCurrentlyEmployed()) {
+            $this->tagTeamRepository->release($tagTeam, $retirementDate);
         }
 
-        $this->tagTeamRepository->release($tagTeam, $retirementDate);
         $this->tagTeamRepository->retire($tagTeam, $retirementDate);
 
         event(new TagTeamRetired($tagTeam, $retirementDate));

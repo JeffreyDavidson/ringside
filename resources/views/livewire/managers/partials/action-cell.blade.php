@@ -23,6 +23,7 @@
         @endcan
     @endif
 
+    // TODO: Fix Due to removal of this method
     @if ($manager->canBeEmployed())
         @can('employ', $manager)
             <x-buttons.employ :route="route('managers.employ', $manager)" />

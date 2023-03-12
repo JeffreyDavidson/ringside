@@ -33,7 +33,7 @@ test('it throws exception for restoring a wrestler on a current tag team from th
         ->trashed()
         ->create();
 
-    $wrestlerNewTagTeam = TagTeam::factory()
+    TagTeam::factory()
         ->withCurrentWrestlers([$wrestlerA, $wrestlerC], $datetime)->bookable()->create();
 
     RestoreAction::run($wrestlerOldTagTeam);

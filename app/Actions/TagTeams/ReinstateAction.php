@@ -35,7 +35,7 @@ class ReinstateAction extends BaseTagTeamAction
      */
     private function ensureCanBeReinstated(TagTeam $tagTeam): void
     {
-        if (! $tagTeam->canBeReinstated()) {
+        if (! $tagTeam->isSuspended()) {
             throw CannotBeReinstatedException::notSuspended($tagTeam);
         }
     }

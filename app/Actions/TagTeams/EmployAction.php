@@ -6,6 +6,7 @@ namespace App\Actions\TagTeams;
 
 use App\Events\TagTeams\TagTeamEmployed;
 use App\Exceptions\CannotBeEmployedException;
+use App\Exceptions\NotEnoughMembersException;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -23,6 +24,10 @@ class EmployAction extends BaseTagTeamAction
 
         $startDate ??= now();
 
+        if ($tagTeam->isRetired()) {
+            $this->tagTeamRepository->unretire($tagTeam, $startDate);
+        }
+
         $this->tagTeamRepository->employ($tagTeam, $startDate);
 
         event(new TagTeamEmployed($tagTeam, $startDate));
@@ -37,6 +42,10 @@ class EmployAction extends BaseTagTeamAction
     {
         if ($tagTeam->isCurrentlyEmployed()) {
             throw CannotBeEmployedException::employed($tagTeam);
+        }
+
+        if ($tagTeam->currentWrestlers->count() !== TagTeam::NUMBER_OF_WRESTLERS_ON_TEAM) {
+            throw new NotEnoughMembersException();
         }
     }
 }

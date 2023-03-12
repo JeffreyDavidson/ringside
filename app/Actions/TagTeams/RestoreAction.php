@@ -17,13 +17,18 @@ class RestoreAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
+        $this->ensureCanBeRestored($tagTeam);
+
+        $this->tagTeamRepository->restore($tagTeam);
+    }
+
+    public function ensureCanBeRestored(TagTeam $tagTeam): void
+    {
         $tagTeam->previousWrestlers
             ->each(function ($wrestler) {
                 if ($wrestler->isAMemberOfCurrentTagTeam()) {
                     throw CannotJoinTagTeamException::alreadyInTagTeam();
                 }
             });
-
-        $this->tagTeamRepository->restore($tagTeam);
     }
 }
