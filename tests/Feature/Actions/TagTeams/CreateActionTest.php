@@ -8,10 +8,10 @@ use App\Events\TagTeams\TagTeamEmployed;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
 use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
-use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     Event::fake();

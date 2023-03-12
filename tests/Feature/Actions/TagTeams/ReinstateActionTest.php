@@ -5,11 +5,11 @@ use App\Events\TagTeams\TagTeamReinstated;
 use App\Exceptions\CannotBeReinstatedException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
 use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     Event::fake();

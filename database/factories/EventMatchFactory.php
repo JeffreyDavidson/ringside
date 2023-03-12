@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Event;
-use App\Models\EventMatch;
 use App\Models\MatchType;
 use App\Models\TagTeam;
 use Illuminate\Database\Eloquent\Factories\Factory;

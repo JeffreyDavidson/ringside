@@ -5,8 +5,8 @@ use App\Exceptions\CannotJoinTagTeamException;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
-use function Pest\Laravel\mock;
 use Illuminate\Support\Facades\Event;
+use function Pest\Laravel\mock;
 
 beforeEach(function () {
     Event::fake();

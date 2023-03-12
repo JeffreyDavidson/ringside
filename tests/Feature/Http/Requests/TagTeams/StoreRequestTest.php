@@ -4,8 +4,8 @@ use App\Http\Requests\TagTeams\StoreRequest;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Rules\WrestlerCanJoinNewTagTeam;
-use function Pest\Laravel\mock;
 use Illuminate\Support\Carbon;
+use function Pest\Laravel\mock;
 use Tests\RequestFactories\TagTeamRequestFactory;
 
 test('an administrator is authorized to make this request', function () {
@@ -116,7 +116,7 @@ test('tag team wrestlerA must be different from wrestlerB if provided', function
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestlerA->id,
-            'wrestlerB' => $wrestlerA->id
+            'wrestlerB' => $wrestlerA->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => 'different:wrestlerB']);
 });
@@ -125,7 +125,7 @@ test('tag team wrestlerA is required if start date is provided', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => null,
-            'start_date' => Carbon::now()->toDateTimeString()
+            'start_date' => Carbon::now()->toDateTimeString(),
         ]))
         ->assertFailsValidation(['wrestlerA' => 'required_with:start_date']);
 });
@@ -136,7 +136,7 @@ test('tag team wrestlerA is required with wrestlerB is provided', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => null,
-            'wrestlerB' => $wrestler->id
+            'wrestlerB' => $wrestler->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => 'required_with:wrestlerB']);
 });
@@ -157,13 +157,14 @@ test('tag team wrestlerA must be able to join a new tag team if provided', funct
         ->shouldReceive('validate')
         ->with('wrestlerA', 1, function ($closure) {
             $closure();
+
             return true;
         });
 
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestlerA->id,
-            'wrestlerB' => $wrestlerB->id
+            'wrestlerB' => $wrestlerB->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => WrestlerCanJoinNewTagTeam::class]);
 });
@@ -199,7 +200,7 @@ test('tag team wrestlerB is required if start date is provided', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerB' => null,
-            'start_date' => Carbon::now()->toDateTimeString()
+            'start_date' => Carbon::now()->toDateTimeString(),
         ]))
         ->assertFailsValidation(['wrestlerB' => 'required_with:start_date']);
 });
@@ -210,7 +211,7 @@ test('tag team wrestlerB is required with wrestlerA is provided', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerB' => null,
-            'wrestlerA' => $wrestler->id
+            'wrestlerA' => $wrestler->id,
         ]))
         ->assertFailsValidation(['wrestlerB' => 'required_with:wrestlerA']);
 });

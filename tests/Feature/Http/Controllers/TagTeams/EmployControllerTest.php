@@ -5,7 +5,6 @@ use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\TagTeams\EmployController;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
-use App\Models\Wrestler;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\patch;
 

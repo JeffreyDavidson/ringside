@@ -5,11 +5,11 @@ use App\Events\Wrestlers\WrestlerInjured;
 use App\Exceptions\CannotBeInjuredException;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
 use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 
 test('it injures a bookable wrestler at the current datetime by default', function () {
     Event::fake();

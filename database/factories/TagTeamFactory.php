@@ -141,7 +141,7 @@ class TagTeamFactory extends Factory
         $joinDate ??= now();
 
         return $this->hasAttached($wrestler, [
-            'joined_at' => $joinDate
+            'joined_at' => $joinDate,
         ]);
     }
 
@@ -151,7 +151,7 @@ class TagTeamFactory extends Factory
 
         return $this->hasAttached($wrestler, [
             'joined_at' => $leftDate->subDays(3)->toDateTimeString(),
-            'left_at' => $leftDate->toDateTimeString()
+            'left_at' => $leftDate->toDateTimeString(),
         ]);
     }
 

@@ -5,8 +5,8 @@ use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
 use Illuminate\Database\Eloquent\Collection;
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\mock;
 use function Pest\Laravel\get;
+use function Pest\Laravel\mock;
 
 test('create returns a view', function () {
     actingAs(administrator())

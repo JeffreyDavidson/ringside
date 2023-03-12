@@ -5,8 +5,8 @@ use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Rules\EmploymentStartDateCanBeChanged;
 use App\Rules\LetterSpace;
-use function Pest\Laravel\mock;
 use Illuminate\Support\Carbon;
+use function Pest\Laravel\mock;
 use Tests\RequestFactories\TagTeamRequestFactory;
 
 test('an administrator is authorized to make this request', function () {
@@ -156,6 +156,7 @@ test('tag team start date cannot be changed if employment start date has past', 
         ->shouldReceive('validate')
         ->with('wrestlerA', 1, function ($closure) {
             $closure();
+
             return true;
         });
 
@@ -197,7 +198,7 @@ test('tag team wrestlerA must be different from wrestlerB if provided', function
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestlerA->id,
-            'wrestlerB' => $wrestlerA->id
+            'wrestlerB' => $wrestlerA->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => 'different:wrestlerB']);
 });
@@ -209,7 +210,7 @@ test('tag team wrestlerA is required if start date is provided', function () {
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => null,
-            'start_date' => Carbon::now()->toDateTimeString()
+            'start_date' => Carbon::now()->toDateTimeString(),
         ]))
         ->assertFailsValidation(['wrestlerA' => 'required_with:start_date']);
 });
@@ -222,7 +223,7 @@ test('tag team wrestlerA is required with wrestlerB is provided', function () {
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => null,
-            'wrestlerB' => $wrestler->id
+            'wrestlerB' => $wrestler->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => 'required_with:wrestlerB']);
 });
@@ -247,6 +248,7 @@ test('tag team wrestlerA must be able to join an existing tag team if provided',
         ->shouldReceive('validate')
         ->with('wrestlerA', 1, function ($closure) {
             $closure();
+
             return true;
         });
 
@@ -254,7 +256,7 @@ test('tag team wrestlerA must be able to join an existing tag team if provided',
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestlerC->id,
-            'wrestlerB' => $wrestlerB->id
+            'wrestlerB' => $wrestlerB->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => WrestlerCanJoinExistingTagTeam::class]);
 });
@@ -289,7 +291,7 @@ test('tag team wrestlerB must be different from wrestlerA if provided', function
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestlerB->id,
-            'wrestlerB' => $wrestlerB->id
+            'wrestlerB' => $wrestlerB->id,
         ]))
         ->assertFailsValidation(['wrestlerB' => 'different:wrestlerA']);
 });
@@ -301,7 +303,7 @@ test('tag team wrestlerB is required if start date is provided', function () {
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerB' => null,
-            'start_date' => Carbon::now()->toDateTimeString()
+            'start_date' => Carbon::now()->toDateTimeString(),
         ]))
         ->assertFailsValidation(['wrestlerB' => 'required_with:start_date']);
 });
@@ -339,6 +341,7 @@ test('tag team wrestlerB must be able to join an existing tag team if provided',
         ->shouldReceive('validate')
         ->with('wrestlerB', 1, function ($closure) {
             $closure();
+
             return true;
         });
 
@@ -346,7 +349,7 @@ test('tag team wrestlerB must be able to join an existing tag team if provided',
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestlerC->id,
-            'wrestlerB' => $wrestlerA->id
+            'wrestlerB' => $wrestlerA->id,
         ]))
         ->assertFailsValidation(['wrestlerB' => WrestlerCanJoinExistingTagTeam::class]);
 });

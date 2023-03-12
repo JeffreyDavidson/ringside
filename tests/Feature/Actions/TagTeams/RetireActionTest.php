@@ -5,11 +5,11 @@ use App\Events\TagTeams\TagTeamRetired;
 use App\Exceptions\CannotBeRetiredException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
 use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     Event::fake();
@@ -63,11 +63,11 @@ test('it retires a currently employed tag team at a specific datetime', function
     $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now()->addDays(2);
 
-   $this->tagTeamRepository
-        ->shouldReceive('release')
-        ->once()
-        ->with($tagTeam, $datetime)
-        ->andReturns($tagTeam);
+    $this->tagTeamRepository
+         ->shouldReceive('release')
+         ->once()
+         ->with($tagTeam, $datetime)
+         ->andReturns($tagTeam);
 
     $this->tagTeamRepository
         ->shouldReceive('retire')

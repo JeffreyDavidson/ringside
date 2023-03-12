@@ -4,8 +4,8 @@ use App\Actions\TagTeams\UpdateAction;
 use App\Data\TagTeamData;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use function Pest\Laravel\mock;
 use Illuminate\Support\Facades\Event;
+use function Pest\Laravel\mock;
 
 beforeEach(function () {
     Event::fake();

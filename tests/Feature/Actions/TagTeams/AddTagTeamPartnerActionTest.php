@@ -4,10 +4,10 @@ use App\Actions\TagTeams\AddTagTeamPartnerAction;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
+use Illuminate\Support\Carbon;
 use function Pest\Laravel\mock;
 use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
-use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     testTime()->freeze();
@@ -15,7 +15,7 @@ beforeEach(function () {
     $this->tagTeamRepository = mock(TagTeamRepository::class);
 });
 
-test('it can add a wrestler to a tag team', function() {
+test('it can add a wrestler to a tag team', function () {
     $wrestler = Wrestler::factory()->create();
     $tagTeam = TagTeam::factory()->create();
     $datetime = now();
