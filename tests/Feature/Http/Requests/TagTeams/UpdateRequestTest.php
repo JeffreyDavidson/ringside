@@ -310,13 +310,13 @@ test('tag team wrestlerB is required with wrestlerA is provided', function () {
     $tagTeam = TagTeam::factory()->bookable()->create();
     $wrestler = Wrestler::factory()->create();
 
-    dd($this->createRequest(UpdateRequest::class)
+    $this->createRequest(UpdateRequest::class)
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
             'wrestlerA' => $wrestler->id,
             'wrestlerB' => null,
-        ]))->getFailedRules());
-        // ->assertFailsValidation(['wrestlerB' => 'required_with:wrestlerA']);
+        ]))
+        ->assertFailsValidation(['wrestlerB' => 'required_with:wrestlerA']);
 });
 
 test('tag team wrestlerB must exist if provided', function () {
