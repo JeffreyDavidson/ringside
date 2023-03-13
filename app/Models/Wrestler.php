@@ -49,6 +49,15 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     ];
 
     /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => WrestlerStatus::UNEMPLOYED->value,
+    ];
+
+    /**
      * Create a new Eloquent query builder for the model.
      */
     public function newEloquentBuilder($query): WrestlerQueryBuilder

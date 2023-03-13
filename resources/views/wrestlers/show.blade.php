@@ -1,6 +1,8 @@
 <x-layouts.app>
+
     <x-slot name="toolbar">
-        <x-toolbar title="{{ $wrestler->name }}">
+        <x-toolbar>
+            <x-page-heading>{{  $wrestler->name }}</x-page-heading>
             <x-breadcrumbs.item :url="route('dashboard')" label="Home" />
             <x-breadcrumbs.separator />
             <x-breadcrumbs.item :url="route('wrestlers.index')" label="Wrestlers" />

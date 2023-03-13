@@ -2,6 +2,7 @@
 
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Models\Wrestler;
+use App\Rules\LetterSpace;
 use Tests\RequestFactories\WrestlerRequestFactory;
 
 test('an administrator is authorized to make this request', function () {
@@ -30,6 +31,14 @@ test('wrestler name must be a string', function () {
             'name' => 123,
         ]))
         ->assertFailsValidation(['name' => 'string']);
+});
+
+test('wrestler name must conain only letters and spaces', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(WrestlerRequestFactory::new()->create([
+            'name' => 'HKJT*&^&*(^))',
+        ]))
+        ->assertFailsValidation(['name' => LetterSpace::class]);
 });
 
 test('wrestler name must be at least 3 characters', function () {
@@ -64,6 +73,14 @@ test('wrestler height in feet must be an integer', function () {
             'feet' => 'not-an-integer',
         ]))
         ->assertFailsValidation(['feet' => 'integer']);
+});
+
+test('wrestler height in feet cannot be more than eight', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(WrestlerRequestFactory::new()->create([
+            'feet' => 9,
+        ]))
+        ->assertFailsValidation(['feet' => 'max:8']);
 });
 
 test('wrestler height in inches is required', function () {
@@ -106,6 +123,14 @@ test('wrestler weight must be an integer', function () {
         ->assertFailsValidation(['weight' => 'integer']);
 });
 
+test('wrestler weight must be only 3 digits', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(WrestlerRequestFactory::new()->create([
+            'weight' => 1000,
+        ]))
+        ->assertFailsValidation(['weight' => 'digits:3']);
+});
+
 test('wrestler hometown is required', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(WrestlerRequestFactory::new()->create([
@@ -136,6 +161,14 @@ test('wrestler signature move must be a string if provided', function () {
             'signature_move' => 12345,
         ]))
         ->assertFailsValidation(['signature_move' => 'string']);
+});
+
+test('wrestler signature move must be specific characters', function () {
+    $this->createRequest(StoreRequest::class)
+        ->validate(WrestlerRequestFactory::new()->create([
+            'signature_move' => '09878&*%^&%^&()**',
+        ]))
+        ->assertFailsValidation(['signature_move' => 'regex:/^[a-zA-Z\s\']+$/']);
 });
 
 test('wrestler start date is optional', function () {
