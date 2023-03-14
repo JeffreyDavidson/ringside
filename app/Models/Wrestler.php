@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Injurable, Manageable, TagTeamMember
 {
+    use Concerns\CanHaveMatches;
     use Concerns\CanJoinStables;
     use Concerns\CanJoinTagTeams;
     use Concerns\HasManagers;
@@ -47,6 +48,15 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
      */
     protected $casts = [
         'status' => WrestlerStatus::class,
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => WrestlerStatus::UNEMPLOYED->value,
     ];
 
     /**
