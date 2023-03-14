@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Injurable, Manageable, TagTeamMember
 {
-    use Concerns\CanHaveMatches;
     use Concerns\CanJoinStables;
     use Concerns\CanJoinTagTeams;
     use Concerns\HasManagers;
