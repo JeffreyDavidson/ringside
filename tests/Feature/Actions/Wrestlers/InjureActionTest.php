@@ -74,4 +74,4 @@ test('invoke throws exception for injuring a non injurable wrestler', function (
     'withFutureEmployment',
     'retired',
     'injured',
-])->skip();
+]);
