@@ -75,7 +75,7 @@ uses()
     );
 uses()->group('wrestlers', 'feature-wrestlers', 'roster', 'feature-roster')
     ->in(
-        'Feature/Http/Actions/Wrestlers',
+        'Feature/Actions/Wrestlers',
         'Feature/Http/Controllers/Wrestlers',
         'Feature/Http/Livewire/Wrestlers',
         'Feature/Http/Requests/Wrestlers',
@@ -83,6 +83,12 @@ uses()->group('wrestlers', 'feature-wrestlers', 'roster', 'feature-roster')
         'Feature/Policies/WrestlerPolicyTest.php',
         'Feature/Http/Repositories/WrestlerRepositoryTest.php',
         'Feature/resources/views/wrestlers'
+    );
+
+uses()->group('wrestlers', 'unit-wrestlers', 'roster', 'unit-roster')
+    ->in(
+        'Unit/Builders/WrestlerQueryBuilderTest.php',
+        'Unit/Models/WrestlerTest.php',
     );
 
 beforeEach(function () {

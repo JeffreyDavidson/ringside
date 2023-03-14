@@ -4,6 +4,7 @@ use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Models\Wrestler;
 use App\Rules\LetterSpace;
 use Tests\RequestFactories\WrestlerRequestFactory;
+use function Pest\Laravel\mock;
 
 test('an administrator is authorized to make this request', function () {
     $this->createRequest(StoreRequest::class)
@@ -34,6 +35,12 @@ test('wrestler name must be a string', function () {
 });
 
 test('wrestler name must conain only letters and spaces', function () {
+    mock(LetterSpace::class)
+        ->shouldReceive('validate')
+        ->with('name', 1, function ($closure) {
+            $closure();
+        });
+
     $this->createRequest(StoreRequest::class)
         ->validate(WrestlerRequestFactory::new()->create([
             'name' => 'HKJT*&^&*(^))',

@@ -51,6 +51,12 @@ test('wrestler name must be a string', function () {
 test('wrestler name must contain only letters and spaces', function () {
     $wrestler = Wrestler::factory()->create();
 
+    mock(LetterSpace::class)
+        ->shouldReceive('validate')
+        ->with('name', 1, function ($closure) {
+            $closure();
+        });
+
     $this->createRequest(UpdateRequest::class)
         ->withParam('wrestler', $wrestler)
         ->validate(WrestlerRequestFactory::new()->create([
@@ -205,6 +211,12 @@ test('wrestler hometown must be a string', function () {
 
 test('wrestler hometown must only contain letters and spaces', function () {
     $wrestler = Wrestler::factory()->create();
+
+    mock(LetterSpace::class)
+        ->shouldReceive('validate')
+        ->with('name', 1, function ($closure) {
+            $closure();
+        });
 
     $this->createRequest(UpdateRequest::class)
         ->withParam('wrestler', $wrestler)
