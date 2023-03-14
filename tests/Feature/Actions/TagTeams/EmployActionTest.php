@@ -5,11 +5,10 @@ use App\Events\TagTeams\TagTeamEmployed;
 use App\Exceptions\CannotBeEmployedException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
-use function Spatie\PestPluginTestTime\testTime;
 
 beforeEach(function () {
     Event::fake();
@@ -30,8 +29,8 @@ test('it employs an employable tag team at the current datetime by default', fun
         ->shouldReceive('employ')
         ->once()
         ->withArgs(function (TagTeam $employedTagTeam, Carbon $employmentDate) use ($tagTeam, $datetime) {
-            assertTrue($employedTagTeam->is($tagTeam));
-            assertTrue($employmentDate->equalTo($datetime));
+            expect($employedTagTeam->is($tagTeam))->toBeTrue();
+            expect($employmentDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -40,8 +39,8 @@ test('it employs an employable tag team at the current datetime by default', fun
     EmployAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->employmentDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->employmentDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -67,8 +66,8 @@ test('it employs an employable tag team at a specific datetime', function ($fact
     EmployAction::run($tagTeam, $datetime);
 
     Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->employmentDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->employmentDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -85,8 +84,8 @@ test('it employs a retired tag team at the current datetime by default', functio
     $this->tagTeamRepository
         ->shouldReceive('unretire')
         ->withArgs(function (TagTeam $retiredTagTeam, Carbon $unretireDate) use ($tagTeam, $datetime) {
-            assertTrue($retiredTagTeam->is($tagTeam));
-            assertTrue($unretireDate->equalTo($datetime));
+            expect($retiredTagTeam->is($tagTeam))->toBeTrue();
+            expect($unretireDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -97,8 +96,8 @@ test('it employs a retired tag team at the current datetime by default', functio
         ->shouldReceive('employ')
         ->once()
         ->withArgs(function (TagTeam $employedTagTeam, Carbon $employmentDate) use ($tagTeam, $datetime) {
-            assertTrue($employedTagTeam->is($tagTeam));
-            assertTrue($employmentDate->equalTo($datetime));
+            expect($employedTagTeam->is($tagTeam))->toBeTrue();
+            expect($employmentDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -107,8 +106,8 @@ test('it employs a retired tag team at the current datetime by default', functio
     EmployAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->employmentDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->employmentDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -133,16 +132,14 @@ test('it employs a retired tag team at a specific datetime', function () {
     EmployAction::run($tagTeam, $datetime);
 
     Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->employmentDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->employmentDate->is($datetime))->toBeTrue();
 
         return true;
     });
 });
 
 test('it throws exception for employing a non employable tag team', function ($factoryState) {
-    $this->withoutExceptionHandling();
-
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
 
     EmployAction::run($tagTeam);

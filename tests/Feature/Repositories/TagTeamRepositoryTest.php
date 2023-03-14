@@ -79,9 +79,7 @@ test('it can employ a tag team', function () {
 
 test('it can update an employment of a tag team', function () {
     $datetime = now();
-    $wrestlers = Wrestler::factory()->count(2)->create();
     $tagTeam = TagTeam::factory()
-        ->withCurrentWrestlers($wrestlers)
         ->has(Employment::factory()->started($datetime->copy()->addDays(2)))
         ->create();
 
@@ -97,8 +95,7 @@ test('it can update an employment of a tag team', function () {
 });
 
 test('it can release a tag team', function () {
-    $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->bookable()->create();
+    $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now();
 
     $tagTeam = app(TagTeamRepository::class)->release($tagTeam, $datetime);
@@ -109,8 +106,7 @@ test('it can release a tag team', function () {
 });
 
 test('it can retire a tag team', function () {
-    $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->bookable()->create();
+    $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now();
 
     $tagTeam = app(TagTeamRepository::class)->retire($tagTeam, $datetime);
@@ -133,8 +129,7 @@ test('it can unretire a tag team', function () {
 });
 
 test('it can suspend a tag team', function () {
-    $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->bookable()->create();
+    $tagTeam = TagTeam::factory()->bookable()->create();
     $datetime = now();
 
     $tagTeam = app(TagTeamRepository::class)->suspend($tagTeam, $datetime);
@@ -145,8 +140,7 @@ test('it can suspend a tag team', function () {
 });
 
 test('it can reinstate a tag team', function () {
-    $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->suspended()->create();
+    $tagTeam = TagTeam::factory()->suspended()->create();
     $datetime = now();
 
     $tagTeam = app(TagTeamRepository::class)->reinstate($tagTeam, $datetime);
@@ -157,8 +151,7 @@ test('it can reinstate a tag team', function () {
 });
 
 test('it can update a future employment for a tag team', function () {
-    $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->hasFutureEmployment()->create();
+    $tagTeam = TagTeam::factory()->hasFutureEmployment()->create();
     $datetime = now();
 
     $tagTeam = app(TagTeamRepository::class)->updateEmployment($tagTeam, $datetime);
@@ -192,7 +185,7 @@ test('it can add a wrestler to a tag team', function () {
 
 test('it can remove wrestlers from a tag team', function () {
     $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->create();
+    $tagTeam = TagTeam::factory()->create();
     $datetime = now();
 
     app(TagTeamRepository::class)->removeTagTeamPartners($tagTeam, $wrestlers, $datetime);

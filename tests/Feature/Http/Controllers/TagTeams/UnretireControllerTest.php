@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\TagTeams\UnretireAction;
+use App\Exceptions\CannotBeUnretiredException;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Http\Controllers\TagTeams\UnretireController;
 use App\Models\TagTeam;
@@ -28,4 +29,16 @@ test('a basic user cannot unretire a tag team', function () {
 test('a guest cannot unretire a tag team', function () {
     patch(action([UnretireController::class], $this->tagTeam))
         ->assertRedirect(route('login'));
+});
+
+test('invoke returns an error message when suspending a non suspendable tag team', function () {
+    $tagTeam = TagTeam::factory()->create();
+
+    UnretireAction::allowToRun()->andThrow(CannotBeUnretiredException::class);
+
+    actingAs(administrator())
+        ->from(action([TagTeamsController::class, 'index']))
+        ->patch(action([UnretireController::class], $tagTeam))
+        ->assertRedirect(action([TagTeamsController::class, 'index']))
+        ->assertSessionHas('error');
 });

@@ -4,9 +4,8 @@ use App\Actions\TagTeams\DeleteAction;
 use App\Events\TagTeams\TagTeamDeleted;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
+use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     Event::fake();
@@ -25,7 +24,7 @@ test('it deletes a tag team', function () {
     DeleteAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamDeleted::class, function ($event) use ($tagTeam) {
-        assertTrue($event->tagTeam->is($tagTeam));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
 
         return true;
     });

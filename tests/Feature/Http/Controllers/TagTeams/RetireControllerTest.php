@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\TagTeams\RetireAction;
+use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\TagTeams\RetireController;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
@@ -28,4 +29,16 @@ test('a basic user cannot retire a bookable tag team', function () {
 test('a guest cannot suspend a bookable tag team', function () {
     patch(action([RetireController::class], $this->tagTeam))
         ->assertRedirect(route('login'));
+});
+
+test('invoke returns an error message when releasing a non releasable tag team', function () {
+    $tagTeam = TagTeam::factory()->create();
+
+    RetireAction::allowToRun()->andThrow(CannotBeRetiredException::class);
+
+    actingAs(administrator())
+        ->from(action([TagTeamsController::class, 'index']))
+        ->patch(action([RetireController::class], $tagTeam))
+        ->assertRedirect(action([TagTeamsController::class, 'index']))
+        ->assertSessionHas('error');
 });

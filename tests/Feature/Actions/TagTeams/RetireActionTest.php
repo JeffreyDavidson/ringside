@@ -5,11 +5,10 @@ use App\Events\TagTeams\TagTeamRetired;
 use App\Exceptions\CannotBeRetiredException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
-use function Spatie\PestPluginTestTime\testTime;
 
 beforeEach(function () {
     Event::fake();
@@ -27,8 +26,8 @@ test('it retires a currently employed tag team at the current datetime by defaul
         ->shouldReceive('release')
         ->once()
         ->withArgs(function (TagTeam $retiredTagTeam, Carbon $retirementDate) use ($tagTeam, $datetime) {
-            assertTrue($retiredTagTeam->is($tagTeam));
-            assertTrue($retirementDate->equalTo($datetime));
+            expect($retiredTagTeam->is($tagTeam))->toBeTrue();
+            expect($retirementDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -38,8 +37,8 @@ test('it retires a currently employed tag team at the current datetime by defaul
         ->shouldReceive('retire')
         ->once()
         ->withArgs(function (TagTeam $retiredTagTeam, Carbon $retirementDate) use ($tagTeam, $datetime) {
-            assertTrue($retiredTagTeam->is($tagTeam));
-            assertTrue($retirementDate->equalTo($datetime));
+            expect($retiredTagTeam->is($tagTeam))->toBeTrue();
+            expect($retirementDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -48,8 +47,8 @@ test('it retires a currently employed tag team at the current datetime by defaul
     RetireAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamRetired::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->retirementDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->retirementDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -78,8 +77,8 @@ test('it retires a currently employed tag team at a specific datetime', function
     RetireAction::run($tagTeam, $datetime);
 
     Event::assertDispatched(TagTeamRetired::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->retirementDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->retirementDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -100,8 +99,8 @@ test('it retires a released tag team at the current datetime by default', functi
         ->shouldReceive('retire')
         ->once()
         ->withArgs(function (TagTeam $retiredTagTeam, Carbon $retirementDate) use ($tagTeam, $datetime) {
-            assertTrue($retiredTagTeam->is($tagTeam));
-            assertTrue($retirementDate->equalTo($datetime));
+            expect($retiredTagTeam->is($tagTeam))->toBeTrue();
+            expect($retirementDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -110,8 +109,8 @@ test('it retires a released tag team at the current datetime by default', functi
     RetireAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamRetired::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->retirementDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->retirementDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -133,8 +132,8 @@ test('it retires a released tag team at a specific datetime', function () {
     RetireAction::run($tagTeam, $datetime);
 
     Event::assertDispatched(TagTeamRetired::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->retirementDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->retirementDate->is($datetime))->toBeTrue();
 
         return true;
     });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\TagTeams\SuspendAction;
+use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\TagTeams\SuspendController;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
@@ -28,4 +29,16 @@ test('a basic user cannot retire a bookable tag team', function () {
 test('a guest cannot suspend a bookable tag team', function () {
     patch(action([SuspendController::class], $this->tagTeam))
         ->assertRedirect(route('login'));
+});
+
+test('invoke returns an error message when suspending a non suspendable tag team', function () {
+    $tagTeam = TagTeam::factory()->create();
+
+    SuspendAction::allowToRun()->andThrow(CannotBeSuspendedException::class);
+
+    actingAs(administrator())
+        ->from(action([TagTeamsController::class, 'index']))
+        ->patch(action([SuspendController::class], $tagTeam))
+        ->assertRedirect(action([TagTeamsController::class, 'index']))
+        ->assertSessionHas('error');
 });

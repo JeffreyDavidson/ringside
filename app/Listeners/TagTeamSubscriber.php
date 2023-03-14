@@ -4,12 +4,12 @@ namespace App\Listeners;
 
 use App\Actions\TagTeams\EmployAction;
 use App\Actions\TagTeams\RemoveTagTeamPartnerAction;
-use App\Actions\TagTeams\SuspendAction;
-use App\Actions\TagTeams\UnretireAction;
 use App\Actions\Wrestlers\EmployAction as EmployWrestler;
 use App\Actions\Wrestlers\ReinstateAction;
 use App\Actions\Wrestlers\ReleaseAction;
 use App\Actions\Wrestlers\RetireAction;
+use App\Actions\Wrestlers\SuspendAction;
+use App\Actions\Wrestlers\UnretireAction;
 use App\Events\TagTeams\TagTeamDeleted;
 use App\Events\TagTeams\TagTeamEmployed;
 use App\Events\TagTeams\TagTeamReinstated;
@@ -92,12 +92,14 @@ class TagTeamSubscriber
 
     public function releaseTagTeamPartners(TagTeamReleased $event): void
     {
-        $event->tagTeam->currentWrestlers->each(fn ($wrestler) => ReleaseAction::run($wrestler, $event->releaseDate));
+        $event->tagTeam->currentWrestlers
+            ->each(fn ($wrestler) => ReleaseAction::run($wrestler, $event->releaseDate));
     }
 
     public function reinstateTagTeamPartners(TagTeamReinstated $event): void
     {
-        $event->tagTeam->currentWrestlers->each(fn ($wrestler) => ReinstateAction::run($wrestler, $event->reinstatementDate));
+        $event->tagTeam->currentWrestlers
+            ->each(fn ($wrestler) => ReinstateAction::run($wrestler, $event->reinstatementDate));
     }
 
     public function employTagTeamPartners(TagTeamEmployed $event): void

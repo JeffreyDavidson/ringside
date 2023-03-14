@@ -8,10 +8,9 @@ use App\Events\TagTeams\TagTeamEmployed;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
-use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     Event::fake();
@@ -78,8 +77,8 @@ test('it creates an employment for the tag team with two wrestlers if start date
     CreateAction::run($data);
 
     Event::assertDispatched(TagTeamEmployed::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->employmentDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->employmentDate->is($datetime))->toBeTrue();
 
         return true;
     });

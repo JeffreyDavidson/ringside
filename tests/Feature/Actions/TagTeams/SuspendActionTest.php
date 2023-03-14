@@ -5,11 +5,11 @@ use App\Events\TagTeams\TagTeamSuspended;
 use App\Exceptions\CannotBeSuspendedException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
-use function Spatie\PestPluginTestTime\testTime;
+
 
 beforeEach(function () {
     Event::fake();
@@ -27,8 +27,8 @@ test('it suspends a bookable tag team at the current datetime by default', funct
         ->shouldReceive('suspend')
         ->once()
         ->withArgs(function (TagTeam $suspendedTagTeam, Carbon $suspensionDate) use ($tagTeam, $datetime) {
-            assertTrue($suspendedTagTeam->is($tagTeam));
-            assertTrue($suspensionDate->equalTo($datetime));
+            expect($suspendedTagTeam->is($tagTeam))->toBeTrue();
+            expect($suspensionDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -37,8 +37,8 @@ test('it suspends a bookable tag team at the current datetime by default', funct
     SuspendAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamSuspended::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->suspensionDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->suspensionDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -57,8 +57,8 @@ test('it suspends a bookable tag team at a specific datetime', function () {
     SuspendAction::run($tagTeam, $datetime);
 
     Event::assertDispatched(TagTeamSuspended::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->suspensionDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->suspensionDate->is($datetime))->toBeTrue();
 
         return true;
     });

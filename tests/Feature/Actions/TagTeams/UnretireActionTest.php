@@ -5,11 +5,10 @@ use App\Events\TagTeams\TagTeamUnretired;
 use App\Exceptions\CannotBeUnretiredException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
-use function Spatie\PestPluginTestTime\testTime;
 
 beforeEach(function () {
     Event::fake();
@@ -27,8 +26,8 @@ test('it unretires a retired tag team at the current datetime by default', funct
         ->shouldReceive('unretire')
         ->once()
         ->withArgs(function (TagTeam $unretiredTagTeam, Carbon $unretireDate) use ($tagTeam, $datetime) {
-            assertTrue($unretiredTagTeam->is($tagTeam));
-            assertTrue($unretireDate->equalTo($datetime));
+            expect($unretiredTagTeam->is($tagTeam))->toBeTrue();
+            expect($unretireDate->equalTo($datetime))->toBeTrue();
 
             return true;
         })
@@ -37,8 +36,8 @@ test('it unretires a retired tag team at the current datetime by default', funct
     UnretireAction::run($tagTeam);
 
     Event::assertDispatched(TagTeamUnretired::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->unretireDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->unretireDate->is($datetime))->toBeTrue();
 
         return true;
     });
@@ -57,8 +56,8 @@ test('it unretires a retired tag team at a specific datetime', function () {
     UnretireAction::run($tagTeam, $datetime);
 
     Event::assertDispatched(TagTeamUnretired::class, function ($event) use ($tagTeam, $datetime) {
-        assertTrue($event->tagTeam->is($tagTeam));
-        assertTrue($event->unretireDate->is($datetime));
+        expect($event->tagTeam->is($tagTeam))->toBeTrue();
+        expect($event->unretireDate->is($datetime))->toBeTrue();
 
         return true;
     });

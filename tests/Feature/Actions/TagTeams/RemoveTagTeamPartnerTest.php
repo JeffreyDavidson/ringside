@@ -4,10 +4,9 @@ use App\Actions\TagTeams\RemoveTagTeamPartnerAction;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
-use Illuminate\Support\Carbon;
 use function Pest\Laravel\mock;
-use function PHPUnit\Framework\assertTrue;
 use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     testTime()->freeze();
@@ -24,9 +23,9 @@ test('it can remove a wrestler from a tag team at the current datetime by defaul
         ->shouldReceive('removeTagTeamPartner')
         ->once()
         ->withArgs(function (TagTeam $tagTeamToRemoveWrestler, Wrestler $removedWrestler, Carbon $removalDate) use ($tagTeam, $wrestler, $datetime) {
-            assertTrue($tagTeamToRemoveWrestler->is($tagTeam));
-            assertTrue($removedWrestler->is($wrestler));
-            assertTrue($removalDate->equalTo($datetime));
+            expect($tagTeamToRemoveWrestler->is($tagTeam))->toBeTrue();
+            expect($removedWrestler->is($wrestler))->toBeTrue();
+            expect($removalDate->equalTo($datetime))->toBeTrue();
 
             return true;
         });

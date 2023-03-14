@@ -90,15 +90,15 @@ uses()->group('wrestlers', 'unit-wrestlers', 'roster', 'unit-roster')
     );
 uses()->group('tagteams', 'feature-tagteams', 'roster', 'feature-roster')
     ->in(
-        'Feature/Http/Actions/TagTeams',
+        'Feature/Actions/TagTeams',
         'Feature/Http/Controllers/TagTeams',
         'Feature/Http/Livewire/TagTeams',
         'Feature/Http/Requests/TagTeams',
         'Feature/Listeners/TagTeams',
         'Feature/Policies/TagTeamPolicyTest.php',
-        'Feature/Http/Repositories/TagTeamRepositoryTest.php'
+        'Feature/Repositories/TagTeamRepositoryTest.php'
     );
-uses()->group('tagteams', 'roster')
+uses()->group('tagteams', 'unit-tagteams', 'roster', 'unit-tagteams')
     ->in(
         'Unit/Builders/TagTeamQueryBuilderTest.php',
         'Unit/Models/TagTeamTest.php',
