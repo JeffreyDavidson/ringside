@@ -140,7 +140,6 @@ test('reinstate a manager', function () {
 
     expect($manager->fresh()->suspensions)->toHaveCount(1);
     expect($manager->fresh()->suspensions()->first())->started_at->equalTo($datetime->copy()->subDays(2));
-
 });
 
 test('remove a manager from its current tag teams', function () {
