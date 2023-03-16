@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Listeners\TagTeamSubscriber;
+use App\Listeners\ManagerSubscriber;
 use App\Listeners\WrestlerSubscriber;
 use App\Models\Event;
-use App\Models\Manager;
 use App\Models\Referee;
 use App\Models\Stable;
 use App\Models\Title;
 use App\Observers\EventObserver;
-use App\Observers\ManagerObserver;
 use App\Observers\RefereeObserver;
 use App\Observers\StableObserver;
 use App\Observers\TitleObserver;
@@ -40,7 +39,6 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $observers = [
         Event::class => [EventObserver::class],
-        Manager::class => [ManagerObserver::class],
         Referee::class => [RefereeObserver::class],
         Stable::class => [StableObserver::class],
         Title::class => [TitleObserver::class],
@@ -69,5 +67,6 @@ class EventServiceProvider extends ServiceProvider
     protected $subscribe = [
         WrestlerSubscriber::class,
         TagTeamSubscriber::class,
+        ManagerSubscriber::class,
     ];
 }

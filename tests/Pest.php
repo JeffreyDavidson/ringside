@@ -23,21 +23,23 @@ uses(ValidatesRequests::class)->in('Feature/Http/Requests');
 
 uses()->group('managers', 'feature-managers', 'roster', 'feature-roster')
     ->in(
+        'Feature/Actions/Managers',
         'Feature/Http/Controllers/Managers',
         'Feature/Http/Livewire/Managers',
         'Feature/Http/Requests/Managers',
-        'Feature/Actions/Managers',
-        'Feature/Policies/ManagerPolicyTest',
-        'Feature/Repositories/ManagerRepositoryTest',
+        'Feature/Listeners/ManagerSubscriberTest.php',
+        'Feature/Policies/ManagerPolicyTest.php',
+        'Feature/Repositories/ManagerRepositoryTest.php',
+        'Feature/resources/views/managers'
     );
 uses()->group('referees', 'feature-referees', 'roster', 'feature-roster')
     ->in(
+        'Feature/Actions/Referees',
         'Feature/Http/Controllers/Referees',
         'Feature/Http/Livewire/Referees',
         'Feature/Http/Requests/Referees',
-        'Feature/Actions/Referees',
-        'Feature/Policies/RefereePolicyTest',
-        'Feature/Repositories/RefereeRepositoryTest',
+        'Feature/Policies/RefereePolicyTest.php',
+        'Feature/Repositories/RefereeRepositoryTest.php',
     );
 uses()->group('stables', 'feature-stables', 'roster', 'feature-roster')->in('Feature/Http/Controllers/Stables');
 uses()->group('venues', 'feature-venues')
@@ -103,6 +105,23 @@ uses()->group('tagteams', 'unit-tagteams', 'roster', 'unit-tagteams')
         'Unit/Builders/TagTeamQueryBuilderTest.php',
         'Unit/Models/TagTeamTest.php',
     );
+
+uses()->group('referees', 'unit-referees', 'roster', 'unit-roster')
+    ->in(
+        'Unit/Builders/RefereeQueryBuilderTest.php',
+        'Unit/Models/RefereeTest.php',
+    );
+
+uses()->group('managers', 'unit-managers', 'roster', 'unit-roster')
+    ->in(
+        'Unit/Builders/ManagerQueryBuilderTest.php',
+        'Unit/Models/ManagerTest.php',
+    );
+
+beforeEach(function () {
+    TestResponse::macro('data', fn ($key) => $this->original->getData()[$key]);
+    $dropViews = true;
+});
 
 /*
 |--------------------------------------------------------------------------
