@@ -10,6 +10,7 @@ use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
 use function Pest\Laravel\mock;
 use function Spatie\PestPluginTestTime\testTime;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
@@ -29,8 +30,11 @@ test('it creates a tag team', function () {
         ->with($data)
         ->andReturn(new TagTeam());
 
-    AddTagTeamPartnerAction::shouldNotRun();
-    EmployAction::shouldNotRun();
+    $this->tagTeamRepository
+        ->shouldNotReceive('addTagTeamPartner');
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('employ');
 
     CreateAction::run($data);
 
@@ -38,9 +42,9 @@ test('it creates a tag team', function () {
 });
 
 test('it can add two wrestlers to a tag team when they are provided', function () {
-    $wrestlerA = Wrestler::factory()->create();
-    $wrestlerB = Wrestler::factory()->create();
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
     $data = new TagTeamData('Example Tag Team Name', null, null, $wrestlerA, $wrestlerB);
+    $datetime = now();
 
     $this->tagTeamRepository
         ->shouldReceive('create')
@@ -48,10 +52,30 @@ test('it can add two wrestlers to a tag team when they are provided', function (
         ->with($data)
         ->andReturn($tagTeam = new TagTeam());
 
-    AddTagTeamPartnerAction::shouldRun()->once()->with($tagTeam, $wrestlerA);
-    AddTagTeamPartnerAction::shouldRun()->once()->with($tagTeam, $wrestlerB);
+    $this->tagTeamRepository
+        ->shouldReceive('addTagTeamPartner')
+        ->once()
+        ->withArgs(function (TagTeam $tagTeamToAddTo, Wrestler $wrestlerAdded, Carbon $joinDate) use ($tagTeam, $wrestlerA, $datetime) {
+            expect($tagTeamToAddTo->is($tagTeam))->toBeTrue();
+            expect($wrestlerAdded->is($wrestlerA))->toBeTrue();
+            expect($joinDate->equalTo($datetime))->toBeTrue();
 
-    EmployAction::shouldNotRun();
+            return true;
+        });
+
+    $this->tagTeamRepository
+        ->shouldReceive('addTagTeamPartner')
+        ->once()
+        ->withArgs(function (TagTeam $tagTeamToAddTo, Wrestler $wrestlerAdded, Carbon $joinDate) use ($tagTeam, $wrestlerB, $datetime) {
+            expect($tagTeamToAddTo->is($tagTeam))->toBeTrue();
+            expect($wrestlerAdded->is($wrestlerB))->toBeTrue();
+            expect($joinDate->equalTo($datetime))->toBeTrue();
+
+            return true;
+        });
+
+    $this->tagTeamRepository
+        ->shouldNotReceive('employ');
 
     CreateAction::run($data);
 
@@ -60,8 +84,7 @@ test('it can add two wrestlers to a tag team when they are provided', function (
 
 test('it creates an employment for the tag team with two wrestlers if start date is provided', function () {
     $datetime = now();
-    $wrestlerA = Wrestler::factory()->create();
-    $wrestlerB = Wrestler::factory()->create();
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
     $data = new TagTeamData('Example Tag Team Name', null, $datetime, $wrestlerA, $wrestlerB);
 
     $this->tagTeamRepository
@@ -70,9 +93,31 @@ test('it creates an employment for the tag team with two wrestlers if start date
         ->with($data)
         ->andReturn($tagTeam = new TagTeam());
 
-    AddTagTeamPartnerAction::shouldRun()->with($tagTeam, $wrestlerA);
-    AddTagTeamPartnerAction::shouldRun($tagTeam, $wrestlerB);
-    EmployAction::shouldRun($tagTeam, $datetime);
+    $this->tagTeamRepository
+        ->shouldReceive('addTagTeamPartner')
+        ->once()
+        ->withArgs(function (TagTeam $tagTeamToAddTo, Wrestler $wrestlerAdded, Carbon $joinDate) use ($tagTeam, $wrestlerA, $datetime) {
+            expect($tagTeamToAddTo->is($tagTeam))->toBeTrue();
+            expect($wrestlerAdded->is($wrestlerA))->toBeTrue();
+            expect($joinDate->equalTo($datetime))->toBeTrue();
+
+            return true;
+        });
+
+    $this->tagTeamRepository
+        ->shouldReceive('addTagTeamPartner')
+        ->once()
+        ->withArgs(function (TagTeam $tagTeamToAddTo, Wrestler $wrestlerAdded, Carbon $joinDate) use ($tagTeam, $wrestlerB, $datetime) {
+            expect($tagTeamToAddTo->is($tagTeam))->toBeTrue();
+            expect($wrestlerAdded->is($wrestlerB))->toBeTrue();
+            expect($joinDate->equalTo($datetime))->toBeTrue();
+
+            return true;
+        });
+
+    $this->tagTeamRepository
+        ->shouldReceive('employ')
+        ->with($tagTeam, $datetime);
 
     CreateAction::run($data);
 

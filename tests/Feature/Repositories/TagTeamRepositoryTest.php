@@ -185,13 +185,13 @@ test('it can add a wrestler to a tag team', function () {
 
 test('it can remove wrestlers from a tag team', function () {
     $wrestlers = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->create();
+    $tagTeam = TagTeam::factory()->withCurrentWrestlers($wrestlers)->create();
     $datetime = now();
 
     app(TagTeamRepository::class)->removeTagTeamPartners($tagTeam, $wrestlers, $datetime);
 
     expect($tagTeam->fresh())->wrestlers->toHaveCount(2);
-    expect($tagTeam->fresh())->wrestlers->each->pivot->left_at->toBeNull();
+    expect($tagTeam->fresh())->wrestlers->each->dd()->pivot->dd()->left_at->not->toBeNull();
 });
 
 test('it can remove a wrestler from a tag team', function () {

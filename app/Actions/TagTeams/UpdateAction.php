@@ -21,26 +21,25 @@ class UpdateAction extends BaseTagTeamAction
         $this->tagTeamRepository->update($tagTeam, $tagTeamData);
 
         if ($tagTeamData->wrestlerA && $tagTeamData->wrestlerA->currentTagTeam?->isNot($tagTeam)) {
-            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerA);
+            $this->tagTeamRepository->addTagTeamPartner($tagTeam, $tagTeamData->wrestlerA);
         }
 
         if ($tagTeamData->wrestlerB && $tagTeamData->wrestlerB->currentTagTeam?->isNot($tagTeam)) {
-            AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerB);
+            $this->tagTeamRepository->addTagTeamPartner($tagTeam, $tagTeamData->wrestlerB);
         }
 
         if ($tagTeam->currentWrestlers->isNotEmpty()) {
             $tagTeam
                 ->currentWrestlers
                 ->reject(fn (Wrestler $wrestler) => in_array($wrestler, [$tagTeamData->wrestlerA, $tagTeamData->wrestlerB]))
-                ->each(fn (Wrestler $wrestler) => RemoveTagTeamPartnerAction::run($tagTeam, $wrestler));
+                ->each(fn (Wrestler $wrestler) => $this->tagTeamRepository->removeTagTeamPartner($tagTeam, $wrestler, now()));
         }
 
-        // TODO: Fix due to removeal of canBeEmployed()
         if (isset($tagTeamData->start_date)) {
             if ($tagTeam->canBeEmployed()
                 || $tagTeam->canHaveEmploymentStartDateChanged($tagTeamData->start_date)
             ) {
-                EmployAction::run($tagTeam, $tagTeamData->start_date);
+                $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
             }
         }
 

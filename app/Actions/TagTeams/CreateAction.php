@@ -25,11 +25,11 @@ class CreateAction extends BaseTagTeamAction
             return $tagTeam;
         }
 
-        AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerA);
-        AddTagTeamPartnerAction::run($tagTeam, $tagTeamData->wrestlerB);
+        $this->tagTeamRepository->addTagTeamPartner($tagTeam, $tagTeamData->wrestlerA, now());
+        $this->tagTeamRepository->addTagTeamPartner($tagTeam, $tagTeamData->wrestlerB, now());
 
         if (isset($tagTeamData->start_date)) {
-            EmployAction::run($tagTeam, $tagTeamData->start_date);
+            $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
 
             event(new TagTeamEmployed($tagTeam, $tagTeamData->start_date));
         }

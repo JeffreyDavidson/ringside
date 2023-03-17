@@ -5,10 +5,10 @@ use App\Events\TagTeams\TagTeamReleased;
 use App\Exceptions\CannotBeReleasedException;
 use App\Models\TagTeam;
 use App\Repositories\TagTeamRepository;
-use function Pest\Laravel\mock;
-use function Spatie\PestPluginTestTime\testTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
+use function Pest\Laravel\mock;
+use function Spatie\PestPluginTestTime\testTime;
 
 beforeEach(function () {
     Event::fake();
