@@ -4,8 +4,8 @@ use App\Http\Requests\TagTeams\StoreRequest;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Rules\WrestlerCanJoinNewTagTeam;
-use function Pest\Laravel\mock;
 use Illuminate\Support\Carbon;
+use function Pest\Laravel\mock;
 use Tests\RequestFactories\TagTeamRequestFactory;
 
 test('an administrator is authorized to make this request', function () {
