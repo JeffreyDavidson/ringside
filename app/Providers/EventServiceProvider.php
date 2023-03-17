@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Listeners\TagTeamSubscriber;
 use App\Listeners\ManagerSubscriber;
+use App\Listeners\TagTeamSubscriber;
 use App\Listeners\WrestlerSubscriber;
 use App\Models\Event;
 use App\Models\Referee;
