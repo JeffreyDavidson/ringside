@@ -31,7 +31,7 @@ test('a guest cannot suspend a bookable tag team', function () {
         ->assertRedirect(route('login'));
 });
 
-test('invoke returns an error message when suspending a non suspendable tag team', function () {
+test('it returns an error when an exception is thrown', function () {
     $tagTeam = TagTeam::factory()->create();
 
     SuspendAction::allowToRun()->andThrow(CannotBeSuspendedException::class);

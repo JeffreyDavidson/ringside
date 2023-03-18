@@ -31,7 +31,7 @@ test('a guest cannot release a bookable tag team', function () {
         ->assertRedirect(route('login'));
 });
 
-test('invoke returns an error message when releasing a non releasable tag team', function () {
+test('it returns an error when an exception is thrown', function () {
     $tagTeam = TagTeam::factory()->create();
 
     ReleaseAction::allowToRun()->andThrow(CannotBeReleasedException::class);

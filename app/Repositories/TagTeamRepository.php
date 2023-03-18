@@ -7,9 +7,9 @@ namespace App\Repositories;
 use App\Data\TagTeamData;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class TagTeamRepository
 {
@@ -117,85 +117,17 @@ class TagTeamRepository
     }
 
     /**
-     * Get the model's first employment date.
-     */
-    public function updateEmployment(TagTeam $tagTeam, Carbon $employmentDate): TagTeam
-    {
-        $tagTeam->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
-
-        return $tagTeam;
-    }
-
-    /**
      * Add wrestlers to a tag team.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler>  $wrestlers
+     * @param  \Illuminate\Support\Collection<int, \App\Models\Wrestler>  $wrestlers
      */
-    public function addTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers, ?Carbon $joinDate = null): TagTeam
+    public function addTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers, Carbon $joinDate): TagTeam
     {
-        $joinDate ??= now();
-
         $wrestlers->each(
             fn (Wrestler $wrestler) => $this->addTagTeamPartner($tagTeam, $wrestler, $joinDate)
         );
 
         return $tagTeam;
-    }
-
-    /**
-     * Add wrestlers to a tag team.
-     *
-     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler>  $formerTagTeamPartners
-     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler>  $newTagTeamPartners
-     */
-    public function syncTagTeamPartners(
-        TagTeam $tagTeam,
-        Collection $formerTagTeamPartners,
-        Collection $newTagTeamPartners,
-        ?Carbon $date = null
-    ): TagTeam {
-        $date ??= now();
-
-        $formerTagTeamPartners->each(
-            fn (Wrestler $formerTagTeamPartner) => $this->removeTagTeamPartner(
-                $tagTeam,
-                $formerTagTeamPartner,
-                $date
-            )
-        );
-
-        $newTagTeamPartners->each(
-            fn (Wrestler $newTagTeamPartner) => $this->addTagTeamPartner(
-                $tagTeam,
-                $newTagTeamPartner,
-                $date
-            )
-        );
-
-        return $tagTeam;
-    }
-
-    /**
-     * Remove wrestler from a tag team.
-     */
-    public function removeTagTeamPartner(TagTeam $tagTeam, Wrestler $tagTeamPartner, Carbon $removalDate = null): void
-    {
-        $tagTeam->wrestlers()->wherePivotNull('left_at')->updateExistingPivot(
-            $tagTeamPartner->id,
-            ['left_at' => $removalDate->toDateTimeString()]
-        );
-    }
-
-    /**
-     * Remove wrestler from a tag team.
-     */
-    public function removeTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers, Carbon $removalDate = null): void
-    {
-        $removalDate ??= now();
-
-        $wrestlers->each(
-            fn (Wrestler $wrestler) => $this->removeTagTeamPartner($tagTeam, $wrestler, $removalDate)
-        );
     }
 
     /**
@@ -206,6 +138,29 @@ class TagTeamRepository
         $tagTeam->wrestlers()->attach(
             $tagTeamPartner->id,
             ['joined_at' => $joinDate->toDateTimeString()]
+        );
+    }
+
+    /**
+     * Remove wrestler from a tag team.
+     *
+     * @param  \Illuminate\Support\Collection<int, \App\Models\Wrestler>  $wrestlers
+     */
+    public function removeTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers, Carbon $removalDate): void
+    {
+        $wrestlers->each(
+            fn (Wrestler $wrestler) => $this->removeTagTeamPartner($tagTeam, $wrestler, $removalDate)
+        );
+    }
+
+    /**
+     * Remove wrestler from a tag team.
+     */
+    public function removeTagTeamPartner(TagTeam $tagTeam, Wrestler $tagTeamPartner, Carbon $removalDate = null): void
+    {
+        $tagTeam->wrestlers()->wherePivotNull('left_at')->updateExistingPivot(
+            $tagTeamPartner->id,
+            ['left_at' => $removalDate->toDateTimeString()]
         );
     }
 }

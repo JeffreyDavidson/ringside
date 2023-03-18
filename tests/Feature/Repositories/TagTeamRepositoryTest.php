@@ -150,17 +150,6 @@ test('it can reinstate a tag team', function () {
         ->ended_at->equalTo($datetime);
 });
 
-test('it can update a future employment for a tag team', function () {
-    $tagTeam = TagTeam::factory()->hasFutureEmployment()->create();
-    $datetime = now();
-
-    $tagTeam = app(TagTeamRepository::class)->updateEmployment($tagTeam, $datetime);
-
-    expect($tagTeam->fresh())->employments->toHaveCount(1);
-    expect($tagTeam->fresh()->employments->first())
-        ->started_at->equalTo($datetime);
-});
-
 test('it can add wrestlers to a tag team', function () {
     $wrestlers = Wrestler::factory()->count(2)->create();
     $tagTeam = TagTeam::factory()->create();
@@ -191,7 +180,9 @@ test('it can remove wrestlers from a tag team', function () {
     app(TagTeamRepository::class)->removeTagTeamPartners($tagTeam, $wrestlers, $datetime);
 
     expect($tagTeam->fresh())->wrestlers->toHaveCount(2);
-    expect($tagTeam->fresh())->wrestlers->each->dd()->pivot->dd()->left_at->not->toBeNull();
+    expect($tagTeam->fresh())->wrestlers->each(function ($wrestler) {
+        $wrestler->pivot->left_at->not->toBeNull();
+    });
 });
 
 test('it can remove a wrestler from a tag team', function () {
@@ -203,18 +194,4 @@ test('it can remove a wrestler from a tag team', function () {
 
     expect($tagTeam->fresh())->previousWrestlers->toHaveCount(1);
     expect($tagTeam->fresh())->previousWrestlers->where('id', $wrestler->id)->first()->pivot->left_at->not->toBeNull();
-});
-
-test('it can sync wrestlers from a tag team', function () {
-    $currentTagTeamPartners = Wrestler::factory()->count(2)->create();
-    $newTagTeamPartners = Wrestler::factory()->count(2)->create();
-    $tagTeam = TagTeam::factory()->withCurrentWrestlers($currentTagTeamPartners)->create();
-
-    app(TagTeamRepository::class)->syncTagTeamPartners($tagTeam, $currentTagTeamPartners, $newTagTeamPartners);
-
-    expect($tagTeam->fresh())->wrestlers->toHaveCount(4);
-    expect($tagTeam->fresh())->previousWrestlers->toHaveCount(2);
-    expect($tagTeam->fresh()->previousWrestlers->pluck('id')->toArray())->toMatchArray($currentTagTeamPartners->pluck('id')->toArray());
-    expect($tagTeam->fresh())->currentWrestlers->toHaveCount(2);
-    expect($tagTeam->fresh()->currentWrestlers->pluck('id')->toArray())->toMatchArray($newTagTeamPartners->pluck('id')->toArray());
 });

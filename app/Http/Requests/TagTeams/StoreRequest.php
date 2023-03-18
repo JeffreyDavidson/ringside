@@ -33,7 +33,8 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        // dd($this->all());
+        $rules = [
             'name' => ['required', 'string', new LetterSpace, 'min:3', Rule::unique('tag_teams', 'name')],
             'signature_move' => ['nullable', 'string', 'regex:/^[a-zA-Z\s\']+$/'],
             'start_date' => ['nullable', 'string', 'date'],
@@ -58,6 +59,10 @@ class StoreRequest extends FormRequest
                 new WrestlerCanJoinNewTagTeam,
             ],
         ];
+
+        // dd($rules);
+
+        return $rules;
     }
 
     /**

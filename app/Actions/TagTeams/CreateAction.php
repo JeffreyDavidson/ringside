@@ -7,6 +7,7 @@ namespace App\Actions\TagTeams;
 use App\Data\TagTeamData;
 use App\Events\TagTeams\TagTeamEmployed;
 use App\Models\TagTeam;
+use Illuminate\Database\Eloquent\Collection;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateAction extends BaseTagTeamAction
@@ -25,8 +26,11 @@ class CreateAction extends BaseTagTeamAction
             return $tagTeam;
         }
 
-        $this->tagTeamRepository->addTagTeamPartner($tagTeam, $tagTeamData->wrestlerA, now());
-        $this->tagTeamRepository->addTagTeamPartner($tagTeam, $tagTeamData->wrestlerB, now());
+        $this->tagTeamRepository->addTagTeamPartners(
+            $tagTeam,
+            collect([$tagTeamData->wrestlerA, $tagTeamData->wrestlerB]),
+            now()
+        );
 
         if (isset($tagTeamData->start_date)) {
             $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);

@@ -31,14 +31,12 @@ test('a guest cannot unretire a tag team', function () {
         ->assertRedirect(route('login'));
 });
 
-test('invoke returns an error message when suspending a non suspendable tag team', function () {
-    $tagTeam = TagTeam::factory()->create();
-
+test('it returns an error when an exception is thrown', function () {
     UnretireAction::allowToRun()->andThrow(CannotBeUnretiredException::class);
 
     actingAs(administrator())
         ->from(action([TagTeamsController::class, 'index']))
-        ->patch(action([UnretireController::class], $tagTeam))
+        ->patch(action([UnretireController::class], $this->tagTeam))
         ->assertRedirect(action([TagTeamsController::class, 'index']))
         ->assertSessionHas('error');
 });

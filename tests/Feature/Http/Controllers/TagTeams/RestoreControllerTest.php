@@ -29,3 +29,13 @@ test('a guest cannot restore a deleted tag team', function () {
     patch(action([RestoreController::class], $this->tagTeam))
         ->assertRedirect(route('login'));
 });
+
+test('it returns an error when an exception is thrown', function () {
+    RestoreAction::allowToRun()->andThrow(Exception::class);
+
+    actingAs(administrator())
+        ->from(action([TagTeamsController::class, 'index']))
+        ->patch(action([RestoreController::class], $this->tagTeam))
+        ->assertRedirect(action([TagTeamsController::class, 'index']))
+        ->assertSessionHas('error');
+});

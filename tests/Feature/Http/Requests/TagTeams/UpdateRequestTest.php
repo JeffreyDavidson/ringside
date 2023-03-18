@@ -166,7 +166,7 @@ test('tag team start date cannot be changed if employment start date has past', 
             'start_date' => Carbon::now()->toDateTImeString(),
         ]))
         ->assertFailsValidation(['start_date' => EmploymentStartDateCanBeChanged::class]);
-})->skip();
+});
 
 test('tag team wrestlerA is optional', function () {
     $tagTeam = TagTeam::factory()->bookable()->create();
@@ -241,21 +241,18 @@ test('tag team wrestlerA must exist if provided', function () {
 
 test('tag team wrestlerA must be able to join an existing tag team if provided', function () {
     [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
-    $wrestlerC = Wrestler::factory()->bookable()->create();
-    $tagTeam = TagTeam::factory()->bookable()->withCurrentWrestlers([$wrestlerA, $wrestlerB])->create();
+    $tagTeam = TagTeam::factory()->bookable()->create();
 
     mock(WrestlerCanJoinExistingTagTeam::class)
         ->shouldReceive('validate')
-        ->with('wrestlerA', 1, function ($closure) {
+        ->with('wrestlerA', $wrestlerA->id, function ($closure) {
             $closure();
-
-            return true;
         });
 
     $this->createRequest(UpdateRequest::class)
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlerA' => $wrestlerC->id,
+            'wrestlerA' => $wrestlerA->id,
             'wrestlerB' => $wrestlerB->id,
         ]))
         ->assertFailsValidation(['wrestlerA' => WrestlerCanJoinExistingTagTeam::class]);
@@ -312,6 +309,12 @@ test('tag team wrestlerB is required with wrestlerA is provided', function () {
     $tagTeam = TagTeam::factory()->bookable()->create();
     $wrestler = Wrestler::factory()->create();
 
+    mock(WrestlerCanJoinExistingTagTeam::class)
+        ->shouldReceive('validate')
+        ->with('wrestlerB', 1, function () {
+            return;
+        });
+
     $this->createRequest(UpdateRequest::class)
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
@@ -334,22 +337,19 @@ test('tag team wrestlerB must exist if provided', function () {
 
 test('tag team wrestlerB must be able to join an existing tag team if provided', function () {
     [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
-    $wrestlerC = Wrestler::factory()->bookable()->create();
-    $tagTeam = TagTeam::factory()->bookable()->withCurrentWrestlers([$wrestlerA, $wrestlerB])->create();
+    $tagTeam = TagTeam::factory()->bookable()->create();
 
     mock(WrestlerCanJoinExistingTagTeam::class)
         ->shouldReceive('validate')
-        ->with('wrestlerB', 1, function ($closure) {
+        ->with('wrestlerB', $wrestlerB->id, function ($closure) {
             $closure();
-
-            return true;
         });
 
     $this->createRequest(UpdateRequest::class)
         ->withParam('tag_team', $tagTeam)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlerA' => $wrestlerC->id,
-            'wrestlerB' => $wrestlerA->id,
+            'wrestlerA' => $wrestlerA->id,
+            'wrestlerB' => $wrestlerB->id,
         ]))
         ->assertFailsValidation(['wrestlerB' => WrestlerCanJoinExistingTagTeam::class]);
 });

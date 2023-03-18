@@ -150,12 +150,12 @@ test('tag team wrestlerA must exist if provided', function () {
 });
 
 test('tag team wrestlerA must be able to join a new tag team if provided', function () {
-    $wrestlerA = Wrestler::factory()->bookable()->create();
-    $wrestlerB = Wrestler::factory()->bookable()->create();
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
 
     mock(WrestlerCanJoinNewTagTeam::class)
         ->shouldReceive('validate')
-        ->with('wrestlerA', 1, function ($closure) {
+        ->withArgs('wrestlerA', $wrestlerA->id, function ($closure) {
+            dd($closure);
             $closure();
         });
 
@@ -223,17 +223,18 @@ test('tag team wrestlerB is must exist if provided', function () {
 });
 
 test('tag team wrestlerB must be able to join a new tag team if provided', function () {
-    $wrestler = Wrestler::factory()->create();
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
 
     mock(WrestlerCanJoinNewTagTeam::class)
         ->shouldReceive('validate')
-        ->with('wrestlerB', 1, function ($closure) {
+        ->with('wrestlerB', $wrestlerB->id, function ($closure) {
             $closure();
         });
 
     $this->createRequest(StoreRequest::class)
         ->validate(TagTeamRequestFactory::new()->create([
-            'wrestlerB' => $wrestler->id,
+            'wrestlerA' => $wrestlerA->id,
+            'wrestlerB' => $wrestlerB->id,
         ]))
         ->assertFailsValidation(['wrestlerB' => WrestlerCanJoinNewTagTeam::class]);
 });

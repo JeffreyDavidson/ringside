@@ -61,7 +61,7 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'different:wrestlerA',
                 'required_with:start_date',
-                'required_with:wrestlerB',
+                'required_with:wrestlerA',
                 Rule::exists('wrestlers', 'id'),
                 new WrestlerCanJoinExistingTagTeam($tagTeam),
             ],

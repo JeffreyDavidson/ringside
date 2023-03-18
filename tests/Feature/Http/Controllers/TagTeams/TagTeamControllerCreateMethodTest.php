@@ -11,7 +11,7 @@ use function Pest\Laravel\mock;
 test('create returns a view', function () {
     actingAs(administrator())
         ->get(action([TagTeamsController::class, 'create']))
-        ->assertStatus(200)
+        ->assertOk()
         ->assertViewIs('tagteams.create')
         ->assertViewHas('wrestlers');
 });

@@ -31,14 +31,12 @@ test('a guest cannot reinstate a suspended tag team', function () {
         ->assertRedirect(route('login'));
 });
 
-test('invoke returns an error message when reinstating a non reinstatable tag team', function () {
-    $tagTeam = TagTeam::factory()->create();
-
+test('it returns an error when an exception is thrown', function () {
     ReinstateAction::allowToRun()->andThrow(CannotBeReinstatedException::class);
 
     actingAs(administrator())
         ->from(action([TagTeamsController::class, 'index']))
-        ->patch(action([ReinstateController::class], $tagTeam))
+        ->patch(action([ReinstateController::class], $this->tagTeam))
         ->assertRedirect(action([TagTeamsController::class, 'index']))
         ->assertSessionHas('error');
 });

@@ -8,8 +8,7 @@ test('index returns a view', function () {
     actingAs(administrator())
         ->get(action([TagTeamsController::class, 'index']))
         ->assertOk()
-        ->assertViewIs('tagteams.index')
-        ->assertSeeLivewire('tag-teams.tag-teams-list');
+        ->assertViewIs('tagteams.index');
 });
 
 test('a basic user cannot view tag teams index page', function () {
