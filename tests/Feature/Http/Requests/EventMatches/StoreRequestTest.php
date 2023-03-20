@@ -4,6 +4,9 @@ use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\MatchType;
 use App\Models\Title;
 use App\Models\Wrestler;
+use App\Rules\CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType;
+use App\Rules\TitleChampionIncludedInTitleMatch;
+use App\Rules\TitleMustBeActive;
 use Database\Seeders\MatchTypesTableSeeder;
 use Tests\RequestFactories\EventMatchRequestFactory;
 
@@ -132,7 +135,7 @@ test('each event match titles must be active', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [$title->id],
         ]))
-        ->assertFailsValidation(['titles.0' => 'app\rules\titlemustbeactive']);
+        ->assertFailsValidation(['titles.0' => TitleMustBeActive::class]);
 });
 
 test('each event match competitors is required', function () {
@@ -172,7 +175,7 @@ test('each event match competitors items in the array must equal number of sides
             ],
         ]))
         ->assertFailsValidation([
-            'competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype',
+            'competitors' => CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class,
         ]);
 });
 
@@ -198,7 +201,7 @@ test('title with champion must be included in competitors for title match', func
             ],
         ]))
         ->assertFailsValidation([
-            'competitors' => 'app\rules\titlechampionincludedintitlematch',
+            'competitors' => TitleChampionIncludedInTitleMatch::class,
         ]);
 });
 
