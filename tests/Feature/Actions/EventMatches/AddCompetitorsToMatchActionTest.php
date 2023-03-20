@@ -4,6 +4,7 @@ use App\Actions\EventMatches\AddCompetitorsToMatchAction;
 use App\Actions\EventMatches\AddTagTeamsToMatchAction;
 use App\Actions\EventMatches\AddWrestlersToMatchAction;
 use App\Models\EventMatch;
+use App\Models\EventMatchCompetitor;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
@@ -15,8 +16,7 @@ beforeEach(function () {
 
 test('it adds wrestler competitors to a match', function () {
     $eventMatch = EventMatch::factory()->create();
-    $wrestlerA = Wrestler::factory()->create();
-    $wrestlerB = Wrestler::factory()->create();
+    [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
     $competitors = collect([
         0 => [
             'wrestlers' => collect([$wrestlerA]),

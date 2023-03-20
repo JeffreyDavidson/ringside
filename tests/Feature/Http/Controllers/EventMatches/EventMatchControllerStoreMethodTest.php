@@ -15,7 +15,7 @@ beforeEach(function () {
     $this->request = StoreRequest::create(action([EventMatchesController::class, 'store'], $this->event), 'POST', $this->data);
 });
 
-test('it creates a match for an event and redirects', function () {
+test('it saves a match for an event and redirects', function () {
     actingAs(administrator())
         ->from(action([EventMatchesController::class, 'create'], $this->event))
         ->post(action([EventMatchesController::class, 'store'], $this->event), $this->data)

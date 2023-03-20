@@ -13,27 +13,26 @@ beforeEach(function () {
     $this->event = Event::factory()->create();
 });
 
-test('it should return correct view', function () {
+test('it ensures the correct view is loaded', function () {
     livewire(MatchForm::class, ['event' => $this->event, 'match' => new EventMatch()])
         ->assertSet('event', $this->event)
         ->assertSet('match', new EventMatch())
         ->assertViewIs('livewire.matches.create');
 });
 
-test('it should pass correct data', function () {
+test('it ensures the view is passed the correct variables', function () {
     $matchTypes = MatchType::pluck('name', 'id');
     $referees = Referee::query()->get()->pluck('full_name', 'id');
     $titles = Title::pluck('name', 'id');
 
-    livewire(MatchForm::class, ['event' => $this->event, 'match' => new EventMatch()])
-        ->assertViewHas('match', new EventMatch())
+    livewire(MatchForm::class, ['event' => $this->event, 'match' => $match = new EventMatch()])
+        ->assertViewHas('match', $match)
         ->assertViewHas('matchTypes', $matchTypes->escapeWhenCastingToString())
         ->assertViewHas('referees', $referees->escapeWhenCastingToString())
         ->assertViewHas('titles', $titles->escapeWhenCastingToString());
 });
 
 test('it updates the competitors view when the match type is changes', function () {
-    $eventMatch = EventMatch::factory()->create();
     $matchTypes = MatchType::pluck('name', 'id');
 
     $matchTypeChosen = $matchTypes->random();

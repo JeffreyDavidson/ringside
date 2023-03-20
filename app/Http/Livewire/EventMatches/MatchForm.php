@@ -27,7 +27,7 @@ class MatchForm extends BaseComponent
     /**
      * Match type to target for subview.
      */
-    public int $matchTypeId = 0;
+    public int $matchTypeId;
 
     /**
      * View to rendor for each match type.

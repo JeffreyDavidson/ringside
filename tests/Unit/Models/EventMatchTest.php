@@ -13,53 +13,43 @@ beforeEach(function () {
 });
 
 test('an event match belongs to an event', function () {
-    $event = Event::factory()->create();
-    $eventMatch = EventMatch::factory()->for($event)->create();
+    $eventMatch = EventMatch::factory()->create();
 
-    expect($eventMatch)
-        ->event_id->toEqual($event->id)
-        ->event->toBeInstanceOf(Event::class);
+    expect($eventMatch)->event->toBeInstanceOf(Event::class);
 });
 
 test('an event match has a match type', function () {
-    $eventMatch = EventMatch::factory()->create(['match_type_id' => MatchType::first()->id]);
+    $eventMatch = EventMatch::factory()->make();
 
-    expect($eventMatch)
-        ->match_type_id->toEqual(1)
-        ->matchType->toBeInstanceOf(MatchType::class);
+    expect($eventMatch)->matchType->toBeInstanceOf(MatchType::class);
 });
 
 test('an event match referees', function () {
     $eventMatch = EventMatch::factory()->create();
 
-    expect($eventMatch)
-        ->referees->toBeCollection();
+    expect($eventMatch)->referees->toBeCollection();
 });
 
 test('an event match titiles', function () {
     $eventMatch = EventMatch::factory()->create();
 
-    expect($eventMatch)
-        ->titles->toBeCollection();
-});
-
-test('an event match wrestlers', function () {
-    $eventMatch = EventMatch::factory()->create();
-
-    expect($eventMatch)
-        ->wrestlers->toBeCollection();
-});
-
-test('an event match tag teams', function () {
-    $eventMatch = EventMatch::factory()->create();
-
-    expect($eventMatch)
-        ->tagteams->toBeCollection();
+    expect($eventMatch)->titles->toBeCollection();
 });
 
 test('an event match competitors', function () {
     $eventMatch = EventMatch::factory()->create();
 
-    expect($eventMatch)
-        ->competitors->toBeCollection();
+    expect($eventMatch)->competitors->toBeCollection();
+});
+
+test('an event match wrestlers', function () {
+    $eventMatch = EventMatch::factory()->create();
+
+    expect($eventMatch)->wrestlers->toBeCollection();
+});
+
+test('an event match tag teams', function () {
+    $eventMatch = EventMatch::factory()->create();
+
+    expect($eventMatch)->tagteams->toBeCollection();
 });

@@ -26,8 +26,12 @@ test('add a match to an event', function () {
     $referees = Referee::factory()->count(1)->create();
     [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
     $competitors = collect([
-        0 => collect([$wrestlerA]),
-        1 => collect([$wrestlerB]),
+        0 => [
+            'wrestlers' => collect([$wrestlerA]),
+        ],
+        1 => [
+            'wrestlers' => collect([$wrestlerB]),
+        ],
     ]);
     $data = new EventMatchData($matchType, $referees, collect(), $competitors, null);
 
@@ -49,8 +53,12 @@ test('add a title match to an event', function () {
     $titles = Title::factory()->count(1)->create();
     [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
     $competitors = collect([
-        0 => collect([$wrestlerA]),
-        1 => collect([$wrestlerB]),
+        0 => [
+            'wrestlers' => collect([$wrestlerA]),
+        ],
+        1 => [
+            'wrestlers' => collect([$wrestlerB]),
+        ],
     ]);
     $data = new EventMatchData($matchType, $referees, $titles, $competitors, null);
 

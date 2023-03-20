@@ -12,11 +12,17 @@ beforeEach(function () {
     $this->event = Event::factory()->scheduled()->create();
 });
 
-test('it creates a match for an event and redirects', function () {
+test('it ensures the correct view is loaded', function () {
     actingAs(administrator())
         ->get(action([EventMatchesController::class, 'create'], $this->event))
         ->assertOk()
-        ->assertViewIs('matches.create')
+        ->assertViewIs('matches.create');
+});
+
+test('it ensures the view is passed the correct variables', function () {
+    actingAs(administrator())
+        ->get(action([EventMatchesController::class, 'create'], $this->event))
+        ->assertOk()
         ->assertViewHas('event', $this->event)
         ->assertViewHas('match', new EventMatch);
 });

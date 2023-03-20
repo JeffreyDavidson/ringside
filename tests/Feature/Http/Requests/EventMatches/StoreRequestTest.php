@@ -69,7 +69,7 @@ test('each event match referees must be an integer', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'referees' => ['not-an-integer'],
         ]))
-        ->assertFailsValidation(['referees.0' => 'integer']);
+        ->assertFailsValidation(['referees.*' => 'integer']);
 });
 
 test('each event match referees must be distinct', function () {
@@ -77,7 +77,7 @@ test('each event match referees must be distinct', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'referees' => [1, 1],
         ]))
-        ->assertFailsValidation(['referees.0' => 'distinct']);
+        ->assertFailsValidation(['referees.*' => 'distinct']);
 });
 
 test('each event match referees must exist', function () {
@@ -85,7 +85,7 @@ test('each event match referees must exist', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'referees' => [999999],
         ]))
-        ->assertFailsValidation(['referees.0' => 'exists']);
+        ->assertFailsValidation(['referees.*' => 'exists']);
 });
 
 test('event match titles is optional', function () {
@@ -109,7 +109,7 @@ test('each event match titles must be an integer', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => ['not-an-integer'],
         ]))
-        ->assertFailsValidation(['titles.0' => 'integer']);
+        ->assertFailsValidation(['titles.*' => 'integer']);
 });
 
 test('each event match titles must be a distinct', function () {
@@ -117,7 +117,7 @@ test('each event match titles must be a distinct', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [1, 1],
         ]))
-        ->assertFailsValidation(['titles.0' => 'distinct']);
+        ->assertFailsValidation(['titles.*' => 'distinct']);
 });
 
 test('each event match titles must be exist', function () {
@@ -125,7 +125,7 @@ test('each event match titles must be exist', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [999999],
         ]))
-        ->assertFailsValidation(['titles.0' => 'exists']);
+        ->assertFailsValidation(['titles.*' => 'exists']);
 });
 
 test('each event match titles must be active', function () {
@@ -135,7 +135,7 @@ test('each event match titles must be active', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [$title->id],
         ]))
-        ->assertFailsValidation(['titles.0' => TitleMustBeActive::class]);
+        ->assertFailsValidation(['titles.*' => TitleMustBeActive::class]);
 });
 
 test('each event match competitors is required', function () {
