@@ -36,7 +36,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'match_type_id' => ['required', 'integer', Rule::exists('match_types', 'id')],
+            'match_type_id' => ['bail', 'required', 'integer', Rule::exists('match_types', 'id')],
             'referees' => ['required', 'array'],
             'referees.*' => ['integer', 'distinct', Rule::exists('referees', 'id')],
             'titles' => ['array'],

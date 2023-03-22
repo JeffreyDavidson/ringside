@@ -4,11 +4,9 @@ use App\Actions\EventMatches\AddCompetitorsToMatchAction;
 use App\Actions\EventMatches\AddTagTeamsToMatchAction;
 use App\Actions\EventMatches\AddWrestlersToMatchAction;
 use App\Models\EventMatch;
-use App\Models\EventMatchCompetitor;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
-use Illuminate\Support\Arr;
 
 beforeEach(function () {
     $this->seed(MatchTypesTableSeeder::class);
@@ -27,8 +25,12 @@ test('it adds wrestler competitors to a match', function () {
     ]);
 
     AddWrestlersToMatchAction::shouldRun()
-        ->with($eventMatch, Arr::get($competitors, 'wrestlers'), $competitors->count())
-        ->times(count(Arr::get($competitors, 'wrestlers')));
+        ->with($eventMatch, $competitors[0]['wrestlers'], 0)
+        ->once();
+
+    AddWrestlersToMatchAction::shouldRun()
+        ->with($eventMatch, $competitors[1]['wrestlers'], 1)
+        ->once();
 
     AddTagTeamsToMatchAction::shouldNotRun();
 
@@ -37,8 +39,7 @@ test('it adds wrestler competitors to a match', function () {
 
 test('it adds tag team competitors to a match', function () {
     $eventMatch = EventMatch::factory()->create();
-    $tagTeamA = TagTeam::factory()->create();
-    $tagTeamB = TagTeam::factory()->create();
+    [$tagTeamA, $tagTeamB] = TagTeam::factory()->count(2)->create();
     $competitors = collect([
         0 => [
             'tag_teams' => collect([$tagTeamA]),
@@ -48,11 +49,15 @@ test('it adds tag team competitors to a match', function () {
         ],
     ]);
 
-    AddWrestlersToMatchAction::shouldNotRun();
+    AddTagTeamsToMatchAction::shouldRun()
+        ->with($eventMatch, $competitors[0]['tag_teams'], 0)
+        ->once();
 
     AddTagTeamsToMatchAction::shouldRun()
-        ->with($eventMatch, Arr::get($competitors, 'tag_teams'), $competitors->count())
-        ->times(count(Arr::get($competitors, 'tag_teams')));
+        ->with($eventMatch, $competitors[1]['tag_teams'], 1)
+        ->once();
+
+    AddWrestlersToMatchAction::shouldNotRun();
 
     AddCompetitorsToMatchAction::run($eventMatch, $competitors);
 });
