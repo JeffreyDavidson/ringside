@@ -2,12 +2,16 @@
 
 use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\MatchType;
+use App\Models\Referee;
 use App\Models\Title;
 use App\Models\Wrestler;
+use App\Rules\CompetitorsAreNotDuplicated;
 use App\Rules\CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType;
+use App\Rules\RefereeCanRefereeMatch;
 use App\Rules\TitleChampionIncludedInTitleMatch;
 use App\Rules\TitleMustBeActive;
 use Database\Seeders\MatchTypesTableSeeder;
+use function Pest\Laravel\mock;
 use Tests\RequestFactories\EventMatchRequestFactory;
 
 beforeEach(fn () => $this->seed(MatchTypesTableSeeder::class));
@@ -69,7 +73,7 @@ test('each event match referees must be an integer', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'referees' => ['not-an-integer'],
         ]))
-        ->assertFailsValidation(['referees.*' => 'integer']);
+        ->assertFailsValidation(['referees.0' => 'integer']);
 });
 
 test('each event match referees must be distinct', function () {
@@ -77,7 +81,7 @@ test('each event match referees must be distinct', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'referees' => [1, 1],
         ]))
-        ->assertFailsValidation(['referees.*' => 'distinct']);
+        ->assertFailsValidation(['referees.0' => 'distinct']);
 });
 
 test('each event match referees must exist', function () {
@@ -85,7 +89,23 @@ test('each event match referees must exist', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'referees' => [999999],
         ]))
-        ->assertFailsValidation(['referees.*' => 'exists']);
+        ->assertFailsValidation(['referees.0' => 'exists']);
+});
+
+test('each event match referees must be able to referee the match', function () {
+    $referee = Referee::factory()->create();
+
+    mock(RefereeCanRefereeMatch::class)
+        ->shouldReceive('validate')
+        ->with('referees.0', $referee->id, function ($closure) {
+            $closure();
+        });
+
+    $this->createRequest(StoreRequest::class)
+        ->validate(EventMatchRequestFactory::new()->create([
+            'referees' => [$referee->id],
+        ]))
+        ->assertFailsValidation(['referees.0' => RefereeCanRefereeMatch::class]);
 });
 
 test('event match titles is optional', function () {
@@ -109,7 +129,7 @@ test('each event match titles must be an integer', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => ['not-an-integer'],
         ]))
-        ->assertFailsValidation(['titles.*' => 'integer']);
+        ->assertFailsValidation(['titles.0' => 'integer']);
 });
 
 test('each event match titles must be a distinct', function () {
@@ -117,7 +137,7 @@ test('each event match titles must be a distinct', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [1, 1],
         ]))
-        ->assertFailsValidation(['titles.*' => 'distinct']);
+        ->assertFailsValidation(['titles.0' => 'distinct']);
 });
 
 test('each event match titles must be exist', function () {
@@ -125,17 +145,23 @@ test('each event match titles must be exist', function () {
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [999999],
         ]))
-        ->assertFailsValidation(['titles.*' => 'exists']);
+        ->assertFailsValidation(['titles.0' => 'exists']);
 });
 
 test('each event match titles must be active', function () {
     $title = Title::factory()->nonActive()->create();
 
+    mock(TitleMustBeActive::class)
+        ->shouldReceive('validate')
+        ->with('titles.0', $title->id, function ($closure) {
+            $closure();
+        });
+
     $this->createRequest(StoreRequest::class)
         ->validate(EventMatchRequestFactory::new()->create([
             'titles' => [$title->id],
         ]))
-        ->assertFailsValidation(['titles.*' => TitleMustBeActive::class]);
+        ->assertFailsValidation(['titles.0' => TitleMustBeActive::class]);
 });
 
 test('each event match competitors is required', function () {
@@ -155,31 +181,48 @@ test('each event match competitors must be an array', function () {
 });
 
 test('each event match competitors array must contain at least two items', function () {
+    $data = EventMatchRequestFactory::new()->create();
+    data_set($data, 'competitors', [0 => []]);
+
     $this->createRequest(StoreRequest::class)
-        ->validate(EventMatchRequestFactory::new()->create([
-            'competitors' => [
-                [],
-            ],
-        ]))
+        ->validate($data)
         ->assertFailsValidation(['competitors' => 'min:2']);
 });
 
 test('each event match competitors items in the array must equal number of sides of the match type', function () {
+    $data = EventMatchRequestFactory::new()->create([
+        'match_type_id' => MatchType::factory()->create(['number_of_sides' => 2])->id,
+    ]);
+    $competitors = [
+        ['wrestlers' => [1]],
+        ['wrestlers' => [2]],
+        ['wrestlers' => [3]],
+    ];
+    data_set($data, 'competitors', $competitors);
+
     $this->createRequest(StoreRequest::class)
-        ->validate(EventMatchRequestFactory::new()->create([
-            'match_type_id' => MatchType::factory()->create(['number_of_sides' => 2])->id,
-            'competitors' => [
-                [['competitor_id' => 1, 'competitor_type' => 'wrestler']],
-                [['competitor_id' => 2, 'competitor_type' => 'wrestler']],
-                [['competitor_id' => 3, 'competitor_type' => 'wrestler']],
-            ],
-        ]))
+        ->validate($data)
         ->assertFailsValidation([
             'competitors' => CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class,
         ]);
 });
 
-test('each_event_match_preview_is_optional', function () {
+test('each event match competitors items must not be duplicated', function () {
+    $data = EventMatchRequestFactory::new()->create();
+    $competitors = [
+        ['wrestlers' => [1]],
+        ['wrestlers' => [1]],
+    ];
+    data_set($data, 'competitors', $competitors);
+
+    $this->createRequest(StoreRequest::class)
+        ->validate($data)
+        ->assertFailsValidation([
+            'competitors' => CompetitorsAreNotDuplicated::class,
+        ]);
+});
+
+test('each event match preview is optional', function () {
     $this->createRequest(StoreRequest::class)
         ->validate(EventMatchRequestFactory::new()->create([
             'preview' => null,
@@ -191,15 +234,16 @@ test('title with champion must be included in competitors for title match', func
     $champion = Wrestler::factory()->bookable()->create();
     $title = Title::factory()->active()->withChampion($champion)->create();
     [$wrestlerA, $wrestlerB] = Wrestler::factory()->bookable()->count(2)->create();
+    $data = EventMatchRequestFactory::new()->create([
+        'titles' => [$title->id],
+        'competitors' => [
+            ['wrestlers' => [$wrestlerA->id]],
+            ['wrestlers' => [$wrestlerB->id]],
+        ],
+    ]);
 
     $this->createRequest(StoreRequest::class)
-        ->validate(EventMatchRequestFactory::new()->create([
-            'titles' => [$title->id],
-            'competitors' => [
-                [['competitor_id' => $wrestlerA->id, 'competitor_type' => 'wrestler']],
-                [['competitor_id' => $wrestlerB->id, 'competitor_type' => 'wrestler']],
-            ],
-        ]))
+        ->validate($data)
         ->assertFailsValidation([
             'competitors' => TitleChampionIncludedInTitleMatch::class,
         ]);
@@ -209,14 +253,15 @@ test('title with champion must be included in competitors for title match two', 
     $champion = Wrestler::factory()->bookable()->create();
     $title = Title::factory()->active()->withChampion($champion)->create();
     $nonChampionWrestler = Wrestler::factory()->bookable()->create();
+    $data = EventMatchRequestFactory::new()->create([
+        'titles' => [$title->id],
+        'competitors' => [
+            ['wrestlers' => [$champion->id]],
+            ['wrestlers' => [$nonChampionWrestler->id]],
+        ],
+    ]);
 
     $this->createRequest(StoreRequest::class)
-        ->validate(EventMatchRequestFactory::new()->create([
-            'titles' => [$title->id],
-            'competitors' => [
-                [['competitor_id' => $champion->id, 'competitor_type' => 'wrestler']],
-                [['competitor_id' => $nonChampionWrestler->id, 'competitor_type' => 'wrestler']],
-            ],
-        ]))
+        ->validate($data)
         ->assertPassesValidation();
 });

@@ -12,10 +12,20 @@ test('controllers')
 
 test('models')
     ->expect('App\Models')
-    ->toOnlyBeUsedOn('App\Repositories')
-    ->toOnlyUse('Illuminate\Database');
+    ->toOnlyBeUsedIn('App\Repositories')
+    ->toOnlyUse('Illuminate\Database')
+    ->ignoring('database\seeders');
 
 test('repositories')
     ->expect('App\Repositories')
-    ->toOnlyBeUsedOn('App\Http\Controllers')
-    ->toOnlyUse('App\Models');
+    ->toOnlyBeUsedIn(['App\Http\Controllers', 'App\Actions', 'App\Listeners'])
+    ->toOnlyUse([
+        'App\Models',
+        'App\Data',
+        'Illuminate\Support\Carbon',
+        'now',
+        'Illuminate\Support\Collection',
+        'Illuminate\Database\Eloquent\Collection',
+        'App\Enums',
+        'Illuminate\Database\Eloquent\Builder',
+    ]);

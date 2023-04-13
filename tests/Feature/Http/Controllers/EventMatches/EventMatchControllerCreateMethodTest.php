@@ -12,14 +12,14 @@ beforeEach(function () {
     $this->event = Event::factory()->scheduled()->create();
 });
 
-test('it ensures the correct view is loaded', function () {
+test('it loads the correct view', function () {
     actingAs(administrator())
         ->get(action([EventMatchesController::class, 'create'], $this->event))
         ->assertOk()
         ->assertViewIs('matches.create');
 });
 
-test('it ensures the view is passed the correct variables', function () {
+test('it passes the correct data to the view', function () {
     actingAs(administrator())
         ->get(action([EventMatchesController::class, 'create'], $this->event))
         ->assertOk()
