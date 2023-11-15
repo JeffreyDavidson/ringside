@@ -7,11 +7,6 @@ namespace App\Builders;
 use App\Enums\TitleStatus;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * @template TModelClass of \Illuminate\Database\Eloquent\Model
- *
- * @extends Builder<TModelClass>
- */
 class TitleBuilder extends Builder
 {
     use Concerns\HasActivations;
