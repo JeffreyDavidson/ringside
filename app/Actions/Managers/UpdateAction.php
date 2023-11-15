@@ -20,7 +20,7 @@ class UpdateAction extends BaseManagerAction
     {
         $this->managerRepository->update($manager, $managerData);
 
-        if ($this->shouldBeEmployed($manager, $managerData->start_date)) {
+        if (! is_null($managerData->start_date) && $this->shouldBeEmployed($manager, $managerData->start_date)) {
             $this->managerRepository->employ($manager, $managerData->start_date);
         }
 
@@ -32,10 +32,6 @@ class UpdateAction extends BaseManagerAction
      */
     private function shouldBeEmployed(Manager $manager, ?Carbon $startDate): bool
     {
-        if (is_null($startDate)) {
-            return false;
-        }
-
         if ($manager->isCurrentlyEmployed()) {
             return false;
         }

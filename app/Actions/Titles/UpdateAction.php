@@ -20,7 +20,7 @@ class UpdateAction extends BaseTitleAction
     {
         $this->titleRepository->update($title, $titleData);
 
-        if ($this->shouldBeActivated($title, $titleData->activation_date)) {
+        if (! is_null($titleData->activation_date) && $this->shouldBeActivated($title, $titleData->activation_date)) {
             $this->titleRepository->activate($title, $titleData->activation_date);
         }
 
@@ -32,10 +32,6 @@ class UpdateAction extends BaseTitleAction
      */
     private function shouldBeActivated(Title $title, ?Carbon $activationDate): bool
     {
-        if (is_null($activationDate)) {
-            return false;
-        }
-
         if ($title->isCurrentlyActivated()) {
             return false;
         }

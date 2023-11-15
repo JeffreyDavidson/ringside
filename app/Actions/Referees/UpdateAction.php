@@ -20,7 +20,7 @@ class UpdateAction extends BaseRefereeAction
     {
         $this->refereeRepository->update($referee, $refereeData);
 
-        if ($this->shouldBeEmployed($referee, $refereeData->start_date)) {
+        if (! is_null($refereeData->start_date) && $this->shouldBeEmployed($referee, $refereeData->start_date)) {
             $this->refereeRepository->employ($referee, $refereeData->start_date);
         }
 
@@ -32,10 +32,6 @@ class UpdateAction extends BaseRefereeAction
      */
     private function shouldBeEmployed(Referee $referee, ?Carbon $startDate): bool
     {
-        if (is_null($startDate)) {
-            return false;
-        }
-
         if ($referee->isCurrentlyEmployed()) {
             return false;
         }

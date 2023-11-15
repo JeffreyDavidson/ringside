@@ -20,7 +20,7 @@ class UpdateAction extends BaseWrestlerAction
     {
         $this->wrestlerRepository->update($wrestler, $wrestlerData);
 
-        if ($this->shouldBeEmployed($wrestler, $wrestlerData->start_date)) {
+        if (! is_null($wrestlerData->start_date) && $this->shouldBeEmployed($wrestler, $wrestlerData->start_date)) {
             $this->wrestlerRepository->employ($wrestler, $wrestlerData->start_date);
         }
 
@@ -32,10 +32,6 @@ class UpdateAction extends BaseWrestlerAction
      */
     private function shouldBeEmployed(Wrestler $wrestler, ?Carbon $startDate): bool
     {
-        if (is_null($startDate)) {
-            return false;
-        }
-
         if ($wrestler->isCurrentlyEmployed()) {
             return false;
         }

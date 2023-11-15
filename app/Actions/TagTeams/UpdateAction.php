@@ -37,7 +37,7 @@ class UpdateAction extends BaseTagTeamAction
                 ->each(fn (Wrestler $wrestler) => $this->tagTeamRepository->removeTagTeamPartner($tagTeam, $wrestler, $datetime));
         }
 
-        if ($this->shouldBeEmployed($tagTeam, $tagTeamData->start_date)) {
+        if (! is_null($tagTeamData->start_date) && $this->shouldBeEmployed($tagTeam, $tagTeamData->start_date)) {
             $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
         }
 
@@ -49,10 +49,6 @@ class UpdateAction extends BaseTagTeamAction
      */
     private function shouldBeEmployed(TagTeam $tagTeam, ?Carbon $startDate): bool
     {
-        if (is_null($startDate)) {
-            return false;
-        }
-
         if ($tagTeam->isCurrentlyEmployed()) {
             return false;
         }
