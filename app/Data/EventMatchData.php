@@ -22,7 +22,7 @@ readonly class EventMatchData
      *
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Referee>  $referees
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Title>  $titles
-     * @param  \Illuminate\Support\Collection<int, mixed>  $competitors
+     * @param  \Illuminate\Support\Collection<"wrestler"|"tag_team", array<int, \App\Models\Wrestler|\App\Models\TagTeam>>  $competitors
      */
     public function __construct(
         public MatchType $matchType,
@@ -55,6 +55,8 @@ readonly class EventMatchData
 
     /**
      * Undocumented function.
+     *
+     * @param \Illuminate\Support\Collection<"wrestler"|"tag_team", array<int, \App\Models\Wrestler|\App\Models\TagTeam>> $competitors
      */
     private static function getCompetitors(Collection $competitors): Collection
     {
