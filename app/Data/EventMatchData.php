@@ -20,9 +20,9 @@ readonly class EventMatchData
     /**
      * Create a new event match data instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Referee>  $referees
-     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Title>  $titles
-     * @param  \Illuminate\Support\Collection<"wrestler"|"tag_team", array<int, \App\Models\Wrestler|\App\Models\TagTeam>>  $competitors
+     * @param  EloquentCollection<int, Referee>  $referees
+     * @param  EloquentCollection<int, Title>  $titles
+     * @param  Collection<"wrestlers"|"tag_teams", array<int, Wrestler|TagTeam>>  $competitors
      */
     public function __construct(
         public MatchType $matchType,
@@ -38,10 +38,10 @@ readonly class EventMatchData
      */
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Referee> $referees */
+        /** @var EloquentCollection<int, Referee> $referees */
         $referees = Referee::query()->findMany($request->collect('referees'));
 
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Title> $titles */
+        /** @var EloquentCollection<int, Title> $titles */
         $titles = Title::query()->findMany($request->collect('titles'));
 
         return new self(
@@ -56,7 +56,8 @@ readonly class EventMatchData
     /**
      * Undocumented function.
      *
-     * @param \Illuminate\Support\Collection<"wrestler"|"tag_team", array<int, \App\Models\Wrestler|\App\Models\TagTeam>> $competitors
+     * @param Collection<"wrestlers"|"tag_teams", array<int, Wrestler|TagTeam>> $competitors
+     * @return Collection<"wrestlers"|"tag_teams", array<int, Wrestler|TagTeam>>
      */
     private static function getCompetitors(Collection $competitors): Collection
     {
