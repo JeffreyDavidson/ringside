@@ -90,7 +90,8 @@ trait WithBulkActions
     /**
      * Undocumented function.
      */
-    public function getSelectedRowsQueryProperty(): Builder
+    #[Computed]
+    public function selectedRowsQuery(): Builder
     {
         return (clone $this->rowsQuery)
             ->unless($this->selectAll, fn ($query) => $query->whereKey($this->selected));
