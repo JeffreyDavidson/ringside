@@ -14,8 +14,8 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 
 /**
- * @property \Illuminate\Database\Eloquent\Collection $rows
- * @property \Illuminate\Database\Eloquent\Builder $rowsQuery
+ * @property-read LengthAwarePaginator $rows
+ * @property-read Builder $rowsQuery
  */
 class RefereesList extends BaseComponent
 {
@@ -45,7 +45,7 @@ class RefereesList extends BaseComponent
     public function rowsQuery(): Builder
     {
         $query = Referee::query()
-            ->when($this->filters['search'], function ($query, $search) {
+            ->when($this->filters['search'], function (Builder $query, string $search) {
                 $query->where('first_name', 'like', '%'.$search.'%')->orWhere('last_name', 'like', '%'.$search.'%');
             })
             ->oldest('last_name');
