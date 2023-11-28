@@ -14,3 +14,7 @@ parameters:
             message: '#Undefined variable: \$this#'
             paths:
                 - ./tests/*
+        -
+            message: '#Access to an undefined property: \$this#'
+            paths:
+                - ./App/Http/Livewire/*

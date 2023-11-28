@@ -34,7 +34,7 @@ trait WithSorting
     /**
      * Undocumented function.
      */
-    public function applySorting($query): Builder
+    public function applySorting(Builder $query): Builder
     {
         foreach ($this->sorts as $field => $direction) {
             $query->orderBy($field, $direction);

@@ -13,6 +13,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 
+/**
+ * @property-read LengthAwarePaginator $rows
+ * @property-read Builder $rowsQuery
+ */
 class WrestlersList extends BaseComponent
 {
     use WithBulkActions;
