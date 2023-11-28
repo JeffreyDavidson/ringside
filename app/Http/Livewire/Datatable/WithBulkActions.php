@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Datatable;
 
 use Illuminate\Database\Query\Builder;
+use Livewire\Attributes\Computed;
 
 trait WithBulkActions
 {
