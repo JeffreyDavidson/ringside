@@ -119,6 +119,8 @@ class StableRepository
 
     /**
      * Add wrestlers to a given stable.
+     *
+     * @param  Collection<int, \App\Models\Wrestler>  $wrestlers
      */
     public function addWrestlers(Stable $stable, Collection $wrestlers, Carbon $joinDate): void
     {
