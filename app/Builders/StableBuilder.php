@@ -6,6 +6,10 @@ namespace App\Builders;
 
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModel of \App\Models\Stable
+ * @extends \Illuminate\Database\Eloquent\Builder<TModel>
+ */
 class StableBuilder extends Builder
 {
     use Concerns\HasActivations;
