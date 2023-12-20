@@ -72,7 +72,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
      */
     public function isAvailable(): bool
     {
-        return $this->status->label() == ManagerStatus::Available->label();
+        return $this->status->label() === ManagerStatus::Available->label();
     }
 
     /**
