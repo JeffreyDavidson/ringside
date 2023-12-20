@@ -6,8 +6,10 @@ namespace App\Http\Requests\Wrestlers;
 
 use App\Models\Wrestler;
 use App\Rules\EmploymentStartDateCanBeChanged;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Tests\RequestFactories\WrestlerRequestFactory;
 
 class UpdateRequest extends FormRequest
@@ -34,7 +36,7 @@ class UpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, array<int, string|class-string>>
+     * @return array<string, array<int, string|Unique|ValidationRule>>
      */
     public function rules(): array
     {

@@ -7,6 +7,7 @@ namespace App\Http\Requests\Wrestlers;
 use App\Models\Wrestler;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Tests\RequestFactories\WrestlerRequestFactory;
 
 class StoreRequest extends FormRequest
@@ -29,7 +30,7 @@ class StoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, array<int, string|class-string>>
+     * @return array<string, array<int, string|Unique>>
      */
     public function rules(): array
     {

@@ -33,7 +33,7 @@ class UpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, array<int, string>>
+     * @return array<string, array<int, \App\Rules\EmploymentStartDateCanBeChanged|string>>
      */
     public function rules(): array
     {
