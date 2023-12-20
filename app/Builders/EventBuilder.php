@@ -8,8 +8,9 @@ use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @template TModel of \App\Models\Event
- * @extends \Illuminate\Database\Eloquent\Builder<TModel>
+ * @template TModelClass of \App\Models\Event
+ *
+ * @extends \Illuminate\Database\Eloquent\Builder<TModelClass>
  */
 class EventBuilder extends Builder
 {

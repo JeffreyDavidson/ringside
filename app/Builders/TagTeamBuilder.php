@@ -7,8 +7,9 @@ namespace App\Builders;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @template TModel of \App\Models\TagTeam
- * @extends \Illuminate\Database\Eloquent\Builder<TModel>
+ * @template TModelClass of \App\Models\TagTeam
+ *
+ * @extends \Illuminate\Database\Eloquent\Builder<TModelClass>
  */
 class TagTeamBuilder extends Builder
 {
