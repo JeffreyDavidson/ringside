@@ -43,7 +43,11 @@ class VenuesList extends BaseComponent
     public function rowsQuery(): Builder
     {
         $query = Venue::query()
-            ->when($this->filters['search'], fn (Builder $query, string $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->when(
+                $this->filters['search'],
+                function (Builder $query, string $search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                })
             ->oldest('name');
 
         return $this->applySorting($query);

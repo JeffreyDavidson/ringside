@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Titles;
 
+use App\Builders\TitleBuilder;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
@@ -43,7 +44,11 @@ class TitlesList extends BaseComponent
     public function rowsQuery(): Builder
     {
         $query = Title::query()
-            ->when($this->filters['search'], fn (Builder $query, string $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->when(
+                $this->filters['search'],
+                function (TitleBuilder $query, string $search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                })
             ->oldest('name');
 
         return $this->applySorting($query);

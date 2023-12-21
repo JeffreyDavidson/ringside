@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Managers;
 
+use App\Builders\ManagerBuilder;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
@@ -45,9 +46,12 @@ class ManagersList extends BaseComponent
     public function rowsQuery(): Builder
     {
         $query = Manager::query()
-            ->when($this->filters['search'], function (Builder $query, string $search) {
-                $query->where('first_name', 'like', '%'.$search.'%')->orWhere('last_name', 'like', '%'.$search.'%');
-            })
+            ->when(
+                $this->filters['search'],
+                function (ManagerBuilder $query, string $search) {
+                    $query->where('first_name', 'like', '%'.$search.'%')
+                        ->orWhere('last_name', 'like', '%'.$search.'%');
+                })
             ->oldest('last_name');
 
         return $this->applySorting($query);
