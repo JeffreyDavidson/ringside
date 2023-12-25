@@ -19,7 +19,18 @@
                 <x-separator />
                 <x-card.detail-container id="kt_tag_team_view_details">
                     <x-card.detail-row property="Name" value="{{ $tagTeam->name }}" />
-                    <x-card.detail-row property="Tag Team Partners" value="{{ $tagTeam->currentWrestlers->isNotEmpty() ? $tagTeam->currentWrestlers->pluck('name')->join(', ', ' and ') : 'No Wrestlers Assigned' }}" />
+                    @php
+                    if ($tagTeam->currentWrestlers->isNotEmpty()) {
+                        if ($tagTeam->currentWrestlers->count() === 2) {
+                            $names = $tagTeam->currentWrestlers->pluck('name')->join(', ', ' and ');
+                        } else {
+                            $names = $tagTeam->currentWrestlers->first()->name. " and TBD";
+                        }
+                    } else {
+                        $names = "No Wrestlers Assigned";
+                    }
+                    @endphp
+                    <x-card.detail-row property="Current Tag Team Partners" value="{{ $names }}" />
 
                     @if ($tagTeam->currentWrestlers->isNotEmpty())
                         <x-card.detail-row property="Combined Weight" value="{{ $tagTeam->combined_weight }} lbs." />
