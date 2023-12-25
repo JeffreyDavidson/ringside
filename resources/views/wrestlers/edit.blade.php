@@ -20,6 +20,7 @@
         </x-slot>
         <x-card.body>
             <x-form :action="route('wrestlers.update', $wrestler)">
+                @method('PATCH')
                 @include('wrestlers.partials.form')
             </x-form>
         </x-card.body>
