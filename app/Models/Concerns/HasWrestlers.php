@@ -54,38 +54,4 @@ trait HasWrestlers
             get: fn () => $this->currentWrestlers->sum('weight')
         );
     }
-
-    /**
-     * Get the current wrestlers names.
-     *
-     * @return Attribute<string, never>
-     */
-    public function currentWrestlersNames(): Attribute
-    {
-//        $names = match ($this->currentWrstlers->count()) {
-//            0 => 'No Users Assigned',
-//            1 => $this->currentWrstlers->first()->name.' and TBD',
-//            2 => $this->currentWrstlers->pluck('name')->join(', ', ' and '),
-//        };
-
-//        return new Attribute(
-//            get: fn () => $names
-//        );
-
-        if ($this->currentWrestlers->isEmpty()) {
-            return new Attribute(
-                get: fn () => 'No Users Assigned'
-            );
-        }
-
-        if ($this->currentWrestlers->containsOneItem()) {
-            return new Attribute(
-                get: fn () => "{$this->currentWrestlers->first()->name} and TBD"
-            );
-        }
-
-        return new Attribute(
-            get: fn () => $this->currentWrestlers->pluck('name')->join(', ', ' and ')
-        );
-    }
 }
