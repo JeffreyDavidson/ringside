@@ -12,8 +12,10 @@ use App\Rules\TagTeamMustBeBookable;
 use App\Rules\TitleChampionIncludedInTitleMatch;
 use App\Rules\TitleMustBeActive;
 use App\Rules\WrestlerMustBeBookable;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Tests\RequestFactories\EventMatchRequestFactory;
 
 class StoreRequest extends FormRequest
@@ -38,7 +40,7 @@ class StoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, array<int, string|\Illuminate\Validation\Rules\Exists|class-string>>
+     * @return array<string, array<int, string|Exists|ValidationRule>>
      */
     public function rules(): array
     {

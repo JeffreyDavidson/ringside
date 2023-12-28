@@ -11,10 +11,12 @@ trait HasMatches
 {
     /**
      * Retrieve the event matches participated by the model.
+     *
+     * @return MorphToMany<EventMatch>
      */
     public function eventMatches(): MorphToMany
     {
-        return $this->morphToMany(EventMatch::class, 'event_match_competitor');
+        return $this->morphToMany(EventMatch::class, 'competitor', 'event_match_competitors');
     }
 
     /**

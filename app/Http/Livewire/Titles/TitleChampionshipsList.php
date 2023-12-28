@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Titles;
 
 use App\Http\Livewire\BaseComponent;
 use App\Models\Title;
-use App\Models\TitleChampionship;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
@@ -46,9 +45,10 @@ class TitleChampionshipsList extends BaseComponent
     #[Computed]
     public function rowsQuery(): Builder
     {
-        return TitleChampionship::query()
-            ->where('title_id', $this->title->id)
-            ->latest('won_at');
+        return $this->title
+            ->championships()
+            ->latest('won_at')
+            ->latest('id');
     }
 
     /**
@@ -65,7 +65,7 @@ class TitleChampionshipsList extends BaseComponent
      */
     public function render(): View
     {
-        return view('livewire.titles.title-championships-list', [
+        return view('livewire.titles.title-championships.title-championships-list', [
             'titleChampionships' => $this->rows,
         ]);
     }

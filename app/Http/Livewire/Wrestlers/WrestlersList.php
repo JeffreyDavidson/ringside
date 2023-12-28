@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wrestlers;
 
+use App\Builders\WrestlerBuilder;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
@@ -43,7 +44,12 @@ class WrestlersList extends BaseComponent
     public function rowsQuery(): Builder
     {
         $query = Wrestler::query()
-            ->when($this->filters['search'], fn (Builder $query, string $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->when(
+                $this->filters['search'],
+                function (WrestlerBuilder $query, string $search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                }
+            )
             ->orderBy('name');
 
         return $this->applySorting($query);

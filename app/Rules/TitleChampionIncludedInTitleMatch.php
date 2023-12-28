@@ -11,16 +11,19 @@ use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class TitleChampionIncludedInTitleMatch implements ValidationRule, DataAwareRule
+class TitleChampionIncludedInTitleMatch implements DataAwareRule, ValidationRule
 {
     /**
      * All the data under validation.
+     *
+     * @var array<string, string>
      */
     protected array $data = [];
 
     /**
      * Set the data under validation.
      *
+     * @param  array<string, string>  $data
      * @return $this
      */
     public function setData(array $data): self

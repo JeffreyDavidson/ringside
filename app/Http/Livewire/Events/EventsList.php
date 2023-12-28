@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Events;
 
+use App\Builders\EventBuilder;
 use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Event;
-use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
@@ -42,10 +42,15 @@ class EventsList extends BaseComponent
      * Undocumented function.
      */
     #[Computed]
-    public function rowsQuery(): Builder
+    public function rowsQuery(): EventBuilder
     {
         $query = Event::query()
-            ->when($this->filters['search'], fn (Builder $query, string $search) => $query->where('name', 'like', '%'.$search.'%'))
+            ->when(
+                $this->filters['search'],
+                function (EventBuilder $query, string $search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                }
+            )
             ->oldest('name');
 
         return $this->applySorting($query);

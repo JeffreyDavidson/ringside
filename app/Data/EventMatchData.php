@@ -49,7 +49,7 @@ readonly class EventMatchData
             $referees,
             $titles,
             self::getCompetitors($request->collect('competitors')),
-            $request->input('preview')
+            $request->string('preview')->value()
         );
     }
 
@@ -61,7 +61,6 @@ readonly class EventMatchData
      */
     private static function getCompetitors(Collection $competitors): Collection
     {
-        /** @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter */
         return $competitors->transform(function (array $sideCompetitors) {
             if (Arr::exists($sideCompetitors, 'wrestlers')) {
                 return data_set(
