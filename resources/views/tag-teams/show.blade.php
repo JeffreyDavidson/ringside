@@ -71,6 +71,7 @@
 
         <x-details-data>
             <livewire:tag-teams.match-list :tagTeam="$tagTeam" />
+            <livewire:tag-teams.title-championships-list :tagTeam="$tagTeam" />
         </x-details-data>
     </x-details-page>
 </x-layouts.app>
