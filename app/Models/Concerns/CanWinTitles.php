@@ -14,7 +14,7 @@ trait CanWinTitles
     /**
      * Retrieve the titles won by the model.
      *
-     * @return MorphTo<TitleChampionship>
+     * @return MorphMany<TitleChampionship>
      */
     public function titleChampionships(): MorphMany
     {
