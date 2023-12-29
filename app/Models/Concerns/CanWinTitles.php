@@ -7,7 +7,6 @@ namespace App\Models\Concerns;
 use App\Models\TitleChampionship;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 trait CanWinTitles
 {
