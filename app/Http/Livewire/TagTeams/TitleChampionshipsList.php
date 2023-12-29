@@ -52,7 +52,8 @@ class TitleChampionshipsList extends BaseComponent
             ->addSelect(
                 'title_championships.title_id',
                 DB::raw('count(title_id) as title_count'),
-                DB::raw('max(won_at) as last_held_reign')
+                DB::raw('max(won_at) as won_at'),
+                DB::raw('case when MAX(lost_at IS NULL) = 0 THEN max(lost_at) END AS lost_at')
             )
             ->groupBy('title_id');
     }
