@@ -17,7 +17,7 @@
                 <x-table.cell>
                     {{ $titleChampionship->won_at->toDateString() }}
                         -
-                    {{ $titleChampionship->lost_at->toDateString() }}
+                    {{ $titleChampionship->lost_at?->toDateString() ?? "Present" }}
                 </x-table.cell>
             </x-table.row>
         @empty
