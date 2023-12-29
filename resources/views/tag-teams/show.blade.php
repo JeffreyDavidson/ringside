@@ -100,6 +100,10 @@
             @if ($tagTeam->previousWrestlers->isNotEmpty())
                 <livewire:tag-teams.wrestlers-list :tagTeam="$tagTeam" />
             @endif
+
+            @if ($tagTeam->previousManagers->isNotEmpty())
+                <livewire:tag-teams.managers-list :tagTeam="$tagTeam" />
+            @endif
         </x-details-data>
     </x-details-page>
 </x-layouts.app>
