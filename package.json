@@ -11,12 +11,14 @@
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.2.1",
+        "@vitejs/plugin-vue": "^5.0.2",
         "alpinejs": "^2.7.3",
         "autoprefixer": "^10.1.0",
         "axios": "^0.25",
         "bootstrap": "^4.3.1",
         "jquery": "^3.4.1",
         "laravel-mix": "^6.0.12",
+        "laravel-vite-plugin": "^1.0.1",
         "lodash": "^4.17.11",
         "popper.js": "^1.15.0",
         "postcss": "^8.2.8",
@@ -25,7 +27,8 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "tailwindcss": "^2.0.2",
-        "vue": "^2.5.17",
+        "vite": "^5.0.10",
+        "vue": "^3.2.25",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
