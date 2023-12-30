@@ -41,8 +41,10 @@ class WrestlersList extends Component
     #[Computed]
     public function rowsQuery(): Builder
     {
-        return $this->tagTeam
+        $query = $this->tagTeam
             ->previousWrestlers();
+
+        return $this->applySorting($query);
     }
 
     /**

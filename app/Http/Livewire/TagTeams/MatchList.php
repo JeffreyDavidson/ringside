@@ -50,8 +50,10 @@ class MatchList extends Component
     #[Computed]
     public function rowsQuery(): Builder
     {
-        return $this->tagTeam
+        $query = $this->tagTeam
             ->eventMatches();
+
+        return $this->applySorting($query);
     }
 
     /**

@@ -51,7 +51,7 @@ class TitleChampionshipsList extends Component
     #[Computed]
     public function rowsQuery(): Builder
     {
-        return $this->tagTeam
+        $query = $this->tagTeam
             ->titleChampionships()
             ->with('title')
             ->addSelect(
@@ -61,6 +61,8 @@ class TitleChampionshipsList extends Component
                 DB::raw('case when MAX(lost_at IS NULL) = 0 THEN max(lost_at) END AS lost_at')
             )
             ->groupBy('title_id');
+
+        return $this->applySorting($query);
     }
 
     /**

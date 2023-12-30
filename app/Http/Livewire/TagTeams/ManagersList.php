@@ -41,8 +41,10 @@ class ManagersList extends Component
     #[Computed]
     public function rowsQuery(): Builder
     {
-        return $this->tagTeam
+        $query = $this->tagTeam
             ->previousManagers();
+
+        return $this->applySorting($query);
     }
 
     /**
