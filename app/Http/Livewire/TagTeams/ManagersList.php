@@ -10,6 +10,7 @@ use App\Models\TagTeam;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -42,7 +43,10 @@ class ManagersList extends Component
     public function rowsQuery(): Builder
     {
         $query = $this->tagTeam
-            ->previousManagers();
+            ->previousManagers()
+            ->addSelect(
+                DB::raw("CONCAT(managers.first_name,' ', managers.last_name) AS full_name"),
+            );
 
         return $this->applySorting($query);
     }

@@ -53,7 +53,7 @@ class TitleChampionshipsList extends Component
     {
         $query = $this->tagTeam
             ->titleChampionships()
-            ->with('title')
+            ->join('titles', 'titles.id', '=', 'title_championships.title_id')
             ->addSelect(
                 'title_championships.title_id',
                 DB::raw('count(title_id) as title_count'),

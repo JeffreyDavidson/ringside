@@ -51,7 +51,8 @@ class MatchList extends Component
     public function rowsQuery(): Builder
     {
         $query = $this->tagTeam
-            ->eventMatches();
+            ->eventMatches()
+            ->join('events', 'events.id', '=', 'event_matches.event_id');
 
         return $this->applySorting($query);
     }
