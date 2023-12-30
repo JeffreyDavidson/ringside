@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\TagTeams;
 
 use App\Builders\TagTeamBuilder;
-use App\Http\Livewire\BaseComponent;
 use App\Http\Livewire\Datatable\WithBulkActions;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
@@ -13,12 +12,13 @@ use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Component;
 
 /**
  * @property-read LengthAwarePaginator $rows
  * @property-read Builder $rowsQuery
  */
-class TagTeamsList extends BaseComponent
+class TagTeamsList extends Component
 {
     use WithBulkActions;
     use WithSorting;

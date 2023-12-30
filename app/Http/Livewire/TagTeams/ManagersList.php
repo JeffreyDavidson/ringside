@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\TagTeams;
 
-use App\Http\Livewire\BaseComponent;
 use App\Models\TagTeam;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Component;
 
 /**
  * @property-read LengthAwarePaginator $rows
  * @property-read Builder $rowsQuery
  */
-class ManagersList extends BaseComponent
+class ManagersList extends Component
 {
     /**
      * Tag Team to use for component.
