@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\TagTeams;
 
 use App\Http\Livewire\Datatable\WithPerPagePagination;
+use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -20,6 +21,7 @@ use Livewire\Component;
 class TitleChampionshipsList extends Component
 {
     use WithPerPagePagination;
+    use WithSorting;
 
     /**
      * Tag team to use for component.
