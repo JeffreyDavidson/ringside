@@ -6,6 +6,7 @@ namespace App\Http\Livewire\TagTeams;
 
 use App\Builders\TagTeamBuilder;
 use App\Http\Livewire\Datatable\WithBulkActions;
+use App\Http\Livewire\Datatable\WithPerPagePagination;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -21,6 +22,7 @@ use Livewire\Component;
 class TagTeamsList extends Component
 {
     use WithBulkActions;
+    use WithPerPagePagination;
     use WithSorting;
 
     /**
