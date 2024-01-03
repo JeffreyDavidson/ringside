@@ -121,7 +121,7 @@
             @endif
 
             @if ($tagTeam->previousWrestlers->isNotEmpty())
-                <livewire:tag-teams.wrestlers-list :tagTeam="$tagTeam" />
+                <livewire:tag-teams.previous-wrestlers-list :tagTeam="$tagTeam" />
             @endif
 
             @if ($tagTeam->previousManagers->isNotEmpty())
