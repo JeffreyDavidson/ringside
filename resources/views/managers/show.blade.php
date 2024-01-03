@@ -64,6 +64,18 @@
                             </x-card.detail-row>
                         @endif
 
+                        @if ($manager->currentStable)
+                            <x-card.detail-row>
+                                <x-card.detail-property label="Current Stable" />
+                                <x-card.detail-value>
+                                    <x-route-link
+                                        :route="route('stables.show', $manager->currentStable)"
+                                        label="{{ $manager->currentStable->name }}"
+                                    />
+                                </x-card.detail-value>
+                            </x-card.detail-row>
+                        @endif
+
                         <x-card.detail-row>
                             <x-card.detail-property label="Start Date" />
                             <x-card.detail-value>
