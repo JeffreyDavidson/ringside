@@ -13,9 +13,10 @@
             <p>{{ $match->matchType->name }} Match</p>
         @endif
 
-        <p>{{ $match->competitors->groupedBySide()->map(function ($side) {
-                        return $side->pluck('competitor.name')->implode(' & ');
-                    })->implode(' vs. ') }}</p>
+        @dd($match->competitors->propertlyFormattedCompetitors())
+        {{--        <p>{{ $match->competitors->groupedBySide()->map(function ($side) {--}}
+        {{--                        return $side->pluck('competitor.name')->implode(' & ');--}}
+        {{--                    })->implode(' vs. ') }}</p>--}}
 
         <p>{{ $match->preview }}</p>
     </div>
