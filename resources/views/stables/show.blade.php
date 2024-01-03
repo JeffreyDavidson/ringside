@@ -27,6 +27,25 @@
                             <x-card.detail-property label="Name" />
                             <x-card.detail-value>{{ $stable->name }}</x-card.detail-value>
                         </x-card.detail-row>
+
+                        @if ($stable->currentWrestlers->isNotEmpty())
+                            <x-card.detail-row>
+                                <x-card.detail-property label="Current Wrestler(s)" />
+                                <x-card.detail-value>
+                                    @foreach ($stable->currentWrestlers as $wrestler)
+                                        <x-route-link
+                                            :route="route('wrestlers.show', $wrestler)"
+                                            label="{{ $wrestler->name }}"
+                                        />
+
+                                        @if (! $loop->last)
+                                            @php echo "<br>" @endphp
+                                        @endif
+                                    @endforeach
+                                </x-card.detail-value>
+                            </x-card.detail-row>
+                        @endif
+
                         <x-card.detail-row>
                             <x-card.detail-property label="Start Date" />
                             <x-card.detail-value>
