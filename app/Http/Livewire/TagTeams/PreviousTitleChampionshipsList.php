@@ -18,7 +18,7 @@ use Livewire\Component;
  * @property-read LengthAwarePaginator $rows
  * @property-read Builder $rowsQuery
  */
-class TitleChampionshipsList extends Component
+class PreviousTitleChampionshipsList extends Component
 {
     use WithPerPagePagination;
     use WithSorting;
@@ -52,8 +52,8 @@ class TitleChampionshipsList extends Component
     public function rowsQuery(): Builder
     {
         $query = $this->tagTeam
-            ->titleChampionships()
-            ->with(['title.previousChampionship'])
+            ->previousTitleChampionships()
+            ->with('title')
             ->addSelect(
                 'title_championships.title_id',
                 'title_championships.won_at',
@@ -78,8 +78,8 @@ class TitleChampionshipsList extends Component
      */
     public function render(): View
     {
-        return view('livewire.tag-teams.title-championships.title-championships-list', [
-            'titlesChampionships' => $this->rows,
+        return view('livewire.tag-teams.previous-title-championships.previous-title-championships-list', [
+            'previousTitleChampionships' => $this->rows,
         ]);
     }
 }
