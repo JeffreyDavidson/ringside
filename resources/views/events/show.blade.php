@@ -55,7 +55,9 @@
         </x-details-card>
 
         <x-details-data>
-            @include('events.partials.matches', ['matches' => $event->matches])
+            @if ($event->matches->isNotEmpty())
+                <livewire:events.matches.matches-list :event="$event" />
+            @endif
         </x-details-data>
     </x-details-page>
 </x-layouts.app>
