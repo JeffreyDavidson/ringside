@@ -16,17 +16,39 @@
         <x-details-card>
             <x-card>
                 <x-card.body>
-                    <x-card.detail-link collapsibleLink="kt_event_view_details" resource="event" :href="route('events.edit', $event)" />
+                    <x-card.detail-link
+                        collapsibleLink="kt_event_view_details"
+                        resource="event"
+                        :href="route('events.edit', $event)"
+                    />
                     <x-separator />
                     <x-card.detail-container id="kt_event_view_details">
-                        <x-card.detail-row property="Name" value="{{ $event->name }}" />
-                        <x-card.detail-row property="Date" value="{{ $event->date?->format('Y-m-j g:i A') ?? 'Unscheduled' }}" />
-                        <x-card.detail-row property="Venue" value="{{ $event->venue->name ?? 'No Venue Chosen' }}" />
-                        <x-card.detail-row property="Preview" value="{{ $event->preview ?? 'No preview added'}}" />
+                        <x-card.detail-row>
+                            <x-card.detail-property label="Name" />
+                            <x-card.detail-value>{{ $event->name }}</x-card.detail-value>
+                        </x-card.detail-row>
+                        <x-card.detail-row>
+                            <x-card.detail-property label="Date" />
+                            <x-card.detail-value>
+                                {{ $event->date?->format('Y-m-j g:i A') ?? 'Unscheduled' }}
+                            </x-card.detail-value>
+                        </x-card.detail-row>
+                        <x-card.detail-row>
+                            <x-card.detail-property label="Venue" />
+                            <x-card.detail-value>{{ $event->venue->name ?? "No Venue Chosen" }}</x-card.detail-value>
+                        </x-card.detail-row>
+                        <x-card.detail-row>
+                            <x-card.detail-property label="Preview" />
+                            <x-card.detail-value>{{ $event->preview ?? "No Preview Added" }}</x-card.detail-value>
+                        </x-card.detail-row>
                     </x-card.detail-container>
 
                     @if ($event->isUnscheduled())
-                        <x-notice class="mt-4" title="This event needs your attention!" description="This event does not have a date and needs to be scheduled." />
+                        <x-notice
+                            class="mt-4"
+                            title="This event needs your attention!"
+                            description="This event does not have a date and needs to be scheduled."
+                        />
                     @endif
                 </x-card.body>
             </x-card>
