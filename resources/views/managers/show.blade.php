@@ -36,7 +36,11 @@
                     </x-card.detail-container>
 
                     @if ($manager->isUnemployed())
-                        <x-notice class="mt-4" title="This manager needs your attention!" description="This manager does not have a start date and needs to be employed." />
+                        <x-notice
+                            class="mt-4"
+                            title="This manager needs your attention!"
+                            description="This manager does not have a start date and needs to be employed."
+                        />
                     @endif
                 </x-card.body>
             </x-card>
