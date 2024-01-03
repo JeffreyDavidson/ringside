@@ -105,6 +105,10 @@
             @if ($stable->previousWrestlers->isNotEmpty())
                 <livewire:stables.previous-wrestlers-list :stable="$stable" />
             @endif
+
+            @if ($stable->previousTagTeams->isNotEmpty())
+                <livewire:stables.previous-tag-teams-list :stable="$stable" />
+            @endif
         </x-details-data>
     </x-details-page>
 </x-layouts.app>
