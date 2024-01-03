@@ -125,7 +125,7 @@
             @endif
 
             @if ($tagTeam->previousManagers->isNotEmpty())
-                <livewire:tag-teams.managers-list :tagTeam="$tagTeam" />
+                <livewire:tag-teams.previous-managers-list :tagTeam="$tagTeam" />
             @endif
         </x-details-data>
     </x-details-page>
