@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\TagTeams;
+namespace App\Http\Livewire\Wrestlers;
 
 use App\Http\Livewire\Datatable\WithPerPagePagination;
 use App\Http\Livewire\Datatable\WithSorting;
-use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -17,22 +18,22 @@ use Livewire\Component;
  * @property-read LengthAwarePaginator $rows
  * @property-read Builder $rowsQuery
  */
-class WrestlersList extends Component
+class PreviousManagersList extends Component
 {
     use WithPerPagePagination;
     use WithSorting;
 
     /**
-     * Tag Team to use for component.
+     * Wrestler to use for component.
      */
-    public TagTeam $tagTeam;
+    public Wrestler $wrestler;
 
     /**
-     * Set the Tag Team to be used for this component.
+     * Set the Wrestler to be used for this component.
      */
-    public function mount(TagTeam $tagTeam): void
+    public function mount(Wrestler $wrestler): void
     {
-        $this->tagTeam = $tagTeam;
+        $this->wrestler = $wrestler;
     }
 
     /**
@@ -41,8 +42,11 @@ class WrestlersList extends Component
     #[Computed]
     public function rowsQuery(): Builder
     {
-        $query = $this->tagTeam
-            ->previousWrestlers();
+        $query = $this->wrestler
+            ->previousManagers()
+            ->addSelect(
+                DB::raw("CONCAT(managers.first_name,' ', managers.last_name) AS full_name"),
+            );
 
         return $this->applySorting($query);
     }
@@ -61,8 +65,8 @@ class WrestlersList extends Component
      */
     public function render(): View
     {
-        return view('livewire.tag-teams.wrestlers.previous-wrestlers-list', [
-            'wrestlers' => $this->rows,
+        return view('livewire.wrestlers.previous-managers.previous-managers-list', [
+            'previousManagers' => $this->rows,
         ]);
     }
 }
