@@ -45,6 +45,24 @@
                                 </x-card.detail-value>
                             </x-card.detail-row>
                         @endif
+                        
+                        @if ($stable->currentTagTeams->isNotEmpty())
+                            <x-card.detail-row>
+                                <x-card.detail-property label="Current Tag Team(s)" />
+                                <x-card.detail-value>
+                                    @foreach ($stable->currentTagTeams as $tagTeam)
+                                        <x-route-link
+                                            :route="route('tag-teams.show', $tagTeam)"
+                                            label="{{ $tagTeam->name }}"
+                                        />
+
+                                        @if (! $loop->last)
+                                            @php echo "<br>" @endphp
+                                        @endif
+                                    @endforeach
+                                </x-card.detail-value>
+                            </x-card.detail-row>
+                        @endif
 
                         <x-card.detail-row>
                             <x-card.detail-property label="Start Date" />
