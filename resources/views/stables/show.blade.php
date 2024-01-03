@@ -64,6 +64,24 @@
                             </x-card.detail-row>
                         @endif
 
+                        @if ($stable->currentManagers->isNotEmpty())
+                            <x-card.detail-row>
+                                <x-card.detail-property label="Current Manager(s)" />
+                                <x-card.detail-value>
+                                    @foreach ($stable->currentManagers as $manager)
+                                        <x-route-link
+                                            :route="route('managers.show', $manager)"
+                                            label="{{ $manager->full_name }}"
+                                        />
+
+                                        @if (! $loop->last)
+                                            @php echo "<br>" @endphp
+                                        @endif
+                                    @endforeach
+                                </x-card.detail-value>
+                            </x-card.detail-row>
+                        @endif
+
                         <x-card.detail-row>
                             <x-card.detail-property label="Start Date" />
                             <x-card.detail-value>
