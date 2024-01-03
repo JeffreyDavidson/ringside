@@ -16,11 +16,23 @@
         <x-details-card>
             <x-card>
                 <x-card.body>
-                    <x-card.detail-link collapsibleLink="kt_manager_view_details" resource="manager" :href="route('managers.edit', $manager)" />
+                    <x-card.detail-link
+                        collapsibleLink="kt_manager_view_details"
+                        resource="manager"
+                        :href="route('managers.edit', $manager)"
+                    />
                     <x-separator />
                     <x-card.detail-container id="kt_manager_view_details">
-                        <x-card.detail-row property="Name" value="{{ $manager->full_name }}" />
-                        <x-card.detail-row property="Start Date" value="{{ $manager->startedAt?->toDateString() ?? 'No Start Date Set' }}" />
+                        <x-card.detail-row>
+                            <x-card.detail-property label="Name" />
+                            <x-card.detail-value>{{ $manager->full_name }}</x-card.detail-value>
+                        </x-card.detail-row>
+                        <x-card.detail-row>
+                            <x-card.detail-property label="Start Date" />
+                            <x-card.detail-value>
+                                {{ $manager->startedAt?->toDateString() ?? 'No Start Date Set' }}
+                            </x-card.detail-value>
+                        </x-card.detail-row>
                     </x-card.detail-container>
 
                     @if ($manager->isUnemployed())
