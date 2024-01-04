@@ -35,7 +35,16 @@
                         </x-card.detail-row>
                         <x-card.detail-row>
                             <x-card.detail-property label="Venue" />
-                            <x-card.detail-value>{{ $event->venue->name ?? "No Venue Chosen" }}</x-card.detail-value>
+                            <x-card.detail-value>
+                                @if ($event->venue)
+                                    <x-route-link
+                                        :route="route('venues.show', $event->venue)"
+                                        label="{{ $event->venue->name }}"
+                                    />
+                                @else
+                                    {{ "No Venue Chosen" }}
+                                @endif
+                            </x-card.detail-value>
                         </x-card.detail-row>
                         <x-card.detail-row>
                             <x-card.detail-property label="Preview" />
