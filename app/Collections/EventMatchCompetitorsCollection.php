@@ -24,12 +24,7 @@ class EventMatchCompetitorsCollection extends Collection
     public function propertlyFormattedCompetitors(): Collection
     {
         $groupedCollection = $this->groupBy('side_number');
-        dd($groupedCollection);
 
-        $newCollection = $groupedCollection->keyBy('competitor_type');
-
-        dd($newCollection);
-
-        return $newCollection;
+        return $groupedCollection;
     }
 }
