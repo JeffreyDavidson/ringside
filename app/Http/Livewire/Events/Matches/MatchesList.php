@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Events\Matches;
 
-use App\Http\Livewire\Datatable\WithPerPagePagination;
-use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class MatchesList extends Component
 {
-    use WithPerPagePagination;
-    use WithSorting;
-
     /**
      * Event to use for component.
      */
