@@ -42,7 +42,8 @@ class MatchesList extends Component
     public function rowsQuery(): Builder
     {
         return $this->event
-            ->matches();
+            ->matches()
+            ->with(['competitors.competitor', 'competitors.competitor', 'titles', 'referees', 'matchType']);
     }
 
     /**
