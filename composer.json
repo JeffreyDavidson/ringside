@@ -40,6 +40,7 @@
         "pestphp/pest-plugin-type-coverage": "^2.0",
         "spatie/laravel-ignition": "^2.0",
         "spatie/laravel-ray": "^1.32",
+        "spatie/pest-plugin-test-time": "^2.0",
         "worksome/request-factories": "^3.1"
     },
     "config": {
@@ -85,6 +86,9 @@
         ],
         "analyze": [
             "./vendor/bin/phpstan analyze --memory-limit=2G app"
+        ],
+        "pest-test-coverage": [
+            "./vendor/bin/pest --type-coverage"
         ]
     }
 }
