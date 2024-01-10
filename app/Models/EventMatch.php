@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
-use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 
 class EventMatch extends Model
 {
@@ -32,7 +32,7 @@ class EventMatch extends Model
     /**
      * Get the event the match belongs to.
      *
-     * @return BelongsTo<Event, EventMatch>
+     * @return BelongsTo<Event, Match>
      */
     public function event(): BelongsTo
     {
@@ -42,7 +42,7 @@ class EventMatch extends Model
     /**
      * Get the match type of the match.
      *
-     * @return BelongsTo<MatchType, EventMatch>
+     * @return BelongsTo<MatchType, Match>
      */
     public function matchType(): BelongsTo
     {
@@ -72,9 +72,9 @@ class EventMatch extends Model
     /**
      * Get all the event match competitors for the match.
      */
-    public function competitors(): MergedRelation
+    public function competitors(): HasMany
     {
-        return $this->mergedRelationWithModel(EventMatchCompetitor::class, 'all_match_competitors');
+        return $this->hasMany(EventMatchCompetitor::class);
     }
 
     /**

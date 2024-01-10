@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Events;
 use App\Actions\Events\CreateAction;
 use App\Actions\Events\DeleteAction;
 use App\Actions\Events\UpdateAction;
+use App\Builders\EventBuilder;
 use App\Data\EventData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Events\StoreRequest;
@@ -59,7 +60,19 @@ class EventsController extends Controller
         $this->authorize('view', $event);
 
         return view('events.show', [
-            'event' => $event->load('venue'),
+            'event' => $event->load([
+                'venue',
+                'matches.matchType',
+                'matches.referees' => function (EventBuilder $query) {
+                    $query->withTrashed();
+                },
+                'matches.titles' => function (EventBuilder $query) {
+                    $query->withTrashed();
+                },
+                'matches.competitors.competitor' => function (EventBuilder $query) {
+                    $query->withTrashed();
+                },
+            ]),
         ]);
     }
 

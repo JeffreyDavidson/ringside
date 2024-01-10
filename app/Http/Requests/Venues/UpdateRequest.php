@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests\Venues;
 
 use App\Models\Venue;
-use App\Models\Wrestler;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Tests\RequestFactories\VenueRequestFactory;
@@ -13,7 +12,7 @@ use Tests\RequestFactories\VenueRequestFactory;
 class UpdateRequest extends FormRequest
 {
     /** @var class-string */
-    public static $factory = VenueRequestFactory::class;
+    public static string $factory = VenueRequestFactory::class;
 
     /**
      * Determine if the user is authorized to make this request.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Ankurk91\Eloquent\HasMorphToOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,7 @@ class TitleChampionship extends Model
 {
     use HasFactory;
     use HasMergedRelationships;
+    use HasMorphToOne;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +47,7 @@ class TitleChampionship extends Model
     protected $casts = [
         'won_at' => 'datetime',
         'lost_at' => 'datetime',
+        'last_held_reign' => 'datetime',
     ];
 
     /**
@@ -71,16 +74,6 @@ class TitleChampionship extends Model
      * @return MorphTo<Model, TitleChampionship>
      */
     public function currentChampion(): MorphTo
-    {
-        return $this->morphTo(__FUNCTION__, 'champion_type', 'champion_id');
-    }
-
-    /**
-     * Retrieve the previous champion of the title championship.
-     *
-     * @return MorphTo<Model, TitleChampionship>
-     */
-    public function previousChampion(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'champion_type', 'champion_id');
     }
