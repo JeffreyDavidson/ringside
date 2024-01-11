@@ -1,21 +1,18 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 
+/** @type {import('tailwindcss').Config} */
 export default {
-    purge: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+    ],
 
     theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
-            },
-        },
+        extend: {},
     },
 
     variants: {
-        extend: {
-            opacity: ['disabled'],
-        },
+        extend: {},
     },
 
     plugins: [forms],
