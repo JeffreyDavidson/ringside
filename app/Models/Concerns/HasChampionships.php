@@ -41,7 +41,7 @@ trait HasChampionships
     {
         return $this->belongsToOne(TitleChampionship::class, 'title_championships')
             ->wherePivotNotNull('lost_at')
-            ->latest('lost_at');
+            ->orderByPivot('lost_at', 'desc');
     }
 
     /**
