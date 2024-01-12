@@ -6,10 +6,7 @@ namespace App\Http\Livewire\Wrestlers;
 
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Wrestler;
-use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 

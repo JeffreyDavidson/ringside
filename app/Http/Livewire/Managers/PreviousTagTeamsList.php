@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Managers;
 
-use App\Http\Livewire\Datatable\WithPerPagePagination;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Manager;
-use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 
