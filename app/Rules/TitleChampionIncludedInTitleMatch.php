@@ -50,10 +50,10 @@ class TitleChampionIncludedInTitleMatch implements DataAwareRule, ValidationRule
 
         $competitors = $wrestlers->merge($tagTeams);
 
-        $champions = Title::with('currentChampionship.champion')
+        $champions = Title::with('currentChampionship.currentChampion')
             ->findMany($this->data['titles'])
             ->reject(fn (Title $title) => $title->isVacant())
-            ->every(fn (Title $title) => $competitors->contains($title->currentChampionship?->champion));
+            ->every(fn (Title $title) => $competitors->contains($title->currentChampionship?->currentChampion));
 
         if (! $champions) {
             $fail('This match requires the champion to be involved.');
