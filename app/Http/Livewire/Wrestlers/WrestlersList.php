@@ -13,8 +13,8 @@ use Livewire\WithPagination;
 
 class WrestlersList extends Component
 {
-    use WithSorting;
     use WithPagination;
+    use WithSorting;
 
     /**
      * Determines if the filters should be shown.
