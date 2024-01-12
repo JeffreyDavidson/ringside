@@ -51,6 +51,6 @@ trait HasChampionships
      */
     public function isVacant(): bool
     {
-        return $this->currentChampionship?->champion === null;
+        return $this->currentChampionship?->currentChampion === null;
     }
 }
