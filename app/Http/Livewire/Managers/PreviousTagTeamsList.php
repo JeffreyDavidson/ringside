@@ -12,14 +12,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithPagination;
 
-/**
- * @property-read LengthAwarePaginator $rows
- * @property-read Builder $rowsQuery
- */
 class PreviousTagTeamsList extends Component
 {
-    use WithPerPagePagination;
+    use WithPagination;
     use WithSorting;
 
     /**
@@ -36,33 +33,19 @@ class PreviousTagTeamsList extends Component
     }
 
     /**
-     * Run the query for this component.
-     */
-    #[Computed]
-    public function rowsQuery(): Builder
-    {
-        $query = $this->manager
-            ->previousTagTeams();
-
-        return $this->applySorting($query);
-    }
-
-    /**
-     * Apply pagination to the component query results.
-     */
-    #[Computed]
-    public function rows(): LengthAwarePaginator
-    {
-        return $this->applyPagination($this->rowsQuery);
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function render(): View
     {
+        $query = $this->manager
+            ->previousTagTeams();
+
+        $query = $this->applySorting($query);
+
+        $previousTagTeams = $query->paginate();
+
         return view('livewire.managers.previous-tag-teams.previous-tag-teams-list', [
-            'previousTagTeams' => $this->rows,
+            'previousTagTeams' => $previousTagTeams,
         ]);
     }
 }

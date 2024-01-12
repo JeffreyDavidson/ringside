@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wrestlers;
 
-use App\Http\Livewire\Datatable\WithPerPagePagination;
 use App\Http\Livewire\Datatable\WithSorting;
 use App\Models\Wrestler;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -12,14 +11,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithPagination;
 
-/**
- * @property-read LengthAwarePaginator $rows
- * @property-read Builder $rowsQuery
- */
 class PreviousTagTeamsList extends Component
 {
-    use WithPerPagePagination;
+    use WithPagination;
     use WithSorting;
 
     /**
@@ -36,33 +32,19 @@ class PreviousTagTeamsList extends Component
     }
 
     /**
-     * Run the query for this component.
-     */
-    #[Computed]
-    public function rowsQuery(): Builder
-    {
-        $query = $this->wrestler
-            ->previousTagTeams();
-
-        return $this->applySorting($query);
-    }
-
-    /**
-     * Apply pagination to the component query results.
-     */
-    #[Computed]
-    public function rows(): LengthAwarePaginator
-    {
-        return $this->applyPagination($this->rowsQuery);
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function render(): View
     {
+        $query = $this->wrestler
+            ->previousTagTeams();
+
+        $query = $this->applySorting($query);
+
+        $previousTagTeams = $query->paginate();
+
         return view('livewire.wrestlers.previous-tag-teams.previous-tag-teams-list', [
-            'previousTagTeams' => $this->rows,
+            'previousTagTeams' => $previousTagTeams,
         ]);
     }
 }
