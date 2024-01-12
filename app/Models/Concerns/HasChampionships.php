@@ -36,8 +36,6 @@ trait HasChampionships
 
     /**
      * Retrieve the curren championship for a title.
-     *
-     * @return HasOne<TitleChampionship>
      */
     public function previousChampionship(): BelongsToOne
     {
