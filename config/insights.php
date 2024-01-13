@@ -19,6 +19,7 @@ use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\UselessFunctionDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowShortTernaryOperatorSniff;
 use SlevomatCodingStandard\Sniffs\Functions\FunctionLengthSniff;
+use SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
@@ -86,24 +87,25 @@ return [
 
     'remove' => [
         AlphabeticallySortedUsesSniff::class,
+        ClassInstantiationSniff::class,
         DeclareStrictTypesSniff::class,
         DisallowMixedTypeHintSniff::class,
+        DisallowShortTernaryOperatorSniff::class,
         ForbiddenDefineFunctions::class,
         ForbiddenNormalClasses::class,
+        ForbiddenPublicPropertySniff::class,
+        ForbiddenSetterSniff::class,
         ForbiddenTraits::class,
+        FunctionLengthSniff::class,
+        LineLengthSniff::class,
+        NewWithBracesFixer::class,
         ParameterTypeHintSniff::class,
         PropertyTypeHintSniff::class,
         ReturnTypeHintSniff::class,
-        UselessFunctionDocCommentSniff::class,
-        SuperfluousExceptionNamingSniff::class,
-        ClassInstantiationSniff::class,
-        NewWithBracesFixer::class,
-        DisallowShortTernaryOperatorSniff::class,
-        ForbiddenPublicPropertySniff::class,
-        LineLengthSniff::class,
-        FunctionLengthSniff::class,
         SideEffectsSniff::class,
-        ForbiddenSetterSniff::class,
+        SuperfluousExceptionNamingSniff::class,
+        UnusedParameterSniff::class,
+        UselessFunctionDocCommentSniff::class,
     ],
 
     'config' => [
