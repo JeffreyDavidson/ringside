@@ -120,7 +120,7 @@ return [
             ],
         ],
         LineLengthSniff::class => [
-            'lineLimit' => 120,
+            'lineLimit' => 80,
             'absoluteLineLimit' => 120,
         ],
     ],
