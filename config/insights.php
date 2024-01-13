@@ -115,7 +115,6 @@ return [
                 '@var',
                 '@template',
                 '@extends',
-                '@phpcsSuppress',
             ],
         ],
         LineLengthSniff::class => [
