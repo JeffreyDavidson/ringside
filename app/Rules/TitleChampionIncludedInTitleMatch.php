@@ -10,13 +10,14 @@ use App\Models\Wrestler;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Collection;
 
 class TitleChampionIncludedInTitleMatch implements DataAwareRule, ValidationRule
 {
     /**
      * All the data under validation.
      *
-     * @var array<string, string>
+     * @var array<string, array<string>|string>
      */
     protected array $data = [];
 
@@ -46,10 +47,15 @@ class TitleChampionIncludedInTitleMatch implements DataAwareRule, ValidationRule
         $wrestlers = Wrestler::query()->whereIn('id', $wrestlerIds)->get();
         $tagTeams = TagTeam::query()->whereIn('id', $tagTeamIds)->get();
 
-        $competitors = $wrestlers->merge($tagTeams);
+        /** @var Collection<int, Wrestler|TagTeam>  $competitors */
+        $competitors = collect();
+        $competitors->merge($wrestlers)->merge($tagTeams);
+
+        /** @var array<string> $titles */
+        $titles = $this->data['titles'];
 
         $champions = Title::with('currentChampionship.currentChampion')
-            ->findMany($this->data['titles'])
+            ->findMany($titles)
             ->reject(fn (Title $title) => $title->isVacant())
             ->every(fn (Title $title) => $competitors->contains($title->currentChampionship?->currentChampion));
 
