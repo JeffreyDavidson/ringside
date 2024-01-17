@@ -14,8 +14,6 @@ use App\Http\Requests\Events\UpdateRequest;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 
 class EventsController extends Controller
