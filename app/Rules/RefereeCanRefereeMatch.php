@@ -13,8 +13,6 @@ class RefereeCanRefereeMatch implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
-     *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
