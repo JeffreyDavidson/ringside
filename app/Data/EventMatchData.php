@@ -54,7 +54,7 @@ readonly class EventMatchData
     /**
      * Undocumented function.
      *
-     * @param  Collection<"wrestlers"|"tag_teams", array<int, Wrestler|TagTeam>>  $competitors
+     * @param  Collection<int, array<"wrestlers"|"tag_teams", Wrestler|TagTeam>>  $competitors
      * @return Collection<"wrestlers"|"tag_teams", array<int, Wrestler|TagTeam>>
      */
     private static function getCompetitors(Collection $competitors): Collection
