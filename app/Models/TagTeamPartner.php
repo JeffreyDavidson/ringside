@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class TagTeamPartner extends Pivot
 {
-
     /**
      * Get the attributes that should be cast.
      *
