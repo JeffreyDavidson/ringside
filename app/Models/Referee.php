@@ -37,15 +37,6 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'status' => RefereeStatus::class,
-    ];
-
-    /**
      * The model's default values for attributes.
      *
      * @var array<string, string>
@@ -59,6 +50,18 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
      *
      * @return RefereeBuilder<Referee>
      */
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => RefereeStatus::class,
+        ];
+    }
+
     public function newEloquentBuilder($query): RefereeBuilder // @pest-ignore-type
     {
         return new RefereeBuilder($query);

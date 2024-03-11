@@ -31,20 +31,23 @@ class Event extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'date' => 'datetime',
-        'status' => EventStatus::class,
-    ];
-
-    /**
      * Create a new Eloquent query builder for the model.
      *
      * @return EventBuilder<Event>
      */
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'date' => 'datetime',
+            'status' => EventStatus::class,
+        ];
+    }
+
     public function newEloquentBuilder($query): EventBuilder // @pest-ignore-type
     {
         return new EventBuilder($query);

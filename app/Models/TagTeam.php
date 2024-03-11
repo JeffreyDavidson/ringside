@@ -48,15 +48,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'status' => TagTeamStatus::class,
-    ];
-
-    /**
      * The model's default values for attributes.
      *
      * @var array<string, string>
@@ -70,6 +61,18 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
      *
      * @return TagTeamBuilder<TagTeam>
      */
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => TagTeamStatus::class,
+        ];
+    }
+
     public function newEloquentBuilder($query): TagTeamBuilder // @pest-ignore-type
     {
         return new TagTeamBuilder($query);
