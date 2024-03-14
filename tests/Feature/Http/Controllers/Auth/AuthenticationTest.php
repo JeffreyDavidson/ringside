@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Providers\AppServiceProvider;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 
@@ -19,7 +20,7 @@ test('users can authenticate using the login screen', function () {
     $this->post('/login', [
         'email' => $user->email,
         'password' => 'secret',
-    ])->assertRedirect(RouteServiceProvider::HOME);
+    ])->assertRedirect(AppServiceProvider::HOME);
 
     assertAuthenticated();
 });
