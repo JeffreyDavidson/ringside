@@ -21,7 +21,7 @@
                     @forelse ($wrestlers as $wrestler)
                         <x-table.row :class="$loop->odd ? 'odd' : 'even'" wire:loading.class.delay="opacity-50" wire:key="row-{{ $wrestler->id }}">
                             <x-table.cell>
-                                <x-form.inputs.checkbox wire:model="selected" value="{{ $wrestler->id }}" />
+                                <x-form.inputs.checkbox wire:model="selectedWrestlerIds" value="{{ $wrestler->id }}" />
                             </x-table.cell>
 
                             <x-table.cell>
