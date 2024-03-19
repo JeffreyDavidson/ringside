@@ -21,14 +21,6 @@ class ValidationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Validator::replacer('ends_with', static function (string $message, string $attribute, string $rule, array $parameters) {
-            $values = array_pop($parameters);
 
-            if (count($parameters)) {
-                $values = implode(', ', $parameters).' or '.$values;
-            }
-
-            return str_replace(':values', $values, $message);
-        });
     }
 }
