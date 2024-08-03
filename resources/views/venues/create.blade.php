@@ -17,9 +17,15 @@
             <x-card.header title="Create Venue Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('venues.store')">
+            <x-form :action="route('venues.store')" id="createVenueForm">
                 @include('venues.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="createVenueForm"/>
+                <x-form.buttons.submit form="createVenueForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

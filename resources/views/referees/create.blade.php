@@ -17,9 +17,15 @@
             <x-card.header title="Create Referee Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('referees.store')">
+            <x-form :action="route('referees.store')" id="createRefereeForm">
                 @include('referees.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="createRefereeForm"/>
+                <x-form.buttons.submit form="createRefereeForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

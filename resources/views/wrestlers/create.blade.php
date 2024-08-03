@@ -17,9 +17,15 @@
             <x-card.header title="Create Wrestler Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('wrestlers.store')">
+            <x-form :action="route('wrestlers.store')" id="createWrestlerForm">
                 @include('wrestlers.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="createWrestlerForm"/>
+                <x-form.buttons.submit form="createWrestlerForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

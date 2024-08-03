@@ -17,9 +17,15 @@
             <x-card.header title="Create Tag Team Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('tag-teams.store')">
+            <x-form :action="route('tag-teams.store')" id="createTagTeamForm">
                 @include('tag-teams.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="createTagTeamForm"/>
+                <x-form.buttons.submit form="createTagTeamForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

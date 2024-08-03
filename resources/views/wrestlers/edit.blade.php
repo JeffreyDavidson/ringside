@@ -19,10 +19,16 @@
             <x-card.header title="Edit Wrestler Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('wrestlers.update', $wrestler)">
+            <x-form :action="route('wrestlers.update', $wrestler)" id="createWrestlerForm">
                 @method('PATCH')
                 @include('wrestlers.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="editWrestlerForm"/>
+                <x-form.buttons.submit form="editWrestlerForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

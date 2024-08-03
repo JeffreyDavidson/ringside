@@ -19,10 +19,16 @@
             <x-card.header title="Edit Tag Team Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('tag-teams.update', $tagTeam)">
+            <x-form :action="route('tag-teams.update', $tagTeam)" id="editTagTeamForm">
                 @method('PATCH')
                 @include('tag-teams.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="editTagTeamForm"/>
+                <x-form.buttons.submit form="editTagTeamForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

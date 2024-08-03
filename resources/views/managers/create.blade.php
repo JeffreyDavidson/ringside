@@ -17,9 +17,15 @@
             <x-card.header title="Create Manager Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('managers.store')">
+            <x-form :action="route('managers.store')" id="createManagerForm">
                 @include('managers.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="createManagerForm"/>
+                <x-form.buttons.submit form="createManagerForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>

@@ -19,10 +19,16 @@
             <x-card.header title="Edit Title Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('titles.update', $title)">
+            <x-form :action="route('titles.update', $title)" id="editTitleForm">
                 @method('PATCH')
                 @include('titles.partials.form')
             </x-form>
         </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="editTitleForm"/>
+                <x-form.buttons.submit form="editTitleForm"/>
+            </x-card.footer>
+        </x-slot>
     </x-card>
 </x-layouts.app>
