@@ -13,5 +13,3 @@
         :value="old('activation_date', $title->activated_at?->format('Y-m-d'))"
     />
 </div>
-
-<x-form.footer />
