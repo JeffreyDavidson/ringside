@@ -19,7 +19,7 @@
             <x-card.header title="Edit Wrestler Form" />
         </x-slot>
         <x-card.body>
-            <x-form :action="route('wrestlers.update', $wrestler)" id="createWrestlerForm">
+            <x-form :action="route('wrestlers.update', $wrestler)" id="editWrestlerForm">
                 @method('PATCH')
                 @include('wrestlers.partials.form')
             </x-form>
