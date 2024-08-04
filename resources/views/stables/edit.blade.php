@@ -14,34 +14,20 @@
         </x-toolbar>
     </x-slot>
 
-    <div class="shadow-sm card">
-        <div class="card-header">
-            <h3 class="card-title">Edit Stable Form</h3>
-        </div>
-        <div class="card-body">
-            <form method="post" action="{{ route('stables.update', $stable) }}">
-                @method('patch')
-                @csrf
-                <div class="mb-10">
-                    <x-form.inputs.text
-                        label="Name:"
-                        name="name"
-                        placeholder="Stable Name Here"
-                        :value="old('name', $stable->name)"
-                    />
-                </div>
-                <div class="mb-10">
-                    <x-form.inputs.date
-                        label="Start Date:"
-                        name="start_date"
-                        :value="old('start_date', $stable->started_at?->format('Y-m-d'))"
-                    />
-                </div>
-        </div>
-        <div class="card-footer">
-            <x-form.buttons.submit />
-            <x-form.buttons.reset />
-        </div>
-        </form>
-    </div>
+    <x-card>
+        <x-slot name="header">
+            <x-card.header title="Edit Stable Form" />
+        </x-slot>
+        <x-card.body>
+            <x-form :action="route('stables.update', $stable)" id="editStableForm">
+                @include('stables.partials.form')
+            </x-form>
+        </x-card.body>
+        <x-slot name="footer">
+            <x-card.footer>
+                <x-form.buttons.reset form="editStableForm"/>
+                <x-form.buttons.submit form="editStableForm"/>
+            </x-card.footer>
+        </x-slot>
+    </x-card>
 </x-layouts.app>
