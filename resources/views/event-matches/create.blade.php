@@ -1,6 +1,5 @@
 <x-layouts.app>
     <x-slot name="toolbar">
-
         <x-toolbar>
             <x-page-heading>Event Matches</x-page-heading>
             <x-breadcrumbs.list>
