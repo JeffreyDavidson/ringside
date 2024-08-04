@@ -13,19 +13,19 @@
     </x-slot>
 
     <x-card>
-        <x-slot name="header">
-            <x-card.header title="Create Venue Form" />
-        </x-slot>
+        <x-card.header>
+            <x-card.title class="m-0">
+                <x-card.heading>Create Venue Form</x-card.heading>
+            </x-card.title>
+        </x-card.header>
         <x-card.body>
             <x-form :action="route('venues.store')" id="createVenueForm">
                 @include('venues.partials.form')
             </x-form>
         </x-card.body>
-        <x-slot name="footer">
-            <x-card.footer>
-                <x-form.buttons.reset form="createVenueForm"/>
-                <x-form.buttons.submit form="createVenueForm"/>
-            </x-card.footer>
-        </x-slot>
+        <x-card.footer>
+            <x-form.buttons.reset form="createVenueForm"/>
+            <x-form.buttons.submit form="createVenueForm"/>
+        </x-card.footer>
     </x-card>
 </x-layouts.app>

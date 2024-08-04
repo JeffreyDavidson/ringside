@@ -15,20 +15,20 @@
     </x-slot>
 
     <x-card>
-        <x-slot name="header">
-            <x-card.header title="Edit Wrestler Form" />
-        </x-slot>
+        <x-card.header>
+            <x-card.title class="m-0">
+                <x-card.heading>Edit Wrestler Form</x-card.heading>
+            </x-card.title>
+        </x-card.header>
         <x-card.body>
             <x-form :action="route('wrestlers.update', $wrestler)" id="editWrestlerForm">
                 @method('PATCH')
                 @include('wrestlers.partials.form')
             </x-form>
         </x-card.body>
-        <x-slot name="footer">
-            <x-card.footer>
-                <x-form.buttons.reset form="editWrestlerForm"/>
-                <x-form.buttons.submit form="editWrestlerForm"/>
-            </x-card.footer>
-        </x-slot>
+        <x-card.footer>
+            <x-form.buttons.reset form="editWrestlerForm"/>
+            <x-form.buttons.submit form="editWrestlerForm"/>
+        </x-card.footer>
     </x-card>
 </x-layouts.app>

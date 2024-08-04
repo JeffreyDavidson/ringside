@@ -13,19 +13,19 @@
     </x-slot>
 
     <x-card>
-        <x-slot name="header">
-            <x-card.header title="Create Referee Form" />
-        </x-slot>
+        <x-card.header>
+            <x-card.title class="m-0">
+                <x-card.heading>Create Referee Form</x-card.heading>
+            </x-card.title>
+        </x-card.header>
         <x-card.body>
             <x-form :action="route('referees.store')" id="createRefereeForm">
                 @include('referees.partials.form')
             </x-form>
         </x-card.body>
-        <x-slot name="footer">
-            <x-card.footer>
-                <x-form.buttons.reset form="createRefereeForm"/>
-                <x-form.buttons.submit form="createRefereeForm"/>
-            </x-card.footer>
-        </x-slot>
+        <x-card.footer>
+            <x-form.buttons.reset form="createRefereeForm"/>
+            <x-form.buttons.submit form="createRefereeForm"/>
+        </x-card.footer>
     </x-card>
 </x-layouts.app>

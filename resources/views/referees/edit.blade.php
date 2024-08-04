@@ -15,20 +15,20 @@
     </x-slot>
 
     <x-card>
-        <x-slot name="header">
-            <x-card.header title="Edit Referee Form" />
-        </x-slot>
+        <x-card.header>
+            <x-card.title class="m-0">
+                <x-card.heading>Edit Referee Form</x-card.heading>
+            </x-card.title>
+        </x-card.header>
         <x-card.body>
             <x-form :action="route('referees.update', $referee)" id="editRefereeForm">
                 @method('PATCH')
                 @include('referees.partials.form')
             </x-form>
         </x-card.body>
-        <x-slot name="footer">
-            <x-card.footer>
-                <x-form.buttons.reset form="editRefereeForm"/>
-                <x-form.buttons.submit form="editRefereeForm"/>
-            </x-card.footer>
-        </x-slot>
+        <x-card.footer>
+            <x-form.buttons.reset form="editRefereeForm"/>
+            <x-form.buttons.submit form="editRefereeForm"/>
+        </x-card.footer>
     </x-card>
 </x-layouts.app>
