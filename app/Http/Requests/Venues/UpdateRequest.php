@@ -46,7 +46,7 @@ class UpdateRequest extends FormRequest
             'street_address' => ['required', 'string', 'min:3'],
             'city' => ['required', 'string', 'min:3'],
             'state' => ['required', 'string'],
-            'zip' => ['required', 'integer', 'digits:5'],
+            'zipcode' => ['required', 'integer', 'digits:5'],
         ];
     }
 
@@ -60,7 +60,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => 'venue name',
             'street_address' => 'street address',
-            'zip' => 'zip code',
+            'zipcode' => 'zip code',
         ];
     }
 }

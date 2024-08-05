@@ -31,7 +31,7 @@
                             <x-table.cell>{{ $venue->street_address }}</x-table.cell>
                             <x-table.cell>{{ $venue->city }}</x-table.cell>
                             <x-table.cell>{{ $venue->state }}</x-table.cell>
-                            <x-table.cell>{{ $venue->zip }}</x-table.cell>
+                            <x-table.cell>{{ $venue->zipcode }}</x-table.cell>
                             <x-table.cell class="text-end">
                                 @include('livewire.venues.partials.action-cell')
                             </x-table.cell>

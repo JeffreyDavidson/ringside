@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-lg-4">
-            <x-form.inputs.text label="Zip:" name="zip" placeholder="12345" :value="old('zip', $venue->zip)"/>
+            <x-form.inputs.text label="Zip Code:" name="zipcode" placeholder="12345" :value="old('zipcode', $venue->zipcode)"/>
         </div>
     </div>
 </div>
