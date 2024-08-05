@@ -49,7 +49,6 @@ class StoreRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'venue name',
             'street_address' => 'street address',
             'zipcode' => 'zip code',
         ];
