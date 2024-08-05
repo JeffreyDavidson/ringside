@@ -25,5 +25,3 @@
         :value="old('start_date', $manager->started_at?->format('Y-m-d'))"
     />
 </div>
-
-<x-form.footer />
