@@ -36,7 +36,7 @@ class StoreRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', 'unique:App\Models\Venue,name'],
             'street_address' => ['required', 'string', 'min:3'],
             'city' => ['required', 'string', 'min:3'],
-            'state' => ['required', 'string'],
+            'state' => ['required', 'string', 'exists:App\Models\State,name'],
             'zipcode' => ['required', 'integer', 'digits:5'],
         ];
     }
