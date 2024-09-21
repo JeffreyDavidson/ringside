@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Titles;
 
 use App\Builders\TitleBuilder;
-use App\Http\Livewire\Datatable\WithSorting;
+use App\Livewire\Datatable\WithSorting;
 use App\Models\Title;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;

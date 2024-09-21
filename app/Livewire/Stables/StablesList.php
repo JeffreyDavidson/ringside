@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Stables;
 
 use App\Builders\StableBuilder;
-use App\Http\Livewire\Datatable\WithSorting;
+use App\Livewire\Datatable\WithSorting;
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;

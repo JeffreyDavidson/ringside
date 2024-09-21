@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Events;
 
 use App\Builders\EventBuilder;
-use App\Http\Livewire\Datatable\WithSorting;
+use App\Livewire\Datatable\WithSorting;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;

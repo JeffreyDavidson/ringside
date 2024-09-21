@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Venues;
 
-use App\Http\Livewire\Datatable\WithSorting;
+use App\Livewire\Datatable\WithSorting;
 use App\Models\Venue;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;

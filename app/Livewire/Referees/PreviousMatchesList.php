@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Referees;
 
-use App\Http\Livewire\Datatable\WithSorting;
+use App\Livewire\Datatable\WithSorting;
 use App\Models\Referee;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
