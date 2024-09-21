@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Managers\ManagersList;
+use App\Livewire\Managers\ManagersList;
 use Livewire\Livewire;
 
 test('it should return correct view', function () {

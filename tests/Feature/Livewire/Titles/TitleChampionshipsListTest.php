@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Titles\TitleChampionshipsList;
+use App\Livewire\Titles\TitleChampionshipsList;
 
 use function Pest\Livewire\livewire;
 

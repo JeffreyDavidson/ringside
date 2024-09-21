@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Events\EventsList;
+use App\Livewire\Events\EventsList;
 use Livewire\Livewire;
 
 test('it should return correct view', function () {

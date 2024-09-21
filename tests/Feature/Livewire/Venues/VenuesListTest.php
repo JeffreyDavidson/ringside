@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Venues\VenuesList;
+use App\Livewire\Venues\VenuesList;
 use Livewire\Livewire;
 
 test('it should return correct view', function () {

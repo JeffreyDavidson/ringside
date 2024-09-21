@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Stables\StablesList;
+use App\Livewire\Stables\StablesList;
 use Livewire\Livewire;
 
 test('it should return correct view', function () {

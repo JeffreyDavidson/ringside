@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Events\DeletedEventsList;
+use App\Livewire\Events\DeletedEventsList;
 use Livewire\Livewire;
 
 test('it should return correct view', function () {

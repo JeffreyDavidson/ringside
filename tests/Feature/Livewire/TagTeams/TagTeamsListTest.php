@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\TagTeams\TagTeamsList;
+use App\Livewire\TagTeams\TagTeamsList;
 use Livewire\Livewire;
 
 test('it should return correct view', function () {

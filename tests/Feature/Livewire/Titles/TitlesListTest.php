@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Titles\TitlesList;
+use App\Livewire\Titles\TitlesList;
 
 use function Pest\Livewire\livewire;
 
