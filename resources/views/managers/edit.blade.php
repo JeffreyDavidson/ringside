@@ -9,7 +9,7 @@
             <x-card.body>
                 <x-form :action="route('managers.update', $manager)" id="editManagerForm">
                     @method('PATCH')
-                    @include('managers.partials.form')
+                    <x-managers.form :$manager />
                 </x-form>
             </x-card.body>
             <x-card.footer>

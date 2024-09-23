@@ -9,7 +9,7 @@
             <x-card.body>
                 <x-form :action="route('wrestlers.update', $wrestler)" id="editWrestlerForm">
                     @method('PATCH')
-                    @include('wrestlers.partials.form')
+                    <x-wrestlers.form :$wrestler />
                 </x-form>
             </x-card.body>
             <x-card.footer>

@@ -8,7 +8,7 @@
             </x-card.header>
             <x-card.body>
                 <x-form :action="route('tag-teams.store')" id="createTagTeamForm">
-                    @include('tag-teams.partials.form')
+                    <x-tag-teams.form :$tagTeam :$wrestlers />
                 </x-form>
             </x-card.body>
             <x-card.footer>

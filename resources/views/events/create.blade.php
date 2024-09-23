@@ -8,7 +8,7 @@
             </x-card.header>
             <x-card.body>
                 <x-form :action="route('events.store')" id="createEventForm">
-                    @include('events.partials.form')
+                    <x-events.form :$event :$venues />
                 </x-form>
             </x-card.body>
             <x-card.footer>

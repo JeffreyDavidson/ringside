@@ -8,7 +8,7 @@
             </x-card.header>
             <x-card.body>
                 <x-form :action="route('managers.store')" id="createManagerForm">
-                    @include('managers.partials.form')
+                    <x-managers.form :$manager />
                 </x-form>
             </x-card.body>
             <x-card.footer>

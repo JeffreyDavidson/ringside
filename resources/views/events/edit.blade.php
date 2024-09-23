@@ -9,7 +9,7 @@
             <x-card.body>
                 <x-form :action="route('events.store')" id="editEventForm">
                     @method('PATCH')
-                    @include('events.partials.form')
+                    <x-events.form :$event :$venues />
                 </x-form>
             </x-card.body>
             <x-card.footer>

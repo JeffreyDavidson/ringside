@@ -8,7 +8,7 @@
             </x-card.header>
             <x-card.body>
                 <x-form :action="route('stables.store')" id="createStableForm">
-                    @include('stables.partials.form')
+                    <x-stables.form :$stable :$wrestlers :$tagTeams :$managers />
                 </x-form>
             </x-card.body>
             <x-card.footer>

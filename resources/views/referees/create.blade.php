@@ -8,7 +8,7 @@
             </x-card.header>
             <x-card.body>
                 <x-form :action="route('referees.store')" id="createRefereeForm">
-                    @include('referees.partials.form')
+                    <x-referees.form :$referee />
                 </x-form>
             </x-card.body>
             <x-card.footer>
