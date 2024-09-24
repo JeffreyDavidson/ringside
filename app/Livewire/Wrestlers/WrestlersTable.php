@@ -60,7 +60,7 @@ class WrestlersTable extends DataTableComponent
                             'deleteLink' => route('wrestlers.destroy', $row),
                         ]
                     )
-                )->html()
+                )->html(),
         ];
     }
 
@@ -75,7 +75,7 @@ class WrestlersTable extends DataTableComponent
                 ->options(['' => 'Select One', 1 => 'Testing'])
                 ->filter(function (Builder $builder, string $value) {
                     $builder->where('status', $value);
-                })
+                }),
         ];
     }
 }
