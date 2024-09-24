@@ -10,14 +10,15 @@ use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class WrestlersTable extends DataTableComponent
 {
     public function builder(): WrestlerBuilder
     {
-        return Wrestler::query();
+        return Wrestler::query()->with('employments:id,started_at')->withWhereHas('employments', function ($query) {
+            $query->where('started_at', '<=', now())->whereNull('ended_at')->limit(1);
+        });
     }
 
     public function bulkActions(): array
@@ -48,8 +49,8 @@ class WrestlersTable extends DataTableComponent
             Column::make('Height'),
             Column::make('Weight'),
             Column::make('Hometown'),
-            // DateColumn::make('Start Date', 'currentEmployment.started_at')
-            //     ->eagerLoadRelations(),
+            Column::make('Start Date')
+                ->label(fn ($row, Column $column) => $row->employments->first()->started_at->format('Y-m-d')),
             Column::make('Action')
                 ->label(
                     fn ($row, Column $column) => view('components.livewire.datatables.action-column')->with(
@@ -59,7 +60,7 @@ class WrestlersTable extends DataTableComponent
                             'deleteLink' => route('wrestlers.destroy', $row),
                         ]
                     )
-                )->html(),
+                )->html()
         ];
     }
 
