@@ -16,7 +16,8 @@ module.exports = {
         "./vendor/rappasoft/laravel-livewire-tables/resources/views/*.blade.php",
         "./vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php",
         "./app/Livewire/*.php",
-        "./app/Livewire/**/*.php",    ],
+        "./app/Livewire/**/*.php",    
+    ],
     safelist: [
         {
             pattern: /max-w-(sm|md|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|full)/,

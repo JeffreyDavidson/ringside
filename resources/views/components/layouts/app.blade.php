@@ -12,7 +12,8 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" />
     @vite('resources/vendors/keenicons/styles.bundle.css')
-    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
+
     @livewireStyles
 </head>
 
@@ -66,8 +67,7 @@
     <!-- End of Main -->
     <x-modal.search />
     <!-- End of Page -->
-    @vite('resources/js/app.js')
-    @livewireScripts
+    @livewireScriptConfig 
 </body>
 
 </html>
