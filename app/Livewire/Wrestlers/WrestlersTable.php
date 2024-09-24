@@ -17,10 +17,7 @@ class WrestlersTable extends DataTableComponent
 {
     public function builder(): WrestlerBuilder
     {
-        return Wrestler::query()
-            ->with('currentEmployment')
-            ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
-        ;
+        return Wrestler::query();
     }
 
     public function bulkActions(): array
@@ -35,7 +32,7 @@ class WrestlersTable extends DataTableComponent
         $this->setPrimaryKey('id')
             ->setSearchPlaceholder('search wrestlers')
             ->setColumnSelectDisabled()
-            ->filtersAreEnabled();
+            ->setPaginationEnabled();
     }
 
     public function columns(): array
@@ -51,8 +48,8 @@ class WrestlersTable extends DataTableComponent
             Column::make('Height'),
             Column::make('Weight'),
             Column::make('Hometown'),
-            DateColumn::make('Start Date', 'currentEmployment.started_at')
-                ->eagerLoadRelations(),
+            // DateColumn::make('Start Date', 'currentEmployment.started_at')
+            //     ->eagerLoadRelations(),
             Column::make('Action')
                 ->label(
                     fn ($row, Column $column) => view('components.livewire.datatables.action-column')->with(
@@ -74,7 +71,10 @@ class WrestlersTable extends DataTableComponent
 
         return [
             SelectFilter::make('Status', 'testing')
-                ->options([1 => 'Testing'])
+                ->options(['' => 'Select One', 1 => 'Testing'])
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('status', $value);
+                })
         ];
     }
 }
