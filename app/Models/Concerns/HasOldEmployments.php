@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
-trait HasEmployments
+trait HasOldEmployments
 {
     /**
      * Get all the employments of the model.
