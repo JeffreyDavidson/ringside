@@ -18,7 +18,7 @@ trait HasNewEmployments
 
     public function getLatestCurrentEmploymentStartDate()
     {
-        return !is_null($this->latestCurrentEmployment) ? $this->latestCurrentEmployment->started_at->format('Y-m-d') : 'N/A';
+        return ! is_null($this->latestCurrentEmployment) ? $this->latestCurrentEmployment->started_at->format('Y-m-d') : 'N/A';
     }
 
     public function latestEmployment()
@@ -28,7 +28,7 @@ trait HasNewEmployments
 
     public function getLatestEmploymentStartDate()
     {
-        return !is_null($this->latestEmployment) ? $this->latestEmployment->started_at->format('Y-m-d') : 'N/A';
+        return ! is_null($this->latestEmployment) ? $this->latestEmployment->started_at->format('Y-m-d') : 'N/A';
     }
 
     public function earliestEmployment()
@@ -38,6 +38,6 @@ trait HasNewEmployments
 
     public function getEarliestEmploymentStartDate()
     {
-        return !is_null($this->earliestEmployment) ? $this->earliestEmployment->started_at->format('Y-m-d') : 'N/A';
+        return ! is_null($this->earliestEmployment) ? $this->earliestEmployment->started_at->format('Y-m-d') : 'N/A';
     }
 }
