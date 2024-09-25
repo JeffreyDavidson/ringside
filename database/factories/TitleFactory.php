@@ -76,18 +76,4 @@ class TitleFactory extends Factory
             'championships'
         );
     }
-
-    public function nonActive(): static
-    {
-        return $this->state(function () {
-            return [
-                'status' => fake()->randomElement([
-                    TitleStatus::Inactive,
-                    TitleStatus::Retired,
-                    TitleStatus::FutureActivation,
-                    TitleStatus::Unactivated,
-                ]),
-            ];
-        });
-    }
 }
