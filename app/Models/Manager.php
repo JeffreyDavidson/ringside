@@ -11,15 +11,17 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\ManagerEmployment;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
 {
     use Concerns\CanJoinStables;
-    use Concerns\HasEmployments;
+    use Concerns\HasNewEmployments;
     use Concerns\HasInjuries;
     use Concerns\HasRetirements;
     use Concerns\HasSuspensions;
@@ -57,6 +59,16 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     public function newEloquentBuilder($query): ManagerBuilder // @pest-ignore-type
     {
         return new ManagerBuilder($query);
+    }
+
+    /**
+     * Get all the employments of the model.
+     *
+     * @return HasMany<ManagerEmployment>
+     */
+    public function employments(): HasMany
+    {
+        return $this->hasMany(ManagerEmployment::class);
     }
 
     /**

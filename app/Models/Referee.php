@@ -10,15 +10,17 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\RefereeEmployment;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable
 {
-    use Concerns\HasEmployments;
+    use Concerns\HasNewEmployments;
     use Concerns\HasInjuries;
     use Concerns\HasRetirements;
     use Concerns\HasSuspensions;
@@ -53,6 +55,16 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     public function newEloquentBuilder($query): RefereeBuilder // @pest-ignore-type
     {
         return new RefereeBuilder($query);
+    }
+
+    /**
+     * Get all the employments of the model.
+     *
+     * @return HasMany<RefereeEmployment>
+     */
+    public function employments(): HasMany
+    {
+        return $this->hasMany(RefereeEmployment::class);
     }
 
     /**
