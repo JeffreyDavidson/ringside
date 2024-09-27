@@ -7,20 +7,23 @@ namespace App\Livewire\Wrestlers;
 use App\Builders\WrestlerBuilder;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Wrestler;
+use Illuminate\Support\Facades\Gate;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Actions\Action;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class WrestlersTable extends DataTableComponent
 {
     use BaseTableTrait;
 
-    protected string $databaseTableName = 'wrestlers';
+    protected string $databaseTableName = "wrestlers";
 
     protected string $routeBasePath = 'wrestlers';
-
     protected array $actionLinksToDisplay = ['view' => true, 'edit' => true, 'delete' => true];
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     public function builder(): WrestlerBuilder
     {
@@ -28,6 +31,16 @@ class WrestlersTable extends DataTableComponent
             ->with('employments:id,started_at')->withWhereHas('employments', function ($query) {
                 $query->where('started_at', '<=', now())->whereNull('ended_at')->limit(1);
             });
+    }
+
+    public function delete(Wrestler $model)
+    {
+        try {
+            Gate::authorize('delete', $model);
+            $model->delete();
+        } catch (\Exception $exception) {
+            report($exception);
+        }
     }
 
     public function columns(): array
@@ -53,6 +66,15 @@ class WrestlersTable extends DataTableComponent
                         ]
                     )
                 )->html(),
+        ];
+    }
+
+    public function actions(): array
+    {
+        return [
+            Action::make('Create')
+                ->setWireAction("wire:click")
+                ->setWireActionDispatchParams("'openModal', { component: 'wrestlers.wrestler-modal' }"),
         ];
     }
 }
