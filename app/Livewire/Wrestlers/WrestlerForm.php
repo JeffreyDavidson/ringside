@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace App\Livewire\Wrestlers;
 
 use Livewire\Attributes\Validate;
@@ -29,6 +30,6 @@ class WrestlerForm extends Form
 
     public function getHeight()
     {
-        return ($this->height_feet*12)+$this->height_inches;
+        return ($this->height_feet * 12) + $this->height_inches;
     }
 }

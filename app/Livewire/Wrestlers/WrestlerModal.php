@@ -11,6 +11,7 @@ use LivewireUI\Modal\ModalComponent;
 class WrestlerModal extends ModalComponent
 {
     public ?Wrestler $wrestler;
+
     public WrestlerForm $form;
 
     public function mount()
@@ -37,7 +38,7 @@ class WrestlerModal extends ModalComponent
             $this->wrestler->save();
         } else {
             Gate::authorize('create', Wrestler::class);
-            $this->wrestler = new Wrestler();
+            $this->wrestler = new Wrestler;
             $this->wrestler->fill($this->form->validate());
             $this->wrestler->height = $this->form->getHeight();
             $this->wrestler->save();
