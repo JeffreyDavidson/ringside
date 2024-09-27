@@ -8,7 +8,8 @@
     </div>
     <div>
         <div class="mb-10">
-            <x-form.inputs.text label="Name:" name="name" placeholder="Wrestler Name Here" wire:model="form.name" />
+            <x-form.inputs.text label="Name:" name="name" placeholder="Wrestler Name Here"
+                wire:model.live="form.name" />
         </div>
 
         <div class="mb-10">
