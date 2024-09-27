@@ -43,6 +43,10 @@ class WrestlerModal extends ModalComponent
             $this->wrestler->height = $this->form->getHeight();
             $this->wrestler->save();
         }
+
+        $this->dispatch('refreshDatatable');
+
+        $this->closeModal();
     }
 
     public function render()
