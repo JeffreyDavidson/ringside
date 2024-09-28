@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6afbaf2b1890ee70b0e5088fc2a82346",
+    "content-hash": "5f5d4cead1c5b58e5a669b3f53687207",
     "packages": [
         {
             "name": "ankurk91/laravel-eloquent-relationships",
@@ -3658,12 +3658,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rappasoft/laravel-livewire-tables.git",
-                "reference": "566a039e0e437fc292a874efe21bb6291a6f89f8"
+                "reference": "9a8436f5fbd7fb85cc56346fdf09ea945457c94b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/566a039e0e437fc292a874efe21bb6291a6f89f8",
-                "reference": "566a039e0e437fc292a874efe21bb6291a6f89f8",
+                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/9a8436f5fbd7fb85cc56346fdf09ea945457c94b",
+                "reference": "9a8436f5fbd7fb85cc56346fdf09ea945457c94b",
                 "shasum": ""
             },
             "require": {
@@ -3731,7 +3731,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-25T05:36:45+00:00"
+            "time": "2024-09-27T04:14:05+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
