@@ -1,13 +1,6 @@
-<label class="form-label" for="{{ $name }}">{{ $label }}</label>
+@props(['name' => $attributes->whereStartsWith('wire:model')->first(), 'label'])
 
-<input
-    type="text"
-    class="form-control"
-    name="{{ $name }}"
-    :placeholder="$label ?? Enter {{ $label }} : null"
-    value="{{ $value ?? null }}"
->
-
-@error($name)
-    <x-form.validation-error name="{{ $name }}" :message="$message" />
-@enderror
+<x-form.wrapper :$name :$label>
+    <input name="{{ $name }}" type="text"
+        {{ $attributes->merge(['class' => 'form-control', 'placeholder' => 'Enter ' . ($label ?? 'Value')]) }} />
+</x-form.wrapper>
