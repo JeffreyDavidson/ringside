@@ -25,9 +25,6 @@ class WrestlerForm extends Form
     #[Validate('required|min:1')]
     public $signature_move = '';
 
-    #[Validate('required|min:1')]
-    public $status = '';
-
     public function getHeight()
     {
         return ($this->height_feet * 12) + $this->height_inches;
