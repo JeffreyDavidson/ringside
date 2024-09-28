@@ -1064,7 +1064,7 @@
                                 <div class="flex items-center gap-2.5">
                                     <div class="card shadow-none flex flex-col gap-3.5 bg-light-active w-40">
                                         <div class="bg-cover bg-no-repeat card-rounded-t shrink-0 h-24"
-                                            style="background-image: url('assets/media/images/600x600/6.jpg')">
+                                            style="background-image: url("{{ asset('assets/media/images/600x600/6.jpg') }}">
                                         </div>
                                         <div class="px-2.5 pb-2">
                                             <a class="font-medium block text-gray-700 hover:text-primary text-xs leading-4 mb-0.5"
@@ -1081,7 +1081,7 @@
                                     </div>
                                     <div class="card shadow-none flex flex-col gap-3.5 bg-light-active w-40">
                                         <div class="bg-cover bg-no-repeat card-rounded-t shrink-0 h-24"
-                                            style="background-image: url('assets/media/images/600x600/1.jpg')">
+                                            style="background-image: url({{ asset('assets/media/images/600x600/1.jpg') }})">
                                         </div>
                                         <div class="px-2.5 pb-2">
                                             <a class="font-medium block text-gray-700 hover:text-primary text-xs leading-4 mb-0.5"
