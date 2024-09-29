@@ -17,6 +17,8 @@
         </div>
     </x-container-fixed>
     <x-container-fixed>
-        <livewire:wrestlers.wrestlers-table />
+        <div class="card-body">
+            <livewire:wrestlers.wrestlers-table />
+        </div>
     </x-container-fixed>
 </x-layouts.app>
