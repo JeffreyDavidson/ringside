@@ -93,7 +93,7 @@ class WrestlersTable extends DataTableComponent
     public function actions(): array
     {
         return [
-            Action::make('Create')->setWireAction("wire:click")->setWireActionDispatchParams("'openModal', { component: '".$this->modalPath."' }")
+            Action::make('Create')->setWireAction('wire:click')->setWireActionDispatchParams("'openModal', { component: '".$this->modalPath."' }"),
         ];
     }
 }
