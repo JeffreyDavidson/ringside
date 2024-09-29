@@ -9,6 +9,7 @@ use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Wrestler;
 use Illuminate\Support\Facades\Gate;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Actions\Action;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class WrestlersTable extends DataTableComponent
@@ -18,6 +19,8 @@ class WrestlersTable extends DataTableComponent
     protected string $databaseTableName = 'wrestlers';
 
     protected string $routeBasePath = 'wrestlers';
+
+    protected string $modalPath = 'wrestlers.wrestler-modal';
 
     protected array $actionLinksToDisplay = ['view' => true, 'edit' => true, 'delete' => true];
 
@@ -84,6 +87,13 @@ class WrestlersTable extends DataTableComponent
                         ]
                     )
                 )->html(),
+        ];
+    }
+
+    public function actions(): array
+    {
+        return [
+            Action::make('Create')->setWireAction("wire:click")->setWireActionDispatchParams("'openModal', { component: '".$this->modalPath."' }")
         ];
     }
 }

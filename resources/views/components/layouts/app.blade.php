@@ -65,7 +65,6 @@
         <!-- End of Wrapper -->
     </div>
     <!-- End of Main -->
-    <x-modal.search />
     <!-- End of Page -->
     @livewireScriptConfig
     @livewire('wire-elements-modal')
