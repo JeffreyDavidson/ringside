@@ -42,12 +42,12 @@ class WrestlersTable extends DataTableComponent
 
         $this->setComponentWrapperAttributes([
             'class' => 'card card-grid min-w-full',
-            'default' => false
+            'default' => false,
         ]);
 
         $this->setTableWrapperAttributes([
             'class' => 'scrollable-x-auto',
-            'default' => false
+            'default' => false,
         ]);
 
         $this->setPaginationWrapperAttributes([
