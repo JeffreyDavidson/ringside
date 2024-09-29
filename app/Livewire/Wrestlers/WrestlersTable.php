@@ -36,15 +36,39 @@ class WrestlersTable extends DataTableComponent
             return [];
         });
 
-        $this->setTdAttributes(function (Column $column) {
-            if ($column->getTitle() === __('core.actions')) {
-                return [
-                    'class' => 'text-center',
-                    'default' => false,
-                ];
-            }
+        $this->setConfigurableAreas([
+            'before-wrapper' => 'wrestlers.table-pre',
+        ]);
 
-            return [];
+        $this->setComponentWrapperAttributes([
+            'class' => 'card card-grid min-w-full',
+            'default' => false
+        ]);
+
+        $this->setTableWrapperAttributes([
+            'class' => 'scrollable-x-auto',
+            'default' => false
+        ]);
+
+        $this->setPaginationWrapperAttributes([
+            'class' => 'card-body database-initialized',
+        ]);
+
+        $this->setTableAttributes([
+            'class' => 'table table-auto table-border',
+            'default' => false,
+        ]);
+
+        $this->setTheadAttributes([
+            'default' => false,
+        ]);
+
+        $this->setTbodyAttributes([
+            'default' => false,
+        ]);
+
+        $this->setTrAttributes(function ($row, $index) {
+            return ['default' => false];
         });
     }
 
@@ -67,6 +91,7 @@ class WrestlersTable extends DataTableComponent
     public function columns(): array
     {
         return [
+            Column::make(__('wrestlers.height')),
             Column::make(__('wrestlers.name'), 'name')
                 ->sortable()
                 ->searchable(),
