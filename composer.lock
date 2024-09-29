@@ -3658,12 +3658,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rappasoft/laravel-livewire-tables.git",
-                "reference": "9a8436f5fbd7fb85cc56346fdf09ea945457c94b"
+                "reference": "a7b1579253488cc1d9c37140a69ae34f8d242db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/9a8436f5fbd7fb85cc56346fdf09ea945457c94b",
-                "reference": "9a8436f5fbd7fb85cc56346fdf09ea945457c94b",
+                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/a7b1579253488cc1d9c37140a69ae34f8d242db3",
+                "reference": "a7b1579253488cc1d9c37140a69ae34f8d242db3",
                 "shasum": ""
             },
             "require": {
@@ -3731,7 +3731,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-27T04:14:05+00:00"
+            "time": "2024-09-29T03:00:22+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
