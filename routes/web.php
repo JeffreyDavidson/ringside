@@ -20,6 +20,7 @@ Route::middleware(['auth'])->prefix('roster')->group(function () {
     Route::group([], __DIR__.'/web/managers.php');
     Route::group([], __DIR__.'/web/referees.php');
     Route::group([], __DIR__.'/web/tagteams.php');
+    Route::get('/wrestlers22', App\Livewire\Wrestlers\WrestlersTable::class)->name('wrestlers22');
 });
 
 Route::middleware(['auth'])->group(function () {
