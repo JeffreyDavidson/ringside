@@ -9,48 +9,58 @@
     ];
 @endphp
 
-<div class="card-body">
-    <div class="database-initialized">
-        <div wire:key="{{ $tableName }}-twrap"
-            {{ $attributes->merge($customAttributes['wrapper'])->class([
-                    'scrollable-x-auto' => $customAttributes['wrapper']['default'] ?? true,
-                ])->except('default') }}>
-            <table class="table table-auto table-border" wire:key="{{ $tableName }}-table"
-                {{ $attributes->merge($customAttributes['table'])->except('default') }}>
-                <thead wire:key="{{ $tableName }}-thead"
-                    {{ $attributes->merge($customAttributes['thead'])->except('default') }}>
-                    <tr>
-                        {{ $thead }}
-                    </tr>
-                </thead>
+@if ($isTailwind)
+    <div wire:key="{{ $tableName }}-twrap"
+        {{ $attributes->merge($customAttributes['wrapper'])->class([
+                'shadow overflow-y-auto border-b border-gray-200 dark:border-gray-700 sm:rounded-lg' =>
+                    $customAttributes['wrapper']['default'] ?? true,
+            ])->except(['default', 'default-styling', 'default-colors']) }}>
+        <table wire:key="{{ $tableName }}-table"
+            {{ $attributes->merge($customAttributes['table'])->class(['min-w-full divide-y divide-gray-200 dark:divide-none' => $customAttributes['table']['default'] ?? true])->except(['default', 'default-styling', 'default-colors']) }}>
+            <thead wire:key="{{ $tableName }}-thead"
+                {{ $attributes->merge($customAttributes['thead'])->class(['bg-gray-50 dark:bg-gray-800' => $customAttributes['thead']['default'] ?? true])->except(['default', 'default-styling', 'default-colors']) }}>
+                <tr>
+                    {{ $thead }}
+                </tr>
+            </thead>
 
-                <tbody wire:key="{{ $tableName }}-tbody" id="{{ $tableName }}-tbody"
-                    {{ $attributes->merge($customAttributes['tbody'])->except('default') }}>
-                    {{ $slot }}
-                </tbody>
+            <tbody wire:key="{{ $tableName }}-tbody" id="{{ $tableName }}-tbody"
+                {{ $attributes->merge($customAttributes['tbody'])->class([
+                        'bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-none' =>
+                            $customAttributes['tbody']['default'] ?? true,
+                    ])->except(['default', 'default-styling', 'default-colors']) }}>
+                {{ $slot }}
+            </tbody>
 
-                @if (isset($tfoot))
-                    <tfoot wire:key="{{ $tableName }}-tfoot">
-                        {{ $tfoot }}
-                    </tfoot>
-                @endif
-            </table>
-        </div>
-        <div
-            class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
-            <x-livewire-tables::pagination />
-            <div class="flex items-center gap-4 order-1 md:order-2">
-                @if ($this->paginationVisibilityIsEnabled())
-                    <span
-                        data-datatable-info="true">{{ $this->getRows->firstItem() }}-{{ $this->getRows->lastItem() }}
-                        of {{ $this->getRows->total() }}</span>
-                    <div class="pagination">
-                        @if ($this->paginationIsEnabled())
-                            {{ $this->getRows->links('livewire-tables::specific.tailwind.' . (!$this->isPaginationMethod('standard') ? 'simple-' : '') . 'pagination') }}
-                        @endif
-                    </div>
-                @endif
-            </div>
-        </div>
+            @if (isset($tfoot))
+                <tfoot wire:key="{{ $tableName }}-tfoot">
+                    {{ $tfoot }}
+                </tfoot>
+            @endif
+        </table>
     </div>
-</div>
+@elseif ($isBootstrap)
+    <div wire:key="{{ $tableName }}-twrap"
+        {{ $attributes->merge($customAttributes['wrapper'])->class(['table-responsive' => $customAttributes['wrapper']['default'] ?? true])->except(['default', 'default-styling', 'default-colors']) }}>
+        <table wire:key="{{ $tableName }}-table"
+            {{ $attributes->merge($customAttributes['table'])->class(['laravel-livewire-table table' => $customAttributes['table']['default'] ?? true])->except(['default', 'default-styling', 'default-colors']) }}>
+            <thead wire:key="{{ $tableName }}-thead"
+                {{ $attributes->merge($customAttributes['thead'])->class(['' => $customAttributes['thead']['default'] ?? true])->except(['default', 'default-styling', 'default-colors']) }}>
+                <tr>
+                    {{ $thead }}
+                </tr>
+            </thead>
+
+            <tbody wire:key="{{ $tableName }}-tbody" id="{{ $tableName }}-tbody"
+                {{ $attributes->merge($customAttributes['tbody'])->class(['' => $customAttributes['tbody']['default'] ?? true])->except(['default', 'default-styling', 'default-colors']) }}>
+                {{ $slot }}
+            </tbody>
+
+            @if (isset($tfoot))
+                <tfoot wire:key="{{ $tableName }}-tfoot">
+                    {{ $tfoot }}
+                </tfoot>
+            @endif
+        </table>
+    </div>
+@endif

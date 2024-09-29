@@ -1,5 +1,8 @@
 @aware(['component', 'isTailwind', 'isBootstrap'])
 
-<div class="card-header flex-wrap gap-2">
+<div @class([
+    'flex-col' => $isTailwind,
+    'd-flex flex-column ' => $isBootstrap,
+])>
     {{ $slot }}
 </div>
