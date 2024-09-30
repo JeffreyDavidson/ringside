@@ -50,10 +50,6 @@ class WrestlersTable extends DataTableComponent
             'default' => false,
         ]);
 
-        $this->setPaginationWrapperAttributes([
-            'class' => 'card-body database-initialized',
-        ]);
-
         $this->setTableAttributes([
             'class' => 'table table-auto table-border',
             'default' => false,
@@ -70,6 +66,22 @@ class WrestlersTable extends DataTableComponent
         $this->setTrAttributes(function ($row, $index) {
             return ['default' => false];
         });
+
+        $this->setToolBarAttributes([
+            'class' => 'card-header flex-wrap gap-2',
+            'default' => false
+        ]);
+
+
+        $this->setSearchFieldAttributes([
+            'class' => 'this that',
+            'default' => false,
+        ]);
+
+        $this->setPaginationWrapperAttributes([
+            'class' => 'card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium',
+            'default' => false,
+        ]);
     }
 
     public function builder(): WrestlerBuilder
