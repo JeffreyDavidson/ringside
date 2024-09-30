@@ -69,9 +69,8 @@ class WrestlersTable extends DataTableComponent
 
         $this->setToolBarAttributes([
             'class' => 'card-header flex-wrap gap-2',
-            'default' => false
+            'default' => false,
         ]);
-
 
         $this->setSearchFieldAttributes([
             'class' => 'this that',
