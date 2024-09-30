@@ -9,7 +9,6 @@ use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Wrestler;
 use Illuminate\Support\Facades\Gate;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Actions\Action;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class WrestlersTable extends DataTableComponent
