@@ -102,7 +102,6 @@ class WrestlersTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('wrestlers.height')),
             Column::make(__('wrestlers.name'), 'name')
                 ->sortable()
                 ->searchable(),
