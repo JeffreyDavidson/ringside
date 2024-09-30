@@ -82,8 +82,8 @@ class WrestlersTable extends DataTableComponent
 
         $this->setPerPageFieldAttributes([
             'class' => 'select select-sm w-16',
-            'default-colors' => false, // Do not output the default colors
-            'default-styles' => false, // Output the default styling
+            'default-colors' => false,
+            'default-styles' => false,
         ]);
 
         $this->setPerPageAccepted([5, 10, 25, 50, 100]);
