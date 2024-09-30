@@ -72,7 +72,6 @@ class WrestlersTable extends DataTableComponent
         ]);
 
         $this->setSearchFieldAttributes([
-            'class' => 'this that',
             'default' => false,
         ]);
 
@@ -80,6 +79,14 @@ class WrestlersTable extends DataTableComponent
             'class' => 'card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium',
             'default' => false,
         ]);
+
+        $this->setPerPageFieldAttributes([
+            'class' => 'select select-sm w-16',
+            'default-colors' => false, // Do not output the default colors
+            'default-styles' => false, // Output the default styling
+        ]);
+
+        $this->setPerPageAccepted([5, 10, 25, 50, 100]);
     }
 
     public function builder(): WrestlerBuilder
