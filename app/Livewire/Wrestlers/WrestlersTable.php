@@ -92,6 +92,9 @@ class WrestlersTable extends DataTableComponent
         $this->setPerPageAccepted([5, 10, 25, 50, 100]);
 
         $this->setSearchPlaceholder('Search wrestlers');
+
+        $this->setLoadingPlaceholderContent('Loading');
+        $this->setLoadingPlaceholderEnabled();
     }
 
     public function builder(): WrestlerBuilder
