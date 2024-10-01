@@ -72,7 +72,10 @@ class WrestlersTable extends DataTableComponent
         ]);
 
         $this->setSearchFieldAttributes([
+            'class' => 'border-0 focus:ring-0',
             'default' => false,
+            'default-styling' => false,
+            'default-colors' => false,
         ]);
 
         $this->setPaginationWrapperAttributes([
@@ -81,12 +84,14 @@ class WrestlersTable extends DataTableComponent
         ]);
 
         $this->setPerPageFieldAttributes([
-            'class' => 'select select-sm w-16',
+            'class' => 'block select select-sm w-16 rounded-md shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:ring focus:ring-opacity-50',
             'default-colors' => false,
-            'default-styles' => false,
+            'default-styling' => false,
         ]);
 
         $this->setPerPageAccepted([5, 10, 25, 50, 100]);
+
+        $this->setSearchPlaceholder('Search wrestlers');
     }
 
     public function builder(): WrestlerBuilder
