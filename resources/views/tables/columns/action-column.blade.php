@@ -1,34 +1,11 @@
-<div class="menu flex-inline" x-data="{
-    open: false,
-    toggle() {
-        if (this.open) {
-            return this.close()
-        }
-
-        this.$refs.button.focus()
-
-        this.open = true
-    },
-    close(focusAfter) {
-        if (!this.open) return
-
-        this.open = false
-
-        focusAfter && focusAfter.focus()
-    }
-}" x-on:keydown.escape.prevent.stop="close($refs.button)"
-    x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['dropdown-button']">
-    <div class="menu-item" :class="open ? 'show menu-item-dropdown' : ''">
-        <button x-ref="button" x-on:click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')"
-            class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+<div class="menu" x-data x-data="{ open: false, toggle() { this.open = !this.open } }" @click.outside="open = false">
+    <div class="menu-item" class="relative">
+        <button x-ref="button" @click="toggle()" class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
             <i class="ki-filled ki-dots-vertical"></i>
         </button>
-        <div class="menu-dropdown menu-default w-full max-w-[175px]" x-ref="panel" x-show="open"
-            x-transition.origin.top.left x-on:click.outside="close($refs.button)" :id="$id('dropdown-button')"
-            :class="open ? 'show' : ''"
-            :style="{
-                open: 'z-index: 105; position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-391px, 322px, 0px)'
-            }">
+        <div class="menu-dropdown menu-default w-full max-w-[175px] absolute" x-show="open"
+            x-anchor.bottom="$refs.button"
+            style="z-index: 105; position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-391px, 322px, 0px);">
             @if ($links['view'] ?? true)
                 <div class="menu-item">
                     <a class="menu-link" href="{{ route($path . '.show', $rowId) }}">
