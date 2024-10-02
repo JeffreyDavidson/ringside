@@ -1,11 +1,11 @@
-<div class="menu" x-data x-data="{ open: false, toggle() { this.open = !this.open } }" @click.outside="open = false">
+<div class="menu" x-data="{ open: false, toggle() { this.open = !this.open } }" @click.outside="open = false">
     <div class="menu-item" class="relative">
         <button x-ref="button" @click="toggle()" class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
             <i class="ki-filled ki-dots-vertical"></i>
         </button>
-        <div class="menu-dropdown menu-default w-full max-w-[175px] absolute" x-show="open"
+        <div class="menu-dropdown menu-default w-full max-w-[175px]" x-show="open"
             x-anchor.bottom="$refs.button"
-            style="z-index: 105; position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-391px, 322px, 0px);">
+            style="z-index: 105; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-391px, 322px, 0px);">
             @if ($links['view'] ?? true)
                 <div class="menu-item">
                     <a class="menu-link" href="{{ route($path . '.show', $rowId) }}">
