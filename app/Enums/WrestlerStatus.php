@@ -18,12 +18,12 @@ enum WrestlerStatus: string
     {
         return match ($this) {
             self::Bookable => 'success',
-            self::Injured => 'light',
+            self::Injured => 'primary',
             self::FutureEmployment => 'warning',
-            self::Released => 'dark',
-            self::Retired => 'secondary',
+            self::Released => 'gray-400',
+            self::Retired => 'gray-400',
             self::Suspended => 'danger',
-            self::Unemployed => 'info',
+            self::Unemployed => 'gray-400',
         };
     }
 
