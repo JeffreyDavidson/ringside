@@ -30,7 +30,7 @@
             ])->class(['hidden' => $column->shouldCollapseAlways()])->class(['hidden md:table-cell' => $column->shouldCollapseOnMobile()])->class(['hidden lg:table-cell' => $column->shouldCollapseOnTablet()])->except(['default', 'default-colors', 'default-styling']) }}>
         @if ($column->getColumnLabelStatus())
             @unless ($this->sortingIsEnabled() && ($column->isSortable() || $column->getSortCallback()))
-                <span
+                <span class="font-normal text-gray-700"
                     {{ $customLabelAttributes->except(['default', 'default-colors', 'default-styling']) }}>{{ $column->getTitle() }}</span>
             @else
                 <span class="sort {{ $direction }}" wire:click="sortBy('{{ $column->getColumnSortKey() }}')"

@@ -10,6 +10,9 @@
         ])->except(['default', 'default-styling', 'default-colors']) }}>
     <h3 class="card-title font-medium text-sm">Showing {{ $component->perPage }} of {{ $component->builder()->count() }}
         {{ $component->databaseTableName }}</h3>
+    @if ($this->showSortPillsSection)
+        <x-livewire-tables::tools.sorting-pills />
+    @endif
     @if ($this->hasConfigurableAreaFor('toolbar-left-start'))
         <div x-cloak x-show="!currentlyReorderingStatus" @class([
             'mb-3 mb-md-0 input-group' => $this->isBootstrap,
