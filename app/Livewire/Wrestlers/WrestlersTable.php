@@ -21,80 +21,13 @@ class WrestlersTable extends DataTableComponent
 
     protected string $modalPath = 'wrestlers.wrestler-modal';
 
-    protected array $actionLinksToDisplay = ['view' => true, 'edit' => true, 'delete' => true];
-
     public function configure(): void
     {
-        $this->setThAttributes(function (Column $column) {
-            if ($column->getTitle() === __('core.actions')) {
-                return [
-                    'class' => 'w-[60px]',
-                ];
-            }
-
-            return [];
-        });
-
         $this->setConfigurableAreas([
             'before-wrapper' => 'wrestlers.table-pre',
         ]);
 
-        $this->setComponentWrapperAttributes([
-            'class' => 'card card-grid min-w-full',
-            'default' => false,
-        ]);
-
-        $this->setTableWrapperAttributes([
-            'class' => 'scrollable-x-auto',
-            'default' => false,
-        ]);
-
-        $this->setTableAttributes([
-            'class' => 'table table-auto table-border',
-            'default' => false,
-        ]);
-
-        $this->setTheadAttributes([
-            'default' => false,
-        ]);
-
-        $this->setTbodyAttributes([
-            'default' => false,
-        ]);
-
-        $this->setTrAttributes(function ($row, $index) {
-            return ['default' => false];
-        });
-
-        $this->setToolBarAttributes([
-            'class' => 'card-header flex-wrap gap-2',
-            'default' => false,
-        ]);
-
-        $this->setSearchFieldAttributes([
-            'class' => 'border-0 focus:ring-0',
-            'default' => false,
-            'default-styling' => false,
-            'default-colors' => false,
-        ]);
-
-        $this->setPaginationWrapperAttributes([
-            'class' => 'card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium',
-            'default' => false,
-        ]);
-
-        $this->setPerPageFieldAttributes([
-            'class' => 'block select select-sm w-16 rounded-md shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:ring focus:ring-opacity-50',
-            'default-colors' => false,
-            'default-styling' => false,
-        ]);
-
-        $this->setPerPageAccepted([5, 10, 25, 50, 100]);
-
         $this->setSearchPlaceholder('Search wrestlers');
-
-        $this->setLoadingPlaceholderContent('Loading');
-        $this->setLoadingPlaceholderEnabled();
     }
 
     public function builder(): WrestlerBuilder
