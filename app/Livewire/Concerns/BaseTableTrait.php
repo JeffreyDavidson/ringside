@@ -20,6 +20,7 @@ trait BaseTableTrait
             ->setThAttributes(function (Column $column) {
                 if ($column->getTitle() === __('core.actions')) {
                     $column->setColumnLabelStatusDisabled();
+
                     return [
                         'class' => 'w-[60px]',
                     ];
