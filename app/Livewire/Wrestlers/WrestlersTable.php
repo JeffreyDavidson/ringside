@@ -59,16 +59,6 @@ class WrestlersTable extends DataTableComponent
             Column::make(__('wrestlers.hometown'), 'hometown'),
             Column::make(__('employments.start_date'), 'latestEmployment.started_at')
                 ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
-            Column::make(__('core.actions'))
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'rowId' => $row->id,
-                            'path' => $this->routeBasePath,
-                            'links' => $this->actionLinksToDisplay,
-                        ]
-                    )
-                )->html(),
         ];
     }
 }
