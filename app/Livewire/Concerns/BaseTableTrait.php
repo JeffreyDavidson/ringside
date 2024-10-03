@@ -37,7 +37,7 @@ trait BaseTableTrait
                     ];
                 }
 
-                return [];
+                return ['default' => false];
             })
             ->setComponentWrapperAttributes([
                 'class' => 'card card-grid min-w-full',
