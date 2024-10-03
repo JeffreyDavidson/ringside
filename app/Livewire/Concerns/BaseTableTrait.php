@@ -8,6 +8,8 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 trait BaseTableTrait
 {
+    use HasActionColumn;
+
     protected array $actionLinksToDisplay = ['view' => true, 'edit' => true, 'delete' => true];
 
     public function configuringBaseTableTrait()
@@ -87,16 +89,7 @@ trait BaseTableTrait
     public function appendColumns(): array
     {
         return [
-            Column::make(__('core.actions'))
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'rowId' => $row->id,
-                            'path' => $this->routeBasePath,
-                            'links' => $this->actionLinksToDisplay,
-                        ]
-                    )
-                )->html(),
+            $this->getDefaultActionColumn(),
         ];
     }
 }
