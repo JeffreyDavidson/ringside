@@ -12,6 +12,8 @@ trait BaseTableTrait
 
     protected array $actionLinksToDisplay = ['view' => true, 'edit' => true, 'delete' => true];
 
+    protected bool $showActionColumn  = true;
+
     public function configuringBaseTableTrait()
     {
         $this->setPrimaryKey('id')
@@ -88,8 +90,8 @@ trait BaseTableTrait
 
     public function appendColumns(): array
     {
-        return [
+        return $this->showActionColumn ? [
             $this->getDefaultActionColumn(),
-        ];
+        ] : [];
     }
 }
