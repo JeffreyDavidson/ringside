@@ -1,4 +1,4 @@
-.\!modal {
+/* .\!modal {
     width: 100% !important;
     display: none !important;
     opacity: 0 !important;
@@ -7,9 +7,9 @@
     inset: 0 !important;
     padding: 1.25rem !important;
     transition: opacity 300ms ease !important;
-  }
+  } */
 
-  .modal {
+  /* .modal {
     width: 100%;
     display: none;
     opacity: 0;
@@ -18,7 +18,7 @@
     inset: 0;
     padding: 1.25rem;
     transition: opacity 300ms ease;
-  }
+  } */
 
   .\!modal.open {
     opacity: 1 !important;
@@ -31,39 +31,16 @@
   }
 
   .modal-content {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 0.75rem;
     box-shadow: var(--tw-modal-box-shadow);
     background-color: var(--tw-modal-background-color);
-    display: flex;
-    flex-direction: column;
   }
 
   .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     border-bottom: 1px solid var(--tw-gray-200);
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    padding-top: 0.625rem;
-    padding-bottom: 0.625rem;
   }
 
   .modal-title {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-weight: 600;
     color: var(--tw-gray-900);
-  }
-
-  .modal-body {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    padding-top: 0.625rem;
-    padding-bottom: 0.625rem;
   }
 
   .modal-table .table th:first-child, .modal-table .table td:first-child {
