@@ -1,9 +1,9 @@
-<div class="p-4 inline-flex " x-data="{ open: false, toggle() { this.open = !this.open } }" @click.outside="open = false">
+<div class="inline-flex " x-data="{ open: false, toggle() { this.open = !this.open } }" @click.outside="open = false">
     <button x-ref="button" @click="toggle()" class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
         <i class="ki-filled ki-dots-vertical"></i>
     </button>
     <div x-show.important="open" x-anchor.bottom="$refs.button"
-        class="menu-default text-white bg-black rounded-md max-w-[175px]">
+        class="menu-default py-2.5 text-white bg-black rounded-md max-w-[175px]">
         <ul class="w-full">
             @if ($links['view'] ?? true)
                 <li class="menu-item" @click="open = false">

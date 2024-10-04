@@ -4,10 +4,21 @@ declare(strict_types=1);
 
 namespace App\Livewire\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
 trait StandardForm
 {
+    public function setupModel(Model $model): void
+    {
+        if (property_exists($this, 'formModel')) {
+            $this->formModel = $model;
+        }
+
+        $this->fill($model);
+        $this->runExtraLoadMethods($model);
+    }
+
     public function save(): bool
     {
         $validated = $this->validate();
@@ -39,7 +50,9 @@ trait StandardForm
         return false;
     }
 
-    protected function runExtraPreSaveMethods(): void {}
+    protected function runExtraPreSaveMethods(): void
+    {
+    }
 
     protected function runExtraPostSaveMethods(): bool
     {

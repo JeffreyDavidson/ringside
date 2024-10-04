@@ -6,6 +6,7 @@ namespace App\Livewire\Wrestlers;
 
 use App\Livewire\Concerns\StandardForm;
 use App\Models\Wrestler;
+use App\ValueObjects\Height;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
@@ -93,8 +94,8 @@ class WrestlerForm extends Form
         $this->formModel->height = $this->getHeight();
     }
 
-    public function getHeight()
+    public function getHeight(): int
     {
-        return (($this->height_feet ?? 0) * 12) + ($this->height_inches ?? 0);
+        return (new Height($this->height_feet ?? 0, $this->height_inches ?? 0))->toInches();
     }
 }
