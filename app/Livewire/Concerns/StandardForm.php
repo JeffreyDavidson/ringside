@@ -50,9 +50,7 @@ trait StandardForm
         return false;
     }
 
-    protected function runExtraPreSaveMethods(): void
-    {
-    }
+    protected function runExtraPreSaveMethods(): void {}
 
     protected function runExtraPostSaveMethods(): bool
     {
