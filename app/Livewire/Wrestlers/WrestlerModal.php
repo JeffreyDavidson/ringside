@@ -49,6 +49,11 @@ class WrestlerModal extends ModalComponent
         $this->closeModal();
     }
 
+    public function getModalTitle(): string
+    {
+        return isset($this->wrestler) ? "Edit " . $this->wrestler->name : "Add Wrestler";
+    }
+
     public function render()
     {
         return view('livewire.wrestlers.modal');
