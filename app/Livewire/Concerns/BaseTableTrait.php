@@ -35,7 +35,6 @@ trait BaseTableTrait
             ->setTdAttributes(function (Column $column) {
                 if ($column->getTitle() === __('core.actions')) {
                     return [
-                        'class' => 'px-6 py-4 text-sm font-medium dark:text-white',
                         'default' => false,
                         'default-styling' => false,
                     ];
