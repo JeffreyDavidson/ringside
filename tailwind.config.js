@@ -19,6 +19,8 @@ module.exports = {
         "./app/Livewire/**/*.php",
         "./vendor/wire-elements/modal/resources/views/*.blade.php",
         "./storage/framework/views/*.php",
+        "./vendor/wire-elements/modal/src/**/*.php",
+        "./vendor/wire-elements/modal/resources/views/**/*.blade.php",
     ],
     safelist: [
         {
