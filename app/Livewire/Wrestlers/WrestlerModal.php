@@ -51,7 +51,7 @@ class WrestlerModal extends ModalComponent
 
     public function getModalTitle(): string
     {
-        return isset($this->wrestler) ? "Edit " . $this->wrestler->name : "Add Wrestler";
+        return isset($this->wrestler) ? 'Edit '.$this->wrestler->name : 'Add Wrestler';
     }
 
     public function render()

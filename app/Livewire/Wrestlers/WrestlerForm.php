@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Wrestlers;
 
-use Livewire\Form;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
+use Livewire\Form;
 
 class WrestlerForm extends Form
 {
