@@ -5,7 +5,7 @@
         </div>
         <div class="modal-body">
             <form wire:submit="save" id="wrestlerForm">
-                <div>
+                <div class="mb-10">
                     <label class="form-label">{{ __('wrestlers.name') }}:</label>
                     <input type="text" class="input" wire:model.live="form.name" />
                     <div>
@@ -14,36 +14,38 @@
                         @enderror
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <label class="form-label">{{ __('wrestlers.feet') }}:</label>
-                        <input type="text" class="input" wire:model="form.height_feet" />
-                        <div>
-                            @error('form.height_feet')
-                                {{ $message }}
-                            @enderror
+                <div class="mb-10">
+                    <div class="mb-5 row gx-10">
+                        <div class="col-lg-3">
+                            <label class="form-label">{{ __('wrestlers.feet') }}:</label>
+                            <input type="text" class="input" wire:model="form.height_feet" />
+                            <div>
+                                @error('form.height_feet')
+                                    {{ $message }}
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="form-label">{{ __('wrestlers.inches') }}:</label>
-                        <input type="text" class="input" wire:model="form.height_inches" />
-                        <div>
-                            @error('form.height_inches')
-                                {{ $message }}
-                            @enderror
+                        <div class="col-lg-3">
+                            <label class="form-label">{{ __('wrestlers.inches') }}:</label>
+                            <input type="text" class="input" wire:model="form.height_inches" />
+                            <div>
+                                @error('form.height_inches')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">{{ __('wrestlers.weight') }}:</label>
+                            <input type="text" class="input" wire:model="form.weight" />
+                            <div>
+                                @error('form.weight')
+                                    {{ $message }}
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <label class="form-label">{{ __('wrestlers.weight') }}:</label>
-                    <input type="text" class="input" wire:model="form.weight" />
-                    <div>
-                        @error('form.weight')
-                            {{ $message }}
-                        @enderror
-                    </div>
-                </div>
-                <div>
+                <div class="mb-10">
                     <label class="form-label">{{ __('wrestlers.hometown') }}:</label>
                     <input type="text" class="input" wire:model="form.hometown" />
                     <div>
@@ -52,7 +54,7 @@
                         @enderror
                     </div>
                 </div>
-                <div>
+                <div class="mb-10">
                     <label class="form-label">{{ __('employments.start_date') }}:</label>
                     <input type="date" class="input" wire:model="form.start_date" />
                     <div>
