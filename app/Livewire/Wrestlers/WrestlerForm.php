@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Wrestlers;
 
-use App\Livewire\Concerns\StandardFormMethods;
+use App\Livewire\Concerns\StandardForm;
 use App\Models\Wrestler;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +15,7 @@ use Livewire\Form;
 
 class WrestlerForm extends Form
 {
-    use StandardFormMethods;
+    use StandardForm;
 
     public ?Wrestler $formModel;
 
