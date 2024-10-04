@@ -1,7 +1,7 @@
 <div class="p-4 inline-flex " x-data="{ open: false, toggle() { this.open = !this.open } }" @click.outside="open = false">
     <button x-ref="button" @click="toggle()" class="w-4 text-white rounded-md bg-black">&vellip;</button>
     <div x-show.important="open" x-anchor.bottom="$refs.button"
-        class="menu-default text-white bg-black rounded-md w-full max-w-[175px]">
+        class="menu-default text-white bg-black rounded-md max-w-[175px]">
         <ul class="w-full">
             @if ($links['view'] ?? true)
                 <li class="menu-item" @click="open = false">
