@@ -72,10 +72,12 @@ class WrestlerForm extends Form
                 $this->formModel->fill($validated);
                 $this->formModel->height = $this->getHeight();
             }
+
             return $this->formModel->save();
         } catch (Exception $exception) {
             dd($exception->getMessage());
         }
+
         return false;
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Concerns;
 
 use Illuminate\Support\Facades\Gate;
@@ -24,19 +26,20 @@ trait StandardForm
             if (isset($this->formModel)) {
                 $this->runExtraPreSaveMethods();
                 $this->formModel->save();
+
                 return $this->runExtraPostSaveMethods();
             }
+
             return false;
 
         } catch (\Exception $exception) {
             dd($exception->getMessage());
         }
+
         return false;
     }
 
-    protected function runExtraPreSaveMethods(): void
-    {
-    }
+    protected function runExtraPreSaveMethods(): void {}
 
     protected function runExtraPostSaveMethods(): bool
     {
