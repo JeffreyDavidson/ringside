@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Livewire\Wrestlers;
 
+use App\Models\Wrestler;
+use Livewire\Form;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
-use Livewire\Form;
 
 class WrestlerForm extends Form
 {
+    public ?Wrestler $wrestler;
+
     #[Validate(as: 'wrestlers.name')]
     public $name = '';
 
@@ -34,7 +37,7 @@ class WrestlerForm extends Form
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3', Rule::unique('wrestlers')],
+            'name' => ['required', 'string', 'min:3', Rule::unique('wrestlers')->ignore($this->wrestler)],
             'height_feet' => ['required', 'integer', 'max:8'],
             'height_inches' => ['required', 'integer', 'max:11'],
             'weight' => ['required', 'integer', 'digits:3'],
