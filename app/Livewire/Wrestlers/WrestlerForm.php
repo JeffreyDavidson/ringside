@@ -25,10 +25,10 @@ class WrestlerForm extends Form
     public $name = '';
 
     #[Validate(as: 'wrestlers.feet')]
-    public int $height_feet;
+    public ?int $height_feet;
 
     #[Validate(as: 'wrestlers.inches')]
-    public int $height_inches;
+    public ?int $height_inches;
 
     #[Validate(as: 'wrestlers.weight')]
     public $weight = '';
@@ -95,6 +95,6 @@ class WrestlerForm extends Form
 
     public function getHeight()
     {
-        return ($this->height_feet * 12) + $this->height_inches;
+        return (($this->height_feet ?? 0) * 12) + ($this->height_inches ?? 0);
     }
 }

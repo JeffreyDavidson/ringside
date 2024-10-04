@@ -34,23 +34,15 @@
                 ])->except(['default', 'default-styling', 'default-colors']) }} />
 
         @if ($this->hasSearch())
-            <div @class([
-                'd-inline-flex h-100 align-items-center ' => $this->isBootstrap,
-            ])>
-                <div wire:click="clearSearch" @class([
-                    'btn btn-outline-secondary d-inline-flex h-100 align-items-center' =>
-                        $this->isBootstrap,
-                    'inline-flex h-full items-center px-3 text-gray-500 bg-gray-50 rounded-r-md border border-l-0 border-gray-300 cursor-pointer sm:text-sm dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600' =>
-                        $this->isTailwind,
-                ])>
-                    @if ($this->isTailwind)
-                        <x-heroicon-m-x-mark class='w-4 h-4' />
-                    @else
-                        <x-heroicon-m-x-mark class="laravel-livewire-tables-btn-smaller" />
-                    @endif
-                </div>
-            </div>
+            @if ($this->isTailwind)
+                <button
+                    class="inline-flex items-center cursor-pointer leading-4 rounded-md border border-solid w-4 h-4 justify-center shrink-0 p-0 gap-0 font-medium text-base btn-light"
+                    wire:click="clearSearch">
+                    <i class="ki-outline ki-cross"></i>
+                </button>
+            @else
+                <x-heroicon-m-x-mark class="laravel-livewire-tables-btn-smaller" />
+            @endif
         @endif
-
     </label>
 </div>
