@@ -18,10 +18,7 @@ class WrestlerModal extends ModalComponent
     {
         if (isset($this->wrestler)) {
             Gate::authorize('update', $this->wrestler);
-            $this->form->fill($this->wrestler);
-            $this->form->height_feet = $this->wrestler->height->feet;
-            $this->form->height_inches = $this->wrestler->height->inches;
-
+            $this->form->setupModel($this->wrestler);
         } else {
             Gate::authorize('create', Wrestler::class);
         }
@@ -29,24 +26,10 @@ class WrestlerModal extends ModalComponent
 
     public function save()
     {
-        $this->form->validate();
-
-        if (isset($this->wrestler)) {
-            Gate::authorize('update', $this->wrestler);
-            $this->wrestler->fill($this->form->validate());
-            $this->wrestler->height = $this->form->getHeight();
-            $this->wrestler->save();
-        } else {
-            Gate::authorize('create', Wrestler::class);
-            $this->wrestler = new Wrestler;
-            $this->wrestler->fill($this->form->validate());
-            $this->wrestler->height = $this->form->getHeight();
-            $this->wrestler->save();
+        if ($this->form->save()) {
+            $this->dispatch('refreshDatatable');
+            $this->closeModal();
         }
-
-        $this->dispatch('refreshDatatable');
-
-        $this->closeModal();
     }
 
     public function getModalTitle(): string

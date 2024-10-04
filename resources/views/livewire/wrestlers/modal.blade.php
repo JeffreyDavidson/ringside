@@ -2,11 +2,8 @@
     <div class="modal-content flex flex-col relative mx-auto rounded-xl max-w-[600] top-[10%] tw-modal-background-color">
         <div class="flex items-center justify-between border-gray-200 border border-b py-2.5 px-5">
             <h3 class="text-sm font-semibold text-gray-900">{{ $this->getModalTitle() }}</h3>
-            <button class="btn btn-xs btn-icon btn-light">
-                <i class="ki-outline ki-cross"></i>
-            </button>
             <button
-                class="inline-flex items-center cursor-pointer leading-4 rounded-md border-solid w-7 h-7 justify-center shrink-0 p-0 gap-0 font-medium text-base btn-light"
+                class="inline-flex items-center cursor-pointer leading-4 rounded-md border border-solid w-7 h-7 justify-center shrink-0 p-0 gap-0 font-medium text-base btn-light"
                 wire:click="closeModal">
                 <i class="ki-outline ki-cross"></i>
             </button>
