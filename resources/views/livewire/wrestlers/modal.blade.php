@@ -1,4 +1,4 @@
-<div class="modal">
+<div class="w-full fixed overflow-auto>
     <div class="modal-content flex flex-col relative mx-auto rounded-xl max-w-[600] top-[10%] tw-modal-background-color">
         <div class="flex items-center justify-between border-gray-200 border border-b py-2.5 px-5">
             <h3 class="text-sm font-semibold text-gray-900">{{ $this->getModalTitle() }}</h3>
