@@ -1,15 +1,7 @@
-<label for="{{ $name }}">{{ $label }}</label>
-
 <input
     type="number"
-    class="form-control"
-    min="{{ $min ?? 0 }}"
-    max="{{ $max ?? '' }}"
-    name="{{ $name }}"
-    placeholder="{{ $placeholder ?? '' }}"
-    value="{{ $value ?? null }}"
->
-
-@error($name)
-    <x-form.validation-error name="{{ $name }}" :message="$message" />
-@enderror
+    {{ $attributes->merge([
+        'class' => 'block w-full appearance-none shadow-none font-medium text-2sm leading-4 border border-1 border-gray-300 rounded-md h-10 px-3 text-gray-700 bg-light hover:border-gray-400',
+        'min' => 0,
+        'max' => '',
+    ]) }}>
