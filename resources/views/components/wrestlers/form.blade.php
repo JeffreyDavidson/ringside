@@ -1,4 +1,4 @@
-<form wire:submit="save" id="wrestlerForm">
+<x-form {{ $attributes }} wire:submit="save">
     <div class="space-y-4">
         <div class="flex flex-col gap-1">
             <x-form.input-label label="{{ __('wrestlers.name') }}"/>
@@ -40,4 +40,4 @@
             <x-form.validation-error field="form.signature_move"/>
         </div>
     </div>
-</form>
+</x-form>
