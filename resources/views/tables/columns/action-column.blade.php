@@ -3,41 +3,24 @@
         <i class="ki-solid ki-dots-vertical"></i>
     </button>
     <div x-cloak x-show.important="open" x-anchor.bottom="$refs.button"
-        class="menu-default py-2.5 text-white bg-black rounded-md max-w-[175px]">
-        <ul class="w-full">
+        class="py-2.5 w-full bg-black rounded-md max-w-[175px] border border-solid border-gray-200 dark:border-gray-100 gap-0.5">
+        <ul>
             @if ($links['view'] ?? true)
-                <li class="menu-item" @click="open = false">
-                    <a class="menu-link" href="{{ route($path . '.show', $rowId) }}">
-                        <span class="menu-icon">
-                            <i class="ki-filled ki-search-list"></i>
-                        </span>
-                        <span class="menu-title">View</span>
-                    </a>
-                </li>
+                <x-dropdown.item>
+                    <x-dropdown.item.link href="{{ route($path . '.show', $rowId) }}" icon="ki-search-list" label="View" />
+                </x-dropdown.item>
             @endif
-            <div class="my-2.5 border-t-2 border-solid border-black-blue"></div>
+            <x-dropdown.item-separator/>
             @if ($links['edit'] ?? true)
-                <li class="menu-item" @click="open = false">
-                    <button class="menu-link"
-                        wire:click="$dispatch('openModal', { component: 'wrestlers.wrestler-modal', arguments: { wrestler: {{ $rowId }} }})">
-                        <span class="menu-icon">
-                            <i class="ki-filled ki-pencil"></i>
-                        </span>
-                        <span class="menu-title">Edit</span>
-                    </button>
-                </li>
+                <x-dropdown.item>
+                    <x-dropdown.item.button wire:click="$dispatch('openModal', { component: 'wrestlers.wrestler-modal', arguments: { wrestler: {{ $rowId }} }})" icon="ki-pencil" label="Edit"/>
+                </x-dropdown.item>
             @endif
-            <div class="my-2.5 border-t-2 border-solid border-black-blue"></div>
+            <x-dropdown.item-separator/>
             @if ($links['delete'] ?? true)
-                <li class="menu-item" @click="open = false">
-                    <button class="menu-link"
-                        wire:click="$dispatch('openModal', { component: 'wrestlers.delete-wrestler', arguments: { wrestler: {{ $rowId }} }})">
-                        <span class="menu-icon">
-                            <i class="ki-filled ki-trash"></i>
-                        </span>
-                        <span class="menu-title">Remove</span>
-                    </button>
-                </li>
+                <x-dropdown.item>
+                    <x-dropdown.item.button wire:click="$dispatch('openModal', { component: 'wrestlers.delete-wreslter', arguments: { wrestler: {{ $rowId }} }})" icon="ki-trash" label="Remove"/>
+                </x-dropdown.item>
             @endif
         </ul>
     </div>
