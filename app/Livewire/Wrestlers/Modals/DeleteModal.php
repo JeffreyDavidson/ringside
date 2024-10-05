@@ -19,13 +19,20 @@ class DeleteModal extends ModalComponent
 
     public function delete()
     {
+        $this->wrestler->delete();
+
         $this->dispatch('refreshDatatable');
 
         $this->closeModal();
     }
 
+    public function getModalTitle(): string
+    {
+        return 'Delete '.$this->wrestler->name;
+    }
+
     public function render()
     {
-        return view('livewire.wrestlers.delete-modal');
+        return view('livewire.wrestlers.modals.delete-modal');
     }
 }
