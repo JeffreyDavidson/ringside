@@ -21,7 +21,7 @@
     <div class="flex items-center gap-2.5">
         <div class="flex justify-items-end gap-2.5">
             <button class="btn btn-sm btn-primary"
-                @click="$dispatch('openModal', { component: 'wrestlers.wrestler-modal' })">
+                @click="$dispatch('openModal', { component: 'wrestlers.modals.form-modal' })">
                 Add Wrestler
             </button>
         </div>

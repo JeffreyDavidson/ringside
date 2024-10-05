@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Wrestlers;
+namespace App\Livewire\Wrestlers\Modals;
 
+use App\Livewire\Wrestlers\WrestlerForm;
 use App\Models\Wrestler;
 use Illuminate\Support\Facades\Gate;
 use LivewireUI\Modal\ModalComponent;
 
-class WrestlerModal extends ModalComponent
+class FormModal extends ModalComponent
 {
     public ?Wrestler $wrestler;
 
@@ -39,6 +40,6 @@ class WrestlerModal extends ModalComponent
 
     public function render()
     {
-        return view('livewire.wrestlers.modal');
+        return view('livewire.wrestlers.modals.form-modal');
     }
 }

@@ -19,7 +19,7 @@ class WrestlersTable extends DataTableComponent
 
     protected string $routeBasePath = 'wrestlers';
 
-    protected string $modalPath = 'wrestlers.wrestler-modal';
+    protected string $modalPath = 'wrestlers.modals.form-modal';
 
     public function configure(): void
     {

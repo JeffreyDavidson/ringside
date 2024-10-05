@@ -13,7 +13,7 @@
             <x-dropdown.item-separator/>
             @if ($links['edit'] ?? true)
                 <x-dropdown.item>
-                    <x-dropdown.item.button wire:click="$dispatch('openModal', { component: 'wrestlers.wrestler-modal', arguments: { wrestler: {{ $rowId }} }})" icon="ki-pencil" label="Edit"/>
+                    <x-dropdown.item.button wire:click="$dispatch('openModal', { component: 'wrestlers.modals.form-modal', arguments: { wrestler: {{ $rowId }} }})" icon="ki-pencil" label="Edit"/>
                 </x-dropdown.item>
             @endif
             <x-dropdown.item-separator/>
