@@ -24,7 +24,7 @@ class WrestlersTable extends DataTableComponent
     public function configure(): void
     {
         $this->setConfigurableAreas([
-            'before-wrapper' => 'wrestlers.table-pre',
+            'before-wrapper' => 'components.wrestlers.table-pre',
         ]);
 
         $this->setSearchPlaceholder('Search wrestlers');
