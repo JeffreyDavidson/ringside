@@ -35,6 +35,9 @@ module.exports = {
     darkMode: 'class',
 	theme: {
 		extend: {
+            colors: {
+                'black-blue': '#1B1C22',
+            },
 			base: {
 				colors: {
 					gray: {
