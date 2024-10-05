@@ -16,7 +16,18 @@ class VenuesTable extends DataTableComponent
 
     protected string $databaseTableName = 'venues';
 
-    public function configure(): void {}
+    protected string $routeBasePath = 'venues';
+
+    protected string $modalPath = 'venues.modals.form-modal';
+
+    public function configure(): void
+    {
+        $this->setConfigurableAreas([
+            'before-wrapper' => 'components.venues.table-pre',
+        ]);
+
+        $this->setSearchPlaceholder('Search venues');
+    }
 
     public function builder(): Builder
     {
@@ -33,16 +44,6 @@ class VenuesTable extends DataTableComponent
             Column::make(__('venues.city'), 'city'),
             Column::make(__('venues.state'), 'state'),
             Column::make(__('venues.zipcode'), 'zipcode'),
-            Column::make(__('core.actions'), 'actions')
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'viewLink' => route('venues.show', $row),
-                            'editLink' => route('venues.edit', $row),
-                            'deleteLink' => route('venues.destroy', $row),
-                        ]
-                    )
-                )->html(),
         ];
     }
 }

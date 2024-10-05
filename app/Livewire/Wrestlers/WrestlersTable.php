@@ -16,10 +16,9 @@ class WrestlersTable extends DataTableComponent
     use BaseTableTrait;
 
     protected string $databaseTableName = 'wrestlers';
-
     protected string $routeBasePath = 'wrestlers';
-
-    protected string $modalPath = 'wrestlers.modals.form-modal';
+    protected string $formModalPath = 'wrestlers.modals.form-modal';
+    protected string $deleteModalPath = 'wrestlers.modals.delete-modal';
 
     public function configure(): void
     {

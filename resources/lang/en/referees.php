@@ -2,4 +2,5 @@
 
 return [
     'name' => 'Name',
+    'status' => 'Status',
 ];

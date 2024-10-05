@@ -16,14 +16,23 @@ class RefereesTable extends DataTableComponent
 
     protected string $databaseTableName = 'referees';
 
-    public function configure(): void {}
+    protected string $routeBasePath = 'referees';
+
+    protected string $modalPath = 'referees.modals.form-modal';
+
+    public function configure(): void
+    {
+        $this->setConfigurableAreas([
+            'before-wrapper' => 'components.referees.table-pre',
+        ]);
+
+        $this->setSearchPlaceholder('Search referees');
+    }
 
     public function builder(): RefereeBuilder
     {
         return Referee::query()
-            ->with('employments:id,started_at')->withWhereHas('employments', function ($query) {
-                $query->where('started_at', '<=', now())->whereNull('ended_at')->limit(1);
-            });
+            ->with('latestEmployment');
     }
 
     public function columns(): array
@@ -34,18 +43,8 @@ class RefereesTable extends DataTableComponent
                 ->sortable(),
             Column::make(__('referees.status'), 'status')
                 ->view('tables.columns.status'),
-            // Column::make(__('employments.start_date'), 'started_at')
-            //     ->label(fn ($row, Column $column) => $row->employments->first()->started_at->format('Y-m-d')),
-            Column::make(__('core.actions'), 'actions')
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'viewLink' => route('referees.show', $row),
-                            'editLink' => route('referees.edit', $row),
-                            'deleteLink' => route('referees.destroy', $row),
-                        ]
-                    )
-                )->html(),
+            Column::make(__('employments.start_date'), 'latestEmployment.started_at')
+                ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 }
