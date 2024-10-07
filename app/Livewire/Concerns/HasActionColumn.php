@@ -17,6 +17,9 @@ trait HasActionColumn
                         'rowId' => $row->id,
                         'path' => $this->routeBasePath,
                         'links' => $this->actionLinksToDisplay,
+                        'formModalPath' => $this->formModalPath,
+                        'deleteModalPath' => $this->deleteModalPath,
+                        'baseModel' => $this->baseModel,
                     ]
                 )
             )->html();

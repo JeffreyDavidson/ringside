@@ -14,12 +14,12 @@ class DeleteModal extends ModalComponent
 
     public function mount()
     {
-        Gate::authorize('delete', $this->wrestler);
+        Gate::authorize('delete', $this->model);
     }
 
     public function delete()
     {
-        $this->wrestler->delete();
+        $this->model->delete();
 
         $this->dispatch('refreshDatatable');
 
@@ -28,7 +28,7 @@ class DeleteModal extends ModalComponent
 
     public function getModalTitle(): string
     {
-        return 'Delete '.$this->wrestler->name;
+        return 'Delete '.$this->model->name;
     }
 
     public function render()

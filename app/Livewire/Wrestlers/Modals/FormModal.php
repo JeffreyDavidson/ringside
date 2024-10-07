@@ -11,15 +11,15 @@ use LivewireUI\Modal\ModalComponent;
 
 class FormModal extends ModalComponent
 {
-    public ?Wrestler $wrestler;
+    public ?Wrestler $model;
 
     public WrestlerForm $form;
 
     public function mount()
     {
-        if (isset($this->wrestler)) {
-            Gate::authorize('update', $this->wrestler);
-            $this->form->setupModel($this->wrestler);
+        if (isset($this->model)) {
+            Gate::authorize('update', $this->model);
+            $this->form->setupModel($this->model);
         } else {
             Gate::authorize('create', Wrestler::class);
         }
@@ -35,7 +35,7 @@ class FormModal extends ModalComponent
 
     public function getModalTitle(): string
     {
-        return isset($this->wrestler) ? 'Edit '.$this->wrestler->name : 'Add Wrestler';
+        return isset($this->model) ? 'Edit '.$this->model->name : 'Add Wrestler';
     }
 
     public function render()
