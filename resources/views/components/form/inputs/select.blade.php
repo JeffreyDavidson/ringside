@@ -1,27 +1,15 @@
 @props([
-    'name',
-    'label',
-    'options',
-    'selected' => '',
+    'options' => [],
+    'select_type' => 'an',
+    'select_name' => 'Option'
 ])
 
-<label class="form-label" for="{{ $name }}">{{ $label }}</label>
-
 <select
-    class="form-select"
-    name="{{ $name }}"
-    {{ $attributes->whereStartsWith('wire:click') }}
-    {{ $attributes->whereStartsWith('wire:model') }}
->
-    <option value="">Select</option>
-    @foreach ($options as $key => $value)
-        <option
-            value="{{ $key }}"
-            @selected($selected == $key)
-        >{{ $value }}</option>
-    @endforeach
+    {{ $attributes->merge(['class' => 'block w-full appearance-none shadow-none font-medium text-2sm leading-4 border border-1 border-gray-300 rounded-md h-10 px-3 text-gray-700 bg-light hover:border-gray-400']) }}>
+    <option value="">{{ __('core.select_'.$select_type, ['name' => $select_name])}}</option>
+    @forelse($options as $key => $value)
+        <option value="{{ $key }}">{{ $value }}</option>
+    @empty
+      <option>{{ __('core.select.no-options') }}</option>
+    @endforelse
 </select>
-
-@error($name)
-    <x-form.validation-error name="{{ $name }}" :message="$message" />
-@enderror
