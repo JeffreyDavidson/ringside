@@ -4,48 +4,59 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
-use App\Builders\ManagerBuilder;
-use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Manager;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use App\Builders\ManagerBuilder;
+use Illuminate\Support\Facades\DB;
+use App\Livewire\Concerns\BaseTableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 class ManagersTable extends DataTableComponent
 {
     use BaseTableTrait;
 
     protected string $databaseTableName = 'managers';
+    protected string $routeBasePath = 'managers';
+    protected string $formModalPath = 'managers.modals.form-modal';
+    protected string $deleteModalPath = 'managers.modals.delete-modal';
+    protected string $baseModel = 'manager';
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->setConfigurableAreas([
+            'before-wrapper' => 'components.managers.table-pre',
+        ]);
+
+        $this->setSearchPlaceholder('Search managers');
+
+        $this->addAdditionalSelects([
+            'managers.first_name as first_name',
+            'managers.last_name as last_name',
+        ]);
+    }
 
     public function builder(): ManagerBuilder
     {
         return Manager::query()
-            ->with('employments:manager_id,started_at')->withWhereHas('employments', function ($query) {
-                $query->where('started_at', '<=', now())->whereNull('ended_at')->limit(1);
-            });
+            ->with('latestEmployment');
     }
 
     public function columns(): array
     {
         return [
-            Column::make('Name')
+            Column::make(__('managers.full_name'))
                 ->label(fn ($row, Column $column) => ucwords($row->first_name.' '.$row->last_name))
-                ->sortable(),
+                ->sortable()
+                ->searchable(function (Builder $query, $searchTerm) {
+                    $query->whereLike('first_name', "%{$searchTerm}%")
+                        ->orWhereLike('last_name', "%{$searchTerm}%")
+                        ->orWhereLike(DB::raw("CONCAT(first_name, ' ', last_name)"), "%{$searchTerm}%");
+                }),
             Column::make(__('managers.status'), 'status')
                 ->view('tables.columns.status'),
-            Column::make(__('employments.start_date'), 'started_at')
-                ->label(fn ($row, Column $column) => $row->employments->first()->started_at->format('Y-m-d')),
-            Column::make(__('core.actions'), 'actions')
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'viewLink' => route('managers.show', $row),
-                            'editLink' => route('managers.edit', $row),
-                            'deleteLink' => route('managers.destroy', $row),
-                        ]
-                    )
-                )->html(),
+            Column::make(__('employments.start_date'), 'latestEmployment.started_at')
+                    ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 }

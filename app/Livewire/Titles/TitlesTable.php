@@ -15,15 +15,24 @@ class TitlesTable extends DataTableComponent
     use BaseTableTrait;
 
     protected string $databaseTableName = 'titles';
+    protected string $routeBasePath = 'titles';
+    protected string $formModalPath = 'titles.modals.form-modal';
+    protected string $deleteModalPath = 'titles.modals.delete-modal';
+    protected string $baseModel = 'title';
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->setConfigurableAreas([
+            'before-wrapper' => 'components.titles.table-pre',
+        ]);
+
+        $this->setSearchPlaceholder('Search titles');
+    }
 
     public function builder(): TitleBuilder
     {
         return Title::query()
-            ->with('activations:id,started_at')->withWhereHas('activations', function ($query) {
-                $query->where('started_at', '<=', now())->whereNull('ended_at')->limit(1);
-            });
+            ->with('latestActivation');
     }
 
     public function columns(): array
@@ -34,18 +43,8 @@ class TitlesTable extends DataTableComponent
                 ->searchable(),
             Column::make(__('titles.status'), 'status')
                 ->view('tables.columns.status'),
-            Column::make(__('activations.start_date'), 'started_at')
-                ->label(fn ($row, Column $column) => $row->activations->first()->started_at->format('Y-m-d')),
-            Column::make(__('core.actions'), 'actions')
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'viewLink' => route('titles.show', $row),
-                            'editLink' => route('titles.edit', $row),
-                            'deleteLink' => route('titles.destroy', $row),
-                        ]
-                    )
-                )->html(),
+            Column::make(__('activations.start_date'), 'latestActivation.started_at')
+                ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 }

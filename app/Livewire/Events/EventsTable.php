@@ -17,7 +17,22 @@ class EventsTable extends DataTableComponent
 
     protected string $databaseTableName = 'events';
 
-    public function configure(): void {}
+    protected string $routeBasePath = 'events';
+
+    protected string $formModalPath = 'events.modals.form-modal';
+
+    protected string $deleteModalPath = 'events.modals.delete-modal';
+
+    protected string $baseModel = 'event';
+
+    public function configure(): void
+    {
+        $this->setConfigurableAreas([
+            'before-wrapper' => 'components.events.table-pre',
+        ]);
+
+        $this->setSearchPlaceholder('Search events');
+    }
 
     public function builder(): EventBuilder
     {
@@ -30,21 +45,11 @@ class EventsTable extends DataTableComponent
             Column::make(__('events.name'), 'name')
                 ->sortable()
                 ->searchable(),
-            DateColumn::make(__('events.date'), 'date')
-                ->sortable()
-                ->searchable(),
             Column::make(__('events.status'), 'status')
                 ->view('tables.columns.status'),
-            Column::make(__('core.actions'), 'actions')
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'viewLink' => route('events.show', $row),
-                            'editLink' => route('events.edit', $row),
-                            'deleteLink' => route('events.destroy', $row),
-                        ]
-                    )
-                )->html(),
+            Column::make(__('events.date'), 'date')
+                ->label(fn ($row, Column $column) => $row->date?->format('Y-m-d') ?? 'TBD')
+                ->sortable(),
         ];
     }
 }

@@ -15,10 +15,10 @@ class VenuesTable extends DataTableComponent
     use BaseTableTrait;
 
     protected string $databaseTableName = 'venues';
-
     protected string $routeBasePath = 'venues';
-
-    protected string $modalPath = 'venues.modals.form-modal';
+    protected string $formModalPath = 'venues.modals.form-modal';
+    protected string $deleteModalPath = 'venues.modals.delete-modal';
+    protected string $baseModel = 'venue';
 
     public function configure(): void
     {
