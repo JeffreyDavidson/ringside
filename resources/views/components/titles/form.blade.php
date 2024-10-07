@@ -1,7 +1,14 @@
-<div class="mb-10">
-    <x-form.inputs.text label="Name:" name="name" placeholder="Title Name Here" :value="old('name', $title->name)"/>
-</div>
-
-<div class="mb-10">
-    <x-form.inputs.date label="Activation Date:" name="activation_date" :value="old('activation_date', $title->activated_at?->format('Y-m-d'))"/>
-</div>
+<x-form {{ $attributes }} wire:submit="save">
+    <div class="space-y-4">
+        <div class="flex flex-col gap-1">
+            <x-form.input-label label="{{ __('titles.name') }}"/>
+            <x-form.inputs.text wire:model.live="form.name"/>
+            <x-form.validation-error field="form.name"/>
+        </div>
+        <div class="flex flex-col gap-1">
+            <x-form.input-label label="{{ __('activations.start_date') }}"/>
+            <x-form.inputs.date wire:model.live="form.start_date"/>
+            <x-form.validation-error field="form.start_date"/>
+        </div>
+    </div>
+</x-form>

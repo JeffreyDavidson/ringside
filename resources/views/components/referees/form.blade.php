@@ -1,14 +1,23 @@
-<div class="mb-10">
-    <div class="mb-5 row gx-10">
-        <div class="col-lg-6">
-            <x-form.inputs.text label="First Name:" name="first_name" placeholder="First Name Here" :value="old('first_name', $referee->first_name)"/>
+<x-form {{ $attributes }} wire:submit="save">
+    <div class="space-y-4">
+        <div class="flex flex-col gap-1">
+            <div class="columns-2">
+                <div class="flex flex-col gap-1">
+                    <x-form.input-label label="{{ __('referees.first_name') }}"/>
+                    <x-form.inputs.text wire:model.live="form.first_name"/>
+                    <x-form.validation-error field="form.first_name"/>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <x-form.input-label label="{{ __('referees.last_name') }}"/>
+                    <x-form.inputs.text wire:model.live="form.last_name"/>
+                    <x-form.validation-error field="form.last_name"/>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-6">
-            <x-form.inputs.text label="Last Name:" name="last_name" placeholder="Last Name Here" :value="old('last_name', $referee->last_name)"/>
+        <div class="flex flex-col gap-1">
+            <x-form.input-label label="{{ __('employments.start_date') }}"/>
+            <x-form.inputs.date wire:model.live="form.start_date"/>
+            <x-form.validation-error field="form.start_date"/>
         </div>
     </div>
-</div>
-
-<div class="mb-10">
-    <x-form.inputs.date label="Start Date:" name="start_date" :value="old('start_date', $referee->started_at?->format('Y-m-d'))"/>
-</div>
+</x-form>

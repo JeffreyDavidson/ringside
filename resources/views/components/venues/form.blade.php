@@ -1,23 +1,33 @@
-<div class="mb-10">
-    <x-form.inputs.text label="Name:" name="name" placeholder="Venue Name Here" :value="old('name', $venue->name)"/>
-</div>
-
-<div class="mb-10">
-    <x-form.inputs.text label="Street Address:" name="street_address" placeholder="Street Address Here" :value="old('street_address', $venue->street_address)"/>
-</div>
-
-<div class="mb-10">
-    <div class="mb-5 row gx-10">
-        <div class="col-lg-4">
-            <x-form.inputs.text label="City:" name="city" placeholder="Orlando" :value="old('city', $venue->city)"/>
+<x-form {{ $attributes }} wire:submit="save">
+    <div class="space-y-4">
+        <div class="flex flex-col gap-1">
+            <x-form.input-label label="{{ __('venues.name') }}"/>
+            <x-form.inputs.text wire:model.live="form.name"/>
+            <x-form.validation-error field="form.name"/>
         </div>
-
-        <div class="col-lg-4">
-            <x-form.inputs.select label="State:" name="state" :options="$states" :selected="old('state', $venue->state)" />
+        <div class="flex flex-col gap-1">
+            <x-form.input-label label="{{ __('venues.street_address') }}"/>
+            <x-form.inputs.text wire:model.live="form.street_address"/>
+            <x-form.validation-error field="form.street_address"/>
         </div>
-
-        <div class="col-lg-4">
-            <x-form.inputs.text label="Zip Code:" name="zipcode" placeholder="12345" :value="old('zipcode', $venue->zipcode)"/>
+        <div class="flex flex-col gap-1">
+            <div class="columns-3">
+                <div class="flex flex-col gap-1">
+                    <x-form.input-label label="{{ __('venues.city') }}"/>
+                    <x-form.inputs.text wire:model.live="form.city"/>
+                    <x-form.validation-error field="form.city"/>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <x-form.input-label label="{{ __('venues.state') }}"/>
+                    <x-form.inputs.text wire:model.live="form.state"/>
+                    <x-form.validation-error field="form.state"/>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <x-form.input-label label="{{ __('venues.zipcode') }}"/>
+                    <x-form.inputs.text wire:model.live="form.zipcode"/>
+                    <x-form.validation-error field="form.zipcode"/>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</x-form>
