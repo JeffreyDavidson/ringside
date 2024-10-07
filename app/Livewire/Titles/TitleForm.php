@@ -2,38 +2,41 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Referees;
+namespace App\Livewire\Titles;
 
 use App\Livewire\Concerns\StandardForm;
-use App\Models\Referee;
+use App\Models\Title;
 use Exception;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class RefereeForm extends Form
+class TitleForm extends Form
 {
     use StandardForm;
 
-    public ?Referee $formModel;
+    public ?Title $formModel;
 
-    protected string $formModelType = Referee::class;
+    protected string $formModelType = Title::class;
 
-    #[Validate(as: 'referees.first_name')]
-    public $first_name = '';
+    #[Validate(as: 'titles.name')]
+    public $name = '';
 
-    #[Validate(as: 'referees.last_name')]
-    public $last_name = '';
-
-    #[Validate(as: 'employments.start_date')]
+    #[Validate(as: 'activations.start_date')]
     public $start_date = '';
 
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'min:3'],
-            'last_name' => ['required', 'string', 'min:3'],
-            'start_date' => ['nullable', 'string', 'date'],
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'ends_with:Title,Titles',
+                Rule::unique('titles', 'name'),
+            ],
+            'activation_date' => ['nullable', 'string', 'date'],
         ];
     }
 
@@ -48,8 +51,8 @@ class RefereeForm extends Form
                 Gate::authorize('update', $this->formModel);
                 $this->formModel->fill($validated);
             } else {
-                Gate::authorize('create', Referee::class);
-                $this->formModel = new Referee;
+                Gate::authorize('create', Title::class);
+                $this->formModel = new Title;
                 $this->formModel->fill($validated);
             }
 

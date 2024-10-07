@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Referees;
+namespace App\Livewire\Managers;
 
 use App\Livewire\Concerns\StandardForm;
-use App\Models\Referee;
+use App\Models\Manager;
 use Exception;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class RefereeForm extends Form
+class ManagerForm extends Form
 {
     use StandardForm;
 
-    public ?Referee $formModel;
+    public ?Manager $formModel;
 
-    protected string $formModelType = Referee::class;
+    protected string $formModelType = Manager::class;
 
-    #[Validate(as: 'referees.first_name')]
-    public $firstName = '';
+    #[Validate(as: 'managers.first_name')]
+    public $first_name = '';
 
-    #[Validate(as: 'referees.last_name')]
-    public $lastName = '';
+    #[Validate(as: 'managers.last_name')]
+    public $last_name = '';
 
     #[Validate(as: 'employments.start_date')]
     public $start_date = '';
@@ -48,8 +48,8 @@ class RefereeForm extends Form
                 Gate::authorize('update', $this->formModel);
                 $this->formModel->fill($validated);
             } else {
-                Gate::authorize('create', Referee::class);
-                $this->formModel = new Referee;
+                Gate::authorize('create', Manager::class);
+                $this->formModel = new Manager;
                 $this->formModel->fill($validated);
             }
 
