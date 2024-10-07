@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Venues\Modals;
+namespace App\Livewire\Events\Modals;
 
-use App\Livewire\Venues\VenueForm;
-use App\Models\Venue;
+use App\Livewire\Events\EventForm;
+use App\Models\Event;
 use Illuminate\Support\Facades\Gate;
 use LivewireUI\Modal\ModalComponent;
 
 class FormModal extends ModalComponent
 {
-    public ?Venue $venue;
+    public ?Event $model;
 
-    public VenueForm $form;
+    public EventForm $form;
 
     public function mount()
     {
-        if (isset($this->venue)) {
-            Gate::authorize('update', $this->venue);
-            $this->form->setupModel($this->venue);
+        if (isset($this->model)) {
+            Gate::authorize('update', $this->model);
+            $this->form->setupModel($this->model);
         } else {
-            Gate::authorize('create', Venue::class);
+            Gate::authorize('create', Event::class);
         }
     }
 
@@ -35,11 +35,11 @@ class FormModal extends ModalComponent
 
     public function getModalTitle(): string
     {
-        return isset($this->venue) ? 'Edit '.$this->venue->name : 'Add Venue';
+        return isset($this->model) ? 'Edit '.$this->model->name : 'Add Event';
     }
 
     public function render()
     {
-        return view('livewire.venues.modals.form-modal');
+        return view('livewire.events.modals.form-modal');
     }
 }
