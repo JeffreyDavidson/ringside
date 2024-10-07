@@ -105,7 +105,7 @@ class WrestlerForm extends Form
 
                 if (isset($validated['start_date'])) {
                     $this->formModel->employments()->create([
-                        'started_at' => $validated['start_date']
+                        'started_at' => $validated['start_date'],
                     ]);
                 }
             }
@@ -124,7 +124,7 @@ class WrestlerForm extends Form
     {
         $this->height_feet = $model->height->feet;
         $this->height_inches = $model->height->inches;
-        $this->start_date = $model->employments->whereNull('ended_at')->first()->started_at->format("Y-m-d") ?? null;
+        $this->start_date = $model->employments->whereNull('ended_at')->first()->started_at->format('Y-m-d') ?? null;
     }
 
     protected function runExtraPreSaveMethods(): void

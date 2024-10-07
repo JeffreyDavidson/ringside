@@ -22,6 +22,7 @@ class WrestlersTable extends DataTableComponent
     protected string $formModalPath = 'wrestlers.modals.form-modal';
 
     protected string $deleteModalPath = 'wrestlers.modals.delete-modal';
+
     protected string $baseModel = 'wrestler';
 
     public function configure(): void

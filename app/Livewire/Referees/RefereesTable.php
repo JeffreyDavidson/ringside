@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace App\Livewire\Referees;
 
-use App\Models\Referee;
 use App\Builders\RefereeBuilder;
-use Illuminate\Support\Facades\DB;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Models\Referee;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class RefereesTable extends DataTableComponent
 {
     use BaseTableTrait;
 
     protected string $databaseTableName = 'referees';
-    protected string $routeBasePath = 'referees';
-    protected string $formModalPath = 'referees.modals.form-modal';
-    protected string $deleteModalPath = 'referees.modals.delete-modal';
-    protected string $baseModel = 'referee';
 
+    protected string $routeBasePath = 'referees';
+
+    protected string $formModalPath = 'referees.modals.form-modal';
+
+    protected string $deleteModalPath = 'referees.modals.delete-modal';
+
+    protected string $baseModel = 'referee';
 
     public function configure(): void
     {

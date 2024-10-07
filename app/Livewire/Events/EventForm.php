@@ -44,7 +44,7 @@ class EventForm extends Form
             'name' => ['required', 'string', 'min:3', Rule::unique('events')->ignore(isset($this->formModel) ? $this->formModel : '')],
             'venue_id' => ['required', 'integer', Rule::exists('venues', 'id')],
             'date' => ['nullable', 'string', 'date'],
-            'preview' => ['required', 'string']
+            'preview' => ['required', 'string'],
         ];
     }
 

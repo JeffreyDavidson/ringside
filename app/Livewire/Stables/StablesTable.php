@@ -15,14 +15,16 @@ class StablesTable extends DataTableComponent
     use BaseTableTrait;
 
     protected string $databaseTableName = 'stables';
+
     protected string $routeBasePath = 'stables';
+
     protected string $formModalPath = 'stables.modals.form-modal';
+
     protected string $deleteModalPath = 'stables.modals.delete-modal';
+
     protected string $baseModel = 'stable';
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function builder(): StableBuilder
     {

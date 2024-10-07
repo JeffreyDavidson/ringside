@@ -19,9 +19,7 @@ class WrestlerMatchesTable extends DataTableComponent
      */
     public int $wrestlerId;
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function builder(): Builder
     {

@@ -21,9 +21,7 @@ class WrestlerStablesTable extends DataTableComponent
 
     protected string $databaseTableName = 'stables';
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function builder(): StableBuilder
     {

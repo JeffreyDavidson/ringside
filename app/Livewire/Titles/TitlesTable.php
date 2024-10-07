@@ -15,9 +15,13 @@ class TitlesTable extends DataTableComponent
     use BaseTableTrait;
 
     protected string $databaseTableName = 'titles';
+
     protected string $routeBasePath = 'titles';
+
     protected string $formModalPath = 'titles.modals.form-modal';
+
     protected string $deleteModalPath = 'titles.modals.delete-modal';
+
     protected string $baseModel = 'title';
 
     public function configure(): void

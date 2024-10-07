@@ -15,9 +15,13 @@ class TagTeamsTable extends DataTableComponent
     use BaseTableTrait;
 
     protected string $databaseTableName = 'tag_teams';
+
     protected string $routeBasePath = 'tag-teams';
+
     protected string $formModalPath = 'tag-teams.modals.form-modal';
+
     protected string $deleteModalPath = 'tag-teams.modals.delete-modal';
+
     protected string $baseModel = 'tag-team';
 
     public function configure(): void

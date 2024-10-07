@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
-use App\Models\Manager;
 use App\Builders\ManagerBuilder;
-use Illuminate\Support\Facades\DB;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Models\Manager;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class ManagersTable extends DataTableComponent
 {
     use BaseTableTrait;
 
     protected string $databaseTableName = 'managers';
+
     protected string $routeBasePath = 'managers';
+
     protected string $formModalPath = 'managers.modals.form-modal';
+
     protected string $deleteModalPath = 'managers.modals.delete-modal';
+
     protected string $baseModel = 'manager';
 
     public function configure(): void
@@ -56,7 +60,7 @@ class ManagersTable extends DataTableComponent
             Column::make(__('managers.status'), 'status')
                 ->view('tables.columns.status'),
             Column::make(__('employments.start_date'), 'latestEmployment.started_at')
-                    ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
+                ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 }

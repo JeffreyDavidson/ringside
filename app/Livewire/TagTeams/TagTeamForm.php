@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
-use App\Models\TagTeam;
 use App\Livewire\Concerns\StandardForm;
+use App\Models\TagTeam;
 use App\Rules\WrestlerCanJoinNewTagTeam;
 use Exception;
-use Livewire\Attributes\Validate;
-use Livewire\Form;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
+use Livewire\Form;
 
 class TagTeamForm extends Form
 {

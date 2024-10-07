@@ -9,7 +9,6 @@ use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Event;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class EventsTable extends DataTableComponent
 {
