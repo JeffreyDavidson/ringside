@@ -7,7 +7,7 @@
             </img>
         </button>
         <div x-show="open"
-            class="fixed z-[105px] m-0 light:border-gray-300 w-screen max-w-[250px] bottom-auto left-auto top-0 right-0 [transform:translate3d(-350px,65px,0)] dark:bg-[--tw-dropdown-background-color] border-1 dark:border-[--tw-dropdown-border] dark:shadow-[--tw-dropdown-box-shadow] rounded-xl will-change-transform">
+            class="fixed z-[105px] m-0 border border-gray-300 dark:border-gray-200 w-screen max-w-[250px] bottom-auto left-auto top-0 right-0 [transform:translate3d(-350px,65px,0)] bg-[--tw-dropdown-background-color] dark:shadow-[--tw-dropdown-box-shadow] rounded-xl will-change-transform py-2.5">
             <div class="flex items-center justify-between px-5 py-1.5 gap-1.5">
                 <div class="flex items-center gap-2">
                     <img alt="" class="size-9 rounded-full border-2 border-success"
@@ -23,10 +23,11 @@
                     </img>
                 </div>
             </div>
-            <div class="my-2.5 border-b dark:border-[--tw-dropdown-border]"></div>
+            <div class="my-2.5 border-b dark:[--tw-dropdown-border]"></div>
+            <div class="my-2.5 border-b dark:[--tw-dropdown-border]"></div>
             <div class="flex flex-col">
                 <div class="flex flex-col p-0 m-0 mb-0.5">
-                    <div class="flex items-center grow mx-2.5 p-2.5 rounded-md cursor-pointer group hover:bg-coal-300">
+                    <div class="flex items-center grow mx-2.5 p-2.5 rounded-md cursor-pointer group hover:bg-gray-100 dark:hover:bg-coal-300">
                         <span class="flex items-center shrink-0 mr-2.5 group-hover:text-primary">
                             <i class="ki-filled ki-moon"></i>
                         </span>
