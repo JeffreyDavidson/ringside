@@ -14,12 +14,11 @@
                         src="{{ asset('assets/media/avatars/300-2.png') }}">
                     <div class="flex flex-col gap-1.5">
                         <span class="text-sm text-gray-800 font-semibold leading-none">
-                            Cody Fisher
+                            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                         </span>
-                        <a class="text-xs text-gray-600 hover:text-primary font-medium leading-none"
-                            href="html/demo1/account/home/get-started.html">
-                            c.fisher@gmail.com
-                        </a>
+                        <span class="text-xs text-gray-600 font-medium leading-none">
+                            {{ auth()->user()->email }}
+                        </span>
                     </div>
                     </img>
                 </div>
