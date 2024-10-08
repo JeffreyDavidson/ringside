@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full" data-theme="true" data-theme-mode="dark" lang="en" lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="darkMode" :class="darkMode ? 'dark' : ''" >
+<html class="h-full" lang="en" lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="darkMode" :class="darkMode ? 'dark' : ''" >
 
 <head>
     <meta charset="utf-8">
