@@ -22,9 +22,6 @@
                     </div>
                     </img>
                 </div>
-                <span class="badge badge-xs badge-primary badge-outline">
-                    Pro
-                </span>
             </div>
             <div class="my-2.5 border-b dark:border-[--tw-dropdown-border]"></div>
             <div class="flex flex-col">
