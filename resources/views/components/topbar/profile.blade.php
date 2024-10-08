@@ -24,6 +24,20 @@
                 </div>
             </div>
             <div class="my-2.5 border-b dark:[--tw-dropdown-border]"></div>
+            <div class="flex flex-col">
+                <div class="flex flex-col p-0 m-0 mb-0.5">
+                    <div class="flex items-center grow mx-2.5 p-2.5 rounded-md cursor-pointer group hover:bg-gray-100 dark:hover:bg-coal-300">
+                        <span class="flex items-center shrink-0 mr-2.5 group-hover:text-primary">
+                            <i class="ki-filled ki-icon"></i>
+                        </span>
+                        <span class="flex items-center grow text-gray-800 text-2sm font-medium group-hover:text-gray-900">Language</span>
+                        <div class="flex items-center gap-1.5 rounded-md border border-gray-300 text-gray-600 p-1.5 text-2xs font-medium shrink-0">
+                            English
+                            <img alt="" class="inline-block size-3.5 rounded-full" src="{{ asset('assets/media/flags/united-states.svg') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="my-2.5 border-b dark:[--tw-dropdown-border]"></div>
             <div class="flex flex-col">
                 <div class="flex flex-col p-0 m-0 mb-0.5">
