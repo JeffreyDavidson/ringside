@@ -3,7 +3,7 @@
         <button x-ref="button" x-on:click="toggle()"
             class="inline-flex align-center cursor-pointer leading-4 h-10 font-medium border-1 border-solid border-transparent justify-center shrink-0 p-0 gap-0 w-10 rounded-full grow">
             <img alt="" class="size-9 rounded-full border-2 border-success shrink-0"
-                src="{{ asset('assets/media/avatars/300-2.png') }}">
+                src="{{ Vite::image('avatars/300-2.png') }}">
             </img>
         </button>
         <div x-show="open"
@@ -11,7 +11,7 @@
             <div class="flex items-center justify-between px-5 py-1.5 gap-1.5">
                 <div class="flex items-center gap-2">
                     <img alt="" class="size-9 rounded-full border-2 border-success"
-                        src="{{ asset('assets/media/avatars/300-2.png') }}">
+                        src="{{ Vite::image('avatars/300-2.png') }}">
                     <div class="flex flex-col gap-1.5">
                         <span class="text-sm text-gray-800 font-semibold leading-none">
                             {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
@@ -33,7 +33,7 @@
                         <span class="flex items-center grow text-gray-800 text-2sm font-medium group-hover:text-gray-900">Language</span>
                         <div class="flex items-center gap-1.5 rounded-md border border-gray-300 text-gray-600 p-1.5 text-2xs font-medium shrink-0">
                             English
-                            <img alt="" class="inline-block size-3.5 rounded-full" src="{{ asset('assets/media/flags/united-states.svg') }}">
+                            <img alt="" class="inline-block size-3.5 rounded-full" src="{{ Vite::image('flags/united-states.svg') }}">
                         </div>
                     </div>
                 </div>

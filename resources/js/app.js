@@ -7,6 +7,10 @@ import '../vendors/keenicons/styles.bundle.css';
 import '../css/modal.css';
 import '../css/app.css';
 
+import.meta.glob([
+    '../images/**',
+])
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('darkMode', () => ({
         darkMode: Alpine.$persist(true).as('darkMode'),
