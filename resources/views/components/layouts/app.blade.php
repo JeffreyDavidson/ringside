@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html class="h-full" lang="en" lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="darkMode" :class="darkMode ? 'dark' : ''" >
+<html class="h-full" lang="en" lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="darkMode"
+    :class="darkMode ? 'dark' : ''">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Ringside') }}</title>
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" />
     @vite('resources/js/app.js')
 
     @livewireStyles
