@@ -24,9 +24,7 @@ class StablesTable extends DataTableComponent
 
     protected string $baseModel = 'stable';
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function builder(): StableBuilder
     {
