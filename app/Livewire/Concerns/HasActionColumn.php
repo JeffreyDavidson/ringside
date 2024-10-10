@@ -12,7 +12,7 @@ trait HasActionColumn
     {
         return Column::make(__('core.actions'))
             ->label(
-                fn ($row, Column $column) => view('tables.columns.action-column')->with(
+                fn ($row, Column $column) => view('components.tables.columns.action-column')->with(
                     [
                         'rowId' => $row->id,
                         'path' => $this->routeBasePath,

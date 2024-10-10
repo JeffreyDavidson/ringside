@@ -46,7 +46,7 @@ class TitlesTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make(__('titles.status'), 'status')
-                ->view('tables.columns.status'),
+                ->view('components.tables.columns.status'),
             Column::make(__('activations.start_date'), 'latestActivation.started_at')
                 ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];

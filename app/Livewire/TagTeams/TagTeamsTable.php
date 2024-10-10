@@ -46,7 +46,7 @@ class TagTeamsTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make(__('tag-teams.status'), 'status')
-                ->view('tables.columns.status'),
+                ->view('components.tables.columns.status'),
             Column::make(__('tag-teams.combined_weight'), 'combined_weight'),
             Column::make(__('employments.start_date'), 'latestEmployment.started_at')
                 ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),

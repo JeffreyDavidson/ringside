@@ -24,7 +24,9 @@ class StablesTable extends DataTableComponent
 
     protected string $baseModel = 'stable';
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     public function builder(): StableBuilder
     {
@@ -41,19 +43,9 @@ class StablesTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make(__('stables.status'), 'status')
-                ->view('tables.columns.status'),
+                ->view('components.tables.columns.status'),
             Column::make(__('activations.start_date'), 'started_at')
                 ->label(fn ($row, Column $column) => $row->activations->first()->started_at->format('Y-m-d')),
-            Column::make(__('core.actions'), 'actions')
-                ->label(
-                    fn ($row, Column $column) => view('tables.columns.action-column')->with(
-                        [
-                            'viewLink' => route('stables.show', $row),
-                            'editLink' => route('stables.edit', $row),
-                            'deleteLink' => route('stables.destroy', $row),
-                        ]
-                    )
-                )->html(),
         ];
     }
 }

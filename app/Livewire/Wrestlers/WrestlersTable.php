@@ -57,7 +57,7 @@ class WrestlersTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make(__('wrestlers.status'), 'status')
-                ->view('tables.columns.status'),
+                ->view('components.tables.columns.status'),
             Column::make(__('wrestlers.height'), 'height'),
             Column::make(__('wrestlers.weight'), 'weight'),
             Column::make(__('wrestlers.hometown'), 'hometown'),
