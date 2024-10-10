@@ -16,31 +16,22 @@
 </head>
 
 <body
-    class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] demo1 sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
-    <!-- Page -->
-    <!-- Main -->
+    class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
     <div class="flex grow">
-        <!-- Sidebar -->
-        <x-layouts.partials.sidebar />
-        <!-- End of Sidebar -->
-        <!-- Wrapper -->
-        <div class="wrapper flex grow flex-col">
-            <!-- Header -->
+        <x-sidebar />
+
+        <x-page.wrapper>
             <x-layouts.partials.header />
-            <!-- End of Header -->
-            <!-- Content -->
-            <main class="grow content pt-5" id="content" role="content">
+
+            <main class="grow content pt-5" role="content">
                 {{ $slot }}
             </main>
-            <!-- End of Content -->
-            <!-- Footer -->
+
             <x-layouts.partials.footer />
-            <!-- End of Footer -->
-        </div>
-        <!-- End of Wrapper -->
+        </x-page.wrapper>
+
     </div>
-    <!-- End of Main -->
-    <!-- End of Page -->
+
     @livewireScriptConfig
     @livewire('wire-elements-modal')
 </body>
