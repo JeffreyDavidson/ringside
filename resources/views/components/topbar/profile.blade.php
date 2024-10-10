@@ -55,10 +55,10 @@
                     </div>
                 </div>
                 <div class="flex flex-col m-0 px-4 py-1.5">
-                    <a class="btn btn-sm btn-light justify-center"
-                        href="html/demo1/authentication/classic/sign-in.html">
-                        Log out
-                    </a>
+                    <form method="post" action="{{ route('logout') }}" class="flex flex-col">
+                        @csrf
+                        <button class="btn btn-sm btn-light justify-center">Log out</button>
+                    </form>
                 </div>
             </div>
         </div>
