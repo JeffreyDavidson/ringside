@@ -26,7 +26,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     /**
      * Bootstrap any application services.
@@ -61,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
             'stable' => \App\Models\Stable::class,
         ]);
 
-        Vite::macro('image', fn (string $asset) => $this->asset("./resources/images/{$asset}"));
+        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
 
         $this->bootRoute();
     }
