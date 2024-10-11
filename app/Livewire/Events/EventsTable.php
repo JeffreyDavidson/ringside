@@ -45,7 +45,7 @@ class EventsTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make(__('events.status'), 'status')
-                ->view('tables.columns.status'),
+                ->view('components.tables.columns.status'),
             Column::make(__('events.date'), 'date')
                 ->label(fn ($row, Column $column) => $row->date?->format('Y-m-d') ?? 'TBD')
                 ->sortable(),

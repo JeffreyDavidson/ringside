@@ -388,14 +388,22 @@ module.exports = {
 				6.5: '1.625rem', 		// 26px
 				7.5: '1.875rem', 		// 30px
 				12.5: '3.125rem', 	// 40px
+                18: '70px',
+                70: '280px',
 			},
+            padding: {
+                18: '70px',
+            },
 			screens: {
 				sm: '640px',
 				md: '768px',
 				lg: '1024px',
 				xl: '1280px',
 				'2xl': '1536px',
-			}
+			},
+            transitionDuration: {
+                '3': '.3s',
+            }
 		},
 		custom: ({ theme }) => ({
 			components: {
