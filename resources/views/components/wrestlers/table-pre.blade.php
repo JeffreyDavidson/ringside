@@ -1,9 +1,7 @@
-<div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
+<x-container-fixed>
     <div class="flex flex-col justify-center gap-2">
-        <h1 class="text-xl font-medium leading-none text-gray-900">
-            Wrestlers
-        </h1>
-        <div class="flex items-center flex-wrap gap-1.5 font-medium">
+        <x-page.heading>Wrestlers</x-page.heading>
+        <x-tables.metadata>
             <span class="text-md text-gray-600">
                 All Wrestlers:
             </span>
@@ -16,7 +14,7 @@
             <span class="text-md gray-800 font-semibold">
                 {{ $this->builder()->where('status', \App\Enums\WrestlerStatus::Bookable->value)->count() }}
             </span>
-        </div>
+        </x-tables.metadata>
     </div>
     <div class="flex items-center gap-2.5">
         <div class="flex justify-items-end gap-2.5">
@@ -26,4 +24,4 @@
             </button>
         </div>
     </div>
-</div>
+</x-container-fixed>

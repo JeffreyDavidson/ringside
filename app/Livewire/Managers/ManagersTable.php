@@ -58,7 +58,7 @@ class ManagersTable extends DataTableComponent
                         ->orWhereLike(DB::raw("CONCAT(first_name, ' ', last_name)"), "%{$searchTerm}%");
                 }),
             Column::make(__('managers.status'), 'status')
-                ->view('tables.columns.status'),
+                ->view('components.tables.columns.status'),
             Column::make(__('employments.start_date'), 'latestEmployment.started_at')
                 ->label(fn ($row, Column $column) => $row->latestEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
