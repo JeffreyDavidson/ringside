@@ -38,6 +38,10 @@ module.exports = {
             colors: {
                 'black-blue': '#1B1C22',
             },
+            gap: {
+                'x': '.275rem',
+                '1.25': '.3125rem'
+            },
 			base: {
 				colors: {
 					gray: {

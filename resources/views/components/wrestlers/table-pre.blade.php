@@ -1,27 +1,19 @@
-<x-container-fixed>
-    <div class="flex flex-col justify-center gap-2">
+<x-tables.header>
+    <x-tables.header.container>
         <x-page.heading>Wrestlers</x-page.heading>
-        <x-tables.metadata>
-            <span class="text-md text-gray-600">
-                All Wrestlers:
-            </span>
-            <span class="text-md gray-800 font-semibold me-2">
+        <x-tables.header.metadata>
+            <x-tables.header.metadata-label>All Wrestlers</x-tables.header.metadata-label>
+            <x-tables.header.metadata-count class="me-2">
                 {{ $this->builder()->count() }}
-            </span>
-            <span class="text-md text-gray-600">
-                Bookable
-            </span>
-            <span class="text-md gray-800 font-semibold">
+            </x-tables.header.metadata-count>
+            <x-tables.header.metadata-label>Bookable</x-tables.header.metadata-label>
+            <x-tables.header.metadata-count>
                 {{ $this->builder()->where('status', \App\Enums\WrestlerStatus::Bookable->value)->count() }}
-            </span>
-        </x-tables.metadata>
-    </div>
-    <div class="flex items-center gap-2.5">
-        <div class="flex justify-items-end gap-2.5">
-            <button class="btn btn-sm btn-primary"
-                @click="$dispatch('openModal', { component: 'wrestlers.modals.form-modal' })">
-                Add Wrestler
-            </button>
-        </div>
-    </div>
-</x-container-fixed>
+            </x-tables.header.metadata-count>
+        </x-tables.header.metadata>
+    </x-tables.header.container>
+
+    <x-tables.actions-container>
+        <x-buttons.add-new component="wrestlers.modals.form-modal">Add Wrestler</x-buttons.add-new>
+    </x-tables.actions-container>
+</x-tables.header>
