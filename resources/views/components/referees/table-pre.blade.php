@@ -6,10 +6,7 @@
             <x-tables.header.metadata-count class="me-2">
                 {{ $this->builder()->count() }}
             </x-tables.header.metadata-count>
-            <x-tables.header.metadata-label>Bookable</x-tables.header.metadata-label>
-            <x-tables.header.metadata-count>
-                {{ $this->builder()->where('status', \App\Enums\RefereeStatus::Bookable->value)->count() }}
-            </x-tables.header.metadata-count>
+            <x-tables.header.metadata-statuses enum="\App\Enums\RefereeStatus"/>
         </x-tables.header.metadata>
     </x-tables.header.container>
 
