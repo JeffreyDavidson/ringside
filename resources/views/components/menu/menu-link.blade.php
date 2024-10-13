@@ -11,7 +11,7 @@
             </span>
         @endisset
         <span
-            class="menu-title text-2sm font-normal text-gray-800 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary" :class="sidebarOpen ? '' : 'hidden'">
+            class="flex items-center grow text-sm font-medium text-gray-800 active:text-primary active:font-semibold hover:!text-primary" :class="sidebarOpen ? '' : 'hidden'">
             {{ $slot }}
         </span>
     </a>
