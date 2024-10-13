@@ -6,17 +6,21 @@
     :class="sidebarOpen ? 'w-70' : 'w-20'">
     <x-sidebar.header>
         <a class="dark:hidden" href="{{ route('dashboard') }}">
-            <img class="default-logo min-h-[22px] max-w-none" src="{{ Vite::image('app/default-logo.svg') }}" />
-            <img class="small-logo min-h-[22px] max-w-none" src="{{ Vite::image('app/mini-logo.svg') }}" />
+            <img class="min-h-[22px] max-w-none"
+                :src="sidebarOpen ? `{{ Vite::image('app/default-logo.svg') }}` : `{{ Vite::image('app/mini-logo.svg') }}`"
+                :class="sidebarOpen ? 'default-logo' : 'small-logo'"
+            />
         </a>
         <a class="hidden dark:block" href="{{ route('dashboard') }}">
-            <img class="default-logo min-h-[22px] max-w-none" src="{{ Vite::image('app/default-logo-dark.svg') }}" />
-            <img class="small-logo min-h-[22px] max-w-none" src="{{ Vite::image('app/mini-logo.svg') }}" />
+            <img class="min-h-[22px] max-w-none"
+                :src="sidebarOpen ? `{{ Vite::image('app/default-logo-dark.svg') }}` : `{{ Vite::image('app/mini-logo.svg') }}`"
+                :class="sidebarOpen ? 'default-logo' : 'small-logo'"
+            />
         </a>
         <button
-            x-click="sidebarOpen = true"
+            @click="sidebarOpen = !sidebarOpen"
             class="btn btn-icon btn-icon-md size-[30px] rounded-lg border border-gray-200 dark:border-gray-300 bg-light text-gray-500 hover:text-gray-700 toggle absolute left-full top-2/4 -translate-x-2/4 -translate-y-2/4">
-            <i class="ki-filled ki-black-left-line toggle-active:rotate-180 transition-all duration-300"></i>
+            <i class="ki-filled ki-black-left-line transition-all duration-300" :class="sidebarOpen ? 'ki-black-left-line' : 'ki-black-right-line'"></i>
         </button>
     </x-sidebar.header>
     <x-sidebar.content>

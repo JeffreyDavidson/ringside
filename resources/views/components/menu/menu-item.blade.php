@@ -8,7 +8,8 @@
     close() {
         this.open = false
     }
-}" @class(['menu-item', 'menu-item-accordian' => isset($subMenu)])>
+}" @class(['menu-item', 'menu-item-accordian' => isset($subMenu)])
+:class="sidebarOpen ? '' : 'hidden'">
     <div @click="toggle()"
         class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]"
         href="" tabindex="0">

@@ -19,7 +19,7 @@
     x-data="{ sidebarOpen: true }"
     class="antialiased flex h-full text-base text-gray-700 demo1 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
     <div class="flex grow">
-        <x-sidebar :sidebarOpen />
+        <x-sidebar/>
 
         <x-page.wrapper>
             <x-layouts.partials.header />
