@@ -4,7 +4,7 @@
         <x-mega-menu.wrapper>
             <x-mega-menu.menu>
                 <x-mega-menu.menu-link href="{{ route('dashboard') }}" :isActive="request()->routeIs('dashboard')">
-                    Home
+                    Dashboard
                 </x-mega-menu.menu-link>
                 <x-mega-menu.menu-item :isActive="request()->routeIs('titles.*')">
                     Roster

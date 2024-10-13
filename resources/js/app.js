@@ -1,6 +1,7 @@
 import './bootstrap';
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 import Clipboard from '@ryangjchandler/alpine-clipboard'
+import collapse from '@alpinejs/collapse'
 import '../../vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js';
 import ui from '@alpinejs/ui';
 import '../vendors/keenicons/styles.bundle.css';
@@ -28,5 +29,6 @@ document.addEventListener('alpine:init', () => {
 });
 
 Alpine.plugin(Clipboard)
+Alpine.plugin(collapse)
 Alpine.plugin(ui)
 Livewire.start();

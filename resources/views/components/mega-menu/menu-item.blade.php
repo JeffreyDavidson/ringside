@@ -8,7 +8,7 @@
     }
 }" @class(['flex flex-col p-0 m-0 group'])>
     <div @mouseleave="open = false"
-        class="menu-link text-sm text-gray-800 menu-link-hover:text-primary menu-item-active:text-gray-900 menu-item-show:text-primary menu-item-here:text-gray-900 menu-item-active:font-medium menu-item-here:font-medium">
+        class="menu-link text-sm text-gray-800 hover:text-primary active:text-gray-900">
         {{ $slot }}
     </div>
 

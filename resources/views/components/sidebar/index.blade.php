@@ -1,8 +1,9 @@
 <div
     {{ $attributes->merge([
         'class' =>
-            'sidebar dark:bg-coal-600 bg-light border-r border-r-gray-200 dark:border-r-coal-100 fixed top-0 bottom-0 z-20 hidden lg:flex flex-col items-stretch shrink-0',
-    ]) }}>
+            'bg-light border-r border-r-gray-200 fixed top-0 bottom-0 z-20 hidden flex-col items-stretch shrink-0 lg:flex dark:bg-coal-600 dark:border-r-coal-100',
+    ]) }}
+    :class="sidebarOpen ? 'w-70' : 'w-20'">
     <x-sidebar.header>
         <a class="dark:hidden" href="{{ route('dashboard') }}">
             <img class="default-logo min-h-[22px] max-w-none" src="{{ Vite::image('app/default-logo.svg') }}" />
@@ -13,6 +14,7 @@
             <img class="small-logo min-h-[22px] max-w-none" src="{{ Vite::image('app/mini-logo.svg') }}" />
         </a>
         <button
+            x-click="sidebarOpen = true"
             class="btn btn-icon btn-icon-md size-[30px] rounded-lg border border-gray-200 dark:border-gray-300 bg-light text-gray-500 hover:text-gray-700 toggle absolute left-full top-2/4 -translate-x-2/4 -translate-y-2/4">
             <i class="ki-filled ki-black-left-line toggle-active:rotate-180 transition-all duration-300"></i>
         </button>
