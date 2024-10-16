@@ -1,43 +1,15 @@
 <x-form {{ $attributes }} wire:submit="save">
     <div class="space-y-4">
-        <div class="flex flex-col gap-1">
-            <x-form.input-label label="{{ __('wrestlers.name') }}"/>
-            <x-form.inputs.text wire:model.live="form.name"/>
-            <x-form.validation-error field="form.name"/>
-        </div>
+        <x-form.field-groups.text label="{{ __('wrestlers.name') }}" isLive="true" name="form.name" />
         <div class="flex flex-col gap-1">
             <div class="columns-3">
-                <div class="flex flex-col gap-1">
-                    <x-form.input-label label="{{ __('wrestlers.feet') }}"/>
-                    <x-form.inputs.number wire:model.live="form.height_feet"/>
-                    <x-form.validation-error field="form.height_feet"/>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <x-form.input-label label="{{ __('wrestlers.inches') }}"/>
-                    <x-form.inputs.number wire:model.live="form.height_inches"/>
-                    <x-form.validation-error field="form.height_inches"/>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <x-form.input-label label="{{ __('wrestlers.weight') }}"/>
-                    <x-form.inputs.number wire:model.live="form.weight"/>
-                    <x-form.validation-error field="form.weight"/>
-                </div>
+                <x-form.field-groups.number label="{{ __('wrestlers.feet') }}" name="form.height_feet" />
+                <x-form.field-groups.number label="{{ __('wrestlers.inches') }}" name="form.height_inches" />
+                <x-form.field-groups.number label="{{ __('wrestlers.weight') }}" name="form.weight" />
             </div>
         </div>
-        <div class="flex flex-col gap-1">
-            <x-form.input-label label="{{ __('wrestlers.hometown') }}"/>
-            <x-form.inputs.text wire:model.live="form.hometown"/>
-            <x-form.validation-error field="form.hometown"/>
-        </div>
-        <div class="flex flex-col gap-1">
-            <x-form.input-label label="{{ __('employments.start_date') }}"/>
-            <x-form.inputs.date wire:model.live="form.start_date"/>
-            <x-form.validation-error field="form.start_date"/>
-        </div>
-        <div class="flex flex-col gap-1">
-            <x-form.input-label label="{{ __('wrestlers.signature_move') }}"/>
-            <x-form.inputs.text wire:model.live="form.signature_move"/>
-            <x-form.validation-error field="form.signature_move"/>
-        </div>
+        <x-form.field-groups.text label="{{ __('wrestlers.hometown') }}" name="form.hometown" />
+        <x-form.field-groups.text label="{{ __('wrestlers.signature_move') }}" name="form.signature_move" />
+        <x-form.field-groups.date label="{{ __('employments.start_date') }}" name="form.start_date" />
     </div>
 </x-form>
