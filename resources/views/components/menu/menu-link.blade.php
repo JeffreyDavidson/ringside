@@ -1,18 +1,25 @@
-<div class="menu-item">
-    <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
-        {{ $attributes }} tabindex="0">
+@props([
+    'icon' => '',
+    'hasSubMenu' => false,
+])
+
+<div class="flex flex-col p-0 m-o">
+    <a {{ $attributes }} tabindex="0" @class([
+        'menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]',
+        'dark:bg-coal-300 dark:border-gray-100 rounded-lg' =>
+            request()->url() === $attributes['href'],
+    ])>
         @isset($icon)
-            <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
-                <i class="ki-filled {{ $icon }} text-lg"></i>
-            </span>
+            <x-menu.menu-icon :icon="$icon" />
         @else
-            <span
-                class="menu-bullet flex w-[6px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary">
-            </span>
+            <x-menu.menu-bullet />
         @endisset
-        <span
-            class="flex items-center grow text-sm font-medium text-gray-800 active:text-primary active:font-semibold hover:!text-primary" :class="sidebarOpen ? '' : 'hidden'">
+        <x-menu.menu-title :class="request()->url() === $attributes['href'] ? 'text-primary font-semibold' : ''">
             {{ $slot }}
-        </span>
+        </x-menu.menu-title>
+
+        @if ($hasSubMenu)
+            <x-menu.menu-dropdown-icons />
+        @endif
     </a>
 </div>
