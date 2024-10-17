@@ -14,6 +14,7 @@
         @else
             <x-menu.menu-bullet />
         @endisset
+
         <x-menu.menu-title :class="request()->url() === $attributes['href'] ? 'text-primary font-semibold' : ''">
             {{ $slot }}
         </x-menu.menu-title>
