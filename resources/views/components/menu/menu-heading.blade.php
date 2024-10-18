@@ -2,5 +2,6 @@
     <span class="uppercase text-2sm font-medium text-gray-500 pl-[10px] pr-[10px]" x-text="sidebarOpen ? `{{ $slot }}` : '...'"
         :class="sidebarOpen ? 'lg:invisible lg:relative' : ''"
     ">
+     {{ $slot }}
     </span>
 </div>

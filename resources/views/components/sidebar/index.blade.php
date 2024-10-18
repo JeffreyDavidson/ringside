@@ -22,8 +22,9 @@
         </button>
     </x-sidebar.header>
     <x-sidebar.content>
+        <x-menus.sidebar/>
         <!-- Sidebar Menu -->
-        <x-menu>
+        {{-- <x-menu>
             <x-menu.menu-link icon="ki-home" :href="route('dashboard')">Dashboard</x-menu.menu-link>
             <x-menu.menu-heading>Admin</x-menu.menu-heading>
             <x-menu.menu-item icon="ki-people" :subMenuOpen="request()->is('roster/*')">
@@ -39,7 +40,7 @@
             <x-menu.menu-link icon="ki-cup" :href="route('titles.index')">Titles</x-menu.menu-link>
             <x-menu.menu-link icon="ki-home-3" :href="route('venues.index')">Venues</x-menu.menu-link>
             <x-menu.menu-link icon="ki-calendar" :href="route('events.index')">Events</x-menu.menu-link>
-        </x-menu>
+        </x-menu> --}}
         <!-- End of Sidebar Menu -->
     </x-sidebar.content>
 </div>
