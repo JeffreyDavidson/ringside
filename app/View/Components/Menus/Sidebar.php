@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components\Menus;
 
 use Closure;
@@ -14,7 +16,7 @@ class Sidebar extends Component
     public function render(): View|Closure|string
     {
         $menuItems = [
-            ['icon' => 'ki-home', 'name' => 'Dashboard', 'href' => route("dashboard")],
+            ['icon' => 'ki-home', 'name' => 'Dashboard', 'href' => route('dashboard')],
             [
                 'name' => 'Admin',
                 'items' => [
@@ -22,16 +24,16 @@ class Sidebar extends Component
                         'icon' => 'ki-people',
                         'name' => 'Roster',
                         'items' => [
-                            ['name' => 'Wrestlers', 'href' => route("wrestlers.index")],
-                            ['name' => 'Tag Teams', 'href' => route("tag-teams.index")],
-                            ['name' => 'Managers', 'href' => route("managers.index")],
-                            ['name' => 'Referees', 'href' => route("referees.index")],
-                            ['name' => 'Stables', 'href' => route("stables.index")],
-                        ]
+                            ['name' => 'Wrestlers', 'href' => route('wrestlers.index')],
+                            ['name' => 'Tag Teams', 'href' => route('tag-teams.index')],
+                            ['name' => 'Managers', 'href' => route('managers.index')],
+                            ['name' => 'Referees', 'href' => route('referees.index')],
+                            ['name' => 'Stables', 'href' => route('stables.index')],
+                        ],
                     ],
-                    ['icon' => 'ki-cup', 'name' => 'Titles', 'href' => route("titles.index")],
-                    ['icon' => 'ki-home-3', 'name' => 'Venues', 'href' => route("venues.index")],
-                    ['icon' => 'ki-calendar', 'name' => 'Events', 'href' => route("events.index")]
+                    ['icon' => 'ki-cup', 'name' => 'Titles', 'href' => route('titles.index')],
+                    ['icon' => 'ki-home-3', 'name' => 'Venues', 'href' => route('venues.index')],
+                    ['icon' => 'ki-calendar', 'name' => 'Events', 'href' => route('events.index')],
                 ],
             ],
         ];
