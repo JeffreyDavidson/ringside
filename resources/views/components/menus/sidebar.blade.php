@@ -1,24 +1,26 @@
 <x-menu x-data="{ open: false }" @click.outside="open = false">
-    <x-testmenu.mainmenu :buttonLabel="'Menu'" :index=0>
+    <x-testmenu.mainmenu :index=0>
+        {{-- @dd($menuItems) --}}
         @foreach ($menuItems as $menuItem)
-            @if(array_key_exists('items', $menuItem))
+            {{-- @dd($menuItem) --}}
+            @if (!array_key_exists('children', $menuItem))
+                <x-testmenu.item icon="{{ $menuItem['icon'] ?? '' }}"
+                    href="{{ $menuItem['href'] ?? '' }}">{{ $menuItem['name'] }}</x-testmenu.item>
+            @else
                 <x-testmenu.submenu buttonLabel="{{ $menuItem['name'] }}" :index=1>
-                    @foreach($menuItem['items'] as $item)
-                        @if(array_key_exists('items', $item))
+                    @foreach ($menuItem['children'] as $item)
+                        @if (!array_key_exists('children', $item))
+                            <x-testmenu.item href="{{ $item['href'] }}">{{ $item['name'] }}</x-testmenu.item>
+                        @else
                             <x-testmenu.submenu buttonLabel="{{ $item['name'] }}" :index=1>
-                                @foreach($item['items'] as $childItem)
-                                    <x-testmenu.item href="{{ $childItem['href'] }}" >{{ $childItem['name'] }}</x-testmenu.item>
+                                @foreach ($item['children'] as $childItem)
+                                    <x-testmenu.item icon="{{ $childItem['icon'] ?? '' }}"
+                                        href="{{ $childItem['href'] }}">{{ $childItem['name'] }}</x-testmenu.item>
                                 @endforeach
                             </x-testmenu.submenu>
-
-                        @else
-                            <x-testmenu.item href="{{ $item['href'] }}" >{{ $item['name'] }}</x-testmenu.item>
                         @endif
-
                     @endforeach
                 </x-testmenu.submenu>
-            @else
-                <x-testmenu.item href="{{ $menuItem['href'] }}" >{{ $menuItem['name'] }}</x-testmenu.item>
             @endif
         @endforeach
     </x-testmenu.mainmenu>

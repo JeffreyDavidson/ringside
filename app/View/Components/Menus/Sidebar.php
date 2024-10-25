@@ -19,11 +19,11 @@ class Sidebar extends Component
             ['icon' => 'ki-home', 'name' => 'Dashboard', 'href' => route('dashboard')],
             [
                 'name' => 'Admin',
-                'items' => [
+                'children' => [
                     [
                         'icon' => 'ki-people',
                         'name' => 'Roster',
-                        'items' => [
+                        'children' => [
                             ['name' => 'Wrestlers', 'href' => route('wrestlers.index')],
                             ['name' => 'Tag Teams', 'href' => route('tag-teams.index')],
                             ['name' => 'Managers', 'href' => route('managers.index')],
