@@ -6,14 +6,13 @@ namespace App\Models;
 
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
-use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Retirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Title extends Model implements Activatable, Retirable
+class Title extends Model implements Retirable
 {
     use Concerns\HasChampionships;
     use Concerns\HasNewActivations;
