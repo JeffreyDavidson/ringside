@@ -1,28 +1,28 @@
 <x-menu x-data="{ open: false }" @click.outside="open = false">
-    <x-testmenu.mainmenu :index=0>
+    <x-newmenu.mainmenu :index=0>
         @foreach ($menuItems as $menuItem)
             {{-- @dd($menuItem) --}}
             @if (!array_key_exists('children', $menuItem))
-                <x-testmenu.item icon="{{ $menuItem['icon'] ?? '' }}"
-                    href="{{ $menuItem['href'] ?? '' }}">{{ $menuItem['name'] }}</x-testmenu.item>
+                <x-newmenu.item icon="{{ $menuItem['icon'] ?? '' }}"
+                    href="{{ $menuItem['href'] ?? '' }}">{{ $menuItem['name'] }}</x-newmenu.item>
             @else
-                <x-testmenu.submenu buttonLabel="{{ $menuItem['name'] }}" **:index=1**>
+                <x-newmenu.submenu buttonLabel="{{ $menuItem['name'] }}" **:index=1**>
                     @foreach ($menuItem['children'] as $item)
                         @if (!array_key_exists('children', $item))
-                            <x-testmenu.item href="{{ $item['href'] }}">{{ $item['name'] }}</x-testmenu.item>
+                            <x-newmenu.item href="{{ $item['href'] }}">{{ $item['name'] }}</x-newmenu.item>
                         @else
-                            <x-testmenu.submenu buttonLabel="{{ $item['name'] }}" **:index=1**>
+                            <x-newmenu.submenu buttonLabel="{{ $item['name'] }}" **:index=1**>
                                 @foreach ($item['children'] as $childItem)
-                                    <x-testmenu.item icon="{{ $childItem['icon'] ?? '' }}"
-                                        href="{{ $childItem['href'] }}">{{ $childItem['name'] }}</x-testmenu.item>
+                                    <x-newmenu.item icon="{{ $childItem['icon'] ?? '' }}"
+                                        href="{{ $childItem['href'] }}">{{ $childItem['name'] }}</x-newmenu.item>
                                 @endforeach
-                            </x-testmenu.submenu>
+                            </x-newmenu.submenu>
                         @endif
                     @endforeach
-                </x-testmenu.submenu>
+                </x-newmenu.submenu>
             @endif
         @endforeach
-    </x-testmenu.mainmenu>
+    </x-newmenu.mainmenu>
     <x-testmenu.mainmenu :buttonLabel="'Menu'" :index=0>
         <x-testmenu.item>Item 1</x-testmenu.item>
         <x-testmenu.submenu :buttonLabel="'Item 2'" :index=1>
