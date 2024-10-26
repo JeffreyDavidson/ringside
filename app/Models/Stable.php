@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stable extends Model implements Activatable, Retirable
 {
-    use Concerns\HasActivations;
     use Concerns\HasMembers;
     use Concerns\HasRetirements;
     use Concerns\OwnedByUser;
