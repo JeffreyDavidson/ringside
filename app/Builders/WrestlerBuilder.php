@@ -8,7 +8,9 @@ use App\Enums\WrestlerStatus;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Builder<\App\Models\Wrestler>
+ * @template TModelClass of \App\Models\Wrestler
+ *
+ * @extends \Illuminate\Database\Eloquent\Builder<TModelClass>
  */
 class WrestlerBuilder extends Builder
 {
