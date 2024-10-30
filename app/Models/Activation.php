@@ -26,6 +26,19 @@ class Activation extends Model
     ];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'started_at' => 'datetime',
+            'ended_at' => 'datetime',
+        ];
+    }
+
+    /**
      * Get the activated model.
      *
      * @return MorphTo<Model, Activation>
@@ -41,18 +54,5 @@ class Activation extends Model
     public function startedBefore(Carbon $date): bool
     {
         return $this->started_at->lt($date);
-    }
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'started_at' => 'datetime',
-            'ended_at' => 'datetime',
-        ];
     }
 }

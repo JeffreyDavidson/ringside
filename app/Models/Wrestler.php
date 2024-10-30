@@ -60,6 +60,19 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     ];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'height' => HeightCast::class,
+            'status' => WrestlerStatus::class,
+        ];
+    }
+
+    /**
      * Create a new Eloquent query builder for the model.
      *
      * @return WrestlerBuilder<Wrestler>
@@ -75,19 +88,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     public function getIdentifier(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'height' => HeightCast::class,
-            'status' => WrestlerStatus::class,
-        ];
     }
 
     /**
