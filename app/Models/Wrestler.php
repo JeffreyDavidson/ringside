@@ -28,7 +28,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     use Concerns\CanWinTitles;
     use Concerns\HasManagers;
     use Concerns\HasMatches;
-    use Concerns\HasNewEmployments;
     use Concerns\OwnedByUser;
     /** @use HasFactory<\Database\Factories\WrestlerFactory> */
     use HasFactory;

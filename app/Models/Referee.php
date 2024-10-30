@@ -21,8 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable
 {
-    use Concerns\HasInjuries;
-    use Concerns\HasNewEmployments;
     use HasFactory;
     use SoftDeletes;
 

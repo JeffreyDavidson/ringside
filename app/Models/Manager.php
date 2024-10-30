@@ -22,8 +22,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
 {
     use Concerns\CanJoinStables;
-    use Concerns\HasInjuries;
-    use Concerns\HasNewEmployments;
     use Concerns\Manageables;
     use Concerns\OwnedByUser;
     use HasFactory;
