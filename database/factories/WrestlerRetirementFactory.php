@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WrestlerRetirement>
@@ -21,5 +22,19 @@ class WrestlerRetirementFactory extends Factory
             'wrestler_id' => Wrestler::factory(),
             'started_at' => now()->toDateTimeString()
         ];
+    }
+
+    public function started(Carbon $retirementDate): static
+    {
+        return $this->state([
+            'started_at' => $retirementDate->toDateTimeString(),
+        ]);
+    }
+
+    public function ended(Carbon $unretireDate): static
+    {
+        return $this->state([
+            'ended_at' => $unretireDate->toDateTimeString(),
+        ]);
     }
 }
