@@ -91,6 +91,17 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     }
 
     /**
+     * @return HasOne<TagTeamEmployment, $this>
+     */
+    public function futureEmployment(): HasOne
+    {
+        return $this->employments()
+            ->whereNull('ended_at')
+            ->where('started_at', '>', now())
+            ->one();
+    }
+
+    /**
      * @return HasMany<TagTeamRetirement, $this>
      */
     public function retirements(): HasMany
