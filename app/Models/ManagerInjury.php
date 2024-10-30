@@ -1,15 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
+use App\Models\Manager;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Injury extends Model
+class ManagerInjury extends Model
 {
+    /** @use HasFactory<\Database\Factories\ManagerInjuryFactory> */
     use HasFactory;
 
     /**
@@ -18,21 +18,10 @@ class Injury extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'injurable_id',
-        'injurable_type',
+        'manager_id',
         'started_at',
         'ended_at',
     ];
-
-    /**
-     * Retrieve the injured model.
-     *
-     * @return MorphTo<Model, Injury>
-     */
-    public function injurable(): MorphTo
-    {
-        return $this->morphTo();
-    }
 
     /**
      * Get the attributes that should be cast.
@@ -45,5 +34,13 @@ class Injury extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @return BelongsTo<Manager, $this>
+     */
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(Manager::class);
     }
 }
