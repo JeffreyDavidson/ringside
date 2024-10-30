@@ -26,11 +26,9 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     use Concerns\CanJoinStables;
     use Concerns\CanJoinTagTeams;
     use Concerns\CanWinTitles;
-    use Concerns\HasInjuries;
     use Concerns\HasManagers;
     use Concerns\HasMatches;
     use Concerns\HasNewEmployments;
-    use Concerns\HasRetirements;
     use Concerns\OwnedByUser;
     use HasFactory;
     use SoftDeletes;

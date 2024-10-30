@@ -25,7 +25,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     use Concerns\HasManagers;
     use Concerns\HasMatches;
     use Concerns\HasNewEmployments;
-    use Concerns\HasRetirements;
     use Concerns\HasWrestlers;
     use Concerns\OwnedByUser;
     use HasFactory;
