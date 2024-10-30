@@ -9,6 +9,4 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * @extends \Illuminate\Database\Eloquent\Builder<\App\Models\Stable>
  */
-class StableBuilder extends Builder
-{
-}
+class StableBuilder extends Builder {}
