@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Builders\StableBuilder;
 use App\Enums\StableStatus;
+use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Retirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
