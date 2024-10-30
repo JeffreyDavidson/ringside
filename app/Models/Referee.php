@@ -22,11 +22,11 @@ use Illuminate\Support\Carbon;
 
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable
 {
-    /** @use HasFactory<\Database\Factories\RefereeFactory> */
-    use HasFactory;
-
     /** @use HasBuilder<RefereeBuilder<static>> */
     use HasBuilder;
+
+    /** @use HasFactory<\Database\Factories\RefereeFactory> */
+    use HasFactory;
 
     use SoftDeletes;
 

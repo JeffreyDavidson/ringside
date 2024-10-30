@@ -20,11 +20,11 @@ class Title extends Model implements Activatable, Retirable
 {
     use Concerns\HasChampionships;
 
-    /** @use HasFactory<\Database\Factories\TitleFactory> */
-    use HasFactory;
-
     /** @use HasBuilder<TitleBuilder<static>> */
     use HasBuilder;
+
+    /** @use HasFactory<\Database\Factories\TitleFactory> */
+    use HasFactory;
 
     use SoftDeletes;
 
