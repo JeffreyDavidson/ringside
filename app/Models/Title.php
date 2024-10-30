@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Contracts\Retirable;
-use App\Models\TitleRetirement;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

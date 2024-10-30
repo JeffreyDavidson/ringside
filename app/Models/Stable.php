@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Builders\StableBuilder;
 use App\Enums\StableStatus;
 use App\Models\Contracts\Retirable;
-use App\Models\StableRetirement;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
