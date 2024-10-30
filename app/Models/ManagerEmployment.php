@@ -38,9 +38,7 @@ class ManagerEmployment extends Model
     }
 
     /**
-     * Get the employed model.
-     *
-     * @return MorphTo<Model, Employment>
+     * @return BelongsTo<Manager, $this>
      */
     public function manager(): BelongsTo
     {

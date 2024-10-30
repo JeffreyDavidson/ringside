@@ -38,11 +38,9 @@ class RefereeEmployment extends Model
     }
 
     /**
-     * Get the employed model.
-     *
-     * @return MorphTo<Model, Employment>
+     * @return BelongsTo<Referee, $this>
      */
-    public function manager(): BelongsTo
+    public function referee(): BelongsTo
     {
         return $this->belongsTo(Referee::class);
     }
