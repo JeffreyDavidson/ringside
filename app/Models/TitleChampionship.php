@@ -19,6 +19,13 @@ class TitleChampionship extends Model
     use HasMorphToOne;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'title_championships';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -31,13 +38,6 @@ class TitleChampionship extends Model
         'won_at',
         'lost_at',
     ];
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'title_championships';
 
     /**
      * Retrieve the title of the championship.
