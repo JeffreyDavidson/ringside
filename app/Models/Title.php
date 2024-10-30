@@ -6,14 +6,16 @@ namespace App\Models;
 
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
+use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Retirable;
+use App\Models\TitleActivation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Title extends Model implements Retirable
+class Title extends Model implements Activatable, Retirable
 {
     use Concerns\HasChampionships;
 
@@ -64,13 +66,50 @@ class Title extends Model implements Retirable
     }
 
     /**
-     * Get all the activations of the model.
-     *
-     * @return HasMany<TitleActivation>
+     * @return HasMany<TitleActivation, $this>
      */
     public function activations(): HasMany
     {
         return $this->hasMany(TitleActivation::class);
+    }
+
+    /**
+     * @return HasOne<TitleActivation, $this>
+     */
+    public function currentActivation(): HasOne
+    {
+        return $this->activations()
+            ->whereNull('ended_at')
+            ->one();
+    }
+
+    /**
+     * @return HasMany<TitleActivation, $this>
+     */
+    public function previousActivations(): HasMany
+    {
+        return $this->activations()
+            ->whereNotNull('ended_at');
+    }
+
+    /**
+     * @return HasOne<TitleActivation, $this>
+     */
+    public function previousActivation(): HasOne
+    {
+        return $this->previousActivations()
+            ->latest('ended_at')
+            ->one();
+    }
+
+    public function isActivated(): bool
+    {
+        return $this->currentActivation()->exists();
+    }
+
+    public function hasActivations(): bool
+    {
+        return $this->activations()->count() > 0;
     }
 
     /**
