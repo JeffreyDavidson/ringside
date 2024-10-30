@@ -11,6 +11,4 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @extends \Illuminate\Database\Eloquent\Builder<TModelClass>
  */
-class StableBuilder extends Builder
-{
-}
+class StableBuilder extends Builder {}
