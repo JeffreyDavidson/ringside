@@ -40,7 +40,7 @@ class TagTeamEmployment extends Model
     /**
      * Get the employed model.
      *
-     * @return MorphTo<Model, Employment>
+     * @return BelongsTo<TagTeam, $this>
      */
     public function tagTeam(): BelongsTo
     {

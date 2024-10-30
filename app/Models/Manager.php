@@ -17,12 +17,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
 {
     use Concerns\CanJoinStables;
     use Concerns\Manageables;
     use Concerns\OwnedByUser;
+    /** @use HasFactory<\Database\Factories\ManagerFactory> */
     use HasFactory;
     use SoftDeletes;
 
@@ -72,7 +74,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerRetirement, $this>
+     * @return HasOne<ManagerEmployment>
      */
     public function currentEmployment(): HasOne
     {
@@ -82,7 +84,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerEmployment, $this>
+     * @return HasOne<ManagerEmployment>
      */
     public function futureEmployment(): HasOne
     {
@@ -93,7 +95,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerEmployment, $this>
+     * @return HasMany<ManagerEmployment>
      */
     public function previousEmployments(): HasMany
     {
@@ -102,13 +104,28 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerEmployment, $this>
+     * @return HasOne<ManagerEmployment>
      */
     public function previousEmployment(): HasOne
     {
         return $this->previousEmployments()
-            ->latestOfMany()
-            ->one();
+            ->one()
+            ->ofMany('ended_at', 'max');
+    }
+
+    public function hasEmployments(): bool
+    {
+        return $this->employments()->count() > 0;
+    }
+
+    public function isCurrentlyEmployed(): bool
+    {
+        return $this->currentEmployment()->exists();
+    }
+
+    public function hasFutureEmployment(): bool
+    {
+        return $this->futureEmployment()->exists();
     }
 
     public function isNotInEmployment(): bool
@@ -129,8 +146,18 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
             && $this->currentRetirement()->doesntExist();
     }
 
+    public function employedOn(Carbon $employmentDate): bool
+    {
+        return $this->currentEmployment?->started_at->eq($employmentDate);
+    }
+
+    public function employedBefore(Carbon $employmentDate): bool
+    {
+        return $this->currentEmployment?->started_at->lte($employmentDate);
+    }
+
     /**
-     * @return HasMany<ManagerInjury, $this>
+     * @return HasMany<ManagerInjury>
      */
     public function injuries(): HasMany
     {
@@ -138,7 +165,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerInjury, $this>
+     * @return HasOne<ManagerInjury>
      */
     public function currentInjury(): HasOne
     {
@@ -148,7 +175,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerInjury, $this>
+     * @return HasMany<ManagerInjury>
      */
     public function previousInjuries(): HasMany
     {
@@ -157,13 +184,13 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerInjury, $this>
+     * @return HasOne<ManagerInjury>
      */
     public function previousInjury(): HasOne
     {
         return $this->previousInjuries()
-            ->latestOfMany()
-            ->one();
+            ->one()
+            ->ofMany('ended_at', 'max');
     }
 
     public function isInjured(): bool
@@ -177,7 +204,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerSuspension, $this>
+     * @return HasMany<ManagerSuspension>
      */
     public function suspensions(): HasMany
     {
@@ -185,7 +212,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerSuspension, $this>
+     * @return HasOne<ManagerSuspension>
      */
     public function currentSuspension(): HasOne
     {
@@ -195,7 +222,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerSuspension, $this>
+     * @return HasMany<ManagerSuspension>
      */
     public function previousSuspensions(): HasMany
     {
@@ -204,13 +231,13 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerSuspension, $this>
+     * @return HasOne<ManagerSuspension>
      */
     public function previousSuspension(): HasOne
     {
         return $this->suspensions()
-            ->latestOfMany('ended_at')
-            ->one();
+            ->one()
+            ->ofMany('ended_at', 'max');
     }
 
     public function isSuspended(): bool
@@ -224,7 +251,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerRetirement, $this>
+     * @return HasMany<ManagerRetirement>
      */
     public function retirements(): HasMany
     {
@@ -232,7 +259,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerRetirement, $this>
+     * @return HasOne<ManagerRetirement>
      */
     public function currentRetirement(): HasOne
     {
@@ -242,7 +269,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerRetirement, $this>
+     * @return HasMany<ManagerRetirement>
      */
     public function previousRetirements(): HasMany
     {
@@ -251,13 +278,13 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerRetirement, $this>
+     * @return HasOne<ManagerRetirement>
      */
     public function previousRetirement(): HasOne
     {
         return $this->previousRetirements()
-            ->latestOfMany()
-            ->one();
+            ->one()
+            ->ofMany('ended_at', 'max');
     }
 
     public function isRetired(): bool
