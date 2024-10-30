@@ -12,9 +12,11 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Manageable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\TagTeamSuspension;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable, Manageable, Retirable, Suspendable
@@ -25,7 +27,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     use Concerns\HasMatches;
     use Concerns\HasNewEmployments;
     use Concerns\HasRetirements;
-    use Concerns\HasSuspensions;
     use Concerns\HasWrestlers;
     use Concerns\OwnedByUser;
     use HasFactory;
@@ -75,6 +76,53 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     public function employments(): HasMany
     {
         return $this->hasMany(TagTeamEmployment::class);
+    }
+
+    /**
+     * @return HasMany<TagTeamSuspension, $this>
+     */
+    public function suspensions(): HasMany
+    {
+        return $this->hasMany(TagTeamSuspension::class);
+    }
+
+    /**
+     * @return HasOne<TagTeamSuspension, $this>
+     */
+    public function currentSuspension(): HasOne
+    {
+        return $this->suspensions()
+            ->whereNull('ended_at')
+            ->one();
+    }
+
+    /**
+     * @return HasMany<TagTeamSuspension, $this>
+     */
+    public function previousSuspensions(): HasMany
+    {
+        return $this->suspensions()
+            ->whereNotNull('ended_at');
+    }
+
+    /**
+     * @return HasOne<TagTeamSuspension, $this>
+     */
+    public function previousSuspension(): HasOne
+    {
+        return $this->suspensions()
+            ->latestOfMany('ended_at')
+            ->one();
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->currentSuspension()->exists();
+    }
+
+    public function hasSuspensions(): bool
+    {
+        return $this->suspensions()->count() > 0;
     }
 
     /**
