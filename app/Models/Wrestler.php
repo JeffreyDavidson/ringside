@@ -15,6 +15,7 @@ use App\Models\Contracts\Manageable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
 use App\Models\Contracts\TagTeamMember;
+use App\Models\WrestlerInjury;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -98,5 +99,13 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     public function employments(): HasMany
     {
         return $this->hasMany(WrestlerEmployment::class);
+    }
+
+    /**
+     * @return HasMany<WrestlerInjury, $this>
+     */
+    public function injuries(): HasMany
+    {
+        return $this->hasMany(WrestlerInjury::class);
     }
 }

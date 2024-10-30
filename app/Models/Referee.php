@@ -10,6 +10,7 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\RefereeInjury;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -103,6 +104,14 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
         return $this->matches()
             ->join('events', 'event_matches.event_id', '=', 'events.id')
             ->where('events.date', '<', today());
+    }
+
+    /**
+     * @return HasMany<RefereeInjury, $this>
+     */
+    public function injuries(): HasMany
+    {
+        return $this->hasMany(RefereeInjury::class);
     }
 
     /**

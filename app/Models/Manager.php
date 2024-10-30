@@ -11,6 +11,7 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\ManagerInjury;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -68,6 +69,14 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     public function employments(): HasMany
     {
         return $this->hasMany(ManagerEmployment::class);
+    }
+
+    /**
+     * @return HasMany<ManagerInjury, $this>
+     */
+    public function injuries(): HasMany
+    {
+        return $this->hasMany(ManagerInjury::class);
     }
 
     /**
