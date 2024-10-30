@@ -57,9 +57,4 @@ class Stable extends Model implements Retirable
     {
         return new StableBuilder($query);
     }
-
-    public function getIdentifier(): string
-    {
-        return $this->name;
-    }
 }

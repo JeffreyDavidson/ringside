@@ -90,11 +90,6 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
         return true;
     }
 
-    public function getIdentifier(): string
-    {
-        return "{$this->first_name} {$this->last_name}";
-    }
-
     /**
      * Retrieve the event matches participated by the model.
      *

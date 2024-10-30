@@ -197,14 +197,6 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * Get the identifier of the manager.
-     */
-    public function getIdentifier(): string
-    {
-        return "{$this->first_name} {$this->last_name}";
-    }
-
-    /**
      * Get the manager's full name.
      *
      * @return Attribute<string, never>

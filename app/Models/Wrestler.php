@@ -82,14 +82,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * Get the display name of the wrestler.
-     */
-    public function getIdentifier(): string
-    {
-        return $this->name;
-    }
-
-    /**
      * Get all the employments of the model.
      *
      * @return HasMany<WrestlerEmployment>

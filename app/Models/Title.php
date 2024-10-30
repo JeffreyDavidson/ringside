@@ -60,11 +60,6 @@ class Title extends Model implements Retirable
         return new TitleBuilder($query);
     }
 
-    public function getIdentifier(): string
-    {
-        return $this->name;
-    }
-
     /**
      * Get all the activations of the model.
      *
