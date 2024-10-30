@@ -17,8 +17,10 @@ class Stable extends Model implements Retirable
 {
     use Concerns\HasMembers;
     use Concerns\OwnedByUser;
+
     /** @use HasFactory<\Database\Factories\StableFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**

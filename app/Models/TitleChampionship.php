@@ -16,6 +16,7 @@ class TitleChampionship extends Model
 {
     /** @use HasFactory<\Database\Factories\TitleChampionshipFactory> */
     use HasFactory;
+
     use HasMergedRelationships;
     use HasMorphToOne;
 
