@@ -32,11 +32,11 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     use Concerns\HasMatches;
     use Concerns\OwnedByUser;
 
-    /** @use HasFactory<\Database\Factories\WrestlerFactory> */
-    use HasFactory;
-
     /** @use HasBuilder<WrestlerBuilder<static>> */
     use HasBuilder;
+
+    /** @use HasFactory<\Database\Factories\WrestlerFactory> */
+    use HasFactory;
 
     use SoftDeletes;
 
