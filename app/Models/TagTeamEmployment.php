@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TagTeamEmployment extends Model
 {
+    /** @use HasFactory<\Database\Factories\TagTeamEmploymentFactory> */
     use HasFactory;
 
     /**

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Title extends Model implements Retirable
 {
     use Concerns\HasChampionships;
+    /** @use HasFactory<\Database\Factories\TitleFactory> */
     use HasFactory;
     use SoftDeletes;
 

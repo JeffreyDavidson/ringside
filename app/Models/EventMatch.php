@@ -15,6 +15,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 class EventMatch extends Model
 {
+    /** @use HasFactory<\Database\Factories\EventMatchFactory> */
     use HasFactory;
     use HasMergedRelationships;
 

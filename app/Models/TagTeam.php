@@ -27,6 +27,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     use Concerns\HasNewEmployments;
     use Concerns\HasWrestlers;
     use Concerns\OwnedByUser;
+    /** @use HasFactory<\Database\Factories\TagTeamFactory> */
     use HasFactory;
     use SoftDeletes;
 

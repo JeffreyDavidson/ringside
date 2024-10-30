@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ManagerEmployment extends Model
 {
+    /** @use HasFactory<\Database\Factories\ManagerEmploymentFactory> */
     use HasFactory;
 
     /**

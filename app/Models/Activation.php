@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 
 class Activation extends Model
 {
+    /** @use HasFactory<\Database\Factories\ActivationFactory> */
     use HasFactory;
 
     /**
