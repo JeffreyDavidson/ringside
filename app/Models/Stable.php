@@ -27,7 +27,7 @@ class Stable extends Model implements Activatable, Retirable
     /**
      * The minimum number of members allowed on a tag team.
      */
-    public const MIN_MEMBERS_COUNT = 3;
+    public const int MIN_MEMBERS_COUNT = 3;
 
     /**
      * The attributes that are mass assignable.
