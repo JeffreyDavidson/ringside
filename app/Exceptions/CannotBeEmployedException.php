@@ -10,6 +10,6 @@ class CannotBeEmployedException extends Exception
 {
     public static function employed(): self
     {
-        return new self("This model is already employed.");
+        return new self('This model is already employed.');
     }
 }

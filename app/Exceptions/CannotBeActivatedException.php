@@ -10,6 +10,6 @@ class CannotBeActivatedException extends Exception
 {
     public static function activated(): self
     {
-        return new self("This model is already activated.");
+        return new self('This model is already activated.');
     }
 }
