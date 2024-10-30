@@ -27,8 +27,10 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     use Concerns\CanJoinStables;
     use Concerns\Manageables;
     use Concerns\OwnedByUser;
+
     /** @use HasFactory<\Database\Factories\ManagerFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**
