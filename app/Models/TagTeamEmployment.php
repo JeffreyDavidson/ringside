@@ -50,4 +50,9 @@ class TagTeamEmployment extends Model
     {
         return $this->belongsTo(TagTeam::class);
     }
+
+    public function startedBefore(Carbon $employmentDate): bool
+    {
+        return $this->started_at->lte($employmentDate);
+    }
 }
