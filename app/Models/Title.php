@@ -9,6 +9,7 @@ use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Retirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,6 +21,9 @@ class Title extends Model implements Activatable, Retirable
 
     /** @use HasFactory<\Database\Factories\TitleFactory> */
     use HasFactory;
+
+    /** @use HasBuilder<TitleBuilder<static>> */
+    use HasBuilder;
 
     use SoftDeletes;
 
@@ -42,6 +46,8 @@ class Title extends Model implements Activatable, Retirable
         'status' => TitleStatus::Unactivated->value,
     ];
 
+    protected static string $builder = TitleBuilder::class;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -55,14 +61,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * Create a new Eloquent query builder for the model.
-     *
-     * @return TitleBuilder<Title>
-     */
-    public function newEloquentBuilder($query): TitleBuilder // @pest-ignore-type
-    {
-        return new TitleBuilder($query);
-    }
+     * @return HasMany<TitleActivation>
 
     /**
      * @return HasMany<TitleActivation, $this>

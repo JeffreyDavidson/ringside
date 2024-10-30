@@ -47,6 +47,8 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
         'status' => ManagerStatus::Unemployed->value,
     ];
 
+    protected static string $builder = ManagerBuilder::class;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -57,16 +59,6 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
         return [
             'status' => ManagerStatus::class,
         ];
-    }
-
-    /**
-     * Create a new Eloquent query builder for the model.
-     *
-     * @return ManagerBuilder<Manager>
-     */
-    public function newEloquentBuilder($query): ManagerBuilder // @pest-ignore-type
-    {
-        return new ManagerBuilder($query);
     }
 
     /**

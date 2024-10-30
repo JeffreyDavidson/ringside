@@ -15,8 +15,8 @@ use App\Models\Contracts\Manageable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
 use App\Models\Contracts\TagTeamMember;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,6 +33,9 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
 
     /** @use HasFactory<\Database\Factories\WrestlerFactory> */
     use HasFactory;
+
+    /** @use HasBuilder<WrestlerBuilder<static>> */
+    use HasBuilder;
 
     use SoftDeletes;
 
@@ -60,6 +63,8 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
         'status' => WrestlerStatus::Unemployed->value,
     ];
 
+    protected static string $builder = WrestlerBuilder::class;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -71,16 +76,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
             'height' => HeightCast::class,
             'status' => WrestlerStatus::class,
         ];
-    }
-
-    /**
-     * Create a new Eloquent query builder for the model.
-     *
-     * @return WrestlerBuilder<Wrestler>
-     */
-    public function newEloquentBuilder($query): WrestlerBuilder // @pest-ignore-type
-    {
-        return new WrestlerBuilder($query);
     }
 
     /**

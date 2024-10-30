@@ -12,6 +12,7 @@ use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,6 +22,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable
 {
     use HasFactory;
+
+    /** @use HasBuilder<RefereeBuilder<static>> */
+    use HasBuilder;
+
     use SoftDeletes;
 
     /**
@@ -43,6 +48,8 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
         'status' => RefereeStatus::Unemployed->value,
     ];
 
+    protected static string $builder = RefereeBuilder::class;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -53,16 +60,6 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
         return [
             'status' => RefereeStatus::class,
         ];
-    }
-
-    /**
-     * Create a new Eloquent query builder for the model.
-     *
-     * @return RefereeBuilder<Referee>
-     */
-    public function newEloquentBuilder($query): RefereeBuilder // @pest-ignore-type
-    {
-        return new RefereeBuilder($query);
     }
 
     /**

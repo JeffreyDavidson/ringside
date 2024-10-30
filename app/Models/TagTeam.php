@@ -13,6 +13,7 @@ use App\Models\Contracts\Manageable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -29,6 +30,9 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
 
     /** @use HasFactory<\Database\Factories\TagTeamFactory> */
     use HasFactory;
+
+    /** @use HasBuilder<TagTeamBuilder<static>> */
+    use HasBuilder;
 
     use SoftDeletes;
 
@@ -58,6 +62,8 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
         'status' => TagTeamStatus::Unemployed->value,
     ];
 
+    protected static string $builder = TagTeamBuilder::class;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -68,16 +74,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
         return [
             'status' => TagTeamStatus::class,
         ];
-    }
-
-    /**
-     * Create a new Eloquent query builder for the model.
-     *
-     * @return TagTeamBuilder<TagTeam>
-     */
-    public function newEloquentBuilder($query): TagTeamBuilder // @pest-ignore-type
-    {
-        return new TagTeamBuilder($query);
     }
 
     /**

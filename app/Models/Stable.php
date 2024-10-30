@@ -40,6 +40,8 @@ class Stable extends Model implements Activatable, Retirable
         'status',
     ];
 
+    protected static string $builder = StableBuilder::class;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -54,14 +56,6 @@ class Stable extends Model implements Activatable, Retirable
 
     /**
      * Create a new Eloquent query builder for the model.
-     *
-     * @return StableBuilder<Stable>
-     */
-    public function newEloquentBuilder($query): StableBuilder // @pest-ignore-type
-    {
-        return new StableBuilder($query);
-    }
-
     /**
      * @return HasMany<StableActivation, $this>
      */
