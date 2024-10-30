@@ -7,14 +7,16 @@ namespace App\Models;
 use App\Builders\StableBuilder;
 use App\Enums\StableStatus;
 use App\Models\Contracts\Retirable;
+use App\Models\StableRetirement;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stable extends Model implements Retirable
 {
     use Concerns\HasMembers;
-    use Concerns\HasRetirements;
     use Concerns\OwnedByUser;
     /** @use HasFactory<\Database\Factories\StableFactory> */
     use HasFactory;
@@ -56,5 +58,52 @@ class Stable extends Model implements Retirable
     public function newEloquentBuilder($query): StableBuilder // @pest-ignore-type
     {
         return new StableBuilder($query);
+    }
+
+    /**
+     * @return HasMany<StableRetirement, $this>
+     */
+    public function retirements(): HasMany
+    {
+        return $this->hasMany(StableRetirement::class);
+    }
+
+    /**
+     * @return HasOne<StableRetirement, $this>
+     */
+    public function currentRetirement(): HasOne
+    {
+        return $this->retirements()
+            ->whereNull('ended_at')
+            ->one();
+    }
+
+    /**
+     * @return HasMany<StableRetirement, $this>
+     */
+    public function previousRetirements(): HasMany
+    {
+        return $this->retirements()
+            ->whereNotNull('ended_at');
+    }
+
+    /**
+     * @return HasOne<StableRetirement, $this>
+     */
+    public function previousRetirement(): HasOne
+    {
+        return $this->previousRetirements()
+            ->latestOfMany()
+            ->one();
+    }
+
+    public function isRetired(): bool
+    {
+        return $this->currentRetirement()->exists();
+    }
+
+    public function hasRetirements(): bool
+    {
+        return $this->retirements()->count() > 0;
     }
 }

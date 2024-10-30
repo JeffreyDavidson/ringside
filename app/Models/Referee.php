@@ -10,6 +10,7 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\RefereeRetirement;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,6 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
 {
     use Concerns\HasInjuries;
     use Concerns\HasNewEmployments;
-    use Concerns\HasRetirements;
     use HasFactory;
     use SoftDeletes;
 
@@ -204,6 +204,53 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     public function hasSuspensions(): bool
     {
         return $this->suspensions()->count() > 0;
+    }
+
+    /**
+     * @return HasMany<RefereeRetirement, $this>
+     */
+    public function retirements(): HasMany
+    {
+        return $this->hasMany(RefereeRetirement::class);
+    }
+
+    /**
+     * @return HasOne<RefereeRetirement, $this>
+     */
+    public function currentRetirement(): HasOne
+    {
+        return $this->retirements()
+            ->whereNull('ended_at')
+            ->one();
+    }
+
+    /**
+     * @return HasMany<RefereeRetirement, $this>
+     */
+    public function previousRetirements(): HasMany
+    {
+        return $this->retirements()
+            ->whereNotNull('ended_at');
+    }
+
+    /**
+     * @return HasOne<RefereeRetirement, $this>
+     */
+    public function previousRetirement(): HasOne
+    {
+        return $this->previousRetirements()
+            ->latestOfMany()
+            ->one();
+    }
+
+    public function isRetired(): bool
+    {
+        return $this->currentRetirement()->exists();
+    }
+
+    public function hasRetirements(): bool
+    {
+        return $this->retirements()->count() > 0;
     }
 
     /**

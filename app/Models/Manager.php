@@ -11,6 +11,7 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
+use App\Models\ManagerRetirement;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,6 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     use Concerns\CanJoinStables;
     use Concerns\HasInjuries;
     use Concerns\HasNewEmployments;
-    use Concerns\HasRetirements;
     use Concerns\Manageables;
     use Concerns\OwnedByUser;
     use HasFactory;
@@ -174,6 +174,53 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     public function hasSuspensions(): bool
     {
         return $this->suspensions()->count() > 0;
+    }
+
+    /**
+     * @return HasMany<ManagerRetirement, $this>
+     */
+    public function retirements(): HasMany
+    {
+        return $this->hasMany(ManagerRetirement::class);
+    }
+
+    /**
+     * @return HasOne<ManagerRetirement, $this>
+     */
+    public function currentRetirement(): HasOne
+    {
+        return $this->retirements()
+            ->whereNull('ended_at')
+            ->one();
+    }
+
+    /**
+     * @return HasMany<ManagerRetirement, $this>
+     */
+    public function previousRetirements(): HasMany
+    {
+        return $this->retirements()
+            ->whereNotNull('ended_at');
+    }
+
+    /**
+     * @return HasOne<ManagerRetirement, $this>
+     */
+    public function previousRetirement(): HasOne
+    {
+        return $this->previousRetirements()
+            ->latestOfMany()
+            ->one();
+    }
+
+    public function isRetired(): bool
+    {
+        return $this->currentRetirement()->exists();
+    }
+
+    public function hasRetirements(): bool
+    {
+        return $this->retirements()->count() > 0;
     }
 
     /**
