@@ -159,7 +159,7 @@ class WrestlerRepository
     /**
      * Undocumented function.
      *
-     * @return Collection<int, Wrestler>
+     * @return Collection<int, covariant Wrestler>
      */
     public static function getAvailableWrestlersForNewTagTeam(): Collection
     {
@@ -179,9 +179,7 @@ class WrestlerRepository
     }
 
     /**
-     * Undocumented function.
-     *
-     * @return Collection<int, Wrestler>
+     * @return Collection<int, covariant Wrestler>
      */
     public static function getAvailableWrestlersForExistingTagTeam(TagTeam $tagTeam): Collection
     {
