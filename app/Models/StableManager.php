@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Relations\Pivot;
+
+class StableManager extends Pivot
+{
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'hired_at' => 'datetime',
+        'left_at' => 'datetime',
+    ];
+}
