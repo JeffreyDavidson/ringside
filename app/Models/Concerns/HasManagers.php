@@ -6,6 +6,7 @@ namespace App\Models\Concerns;
 
 use App\Models\Managable;
 use App\Models\Manager;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasManagers
@@ -13,21 +14,20 @@ trait HasManagers
     /**
      * Get all the managers the model has had.
      *
-     * @return MorphToMany<Manager>
+     * @return BelongsToMany<Manager>
      */
-    public function managers(): MorphToMany
+    public function managers(): BelongsToMany
     {
-        return $this->morphToMany(Manager::class, 'manageable')
-            ->withPivot('hired_at', 'left_at')
-            ->using(Managable::class);
+        return $this->belongsToMany(Manager::class)
+            ->withPivot('hired_at', 'left_at');
     }
 
     /**
      * Get all the current managers the model has.
      *
-     * @return MorphToMany<Manager>
+     * @return BelongsToMany<Manager>
      */
-    public function currentManagers(): MorphToMany
+    public function currentManagers(): BelongsToMany
     {
         return $this->managers()
             ->wherePivotNull('left_at');
@@ -36,9 +36,9 @@ trait HasManagers
     /**
      * Get all the previous managers the model has had.
      *
-     * @return MorphToMany<Manager>
+     * @return BelongsToMany<Manager>
      */
-    public function previousManagers(): MorphToMany
+    public function previousManagers(): BelongsToMany
     {
         return $this->managers()
             ->wherePivotNotNull('left_at');
