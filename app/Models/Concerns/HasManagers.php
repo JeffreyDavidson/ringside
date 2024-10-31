@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
-use App\Models\Managable;
 use App\Models\Manager;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasManagers
 {
