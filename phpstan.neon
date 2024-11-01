@@ -4,3 +4,4 @@ parameters:
     level: 6
     ignoreErrors:
         - message: '#Call to an undefined method [a-zA-Z0-9\\_]+::map\(\)#'
+        - identifier: missingType.generics
