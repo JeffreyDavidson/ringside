@@ -203,50 +203,6 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/spain.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    Spanish
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/germany.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    German
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/japan.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    Japanese
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/france.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    French
-                                </span>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
