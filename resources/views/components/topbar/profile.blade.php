@@ -3,14 +3,14 @@
         data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
         <div class="menu-toggle btn btn-icon rounded-full">
             <img alt="" class="size-9 rounded-full border-2 border-success shrink-0"
-                src="{{ asset('assets/media/avatars/300-2.png') }}">
+                src="{{ Vite::image('avatars/blank.png') }}">
             </img>
         </div>
         <div class="menu-dropdown menu-default light:border-gray-300 w-screen max-w-[250px]">
             <div class="flex items-center justify-between px-5 py-1.5 gap-1.5">
                 <div class="flex items-center gap-2">
                     <img alt="" class="size-9 rounded-full border-2 border-success"
-                        src="{{ asset('assets/media/avatars/300-2.png') }}">
+                        src="{{ Vite::image('avatars/blank.png') }}">
                     <div class="flex flex-col gap-1.5">
                         <span class="text-sm text-gray-800 font-semibold leading-none">
                             Cody Fisher
@@ -184,7 +184,7 @@
                             class="flex items-center gap-1.5 rounded-md border border-gray-300 text-gray-600 p-1.5 text-2xs font-medium shrink-0">
                             English
                             <img alt="" class="inline-block size-3.5 rounded-full"
-                                src="{{ asset('assets/media/flags/united-states.svg') }}" />
+                                src="{{ Vite::image('flags/united-states.svg') }}" />
                         </div>
                     </div>
                     <div class="menu-dropdown menu-default light:border-gray-300 w-full max-w-[170px]">
@@ -192,7 +192,7 @@
                             <a class="menu-link h-10" href="#">
                                 <span class="menu-icon">
                                     <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/united-states.svg') }}" />
+                                        src="{{ Vite::image('flags/united-states.svg') }}" />
                                 </span>
                                 <span class="menu-title">
                                     English
@@ -200,50 +200,6 @@
                                 <span class="menu-badge">
                                     <i class="ki-solid ki-check-circle text-success text-base">
                                     </i>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/spain.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    Spanish
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/germany.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    German
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/japan.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    Japanese
-                                </span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link h-10" href="#">
-                                <span class="menu-icon">
-                                    <img alt="" class="inline-block size-4 rounded-full"
-                                        src="{{ asset('assets/media/flags/france.svg') }}" />
-                                </span>
-                                <span class="menu-title">
-                                    French
                                 </span>
                             </a>
                         </div>
