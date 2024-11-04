@@ -14,7 +14,15 @@ export default {
     ],
 
     theme: {
-        extend: {},
+        extend: {
+            fontSize: {
+                '2xs': '0.8125rem',
+            },
+            spacing: {
+                '2.25': '.563rem',
+                '7.5': '1.875rem;',
+            }
+        },
     },
 
     plugins: [forms],
