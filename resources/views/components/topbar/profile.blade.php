@@ -1,6 +1,5 @@
-<div class="menu" data-menu="true">
-    <div class="menu-item" data-menu-item-offset="20px, 10px" data-menu-item-placement="bottom-end"
-        data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
+<div class="menu">
+    <div class="menu-item">
         <div class="menu-toggle btn btn-icon rounded-full">
             <img alt="" class="size-9 rounded-full border-2 border-success shrink-0"
                 src="{{ Vite::image('avatars/blank.png') }}">
