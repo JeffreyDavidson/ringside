@@ -16,6 +16,9 @@
             </div>
         </div>
         <!-- End of Mobile Logo -->
+        <!-- Mega Menu -->
+        <x-mega-menu/>
+        <!-- End of Mega Menu -->
         <!-- Topbar -->
         <x-topbar />
         <!-- End of Topbar -->

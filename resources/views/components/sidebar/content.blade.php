@@ -1,31 +1,46 @@
 <div class="sidebar-content flex grow shrink-0 py-5 pr-2" id="sidebar_content">
     <div class="scrollable-y-hover grow shrink-0 flex pl-2 lg:pl-5 pr-1 lg:pr-3">
         <!-- Sidebar Menu -->
-        <div class="flex flex-col grow gap-0.5">
-            <x-menu.menu-item>
-                <x-menu.menu-link icon="ki-home" :href="route('dashboard')">Dashboard</x-menu.menu-link>
-            </x-menu.menu-item>
-            <x-menu.menu-heading>Admin</x-menu.menu-heading>
-            <x-menu.menu-item>
-                <x-menu.menu-label icon="ki-people">Roster</x-menu.menu-label>
+        <x-menu>
+            <x-sidebar.menu-item>
+                <x-sidebar.menu-label>
+                    <x-sidebar.menu-icon icon="ki-home"/>
+                    <x-sidebar.menu-title :href="route('dashboard')">Dashboard</x-sidebar.menu-title>
+                </x-sidebar.menu-label>
+            </x-sidebar.menu-item>
+            <x-sidebar.menu-heading>Admin</x-sidebar.menu-heading>
+            <x-sidebar.menu-item>
+                <x-sidebar.menu-label>
+                    <x-sidebar.menu-icon icon="ki-people"/>
+                    Roster
+                </x-sidebar.menu-label>
                 <x-slot:subMenu>
-                    <x-menu.menu-link :href="route('wrestlers.index')">Wrestlers</x-menu.menu-link>
-                    <x-menu.menu-link :href="route('tag-teams.index')">Tag Teams</x-menu.menu-link>
-                    <x-menu.menu-link :href="route('referees.index')">Referees</x-menu.menu-link>
-                    <x-menu.menu-link :href="route('managers.index')">Managers</x-menu.menu-link>
-                    <x-menu.menu-link :href="route('stables.index')">Stables</x-menu.menu-link>
+                    <x-sidebar.menu-link :href="route('wrestlers.index')">Wrestlers</x-sidebar.menu-link>
+                    <x-sidebar.menu-link :href="route('tag-teams.index')">Tag Teams</x-sidebar.menu-link>
+                    <x-sidebar.menu-link :href="route('referees.index')">Referees</x-sidebar.menu-link>
+                    <x-sidebar.menu-link :href="route('managers.index')">Managers</x-sidebar.menu-link>
+                    <x-sidebar.menu-link :href="route('stables.index')">Stables</x-sidebar.menu-link>
                 </x-slot:subMenu>
-            </x-menu.menu-item>
-            <x-menu.menu-item>
-                <x-menu.menu-link icon="ki-cup" :href="route('titles.index')">Titles</x-menu.menu-link>
-            </x-menu.menu-item>
-            <x-menu.menu-item>
-                <x-menu.menu-link icon="ki-home-3" :href="route('venues.index')">Venues</x-menu.menu-link>
-            </x-menu.menu-item>
-            <x-menu.menu-item>
-                <x-menu.menu-link icon="ki-calendar" :href="route('events.index')">Events</x-menu.menu-link>
-            </x-menu.menu-item>
-        </div>
+            </x-sidebar.menu-item>
+            <x-sidebar.menu-item>
+                <x-sidebar.menu-label>
+                    <x-sidebar.menu-icon icon="ki-cup"/>
+                    <x-sidebar.menu-title :href="route('titles.index')">Titles</x-sidebar.menu-title>
+                </x-sidebar.menu-label>
+            </x-sidebar.menu-item>
+            <x-sidebar.menu-item>
+                <x-sidebar.menu-label>
+                    <x-sidebar.menu-icon icon="ki-home-3"/>
+                    <x-sidebar.menu-title :href="route('venues.index')">Venues</x-sidebar.menu-title>
+                </x-sidebar.menu-label>
+            </x-sidebar.menu-item>
+            <x-sidebar.menu-item>
+                <x-sidebar.menu-label>
+                    <x-sidebar.menu-icon icon="ki-calendar"/>
+                    <x-sidebar.menu-title :href="route('events.index')">Events</x-sidebar.menu-title>
+                </x-sidebar.menu-label>
+            </x-sidebar.menu-item>
+        </x-menu>
         <!-- End of Sidebar Menu -->
     </div>
 </div>
