@@ -8,6 +8,8 @@ require __DIR__.'/auth.php';
 
 Route::redirect('/', 'login');
 
+Route::view('dashboard2', 'dashboard')->name('dashboard');
+
 Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
