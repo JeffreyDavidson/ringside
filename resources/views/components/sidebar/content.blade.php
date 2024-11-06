@@ -4,15 +4,15 @@
         <x-menu>
             <x-sidebar.menu-item>
                 <x-sidebar.menu-label>
-                    <x-sidebar.menu-icon icon="ki-home"/>
+                    <x-sidebar.menu-icon icon="ki-home" />
                     <x-sidebar.menu-title :href="route('dashboard')">Dashboard</x-sidebar.menu-title>
                 </x-sidebar.menu-label>
             </x-sidebar.menu-item>
-            <x-sidebar.menu-heading>Admin</x-sidebar.menu-heading>
+            <x-sidebar.menu-heading>User</x-sidebar.menu-heading>
             <x-sidebar.menu-item>
                 <x-sidebar.menu-label>
-                    <x-sidebar.menu-icon icon="ki-people"/>
-                    Roster
+                    <x-sidebar.menu-icon icon="ki-people" />
+                    <x-sidebar.menu-title :href="route('dashboard')">Roster</x-sidebar.menu-title>
                 </x-sidebar.menu-label>
                 <x-slot:subMenu>
                     <x-sidebar.menu-link :href="route('wrestlers.index')">Wrestlers</x-sidebar.menu-link>
@@ -24,19 +24,19 @@
             </x-sidebar.menu-item>
             <x-sidebar.menu-item>
                 <x-sidebar.menu-label>
-                    <x-sidebar.menu-icon icon="ki-cup"/>
+                    <x-sidebar.menu-icon icon="ki-cup" />
                     <x-sidebar.menu-title :href="route('titles.index')">Titles</x-sidebar.menu-title>
                 </x-sidebar.menu-label>
             </x-sidebar.menu-item>
             <x-sidebar.menu-item>
                 <x-sidebar.menu-label>
-                    <x-sidebar.menu-icon icon="ki-home-3"/>
+                    <x-sidebar.menu-icon icon="ki-home-3" />
                     <x-sidebar.menu-title :href="route('venues.index')">Venues</x-sidebar.menu-title>
                 </x-sidebar.menu-label>
             </x-sidebar.menu-item>
             <x-sidebar.menu-item>
                 <x-sidebar.menu-label>
-                    <x-sidebar.menu-icon icon="ki-calendar"/>
+                    <x-sidebar.menu-icon icon="ki-calendar" />
                     <x-sidebar.menu-title :href="route('events.index')">Events</x-sidebar.menu-title>
                 </x-sidebar.menu-label>
             </x-sidebar.menu-item>

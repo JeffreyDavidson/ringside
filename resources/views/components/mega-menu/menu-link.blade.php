@@ -2,10 +2,10 @@
     'isActive' => false,
 ])
 
-<x-menu.menu-link @class([
-    'text-nowrap text-sm',
-    'text-gray-900 font-semibold' => $isActive,
-    'text-gray-700 font-medium' => ! $isActive,
+<a {{ $attributes }} @class([
+    'flex items-center grow cursor-pointer text-sm',
+    'text-gray-900 font-medium' => $isActive,
+    'text-gray-800' => !$isActive,
 ])>
-    <x-menu.menu-title class="text-nowrap">{{ $slot }}</x-menu.menu-title>
-</x-menu.menu-link>
+    {{ $slot }}
+</a>

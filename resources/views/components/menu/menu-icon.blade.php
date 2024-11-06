@@ -1,5 +1,5 @@
 @props([
-    'icon' => 'testing',
+    'icon' => 'ki-element-11',
 ])
 
 <span {{ $attributes->merge(['class' => 'flex shrink-0']) }}>
