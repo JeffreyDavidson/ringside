@@ -3,7 +3,7 @@
         <x-mega-menu.wrapper>
             <div class="flex flex-col lg:flex-row gap-5 lg:gap-7.5">
                 <x-mega-menu.menu-item>
-                    <x-mega-menu.menu-link :isActive="Route::is('dashboard')" href="{{ route('dashboard') }}">Home</x-mega-menu.menu-link>
+                    <x-mega-menu.menu-link :isActive="Route::is('dashboard')" href="{{ route('dashboard') }}">Dashboard</x-mega-menu.menu-link>
                 </x-mega-menu.menu-item>
                 <x-mega-menu.menu-item>
                     <x-mega-menu.menu-label>Roster</x-mega-menu.menu-label>
