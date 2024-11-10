@@ -1,3 +1,3 @@
-<div class="card-footer d-flex justify-content-end py-6 px-9">
+<div {{ $attributes->merge(['class' => 'flex items-center justify-between border-t border-solid border-gray-200 ps-7.5 pe-7.5 py-3']) }}>
     {{ $slot }}
 </div>
