@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             'stable' => \App\Models\Stable::class,
         ]);
 
-        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
+        Vite::macro('image', fn (string $asset) => Vite::asset("resources/images/{$asset}"));
 
         $this->bootRoute();
     }
