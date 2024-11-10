@@ -19,7 +19,23 @@ trait BaseTableTrait
             ->addAdditionalSelects([$this->databaseTableName.'.id as id'])
             ->setPerPageAccepted([5, 10, 25, 50, 100])
             ->setLoadingPlaceholderContent('Loading')
-            ->setLoadingPlaceholderEnabled();
+            ->setLoadingPlaceholderEnabled()
+            ->setTableWrapperAttributes([
+                'default' => false,
+                'class' => 'scrollable-x-auto',
+            ])
+            ->setTableAttributes([
+                'default' => false,
+                'class' => 'w-full caption-bottom border-collapse text-left text-gray-700 font-medium text-sm border table table-auto',
+            ])
+            ->setTheadAttributes([
+                'default' => false,
+                'class' => '',
+            ])
+            ->setTbodyAttributes([
+                'default' => false,
+                'class' => '',
+            ]);
     }
 
     public function appendColumns(): array

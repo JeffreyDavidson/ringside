@@ -4,7 +4,7 @@
         @if ($this->hasRefresh()) wire:poll{{ $this->getRefreshOptions() }} @endif
         @if ($this->isFilterLayoutSlideDown()) wire:ignore.self @endif>
 
-        <div>
+        <x-card class="card-grid min-w-full">
         @if ($this->debugIsEnabled())
             @include('livewire-tables::includes.debug')
         @endif
@@ -13,6 +13,6 @@
         @endif
 
             {{ $slot }}
-        </div>
+        </x-card>
     </div>
 </div>

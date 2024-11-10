@@ -3,9 +3,14 @@
 
 <div @class([
         'd-md-flex justify-content-between mb-3' => $this->isBootstrap,
-        'md:flex md:justify-between mb-4 px-4 md:p-0' => $this->isTailwind,
+        'flex flex-wrap gap-2 lg:gap-5' => $this->isTailwind,
     ])
 >
+    <div class="flex">
+        @if ($this->searchIsEnabled() && $this->searchVisibilityIsEnabled())
+            <x-livewire-tables::tools.toolbar.items.search-field />
+        @endif
+    </div>
     <div @class([
             'd-md-flex' => $this->isBootstrap,
             'w-full mb-4 md:mb-0 md:w-2/4 md:flex space-y-4 md:space-y-0 md:space-x-2' => $this->isTailwind,
@@ -22,10 +27,6 @@
 
         @if ($this->reorderIsEnabled())
             <x-livewire-tables::tools.toolbar.items.reorder-buttons />
-        @endif
-
-        @if ($this->searchIsEnabled() && $this->searchVisibilityIsEnabled())
-            <x-livewire-tables::tools.toolbar.items.search-field />
         @endif
 
         @if ($this->filtersAreEnabled() && $this->filtersVisibilityIsEnabled() && $this->hasVisibleFilters())

@@ -8,35 +8,37 @@
 
 <div {{ $this->getTopLevelAttributes() }}>
     <x-livewire-tables::wrapper :component="$this" :tableName="$tableName" :$primaryKey :$isTailwind :$isBootstrap :$isBootstrap4 :$isBootstrap5>
-        @if($this->hasActions && !$this->showActionsInToolbar)
-            <x-livewire-tables::includes.actions/>    
-        @endif
-    
-
-        @if ($this->hasConfigurableAreaFor('before-tools'))
-            @include($this->getConfigurableAreaFor('before-tools'), $this->getParametersForConfigurableArea('before-tools'))
-        @endif
-
-        @if($this->shouldShowTools)
-        <x-livewire-tables::tools>
-            @if ($this->showSortPillsSection)
-                <x-livewire-tables::tools.sorting-pills />
-            @endif
-            @if($this->showFilterPillsSection)
-                <x-livewire-tables::tools.filter-pills />
+        <x-card.header class="flex-wrap gap-2">
+            <x-card.title class="font-medium text-sm">Showing 10 of 49,053 users</x-card.title>
+            @if($this->hasActions && !$this->showActionsInToolbar)
+                <x-livewire-tables::includes.actions/>
             @endif
 
-            @includeWhen($this->hasConfigurableAreaFor('before-toolbar'), $this->getConfigurableAreaFor('before-toolbar'), $this->getParametersForConfigurableArea('before-toolbar'))
-            @if($this->shouldShowToolBar)
-                <x-livewire-tables::tools.toolbar />
+            @if ($this->hasConfigurableAreaFor('before-tools'))
+                @include($this->getConfigurableAreaFor('before-tools'), $this->getParametersForConfigurableArea('before-tools'))
             @endif
-            @includeWhen($this->hasConfigurableAreaFor('after-toolbar'), $this->getConfigurableAreaFor('after-toolbar'), $this->getParametersForConfigurableArea('after-toolbar'))
-            
-        </x-livewire-tables::tools>
-        @endif
+
+            @if($this->shouldShowTools)
+            <x-livewire-tables::tools>
+                @if ($this->showSortPillsSection)
+                    <x-livewire-tables::tools.sorting-pills />
+                @endif
+                @if($this->showFilterPillsSection)
+                    <x-livewire-tables::tools.filter-pills />
+                @endif
+
+                @includeWhen($this->hasConfigurableAreaFor('before-toolbar'), $this->getConfigurableAreaFor('before-toolbar'), $this->getParametersForConfigurableArea('before-toolbar'))
+                @if($this->shouldShowToolBar)
+                    <x-livewire-tables::tools.toolbar />
+                @endif
+                @includeWhen($this->hasConfigurableAreaFor('after-toolbar'), $this->getConfigurableAreaFor('after-toolbar'), $this->getParametersForConfigurableArea('after-toolbar'))
+
+            </x-livewire-tables::tools>
+            @endif
+        </x-card.header>
 
         <x-livewire-tables::table>
-            
+
             <x-slot name="thead">
                 @if($this->getCurrentlyReorderingStatus)
                     <x-livewire-tables::table.th.reorder x-cloak x-show="currentlyReorderingStatus" />
@@ -79,7 +81,7 @@
 
                     @foreach($this->selectedVisibleColumns as $colIndex => $column)
                         <x-livewire-tables::table.td wire:key="{{ $tableName . '-' . $row->{$primaryKey} . '-datatable-td-' . $column->getSlug() }}"  :column="$column" :colIndex="$colIndex">
-                            @if($column->isHtml())                            
+                            @if($column->isHtml())
                                 {!! $column->renderContents($row) !!}
                             @else
                                 {{ $column->renderContents($row) }}
@@ -106,7 +108,18 @@
             @endif
         </x-livewire-tables::table>
 
-        <x-livewire-tables::pagination  />
+        <x-card.footer class="justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
+            <div class="flex items-center gap-2 order-2 md:order-1">
+                Show
+                @if ($this->paginationIsEnabled() && $this->perPageVisibilityIsEnabled())
+                    <x-livewire-tables::tools.toolbar.items.pagination-dropdown />
+                @endif
+                per page
+            </div>
+            <div class="flex items-center gap-4 order-1 md:order-2">
+                <x-livewire-tables::pagination  />
+            </div>
+        </x-card.footer>
 
         @includeIf($customView)
     </x-livewire-tables::wrapper>

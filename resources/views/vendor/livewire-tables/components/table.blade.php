@@ -49,9 +49,6 @@
                 </tfoot>
             @endif
         </table>
-        @if ($this->paginationIsEnabled() && $this->perPageVisibilityIsEnabled())
-            <x-livewire-tables::tools.toolbar.items.pagination-dropdown />
-        @endif
     </div>
 @elseif ($isBootstrap)
     <div wire:key="{{ $tableName }}-twrap"
