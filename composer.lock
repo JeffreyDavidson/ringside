@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5046a9437b2342a5eb36b149f433345",
+    "content-hash": "aff633505025dc7148ca13836dd54ca9",
     "packages": [
         {
             "name": "ankurk91/laravel-eloquent-relationships",
@@ -3654,16 +3654,16 @@
         },
         {
             "name": "rappasoft/laravel-livewire-tables",
-            "version": "v3.4.20",
+            "version": "v3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rappasoft/laravel-livewire-tables.git",
-                "reference": "9ddb9aea6358e6b1202701ed2a0b38bd4213dabc"
+                "reference": "d39923a7fa2eef1121bedf6b6edd468a698a639e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/9ddb9aea6358e6b1202701ed2a0b38bd4213dabc",
-                "reference": "9ddb9aea6358e6b1202701ed2a0b38bd4213dabc",
+                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/d39923a7fa2eef1121bedf6b6edd468a698a639e",
+                "reference": "d39923a7fa2eef1121bedf6b6edd468a698a639e",
                 "shasum": ""
             },
             "require": {
@@ -3723,7 +3723,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rappasoft/laravel-livewire-tables/issues",
-                "source": "https://github.com/rappasoft/laravel-livewire-tables/tree/v3.4.20"
+                "source": "https://github.com/rappasoft/laravel-livewire-tables/tree/v3.5.2"
             },
             "funding": [
                 {
@@ -3731,7 +3731,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-10T00:19:45+00:00"
+            "time": "2024-11-10T06:40:30+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -11816,12 +11816,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
