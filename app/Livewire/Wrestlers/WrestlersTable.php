@@ -26,7 +26,6 @@ class WrestlersTable extends DataTableComponent
         return Wrestler::query()
             ->with('currentEmployment')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
-
     }
 
     public function configure(): void {}
