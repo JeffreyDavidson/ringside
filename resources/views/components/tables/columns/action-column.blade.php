@@ -1,9 +1,11 @@
-<div class="menu">
-    <div class="menu-item menu-item-dropdown">
-        <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+<div class="flex">
+    <div class="flex flex-col p-0 m-0">
+        <button
+            class="grow inline-flex items-center cursor-pointer leading-4 rounded-md border border-solid border-transparent outline-none h-8 ps-3 pe-3 font-medium text-xs justify-center shrink-0 p-0 gap-0 w-8 text-gray-700 bg-transparent">
             <i class="ki-filled ki-dots-vertical"></i>
         </button>
-        <div class="menu-dropdown menu-default w-full max-w-[175px] show">
+        <div
+            class="p-0 m-0 hidden border border-solid border-gray-200 shadow-[0_7px_18px_0_rgba(0,0,0,0.09)] bg-white rounded-xl">
             @if ($links['view'] ?? true)
                 <div class="menu-item">
                     <a href="{{ route($path . '.show', $rowId) }}">

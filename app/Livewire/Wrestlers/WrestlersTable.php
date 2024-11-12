@@ -28,13 +28,13 @@ class WrestlersTable extends DataTableComponent
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->sortable(),
             Column::make(__('wrestlers.name'), 'name')
                 ->sortable()
                 ->searchable(),

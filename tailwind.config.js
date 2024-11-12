@@ -28,6 +28,25 @@ export default {
                     800: '#252F4A',
                     900: '#071437',
                 },
+                primary: {
+                    default: '#1B84FF',
+                    active: '#056EE9',
+                    light: '#EFF6FF',
+                    clarity: 'rgba(27, 132, 255, 0.20)',
+                    inverse: '#ffffff',
+                },
+                light: {
+					active: '#fcfcfc',
+				},
+            },
+            borders: {
+                card: '1px solid var(--tw-gray-200)',
+            },
+            boxShadow: {
+				card: '0 3px 4px 0 rgba(0,0,0,.03)',
+			},
+            backgrounds: {
+                card: 'white',
             },
             fontSize: {
                 '2sm': [
