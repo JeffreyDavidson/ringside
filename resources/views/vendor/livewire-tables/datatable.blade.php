@@ -9,10 +9,11 @@
 <div {{ $this->getTopLevelAttributes() }}>
     <x-livewire-tables::wrapper :component="$this" :tableName="$tableName" :$primaryKey :$isTailwind :$isBootstrap
         :$isBootstrap4 :$isBootstrap5>
-        <x-card.header asGrid class="flex-wrap gap-2">
-            <h3 class="text-gray-900 font-medium text-sm">@lang('Showing') 10 @lang('of')
-                {{ $this->getRows->total() }} {{ $this->databaseTableName }}
-            </h3>
+        <x-card.header inGrid class="flex-wrap gap-2">
+            <x-card.title class="font-medium text-sm">@lang('Showing') 10 @lang('of')
+                {{ $this->getRows->total() }}
+                {{ $this->databaseTableName }}</x-card.title>
+
             @if ($this->hasActions && !$this->showActionsInToolbar)
                 <x-livewire-tables::includes.actions />
             @endif
@@ -48,7 +49,7 @@
             @endif
         </x-card.header>
 
-        <x-card.body>
+        <x-card.body inGrid>
             <x-livewire-tables::table>
                 <x-slot name="thead">
                     @if ($this->getCurrentlyReorderingStatus)

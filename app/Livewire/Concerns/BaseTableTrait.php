@@ -39,7 +39,7 @@ trait BaseTableTrait
             ])
             ->setTableAttributes([
                 'default' => false,
-                'class' => 'w-full caption-bottom border-collapse text-left text-gray-700 font-medium text-sm border table table-auto border-0',
+                'class' => 'w-full caption-bottom border-collapse text-left text-gray-700 font-medium text-sm border table table-auto border-0 divide-y divide-gray-300',
             ])
             ->setTheadAttributes([
                 'default' => false,
@@ -59,7 +59,7 @@ trait BaseTableTrait
             })
             ->setTbodyAttributes([
                 'default' => false,
-                'class' => '',
+                'class' => 'divide-y divide-gray-200 ',
             ])
             ->setTrAttributes(function ($row, $index) {
                 return [

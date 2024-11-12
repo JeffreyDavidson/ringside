@@ -1,3 +1,7 @@
-<div {{ $attributes->merge(['class' => 'grow-1 ps-7.5 pe-7.5 p-0']) }}>
+@props([
+    'inGrid' => false,
+])
+
+<div {{ $attributes->class(['grow ps-7.5 pe-7.5', 'py-5' => !$inGrid, 'p-0' => $inGrid]) }}>
     {{ $slot }}
 </div>
