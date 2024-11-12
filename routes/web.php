@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
-Auth::loginUsingId(1);
 
 Route::redirect('/', 'login');
 
