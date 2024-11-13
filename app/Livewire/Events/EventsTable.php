@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Events;
 
+use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -11,6 +12,12 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class EventsTable extends DataTableComponent
 {
+    use BaseTableTrait;
+
+    protected string $databaseTableName = 'events';
+
+    protected string $routeBasePath = 'events';
+
     public function configure(): void
     {
     }

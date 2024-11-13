@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Titles;
 
+use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Title;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -11,6 +12,12 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TitlesTable extends DataTableComponent
 {
+    use BaseTableTrait;
+
+    protected string $databaseTableName = 'titles';
+
+    protected string $routeBasePath = 'titles';
+
     public function configure(): void
     {
     }

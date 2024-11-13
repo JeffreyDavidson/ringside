@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
+use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -11,6 +12,12 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TagTeamsTable extends DataTableComponent
 {
+    use BaseTableTrait;
+
+    protected string $databaseTableName = 'tag_teams';
+
+    protected string $routeBasePath = 'tag-teams';
+
     public function configure(): void
     {
     }

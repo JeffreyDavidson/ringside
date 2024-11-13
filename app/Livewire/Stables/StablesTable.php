@@ -4,41 +4,33 @@ declare(strict_types=1);
 
 namespace App\Livewire\Stables;
 
-use App\Builders\StableBuilder;
-use App\Livewire\Datatable\WithSorting;
+use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class StablesList extends Component
+class StablesTable extends DataTableComponent
 {
-    use WithPagination;
-    use WithSorting;
+    use BaseTableTrait;
 
-    /**
-     * Determines if the filters should be shown.
-     */
-    public bool $showFilters = false;
+    protected string $databaseTableName = 'stables';
 
-    /**
-     * Shows list of accepted filters and direction to be displayed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
+    protected string $routeBasePath = 'stables';
 
-    /**
-     * @var array<int>
-     */
-    public array $selectedStableIds = [];
+    public function configure(): void
+    {
+    }
 
-    /**
-     * @var array<int>
-     */
-    public array $stableIdsOnPage = [];
+    public function columns(): array
+    {
+        return [
+            Column::make(__('stables.name'), 'name'),
+            Column::make(__('stables.status'), 'status')
+                ->view('components.tables.columns.status-column'),
+            Column::make(__('activations.start_date'), 'start_date'),
+        ];
+    }
 
     /**
      * Display a listing of the resource.
@@ -46,19 +38,9 @@ class StablesList extends Component
     public function render(): View
     {
         $query = Stable::query()
-            ->when(
-                $this->filters['search'],
-                function (StableBuilder $query, string $search) {
-                    $query->where('name', 'like', '%'.$search.'%');
-                }
-            )
             ->oldest('name');
 
-        $query = $this->applySorting($query);
-
         $stables = $query->paginate();
-
-        $this->stableIdsOnPage = $stables->map(fn (Stable $stable) => (string) $stable->id)->toArray();
 
         return view('livewire.stables.stables-list', [
             'stables' => $stables,

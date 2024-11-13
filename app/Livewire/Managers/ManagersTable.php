@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
+use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Manager;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -11,6 +12,12 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class ManagersTable extends DataTableComponent
 {
+    use BaseTableTrait;
+
+    protected string $databaseTableName = 'managers';
+
+    protected string $routeBasePath = 'managers';
+
     public function configure(): void
     {
     }
