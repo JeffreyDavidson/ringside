@@ -10,7 +10,7 @@ trait HasEmploymentDateFilter
 {
     protected function getDefaultEmploymentDateFilter(): DateRangeFilter
     {
-        return DateRangeFilter::make('Employment')
+        return DateRangeFilter::make('Employment Date')
             ->config([
                 'allowInput' => true,
                 'altFormat' => 'F j, Y',
