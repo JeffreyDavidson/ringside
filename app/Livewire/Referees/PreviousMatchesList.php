@@ -16,15 +16,6 @@ class PreviousMatchesList extends Component
     public Referee $referee;
 
     /**
-     * List of filters that are allowed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
-    /**
      * Set the Referee to be used for this component.
      */
     public function mount(Referee $referee): void

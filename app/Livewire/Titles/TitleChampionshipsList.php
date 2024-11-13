@@ -16,15 +16,6 @@ class TitleChampionshipsList extends Component
     public Title $title;
 
     /**
-     * List of filters that are allowed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
-    /**
      * Undocumented function.
      */
     public function mount(Title $title): void

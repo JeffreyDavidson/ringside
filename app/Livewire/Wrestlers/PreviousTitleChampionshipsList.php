@@ -17,15 +17,6 @@ class PreviousTitleChampionshipsList extends Component
     public Wrestler $wrestler;
 
     /**
-     * List of filters that are allowed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
-    /**
      * Undocumented function.
      */
     public function mount(Wrestler $wrestler): void

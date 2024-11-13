@@ -16,15 +16,6 @@ class PreviousMatchesList extends Component
     public TagTeam $tagTeam;
 
     /**
-     * List of filters that are allowed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
-    /**
      * Set the Tag Team to be used for this component.
      */
     public function mount(TagTeam $tagTeam): void

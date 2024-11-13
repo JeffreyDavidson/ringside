@@ -16,15 +16,6 @@ class PreviousMatchesList extends Component
     public Wrestler $wrestler;
 
     /**
-     * List of filters that are allowed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
-    /**
      * Set the Wrestler to be used for this component.
      */
     public function mount(Wrestler $wrestler): void

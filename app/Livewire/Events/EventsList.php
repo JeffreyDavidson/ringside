@@ -4,27 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Events;
 
-use App\Builders\EventBuilder;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class EventsList extends Component
 {
-    /**
-     * Determines if the filters should be shown.
-     */
-    public bool $showFilters = false;
-
-    /**
-     * Shows list of accepted filters and direction to be displayed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
     /**
      * @var array<int>
      */
@@ -41,12 +26,6 @@ class EventsList extends Component
     public function render(): View
     {
         $query = Event::query()
-            ->when(
-                $this->filters['search'],
-                function (EventBuilder $query, string $search) {
-                    $query->where('name', 'like', '%'.$search.'%');
-                }
-            )
             ->oldest('name');
 
         $events = $query->paginate();

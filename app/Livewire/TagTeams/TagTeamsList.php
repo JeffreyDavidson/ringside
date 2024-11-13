@@ -4,27 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
-use App\Builders\TagTeamBuilder;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class TagTeamsList extends Component
 {
-    /**
-     * Determines if the filters should be shown.
-     */
-    public bool $showFilters = false;
-
-    /**
-     * Shows list of accepted filters and direction to be displayed.
-     *
-     * @var array<string, string>
-     */
-    public array $filters = [
-        'search' => '',
-    ];
-
     /**
      * @var array<int>
      */
@@ -41,12 +26,6 @@ class TagTeamsList extends Component
     public function render(): View
     {
         $query = TagTeam::query()
-            ->when(
-                $this->filters['search'],
-                function (TagTeamBuilder $query, string $search) {
-                    $query->where('name', 'like', '%'.$search.'%');
-                }
-            )
             ->oldest('name');
 
         $tagTeams = $query->paginate();
