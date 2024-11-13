@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Concerns;
 
+use App\Livewire\Concerns\Columns\HasActionColumn;
+
 trait BaseTableTrait
 {
     use HasActionColumn;
