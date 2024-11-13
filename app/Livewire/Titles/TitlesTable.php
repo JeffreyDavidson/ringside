@@ -7,7 +7,9 @@ namespace App\Livewire\Titles;
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Concerns\Columns\HasActivationDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
+use App\Livewire\Concerns\Filters\HasActivationDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Title;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -15,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TitlesTable extends DataTableComponent
 {
-    use BaseTableTrait, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasActivationDateColumn, HasActivationDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'titles';
 
@@ -24,7 +26,7 @@ class TitlesTable extends DataTableComponent
     public function builder(): TitleBuilder
     {
         return Title::query()
-            ->with('currentIntroduction')
+            ->with('currentActivation')
             ->oldest('name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
@@ -39,8 +41,7 @@ class TitlesTable extends DataTableComponent
                 ->searchable(),
             $this->getDefaultStatusColumn(),
             Column::make(__('titles.current_champion'), 'current_champion'),
-            Column::make(__('activations.date_introduced'), 'date_introduced')
-                ->label(fn ($row, Column $column) => $row->currentIntroduction?->started_at->format('Y-m-d') ?? 'TBD'),
+            $this->getDefaultActivationDateColumn(),
         ];
     }
 
@@ -50,6 +51,7 @@ class TitlesTable extends DataTableComponent
 
         return [
             $this->getDefaultStatusFilter($statuses),
+            $this->getDefaultActivationmDateFilter(),
         ];
     }
 }

@@ -7,7 +7,9 @@ namespace App\Livewire\Stables;
 use App\Builders\StableBuilder;
 use App\Enums\StableStatus;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Concerns\Columns\HasActivationDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
+use App\Livewire\Concerns\Filters\HasActivationDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Stable;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -15,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class StablesTable extends DataTableComponent
 {
-    use BaseTableTrait, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasActivationDateColumn, HasActivationDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'stables';
 
@@ -38,8 +40,7 @@ class StablesTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             $this->getDefaultStatusColumn(),
-            Column::make(__('activations.start_date'), 'start_date')
-                ->label(fn ($row, Column $column) => $row->currentActivation?->started_at->format('Y-m-d') ?? 'TBD'),
+            $this->getDefaultActivationDateColumn(),
         ];
     }
 
@@ -49,6 +50,7 @@ class StablesTable extends DataTableComponent
 
         return [
             $this->getDefaultStatusFilter($statuses),
+            $this->getDefaultActivationmDateFilter(),
         ];
     }
 }
