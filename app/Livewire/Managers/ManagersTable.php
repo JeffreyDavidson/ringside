@@ -31,7 +31,13 @@ class ManagersTable extends DataTableComponent
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->addAdditionalSelects([
+            'managers.first_name as first_name',
+            'managers.last_name as last_name',
+        ]);
+    }
 
     public function columns(): array
     {
