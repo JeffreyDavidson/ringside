@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Livewire\Stables;
 
 use App\Builders\StableBuilder;
+use App\Enums\StableStatus;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Stable;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class StablesTable extends DataTableComponent
 {
@@ -21,7 +24,8 @@ class StablesTable extends DataTableComponent
     public function builder(): StableBuilder
     {
         return Stable::query()
-            ->oldest('name');
+            ->oldest('name')
+            ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
 
     public function configure(): void
@@ -35,6 +39,19 @@ class StablesTable extends DataTableComponent
             Column::make(__('stables.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('activations.start_date'), 'start_date'),
+        ];
+    }
+
+    public function filters(): array
+    {
+        $statuses = collect(StableStatus::cases())->pluck('name', 'value')->toArray();
+
+        return [
+            SelectFilter::make('Status', 'status')
+                ->options(['' => 'All'] + $statuses)
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('status', $value);
+                }),
         ];
     }
 }

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Livewire\Referees;
 
 use App\Builders\RefereeBuilder;
+use App\Enums\RefereeStatus;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Referee;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class RefereesTable extends DataTableComponent
 {
@@ -21,7 +24,8 @@ class RefereesTable extends DataTableComponent
     public function builder(): RefereeBuilder
     {
         return Referee::query()
-            ->oldest('last_name');
+            ->oldest('last_name')
+            ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
 
     public function configure(): void
@@ -35,6 +39,19 @@ class RefereesTable extends DataTableComponent
             Column::make(__('referees.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('employments.start_date'), 'start_date'),
+        ];
+    }
+
+    public function filters(): array
+    {
+        $statuses = collect(RefereeStatus::cases())->pluck('name', 'value')->toArray();
+
+        return [
+            SelectFilter::make('Status', 'status')
+                ->options(['' => 'All'] + $statuses)
+                ->filter(function (Builder $builder, string $value) {
+                    $builder->where('status', $value);
+                }),
         ];
     }
 }
