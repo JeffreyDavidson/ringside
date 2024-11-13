@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Titles;
 
+use App\Builders\TitleBuilder;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Title;
-use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -17,6 +17,12 @@ class TitlesTable extends DataTableComponent
     protected string $databaseTableName = 'titles';
 
     protected string $routeBasePath = 'titles';
+
+    public function builder(): TitleBuilder
+    {
+        return Title::query()
+            ->oldest('name');
+    }
 
     public function configure(): void
     {
@@ -31,20 +37,5 @@ class TitlesTable extends DataTableComponent
             Column::make(__('titles.current_champion'), 'current_champion'),
             Column::make(__('activations.date_introduced'), 'date_introduced'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = Title::query()
-            ->oldest('name');
-
-        $titles = $query->paginate();
-
-        return view('livewire.titles.titles-list', [
-            'titles' => $titles,
-        ]);
     }
 }

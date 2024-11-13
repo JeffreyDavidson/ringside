@@ -6,7 +6,9 @@ namespace App\Livewire\Events\Matches;
 
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Event;
+use App\Models\EventMatch;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -31,6 +33,13 @@ class MatchesTable extends DataTableComponent
         $this->event = $event;
     }
 
+    public function builder(): Builder
+    {
+        return EventMatch::query()
+            ->where('event_id', $this->event->id)
+            ->oldest('name');
+    }
+
     public function configure(): void
     {
     }
@@ -40,20 +49,5 @@ class MatchesTable extends DataTableComponent
         return [
             Column::make(__('matches.match_type_name'), 'name'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->event
-            ->matches();
-
-        $matches = $query->get();
-
-        return view('livewire.events.matches.matches-list', [
-            'matches' => $matches,
-        ]);
     }
 }

@@ -6,7 +6,7 @@ namespace App\Livewire\Venues;
 
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Venue;
-use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -17,6 +17,12 @@ class VenuesTable extends DataTableComponent
     protected string $databaseTableName = 'venues';
 
     protected string $routeBasePath = 'venues';
+
+    public function builder(): Builder
+    {
+        return Venue::query()
+            ->oldest('name');
+    }
 
     public function configure(): void
     {
@@ -31,20 +37,5 @@ class VenuesTable extends DataTableComponent
             Column::make(__('venues.state'), 'state'),
             Column::make(__('venues.zipcode'), 'zipcode'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = Venue::query()
-            ->oldest('name');
-
-        $venues = $query->paginate();
-
-        return view('livewire.venues.venues-list', [
-            'venues' => $venues,
-        ]);
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
+use App\Builders\TagTeamBuilder;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\TagTeam;
-use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -17,6 +17,12 @@ class TagTeamsTable extends DataTableComponent
     protected string $databaseTableName = 'tag_teams';
 
     protected string $routeBasePath = 'tag-teams';
+
+    public function builder(): TagTeamBuilder
+    {
+        return TagTeam::query()
+            ->oldest('name');
+    }
 
     public function configure(): void
     {
@@ -32,20 +38,5 @@ class TagTeamsTable extends DataTableComponent
             Column::make(__('tag-teams.combined_weight'), 'combined_weight'),
             Column::make(__('employments.start_date'), 'start_date'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = TagTeam::query()
-            ->oldest('name');
-
-        $tagTeams = $query->paginate();
-
-        return view('livewire.tag-teams.tag-teams-list', [
-            'tagTeams' => $tagTeams,
-        ]);
     }
 }

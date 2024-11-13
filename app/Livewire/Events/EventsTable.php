@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Events;
 
+use App\Builders\EventBuilder;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
@@ -18,6 +19,12 @@ class EventsTable extends DataTableComponent
 
     protected string $routeBasePath = 'events';
 
+    public function builder(): EventBuilder
+    {
+        return Event::query()
+            ->oldest('name');
+    }
+
     public function configure(): void
     {
     }
@@ -31,20 +38,5 @@ class EventsTable extends DataTableComponent
             Column::make(__('events.date'), 'date'),
             Column::make(__('venues.name'), 'venue_name'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = Event::query()
-            ->oldest('name');
-
-        $events = $query->paginate();
-
-        return view('livewire.events.events-list', [
-            'events' => $events,
-        ]);
     }
 }
