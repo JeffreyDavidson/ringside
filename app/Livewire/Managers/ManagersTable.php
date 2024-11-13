@@ -7,15 +7,17 @@ namespace App\Livewire\Managers;
 use App\Builders\ManagerBuilder;
 use App\Enums\ManagerStatus;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Concerns\Columns\HasEmploymentDateColumn;
+use App\Livewire\Concerns\Columns\HasFullNameColumn;
+use App\Livewire\Concerns\Columns\HasStatusColumn;
+use App\Livewire\Concerns\Filters\HasEmploymentDateFilter;
+use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Manager;
-use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ManagersTable extends DataTableComponent
 {
-    use BaseTableTrait;
+    use BaseTableTrait, HasFullNameColumn, HasStatusColumn, HasStatusFilter, HasEmploymentDateColumn, HasEmploymentDateFilter;
 
     protected string $databaseTableName = 'managers';
 
@@ -34,13 +36,9 @@ class ManagersTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('managers.name'), 'name')
-                ->sortable()
-                ->searchable(),
-            Column::make(__('managers.status'), 'status')
-                ->view('components.tables.columns.status-column'),
-            Column::make(__('employments.start_date'), 'start_date')
-                ->label(fn ($row, Column $column) => $row->currentEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
+            $this->getDefaultFullNameColumn(),
+            $this->getDefaultStatusColumn(),
+            $this->getDefaultEmploymentDateColumn(),
         ];
     }
 
@@ -49,11 +47,8 @@ class ManagersTable extends DataTableComponent
         $statuses = collect(ManagerStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
-            SelectFilter::make('Status', 'status')
-                ->options(['' => 'All'] + $statuses)
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('status', $value);
-                }),
+            $this->getDefaultStatusFilter($statuses),
+            $this->getDefaultEmploymentDateFilter(),
         ];
     }
 }

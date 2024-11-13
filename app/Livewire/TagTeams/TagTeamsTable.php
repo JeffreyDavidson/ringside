@@ -7,15 +7,17 @@ namespace App\Livewire\TagTeams;
 use App\Builders\TagTeamBuilder;
 use App\Enums\TagTeamStatus;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Concerns\Columns\HasEmploymentDateColumn;
+use App\Livewire\Concerns\Columns\HasStatusColumn;
+use App\Livewire\Concerns\Filters\HasEmploymentDateFilter;
+use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\TagTeam;
-use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class TagTeamsTable extends DataTableComponent
 {
-    use BaseTableTrait;
+    use BaseTableTrait, HasStatusColumn, HasStatusFilter, HasEmploymentDateColumn, HasEmploymentDateFilter;
 
     protected string $databaseTableName = 'tag_teams';
 
@@ -37,12 +39,10 @@ class TagTeamsTable extends DataTableComponent
             Column::make(__('tag-teams.name'), 'name')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('tag-teams.status'), 'status')
-                ->view('components.tables.columns.status-column'),
+            $this->getDefaultStatusColumn(),
             Column::make(__('tag-teams.partners'), 'partners'),
             Column::make(__('tag-teams.combined_weight'), 'combined_weight'),
-            Column::make(__('employments.start_date'), 'start_date')
-                ->label(fn ($row, Column $column) => $row->currentEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
+            $this->getDefaultEmploymentDateColumn(),
         ];
     }
 
@@ -51,11 +51,8 @@ class TagTeamsTable extends DataTableComponent
         $statuses = collect(TagTeamStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
-            SelectFilter::make('Status', 'status')
-                ->options(['' => 'All'] + $statuses)
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('status', $value);
-                }),
+            $this->getDefaultStatusFilter($statuses),
+            $this->getDefaultEmploymentDateFilter(),
         ];
     }
 }

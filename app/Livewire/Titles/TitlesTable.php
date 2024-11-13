@@ -7,15 +7,15 @@ namespace App\Livewire\Titles;
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
 use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Concerns\Columns\HasStatusColumn;
+use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Title;
-use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class TitlesTable extends DataTableComponent
 {
-    use BaseTableTrait;
+    use BaseTableTrait, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'titles';
 
@@ -37,8 +37,7 @@ class TitlesTable extends DataTableComponent
             Column::make(__('titles.name'), 'name')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('titles.status'), 'status')
-                ->view('components.tables.columns.status-column'),
+            $this->getDefaultStatusColumn(),
             Column::make(__('titles.current_champion'), 'current_champion'),
             Column::make(__('activations.date_introduced'), 'date_introduced')
                 ->label(fn ($row, Column $column) => $row->currentIntroduction?->started_at->format('Y-m-d') ?? 'TBD'),
@@ -50,11 +49,7 @@ class TitlesTable extends DataTableComponent
         $statuses = collect(TitleStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
-            SelectFilter::make('Status', 'status')
-                ->options(['' => 'All'] + $statuses)
-                ->filter(function (Builder $builder, string $value) {
-                    $builder->where('status', $value);
-                }),
+            $this->getDefaultStatusFilter($statuses),
         ];
     }
 }
