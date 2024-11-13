@@ -12,10 +12,8 @@ use App\Livewire\Concerns\Columns\HasFullNameColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Referee;
-use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class RefereesTable extends DataTableComponent
 {
