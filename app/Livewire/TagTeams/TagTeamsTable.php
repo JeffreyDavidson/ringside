@@ -17,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TagTeamsTable extends DataTableComponent
 {
-    use BaseTableTrait, HasStatusColumn, HasStatusFilter, HasEmploymentDateColumn, HasEmploymentDateFilter;
+    use BaseTableTrait, HasEmploymentDateColumn, HasEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'tag_teams';
 

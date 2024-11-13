@@ -17,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 class ManagersTable extends DataTableComponent
 {
-    use BaseTableTrait, HasFullNameColumn, HasStatusColumn, HasStatusFilter, HasEmploymentDateColumn, HasEmploymentDateFilter;
+    use BaseTableTrait, HasEmploymentDateColumn, HasEmploymentDateFilter, HasFullNameColumn, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'managers';
 
