@@ -24,9 +24,7 @@ class TitleChampionshipsTable extends DataTableComponent
         $this->title = $title;
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

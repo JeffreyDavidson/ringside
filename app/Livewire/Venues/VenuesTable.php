@@ -24,9 +24,7 @@ class VenuesTable extends DataTableComponent
             ->oldest('name');
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

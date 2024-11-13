@@ -24,9 +24,7 @@ class PreviousMatchesTable extends DataTableComponent
         $this->referee = $referee;
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

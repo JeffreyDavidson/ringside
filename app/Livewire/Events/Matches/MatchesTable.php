@@ -7,7 +7,6 @@ namespace App\Livewire\Events\Matches;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Models\Event;
 use App\Models\EventMatch;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -40,9 +39,7 @@ class MatchesTable extends DataTableComponent
             ->oldest('name');
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

@@ -18,9 +18,7 @@ class PreviousEventsTable extends DataTableComponent
         $this->venue = $venue;
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

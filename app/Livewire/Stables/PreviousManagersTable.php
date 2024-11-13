@@ -25,9 +25,7 @@ class PreviousManagersTable extends DataTableComponent
         $this->stable = $stable;
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

@@ -25,9 +25,7 @@ class PreviousManagersTable extends DataTableComponent
         $this->wrestler = $wrestler;
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

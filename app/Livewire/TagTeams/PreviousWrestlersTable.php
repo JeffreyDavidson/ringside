@@ -24,9 +24,7 @@ class PreviousWrestlersTable extends DataTableComponent
         $this->tagTeam = $tagTeam;
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {
