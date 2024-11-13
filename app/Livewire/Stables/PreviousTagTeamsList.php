@@ -7,12 +7,9 @@ namespace App\Livewire\Stables;
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousTagTeamsList extends Component
 {
-    use WithPagination;
-
     /**
      * Stable to use for component.
      */

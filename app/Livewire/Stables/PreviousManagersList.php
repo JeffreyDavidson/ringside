@@ -8,12 +8,9 @@ use App\Models\Stable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousManagersList extends Component
 {
-    use WithPagination;
-
     /**
      * Stable to use for component.
      */

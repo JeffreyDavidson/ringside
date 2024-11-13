@@ -8,12 +8,9 @@ use App\Builders\EventBuilder;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class EventsList extends Component
 {
-    use WithPagination;
-
     /**
      * Determines if the filters should be shown.
      */

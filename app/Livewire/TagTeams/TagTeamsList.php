@@ -8,12 +8,9 @@ use App\Builders\TagTeamBuilder;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class TagTeamsList extends Component
 {
-    use WithPagination;
-
     /**
      * Determines if the filters should be shown.
      */

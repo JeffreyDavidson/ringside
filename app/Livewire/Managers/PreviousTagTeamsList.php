@@ -7,12 +7,9 @@ namespace App\Livewire\Managers;
 use App\Models\Manager;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousTagTeamsList extends Component
 {
-    use WithPagination;
-
     /**
      * Manager to use for component.
      */

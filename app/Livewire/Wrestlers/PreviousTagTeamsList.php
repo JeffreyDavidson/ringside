@@ -7,12 +7,9 @@ namespace App\Livewire\Wrestlers;
 use App\Models\Wrestler;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousTagTeamsList extends Component
 {
-    use WithPagination;
-
     /**
      * Wrestler to use for component.
      */

@@ -8,12 +8,9 @@ use App\Builders\RefereeBuilder;
 use App\Models\Referee;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class RefereesList extends Component
 {
-    use WithPagination;
-
     /**
      * Determines if the filters should be shown.
      */

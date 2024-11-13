@@ -7,12 +7,9 @@ namespace App\Livewire\Titles;
 use App\Models\Title;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class TitleChampionshipsList extends Component
 {
-    use WithPagination;
-
     /**
      * Undocumented variable.
      */

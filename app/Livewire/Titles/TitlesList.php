@@ -8,12 +8,9 @@ use App\Builders\TitleBuilder;
 use App\Models\Title;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class TitlesList extends Component
 {
-    use WithPagination;
-
     /**
      * Determines if the filters should be shown.
      */

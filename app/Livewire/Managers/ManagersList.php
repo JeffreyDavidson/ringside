@@ -8,12 +8,9 @@ use App\Builders\ManagerBuilder;
 use App\Models\Manager;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class ManagersList extends Component
 {
-    use WithPagination;
-
     /**
      * Determines if the filters should be shown.
      */

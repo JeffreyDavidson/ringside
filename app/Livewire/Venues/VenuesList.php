@@ -8,12 +8,9 @@ use App\Models\Venue;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class VenuesList extends Component
 {
-    use WithPagination;
-
     /**
      * Determines if the filters should be shown.
      */

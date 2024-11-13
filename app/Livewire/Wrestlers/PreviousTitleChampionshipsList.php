@@ -8,12 +8,9 @@ use App\Models\Wrestler;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousTitleChampionshipsList extends Component
 {
-    use WithPagination;
-
     /**
      * Wrestler to use for component.
      */

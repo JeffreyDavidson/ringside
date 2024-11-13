@@ -7,12 +7,9 @@ namespace App\Livewire\Referees;
 use App\Models\Referee;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousMatchesList extends Component
 {
-    use WithPagination;
-
     /**
      * Referee to use for component.
      */

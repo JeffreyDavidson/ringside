@@ -7,12 +7,9 @@ namespace App\Livewire\TagTeams;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class PreviousMatchesList extends Component
 {
-    use WithPagination;
-
     /**
      * Tag Team to use for component.
      */
