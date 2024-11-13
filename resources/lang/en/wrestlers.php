@@ -6,5 +6,4 @@ return [
     'weight' => 'Weight',
     'signature_move' => 'Signature Move',
     'hometown' => 'Hometown',
-    'status' => 'Status',
 ];
