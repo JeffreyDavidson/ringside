@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\TagTeams;
 
 use App\Builders\TagTeamBuilder;
-use App\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class TagTeamsList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Determines if the filters should be shown.
@@ -53,8 +51,6 @@ class TagTeamsList extends Component
                 }
             )
             ->oldest('name');
-
-        $query = $this->applySorting($query);
 
         $tagTeams = $query->paginate();
 

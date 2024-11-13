@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Managers;
 
 use App\Builders\ManagerBuilder;
-use App\Livewire\Datatable\WithSorting;
 use App\Models\Manager;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class ManagersList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Determines if the filters should be shown.
@@ -54,8 +52,6 @@ class ManagersList extends Component
                 }
             )
             ->oldest('last_name');
-
-        $query = $this->applySorting($query);
 
         $managers = $query->paginate();
 

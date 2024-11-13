@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Referees;
 
 use App\Builders\RefereeBuilder;
-use App\Livewire\Datatable\WithSorting;
 use App\Models\Referee;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class RefereesList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Determines if the filters should be shown.
@@ -54,8 +52,6 @@ class RefereesList extends Component
                 }
             )
             ->oldest('last_name');
-
-        $query = $this->applySorting($query);
 
         $referees = $query->paginate();
 

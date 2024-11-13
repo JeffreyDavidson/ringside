@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
-use App\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -13,7 +12,6 @@ use Livewire\WithPagination;
 class PreviousMatchesList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Tag Team to use for component.
@@ -44,8 +42,6 @@ class PreviousMatchesList extends Component
     {
         $query = $this->tagTeam
             ->previousMatches();
-
-        $query = $this->applySorting($query);
 
         $previousMatches = $query->paginate();
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Stables;
 
-use App\Livewire\Datatable\WithSorting;
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class PreviousManagersList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Stable to use for component.
@@ -39,8 +37,6 @@ class PreviousManagersList extends Component
             ->addSelect(
                 DB::raw("CONCAT(managers.first_name,' ', managers.last_name) AS full_name"),
             );
-
-        $query = $this->applySorting($query);
 
         $previousManagers = $query->paginate();
 

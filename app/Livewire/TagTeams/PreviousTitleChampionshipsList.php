@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
-use App\Livewire\Datatable\WithSorting;
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class PreviousTitleChampionshipsList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Tag team to use for component.
@@ -52,8 +50,6 @@ class PreviousTitleChampionshipsList extends Component
                 'title_championships.lost_at',
                 DB::raw('DATEDIFF(COALESCE(lost_at, NOW()), won_at) AS days_held_count')
             );
-
-        $query = $this->applySorting($query);
 
         $previousTitleChampionships = $query->paginate();
 

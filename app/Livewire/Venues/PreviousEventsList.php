@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Venues;
 
-use App\Livewire\Datatable\WithSorting;
 use App\Models\Venue;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class PreviousEventsList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     public Venue $venue;
 
@@ -51,8 +49,6 @@ class PreviousEventsList extends Component
                 }
             )
             ->oldest('name');
-
-        $query = $this->applySorting($query);
 
         $previousEvents = $query->paginate();
 

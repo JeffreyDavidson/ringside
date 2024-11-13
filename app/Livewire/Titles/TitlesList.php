@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Titles;
 
 use App\Builders\TitleBuilder;
-use App\Livewire\Datatable\WithSorting;
 use App\Models\Title;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -14,7 +13,6 @@ use Livewire\WithPagination;
 class TitlesList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Determines if the filters should be shown.
@@ -53,8 +51,6 @@ class TitlesList extends Component
                 }
             )
             ->oldest('name');
-
-        $query = $this->applySorting($query);
 
         $titles = $query->paginate();
 

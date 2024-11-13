@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Stables;
 
-use App\Livewire\Datatable\WithSorting;
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -13,7 +12,6 @@ use Livewire\WithPagination;
 class PreviousWrestlersList extends Component
 {
     use WithPagination;
-    use WithSorting;
 
     /**
      * Stable to use for component.
@@ -35,8 +33,6 @@ class PreviousWrestlersList extends Component
     {
         $query = $this->stable
             ->previousWrestlers();
-
-        $query = $this->applySorting($query);
 
         $previousWrestlers = $query->paginate();
 
