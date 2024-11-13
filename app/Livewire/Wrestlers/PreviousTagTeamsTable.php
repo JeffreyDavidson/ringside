@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousMatchesList extends DataTableComponent
+class PreviousTagTeamsTable extends DataTableComponent
 {
     /**
      * Wrestler to use for component.
@@ -31,11 +31,10 @@ class PreviousMatchesList extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('events.name'), 'name'),
-            Column::make(__('events.date'), 'date'),
-            Column::make(__('matches.opponents'), 'opponents'),
-            Column::make(__('matches.titles'), 'titles'),
-            Column::make(__('matches.result'), 'result'),
+            Column::make(__('tag-teams.name'), 'name'),
+            Column::make(__('tag-teams.partner'), 'partner'),
+            Column::make(__('tag-teams.date_joined'), 'date_joined'),
+            Column::make(__('tag-teams.date_left'), 'date_left'),
         ];
     }
 
@@ -45,12 +44,12 @@ class PreviousMatchesList extends DataTableComponent
     public function render(): View
     {
         $query = $this->wrestler
-            ->previousMatches();
+            ->previousTagTeams();
 
-        $previousMatches = $query->paginate();
+        $previousTagTeams = $query->paginate();
 
-        return view('livewire.wrestlers.previous-matches.previous-matches-list', [
-            'previousMatches' => $previousMatches,
+        return view('livewire.wrestlers.previous-tag-teams.previous-tag-teams-list', [
+            'previousTagTeams' => $previousTagTeams,
         ]);
     }
 }

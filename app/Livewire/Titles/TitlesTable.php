@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class TitlesList extends DataTableComponent
+class TitlesTable extends DataTableComponent
 {
     public function configure(): void
     {

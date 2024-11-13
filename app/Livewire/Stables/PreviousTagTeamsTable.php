@@ -6,11 +6,10 @@ namespace App\Livewire\Stables;
 
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousManagersList extends DataTableComponent
+class PreviousTagTeamsTable extends DataTableComponent
 {
     /**
      * Stable to use for component.
@@ -32,7 +31,7 @@ class PreviousManagersList extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('managers.name'), 'manager_name'),
+            Column::make(__('tag_teams.name'), 'tag_team_name'),
             Column::make(__('stables.date_joined'), 'date_joined'),
             Column::make(__('stables.date_left'), 'date_left'),
         ];
@@ -44,15 +43,12 @@ class PreviousManagersList extends DataTableComponent
     public function render(): View
     {
         $query = $this->stable
-            ->previousManagers()
-            ->addSelect(
-                DB::raw("CONCAT(managers.first_name,' ', managers.last_name) AS full_name"),
-            );
+            ->previousTagTeams();
 
-        $previousManagers = $query->paginate();
+        $previousTagTeams = $query->paginate();
 
-        return view('livewire.stables.previous-managers.previous-managers-list', [
-            'previousManagers' => $previousManagers,
+        return view('livewire.stables.previous-tag-teams.previous-tag-teams-list', [
+            'previousTagTeams' => $previousTagTeams,
         ]);
     }
 }

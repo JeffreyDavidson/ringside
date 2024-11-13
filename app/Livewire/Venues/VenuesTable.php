@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class VenuesList extends DataTableComponent
+class VenuesTable extends DataTableComponent
 {
     public function configure(): void
     {

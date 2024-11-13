@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class MatchesList extends DataTableComponent
+class MatchesTable extends DataTableComponent
 {
     /**
      * Event to use for component.

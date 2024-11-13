@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousManagersList extends DataTableComponent
+class PreviousManagersTable extends DataTableComponent
 {
     /**
      * Wrestler to use for component.

@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\TagTeams;
+namespace App\Livewire\Referees;
 
-use App\Models\TagTeam;
+use App\Models\Referee;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousMatchesList extends DataTableComponent
+class PreviousMatchesTable extends DataTableComponent
 {
     /**
-     * Tag Team to use for component.
+     * Referee to use for component.
      */
-    public TagTeam $tagTeam;
+    public Referee $referee;
 
     /**
-     * Set the Tag Team to be used for this component.
+     * Set the Referee to be used for this component.
      */
-    public function mount(TagTeam $tagTeam): void
+    public function mount(Referee $referee): void
     {
-        $this->tagTeam = $tagTeam;
+        $this->referee = $referee;
     }
 
     public function configure(): void
@@ -44,12 +44,12 @@ class PreviousMatchesList extends DataTableComponent
      */
     public function render(): View
     {
-        $query = $this->tagTeam
+        $query = $this->referee
             ->previousMatches();
 
         $previousMatches = $query->paginate();
 
-        return view('livewire.tag-teams.previous-matches.previous-matches-list', [
+        return view('livewire.referees.previous-matches.previous-matches-list', [
             'previousMatches' => $previousMatches,
         ]);
     }

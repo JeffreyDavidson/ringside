@@ -6,11 +6,10 @@ namespace App\Livewire\TagTeams;
 
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousManagersList extends DataTableComponent
+class PreviousMatchesTable extends DataTableComponent
 {
     /**
      * Tag Team to use for component.
@@ -32,9 +31,11 @@ class PreviousManagersList extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('managers.name'), 'name'),
-            Column::make(__('managers.date_hired'), 'date_hired'),
-            Column::make(__('managers.date_fired'), 'date_fired'),
+            Column::make(__('events.name'), 'name'),
+            Column::make(__('events.date'), 'date'),
+            Column::make(__('matches.opponents'), 'opponents'),
+            Column::make(__('matches.titles'), 'titles'),
+            Column::make(__('matches.result'), 'result'),
         ];
     }
 
@@ -44,15 +45,12 @@ class PreviousManagersList extends DataTableComponent
     public function render(): View
     {
         $query = $this->tagTeam
-            ->previousManagers()
-            ->addSelect(
-                DB::raw("CONCAT(managers.first_name,' ', managers.last_name) AS full_name"),
-            );
+            ->previousMatches();
 
-        $previousManagers = $query->paginate();
+        $previousMatches = $query->paginate();
 
-        return view('livewire.tag-teams.previous-managers.previous-managers-list', [
-            'previousManagers' => $previousManagers,
+        return view('livewire.tag-teams.previous-matches.previous-matches-list', [
+            'previousMatches' => $previousMatches,
         ]);
     }
 }

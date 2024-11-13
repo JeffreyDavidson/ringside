@@ -2,22 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Venues;
+namespace App\Livewire\Events;
 
-use App\Models\Venue;
+use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousEventsList extends DataTableComponent
+class EventsTable extends DataTableComponent
 {
-    public Venue $venue;
-
-    public function mount(Venue $venue): void
-    {
-        $this->venue = $venue;
-    }
-
     public function configure(): void
     {
     }
@@ -26,7 +19,10 @@ class PreviousEventsList extends DataTableComponent
     {
         return [
             Column::make(__('events.name'), 'name'),
+            Column::make(__('events.status'), 'status')
+                ->view('components.tables.columns.status-column'),
             Column::make(__('events.date'), 'date'),
+            Column::make(__('venues.name'), 'venue_name'),
         ];
     }
 
@@ -35,14 +31,13 @@ class PreviousEventsList extends DataTableComponent
      */
     public function render(): View
     {
-        $query = $this->venue
-            ->previousEvents()
+        $query = Event::query()
             ->oldest('name');
 
-        $previousEvents = $query->paginate();
+        $events = $query->paginate();
 
-        return view('livewire.venues.previous-events.previous-events-list', [
-            'previousEvents' => $previousEvents,
+        return view('livewire.events.events-list', [
+            'events' => $events,
         ]);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousWrestlersList extends DataTableComponent
+class PreviousWrestlersTable extends DataTableComponent
 {
     /**
      * Tag Team to use for component.

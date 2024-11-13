@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Referees;
+namespace App\Livewire\Wrestlers;
 
-use App\Models\Referee;
+use App\Models\Wrestler;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousMatchesList extends DataTableComponent
+class PreviousMatchesTable extends DataTableComponent
 {
     /**
-     * Referee to use for component.
+     * Wrestler to use for component.
      */
-    public Referee $referee;
+    public Wrestler $wrestler;
 
     /**
-     * Set the Referee to be used for this component.
+     * Set the Wrestler to be used for this component.
      */
-    public function mount(Referee $referee): void
+    public function mount(Wrestler $wrestler): void
     {
-        $this->referee = $referee;
+        $this->wrestler = $wrestler;
     }
 
     public function configure(): void
@@ -44,12 +44,12 @@ class PreviousMatchesList extends DataTableComponent
      */
     public function render(): View
     {
-        $query = $this->referee
+        $query = $this->wrestler
             ->previousMatches();
 
         $previousMatches = $query->paginate();
 
-        return view('livewire.referees.previous-matches.previous-matches-list', [
+        return view('livewire.wrestlers.previous-matches.previous-matches-list', [
             'previousMatches' => $previousMatches,
         ]);
     }

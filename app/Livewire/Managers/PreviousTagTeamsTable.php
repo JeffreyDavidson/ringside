@@ -9,7 +9,7 @@ use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousTagTeamsList extends DataTableComponent
+class PreviousTagTeamsTable extends DataTableComponent
 {
     /**
      * Manager to use for component.

@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\TagTeams;
+namespace App\Livewire\Wrestlers;
 
-use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousTitleChampionshipsList extends DataTableComponent
+class PreviousTitleChampionshipsTable extends DataTableComponent
 {
     /**
-     * Tag team to use for component.
+     * Wrestler to use for component.
      */
-    public TagTeam $tagTeam;
+    public Wrestler $wrestler;
 
     /**
      * Undocumented function.
      */
-    public function mount(TagTeam $tagTeam): void
+    public function mount(Wrestler $wrestler): void
     {
-        $this->tagTeam = $tagTeam;
+        $this->wrestler = $wrestler;
     }
 
     public function configure(): void
@@ -35,7 +35,7 @@ class PreviousTitleChampionshipsList extends DataTableComponent
             Column::make(__('titles.name'), 'name'),
             Column::make(__('championships.previous_champion'), 'previous_champion'),
             Column::make(__('championships.dates_held'), 'dates_held'),
-            Column::make(__('championships.reign_length'), 'reign_length'),
+            Column::make(__('championships.days_held'), 'days_held'),
         ];
     }
 
@@ -44,7 +44,7 @@ class PreviousTitleChampionshipsList extends DataTableComponent
      */
     public function render(): View
     {
-        $query = $this->tagTeam
+        $query = $this->wrestler
             ->previousTitleChampionships()
             ->with('title')
             ->addSelect(
@@ -56,7 +56,7 @@ class PreviousTitleChampionshipsList extends DataTableComponent
 
         $previousTitleChampionships = $query->paginate();
 
-        return view('livewire.tag-teams.previous-title-championships.previous-title-championships-list', [
+        return view('livewire.wrestlers.previous-title-championships.previous-title-championships-list', [
             'previousTitleChampionships' => $previousTitleChampionships,
         ]);
     }

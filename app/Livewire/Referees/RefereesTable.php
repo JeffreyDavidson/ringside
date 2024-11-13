@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\TagTeams;
+namespace App\Livewire\Referees;
 
-use App\Models\TagTeam;
+use App\Models\Referee;
 use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class TagTeamsList extends DataTableComponent
+class RefereesTable extends DataTableComponent
 {
     public function configure(): void
     {
@@ -18,11 +18,9 @@ class TagTeamsList extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('tag-teams.name'), 'name'),
-            Column::make(__('tag-teams.status'), 'status')
+            Column::make(__('referees.name'), 'name'),
+            Column::make(__('referees.status'), 'status')
                 ->view('components.tables.columns.status-column'),
-            Column::make(__('tag-teams.partners'), 'partners'),
-            Column::make(__('tag-teams.combined_weight'), 'combined_weight'),
             Column::make(__('employments.start_date'), 'start_date'),
         ];
     }
@@ -32,13 +30,13 @@ class TagTeamsList extends DataTableComponent
      */
     public function render(): View
     {
-        $query = TagTeam::query()
-            ->oldest('name');
+        $query = Referee::query()
+            ->oldest('last_name');
 
-        $tagTeams = $query->paginate();
+        $referees = $query->paginate();
 
-        return view('livewire.tag-teams.tag-teams-list', [
-            'tagTeams' => $tagTeams,
+        return view('livewire.referees.referees-list', [
+            'referees' => $referees,
         ]);
     }
 }
