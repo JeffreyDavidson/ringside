@@ -33,7 +33,9 @@ class EventsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('events.name'), 'name'),
+            Column::make(__('events.name'), 'name')
+                ->sortable()
+                ->searchable(),
             Column::make(__('events.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('events.date'), 'date'),

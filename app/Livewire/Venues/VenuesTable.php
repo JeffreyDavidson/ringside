@@ -29,7 +29,9 @@ class VenuesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('venues.name'), 'name'),
+            Column::make(__('venues.name'), 'name')
+                ->sortable()
+                ->searchable(),
             Column::make(__('venues.address'), 'address'),
             Column::make(__('venues.city'), 'city'),
             Column::make(__('venues.state'), 'state'),

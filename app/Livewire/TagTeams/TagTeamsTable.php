@@ -34,7 +34,9 @@ class TagTeamsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('tag-teams.name'), 'name'),
+            Column::make(__('tag-teams.name'), 'name')
+                ->sortable()
+                ->searchable(),
             Column::make(__('tag-teams.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('tag-teams.partners'), 'partners'),

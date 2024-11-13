@@ -34,7 +34,9 @@ class ManagersTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('managers.name'), 'name'),
+            Column::make(__('managers.name'), 'name')
+                ->sortable()
+                ->searchable(),
             Column::make(__('managers.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('employments.start_date'), 'start_date')

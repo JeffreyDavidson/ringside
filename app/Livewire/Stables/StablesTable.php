@@ -34,7 +34,9 @@ class StablesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('stables.name'), 'name'),
+            Column::make(__('stables.name'), 'name')
+                ->sortable()
+                ->searchable(),
             Column::make(__('stables.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('activations.start_date'), 'start_date')

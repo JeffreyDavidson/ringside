@@ -34,7 +34,9 @@ class TitlesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('titles.name'), 'name'),
+            Column::make(__('titles.name'), 'name')
+                ->sortable()
+                ->searchable(),
             Column::make(__('titles.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('titles.current_champion'), 'current_champion'),
