@@ -6,9 +6,10 @@ namespace App\Livewire\TagTeams;
 
 use App\Models\TagTeam;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousWrestlersList extends Component
+class PreviousWrestlersList extends DataTableComponent
 {
     /**
      * Tag Team to use for component.
@@ -21,6 +22,19 @@ class PreviousWrestlersList extends Component
     public function mount(TagTeam $tagTeam): void
     {
         $this->tagTeam = $tagTeam;
+    }
+
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('wrestlers.name'), 'wrestler_name'),
+            Column::make(__('tag-teams.date_joined'), 'date_joined'),
+            Column::make(__('tag-teams.date_left'), 'date_left'),
+        ];
     }
 
     /**

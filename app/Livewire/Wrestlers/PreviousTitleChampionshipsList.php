@@ -7,9 +7,10 @@ namespace App\Livewire\Wrestlers;
 use App\Models\Wrestler;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousTitleChampionshipsList extends Component
+class PreviousTitleChampionshipsList extends DataTableComponent
 {
     /**
      * Wrestler to use for component.
@@ -22,6 +23,20 @@ class PreviousTitleChampionshipsList extends Component
     public function mount(Wrestler $wrestler): void
     {
         $this->wrestler = $wrestler;
+    }
+
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('titles.name'), 'name'),
+            Column::make(__('championships.previous_champion'), 'previous_champion'),
+            Column::make(__('championships.dates_held'), 'dates_held'),
+            Column::make(__('championships.days_held'), 'days_held'),
+        ];
     }
 
     /**

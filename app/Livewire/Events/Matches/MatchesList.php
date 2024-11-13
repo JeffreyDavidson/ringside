@@ -6,9 +6,10 @@ namespace App\Livewire\Events\Matches;
 
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class MatchesList extends Component
+class MatchesList extends DataTableComponent
 {
     /**
      * Event to use for component.
@@ -21,6 +22,17 @@ class MatchesList extends Component
     public function mount(Event $event): void
     {
         $this->event = $event;
+    }
+
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('matches.match_type_name'), 'name'),
+        ];
     }
 
     /**

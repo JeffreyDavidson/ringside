@@ -6,10 +6,26 @@ namespace App\Livewire\Venues;
 
 use App\Models\Venue;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class VenuesList extends Component
+class VenuesList extends DataTableComponent
 {
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('venues.name'), 'name'),
+            Column::make(__('venues.address'), 'address'),
+            Column::make(__('venues.city'), 'city'),
+            Column::make(__('venues.state'), 'state'),
+            Column::make(__('venues.zipcode'), 'zipcode'),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

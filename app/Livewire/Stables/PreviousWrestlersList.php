@@ -6,9 +6,10 @@ namespace App\Livewire\Stables;
 
 use App\Models\Stable;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousWrestlersList extends Component
+class PreviousWrestlersList extends DataTableComponent
 {
     /**
      * Stable to use for component.
@@ -21,6 +22,19 @@ class PreviousWrestlersList extends Component
     public function mount(Stable $stable): void
     {
         $this->stable = $stable;
+    }
+
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('wrestlers.name'), 'wrestler_name'),
+            Column::make(__('stables.date_joined'), 'date_joined'),
+            Column::make(__('stables.date_left'), 'date_left'),
+        ];
     }
 
     /**

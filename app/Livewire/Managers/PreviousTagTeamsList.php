@@ -6,9 +6,10 @@ namespace App\Livewire\Managers;
 
 use App\Models\Manager;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousTagTeamsList extends Component
+class PreviousTagTeamsList extends DataTableComponent
 {
     /**
      * Manager to use for component.
@@ -21,6 +22,20 @@ class PreviousTagTeamsList extends Component
     public function mount(Manager $manager): void
     {
         $this->manager = $manager;
+    }
+
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('tag-teams.name'), 'name'),
+            Column::make(__('tag-teams.partner'), 'partner'),
+            Column::make(__('tag-teams.date_joined'), 'date_joined'),
+            Column::make(__('tag-teams.date_left'), 'date_left'),
+        ];
     }
 
     /**

@@ -6,15 +6,28 @@ namespace App\Livewire\Venues;
 
 use App\Models\Venue;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousEventsList extends Component
+class PreviousEventsList extends DataTableComponent
 {
     public Venue $venue;
 
     public function mount(Venue $venue): void
     {
         $this->venue = $venue;
+    }
+
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('events.name'), 'name'),
+            Column::make(__('events.date'), 'date'),
+        ];
     }
 
     /**

@@ -6,10 +6,26 @@ namespace App\Livewire\Titles;
 
 use App\Models\Title;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class TitlesList extends Component
+class TitlesList extends DataTableComponent
 {
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('titles.name'), 'name'),
+            Column::make(__('titles.status'), 'status')
+                ->view('components.tables.columns.status-column'),
+            Column::make(__('titles.current_champion'), 'current_champion'),
+            Column::make(__('activations.date_introduced'), 'date_introduced'),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

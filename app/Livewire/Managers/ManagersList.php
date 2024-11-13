@@ -6,10 +6,25 @@ namespace App\Livewire\Managers;
 
 use App\Models\Manager;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class ManagersList extends Component
+class ManagersList extends DataTableComponent
 {
+    public function configure(): void
+    {
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make(__('managers.name'), 'name'),
+            Column::make(__('managers.status'), 'status')
+                ->view('components.tables.columns.status-column'),
+            Column::make(__('employments.start_date'), 'start_date'),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
