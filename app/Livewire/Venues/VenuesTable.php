@@ -32,7 +32,7 @@ class VenuesTable extends DataTableComponent
             Column::make(__('venues.name'), 'name')
                 ->sortable()
                 ->searchable(),
-            Column::make(__('venues.address'), 'address'),
+            Column::make(__('venues.address'), 'street_address'),
             Column::make(__('venues.city'), 'city'),
             Column::make(__('venues.state'), 'state'),
             Column::make(__('venues.zipcode'), 'zipcode'),
