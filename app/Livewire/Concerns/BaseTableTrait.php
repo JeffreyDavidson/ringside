@@ -18,7 +18,7 @@ trait BaseTableTrait
     {
         $this->setPrimaryKey('id')
             ->setColumnSelectDisabled()
-            ->setSearchPlaceholder('search '.$this->databaseTableName)
+            ->setSearchPlaceholder('Search '.$this->databaseTableName)
             ->setPaginationEnabled()
             ->addAdditionalSelects([$this->databaseTableName.'.id as id'])
             ->setPerPageAccepted([5, 10, 25, 50, 100])
