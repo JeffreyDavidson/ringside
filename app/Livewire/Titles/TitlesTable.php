@@ -24,6 +24,7 @@ class TitlesTable extends DataTableComponent
     public function builder(): TitleBuilder
     {
         return Title::query()
+            ->with('currentIntroduction')
             ->oldest('name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
@@ -37,7 +38,8 @@ class TitlesTable extends DataTableComponent
             Column::make(__('titles.status'), 'status')
                 ->view('components.tables.columns.status-column'),
             Column::make(__('titles.current_champion'), 'current_champion'),
-            Column::make(__('activations.date_introduced'), 'date_introduced'),
+            Column::make(__('activations.date_introduced'), 'date_introduced')
+                ->label(fn ($row, Column $column) => $row->currentIntroduction?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 

@@ -24,6 +24,7 @@ class TagTeamsTable extends DataTableComponent
     public function builder(): TagTeamBuilder
     {
         return TagTeam::query()
+            ->with('currentEmployment')
             ->oldest('name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
@@ -38,7 +39,8 @@ class TagTeamsTable extends DataTableComponent
                 ->view('components.tables.columns.status-column'),
             Column::make(__('tag-teams.partners'), 'partners'),
             Column::make(__('tag-teams.combined_weight'), 'combined_weight'),
-            Column::make(__('employments.start_date'), 'start_date'),
+            Column::make(__('employments.start_date'), 'start_date')
+                ->label(fn ($row, Column $column) => $row->currentEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 

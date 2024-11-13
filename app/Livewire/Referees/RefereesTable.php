@@ -24,6 +24,7 @@ class RefereesTable extends DataTableComponent
     public function builder(): RefereeBuilder
     {
         return Referee::query()
+            ->with('currentEmployment')
             ->oldest('last_name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
@@ -36,7 +37,8 @@ class RefereesTable extends DataTableComponent
             Column::make(__('referees.name'), 'name'),
             Column::make(__('referees.status'), 'status')
                 ->view('components.tables.columns.status-column'),
-            Column::make(__('employments.start_date'), 'start_date'),
+            Column::make(__('employments.start_date'), 'start_date')
+                ->label(fn ($row, Column $column) => $row->currentEmployment?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 

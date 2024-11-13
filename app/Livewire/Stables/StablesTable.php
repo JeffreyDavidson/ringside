@@ -24,6 +24,7 @@ class StablesTable extends DataTableComponent
     public function builder(): StableBuilder
     {
         return Stable::query()
+            ->with('currentActivation')
             ->oldest('name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
@@ -36,7 +37,8 @@ class StablesTable extends DataTableComponent
             Column::make(__('stables.name'), 'name'),
             Column::make(__('stables.status'), 'status')
                 ->view('components.tables.columns.status-column'),
-            Column::make(__('activations.start_date'), 'start_date'),
+            Column::make(__('activations.start_date'), 'start_date')
+                ->label(fn ($row, Column $column) => $row->currentActivation?->started_at->format('Y-m-d') ?? 'TBD'),
         ];
     }
 
