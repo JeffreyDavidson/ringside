@@ -18,6 +18,8 @@ class VenuesTable extends DataTableComponent
 
     protected string $routeBasePath = 'venues';
 
+    protected string $resourceName = 'venues';
+
     public function builder(): Builder
     {
         return Venue::query()

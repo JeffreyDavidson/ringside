@@ -23,6 +23,8 @@ class TagTeamsTable extends DataTableComponent
 
     protected string $routeBasePath = 'tag-teams';
 
+    protected string $resourceName = 'tag teams';
+
     public function builder(): TagTeamBuilder
     {
         return TagTeam::query()

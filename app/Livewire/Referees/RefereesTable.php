@@ -23,6 +23,8 @@ class RefereesTable extends DataTableComponent
 
     protected string $routeBasePath = 'referees';
 
+    protected string $resourceName = 'referees';
+
     public function builder(): RefereeBuilder
     {
         return Referee::query()

@@ -21,6 +21,8 @@ class EventsTable extends DataTableComponent
 
     protected string $routeBasePath = 'events';
 
+    protected string $resourceName = 'events';
+
     public function builder(): EventBuilder
     {
         return Event::query()

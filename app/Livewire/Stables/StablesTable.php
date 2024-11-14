@@ -23,6 +23,8 @@ class StablesTable extends DataTableComponent
 
     protected string $routeBasePath = 'stables';
 
+    protected string $resourceName = 'stables';
+
     public function builder(): StableBuilder
     {
         return Stable::query()

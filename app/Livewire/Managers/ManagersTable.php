@@ -23,6 +23,8 @@ class ManagersTable extends DataTableComponent
 
     protected string $routeBasePath = 'managers';
 
+    protected string $resourceName = 'managers';
+
     public function builder(): ManagerBuilder
     {
         return Manager::query()

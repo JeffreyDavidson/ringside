@@ -19,6 +19,8 @@ class MatchesTable extends DataTableComponent
 
     protected string $routeBasePath = 'event-matches';
 
+    protected string $resourceName = 'matches';
+
     /**
      * Event to use for component.
      */

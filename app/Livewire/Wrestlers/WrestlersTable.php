@@ -23,6 +23,8 @@ class WrestlersTable extends DataTableComponent
 
     protected string $routeBasePath = 'wrestlers';
 
+    protected string $resourceName = 'wrestlers';
+
     public function builder(): WrestlerBuilder
     {
         return Wrestler::query()

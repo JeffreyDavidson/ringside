@@ -23,6 +23,8 @@ class TitlesTable extends DataTableComponent
 
     protected string $routeBasePath = 'titles';
 
+    protected string $resourceName = 'titles';
+
     public function builder(): TitleBuilder
     {
         return Title::query()
