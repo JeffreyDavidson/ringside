@@ -130,6 +130,16 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
             ->ofMany('ended_at', 'max');
     }
 
+    /**
+     * @return HasOne<TagTeamEmployment>
+     */
+    public function firstEmployment(): HasOne
+    {
+        return $this->employments()
+            ->one()
+            ->ofMany('started_at', 'min');
+    }
+
     public function hasEmployments(): bool
     {
         return $this->employments()->count() > 0;

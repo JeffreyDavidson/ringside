@@ -114,6 +114,16 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
             ->ofMany('ended_at', 'max');
     }
 
+    /**
+     * @return HasOne<RefereeEmployment>
+     */
+    public function firstEmployment(): HasOne
+    {
+        return $this->employments()
+            ->one()
+            ->ofMany('started_at', 'min');
+    }
+
     public function hasEmployments(): bool
     {
         return $this->employments()->count() > 0;

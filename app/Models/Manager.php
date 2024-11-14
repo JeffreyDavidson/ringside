@@ -122,6 +122,16 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
             ->ofMany('ended_at', 'max');
     }
 
+    /**
+     * @return HasOne<ManagerEmployment>
+     */
+    public function firstEmployment(): HasOne
+    {
+        return $this->employments()
+            ->one()
+            ->ofMany('started_at', 'min');
+    }
+
     public function hasEmployments(): bool
     {
         return $this->employments()->count() > 0;
