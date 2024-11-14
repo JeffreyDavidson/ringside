@@ -7,9 +7,9 @@ namespace App\Livewire\Titles;
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
 use App\Livewire\Concerns\BaseTableTrait;
-use App\Livewire\Concerns\Columns\HasActivationDateColumn;
+use App\Livewire\Concerns\Columns\HasFirstActivationDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
-use App\Livewire\Concerns\Filters\HasActivationDateFilter;
+use App\Livewire\Concerns\Filters\HasFirstActivationDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Title;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -17,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TitlesTable extends DataTableComponent
 {
-    use BaseTableTrait, HasActivationDateColumn, HasActivationDateFilter, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasFirstActivationDateColumn, HasFirstActivationDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'titles';
 
@@ -43,7 +43,7 @@ class TitlesTable extends DataTableComponent
                 ->searchable(),
             $this->getDefaultStatusColumn(),
             Column::make(__('titles.current_champion'), 'current_champion'),
-            $this->getDefaultActivationDateColumn(),
+            $this->getDefaultFirstActivationDateColumn(),
         ];
     }
 
@@ -53,7 +53,7 @@ class TitlesTable extends DataTableComponent
 
         return [
             $this->getDefaultStatusFilter($statuses),
-            $this->getDefaultActivationmDateFilter(),
+            $this->getDefaultFirstActivationmDateFilter(),
         ];
     }
 }

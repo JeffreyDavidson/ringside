@@ -6,9 +6,9 @@ namespace App\Livewire\Concerns\Filters;
 
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
-trait HasActivationDateFilter
+trait HasFirstActivationDateFilter
 {
-    protected function getDefaultActivationmDateFilter(): DateRangeFilter
+    protected function getDefaultFirstActivationmDateFilter(): DateRangeFilter
     {
         return DateRangeFilter::make('Activation Date')
             ->config([
