@@ -7,17 +7,17 @@ namespace App\Livewire\Managers;
 use App\Builders\ManagerBuilder;
 use App\Enums\ManagerStatus;
 use App\Livewire\Concerns\BaseTableTrait;
-use App\Livewire\Concerns\Columns\HasEmploymentDateColumn;
+use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasFullNameColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
-use App\Livewire\Concerns\Filters\HasEmploymentDateFilter;
+use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Manager;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 class ManagersTable extends DataTableComponent
 {
-    use BaseTableTrait, HasEmploymentDateColumn, HasEmploymentDateFilter, HasFullNameColumn, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasFullNameColumn, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'managers';
 
@@ -28,7 +28,7 @@ class ManagersTable extends DataTableComponent
     public function builder(): ManagerBuilder
     {
         return Manager::query()
-            ->with('currentEmployment')
+            ->with('firstEmployment')
             ->oldest('last_name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
@@ -46,7 +46,7 @@ class ManagersTable extends DataTableComponent
         return [
             $this->getDefaultFullNameColumn(),
             $this->getDefaultStatusColumn(),
-            $this->getDefaultEmploymentDateColumn(),
+            $this->getDefaultFirstEmploymentDateColumn(),
         ];
     }
 
@@ -56,7 +56,7 @@ class ManagersTable extends DataTableComponent
 
         return [
             $this->getDefaultStatusFilter($statuses),
-            $this->getDefaultEmploymentDateFilter(),
+            $this->getDefaultFirstEmploymentDateFilter(),
         ];
     }
 }

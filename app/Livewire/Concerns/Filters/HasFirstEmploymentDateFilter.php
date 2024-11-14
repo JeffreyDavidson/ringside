@@ -6,9 +6,9 @@ namespace App\Livewire\Concerns\Filters;
 
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
-trait HasEmploymentDateFilter
+trait HasFirstEmploymentDateFilter
 {
-    protected function getDefaultEmploymentDateFilter(): DateRangeFilter
+    protected function getDefaultFirstEmploymentDateFilter(): DateRangeFilter
     {
         return DateRangeFilter::make('Employment Date')
             ->config([

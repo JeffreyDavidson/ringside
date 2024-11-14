@@ -7,9 +7,9 @@ namespace App\Livewire\TagTeams;
 use App\Builders\TagTeamBuilder;
 use App\Enums\TagTeamStatus;
 use App\Livewire\Concerns\BaseTableTrait;
-use App\Livewire\Concerns\Columns\HasEmploymentDateColumn;
+use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
-use App\Livewire\Concerns\Filters\HasEmploymentDateFilter;
+use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\TagTeam;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -17,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TagTeamsTable extends DataTableComponent
 {
-    use BaseTableTrait, HasEmploymentDateColumn, HasEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'tag_teams';
 
@@ -42,9 +42,7 @@ class TagTeamsTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             $this->getDefaultStatusColumn(),
-            Column::make(__('tag-teams.partners'), 'partners'),
-            Column::make(__('tag-teams.combined_weight'), 'combined_weight'),
-            $this->getDefaultEmploymentDateColumn(),
+            $this->getDefaultFirstEmploymentDateColumn(),
         ];
     }
 
@@ -54,7 +52,7 @@ class TagTeamsTable extends DataTableComponent
 
         return [
             $this->getDefaultStatusFilter($statuses),
-            $this->getDefaultEmploymentDateFilter(),
+            $this->getDefaultFirstEmploymentDateFilter(),
         ];
     }
 }

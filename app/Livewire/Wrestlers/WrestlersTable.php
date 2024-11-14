@@ -7,9 +7,9 @@ namespace App\Livewire\Wrestlers;
 use App\Builders\WrestlerBuilder;
 use App\Enums\WrestlerStatus;
 use App\Livewire\Concerns\BaseTableTrait;
-use App\Livewire\Concerns\Columns\HasEmploymentDateColumn;
+use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
-use App\Livewire\Concerns\Filters\HasEmploymentDateFilter;
+use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Wrestler;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -17,7 +17,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class WrestlersTable extends DataTableComponent
 {
-    use BaseTableTrait, HasEmploymentDateColumn, HasEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'wrestlers';
 
@@ -54,7 +54,7 @@ class WrestlersTable extends DataTableComponent
             Column::make(__('wrestlers.height'), 'height'),
             Column::make(__('wrestlers.weight'), 'weight'),
             Column::make(__('wrestlers.hometown'), 'hometown'),
-            $this->getDefaultEmploymentDateColumn(),
+            $this->getDefaultFirstEmploymentDateColumn(),
         ];
     }
 
@@ -64,7 +64,7 @@ class WrestlersTable extends DataTableComponent
 
         return [
             $this->getDefaultStatusFilter($statuses),
-            $this->getDefaultEmploymentDateFilter(),
+            $this->getDefaultFirstEmploymentDateFilter(),
         ];
     }
 }
