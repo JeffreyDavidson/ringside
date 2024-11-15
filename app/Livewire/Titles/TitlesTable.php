@@ -28,12 +28,17 @@ class TitlesTable extends DataTableComponent
     public function builder(): TitleBuilder
     {
         return Title::query()
-            ->with('currentActivation')
+            ->with(['currentActivation', 'currentChampionship.currentChampion'])
             ->oldest('name')
             ->when($this->getAppliedFilterWithValue('Status'), fn ($query, $status) => $query->where('status', $status));
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->addAdditionalSelects([
+            'currentChampion.name as champion_name',
+        ]);
+    }
 
     public function columns(): array
     {
@@ -42,7 +47,7 @@ class TitlesTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             $this->getDefaultStatusColumn(),
-            Column::make(__('titles.current_champion'), 'current_champion'),
+            Column::make(__('titles.current_champion'), 'champion_name'),
             $this->getDefaultFirstActivationDateColumn(),
         ];
     }

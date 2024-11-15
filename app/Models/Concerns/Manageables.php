@@ -17,7 +17,7 @@ trait Manageables
      */
     public function wrestlers(): BelongsToMany
     {
-        return $this->belongsToMany(Wrestler::class)
+        return $this->belongsToMany(Wrestler::class, 'wrestlers_managers')
             ->withPivot(['hired_at', 'left_at']);
     }
 

@@ -12,6 +12,7 @@ use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Event;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class EventsTable extends DataTableComponent
 {
@@ -39,8 +40,9 @@ class EventsTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             $this->getDefaultStatusColumn(),
-            Column::make(__('events.date'), 'date'),
-            Column::make(__('venues.name'), 'venue_name'),
+            DateColumn::make(__('events.date'), 'date')
+                ->outputFormat('Y-m-d H:i'),
+            Column::make(__('venues.name'), 'venue.name'),
         ];
     }
 

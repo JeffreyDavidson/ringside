@@ -42,7 +42,9 @@ class WrestlersTable extends DataTableComponent
 
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     public function columns(): array
     {

@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
+use App\Builders\WrestlerBuilder;
+use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\Manager;
-use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousWrestlersTable extends DataTableComponent
 {
+    use ShowTableTrait;
+
+    protected string $databaseTableName = 'wrestlers';
+
+    protected string $resourceName = 'wrestlers';
+
     /**
      * Manager to use for component.
      */
@@ -24,30 +32,23 @@ class PreviousWrestlersTable extends DataTableComponent
         $this->manager = $manager;
     }
 
-    public function configure(): void {}
+    public function builder():
+    {
+        return $this->manager->previousWrestlers();
+    }
+
+    public function configure(): void
+    {
+    }
 
     public function columns(): array
     {
         return [
             Column::make(__('wrestlers.name'), 'name'),
-            Column::make(__('wrestlers.partner'), 'partner'),
-            Column::make(__('wrestlers.date_joined'), 'date_joined'),
-            Column::make(__('wrestlers.date_left'), 'date_left'),
+            DateColumn::make(__('wrestlers.date_hired'), 'hired_at')
+                ->outputFormat('Y-m-d'),
+            DateColumn::make(__('wrestlers.date_left'), 'left_at')
+                ->outputFormat('Y-m-d'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->manager
-            ->previousWrestlers();
-
-        $previousWrestlers = $query->paginate();
-
-        return view('livewire.managers.previous-wrestlers.previous-wrestlers-list', [
-            'previousWrestlers' => $previousWrestlers,
-        ]);
     }
 }

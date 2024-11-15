@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class WrestlerManager extends Pivot
 {
+    protected $table = 'wrestlers_managers';
+
     /**
      * The attributes that should be cast to native types.
      *

@@ -16,7 +16,7 @@ trait HasManagers
      */
     public function managers(): BelongsToMany
     {
-        return $this->belongsToMany(Manager::class)
+        return $this->belongsToMany(Manager::class, 'wrestlers_managers')
             ->withPivot('hired_at', 'left_at');
     }
 
