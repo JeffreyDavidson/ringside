@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Livewire\Concerns;
 
 use App\Livewire\Concerns\Columns\HasActionColumn;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 trait BaseTableTrait
 {
     use HasActionColumn;
 
+    /** @var array<string, bool> */
     protected array $actionLinksToDisplay = ['view' => true, 'edit' => true, 'delete' => true];
 
     protected bool $showActionColumn = true;
 
-    public function configuringBaseTableTrait()
+    public function configuringBaseTableTrait(): void
     {
         $this->setPrimaryKey('id')
             ->setColumnSelectDisabled()
@@ -26,6 +28,7 @@ trait BaseTableTrait
             ->setLoadingPlaceholderEnabled();
     }
 
+    /** @return array<Column> */
     public function appendColumns(): array
     {
         return $this->showActionColumn ? [

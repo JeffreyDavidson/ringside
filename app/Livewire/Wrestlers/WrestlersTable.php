@@ -14,6 +14,8 @@ use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Wrestler;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class WrestlersTable extends DataTableComponent
 {
@@ -46,6 +48,7 @@ class WrestlersTable extends DataTableComponent
     {
     }
 
+    /** @return array<Column> */
     public function columns(): array
     {
         return [
@@ -60,6 +63,7 @@ class WrestlersTable extends DataTableComponent
         ];
     }
 
+    /** @return array<Filter> */
     public function filters(): array
     {
         $statuses = collect(WrestlerStatus::cases())->pluck('name', 'value')->toArray();
