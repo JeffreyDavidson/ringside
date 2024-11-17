@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Wrestlers;
 
 use App\Builders\ManagerBuilder;
-use App\Livewire\Concerns\Columns\HasFullNameColumn;
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\Manager;
 use App\Models\Wrestler;
@@ -16,7 +15,7 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousManagersTable extends DataTableComponent
 {
-    use ShowTableTrait, HasFullNameColumn;
+    use ShowTableTrait;
 
     protected string $databaseTableName = 'managers';
 
@@ -54,7 +53,8 @@ class PreviousManagersTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            $this->getDefaultFullNameColumn(),
+            Column::make(__('managers.full_name'), 'manager.full_name')
+                ->searchable(),
             DateColumn::make(__('managers.date_hired'), 'hired_at')
                 ->outputFormat('Y-m-d H:i'),
             DateColumn::make(__('managers.date_fired'), 'left_at')
