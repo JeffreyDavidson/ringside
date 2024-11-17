@@ -11,7 +11,7 @@
                     {{-- <livewire:wrestlers.previous-title-championships-table :$wrestler /> --}}
                     {{-- <livewire:wrestlers.previous-matches-table :$wrestler /> --}}
                     {{-- <livewire:wrestlers.previous-tag-teams-table :$wrestler /> --}}
-                    <livewire:wrestlers.previous-managers-table :$wrestler />
+                    <livewire:wrestlers.previous-managers-table :wrestlerId="$wrestler->id" />
                     {{-- <livewire:wrestlers.wrestler-stables-table :$wrestler /> --}}
                 </div>
             </div>

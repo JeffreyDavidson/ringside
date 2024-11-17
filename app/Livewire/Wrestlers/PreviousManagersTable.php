@@ -7,7 +7,6 @@ namespace App\Livewire\Wrestlers;
 use App\Builders\ManagerBuilder;
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\Manager;
-use App\Models\Wrestler;
 use App\Models\WrestlerManager;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -24,15 +23,7 @@ class PreviousManagersTable extends DataTableComponent
     /**
      * Wrestler to use for component.
      */
-    public Wrestler $wrestler;
-
-    /**
-     * Set the Wrestler to be used for this component.
-     */
-    public function mount(Wrestler $wrestler): void
-    {
-        $this->wrestler = $wrestler;
-    }
+    public ?int $wrestlerId;
 
     public function builder(): Builder
     {
