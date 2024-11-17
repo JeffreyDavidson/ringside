@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Livewire\Wrestlers;
 
-use App\Builders\ManagerBuilder;
 use App\Livewire\Concerns\ShowTableTrait;
-use App\Models\Manager;
 use App\Models\WrestlerManager;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class PreviousManagersTable extends DataTableComponent
 {
     use ShowTableTrait;
 
-    protected string $databaseTableName = 'managers';
+    protected string $databaseTableName = 'wrestlers_managers';
 
     protected string $resourceName = 'manages';
 
@@ -27,17 +26,19 @@ class PreviousManagersTable extends DataTableComponent
 
     public function builder(): Builder
     {
+        if (!isset($this->wrestlerId)) {
+            throw new \Exception("You didn't specify a wrestler");
+        }
+
         return WrestlerManager::query()
-            ->with('manager')
-            ->where('wrestler_id', $this->wrestler->id);
+            ->where('wrestler_id', $this->wrestlerId)
+            ->orderByDesc('hired_at');
     }
 
     public function configure(): void
     {
         $this->addAdditionalSelects([
-            'managers.id',
-            'managers.first_name as first_name',
-            'managers.last_name as last_name',
+            'wrestlers_managers.manager_id as manager_id',
         ]);
     }
 
