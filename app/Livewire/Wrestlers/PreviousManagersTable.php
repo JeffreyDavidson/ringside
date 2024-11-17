@@ -17,7 +17,7 @@ class PreviousManagersTable extends DataTableComponent
 
     protected string $databaseTableName = 'wrestlers_managers';
 
-    protected string $resourceName = 'manages';
+    protected string $resourceName = 'managers';
 
     /**
      * Wrestler to use for component.
