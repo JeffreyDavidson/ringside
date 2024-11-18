@@ -18,6 +18,7 @@ use App\Models\Contracts\TagTeamMember;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -311,5 +312,43 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     public function hasSuspensions(): bool
     {
         return $this->suspensions()->count() > 0;
+    }
+
+    /**
+     * Retrieve the championships held by the model.
+     *
+     * @return BelongsToMany<Title>
+     */
+    public function titleChampionships(): BelongsToMany
+    {
+        return $this->belongsToMany(Title::class, 'wrestlers_title_championships')
+            ->withPivot('won_at', 'lost_at')
+            ->using(WrestlerTitleChampionship::class);
+    }
+
+    /**
+     * Retrieve the former championships held by the model.
+     *
+     * @return BelongsToMany<Title>
+     */
+    public function previousTitleChampionships(): BelongsToMany
+    {
+        return $this->belongsToMany(TitleChampionship::class, 'wrestlers_title_championships', 'former_champion_id')
+            ->withPivot('won_at', 'lost_at')
+            ->whereNotNull('lost_at')
+            ->using(WrestlerTitleChampionship::class);
+    }
+
+    /**
+     * Retrieve the current championships held by the model.
+     *
+     * @return BelongsToMany<Title>
+     */
+    public function currentTitleChampionship(): BelongsToMany
+    {
+        return $this->belongsToMany(TitleChampionship::class, 'wrestlers_title_championships', 'new_champion_id')
+            ->withPivot('won_at', 'lost_at')
+            ->whereNull('lost_at')
+            ->using(WrestlerTitleChampionship::class);
     }
 }
