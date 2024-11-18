@@ -8,7 +8,6 @@ use App\Builders\ManagerBuilder;
 use App\Enums\ManagerStatus;
 use App\Livewire\Concerns\BaseTableTrait;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
-use App\Livewire\Concerns\Columns\HasFullNameColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
@@ -17,7 +16,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 class ManagersTable extends DataTableComponent
 {
-    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasFullNameColumn, HasStatusColumn, HasStatusFilter;
+    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'managers';
 

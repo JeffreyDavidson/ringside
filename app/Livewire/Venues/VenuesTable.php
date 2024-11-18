@@ -23,10 +23,12 @@ class VenuesTable extends DataTableComponent
     public function builder(): Builder
     {
         return Venue::query()
-            ->oldest('name');
+            ->orderBy('name');
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     public function columns(): array
     {

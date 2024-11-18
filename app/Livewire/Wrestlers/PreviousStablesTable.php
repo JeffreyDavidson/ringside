@@ -2,33 +2,36 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Stables;
+namespace App\Livewire\Wrestlers;
 
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\StableWrestler;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class PreviousWrestlersTable extends DataTableComponent
+class PreviousStablesTable extends DataTableComponent
 {
     use ShowTableTrait;
 
     protected string $databaseTableName = 'stables_wrestlers';
 
-    protected string $resourceName = 'wrestlers';
+    protected string $resourceName = 'stables';
 
-    public ?int $stableId;
+    /**
+     * Wrestler to use for component.
+     */
+    public ?int $wrestlerId;
 
     public function builder(): Builder
     {
-        if (!isset($this->stableId)) {
-            throw new \Exception("You didn't specify a stable");
+        if (!isset($this->wrestlerId)) {
+            throw new \Exception("You didn't specify a wrestler");
         }
 
         return StableWrestler::query()
-            ->where('stable_id', $this->stableId)
+            ->where('wrestler_id', $this->wrestlerId)
             ->whereNotNull('left_at')
             ->orderByDesc('joined_at');
     }
@@ -36,14 +39,15 @@ class PreviousWrestlersTable extends DataTableComponent
     public function configure(): void
     {
         $this->addAdditionalSelects([
-            'stables_wrestlers.wrestler_id as wrestler_id',
+            'stables_wrestlers.stable_id as stable_id',
         ]);
     }
 
     public function columns(): array
     {
         return [
-            Column::make(__('wrestlers.name'), 'wrestler.name'),
+            Column::make(__('stables.name'), 'stable.name')
+                ->searchable(),
             DateColumn::make(__('stables.date_joined'), 'joined_at')
                 ->outputFormat('Y-m-d'),
             DateColumn::make(__('stables.date_left'), 'left_at')

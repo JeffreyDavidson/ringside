@@ -4,49 +4,50 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
-use App\Models\TagTeam;
-use Illuminate\Contracts\View\View;
+use App\Livewire\Concerns\ShowTableTrait;
+use App\Models\TagTeamPartner;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousWrestlersTable extends DataTableComponent
 {
-    /**
-     * Tag Team to use for component.
-     */
-    public TagTeam $tagTeam;
+    use ShowTableTrait;
 
-    /**
-     * Set the Tag Team to be used for this component.
-     */
-    public function mount(TagTeam $tagTeam): void
+    protected string $databaseTableName = 'tag_team_wrestler';
+
+    protected string $resourceName = 'wrestlers';
+
+    public ?int $tagTeamId;
+
+    public function builder(): Builder
     {
-        $this->tagTeam = $tagTeam;
+        if (!isset($this->tagTeamId)) {
+            throw new \Exception("You didn't specify a tag team");
+        }
+
+        return TagTeamPartner::query()
+            ->where('tag_team_id', $this->tagTeamId)
+            ->whereNotNull('left_at')
+            ->orderByDesc('joined_at');
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->addAdditionalSelects([
+            'tag_team_wrestler.wrestler_id as wrestler_id',
+        ]);
+    }
 
     public function columns(): array
     {
         return [
-            Column::make(__('wrestlers.name'), 'wrestler_name'),
-            Column::make(__('tag-teams.date_joined'), 'date_joined'),
-            Column::make(__('tag-teams.date_left'), 'date_left'),
+            Column::make(__('wrestlers.name'), 'wrestler.name'),
+            DateColumn::make(__('tag-teams.date_joined'), 'joined_at')
+                ->outputFormat('Y-m-d'),
+            DateColumn::make(__('tag-teams.date_left'), 'left_at')
+                ->outputFormat('Y-m-d'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->tagTeam
-            ->previousWrestlers();
-
-        $previousWrestlers = $query->paginate();
-
-        return view('livewire.tag-teams.previous-wrestlers.previous-wrestlers-list', [
-            'previousWrestlers' => $previousWrestlers,
-        ]);
     }
 }

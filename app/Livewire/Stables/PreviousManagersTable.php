@@ -4,53 +4,50 @@ declare(strict_types=1);
 
 namespace App\Livewire\Stables;
 
-use App\Models\Stable;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
+use App\Livewire\Concerns\ShowTableTrait;
+use App\Models\StableManager;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousManagersTable extends DataTableComponent
 {
-    /**
-     * Stable to use for component.
-     */
-    public Stable $stable;
+    use ShowTableTrait;
 
-    /**
-     * Set the Stable to be used for this component.
-     */
-    public function mount(Stable $stable): void
+    protected string $databaseTableName = 'stables_managers';
+
+    protected string $resourceName = 'managers';
+
+    public ?int $stableId;
+
+    public function builder(): Builder
     {
-        $this->stable = $stable;
+        if (!isset($this->stableId)) {
+            throw new \Exception("You didn't specify a stable");
+        }
+
+        return StableManager::query()
+            ->where('stable_id', $this->stableId)
+            ->whereNotNull('left_at')
+            ->orderByDesc('hired_at');
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->addAdditionalSelects([
+            'stables_managers.manager_id as manager_id',
+        ]);
+    }
 
     public function columns(): array
     {
         return [
-            Column::make(__('managers.name'), 'manager_name'),
-            Column::make(__('stables.date_joined'), 'date_joined'),
-            Column::make(__('stables.date_left'), 'date_left'),
+            Column::make(__('managers.full_name'), 'manager.full_name'),
+            DateColumn::make(__('managers.date_hired'), 'hired_at')
+                ->outputFormat('Y-m-d'),
+            DateColumn::make(__('managers.date_fired'), 'left_at')
+                ->outputFormat('Y-m-d'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->stable
-            ->previousManagers()
-            ->addSelect(
-                DB::raw("CONCAT(managers.first_name,' ', managers.last_name) AS full_name"),
-            );
-
-        $previousManagers = $query->paginate();
-
-        return view('livewire.stables.previous-managers.previous-managers-list', [
-            'previousManagers' => $previousManagers,
-        ]);
     }
 }

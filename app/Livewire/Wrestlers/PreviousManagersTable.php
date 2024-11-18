@@ -32,6 +32,7 @@ class PreviousManagersTable extends DataTableComponent
 
         return WrestlerManager::query()
             ->where('wrestler_id', $this->wrestlerId)
+            ->whereNotNull('left_at')
             ->orderByDesc('hired_at');
     }
 
@@ -48,9 +49,9 @@ class PreviousManagersTable extends DataTableComponent
             Column::make(__('managers.full_name'), 'manager.full_name')
                 ->searchable(),
             DateColumn::make(__('managers.date_hired'), 'hired_at')
-                ->outputFormat('Y-m-d H:i'),
+                ->outputFormat('Y-m-d'),
             DateColumn::make(__('managers.date_fired'), 'left_at')
-                ->outputFormat('Y-m-d H:i'),
+                ->outputFormat('Y-m-d'),
         ];
     }
 }

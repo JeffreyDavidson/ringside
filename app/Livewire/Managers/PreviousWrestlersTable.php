@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
-use App\Builders\WrestlerBuilder;
 use App\Livewire\Concerns\ShowTableTrait;
-use App\Models\Manager;
+use App\Models\WrestlerManager;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
@@ -15,36 +15,35 @@ class PreviousWrestlersTable extends DataTableComponent
 {
     use ShowTableTrait;
 
-    protected string $databaseTableName = 'wrestlers';
+    protected string $databaseTableName = 'wrestlers_managers';
 
     protected string $resourceName = 'wrestlers';
 
-    /**
-     * Manager to use for component.
-     */
-    public Manager $manager;
+    public ?int $managerId;
 
-    /**
-     * Set the Manager to be used for this component.
-     */
-    public function mount(Manager $manager): void
+    public function builder(): Builder
     {
-        $this->manager = $manager;
-    }
+        if (!isset($this->wrestlerId)) {
+            throw new \Exception("You didn't specify a manager");
+        }
 
-    public function builder():
-    {
-        return $this->manager->previousWrestlers();
+        return WrestlerManager::query()
+            ->where('manager_id', $this->managerId)
+            ->whereNotNull('left_at')
+            ->orderByDesc('hired_at');
     }
 
     public function configure(): void
     {
+        $this->addAdditionalSelects([
+            'wrestlers_managers.wrestler_id as wrestler_id',
+        ]);
     }
 
     public function columns(): array
     {
         return [
-            Column::make(__('wrestlers.name'), 'name'),
+            Column::make(__('wrestlers.name'), 'wrestler.name'),
             DateColumn::make(__('wrestlers.date_hired'), 'hired_at')
                 ->outputFormat('Y-m-d'),
             DateColumn::make(__('wrestlers.date_left'), 'left_at')

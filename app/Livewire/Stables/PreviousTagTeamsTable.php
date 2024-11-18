@@ -4,49 +4,50 @@ declare(strict_types=1);
 
 namespace App\Livewire\Stables;
 
-use App\Models\Stable;
-use Illuminate\Contracts\View\View;
+use App\Livewire\Concerns\ShowTableTrait;
+use App\Models\StableTagTeam;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousTagTeamsTable extends DataTableComponent
 {
-    /**
-     * Stable to use for component.
-     */
-    public Stable $stable;
+    use ShowTableTrait;
 
-    /**
-     * Set the Stable to be used for this component.
-     */
-    public function mount(Stable $stable): void
+    protected string $databaseTableName = 'stables_tag_teams';
+
+    protected string $resourceName = 'tag teams';
+
+    public ?int $stableId;
+
+    public function builder(): Builder
     {
-        $this->stable = $stable;
+        if (!isset($this->stableId)) {
+            throw new \Exception("You didn't specify a stable");
+        }
+
+        return StableTagTeam::query()
+            ->where('stable_id', $this->stableId)
+            ->whereNotNull('left_at')
+            ->orderByDesc('joined_at');
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->addAdditionalSelects([
+            'stables_tag_teams.tag_team_id as tag_team_id',
+        ]);
+    }
 
     public function columns(): array
     {
         return [
-            Column::make(__('tag_teams.name'), 'tag_team_name'),
-            Column::make(__('stables.date_joined'), 'date_joined'),
-            Column::make(__('stables.date_left'), 'date_left'),
+            Column::make(__('tag-teams.name'), 'tagTeam.name'),
+            DateColumn::make(__('stables.date_joined'), 'joined_at')
+                ->outputFormat('Y-m-d'),
+            DateColumn::make(__('stables.date_left'), 'left_at')
+                ->outputFormat('Y-m-d'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->stable
-            ->previousTagTeams();
-
-        $previousTagTeams = $query->paginate();
-
-        return view('livewire.stables.previous-tag-teams.previous-tag-teams-list', [
-            'previousTagTeams' => $previousTagTeams,
-        ]);
     }
 }

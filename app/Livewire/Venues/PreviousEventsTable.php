@@ -4,43 +4,49 @@ declare(strict_types=1);
 
 namespace App\Livewire\Venues;
 
-use App\Models\Venue;
-use Illuminate\Contracts\View\View;
+use App\Livewire\Concerns\ShowTableTrait;
+use App\Models\Event;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 class PreviousEventsTable extends DataTableComponent
 {
-    public Venue $venue;
+    use ShowTableTrait;
 
-    public function mount(Venue $venue): void
+    protected string $databaseTableName = 'events';
+
+    protected string $routeBasePath = 'events';
+
+    protected string $resourceName = 'events';
+
+    public ?int $venueId;
+
+    public function builder(): Builder
     {
-        $this->venue = $venue;
+        if (!isset($this->venueId)) {
+            throw new \Exception("You didn't specify a venue");
+        }
+
+        return Event::query()
+            ->where('venue_id', $this->venueId)
+            ->orderByDesc('date');
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     public function columns(): array
     {
         return [
-            Column::make(__('events.name'), 'name'),
-            Column::make(__('events.date'), 'date'),
+            LinkColumn::make(__('events.name'), 'name')
+                ->title(fn ($row) => $row->name)
+                ->location(fn ($row) => route('events.show', $row)),
+            DateColumn::make(__('events.date'), 'date')
+                ->outputFormat('Y-m-d'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->venue
-            ->previousEvents()
-            ->oldest('name');
-
-        $previousEvents = $query->paginate();
-
-        return view('livewire.venues.previous-events.previous-events-list', [
-            'previousEvents' => $previousEvents,
-        ]);
     }
 }

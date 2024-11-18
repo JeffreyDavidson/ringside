@@ -4,50 +4,54 @@ declare(strict_types=1);
 
 namespace App\Livewire\Wrestlers;
 
-use App\Models\Wrestler;
-use Illuminate\Contracts\View\View;
+use App\Livewire\Concerns\ShowTableTrait;
+use App\Models\TagTeamPartner;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousTagTeamsTable extends DataTableComponent
 {
-    /**
-     * Wrestler to use for component.
-     */
-    public Wrestler $wrestler;
+    use ShowTableTrait;
+
+    protected string $databaseTableName = 'tag_team_wrestler';
+
+    protected string $resourceName = 'tag teams';
 
     /**
-     * Set the Wrestler to be used for this component.
+     * Wrestler id to use for component.
      */
-    public function mount(Wrestler $wrestler): void
+    public ?int $wrestlerId;
+
+    public function builder(): Builder
     {
-        $this->wrestler = $wrestler;
+        if (!isset($this->wrestlerId)) {
+            throw new \Exception("You didn't specify a wrestler");
+        }
+
+        return TagTeamPartner::query()
+            ->where('wrestler_id', $this->wrestlerId)
+            ->whereNotNull('left_at')
+            ->orderByDesc('joined_at');
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+        $this->addAdditionalSelects([
+            'tag_team_wrestler.tag_team_id as tag_team_id',
+        ]);
+    }
 
     public function columns(): array
     {
         return [
-            Column::make(__('tag-teams.name'), 'name'),
-            Column::make(__('tag-teams.partner'), 'partner'),
-            Column::make(__('tag-teams.date_joined'), 'date_joined'),
-            Column::make(__('tag-teams.date_left'), 'date_left'),
+            Column::make(__('tag-teams.name'), 'tagTeam.name'),
+            // Column::make(__('tag-teams.partner'), 'partner'),
+            DateColumn::make(__('tag-teams.date_joined'), 'joined_at')
+                ->outputFormat('Y-m-d'),
+            DateColumn::make(__('tag-teams.date_left'), 'left_at')
+                ->outputFormat('Y-m-d'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->wrestler
-            ->previousTagTeams();
-
-        $previousTagTeams = $query->paginate();
-
-        return view('livewire.wrestlers.previous-tag-teams.previous-tag-teams-list', [
-            'previousTagTeams' => $previousTagTeams,
-        ]);
     }
 }
