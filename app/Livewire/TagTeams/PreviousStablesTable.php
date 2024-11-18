@@ -6,11 +6,10 @@ namespace App\Livewire\TagTeams;
 
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\StableTagTeam;
-use App\Models\StableWrestler;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 
 class PreviousStablesTable extends DataTableComponent
 {
@@ -24,7 +23,7 @@ class PreviousStablesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->tagTeamId)) {
+        if (! isset($this->tagTeamId)) {
             throw new \Exception("You didn't specify a tag team");
         }
 

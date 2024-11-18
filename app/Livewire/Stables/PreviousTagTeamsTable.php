@@ -23,7 +23,7 @@ class PreviousTagTeamsTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->stableId)) {
+        if (! isset($this->stableId)) {
             throw new \Exception("You didn't specify a stable");
         }
 

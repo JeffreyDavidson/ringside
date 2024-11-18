@@ -26,7 +26,7 @@ class PreviousMatchesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->wrestler)) {
+        if (! isset($this->wrestler)) {
             throw new \Exception("You didn't specify a wrestler");
         }
 
@@ -54,11 +54,11 @@ class PreviousMatchesTable extends DataTableComponent
                 ->outputFormat('Y-m-d H:i'),
             ArrayColumn::make(__('event-matches.competitors'))
                 ->data(fn ($value, $row) => ($row->competitors))
-                ->outputFormat(fn ($index, $value) => '<a href="' . route('wrestlers.show', $value->competitor->id) . '">' . $value->competitor->name . '</a>')
+                ->outputFormat(fn ($index, $value) => '<a href="'.route('wrestlers.show', $value->competitor->id).'">'.$value->competitor->name.'</a>')
                 ->separator('<br />'),
             ArrayColumn::make(__('event-matches.title'))
                 ->data(fn ($value, $row) => ($row->titles))
-                ->outputFormat(fn ($index, $value) => '<a href="' . route('titles.show', $value->id) . '">' . $value->name . '</a>')
+                ->outputFormat(fn ($index, $value) => '<a href="'.route('titles.show', $value->id).'">'.$value->name.'</a>')
                 ->separator('<br />'),
             Column::make(__('event-matches.result'))
                 ->label(fn ($row) => $row->result->winner->name.' by '.$row->result->decision->name),

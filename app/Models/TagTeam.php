@@ -14,7 +14,6 @@ use App\Models\Contracts\Employable;
 use App\Models\Contracts\Manageable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\Suspendable;
-use App\Models\TagTeamManager;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;

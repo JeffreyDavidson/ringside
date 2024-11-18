@@ -26,7 +26,7 @@ class PreviousStablesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->managerId)) {
+        if (! isset($this->managerId)) {
             throw new \Exception("You didn't specify a manager");
         }
 

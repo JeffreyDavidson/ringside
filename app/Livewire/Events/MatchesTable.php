@@ -25,7 +25,7 @@ class MatchesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->eventId)) {
+        if (! isset($this->eventId)) {
             throw new \Exception("You didn't specify a event");
         }
 
@@ -33,9 +33,7 @@ class MatchesTable extends DataTableComponent
             ->where('event_id', $this->eventId);
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {
@@ -55,7 +53,7 @@ class MatchesTable extends DataTableComponent
                 ->separator(', '),
             Column::make(__('event-matches.result'))
                 ->label(
-                    fn ($row, Column $column) => $row->result->winner->name . ' by ' . $row->result->decision->name
+                    fn ($row, Column $column) => $row->result->winner->name.' by '.$row->result->decision->name
                 ),
         ];
     }

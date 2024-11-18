@@ -26,9 +26,7 @@ class VenuesTable extends DataTableComponent
             ->orderBy('name');
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {

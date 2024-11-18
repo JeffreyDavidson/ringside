@@ -23,7 +23,7 @@ class PreviousManagersTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->tagTeamId)) {
+        if (! isset($this->tagTeamId)) {
             throw new \Exception("You didn't specify a tag team");
         }
 

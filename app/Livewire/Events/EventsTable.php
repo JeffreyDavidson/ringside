@@ -36,9 +36,7 @@ class EventsTable extends DataTableComponent
             ->when($this->getAppliedFilterWithValue('Venue'), fn ($query, $venue) => $query->where('venue', $venue));
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {
@@ -77,7 +75,7 @@ class EventsTable extends DataTableComponent
             SelectFilter::make('Venue')
                 ->options([
                     '' => 'All',
-                    ...$venues
+                    ...$venues,
                 ]),
         ];
     }

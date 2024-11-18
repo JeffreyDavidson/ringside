@@ -7,7 +7,6 @@ namespace App\Livewire\Referees;
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\EventMatch;
 use App\Models\Referee;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -45,9 +44,7 @@ class PreviousMatchesTable extends DataTableComponent
             });
     }
 
-    public function configure(): void
-    {
-    }
+    public function configure(): void {}
 
     public function columns(): array
     {
@@ -59,11 +56,11 @@ class PreviousMatchesTable extends DataTableComponent
                 ->outputFormat('Y-m-d H:i'),
             ArrayColumn::make(__('event-matches.competitors'))
                 ->data(fn ($value, $row) => ($row->competitors))
-                ->outputFormat(fn ($index, $value) => '<a href="' . route('wrestlers.show', $value->competitor->id) . '">' . $value->competitor->name . '</a>')
+                ->outputFormat(fn ($index, $value) => '<a href="'.route('wrestlers.show', $value->competitor->id).'">'.$value->competitor->name.'</a>')
                 ->separator('<br />'),
             ArrayColumn::make(__('event-matches.titles'))
                 ->data(fn ($value, $row) => ($row->titles))
-                ->outputFormat(fn ($index, $value) => '<a href="' . route('titles.show', $value->id) . '">' . $value->name . '</a>')
+                ->outputFormat(fn ($index, $value) => '<a href="'.route('titles.show', $value->id).'">'.$value->name.'</a>')
                 ->separator('<br />'),
             Column::make(__('event-matches.result'))
                 ->label(fn ($row) => $row->result->winner->name.' by '.$row->result->decision->name),

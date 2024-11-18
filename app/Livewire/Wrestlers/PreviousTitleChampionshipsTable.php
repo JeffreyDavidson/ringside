@@ -24,7 +24,7 @@ class PreviousTitleChampionshipsTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if (!isset($this->wrestler)) {
+        if (! isset($this->wrestler)) {
             throw new \Exception("You didn't specify a wrestler");
         }
 
@@ -42,7 +42,7 @@ class PreviousTitleChampionshipsTable extends DataTableComponent
             'title_championships.title_id',
             'title_championships.won_at',
             'title_championships.lost_at',
-            DB::raw('DATEDIFF(COALESCE(lost_at, NOW()), won_at) AS days_held_count')
+            DB::raw('DATEDIFF(COALESCE(lost_at, NOW()), won_at) AS days_held_count'),
         ]);
     }
 
