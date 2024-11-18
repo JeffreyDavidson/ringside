@@ -27,7 +27,6 @@ use Illuminate\Support\Carbon;
 class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable, Manageable, Retirable, Suspendable
 {
     use Concerns\CanJoinStables;
-    use Concerns\CanWinTitles;
     use Concerns\HasManagers;
     use Concerns\HasMatches;
     use Concerns\HasWrestlers;
@@ -303,7 +302,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
      */
     public function previousTitleChampionships(): BelongsToMany
     {
-        return $this->belongsToMany(TitleChampionship::class, 'tag_teams_title_championships', 'former_champion_id')
+        return $this->belongsToMany(Title::class, 'tag_teams_title_championships', 'former_champion_id')
             ->withPivot('won_at', 'lost_at')
             ->whereNotNull('lost_at')
             ->using(TagTeamTitleChampionship::class);
@@ -316,7 +315,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
      */
     public function currentTitleChampionship(): BelongsToMany
     {
-        return $this->belongsToMany(TitleChampionship::class, 'tag_teams_title_championships', 'new_champion_id')
+        return $this->belongsToMany(Title::class, 'tag_teams_title_championships', 'new_champion_id')
             ->withPivot('won_at', 'lost_at')
             ->whereNull('lost_at')
             ->using(TagTeamTitleChampionship::class);

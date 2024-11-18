@@ -28,7 +28,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
 {
     use Concerns\CanJoinStables;
     use Concerns\CanJoinTagTeams;
-    use Concerns\CanWinTitles;
     use Concerns\HasManagers;
     use Concerns\HasMatches;
     use Concerns\OwnedByUser;
@@ -333,7 +332,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
      */
     public function previousTitleChampionships(): BelongsToMany
     {
-        return $this->belongsToMany(TitleChampionship::class, 'wrestlers_title_championships', 'former_champion_id')
+        return $this->belongsToMany(Title::class, 'wrestlers_title_championships', 'former_champion_id')
             ->withPivot('won_at', 'lost_at')
             ->whereNotNull('lost_at')
             ->using(WrestlerTitleChampionship::class);
@@ -346,7 +345,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
      */
     public function currentTitleChampionship(): BelongsToMany
     {
-        return $this->belongsToMany(TitleChampionship::class, 'wrestlers_title_championships', 'new_champion_id')
+        return $this->belongsToMany(Title::class, 'wrestlers_title_championships', 'new_champion_id')
             ->withPivot('won_at', 'lost_at')
             ->whereNull('lost_at')
             ->using(WrestlerTitleChampionship::class);
