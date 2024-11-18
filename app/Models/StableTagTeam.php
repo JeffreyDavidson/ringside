@@ -7,9 +7,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class TagTeamPartner extends Pivot
+class StableTagTeam extends Pivot
 {
-    protected $table = 'tag_team_wrestler';
+    protected $table = 'stables_tag_teams';
 
     /**
      * Get the attributes that should be cast.
@@ -25,18 +25,18 @@ class TagTeamPartner extends Pivot
     }
 
     /**
-     * @return BelongsTo<TagTean, TagTeamPartner>
+     * @return BelongsTo<Stable, StableTagTeam>
+     */
+    public function stable(): BelongsTo
+    {
+        return $this->belongsTo(Stable::class);
+    }
+
+    /**
+     * @return BelongsTo<TagTeam, StableTagTeam>
      */
     public function tagTeam(): BelongsTo
     {
         return $this->belongsTo(TagTeam::class);
-    }
-
-    /**
-     * @return BelongsTo<Wrestler, TagTeamPartner>
-     */
-    public function wrestler(): BelongsTo
-    {
-        return $this->belongsTo(Wrestler::class);
     }
 }
