@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'event' => 'Event',
-    'date' => 'Date',
+    'match_type' => 'Match Type',
+    'referee' => 'Referee(s)',
     'competitors' => 'Competitors',
-    'titles' => 'Titles',
+    'title' => 'Title(s)',
     'result' => 'Result',
 ];

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'name' => 'Name',
+    'name' => 'Event Name',
     'date' => 'Date',
     'venue' => 'Venue',
 ];
