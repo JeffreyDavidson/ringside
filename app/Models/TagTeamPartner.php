@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class TagTeamPartner extends Pivot
 {
-    protected $table = 'tag_team_wrestler';
-
     /**
      * The table associated with the model.
      *
