@@ -8,8 +8,8 @@
             </div>
             <div class="col-span-2">
                 <div class="flex flex-col gap-5 lg:gap-7.5">
-                    <livewire:wrestlers.previous-title-championships-table :$wrestler />
-                    <livewire:wrestlers.previous-matches-table :$wrestler />
+                    {{-- <livewire:wrestlers.previous-title-championships-table :$wrestler /> --}}
+                    {{-- <livewire:wrestlers.previous-matches-table :$wrestler /> --}}
                     <livewire:wrestlers.previous-tag-teams-table :wrestlerId="$wrestler->id" />
                     <livewire:wrestlers.previous-managers-table :wrestlerId="$wrestler->id" />
                     <livewire:wrestlers.previous-stables-table :wrestlerId="$wrestler->id" />
