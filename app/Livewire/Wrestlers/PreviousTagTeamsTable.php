@@ -15,7 +15,7 @@ class PreviousTagTeamsTable extends DataTableComponent
 {
     use ShowTableTrait;
 
-    protected string $databaseTableName = 'tag_team_wrestler';
+    protected string $databaseTableName = 'tag_teams_wrestlers';
 
     protected string $resourceName = 'tag teams';
 
@@ -39,7 +39,7 @@ class PreviousTagTeamsTable extends DataTableComponent
     public function configure(): void
     {
         $this->addAdditionalSelects([
-            'tag_team_wrestler.tag_team_id as tag_team_id',
+            'tag_teams_wrestlers.tag_team_id as tag_team_id',
         ]);
     }
 
