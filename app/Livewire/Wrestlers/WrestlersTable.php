@@ -43,14 +43,15 @@ class WrestlersTable extends DataTableComponent
 
     }
 
-    public function configure(): void {}
+    public function configure(): void
+    {
+    }
 
     /** @return array<Column> */
     public function columns(): array
     {
         return [
             Column::make(__('wrestlers.name'), 'name')
-                ->sortable()
                 ->searchable(),
             $this->getDefaultStatusColumn(),
             Column::make(__('wrestlers.height'), 'height'),
