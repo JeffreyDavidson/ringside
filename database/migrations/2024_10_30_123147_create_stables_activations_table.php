@@ -1,22 +1,21 @@
 <?php
 
-use App\Models\MatchDecision;
+use App\Models\Stable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('event_match_results', function (Blueprint $table) {
+        Schema::create('stables_activations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_match_id')->constrained();
-            $table->morphs('winner');
-            $table->foreignIdFor(MatchDecision::class);
+            $table->foreignIdFor(Stable::class);
+            $table->datetime('started_at');
+            $table->datetime('ended_at')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_match_results');
+        Schema::dropIfExists('stables_activations');
     }
 };

@@ -12,6 +12,13 @@ class TagTeamPartner extends Pivot
     protected $table = 'tag_team_wrestler';
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'tag_teams_wrestlers';
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

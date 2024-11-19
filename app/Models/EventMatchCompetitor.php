@@ -16,6 +16,13 @@ class EventMatchCompetitor extends MorphPivot
     protected $table = 'event_match_competitors';
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'events_matches_competitors';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
