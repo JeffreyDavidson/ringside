@@ -13,6 +13,7 @@ use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Manager;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class ManagersTable extends DataTableComponent
 {
@@ -34,16 +35,13 @@ class ManagersTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->addAdditionalSelects([
-            'managers.first_name as first_name',
-            'managers.last_name as last_name',
-        ]);
     }
 
     public function columns(): array
     {
         return [
-            $this->getDefaultFullNameColumn(),
+            Column::make(__('managers.name'), 'full_name')
+                ->searchable(),
             $this->getDefaultStatusColumn(),
             $this->getDefaultFirstEmploymentDateColumn(),
         ];

@@ -380,16 +380,4 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     {
         return ! $this->currentStable || $this->currentStable->isNot($stable);
     }
-
-    /**
-     * Get the manager's full name.
-     *
-     * @return Attribute<string, never>
-     */
-    protected function fullName(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => "{$this->first_name} {$this->last_name}",
-        );
-    }
 }

@@ -341,16 +341,4 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     {
         return $this->retirements()->count() > 0;
     }
-
-    /**
-     * Get the manager's full name.
-     *
-     * @return Attribute<string, never>
-     */
-    protected function fullName(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => "{$this->first_name} {$this->last_name}",
-        );
-    }
 }

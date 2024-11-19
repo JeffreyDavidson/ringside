@@ -38,7 +38,7 @@ class RefereesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('referees.full_name'), 'full_name')
+            Column::make(__('referees.name'), 'full_name')
                 ->searchable(),
             $this->getDefaultStatusColumn(),
             $this->getDefaultFirstEmploymentDateColumn(),
