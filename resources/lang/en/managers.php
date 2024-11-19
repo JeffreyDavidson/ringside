@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'full_name' => 'Full Name',
+    'name' => 'Manager Name',
     'date_hired' => 'Date Hired',
     'date_fired' => 'Date Fired',
 ];
