@@ -35,7 +35,7 @@ trait BaseTableTrait
     public function appendColumns(): array
     {
         return $this->showActionColumn ? [
-            // $this->getDefaultActionColumn(),
+            $this->getDefaultActionColumn(),
         ] : [];
     }
 
