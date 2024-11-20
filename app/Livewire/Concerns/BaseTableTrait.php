@@ -71,7 +71,17 @@ trait BaseTableTrait
                 'default-colors' => false,
                 'class' => '',
             ])
-            ->setThAttributes(function () {
+            ->setThAttributes(function (Column $column) {
+                // dump($column->getTitle('Actions'));
+                if ($column->getTitle() == 'Actions') {
+                    return [
+                        'default' => false,
+                        'default-styling' => false,
+                        'default-colors' => false,
+                        'class' => 'bg-[#fcfcfc] text-gray-600 font-medium text-[.8125rem] leading-[1.125rem] align-middle py-2.5 ps-4 pe-4 border-b border-gray-200 border-e border-e-solid border-e-gray-200 w-[60px]',
+                    ];
+                }
+
                 return [
                     'default' => false,
                     'default-styling' => false,
@@ -101,12 +111,22 @@ trait BaseTableTrait
                     'class' => '',
                 ];
             })
-            ->setTdAttributes(function () {
+            ->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
+                dump($columnIndex);
+                if ($column->getTitle() == 'Actions') {
+                    return [
+                        'default' => false,
+                        'default-styling' => false,
+                        'default-colors' => false,
+                        'class' => 'py-3 ps-4 border border-solid border-gray-200 border-e-solid border-e-gray-200 pe-5 b-e-0',
+                    ];
+                }
+
                 return [
                     'default' => false,
                     'default-styling' => false,
                     'default-colors' => false,
-                    'class' => 'py-3 ps-4 pe-4 border border-solid border-gray-200 border-e-solid border-e-gray-200',
+                    'class' => 'py-3 ps-4 pe-4 border border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
                 ];
             })
             ->setPaginationWrapperAttributes([
