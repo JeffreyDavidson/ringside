@@ -35,7 +35,7 @@ trait BaseTableTrait
     public function appendColumns(): array
     {
         return $this->showActionColumn ? [
-            // $this->getDefaultActionColumn(),
+            $this->getDefaultActionColumn(),
         ] : [];
     }
 
@@ -106,7 +106,7 @@ trait BaseTableTrait
                     'default' => false,
                     'default-styling' => false,
                     'default-colors' => false,
-                    'class' => 'py-3 pe-px border-b border-solid border-gray-200 border-e-solid border-e-gray-200',
+                    'class' => 'py-3 ps-4 pe-4 border border-solid border-gray-200 border-e-solid border-e-gray-200',
                 ];
             })
             ->setPaginationWrapperAttributes([
