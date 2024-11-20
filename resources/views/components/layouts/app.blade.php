@@ -33,7 +33,9 @@
             </main>
             <!-- End of Content -->
             <!-- Footer -->
-            <x-layouts.partials.footer />
+            @persist('page-footer')
+                <x-layouts.partials.footer />
+            @endpersist
             <!-- End of Footer -->
         </div>
         <!-- End of Wrapper -->
