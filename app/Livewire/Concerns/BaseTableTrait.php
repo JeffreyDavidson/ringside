@@ -118,7 +118,7 @@ trait BaseTableTrait
                     'default' => false,
                     'default-styling' => false,
                     'default-colors' => false,
-                    'class' => '',
+                    'class' => 'border-b border-solid border-gray-200',
                 ];
             })
             ->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
@@ -127,7 +127,7 @@ trait BaseTableTrait
                         'default' => false,
                         'default-styling' => false,
                         'default-colors' => false,
-                        'class' => 'border-b border-solid border-gray-200 py-3 ps-4 pe-5 border-e-0',
+                        'class' => 'border-solid border-gray-200 py-3 ps-4 pe-5 border-e-0',
                     ];
                 }
 
@@ -135,7 +135,7 @@ trait BaseTableTrait
                     'default' => false,
                     'default-styling' => false,
                     'default-colors' => false,
-                    'class' => 'py-3 ps-4 pe-4 border-b border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
+                    'class' => 'py-3 ps-4 pe-4 border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
                 ];
             })
             ->setPaginationWrapperAttributes([
