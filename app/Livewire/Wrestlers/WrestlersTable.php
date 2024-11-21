@@ -31,16 +31,11 @@ class WrestlersTable extends DataTableComponent
         return Wrestler::query()
             ->with('currentEmployment')
             ->when(
-                $this->getAppliedFilterWithValue('Status'),
-                fn ($query, $status) => $query->where('status', $status)
-            )
-            ->when(
                 $this->getAppliedFilterWithValue('Employment'),
                 fn ($query, $dateRange) => $query
                     ->whereDate('wrestler_employments.started_at', '>=', $dateRange['minDate'])
                     ->whereDate('wrestler_employments.ended_at', '<=', $dateRange['maxDate'])
             );
-
     }
 
     public function configure(): void {}
