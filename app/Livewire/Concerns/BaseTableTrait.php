@@ -105,9 +105,9 @@ trait BaseTableTrait
             ])
             ->setTrAttributes(function () {
                 return [
-                    'default' => true,
+                    'default' => false,
                     'default-styling' => false,
-                    'default-colors' => true,
+                    'default-colors' => false,
                     'class' => 'border-b border-solid border-gray-200',
                 ];
             })
