@@ -83,6 +83,7 @@ trait BaseTableTrait
 
                 if ($column->getTitle() == 'Actions') {
                     $classes = [];
+
                     return [
                         'default' => false,
                         'default-styling' => false,
@@ -121,7 +122,7 @@ trait BaseTableTrait
                 ];
             })
             ->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-                if ($this->columns->count()-1 === $columnIndex) {
+                if ($this->columns->count() - 1 === $columnIndex) {
                     return [
                         'default' => false,
                         'default-styling' => false,
