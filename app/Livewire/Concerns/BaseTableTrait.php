@@ -72,8 +72,17 @@ trait BaseTableTrait
                 'class' => '',
             ])
             ->setThAttributes(function (Column $column) {
-                // dump($column->getTitle('Actions'));
+                if ($this->columns->last()->getTitle() === $column->getTitle()) {
+                    return [
+                        'default' => false,
+                        'default-styling' => false,
+                        'default-colors' => false,
+                        'class' => 'bg-[#fcfcfc] text-gray-600 font-medium text-[.8125rem] leading-[1.125rem] align-middle py-2.5 ps-4 pe-4 border-b border-gray-200 border-e border-e-solid border-e-gray-200 rounded-se-xl border-e-0 border-e-none border-e-inherit',
+                    ];
+                }
+
                 if ($column->getTitle() == 'Actions') {
+                    $classes = [];
                     return [
                         'default' => false,
                         'default-styling' => false,
@@ -112,13 +121,12 @@ trait BaseTableTrait
                 ];
             })
             ->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-                dump($columnIndex);
-                if ($column->getTitle() == 'Actions') {
+                if ($this->columns->count()-1 === $columnIndex) {
                     return [
                         'default' => false,
                         'default-styling' => false,
                         'default-colors' => false,
-                        'class' => 'py-3 ps-4 border border-solid border-gray-200 border-e-solid border-e-gray-200 pe-5 b-e-0',
+                        'class' => 'border-b border-solid border-gray-200 py-3 ps-4 pe-5 border-e-0',
                     ];
                 }
 
