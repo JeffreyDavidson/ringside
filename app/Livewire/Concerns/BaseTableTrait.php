@@ -57,7 +57,7 @@ trait BaseTableTrait
                 'default' => false,
                 'default-styling' => false,
                 'default-colors' => false,
-                'class' => 'scrollable-x-auto',
+                'class' => 'scrollable-x-auto border-b-0 sm:rounded-lg',
             ])
             ->setTableAttributes([
                 'default' => false,
@@ -134,7 +134,7 @@ trait BaseTableTrait
                     'default' => false,
                     'default-styling' => false,
                     'default-colors' => false,
-                    'class' => 'py-3 ps-4 pe-4 border border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
+                    'class' => 'py-3 ps-4 pe-4 border-b border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
                 ];
             })
             ->setPaginationWrapperAttributes([
