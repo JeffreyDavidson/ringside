@@ -73,12 +73,12 @@ trait BaseTableTrait
             ])
             ->setThAttributes(function (Column $column) {
                 // dump($column->getTitle('Actions'));
-                if ($column->getTitle() == 'Actions') {
+                if ($column->getTitle() == __('core.actions')) {
                     return [
                         'default' => false,
                         'default-styling' => false,
                         'default-colors' => false,
-                        'class' => 'bg-[#fcfcfc] text-gray-600 font-medium text-[.8125rem] leading-[1.125rem] align-middle py-2.5 ps-4 pe-4 border-b border-gray-200 border-e border-e-solid border-e-gray-200 w-[60px]',
+                        'class' => 'bg-[#fcfcfc] text-gray-600 font-medium text-[.8125rem] leading-[1.125rem] align-middle py-2.5 ps-4 pe-4 border-b border-gray-200 w-[60px]',
                     ];
                 }
 
@@ -117,7 +117,15 @@ trait BaseTableTrait
                         'default' => false,
                         'default-styling' => false,
                         'default-colors' => false,
-                        'class' => 'border-x-2 border-solid border-gray-200 py-3 ps-4 pe-5 border-e-0',
+                        'class' => 'border-x border-solid border-gray-200 py-3 ps-4 pe-5 border-e-0',
+                    ];
+                }
+                if ($columnIndex == 0) {
+                    return [
+                        'default' => false,
+                        'default-styling' => false,
+                        'default-colors' => false,
+                        'class' => 'py-3 ps-4 pe-4 border-r border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
                     ];
                 }
 
@@ -125,7 +133,7 @@ trait BaseTableTrait
                     'default' => false,
                     'default-styling' => false,
                     'default-colors' => false,
-                    'class' => 'py-3 ps-4 pe-4 border-x-2 border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
+                    'class' => 'py-3 ps-4 pe-4 border-x border-solid border-gray-200 border-e-solid border-e-gray-200 pe-4',
                 ];
             })
             ->setPaginationWrapperAttributes([
