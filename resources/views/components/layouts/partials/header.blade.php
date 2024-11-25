@@ -1,6 +1,6 @@
 <header class="h-[70px] fixed top-0 z-10 left-0 right-0 flex items-stretch shrink-0 bg-[#fefefe] lg:start-[280px]">
     <!-- Container -->
-    <x-container-fixed class="flex justify-between items-stretch lg:gap-4">
+    <x-container-fluid class="flex justify-between items-stretch lg:gap-4">
         <!-- Mobile Logo -->
         <div class="flex gap-1 lg:hidden items-center -ml-1">
             <a class="shrink-0" href="{{ route('dashboard') }}">
@@ -22,6 +22,6 @@
         <!-- Topbar -->
         <x-topbar />
         <!-- End of Topbar -->
-    </x-container-fixed>
+    </x-container-fluid>
     <!-- End of Container -->
 </header>
