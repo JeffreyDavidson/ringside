@@ -1,14 +1,14 @@
 <x-mega-menu.container>
-    <x-mega-menu.container>
+    <x-mega-menu.inner>
         <x-mega-menu.wrapper>
-            <div class="flex flex-col lg:flex-row gap-5 lg:gap-7.5">
+            <x-mega-menu.menu>
                 <x-mega-menu.menu-item>
                     <x-mega-menu.menu-link :isActive="Route::is('dashboard')" href="{{ route('dashboard') }}">
                         Home
                     </x-mega-menu.menu-link>
                 </x-mega-menu.menu-item>
                 <x-mega-menu.menu-item class="group">
-                    <x-mega-menu.menu-label>Roster</x-mega-menu.menu-label>
+                    <x-mega-menu.menu-link>Roster</x-mega-menu.menu-link>
                     <x-mega-menu.menu-dropdown>
                         <x-menu.menu-item>
                             <div class="flex py-0 flex-col">
@@ -47,16 +47,18 @@
                     </x-mega-menu.menu-link>
                 </x-mega-menu.menu-item>
                 <x-mega-menu.menu-item>
-                    <x-mega-menu.menu-link isActive="{{ \Route::is('venues.index') }}" href="{{ route('venues.index') }}">
+                    <x-mega-menu.menu-link isActive="{{ \Route::is('venues.index') }}"
+                        href="{{ route('venues.index') }}">
                         Venues
                     </x-mega-menu.menu-link>
                 </x-mega-menu.menu-item>
                 <x-mega-menu.menu-item>
-                    <x-mega-menu.menu-link isActive="{{ \Route::is('events.index') }}" href="{{ route('events.index') }}">
+                    <x-mega-menu.menu-link isActive="{{ \Route::is('events.index') }}"
+                        href="{{ route('events.index') }}">
                         Events
                     </x-mega-menu.menu-link>
                 </x-mega-menu.menu-item>
-            </div>
+            </x-mega-menu.menu>
         </x-mega-menu.wrapper>
-    </x-mega-menu.container>
+    </x-mega-menu.inner>
 </x-mega-menu.container>
