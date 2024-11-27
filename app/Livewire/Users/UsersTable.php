@@ -28,7 +28,8 @@ class UsersTable extends DataTableComponent
             ->oldest('last_name');
     }
 
-    public function configure(): void {
+    public function configure(): void
+    {
         $this->showActionColumn = false;
     }
 
