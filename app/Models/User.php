@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Role;
+use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -83,6 +84,7 @@ class User extends Authenticatable
     {
         return [
             'role' => Role::class,
+            'status' => UserStatus::class,
         ];
     }
 }
