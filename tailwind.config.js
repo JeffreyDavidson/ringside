@@ -35,6 +35,9 @@ export default {
                     DEFAULT: '#1B84FF',
                     active: '#056EE9',
                 },
+                secondary: {
+                    active: '#f9f9f9',
+                },
                 light: {
                     DEFAULT: '#ffffff',
                     active: '#FCFCFC',
