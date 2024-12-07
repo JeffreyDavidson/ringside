@@ -39,7 +39,6 @@
         "phpstan/extension-installer": "^1.4",
         "povils/phpmnd": "^3.4",
         "spatie/laravel-ignition": "^2.4",
-        "spatie/laravel-ray": "^1.35",
         "spatie/pest-plugin-test-time": "^2.0",
         "wire-elements/wire-spy": "^0.0.9",
         "worksome/request-factories": "^3.3"
