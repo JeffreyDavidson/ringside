@@ -10,19 +10,12 @@
                 </x-sidebar.menu-label>
             </x-sidebar.menu-item>
             <x-sidebar.menu-heading>User</x-sidebar.menu-heading>
-
-            <x-sidebar.menu-item x-data="{
+            <div x-data="{
                 open: @json(request()->is('roster/*')),
                 toggle() {
                     this.open = !this.open
                 }
             }">
-                {{-- <div x-data="{
-                open: @json(request()->is('roster/*')),
-                toggle() {
-                    this.open = !this.open
-                }
-            }"> --}}
                 <x-sidebar.menu-label @click="toggle">
                     <x-sidebar.menu-icon icon="ki-people" />
                     <x-sidebar.menu-title>Roster</x-sidebar.menu-title>
@@ -40,8 +33,7 @@
                     <x-sidebar.accordian-link href="{{ route('stables.index') }}"
                         :isCurrent="request()->routeIs('stables.index')">Stables</x-sidebar.accordian-link>
                 </x-sidebar.menu-accordian>
-                {{-- </div> --}}
-            </x-sidebar.menu-item>
+            </div>
             <x-sidebar.menu-item>
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-cup" />
