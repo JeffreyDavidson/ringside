@@ -50,7 +50,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',

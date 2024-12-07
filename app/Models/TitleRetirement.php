@@ -23,7 +23,7 @@ class TitleRetirement extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'title_id',

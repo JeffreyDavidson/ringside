@@ -31,7 +31,7 @@ class Title extends Model implements Activatable, Retirable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
