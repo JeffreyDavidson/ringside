@@ -35,7 +35,6 @@
         "pestphp/pest-plugin-faker": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
         "pestphp/pest-plugin-livewire": "^3.0",
-        "pestphp/pest-plugin-type-coverage": "^3.0",
         "phpstan/extension-installer": "^1.4",
         "povils/phpmnd": "^3.4",
         "spatie/laravel-ignition": "^2.4",
