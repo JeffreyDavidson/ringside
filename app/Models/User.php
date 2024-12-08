@@ -55,7 +55,7 @@ class User extends Authenticatable
     /**
      * Get the user's password.
      *
-     * @return Attribute<string, never>
+     * @return Attribute<mixed, mixed>
      */
     public function password(): Attribute
     {

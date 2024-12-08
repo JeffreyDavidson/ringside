@@ -12,6 +12,7 @@ use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Wrestler;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -33,7 +34,7 @@ class WrestlersTable extends DataTableComponent
             ->with('currentEmployment')
             ->when(
                 $this->getAppliedFilterWithValue('Employment'),
-                fn ($query, $dateRange) => $query
+                fn (Builder $query, array $dateRange) => $query
                     ->whereDate('wrestler_employments.started_at', '>=', $dateRange['minDate'])
                     ->whereDate('wrestler_employments.ended_at', '<=', $dateRange['maxDate'])
             );

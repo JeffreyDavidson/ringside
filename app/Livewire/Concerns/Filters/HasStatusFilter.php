@@ -11,7 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 trait HasStatusFilter
 {
     /**
-     * @param  array<int, string>  $statuses
+     * @param  array<int, mixed>  $statuses
      **/
     protected function getDefaultStatusFilter(array $statuses): Filter
     {

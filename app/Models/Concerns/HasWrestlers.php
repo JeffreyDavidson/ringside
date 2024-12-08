@@ -49,7 +49,7 @@ trait HasWrestlers
     /**
      * Get the combined weight of both tag team partners in a tag team.
      *
-     * @return Attribute<string, never>
+     * @return Attribute<mixed, mixed>
      */
     public function combinedWeight(): Attribute
     {
