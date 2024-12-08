@@ -32,7 +32,7 @@ class Venue extends Model
     /**
      * Retrieve the events for a venue.
      *
-     * @return HasMany<Event>
+     * @return HasMany<Event, $this>
      */
     public function events(): HasMany
     {
@@ -42,7 +42,7 @@ class Venue extends Model
     /**
      * Retrieve the events for a venue.
      *
-     * @return HasMany<Event>
+     * @return HasMany<Event, $this>
      */
     public function previousEvents(): HasMany
     {

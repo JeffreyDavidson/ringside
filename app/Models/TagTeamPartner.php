@@ -30,7 +30,7 @@ class TagTeamPartner extends Pivot
     }
 
     /**
-     * @return BelongsTo<TagTean, TagTeamPartner>
+     * @return BelongsTo<TagTeam, $this>
      */
     public function tagTeam(): BelongsTo
     {

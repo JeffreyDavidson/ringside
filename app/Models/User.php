@@ -75,7 +75,7 @@ class User extends Authenticatable
     /**
      * Get the user's wrestler.
      *
-     * @return HasOne<Wrestler>
+     * @return HasOne<Wrestler, $this>
      */
     public function wrestler(): HasOne
     {
