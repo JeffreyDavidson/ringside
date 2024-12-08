@@ -57,7 +57,7 @@ class MatchForm extends Component
     /**
      * Display a listing of the resource.
      */
-    public function render(): View
+    public function render()
     {
         return view('livewire.event-matches.match-form', [
             'match' => $this->match,

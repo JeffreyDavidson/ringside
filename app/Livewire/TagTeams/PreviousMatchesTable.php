@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\TagTeams;
 
 use App\Models\TagTeam;
-use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -35,20 +34,5 @@ class PreviousMatchesTable extends DataTableComponent
             Column::make(__('matches.titles'), 'titles'),
             Column::make(__('matches.result'), 'result'),
         ];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function render(): View
-    {
-        $query = $this->tagTeam
-            ->previousMatches();
-
-        $previousMatches = $query->paginate();
-
-        return view('livewire.tag-teams.previous-matches.previous-matches-list', [
-            'previousMatches' => $previousMatches,
-        ]);
     }
 }
