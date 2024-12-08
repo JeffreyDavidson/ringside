@@ -45,7 +45,6 @@ class WrestlerForm extends Form
 
         $this->height_feet = $feet;
         $this->height_inches = $inches;
-
     }
 
     public function update(): bool
@@ -71,7 +70,6 @@ class WrestlerForm extends Form
                 'height' => $height->toInches(),
                 'weight' => $this->weight,
             ]);
-
         }
 
         return true;
