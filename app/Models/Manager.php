@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property \App\Enums\ManagerStatus $status
+ * @property Stable $currentStable
  */
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
 {
