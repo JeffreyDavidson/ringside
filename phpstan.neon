@@ -1,7 +1,4 @@
 parameters:
     paths:
         - app/
-    level: 9
-    ignoreErrors:
-        - message: '#Call to an undefined method [a-zA-Z0-9\\_]+::map\(\)#'
-        - identifier: missingType.generics
+    level: 2
