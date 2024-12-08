@@ -45,7 +45,7 @@ class StableRetirement extends Model
     }
 
     /**
-     * @return BelongsTo<Stable, StableRetirement>
+     * @return BelongsTo<Stable, $this>
      */
     public function stable(): BelongsTo
     {

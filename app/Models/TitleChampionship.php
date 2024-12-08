@@ -61,7 +61,7 @@ class TitleChampionship extends Model
     /**
      * Retrieve the title of the championship.
      *
-     * @return BelongsTo<Title, TitleChampionship>
+     * @return BelongsTo<Title, $this>
      */
     public function title(): BelongsTo
     {
@@ -79,7 +79,7 @@ class TitleChampionship extends Model
     /**
      * Retrieve the current champion of the title championship.
      *
-     * @return MorphTo<Model, TitleChampionship>
+     * @return MorphTo<Model, $this>
      */
     public function currentChampion(): MorphTo
     {
@@ -89,7 +89,7 @@ class TitleChampionship extends Model
     /**
      * Retrieve the event match where the title championship switched hands.
      *
-     * @return BelongsTo<EventMatch, TitleChampionship>
+     * @return BelongsTo<EventMatch, $this>
      */
     public function eventMatch(): BelongsTo
     {

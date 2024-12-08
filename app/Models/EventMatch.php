@@ -41,7 +41,7 @@ class EventMatch extends Model
     /**
      * Get the event the match belongs to.
      *
-     * @return BelongsTo<Event, EventMatch>
+     * @return BelongsTo<Event, $this>
      */
     public function event(): BelongsTo
     {

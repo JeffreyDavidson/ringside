@@ -48,7 +48,7 @@ class StableActivation extends Model
     }
 
     /**
-     * @return BelongsTo<Stable, StableActivation>
+     * @return BelongsTo<Stable, $this>
      */
     public function stable(): BelongsTo
     {

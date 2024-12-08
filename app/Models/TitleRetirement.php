@@ -45,7 +45,7 @@ class TitleRetirement extends Model
     }
 
     /**
-     * @return BelongsTo<Title, TitleRetirement>
+     * @return BelongsTo<Title, $this>
      */
     public function title(): BelongsTo
     {

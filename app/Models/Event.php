@@ -57,7 +57,7 @@ class Event extends Model
     /**
      * Retrieve the venue of the event.
      *
-     * @return BelongsTo<Venue, Event>
+     * @return BelongsTo<Venue, $this>
      */
     public function venue(): BelongsTo
     {

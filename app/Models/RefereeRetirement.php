@@ -48,7 +48,7 @@ class RefereeRetirement extends Model
     }
 
     /**
-     * @return BelongsTo<Referee, RefereeRetirement>
+     * @return BelongsTo<Referee, $this>
      */
     public function referee(): BelongsTo
     {

@@ -48,7 +48,7 @@ class ManagerEmployment extends Model
     }
 
     /**
-     * @return BelongsTo<Manager, ManagerEmployment>
+     * @return BelongsTo<Manager, $this>
      */
     public function manager(): BelongsTo
     {
