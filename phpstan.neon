@@ -1,4 +1,6 @@
 parameters:
+    excludePaths:
+        - app/Models/Contracts
     paths:
         - app/
     level: 6
