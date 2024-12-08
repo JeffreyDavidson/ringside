@@ -37,7 +37,7 @@ class WrestlerForm extends Form
 
         $this->hometown = $wrestler->hometown;
         $this->signature_move = $wrestler->signature_move;
-        $this->start_date = $wrestler->currentEmployment->started_at;
+        $this->start_date = $wrestler->currentEmployment?->started_at;
         $this->weight = $wrestler->weight;
         $height = $wrestler->height;
 

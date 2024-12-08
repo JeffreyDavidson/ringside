@@ -10,7 +10,7 @@ use LivewireUI\Modal\ModalComponent;
 
 class WrestlerModal extends ModalComponent
 {
-    public Wrestler $wrestler;
+    public ?Wrestler $wrestler;
 
     public WrestlerForm $form;
 
@@ -20,7 +20,6 @@ class WrestlerModal extends ModalComponent
             $this->wrestler = Wrestler::find($wrestlerId);
             $this->form->setWrestler($this->wrestler);
         }
-
     }
 
     public function save(): void
