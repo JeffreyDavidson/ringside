@@ -3,4 +3,4 @@ parameters:
         - app/Models/Contracts
     paths:
         - app/
-    level: 8
+    level: 9
