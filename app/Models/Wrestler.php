@@ -400,6 +400,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
      */
     public function isNotCurrentlyInStable(Stable $stable): bool
     {
-        return ! $this->currentStable || $this->currentStable->isNot($stable);
+        return $this->currentStable->isNot($stable);
     }
 }

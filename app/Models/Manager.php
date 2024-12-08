@@ -378,6 +378,6 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
      */
     public function isNotCurrentlyInStable(Stable $stable): bool
     {
-        return ! $this->currentStable || $this->currentStable->isNot($stable);
+        return $this->currentStable->isNot($stable);
     }
 }
