@@ -6,7 +6,7 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-element-11" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? 'hidden' : ''"
+                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         href="{{ route('dashboard') }}"
                         :isCurrent="request()->routeIs('dashboard')">
                         Dashboard
@@ -22,8 +22,8 @@
             }">
                 <x-sidebar.menu-label @click="toggle">
                     <x-sidebar.menu-icon icon="ki-people" />
-                    <x-sidebar.menu-title ::class="!sidebarIsOpen ? 'group:not-hover:hidden' : ''">Roster</x-sidebar.menu-title>
-                    <x-sidebar.menu-accordian-icons ::class="!sidebarIsOpen ? 'hidden' : ''"/>
+                    <x-sidebar.menu-title ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''">Roster</x-sidebar.menu-title>
+                    <x-sidebar.menu-accordian-icons ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"/>
                 </x-sidebar.menu-label>
                 <x-sidebar.menu-accordian x-show="open">
                     <x-sidebar.accordian-link href="{{ route('wrestlers.index') }}"
@@ -42,7 +42,7 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-cup" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? 'group:not-hover:hidden' : ''"
+                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         :href="route('titles.index')"
                         :isCurrent="request()->routeIs('titles.*')">
                         Titles
@@ -53,7 +53,7 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-home-3" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? 'group:not-hover:hidden' : ''"
+                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         :href="route('venues.index')"
                         :isCurrent="request()->routeIs('venues.*')">
                         Venues
@@ -64,7 +64,7 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-calendar" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? 'group:not-hover:hidden' : ''"
+                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         :href="route('events.index')"
                         :isCurrent="request()->routeIs('events.*')">
                         Events
