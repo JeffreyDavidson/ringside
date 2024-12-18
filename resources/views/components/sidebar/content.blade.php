@@ -23,7 +23,7 @@
                 <x-sidebar.menu-label @click="toggle">
                     <x-sidebar.menu-icon icon="ki-people" />
                     <x-sidebar.menu-title x-show="sidebarIsOpen" x-cloak>Roster</x-sidebar.menu-title>
-                    <x-sidebar.menu-accordian-icons/>
+                    <x-sidebar.menu-accordian-icons x-show="sidebarIsOpen" x-cloak/>
                 </x-sidebar.menu-label>
                 <x-sidebar.menu-accordian x-show="open">
                     <x-sidebar.accordian-link href="{{ route('wrestlers.index') }}"
