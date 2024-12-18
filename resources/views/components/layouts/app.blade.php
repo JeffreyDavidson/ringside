@@ -26,7 +26,7 @@
         <x-sidebar ::class="sidebarIsOpen ? 'w-72' : 'w-20 lg:transition'" />
         <!-- End of Sidebar -->
         <!-- Wrapper -->
-        <div class="lg:pt-[70px] flex grow flex-col" :class="sidebarIsOpen ? '' : ''">
+        <div class="flex grow flex-col"">
             <!-- Header -->
             <x-layouts.partials.header />
             <!-- End of Header -->
