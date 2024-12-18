@@ -1,4 +1,4 @@
-<div id="sidebar-content" class="flex grow shrink-0 py-5 pe-2" :class="!sidebarIsOpen ? 'lg:overflow-hidden' : ''" x-on:mouseover="sidebarIsOpen = true" x-on:mouseout="sidebarIsOpen = false">
+<div id="sidebar-content" class="flex grow shrink-0 py-5 pe-2" :class="!sidebarIsOpen ? 'lg:overflow-hidden' : ''" x-show="sidebarIsOpen" x-cloak>
     <div class="relative scrollbar-thin scrollbar-transparent overflow-y-scroll grow shrink-0 flex ps-2 lg:ps-5 pe-1 lg:pe-3">
         <!-- Sidebar Menu -->
         <x-sidebar.menu class="flex flex-col grow gap-0.5">
