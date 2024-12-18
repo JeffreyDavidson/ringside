@@ -23,7 +23,7 @@
     <!-- Main -->
     <div x-data="{sidebarIsOpen: false}" class="flex grow">
         <!-- Sidebar -->
-        <x-sidebar ::class="sidebarIsOpen ? 'w-[280px]' : 'w-[80px] lg:transition'" />
+        <x-sidebar ::class="sidebarIsOpen ? 'w-72' : 'w-20 lg:transition'" />
         <!-- End of Sidebar -->
         <!-- Wrapper -->
         <div class="lg:pt-[70px] flex grow flex-col" :class="sidebarIsOpen ? '' : ''">
