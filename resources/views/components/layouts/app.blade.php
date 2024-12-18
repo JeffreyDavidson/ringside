@@ -23,10 +23,10 @@
     <!-- Main -->
     <div x-data="{sidebarIsOpen: false}" class="flex grow">
         <!-- Sidebar -->
-        <x-sidebar ::class="sidebarIsOpen ? 'w-[280px]' : 'w-[80px]'" />
+        <x-sidebar ::class="sidebarIsOpen ? 'w-[280px]' : 'w-[80px] lg:transition'" />
         <!-- End of Sidebar -->
         <!-- Wrapper -->
-        <div class="lg:pt-[70px] lg:ps-[280px] flex grow flex-col" :class="sidebarIsOpen ? '' : ''">
+        <div class="lg:pt-[70px] flex grow flex-col" :class="sidebarIsOpen ? '' : ''">
             <!-- Header -->
             <x-layouts.partials.header />
             <!-- End of Header -->
