@@ -24,5 +24,6 @@
             </x-card.body>
         </x-card>
     </div>
+    @livewireScriptConfig
 </body>
 </html>
