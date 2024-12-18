@@ -1,4 +1,4 @@
-<div id="sidebar-content" class="flex grow shrink-0 py-5 pe-2" :class="!sidebarIsOpen ? 'lg:overflow-hidden' : ''">
+<div id="sidebar-content" class="flex grow shrink-0 py-5 pe-2" :class="!sidebarIsOpen ? 'lg:overflow-hidden' : ''" x-on:mouseover="sidebarIsOpen = true" x-on:mouseout="sidebarIsOpen = false">
     <div class="relative scrollbar-thin scrollbar-transparent overflow-y-scroll grow shrink-0 flex ps-2 lg:ps-5 pe-1 lg:pe-3">
         <!-- Sidebar Menu -->
         <x-sidebar.menu class="flex flex-col grow gap-0.5">
@@ -6,7 +6,6 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-element-11" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         href="{{ route('dashboard') }}"
                         :isCurrent="request()->routeIs('dashboard')">
                         Dashboard
@@ -22,8 +21,8 @@
             }">
                 <x-sidebar.menu-label @click="toggle">
                     <x-sidebar.menu-icon icon="ki-people" />
-                    <x-sidebar.menu-title ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''">Roster</x-sidebar.menu-title>
-                    <x-sidebar.menu-accordian-icons ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"/>
+                    <x-sidebar.menu-title>Roster</x-sidebar.menu-title>
+                    <x-sidebar.menu-accordian-icons/>
                 </x-sidebar.menu-label>
                 <x-sidebar.menu-accordian x-show="open">
                     <x-sidebar.accordian-link href="{{ route('wrestlers.index') }}"
@@ -42,7 +41,6 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-cup" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         :href="route('titles.index')"
                         :isCurrent="request()->routeIs('titles.*')">
                         Titles
@@ -53,7 +51,6 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-home-3" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         :href="route('venues.index')"
                         :isCurrent="request()->routeIs('venues.*')">
                         Venues
@@ -64,7 +61,6 @@
                 <x-sidebar.menu-label>
                     <x-sidebar.menu-icon icon="ki-calendar" />
                     <x-sidebar.menu-link
-                        ::class="!sidebarIsOpen ? '[&:not(:hover)]:hidden' : ''"
                         :href="route('events.index')"
                         :isCurrent="request()->routeIs('events.*')">
                         Events
