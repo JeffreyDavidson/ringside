@@ -64,6 +64,9 @@ export default {
                 '2.25': '.563rem',
                 '7.5': '1.875rem',
             },
+            width: {
+                '15': '3.75rem',
+            },
             lineHeight: {
                 '4.25': '1.125rem'
             },
