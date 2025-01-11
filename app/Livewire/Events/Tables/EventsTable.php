@@ -6,22 +6,21 @@ namespace App\Livewire\Events\Tables;
 
 use App\Builders\EventBuilder;
 use App\Enums\EventStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
-class EventsTable extends DataTableComponent
+class EventsTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasStatusColumn, HasStatusFilter;
+    use HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'events';
 
@@ -88,5 +87,10 @@ class EventsTable extends DataTableComponent
                     ...$venues,
                 ]),
         ];
+    }
+
+    public function delete(Event $event): void
+    {
+        $this->deleteModel($event);
     }
 }

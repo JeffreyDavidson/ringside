@@ -6,19 +6,18 @@ namespace App\Livewire\Titles\Tables;
 
 use App\Builders\TitleBuilder;
 use App\Enums\TitleStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstActivationDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstActivationDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Title;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class TitlesTable extends DataTableComponent
+class TitlesTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasFirstActivationDateColumn, HasFirstActivationDateFilter, HasStatusColumn, HasStatusFilter;
+    use HasFirstActivationDateColumn, HasFirstActivationDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'titles';
 
@@ -65,5 +64,10 @@ class TitlesTable extends DataTableComponent
             $this->getDefaultStatusFilter($statuses),
             $this->getDefaultFirstActivationmDateFilter(),
         ];
+    }
+
+    public function delete(Title $title): void
+    {
+        $this->deleteModel($title);
     }
 }

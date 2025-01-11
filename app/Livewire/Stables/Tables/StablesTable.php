@@ -6,19 +6,18 @@ namespace App\Livewire\Stables\Tables;
 
 use App\Builders\StableBuilder;
 use App\Enums\StableStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstActivationDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstActivationDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Stable;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class StablesTable extends DataTableComponent
+class StablesTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasFirstActivationDateColumn, HasFirstActivationDateFilter, HasStatusColumn, HasStatusFilter;
+    use HasFirstActivationDateColumn, HasFirstActivationDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'stables';
 
@@ -64,5 +63,10 @@ class StablesTable extends DataTableComponent
             $this->getDefaultStatusFilter($statuses),
             $this->getDefaultFirstActivationmDateFilter(),
         ];
+    }
+
+    public function delete(Stable $stable): void
+    {
+        $this->deleteModel($stable);
     }
 }

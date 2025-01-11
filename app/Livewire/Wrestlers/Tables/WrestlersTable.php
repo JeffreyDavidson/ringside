@@ -6,21 +6,19 @@ namespace App\Livewire\Wrestlers\Tables;
 
 use App\Builders\WrestlerBuilder;
 use App\Enums\WrestlerStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Gate;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class WrestlersTable extends DataTableComponent
+class WrestlersTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
+    use HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'wrestlers';
 
@@ -73,13 +71,6 @@ class WrestlersTable extends DataTableComponent
 
     public function delete(Wrestler $wrestler): void
     {
-        $canDelete = Gate::inspect('delete', $wrestler);
-
-        if ($canDelete->allowed()) {
-            $wrestler->delete();
-            session()->flash('status', 'Wrestler successfully updated.');
-        } else {
-            session()->flash('status', 'You cannot delete this wrestler.');
-        }
+        $this->deleteModel($wrestler);
     }
 }

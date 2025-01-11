@@ -6,19 +6,18 @@ namespace App\Livewire\Managers\Tables;
 
 use App\Builders\ManagerBuilder;
 use App\Enums\ManagerStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Manager;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class ManagersTable extends DataTableComponent
+class ManagersTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
+    use HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'managers';
 
@@ -64,5 +63,10 @@ class ManagersTable extends DataTableComponent
             $this->getDefaultStatusFilter($statuses),
             $this->getDefaultFirstEmploymentDateFilter(),
         ];
+    }
+
+    public function delete(Manager $manager): void
+    {
+        $this->deleteModel($manager);
     }
 }

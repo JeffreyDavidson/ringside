@@ -6,19 +6,18 @@ namespace App\Livewire\Referees\Tables;
 
 use App\Builders\RefereeBuilder;
 use App\Enums\RefereeStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\Referee;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class RefereesTable extends DataTableComponent
+class RefereesTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
+    use HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'referees';
 
@@ -64,5 +63,10 @@ class RefereesTable extends DataTableComponent
             $this->getDefaultStatusFilter($statuses),
             $this->getDefaultFirstEmploymentDateFilter(),
         ];
+    }
+
+    public function delete(Referee $referee): void
+    {
+        $this->deleteModel($referee);
     }
 }

@@ -6,19 +6,18 @@ namespace App\Livewire\TagTeams\Tables;
 
 use App\Builders\TagTeamBuilder;
 use App\Enums\TagTeamStatus;
-use App\Livewire\Concerns\BaseTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
 use App\Livewire\Concerns\Filters\HasFirstEmploymentDateFilter;
 use App\Livewire\Concerns\Filters\HasStatusFilter;
 use App\Models\TagTeam;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class TagTeamsTable extends DataTableComponent
+class TagTeamsTable extends BaseTableWithActions
 {
-    use BaseTableTrait, HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
+    use HasFirstEmploymentDateColumn, HasFirstEmploymentDateFilter, HasStatusColumn, HasStatusFilter;
 
     protected string $databaseTableName = 'tag_teams';
 
@@ -67,5 +66,10 @@ class TagTeamsTable extends DataTableComponent
             $this->getDefaultStatusFilter($statuses),
             $this->getDefaultFirstEmploymentDateFilter(),
         ];
+    }
+
+    public function delete(TagTeam $tagTeam): void
+    {
+        $this->deleteModel($tagTeam);
     }
 }
