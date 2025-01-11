@@ -18,12 +18,12 @@ class TitleForm extends LivewireBaseForm
     #[Validate('required|string|min:5|max:255', as: 'titles.name')]
     public string $name = '';
 
-    #[Validate('required|date', as: 'activations.started_at')]
-    public Carbon|string $start_date = '';
+    #[Validate('nullable|date', as: 'activations.started_at')]
+    public Carbon|string|null $start_date = '';
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->currentActivation?->started_at;
+        $this->start_date = $this->formModel->currentActivation?->started_at->toDateString();
     }
 
     public function store(): bool

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
-use App\Livewire\Concerns\BaseModal;
+use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Manager;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Validate;
 
-class ManagerForm extends BaseModal
+class ManagerForm extends LivewireBaseForm
 {
     protected string $formModelType = Manager::class;
 

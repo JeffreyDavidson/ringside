@@ -19,7 +19,7 @@ class WrestlerForm extends LivewireBaseForm
     #[Validate('required|string|min:5|max:255|unique:wrestlers,name', as: 'wrestlers.name')]
     public string $name = '';
 
-    #[Validate('nullable|string|max:255', as: 'wrestlers.hometown')]
+    #[Validate('required|string|max:255', as: 'wrestlers.hometown')]
     public string $hometown = '';
 
     #[Validate('required|integer|max:7', as: 'wrestlers.feet')]
@@ -39,7 +39,7 @@ class WrestlerForm extends LivewireBaseForm
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->currentEmployment?->started_at->format('Y-m-d');
+        $this->start_date = $this->formModel->currentEmployment?->started_at->format('m-d-Y');
 
         $height = $this->formModel->height;
 
