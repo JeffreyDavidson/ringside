@@ -18,8 +18,8 @@ class TitleForm extends LivewireBaseForm
     #[Validate('required|string|min:5|max:255', as: 'titles.name')]
     public string $name = '';
 
-    #[Validate('nullable|date', as: 'activations.started_at')]
-    public Carbon|string|null $start_date = '';
+    #[Validate('required|date', as: 'activations.started_at')]
+    public Carbon|string $start_date = '';
 
     public function loadExtraData(): void
     {

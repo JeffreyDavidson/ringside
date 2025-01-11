@@ -16,7 +16,7 @@ class WrestlerForm extends LivewireBaseForm
 
     public ?Wrestler $formModel;
 
-    #[Validate('required|string|min:5|max:255', as: 'wrestlers.name')]
+    #[Validate('required|string|min:5|max:255|unique:wrestlers,name', as: 'wrestlers.name')]
     public string $name = '';
 
     #[Validate('nullable|string|max:255', as: 'wrestlers.hometown')]
@@ -31,7 +31,7 @@ class WrestlerForm extends LivewireBaseForm
     #[Validate('required|integer', as: 'wrestlers.weight')]
     public int $weight;
 
-    #[Validate('nullable|string|max:255', as: 'wrestlers.signature_move')]
+    #[Validate('nullable|string|max:255|unique:wrestlers,signature_move', as: 'wrestlers.signature_move')]
     public ?string $signature_move = '';
 
     #[Validate('nullable|date', as: 'employments.started_at')]
@@ -39,7 +39,7 @@ class WrestlerForm extends LivewireBaseForm
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->currentEmployment?->started_at;
+        $this->start_date = $this->formModel->currentEmployment?->started_at->format('Y-m-d');
 
         $height = $this->formModel->height;
 
@@ -54,8 +54,6 @@ class WrestlerForm extends LivewireBaseForm
     {
         $this->validate();
 
-        // $this->height_feet = 7;
-        // $this->height_inches = 2;
         $height = new Height($this->height_feet, $this->height_inches);
 
         if (! isset($this->formModel)) {
@@ -67,6 +65,10 @@ class WrestlerForm extends LivewireBaseForm
                 'signature_move' => $this->signature_move,
             ]);
             $this->formModel->save();
+
+            if ($this->start_date) {
+                $this->formModel->employments()->create(['started_at' => $this->start_date]);
+            }
         } else {
             $this->formModel->update([
                 'name' => $this->name,

@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace App\Livewire\Venues;
 
-use App\Livewire\Concerns\BaseModal;
+use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Venue;
 use Livewire\Attributes\Validate;
 
-class VenueForm extends BaseModal
+class VenueForm extends LivewireBaseForm
 {
     protected string $formModelType = Venue::class;
 
-    public Venue $formModel;
+    public ?Venue $formModel;
 
     #[Validate('required|string|min:5|max:255', as: 'venues.name')]
     public string $name = '';
 
-    #[Validate('nullable|string|max:255', as: 'venues.street_address')]
+    #[Validate('required|string|max:255', as: 'venues.street_address')]
     public string $street_address = '';
 
-    #[Validate('required|integer|max:255', as: 'venues.city')]
+    #[Validate('required|string|max:255', as: 'venues.city')]
     public string $city;
 
-    #[Validate('required|integer|max:255', as: 'venues.state')]
+    #[Validate('required|string|max:255', as: 'venues.state')]
     public string $state;
 
-    #[Validate('required|integer|size:5', as: 'venues.zip_code')]
-    public int $zipCode;
+    #[Validate('required|integer|digits:5', as: 'venues.zipcode')]
+    public int $zipcode;
 
     public function store(): bool
     {
@@ -39,7 +39,7 @@ class VenueForm extends BaseModal
                 'street_address' => $this->street_address,
                 'city' => $this->city,
                 'state' => $this->state,
-                'zipcode' => $this->zipCode,
+                'zipcode' => $this->zipcode,
             ]);
             $this->formModel->save();
         } else {
@@ -48,7 +48,7 @@ class VenueForm extends BaseModal
                 'street_address' => $this->street_address,
                 'city' => $this->city,
                 'state' => $this->state,
-                'zipcode' => $this->zipCode,
+                'zipcode' => $this->zipcode,
             ]);
         }
 
