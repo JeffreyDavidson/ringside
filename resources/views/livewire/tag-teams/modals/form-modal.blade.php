@@ -1,36 +1,19 @@
 <x-modal>
-    <div class="flex flex-col gap-2.5">
-        <x-form.inputs.text label="Name:" name="modelForm.name" placeholder="Testing Name Here"
-            wire:model="modelForm.name" />
-    </div>
-
-    <div class="flex flex-col gap-2.5">
-        <x-form.inputs.text label="Hometown:" name="modelForm.hometown" placeholder="Orlando, FL"
-            wire:model="modelForm.hometown" />
-    </div>
-
-    <div class="flex items-center justify-between gap-2.5">
+    <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2.5">
-            <x-form.inputs.text label="Feet:" name="modelForm.height_feet" placeholder="Feet"
-                wire:model="modelForm.height_feet" />
+            <x-form.inputs.text label="{{ __('tag-teams.name') }}" name="modelForm.name" placeholder="Testing Name Here"
+                wire:model="modelForm.name" />
         </div>
-        <div class="flex flex-col gap-2.5">
-            <x-form.inputs.text label="Inches:" name="modelForm.height_inches" placeholder="Inches"
-                wire:model="modelForm.height_inches" />
-        </div>
-        <div class="flex flex-col gap-2.5">
-            <x-form.inputs.text label="Weight:" name="modelForm.weight" placeholder="lbs"
-                wire:model="modelForm.weight" />
-        </div>
-    </div>
 
-    <div class="flex flex-col gap-2.5">
-        <x-form.inputs.text label="Signature Move:" name="modelForm.signature_move" placeholder="This Amazing Finisher"
-            wire:model="modelForm.signature_move" />
-    </div>
+        <div class="flex flex-col gap-2.5">
+            <x-form.inputs.text label="{{ __('tag-teams.signature_move') }}" name="modelForm.signature_move"
+                placeholder="This Amazing Finisher" wire:model="modelForm.signature_move" />
+        </div>
 
-    <div class="flex flex-col gap-2.5">
-        <x-form.inputs.date label="Start Date:" name="modelForm.start_date" wire:model="modelForm.start_date" />
+        <div class="flex flex-col gap-2.5">
+            <x-form.inputs.date label="{{ __('employments.started_at') }}" name="modelForm.start_date"
+                wire:model="modelForm.start_date" />
+        </div>
     </div>
 
     <x-slot:footer>
