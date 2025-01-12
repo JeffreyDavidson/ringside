@@ -26,7 +26,7 @@ class ManagerForm extends LivewireBaseForm
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->currentEmployment?->started_at;
+        $this->start_date = $this->formModel->firstEmployment?->started_at->toDateString();
     }
 
     public function store(): bool

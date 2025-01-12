@@ -39,7 +39,7 @@ class WrestlerForm extends LivewireBaseForm
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->currentEmployment?->started_at->format('m-d-Y');
+        $this->start_date = $this->formModel->firstEmployment?->started_at->toDateString();
 
         $height = $this->formModel->height;
 

@@ -24,6 +24,11 @@ class TagTeamForm extends LivewireBaseForm
     #[Validate('nullable|date', as: 'employments.started_at')]
     public Carbon|string|null $start_date = '';
 
+    public function loadExtraData(): void
+    {
+        $this->start_date = $this->formModel->firstEmployment?->started_at->toDateString();
+    }
+
     public function store(): bool
     {
         $this->validate();

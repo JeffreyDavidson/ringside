@@ -29,7 +29,6 @@ class BaseModal extends ModalComponent
 
     public function getModalTitle(): string
     {
-
         if (isset($this->modelForm) && isset($this->modelForm->formModel)) {
             return 'Edit '.($this->modelForm->formModel->{$this->modelTitleField} ?? 'Unknown');
         }
