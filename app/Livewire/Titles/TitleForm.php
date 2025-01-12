@@ -15,7 +15,7 @@ class TitleForm extends LivewireBaseForm
 
     public ?Title $formModel;
 
-    #[Validate('required|string|min:5|max:255', as: 'titles.name')]
+    #[Validate('required|string|max:255|ends_with:Title,Titles', as: 'titles.name')]
     public string $name = '';
 
     #[Validate('nullable|date', as: 'activations.started_at')]

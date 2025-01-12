@@ -15,7 +15,7 @@ class TagTeamForm extends LivewireBaseForm
 
     public ?TagTeam $formModel;
 
-    #[Validate('required|string|min:5|max:255', as: 'tag-teams.name')]
+    #[Validate('required|string|min:5|max:255|unique:tag_teams,name', as: 'tag-teams.name')]
     public string $name = '';
 
     #[Validate('nullable|string|max:255', as: 'tag-teams.signature_move')]
