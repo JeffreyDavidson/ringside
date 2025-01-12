@@ -72,12 +72,20 @@ export default {
                     clarity: 'rgba(246, 177, 0, 0.20)',
                     inverse: '#ffffff'
                 },
+                info: {
+                    default: '#7239EA',
+                    active: '#5014D0',
+                    light: '#F8F5FF',
+                    clarity: 'rgba(114, 57, 234, 0.20)',
+                    inverse: '#ffffff'
+                },
             },
             boxShadows: {
                 default: '0px 4px 12px 0px rgba(0, 0, 0, 0.09)',
                 light: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
                 primary: '0px 4px 12px 0px rgba(40, 132, 239, 0.35)',
                 danger: '0px 4px 12px 0px rgba(241, 65, 108, 0.35)',
+                info: '0px 4px 12px 0px rgba(114, 57, 234, 0.35)',
                 warning: '0px 4px 12px 0px rgba(246, 192, 0, 0.35)',
             },
             fontSize: {
