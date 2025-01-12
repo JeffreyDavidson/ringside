@@ -36,13 +36,13 @@ class TagTeamForm extends LivewireBaseForm
         if (! isset($this->formModel)) {
             $this->formModel = new TagTeam([
                 'name' => $this->name,
-                'signature_Move' => $this->signature_move,
+                'signature_move' => $this->signature_move,
             ]);
             $this->formModel->save();
         } else {
             $this->formModel->update([
                 'name' => $this->name,
-                'signature_Move' => $this->signature_move,
+                'signature_move' => $this->signature_move,
             ]);
         }
 
