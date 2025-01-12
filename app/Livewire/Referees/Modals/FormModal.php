@@ -16,5 +16,7 @@ class FormModal extends BaseModal
 
     protected string $modalFormPath = 'referees.modals.form-modal';
 
+    protected string $modelTitleField = 'full_name';
+
     public RefereeForm $modelForm;
 }
