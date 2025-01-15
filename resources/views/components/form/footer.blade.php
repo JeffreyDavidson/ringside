@@ -1,7 +1,9 @@
 <div class="flex justify-between flex-1">
     <div>
         @env('local')
-        <x-buttons.info wire:click="fillDummyFields">Auto Fill</x-buttons.info>
+        @empty($this->modelForm->formModel)
+            <x-buttons.info wire:click="fillDummyFields">Auto Fill</x-buttons.info>
+        @endempty
         @endenv
     </div>
     <div>

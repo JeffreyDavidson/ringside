@@ -7,6 +7,7 @@ namespace App\Livewire\TagTeams\Modals;
 use App\Livewire\Concerns\BaseModal;
 use App\Livewire\TagTeams\TagTeamForm;
 use App\Models\TagTeam;
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,10 @@ class FormModal extends BaseModal
 
     public function fillDummyFields()
     {
+        if (isset($this->modelForm->formModel)) {
+            throw new Exception('No need to fill data on an edit form.');
+        }
+
         $datetime = fake()->optional(0.8)->dateTimeBetween('now', '+3 month');
 
         $this->modelForm->name = Str::title(fake()->words(2, true));
