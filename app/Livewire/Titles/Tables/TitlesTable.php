@@ -47,7 +47,7 @@ class TitlesTable extends BaseTableWithActions
                 ->searchable(),
             $this->getDefaultStatusColumn(),
             // Column::make(__('titles.current_champion'), 'champion_name'),
-            FirstActivationFilter::make('Activation Date')->setFields('activations', 'titles_activations.started_at', 'titles_activations.ended_at'),
+            $this->getDefaultFirstActivationDateColumn(),
         ];
     }
 
@@ -62,7 +62,7 @@ class TitlesTable extends BaseTableWithActions
 
         return [
             $this->getDefaultStatusFilter($statuses),
-            $this->getDefaultFirstActivationmDateFilter(),
+            FirstActivationFilter::make('Activation Date')->setFields('activations', 'titles_activations.started_at', 'titles_activations.ended_at'),
         ];
     }
 
