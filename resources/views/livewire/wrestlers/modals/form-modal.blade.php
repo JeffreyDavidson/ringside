@@ -1,5 +1,5 @@
 <x-modal>
-    <div class="flex flex-col space-x-4 space-y-4">
+    <div class="flex flex-col space-y-4">
         <div class="flex flex-col">
             <x-form.inputs.text label="{{ __('wrestlers.name') }}" name="modelForm.name" placeholder="Testing Name Here"
                 wire:model="modelForm.name" />
@@ -10,7 +10,7 @@
                 wire:model="modelForm.hometown" />
         </div>
 
-        <div class="flex flexs-wrap items-center space-x-1 space-y-1">
+        <div class="flex flexs-wrap items-center space-x-2">
             <div class="flex flex-col">
                 <x-form.inputs.text label="{{ __('wrestlers.feet') }}" name="modelForm.height_feet" placeholder="Feet"
                     wire:model="modelForm.height_feet" />
