@@ -7,10 +7,13 @@ namespace App\Livewire\Events\Modals;
 use App\Livewire\Concerns\BaseModal;
 use App\Livewire\Events\EventForm;
 use App\Models\Event;
+use App\Traits\Data\PresentsVenueList;
 use Illuminate\Support\Str;
 
 class FormModal extends BaseModal
 {
+    use PresentsVenueList;
+
     protected string $modelType = Event::class;
 
     protected string $modalLanguagePath = 'events';
