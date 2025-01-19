@@ -7,12 +7,15 @@ namespace App\Livewire\TagTeams\Modals;
 use App\Livewire\Concerns\BaseModal;
 use App\Livewire\TagTeams\TagTeamForm;
 use App\Models\TagTeam;
+use App\Traits\Data\PresentsWrestlersList;
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class FormModal extends BaseModal
 {
+    use PresentsWrestlersList;
+
     protected string $modelType = TagTeam::class;
 
     protected string $modalLanguagePath = 'tag-teams';
