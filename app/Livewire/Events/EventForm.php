@@ -19,7 +19,7 @@ class EventForm extends LivewireBaseForm
     public string $name = '';
 
     #[Validate('required|date', as: 'events.date')]
-    public Carbon|string $date = '';
+    public Carbon|string|null $date = '';
 
     #[Validate('required|integer|exists:venue,id', as: 'events.venue')]
     public int $venue;

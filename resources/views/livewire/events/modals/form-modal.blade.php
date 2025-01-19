@@ -1,20 +1,17 @@
 <x-form-modal>
-    <div class="flex flex-col">
-        <x-form.inputs.text label="{{ __('events.name') }}" name="modelForm.name" placeholder="Testing Name Here"
-            wire:model="modelForm.name" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.text label="{{ __('events.name') }}" wire:model="modelForm.name" />
+    </x-form-modal.modal-input>
 
-    <div class="flex flex-col">
-        <x-form.inputs.date label="{{ __('events.date') }}" name="modelForm.date" wire:model="modelForm.date" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.date label="{{ __('events.date') }}" wire:model="modelForm.date" />
+    </x-form-modal.modal-input>
 
-    <div class="flex flex-col">
-        <x-form.inputs.select :options="$this->getVenues" label="{{ __('events.venue') }}" name="modelForm.venue"
-            wire:model="modelForm.venue" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.select label="{{ __('events.venue') }}" wire:model="modelForm.venue" :options="$this->getVenues" />
+    </x-form-modal.modal-input>
 
-    <div class="flex flex-col">
-        <x-form.inputs.textarea label="{{ __('events.preview') }}" name="modelForm.preview"
-            placeholder="Example event preview" wire:model="modelForm.preview" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.textarea label="{{ __('events.preview') }}" wire:model="modelForm.preview" />
+    </x-form-modal.modal-input>
 </x-form-modal>

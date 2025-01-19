@@ -1,11 +1,9 @@
 <x-form-modal>
-    <div class="flex flex-col">
-        <x-form.inputs.text label="{{ __('stables.name') }}" name="modelForm.name" placeholder="Testing Name Here"
-            wire:model="modelForm.name" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.text label="{{ __('stables.name') }}" wire:model="modelForm.name" />
+    </x-form-modal.modal-input>
 
-    <div class="flex flex-col">
-        <x-form.inputs.date label="{{ __('activations.started_at') }}" name="modelForm.start_date"
-            wire:model="modelForm.start_date" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.date label="{{ __('activations.started_at') }}" wire:model="modelForm.start_date" />
+    </x-form-modal.modal-input>
 </x-form-modal>

@@ -1,16 +1,13 @@
 <x-form-modal>
-    <div class="flex flex-col">
-        <x-form.inputs.text label="{{ __('tag-teams.name') }}" name="modelForm.name" placeholder="Testing Name Here"
-            wire:model="modelForm.name" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.text label="{{ __('tag-teams.name') }}" wire:model="modelForm.name" />
+    </x-form-modal.modal-input>
 
-    <div class="flex flex-col">
-        <x-form.inputs.text label="{{ __('tag-teams.signature_move') }}" name="modelForm.signature_move"
-            placeholder="This Amazing Finisher" wire:model="modelForm.signature_move" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.text label="{{ __('tag-teams.signature_move') }}" wire:model="modelForm.signature_move" />
+    </x-form-modal.modal-input>
 
-    <div class="flex flex-col">
-        <x-form.inputs.date label="{{ __('employments.started_at') }}" name="modelForm.start_date"
-            wire:model="modelForm.start_date" />
-    </div>
+    <x-form-modal.modal-input>
+        <x-form.inputs.date label="{{ __('employments.started_at') }}" wire:model="modelForm.start_date" />
+    </x-form-modal.modal-input>
 </x-form-modal>
