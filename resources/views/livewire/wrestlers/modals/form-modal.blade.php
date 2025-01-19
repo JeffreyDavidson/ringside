@@ -10,7 +10,7 @@
                 wire:model="modelForm.hometown" />
         </div>
 
-        <div class="flex flexs-wrap items-center space-x-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="flex flex-col">
                 <x-form.inputs.text label="{{ __('wrestlers.feet') }}" name="modelForm.height_feet" placeholder="Feet"
                     wire:model="modelForm.height_feet" />
