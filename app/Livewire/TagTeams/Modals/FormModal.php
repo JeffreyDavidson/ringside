@@ -11,6 +11,7 @@ use App\Models\Wrestler;
 use App\Traits\Data\PresentsWrestlersList;
 use Exception;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class FormModal extends BaseModal

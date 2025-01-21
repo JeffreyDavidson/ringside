@@ -8,10 +8,6 @@
     </x-form-modal.modal-input>
 
     <x-form-modal.modal-input>
-        <x-form.inputs.date label="{{ __('activations.started_at') }}" wire:model="modelForm.start_date" />
-    </x-form-modal.modal-input>
-
-    <x-form-modal.modal-input>
         <x-form.inputs.select label="{{ __('core.wrestlers') }}" wire:model="modelForm.wrestlers" :options="$this->getWrestlers"
             selected="modelForm.wrestlers" />
     </x-form-modal.modal-input>
