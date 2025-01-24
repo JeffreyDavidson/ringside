@@ -23,8 +23,18 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Fix PHP code style issues
-        uses: aglipanci/laravel-pint-action@latest
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer:v2
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer update --prefer-stable --no-interaction --no-progress --ansi
+
+      - name: Fix styling
+        run: composer format
 
       - name: Commit styling changes
         uses: stefanzweifel/git-auto-commit-action@v5
