@@ -7,8 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Collection;
 
-use function Pest\pest;
-
 /*
 |--------------------------------------------------------------------------
 | Test Case
