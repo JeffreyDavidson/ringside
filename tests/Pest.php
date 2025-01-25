@@ -6,7 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Collection;
-use Tests\ValidatesRequests;
+
+use function Pest\pest;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,6 @@ use Tests\ValidatesRequests;
 
 uses(TestCase::class, RefreshDatabase::class)
     ->in('Feature', 'Integration', 'Unit');
-
-uses(ValidatesRequests::class)->in('Feature/Http/Requests');
 
 pest()
     ->in('Feature')
