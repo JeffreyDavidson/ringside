@@ -66,7 +66,7 @@ class TagTeamForm extends LivewireBaseForm
 
     public function loadExtraData(): void
     {
-        $currentWrestlers =  $this->formModel->currentWrestlers;
+        $currentWrestlers = $this->formModel->currentWrestlers;
 
         $this->start_date = $this->formModel->firstEmployment?->started_at->toDateString();
         $this->wrestlerA = $currentWrestlers->first();
