@@ -24,7 +24,7 @@ test('it updates a wrestler', function () {
     $this->wrestlerRepository
         ->shouldNotReceive('employ');
 
-    UpdateAction::run($wrestler, $data);
+    app(UpdateAction::class)->handle($wrestler, $data);
 });
 
 test('it employs an employable wrestler if start date is filled in request', function () {
@@ -44,7 +44,7 @@ test('it employs an employable wrestler if start date is filled in request', fun
         ->once()
         ->andReturn($wrestler);
 
-    UpdateAction::run($wrestler, $data);
+    app(UpdateAction::class)->handle($wrestler, $data);
 });
 
 test('it updates a future employed wrestler employment date if start date is filled in request', function () {
@@ -64,5 +64,5 @@ test('it updates a future employed wrestler employment date if start date is fil
         ->once()
         ->andReturn($wrestler);
 
-    UpdateAction::run($wrestler, $data);
+    app(UpdateAction::class)->handle($wrestler, $data);
 });

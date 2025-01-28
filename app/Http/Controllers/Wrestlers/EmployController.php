@@ -21,7 +21,7 @@ class EmployController extends Controller
         Gate::authorize('employ', $wrestler);
 
         try {
-            EmployAction::run($wrestler);
+            app(EmployAction::class)->handle($wrestler);
         } catch (CannotBeEmployedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

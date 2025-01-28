@@ -36,7 +36,7 @@ test('it adds wrestler competitors to a match', function () {
 
     AddTagTeamsToMatchAction::shouldNotRun();
 
-    AddCompetitorsToMatchAction::run($eventMatch, $competitors);
+    app(AddCompetitorsToMatchAction::class)->handle($eventMatch, $competitors);
 });
 
 test('it adds tag team competitors to a match', function () {
@@ -61,5 +61,5 @@ test('it adds tag team competitors to a match', function () {
 
     AddWrestlersToMatchAction::shouldNotRun();
 
-    AddCompetitorsToMatchAction::run($eventMatch, $competitors);
+    app(AddCompetitorsToMatchAction::class)->handle($eventMatch, $competitors);
 });

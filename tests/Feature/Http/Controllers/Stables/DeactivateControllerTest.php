@@ -16,7 +16,7 @@ test('invoke calls deactivate action and redirects', function () {
         ->patch(action([DeactivateController::class], $this->stable))
         ->assertRedirect(action([StablesController::class, 'index']));
 
-    DeactivateAction::shouldRun()->with($this->stable);
+    app(DeactivateAction::class)->shouldRun()->with($this->stable);
 });
 
 test('a basic user cannot deactivate a stable', function () {

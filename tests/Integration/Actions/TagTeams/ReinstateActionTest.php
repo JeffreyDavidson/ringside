@@ -31,7 +31,7 @@ test('it reinstates a suspended tag team at the current datetime by default', fu
         })
         ->andReturns($tagTeam);
 
-    ReinstateAction::run($tagTeam);
+    app(ReinstateAction::class)->handle($tagTeam);
 });
 
 test('it reinstates a suspended tag team at a specific datetime', function () {
@@ -44,13 +44,13 @@ test('it reinstates a suspended tag team at a specific datetime', function () {
         ->with($tagTeam, $datetime)
         ->andReturns($tagTeam);
 
-    ReinstateAction::run($tagTeam, $datetime);
+    app(ReinstateAction::class)->handle($tagTeam, $datetime);
 });
 
 test('it throws exception for reinstating a non reinstatable tag team', function ($factoryState) {
     $tagTeam = TagTeam::factory()->{$factoryState}()->create();
 
-    ReinstateAction::run($tagTeam);
+    app(ReinstateAction::class)->handle($tagTeam);
 })->throws(CannotBeReinstatedException::class)->with([
     'bookable',
     'withFutureEmployment',

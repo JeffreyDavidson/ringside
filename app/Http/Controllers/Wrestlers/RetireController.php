@@ -21,7 +21,7 @@ class RetireController extends Controller
         Gate::authorize('retire', $wrestler);
 
         try {
-            RetireAction::run($wrestler);
+            app(RetireAction::class)->handle($wrestler);
         } catch (CannotBeRetiredException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

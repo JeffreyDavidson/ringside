@@ -23,7 +23,7 @@ class RestoreController extends Controller
         Gate::authorize('restore', $tagTeam);
 
         try {
-            RestoreAction::run($tagTeam);
+            app(RestoreAction::class)->handle($tagTeam);
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

@@ -21,7 +21,7 @@ class ReleaseController extends Controller
         Gate::authorize('release', $tagTeam);
 
         try {
-            ReleaseAction::run($tagTeam);
+            app(ReleaseAction::class)->handle($tagTeam);
         } catch (CannotBeReleasedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Wrestlers;
 
+use App\Actions\Wrestlers\CreateAction;
+use App\Actions\Wrestlers\UpdateAction;
+use App\Data\WrestlerData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Wrestler;
 use App\Rules\EmploymentStartDateCanBeChanged;
@@ -72,28 +75,12 @@ class WrestlerForm extends LivewireBaseForm
         $this->validate();
 
         $height = new Height($this->height_feet, $this->height_inches);
+        $data = WrestlerData::fromForm([$this->name, $this->hometown, $height, $this->weight, $this->signature_move, $this->start_date]);
 
         if (! isset($this->formModel)) {
-            $this->formModel = new Wrestler([
-                'name' => $this->name,
-                'hometown' => $this->hometown,
-                'height' => $height->toInches(),
-                'weight' => $this->weight,
-                'signature_move' => $this->signature_move,
-            ]);
-            $this->formModel->save();
-
-            if ($this->start_date) {
-                $this->formModel->employments()->create(['started_at' => $this->start_date]);
-            }
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'name' => $this->name,
-                'hometown' => $this->hometown,
-                'height' => $height->toInches(),
-                'weight' => $this->weight,
-                'signature_move' => $this->signature_move,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

@@ -21,7 +21,7 @@ class RestoreController extends Controller
 
         Gate::authorize('restore', $wrestler);
 
-        RestoreAction::run($wrestler);
+        app(RestoreAction::class)->handle($wrestler);
 
         return to_route('wrestlers.index');
     }

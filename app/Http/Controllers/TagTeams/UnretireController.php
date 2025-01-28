@@ -21,7 +21,7 @@ class UnretireController extends Controller
         Gate::authorize('unretire', $tagTeam);
 
         try {
-            UnretireAction::run($tagTeam);
+            app(UnretireAction::class)->handle($tagTeam);
         } catch (CannotBeUnretiredException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

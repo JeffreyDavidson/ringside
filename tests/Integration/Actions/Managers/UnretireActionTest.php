@@ -42,7 +42,7 @@ test('it unretires a retired manager at the current datetime by default', functi
         })
         ->andReturn($manager);
 
-    UnretireAction::run($manager);
+    app(UnretireAction::class)->handle($manager);
 });
 
 test('it unretires a retired manager at a specific datetime', function () {
@@ -61,13 +61,13 @@ test('it unretires a retired manager at a specific datetime', function () {
         ->with($manager, $datetime)
         ->andReturn($manager);
 
-    UnretireAction::run($manager, $datetime);
+    app(UnretireAction::class)->handle($manager, $datetime);
 });
 
 test('it throws exception for unretiring a non unretirable manager', function ($factoryState) {
     $manager = Manager::factory()->{$factoryState}()->create();
 
-    UnretireAction::run($manager);
+    app(UnretireAction::class)->handle($manager);
 })->throws(CannotBeUnretiredException::class)->with([
     'available',
     'withFutureEmployment',

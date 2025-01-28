@@ -46,7 +46,7 @@ test('add a match to an event', function () {
     AddTitlesToMatchAction::shouldNotRun();
     AddCompetitorsToMatchAction::shouldRun($eventMatch, $data->competitors);
 
-    AddMatchForEventAction::run($this->event, $data);
+    app(AddMatchForEventAction::class)->handle($this->event, $data);
 });
 
 test('add a title match to an event', function () {
@@ -74,5 +74,5 @@ test('add a title match to an event', function () {
     AddTitlesToMatchAction::shouldRun($this->event, $data->titles);
     AddCompetitorsToMatchAction::shouldRun($eventMatch, $data->competitors);
 
-    AddMatchForEventAction::run($this->event, $data);
+    app(AddMatchForEventAction::class)->handle($this->event, $data);
 });

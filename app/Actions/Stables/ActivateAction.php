@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Stables;
 
+use App\Actions\Managers\EmployAction as ManagerEmployAction;
 use App\Actions\TagTeams\EmployAction as TagTeamEmployAction;
 use App\Actions\Wrestlers\EmployAction as WrestlerEmployAction;
 use App\Exceptions\CannotBeActivatedException;
@@ -30,13 +31,19 @@ class ActivateAction extends BaseStableAction
 
         if ($stable->currentWrestlers->isNotEmpty()) {
             $stable->currentWrestlers->each(
-                fn (Wrestler $wrestler) => WrestlerEmployAction::run($wrestler, $startDate)
+                fn (Wrestler $wrestler) => app(WrestlerEmployAction::class)->handle($wrestler, $startDate)
             );
         }
 
         if ($stable->currentTagTeams->isNotEmpty()) {
             $stable->currentTagTeams->each(
-                fn (TagTeam $tagTeam) => TagTeamEmployAction::run($tagTeam, $startDate)
+                fn (TagTeam $tagTeam) => app(TagTeamEmployAction::class)->handle($tagTeam, $startDate)
+            );
+        }
+
+        if ($stable->currentManagers->isNotEmpty()) {
+            $stable->currentManagers->each(
+                fn (Manager $manager) => app(ManagerEmployAction::class)->handle($manager, $startDate)
             );
         }
 

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Titles;
 
+use App\Actions\Titles\CreateAction;
+use App\Actions\Titles\UpdateAction;
+use App\Data\TitleData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Title;
-use App\Rules\ActivationStartDateCanBeChanged;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 
 class TitleForm extends LivewireBaseForm
 {
@@ -16,43 +18,27 @@ class TitleForm extends LivewireBaseForm
 
     public ?Title $formModel;
 
+    #[Validate('required|string|min:5|max:255', as: 'titles.name')]
     public string $name = '';
 
+    #[Validate('nullable|date', as: 'activations.started_at')]
     public Carbon|string|null $start_date = '';
-
-    protected function rules()
-    {
-        return [
-            'name' => ['required', 'string', 'max:255', 'ends_with:Title,Titles', Rule::unique('titles', 'name')->ignore($this->formModel ?? '')],
-            'start_date' => ['nullable', 'date', new ActivationStartDateCanBeChanged($this->formModel ?? '')],
-        ];
-    }
-
-    protected function validationAttributes()
-    {
-        return [
-            'start_date' => 'start date',
-        ];
-    }
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->firstActivation?->started_at->toDateString();
+        $this->start_date = $this->formModel->currentActivation?->started_at;
     }
 
     public function store(): bool
     {
         $this->validate();
 
+        $data = TitleData::fromForm([$this->name, $this->start_date]);
+
         if (! isset($this->formModel)) {
-            $this->formModel = new Title([
-                'name' => $this->name,
-            ]);
-            $this->formModel->save();
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'name' => $this->name,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

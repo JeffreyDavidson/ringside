@@ -19,5 +19,5 @@ test('it deletes a event', function () {
         ->with($event)
         ->andReturns();
 
-    DeleteAction::run($event);
+    app(DeleteAction::class)->handle($event);
 });

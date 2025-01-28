@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
-use App\Actions\Wrestlers\ReleaseAction as WrestlersReleaseAction;
+use App\Actions\Wrestlers\ReleaseAction as WrestlerReleaseAction;
 use App\Exceptions\CannotBeReleasedException;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
@@ -33,7 +33,7 @@ class ReleaseAction extends BaseTagTeamAction
         $this->tagTeamRepository->release($tagTeam, $releaseDate);
 
         $tagTeam->currentWrestlers
-            ->each(fn (Wrestler $wrestler) => WrestlersReleaseAction::run($wrestler, $releaseDate));
+            ->each(fn (Wrestler $wrestler) => app(WrestlerReleaseAction::class)->handle($wrestler, $releaseDate));
     }
 
     /**

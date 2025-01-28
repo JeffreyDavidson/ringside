@@ -21,7 +21,7 @@ class ReleaseController extends Controller
         Gate::authorize('release', $referee);
 
         try {
-            ReleaseAction::run($referee);
+            app(ReleaseAction::class)->handle($referee);
         } catch (CannotBeReleasedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

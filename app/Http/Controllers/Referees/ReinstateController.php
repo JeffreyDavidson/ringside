@@ -21,7 +21,7 @@ class ReinstateController extends Controller
         Gate::authorize('reinstate', $referee);
 
         try {
-            ReinstateAction::run($referee);
+            app(ReinstateAction::class)->handle($referee);
         } catch (CannotBeReinstatedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

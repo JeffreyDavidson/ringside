@@ -18,5 +18,5 @@ test('it deletes a wrestler', function () {
         ->once()
         ->with($wrestler);
 
-    DeleteAction::run($wrestler);
+    app(DeleteAction::class)->handle($wrestler);
 });

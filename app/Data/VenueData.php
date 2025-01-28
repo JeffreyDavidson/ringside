@@ -16,4 +16,15 @@ readonly class VenueData
         public string $state,
         public string $zipcode,
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['name'],
+            $data['street_address'],
+            $data['city'],
+            $data['state'],
+            $data['zipcode'],
+        );
+    }
 }

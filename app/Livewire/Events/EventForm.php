@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Events;
 
+use App\Actions\Events\CreateAction;
+use App\Actions\Events\UpdateAction;
+use App\Data\EventData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Event;
-use App\Rules\EventDateCanBeChanged;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 
 class EventForm extends LivewireBaseForm
 {
@@ -16,53 +18,28 @@ class EventForm extends LivewireBaseForm
 
     public ?Event $formModel;
 
+    #[Validate('required|string|min:5|max:255', as: 'events.name')]
     public string $name = '';
 
-    public Carbon|string|null $date = '';
+    #[Validate('required|date', as: 'events.date')]
+    public Carbon|string $date = '';
 
+    #[Validate('required|integer|exists:venue,id', as: 'events.venue')]
     public int $venue;
 
+    #[Validate('required|string', as: 'events.preview')]
     public string $preview;
-
-    protected function rules()
-    {
-        return [
-            'name' => ['required', 'string', 'max:255', Rule::unique('events', 'name')->ignore($this->formModel ?? '')],
-            'date' => ['nullable', 'date', new EventDateCanBeChanged($this->formModal ?? new $this->formModelType)],
-            'venue' => ['required_with:date', 'integer', Rule::exists('venues', 'id')],
-            'preview' => ['required', 'string'],
-        ];
-    }
-
-    protected function validationAttributes()
-    {
-        return [
-            'height_feet' => 'feet',
-            'height_inches' => 'inches',
-            'signature_move' => 'signature move',
-            'start_date' => 'start date',
-        ];
-    }
 
     public function store(): bool
     {
         $this->validate();
 
+        $data = EventData::fromForm([$this->name, $this->date, $this->venue, $this->preview]);
+
         if (! isset($this->formModel)) {
-            $this->formModel = new Event([
-                'name' => $this->name,
-                'date' => $this->date,
-                'venue_id' => $this->venue,
-                'preview' => $this->preview,
-            ]);
-            $this->formModel->save();
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'name' => $this->name,
-                'date' => $this->date,
-                'venue_id' => $this->venue,
-                'preview' => $this->preview,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

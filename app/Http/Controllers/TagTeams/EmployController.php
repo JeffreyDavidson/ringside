@@ -21,7 +21,7 @@ class EmployController extends Controller
         Gate::authorize('employ', $tagTeam);
 
         try {
-            EmployAction::run($tagTeam);
+            app(EmployAction::class)->handle($tagTeam);
         } catch (CannotBeEmployedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

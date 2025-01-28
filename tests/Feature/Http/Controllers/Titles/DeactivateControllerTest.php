@@ -20,7 +20,7 @@ test('it deactivates a title and redirects', function () {
         ->patch(action([DeactivateController::class], $this->title))
         ->assertRedirect(action([TitlesController::class, 'index']));
 
-    DeactivateAction::shouldRun()->with($this->title);
+    app(DeactivateAction::class)->shouldRun()->with($this->title);
 });
 
 test('a basic user cannot deactivate a title', function () {
@@ -37,7 +37,7 @@ test('a guest cannot deactivate a title', function () {
 test('it returns an error when an exception is thrown', function () {
     $title = Title::factory()->create();
 
-    DeactivateAction::allowToRun()->andThrow(CannotBeDeactivatedException::class);
+    app(DeactivateAction::class)->allowToRun()->andThrow(CannotBeDeactivatedException::class);
 
     actingAs(administrator())
         ->from(action([TitlesController::class, 'index']))

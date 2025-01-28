@@ -28,4 +28,15 @@ readonly class EventMatchData
         public Collection $competitors,
         public ?string $preview
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['matchType'],
+            $data['referees'],
+            $data['titles'],
+            $data['competitors'],
+            $data['preview'],
+        );
+    }
 }

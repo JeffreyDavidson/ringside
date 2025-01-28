@@ -12,4 +12,12 @@ readonly class TitleData
         public string $name,
         public ?Carbon $activation_date
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['name'],
+            $data['activation_date'],
+        );
+    }
 }

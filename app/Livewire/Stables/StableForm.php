@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Stables;
 
+use App\Actions\Stables\CreateAction;
+use App\Actions\Stables\UpdateAction;
+use App\Data\StableData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Stable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Validate;
 
@@ -21,6 +25,15 @@ class StableForm extends LivewireBaseForm
     #[Validate('nullable|date', as: 'activations.started_at')]
     public Carbon|string|null $start_date = '';
 
+    #[Validate('nullable|array', as: 'roster.wrestlers')]
+    public ?Collection $wrestlers;
+
+    #[Validate('nullable|array', as: 'roster.tag-teams')]
+    public ?Collection $tagTeams;
+
+    #[Validate('nullable|array', as: 'roster.managers')]
+    public ?Collection $managers;
+
     public function loadExtraData(): void
     {
         $this->start_date = $this->formModel->firstActivation?->started_at->toDateString();
@@ -30,15 +43,12 @@ class StableForm extends LivewireBaseForm
     {
         $this->validate();
 
+        $data = StableData::fromForm([$this->name, $this->start_date, $this->wrestlers, $this->tagTeams, $this->managers]);
+
         if (! isset($this->formModel)) {
-            $this->formModel = new Stable([
-                'name' => $this->name,
-            ]);
-            $this->formModel->save();
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'name' => $this->name,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

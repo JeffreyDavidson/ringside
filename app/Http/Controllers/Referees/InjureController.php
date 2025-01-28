@@ -21,7 +21,7 @@ class InjureController extends Controller
         Gate::authorize('injure', $referee);
 
         try {
-            InjureAction::run($referee);
+            app(InjureAction::class)->handle($referee);
         } catch (CannotBeInjuredException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

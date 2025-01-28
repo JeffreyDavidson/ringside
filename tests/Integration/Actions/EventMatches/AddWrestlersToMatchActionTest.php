@@ -23,5 +23,5 @@ test('it adds wrestlers to a match', function () {
         ->with($eventMatch, \Mockery::type(Wrestler::class), $sideNumber)
         ->times($wrestlers->count());
 
-    AddWrestlersToMatchAction::run($eventMatch, $wrestlers, $sideNumber);
+    app(AddWrestlersToMatchAction::class)->handle($eventMatch, $wrestlers, $sideNumber);
 });

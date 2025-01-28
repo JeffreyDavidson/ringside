@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\TagTeams;
 
+use App\Actions\TagTeams\CreateAction;
+use App\Actions\TagTeams\UpdateAction;
+use App\Data\TagTeamData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\TagTeam;
 use Illuminate\Support\Carbon;
@@ -77,17 +80,12 @@ class TagTeamForm extends LivewireBaseForm
     {
         $this->validate();
 
+        $data = TagTeamData::fromForm([$this->name, $this->signature_move, $this->start_date, $this->wrestlerA, $this->wrestlerB]);
+
         if (! isset($this->formModel)) {
-            $this->formModel = new TagTeam([
-                'name' => $this->name,
-                'signature_move' => $this->signature_move,
-            ]);
-            $this->formModel->save();
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'name' => $this->name,
-                'signature_move' => $this->signature_move,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

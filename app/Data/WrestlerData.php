@@ -19,4 +19,16 @@ class WrestlerData
         public ?string $signature_move,
         public ?Carbon $start_date,
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['name'],
+            $data['height'],
+            $data['weight'],
+            $data['hometown'],
+            $data['signature_move'],
+            $data['start_date'],
+        );
+    }
 }

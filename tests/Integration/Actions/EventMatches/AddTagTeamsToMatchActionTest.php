@@ -23,5 +23,5 @@ test('it adds tag teams to a match', function () {
         ->with($eventMatch, \Mockery::type(TagTeam::class), $sideNumber)
         ->times($tagTeams->count());
 
-    AddTagTeamsToMatchAction::run($eventMatch, $tagTeams, $sideNumber);
+    app(AddTagTeamsToMatchAction::class)->handle($eventMatch, $tagTeams, $sideNumber);
 });

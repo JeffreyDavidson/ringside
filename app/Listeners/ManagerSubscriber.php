@@ -34,10 +34,10 @@ class ManagerSubscriber
     public function handleManagerReleased(ManagerReleased $event): void
     {
         $event->manager->currentTagTeams
-            ->whenNotEmpty(fn () => RemoveFromCurrentTagTeamsAction::run($event->manager));
+            ->whenNotEmpty(fn () => app(RemoveFromCurrentTagTeamsAction::class)->handle($event->manager));
 
         $event->manager->currentWrestlers
-            ->whenNotEmpty(fn () => RemoveFromCurrentWrestlersAction::run($event->manager));
+            ->whenNotEmpty(fn () => app(RemoveFromCurrentWrestlersAction::class)->handle($event->manager));
     }
 
     /**
@@ -46,9 +46,9 @@ class ManagerSubscriber
     public function handleManagerRetired(ManagerRetired $event): void
     {
         $event->manager->currentTagTeams
-            ->whenNotEmpty(fn () => RemoveFromCurrentTagTeamsAction::run($event->manager));
+            ->whenNotEmpty(fn () => app(RemoveFromCurrentTagTeamsAction::class)->handle($event->manager));
 
         $event->manager->currentWrestlers
-            ->whenNotEmpty(fn () => RemoveFromCurrentWrestlersAction::run($event->manager));
+            ->whenNotEmpty(fn () => app(RemoveFromCurrentWrestlersAction::class)->handle($event->manager));
     }
 }

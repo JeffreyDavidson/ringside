@@ -18,4 +18,14 @@ readonly class EventData
         public ?Venue $venue,
         public ?string $preview
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['name'],
+            $data['date'],
+            $data['venue'],
+            $data['preview'],
+        );
+    }
 }

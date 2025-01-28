@@ -21,7 +21,7 @@ class SuspendController extends Controller
         Gate::authorize('suspend', $wrestler);
 
         try {
-            SuspendAction::run($wrestler);
+            app(SuspendAction::class)->handle($wrestler);
         } catch (CannotBeSuspendedException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

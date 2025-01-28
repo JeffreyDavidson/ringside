@@ -22,5 +22,5 @@ test('it adds referees to a match', function () {
         ->with($eventMatch, \Mockery::type(Referee::class))
         ->times($referees->count());
 
-    AddRefereesToMatchAction::run($eventMatch, $referees);
+    app(AddRefereesToMatchAction::class)->handle($eventMatch, $referees);
 });

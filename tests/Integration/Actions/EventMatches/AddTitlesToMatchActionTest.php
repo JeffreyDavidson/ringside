@@ -22,5 +22,5 @@ test('it adds titles to a match', function () {
         ->with($eventMatch, \Mockery::type(Title::class))
         ->times($titles->count());
 
-    AddTitlesToMatchAction::run($eventMatch, $titles);
+    app(AddTitlesToMatchAction::class)->handle($eventMatch, $titles);
 });

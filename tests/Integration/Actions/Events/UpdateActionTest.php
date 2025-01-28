@@ -21,5 +21,5 @@ test('it updates a event', function () {
         ->with($event, $data)
         ->andReturns($event);
 
-    UpdateAction::run($event, $data);
+    app(UpdateAction::class)->handle($event, $data);
 });

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Managers;
 
+use App\Actions\Managers\CreateAction;
+use App\Actions\Managers\UpdateAction;
+use App\Data\ManagerData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Manager;
 use App\Rules\EmploymentStartDateCanBeChanged;
@@ -46,17 +49,12 @@ class ManagerForm extends LivewireBaseForm
     {
         $this->validate();
 
+        $data = ManagerData::fromForm([$this->first_name, $this->last_name, $this->start_date]);
+
         if (! isset($this->formModel)) {
-            $this->formModel = new Manager([
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-            ]);
-            $this->formModel->save();
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

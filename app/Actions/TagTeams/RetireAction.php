@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\TagTeams;
 
-use App\Actions\Wrestlers\RetireAction as WrestlersRetireAction;
+use App\Actions\Wrestlers\RetireAction as WrestlerRetireAction;
 use App\Exceptions\CannotBeRetiredException;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
@@ -27,11 +27,11 @@ class RetireAction extends BaseTagTeamAction
         $retirementDate ??= now();
 
         if ($tagTeam->isSuspended()) {
-            ReinstateAction::run($tagTeam, $retirementDate);
+            app(ReinstateAction::class)->handle($tagTeam, $retirementDate);
         }
 
         $tagTeam->currentWrestlers
-            ->each(fn (Wrestler $wrestler) => WrestlersRetireAction::run($wrestler, $retirementDate));
+            ->each(fn (Wrestler $wrestler) => app(WrestlerRetireAction::class)->handle($wrestler, $retirementDate));
 
         if ($tagTeam->isCurrentlyEmployed()) {
             $this->tagTeamRepository->release($tagTeam, $retirementDate);

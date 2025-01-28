@@ -19,4 +19,15 @@ readonly class TagTeamData
         public ?Wrestler $wrestlerA,
         public ?Wrestler $wrestlerB,
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['name'],
+            $data['signature_move'],
+            $data['start_date'],
+            $data['wrestlerA'],
+            $data['wrestlerB'],
+        );
+    }
 }

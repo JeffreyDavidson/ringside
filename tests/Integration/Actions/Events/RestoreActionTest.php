@@ -19,5 +19,5 @@ test('it restores a deleted event', function () {
         ->with($event)
         ->andReturns();
 
-    RestoreAction::run($event);
+    app(RestoreAction::class)->handle($event);
 });

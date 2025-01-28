@@ -21,5 +21,5 @@ test('it updates a venue', function () {
         ->with($venue, $data)
         ->andReturns($venue);
 
-    UpdateAction::run($venue, $data);
+    app(UpdateAction::class)->handle($venue, $data);
 });

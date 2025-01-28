@@ -21,7 +21,7 @@ class ClearInjuryController extends Controller
         Gate::authorize('clearFromInjury', $manager);
 
         try {
-            ClearInjuryAction::run($manager);
+            app(ClearInjuryAction::class)->handle($manager);
         } catch (CannotBeClearedFromInjuryException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

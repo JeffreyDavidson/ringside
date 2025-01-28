@@ -16,4 +16,13 @@ readonly class ManagerData
         public string $last_name,
         public ?Carbon $start_date,
     ) {}
+
+    public static function fromForm($data): self
+    {
+        return new self(
+            $data['first_name'],
+            $data['last_name'],
+            $data['start_date'],
+        );
+    }
 }

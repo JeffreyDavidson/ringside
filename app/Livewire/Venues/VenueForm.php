@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Venues;
 
+use App\Actions\Venues\CreateAction;
+use App\Actions\Venues\UpdateAction;
+use App\Data\VenueData;
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Venue;
 use Illuminate\Validation\Rule;
@@ -47,23 +50,12 @@ class VenueForm extends LivewireBaseForm
     {
         $this->validate();
 
+        $data = VenueData::fromForm([$this->name, $this->street_address, $this->city, $this->state, $this->zipcode]);
+
         if (! isset($this->formModel)) {
-            $this->formModel = new Venue([
-                'name' => $this->name,
-                'street_address' => $this->street_address,
-                'city' => $this->city,
-                'state' => $this->state,
-                'zipcode' => $this->zipcode,
-            ]);
-            $this->formModel->save();
+            app(CreateAction::class)->handle($data);
         } else {
-            $this->formModel->update([
-                'name' => $this->name,
-                'street_address' => $this->street_address,
-                'city' => $this->city,
-                'state' => $this->state,
-                'zipcode' => $this->zipcode,
-            ]);
+            app(UpdateAction::class)->handle($this->formModal, $data);
         }
 
         return true;

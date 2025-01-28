@@ -21,10 +21,10 @@ class CreateAction extends BaseStableAction
         $stable = $this->stableRepository->create($stableData);
 
         if (isset($stableData->start_date)) {
-            ActivateAction::run($stable, $stableData->start_date);
+            app(ActivateAction::class)->handle($stable, $stableData->start_date);
         }
 
-        AddMembersAction::run(
+        app(AddMembersAction::class)->handle(
             $stable,
             $stableData->wrestlers,
             $stableData->tagTeams,
