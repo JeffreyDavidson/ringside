@@ -20,7 +20,7 @@ class FormModal extends BaseModal
 
     public WrestlerForm $modelForm;
 
-    public function fillDummyFields()
+    public function fillDummyFields(): void
     {
         $datetime = fake()->optional(0.8)->dateTimeBetween('now', '+3 month');
 
