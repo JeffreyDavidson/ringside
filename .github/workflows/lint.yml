@@ -23,12 +23,10 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Fix PHP code style issues
+        uses: aglipanci/laravel-pint-action@latest
         with:
-          php-version: 8.3
-          tools: composer:v2
-          coverage: none
+          pintVersion: 1.18.3
 
       - name: Install Dependencies
         run: composer update --prefer-stable --no-interaction --no-progress --ansi
