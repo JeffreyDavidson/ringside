@@ -12,6 +12,6 @@ trait PresentsTagTeamsList
     #[Computed(cache: true, key: 'tag-teams-list', seconds: 180)]
     public function getTagTeams(): array
     {
-        return TagTeam::all()->pluck('name', 'id')->toArray();
+        return TagTeam::query()->pluck('name', 'id')->toArray();
     }
 }

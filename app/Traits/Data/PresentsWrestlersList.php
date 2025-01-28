@@ -12,6 +12,6 @@ trait PresentsWrestlersList
     #[Computed(cache: true, key: 'wrestlers-list', seconds: 180)]
     public function getWrestlers(): array
     {
-        return Wrestler::all()->pluck('name', 'id')->toArray();
+        return Wrestler::query()->pluck('name', 'id')->toArray();
     }
 }

@@ -12,6 +12,6 @@ trait PresentsManagersList
     #[Computed(cache: true, key: 'managers-list', seconds: 180)]
     public function getManagers(): array
     {
-        return Manager::all()->pluck('name', 'id')->toArray();
+        return Manager::query()->pluck('name', 'id')->toArray();
     }
 }
