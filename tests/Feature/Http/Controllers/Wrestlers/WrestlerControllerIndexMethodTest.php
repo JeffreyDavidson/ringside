@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Wrestlers\WrestlersController;
-use App\Livewire\Wrestlers\WrestlersTable;
+use App\Livewire\Wrestlers\Tables\WrestlersTable;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
@@ -24,6 +24,6 @@ test('a basic user cannot view wrestlers index page', function () {
 });
 
 test('a guest cannot view wrestlers index page', function () {
-get(action([WrestlersController::class, 'index']))
-->assertRedirect(route('login'));
-    });
+    get(action([WrestlersController::class, 'index']))
+        ->assertRedirect(route('login'));
+});
