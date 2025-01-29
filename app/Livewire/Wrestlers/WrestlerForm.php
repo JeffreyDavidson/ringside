@@ -34,7 +34,12 @@ class WrestlerForm extends LivewireBaseForm
 
     public Carbon|string|null $start_date = '';
 
-    protected function rules()
+    /**
+     * Undocumented function
+     *
+     * @return array<string, array<string, string>>
+     */
+    protected function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('wrestlers', 'name')->ignore($this->formModel ?? '')],
@@ -47,7 +52,12 @@ class WrestlerForm extends LivewireBaseForm
         ];
     }
 
-    protected function validationAttributes()
+    /**
+     * Undocumented function
+     *
+     * @return array<string, string>
+     */
+    protected function validationAttributes(): array
     {
         return [
             'height_feet' => 'feet',

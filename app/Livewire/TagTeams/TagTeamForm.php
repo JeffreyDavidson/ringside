@@ -28,7 +28,12 @@ class TagTeamForm extends LivewireBaseForm
 
     public int $wrestlerB;
 
-    protected function rules()
+    /**
+     * Undocumented function
+     *
+     * @return array<string, array<int, string>>
+     */
+    protected function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('tag_teams', 'name')],
@@ -57,7 +62,12 @@ class TagTeamForm extends LivewireBaseForm
         ];
     }
 
-    protected function validationAttributes()
+    /**
+     * Undocumented function
+     *
+     * @return array<string, string>
+     */
+    protected function validationAttributes(): array
     {
         return [
             'signature_move' => 'signature move',

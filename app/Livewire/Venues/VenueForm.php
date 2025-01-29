@@ -27,7 +27,12 @@ class VenueForm extends LivewireBaseForm
 
     public int|string $zipcode = '';
 
-    protected function rules()
+    /**
+     * Undocumented function
+     *
+     * @return array<string, array<string, string>>
+     */
+    protected function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('venues')->ignore($this->formModel ?? '')],
@@ -38,7 +43,12 @@ class VenueForm extends LivewireBaseForm
         ];
     }
 
-    protected function validationAttributes()
+    /**
+     * Undocumented function
+     *
+     * @return array<string, string>
+     */
+    protected function validationAttributes(): array
     {
         return [
             'street_address' => 'street address',
