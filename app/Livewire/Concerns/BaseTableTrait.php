@@ -77,7 +77,7 @@ trait BaseTableTrait
                         'default' => false,
                         'default-styling' => false,
                         'default-colors' => false,
-                        'class' => 'bg-[#fcfcfc] text-gray-600 font-medium text-[.8125rem] leading-[1.125rem] align-middle py-2.5 ps-4 pe-4 border-b border-gray-200 w-[60px]',
+                        'class' => 'bg-[#fcfcfc] text-gray-600 font-medium text-[.8125rem] leading-[1.125rem] align-middle py-2.5 ps-4 pe-4 border-b border-gray-200 w-15',
                     ];
                 }
 

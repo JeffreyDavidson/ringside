@@ -3,10 +3,10 @@
 ])
 
 <div class="flex flex-col m-0 p-0 group/menuItem">
-    <a class="flex m-0 p-0 border border-transparent items-center grow menu-item-active:bg-secondary-active group-hover/menuItem:active:rounded-lg hover:bg-secondary-active hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px]"
+    <a class="flex m-0 p-0 border border-transparent items-center grow menu-item-active:bg-secondary-active group-hover/menuItem:active:rounded-lg hover:bg-secondary-active hover:rounded-lg gap-3.5 ps-[10px] pe-[10px] py-[8px]"
         {{ $attributes }}>
         <span @class([
-            'items-center shrink-0 flex w-[6px] -start-[3px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-y-1/2',
+            'items-center shrink-0 flex w-1.5 -start-[3px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-y-1/2',
             'before:bg-primary' => $isCurrent,
         ])></span>
         <span
