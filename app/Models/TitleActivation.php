@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property-read \Illuminate\Support\Carbon $started_at
@@ -45,15 +44,5 @@ class TitleActivation extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the title from the activation record.
-     *
-     * @return BelongsTo<Title, $this>
-     */
-    public function title(): BelongsTo
-    {
-        return $this->belongsTo(Title::class);
     }
 }

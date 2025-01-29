@@ -8,7 +8,6 @@ use App\Collections\EventMatchCompetitorsCollection;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[CollectedBy(EventMatchCompetitorsCollection::class)]
 class EventMatchCompetitor extends MorphPivot
@@ -31,14 +30,4 @@ class EventMatchCompetitor extends MorphPivot
         'competitor_type',
         'side_number',
     ];
-
-    /**
-     * Retrieve the previous champion of the title championship.
-     *
-     * @return MorphTo<Model, $this>
-     */
-    public function competitor(): MorphTo
-    {
-        return $this->morphTo(__FUNCTION__, 'competitor_type', 'competitor_id');
-    }
 }

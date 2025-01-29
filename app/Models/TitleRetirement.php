@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TitleRetirement extends Model
 {
@@ -42,13 +41,5 @@ class TitleRetirement extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
-    }
-
-    /**
-     * @return BelongsTo<Title, $this>
-     */
-    public function title(): BelongsTo
-    {
-        return $this->belongsTo(Title::class);
     }
 }

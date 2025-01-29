@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Builders\WrestlerBuilder;
 use App\Data\WrestlerData;
-use App\Enums\WrestlerStatus;
-use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 
 class WrestlerRepository
@@ -142,64 +137,5 @@ class WrestlerRepository
         $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
 
         return $wrestler;
-    }
-
-    /**
-     * Remove the given wrestler from their current tag team on a given date.
-     */
-    public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate): void
-    {
-        $currentTagTeamId = $wrestler->currentTagTeam?->id;
-
-        $wrestler->tagTeams()->wherePivotNull('left_at')->updateExistingPivot($currentTagTeamId, [
-            'left_at' => $removalDate->toDateTimeString(),
-        ]);
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @return Collection<int, covariant Wrestler>
-     */
-    public static function getAvailableWrestlersForNewTagTeam(): Collection
-    {
-        return Wrestler::query()
-            ->where(function (WrestlerBuilder $query) {
-                $query->unemployed();
-            })
-            ->orWhere(function (WrestlerBuilder $query) {
-                $query->futureEmployed();
-            })
-            ->orWhere(function (WrestlerBuilder $query) {
-                $query->employed()
-                    ->where('status', WrestlerStatus::Bookable)
-                    ->whereDoesntHave('currentTagTeam');
-            })
-            ->get();
-    }
-
-    /**
-     * @return Collection<int, covariant Wrestler>
-     */
-    public static function getAvailableWrestlersForExistingTagTeam(TagTeam $tagTeam): Collection
-    {
-        return Wrestler::query()
-            ->where(function (WrestlerBuilder $query) {
-                $query->unemployed();
-            })
-            ->orWhere(function (WrestlerBuilder $query) {
-                $query->futureEmployed();
-            })
-            ->orWhere(function (WrestlerBuilder $query) {
-                $query->employed()
-                    ->where('status', WrestlerStatus::Bookable)
-                    ->whereDoesntHave('currentTagTeam');
-            })
-            ->orWhere(function (WrestlerBuilder $query) use ($tagTeam) {
-                $query->whereHas('currentTagTeam', function (Builder $query) use ($tagTeam) {
-                    $query->where('tag_team_id', '=', $tagTeam->id);
-                });
-            })
-            ->get();
     }
 }

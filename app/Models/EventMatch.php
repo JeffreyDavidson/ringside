@@ -6,10 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
@@ -39,26 +36,6 @@ class EventMatch extends Model
     ];
 
     /**
-     * Get the event the match belongs to.
-     *
-     * @return BelongsTo<Event, $this>
-     */
-    public function event(): BelongsTo
-    {
-        return $this->belongsTo(Event::class);
-    }
-
-    /**
-     * Get the match type of the match.
-     *
-     * @return BelongsTo<MatchType, $this>
-     */
-    public function matchType(): BelongsTo
-    {
-        return $this->belongsTo(MatchType::class);
-    }
-
-    /**
      * Get the referees assigned to the match.
      *
      * @return BelongsToMany<Referee, $this>
@@ -76,16 +53,6 @@ class EventMatch extends Model
     public function titles(): BelongsToMany
     {
         return $this->belongsToMany(Title::class);
-    }
-
-    /**
-     * Get all the event match competitors for the match.
-     *
-     * @return HasMany<EventMatchCompetitor, $this>
-     */
-    public function competitors(): HasMany
-    {
-        return $this->hasMany(EventMatchCompetitor::class);
     }
 
     /**
@@ -110,15 +77,5 @@ class EventMatch extends Model
         return $this->morphedByMany(TagTeam::class, 'competitor', 'event_match_competitors')
             ->using(EventMatchCompetitor::class)
             ->withPivot('side_number');
-    }
-
-    /**
-     * Get the tag teams involved in the match.
-     *
-     * @return HasOne<EventMatchResult, $this>
-     */
-    public function result(): HasOne
-    {
-        return $this->hasOne(EventMatchResult::class);
     }
 }

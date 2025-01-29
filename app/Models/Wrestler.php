@@ -134,16 +134,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
             ->ofMany('ended_at', 'max');
     }
 
-    /**
-     * @return HasOne<WrestlerEmployment, $this>
-     */
-    public function firstEmployment(): HasOne
-    {
-        return $this->employments()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
     public function hasEmployments(): bool
     {
         return $this->employments()->count() > 0;
@@ -393,13 +383,5 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
         return $this->stables()
             ->wherePivot('joined_at', '<', now())
             ->wherePivotNotNull('left_at');
-    }
-
-    /**
-     * Determine if the model is currently a member of a stable.
-     */
-    public function isNotCurrentlyInStable(Stable $stable): bool
-    {
-        return $this->currentStable->isNot($stable);
     }
 }

@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property-read \Illuminate\Support\Carbon $started_at
@@ -45,13 +44,5 @@ class ManagerEmployment extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
-    }
-
-    /**
-     * @return BelongsTo<Manager, $this>
-     */
-    public function manager(): BelongsTo
-    {
-        return $this->belongsTo(Manager::class);
     }
 }

@@ -125,16 +125,6 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
             ->ofMany('ended_at', 'max');
     }
 
-    /**
-     * @return HasOne<ManagerEmployment, $this>
-     */
-    public function firstEmployment(): HasOne
-    {
-        return $this->employments()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
     public function hasEmployments(): bool
     {
         return $this->employments()->count() > 0;
@@ -328,18 +318,6 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * Determine if the model can be retired.
-     */
-    public function canBeRetired(): bool
-    {
-        if ($this->isNotInEmployment()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Get the stables the model has been belonged to.
      *
      * @return BelongsToMany<Stable, $this>
@@ -371,13 +349,5 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
         return $this->stables()
             ->wherePivot('joined_at', '<', now())
             ->wherePivotNotNull('left_at');
-    }
-
-    /**
-     * Determine if the model is currently a member of a stable.
-     */
-    public function isNotCurrentlyInStable(Stable $stable): bool
-    {
-        return $this->currentStable->isNot($stable);
     }
 }

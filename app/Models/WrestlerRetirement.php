@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WrestlerRetirement extends Model
 {
@@ -42,13 +41,5 @@ class WrestlerRetirement extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
-    }
-
-    /**
-     * @return BelongsTo<Wrestler, $this>
-     */
-    public function wrestler(): BelongsTo
-    {
-        return $this->belongsTo(Wrestler::class);
     }
 }

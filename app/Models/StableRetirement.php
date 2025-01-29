@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StableRetirement extends Model
 {
@@ -42,13 +41,5 @@ class StableRetirement extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
-    }
-
-    /**
-     * @return BelongsTo<Stable, $this>
-     */
-    public function stable(): BelongsTo
-    {
-        return $this->belongsTo(Stable::class);
     }
 }

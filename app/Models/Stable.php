@@ -116,16 +116,6 @@ class Stable extends Model implements Activatable, Retirable
             ->one();
     }
 
-    /**
-     * @return HasOne<StableActivation, $this>
-     */
-    public function firstActivation(): HasOne
-    {
-        return $this->activations()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
     public function hasActivations(): bool
     {
         return $this->activations()->count() > 0;

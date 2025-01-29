@@ -9,6 +9,11 @@ use Livewire\Attributes\Computed;
 
 trait PresentsWrestlersList
 {
+    /**
+     * Undocumented function
+     *
+     * @return array{id: int, name: string}
+     */
     #[Computed(cache: true, key: 'wrestlers-list', seconds: 180)]
     public function getWrestlers(): array
     {

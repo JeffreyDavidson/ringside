@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venue extends Model
@@ -28,25 +27,4 @@ class Venue extends Model
         'state',
         'zipcode',
     ];
-
-    /**
-     * Retrieve the events for a venue.
-     *
-     * @return HasMany<Event, $this>
-     */
-    public function events(): HasMany
-    {
-        return $this->hasMany(Event::class);
-    }
-
-    /**
-     * Retrieve the events for a venue.
-     *
-     * @return HasMany<Event, $this>
-     */
-    public function previousEvents(): HasMany
-    {
-        return $this->events()
-            ->where('date', '<', today());
-    }
 }

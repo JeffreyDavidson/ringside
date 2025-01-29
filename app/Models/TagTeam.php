@@ -132,16 +132,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
             ->ofMany('ended_at', 'max');
     }
 
-    /**
-     * @return HasOne<TagTeamEmployment, $this>
-     */
-    public function firstEmployment(): HasOne
-    {
-        return $this->employments()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
     public function hasEmployments(): bool
     {
         return $this->employments()->count() > 0;
@@ -352,13 +342,5 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     public function isBookable(): bool
     {
         return $this->status->value === TagTeamStatus::Bookable->value;
-    }
-
-    /**
-     * Check to see if the tag team is unbookable.
-     */
-    public function isUnbookable(): bool
-    {
-        return ! $this->currentWrestlers->every(fn (Wrestler $wrestler) => $wrestler->isBookable());
     }
 }

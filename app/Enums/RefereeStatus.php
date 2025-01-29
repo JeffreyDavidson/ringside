@@ -14,19 +14,6 @@ enum RefereeStatus: string
     case Suspended = 'suspended';
     case Unemployed = 'unemployed';
 
-    public function color(): string
-    {
-        return match ($this) {
-            self::Bookable => 'success',
-            self::Injured => 'light',
-            self::FutureEmployment => 'warning',
-            self::Released => 'dark',
-            self::Retired => 'secondary',
-            self::Suspended => 'danger',
-            self::Unemployed => 'info',
-        };
-    }
-
     public function label(): string
     {
         return match ($this) {

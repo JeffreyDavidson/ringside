@@ -12,17 +12,6 @@ enum TitleStatus: string
     case Retired = 'retired';
     case Unactivated = 'unactivated';
 
-    public function color(): string
-    {
-        return match ($this) {
-            self::Active => 'success',
-            self::Inactive => 'light',
-            self::FutureActivation => 'warning',
-            self::Retired => 'secondary',
-            self::Unactivated => 'info',
-        };
-    }
-
     public function label(): string
     {
         return match ($this) {

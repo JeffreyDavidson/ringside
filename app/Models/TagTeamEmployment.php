@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -46,16 +45,6 @@ class TagTeamEmployment extends Model
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the employed model.
-     *
-     * @return BelongsTo<TagTeam, $this>
-     */
-    public function tagTeam(): BelongsTo
-    {
-        return $this->belongsTo(TagTeam::class);
     }
 
     public function startedBefore(Carbon $employmentDate): bool

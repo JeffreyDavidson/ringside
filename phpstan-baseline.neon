@@ -109,12 +109,6 @@ parameters:
 			path: app/Livewire/Events/Tables/MatchesTable.php
 
 		-
-			message: '#^Cannot access property \$firstEmployment on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Livewire/Managers/Tables/ManagersTable.php
-
-		-
 			message: '#^Cannot access property \$id on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -247,12 +241,6 @@ parameters:
 			path: app/Livewire/Referees/Tables/PreviousMatchesTable.php
 
 		-
-			message: '#^Cannot access property \$firstEmployment on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Livewire/Referees/Tables/RefereesTable.php
-
-		-
 			message: '#^Cannot access property \$id on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -359,12 +347,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: app/Livewire/TagTeams/Tables/PreviousWrestlersTable.php
-
-		-
-			message: '#^Cannot access property \$firstEmployment on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Livewire/TagTeams/Tables/TagTeamsTable.php
 
 		-
 			message: '#^Cannot access property \$id on mixed\.$#'
@@ -601,12 +583,6 @@ parameters:
 			path: app/Livewire/Wrestlers/Modals/FormModal.php
 
 		-
-			message: '#^Cannot access property \$firstEmployment on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Livewire/Wrestlers/Tables/WrestlersTable.php
-
-		-
 			message: '#^Cannot access property \$id on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -653,18 +629,6 @@ parameters:
 			identifier: argument.type
 			count: 2
 			path: app/Livewire/Wrestlers/Tables/WrestlersTable.php
-
-		-
-			message: '#^Method App\\Models\\TitleChampionship\:\:allTitleChampions\(\) return type with generic class Staudenmeir\\LaravelMergedRelations\\Eloquent\\Relations\\MergedRelation does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/TitleChampionship.php
-
-		-
-			message: '#^Parameter \#1 \$date of method Carbon\\Carbon\:\:diffInDays\(\) expects DateTimeInterface\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Models/TitleChampionship.php
 
 		-
 			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'

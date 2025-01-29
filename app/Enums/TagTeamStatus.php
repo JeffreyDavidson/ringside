@@ -14,19 +14,6 @@ enum TagTeamStatus: string
     case Retired = 'retired';
     case Unemployed = 'unemployed';
 
-    public function color(): string
-    {
-        return match ($this) {
-            self::Bookable => 'success',
-            self::Unbookable => 'light',
-            self::FutureEmployment => 'warning',
-            self::Suspended => 'danger',
-            self::Released => 'dark',
-            self::Retired => 'secondary',
-            self::Unemployed => 'info',
-        };
-    }
-
     public function label(): string
     {
         return match ($this) {

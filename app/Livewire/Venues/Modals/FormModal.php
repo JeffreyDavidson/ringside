@@ -7,10 +7,13 @@ namespace App\Livewire\Venues\Modals;
 use App\Livewire\Concerns\BaseModal;
 use App\Livewire\Venues\VenueForm;
 use App\Models\Venue;
+use App\Traits\Data\PresentsStatesList;
 use Illuminate\Support\Str;
 
 class FormModal extends BaseModal
 {
+    use PresentsStatesList;
+
     protected string $modelType = Venue::class;
 
     protected string $modalLanguagePath = 'venues';
