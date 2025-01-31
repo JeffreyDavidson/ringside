@@ -21,7 +21,7 @@ class FormModal extends BaseModal
 
     public function fillDummyFields(): void
     {
-        $this->modelForm->name = Str::of(fake()->words(2, true))->title()->append(' Arena')->value();
+        $this->modelForm->name = Str::of(fake()->sentence(2))->title()->append(' Arena')->value();
         $this->modelForm->street_address = fake()->streetAddress();
         $this->modelForm->city = fake()->city();
         $this->modelForm->state = fake()->state();

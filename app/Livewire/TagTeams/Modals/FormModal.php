@@ -36,8 +36,8 @@ class FormModal extends BaseModal
 
         [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
 
-        $this->modelForm->name = Str::title(fake()->words(2, true));
-        $this->modelForm->signature_move = Str::title(fake()->optional(0.8)->words(3, true));
+        $this->modelForm->name = Str::of(fake()->sentence(2))->title()->value();
+        $this->modelForm->signature_move = Str::of(fake()->optional(0.8)->sentence(3))->title()->value();
         $this->modelForm->start_date = $datetime?->format('Y-m-d H:i:s');
         $this->modelForm->wrestlerA = $wrestlerA->id;
         $this->modelForm->wrestlerB = $wrestlerB->id;

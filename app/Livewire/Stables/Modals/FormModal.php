@@ -32,7 +32,7 @@ class FormModal extends BaseModal
         /** @var Carbon|null $datetime */
         $datetime = fake()->optional(0.8)->dateTimeBetween('now', '+3 month');
 
-        $this->modelForm->name = Str::title(fake()->words(2, true));
+        $this->modelForm->name = Str::of(fake()->sentence(2))->title()->value();
         $this->modelForm->start_date = $datetime?->format('Y-m-d H:i:s');
     }
 }
