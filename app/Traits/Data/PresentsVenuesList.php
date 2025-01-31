@@ -7,7 +7,7 @@ namespace App\Traits\Data;
 use App\Models\Venue;
 use Livewire\Attributes\Computed;
 
-trait PresentsVenueList
+trait PresentsVenuesList
 {
     /**
      * @return array<int|string,string|null>

@@ -8,13 +8,13 @@ use App\Livewire\Concerns\BaseModal;
 use App\Livewire\Events\EventForm;
 use App\Models\Event;
 use App\Models\Venue;
-use App\Traits\Data\PresentsVenueList;
+use App\Traits\Data\PresentsVenuesList;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class FormModal extends BaseModal
 {
-    use PresentsVenueList;
+    use PresentsVenuesList;
 
     protected string $modelType = Event::class;
 
