@@ -34,6 +34,8 @@ class FormModal extends BaseModal
         /** @var Carbon|null $datetime */
         $datetime = fake()->optional(0.8)->dateTimeBetween('now', '+3 month');
 
+        /** @var Wrestler $wrestlerA */
+        /** @var Wrestler $wrestlerB */
         [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
 
         $this->modelForm->name = Str::of(fake()->sentence(2))->title()->value();

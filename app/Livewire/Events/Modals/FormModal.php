@@ -32,6 +32,6 @@ class FormModal extends BaseModal
         $this->modelForm->name = Str::of(fake()->sentence(2))->title()->value();
         $this->modelForm->date = $datetime?->format('Y-m-d H:i:s');
         $this->modelForm->venue = Venue::query()->inRandomOrder()->first()->id;
-        $this->modelForm->preview = fake()->paragraphs(4, true);
+        $this->modelForm->preview = fake()->sentences(10);
     }
 }

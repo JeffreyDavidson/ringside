@@ -39,7 +39,7 @@ class PreviousTagTeamsTable extends DataTableComponent
     public function builder(): TagTeamBuilder
     {
         return TagTeam::query()
-            ->withWhereHas('wrestlers', function ($query) {
+            ->withWhereHas('wrestlers', function (TagTeamBuilder $query) {
                 $query->whereIn('wrestler_id', [$this->wrestler->id]);
             });
     }
@@ -53,11 +53,11 @@ class PreviousTagTeamsTable extends DataTableComponent
     {
         return [
             LinkColumn::make(__('tag-teams.name'))
-                ->title(fn ($row) => $row->name)
+                ->title(fn (TagTeam $row) => $row->name)
                 ->location(fn ($row) => route('tag-teams.show', $row)),
             LinkColumn::make(__('tag-teams.partner'))
-                ->title(fn ($row) => $row->partner->name)
-                ->location(fn ($row) => route('wrestlers.show', $row)),
+                ->title(fn (TagTeam $row) => $row->partner->name)
+                ->location(fn (TagTeam $row) => route('wrestlers.show', $row)),
             DateColumn::make(__('tag-teams.date_joined'), 'date_joined')
                 ->outputFormat('Y-m-d H:i'),
             DateColumn::make(__('tag-teams.date_left'), 'date_left')

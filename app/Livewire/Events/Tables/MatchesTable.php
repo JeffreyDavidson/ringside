@@ -6,6 +6,9 @@ namespace App\Livewire\Events\Tables;
 
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\EventMatch;
+use App\Models\EventMatchCompetitor;
+use App\Models\Referee;
+use App\Models\Title;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -48,20 +51,20 @@ class MatchesTable extends DataTableComponent
         return [
             Column::make(__('event-matches.match_type'), 'matchType.name'),
             ArrayColumn::make(__('event-matches.competitors'))
-                ->data(fn ($value, $row) => ($row->competitors))
-                ->outputFormat(fn ($index, $value) => $value->competitor->name)
+                ->data(fn ($value, EventMatch $row) => ($row->competitors))
+                ->outputFormat(fn ($index, EventMatchCompetitor $value) => $value->competitor->name)
                 ->separator(' vs '),
             ArrayColumn::make(__('event-matches.referee'))
-                ->data(fn ($value, $row) => ($row->referees))
-                ->outputFormat(fn ($index, $value) => $value->full_name)
+                ->data(fn ($value, EventMatch $row) => ($row->referees))
+                ->outputFormat(fn ($index, Referee $value) => $value->full_name)
                 ->separator(', '),
             ArrayColumn::make(__('event-matches.title'))
-                ->data(fn ($value, $row) => ($row->titles))
-                ->outputFormat(fn ($index, $value) => $value->name)
+                ->data(fn ($value, EventMatch $row) => ($row->titles))
+                ->outputFormat(fn ($index, Title $value) => $value->name)
                 ->separator(', '),
             Column::make(__('event-matches.result'))
                 ->label(
-                    fn ($row, Column $column) => $row->result->winner->name.' by '.$row->result->decision->name
+                    fn (EventMatch $row, Column $column) => $row->result->winner->name.' by '.$row->result->decision->name
                 ),
         ];
     }
