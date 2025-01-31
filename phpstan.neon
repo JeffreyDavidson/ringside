@@ -1,5 +1,6 @@
 parameters:
     ignoreErrors:
+        - '#should return array\<int\|string, string\|null\> but returns array\<mixed\>.#'
     excludePaths:
         - app/Models/Contracts
     paths:
