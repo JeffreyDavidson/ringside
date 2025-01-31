@@ -31,12 +31,14 @@ class FormModal extends BaseModal
             throw new Exception('No need to fill data on an edit form.');
         }
 
+        /** @var Carbon|null $datetime */
         $datetime = fake()->optional(0.8)->dateTimeBetween('now', '+3 month');
+
         [$wrestlerA, $wrestlerB] = Wrestler::factory()->count(2)->create();
 
         $this->modelForm->name = Str::title(fake()->words(2, true));
         $this->modelForm->signature_move = Str::title(fake()->optional(0.8)->words(3, true));
-        $this->modelForm->start_date = $datetime ? Carbon::instance($datetime)->toDateString() : null;
+        $this->modelForm->start_date = $datetime?->format('Y-m-d H:i:s');
         $this->modelForm->wrestlerA = $wrestlerA->id;
         $this->modelForm->wrestlerB = $wrestlerB->id;
     }

@@ -26,10 +26,11 @@ class FormModal extends BaseModal
 
     public function fillDummyFields(): void
     {
+        /** @var Carbon|null $datetime */
         $datetime = fake()->optional(0.8)->dateTimeBetween('now', '+3 month');
 
         $this->modelForm->name = Str::of(fake()->words(2, true))->title()->value();
-        $this->modelForm->date = $datetime ? Carbon::instance($datetime)->toDateString() : null;
+        $this->modelForm->date = $datetime?->format('Y-m-d H:i:s');
         $this->modelForm->venue = Venue::query()->inRandomOrder()->first()->id;
         $this->modelForm->preview = fake()->paragraphs(4, true);
     }
