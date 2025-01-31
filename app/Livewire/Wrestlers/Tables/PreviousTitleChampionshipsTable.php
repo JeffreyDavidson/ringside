@@ -35,6 +35,9 @@ class PreviousTitleChampionshipsTable extends DataTableComponent
         $this->wrestler = $wrestler;
     }
 
+    /**
+     * @return Builder<TitleChampionship>
+     */
     public function builder(): Builder
     {
         return TitleChampionship::query()

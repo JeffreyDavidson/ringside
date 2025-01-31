@@ -25,6 +25,9 @@ class RefereesTable extends BaseTableWithActions
 
     protected string $resourceName = 'referees';
 
+    /**
+     * @return RefereeBuilder<Referee>
+     */
     public function builder(): RefereeBuilder
     {
         return Referee::query()

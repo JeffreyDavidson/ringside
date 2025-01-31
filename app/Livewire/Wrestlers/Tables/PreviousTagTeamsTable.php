@@ -33,6 +33,9 @@ class PreviousTagTeamsTable extends DataTableComponent
         $this->wrestler = $wrestler;
     }
 
+    /**
+     * @return TagTeamBuilder<TagTeam>
+     */
     public function builder(): TagTeamBuilder
     {
         return TagTeam::query()

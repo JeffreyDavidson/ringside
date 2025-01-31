@@ -25,6 +25,9 @@ class TitlesTable extends BaseTableWithActions
 
     protected string $resourceName = 'titles';
 
+    /**
+     * @return TitleBuilder<Title>
+     */
     public function builder(): TitleBuilder
     {
         return Title::query()

@@ -23,6 +23,9 @@ class MatchesTable extends DataTableComponent
 
     public ?int $eventId;
 
+    /**
+     * @return Builder<EventMatch>
+     */
     public function builder(): Builder
     {
         if (! isset($this->eventId)) {

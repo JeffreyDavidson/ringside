@@ -35,6 +35,9 @@ class PreviousMatchesTable extends DataTableComponent
         $this->referee = $referee;
     }
 
+    /**
+     * @return Builder<EventMatch>
+     */
     public function builder(): Builder
     {
         return EventMatch::query()

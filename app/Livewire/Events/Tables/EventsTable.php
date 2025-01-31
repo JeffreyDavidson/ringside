@@ -28,6 +28,9 @@ class EventsTable extends BaseTableWithActions
 
     protected string $resourceName = 'events';
 
+    /**
+     * @return EventBuilder<Event>
+     */
     public function builder(): EventBuilder
     {
         return Event::query()

@@ -24,6 +24,9 @@ class PreviousMatchesTable extends DataTableComponent
 
     public ?Wrestler $wrestler;
 
+    /**
+     * @return Builder<EventMatch>
+     */
     public function builder(): Builder
     {
         if (! isset($this->wrestler)) {

@@ -25,6 +25,9 @@ class ManagersTable extends BaseTableWithActions
 
     protected string $resourceName = 'managers';
 
+    /**
+     * @return ManagerBuilder<Manager>
+     */
     public function builder(): ManagerBuilder
     {
         return Manager::query()
