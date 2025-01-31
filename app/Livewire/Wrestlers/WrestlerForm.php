@@ -65,6 +65,7 @@ class WrestlerForm extends LivewireBaseForm
     {
         $this->start_date = $this->formModel?->firstEmployment?->started_at->toDateString();
 
+        /** @var Height $height */
         $height = $this->formModel?->height;
 
         $feet = (int) floor($height->toInches() / 12);
