@@ -65,7 +65,10 @@ class EventsTable extends BaseTableWithActions
      */
     public function filters(): array
     {
+        /** @var array<string, string> $statuses */
         $statuses = collect(EventStatus::cases())->pluck('name', 'value')->toArray();
+
+        /** @var array<int, Venue> $venues */
         $venues = Venue::query()->orderBy('name')->pluck('name', 'id')->toArray();
 
         return [

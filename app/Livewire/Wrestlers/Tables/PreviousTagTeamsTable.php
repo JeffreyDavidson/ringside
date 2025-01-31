@@ -47,7 +47,7 @@ class PreviousTagTeamsTable extends DataTableComponent
     public function configure(): void {}
 
     /**
-     * @return array<int, Column>
+     * @return array<int, LinkColumn|DateColumn>
      **/
     public function columns(): array
     {

@@ -61,6 +61,7 @@ class TitlesTable extends BaseTableWithActions
      */
     public function filters(): array
     {
+        /** @var array<string, string> $statuses */
         $statuses = collect(TitleStatus::cases())->pluck('name', 'value')->toArray();
 
         return [

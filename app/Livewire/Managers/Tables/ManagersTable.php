@@ -60,6 +60,7 @@ class ManagersTable extends BaseTableWithActions
      */
     public function filters(): array
     {
+        /** @var array<string, string> $statuses */
         $statuses = collect(ManagerStatus::cases())->pluck('name', 'value')->toArray();
 
         return [

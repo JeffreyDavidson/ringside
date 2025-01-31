@@ -64,6 +64,7 @@ class WrestlersTable extends BaseTableWithActions
      **/
     public function filters(): array
     {
+        /** @var array<string, string> $statuses */
         $statuses = collect(WrestlerStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
