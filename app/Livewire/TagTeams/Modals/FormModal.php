@@ -25,7 +25,7 @@ class FormModal extends BaseModal
 
     public TagTeamForm $modelForm;
 
-    public function fillDummyFields()
+    public function fillDummyFields(): void
     {
         if (isset($this->modelForm->formModel)) {
             throw new Exception('No need to fill data on an edit form.');
