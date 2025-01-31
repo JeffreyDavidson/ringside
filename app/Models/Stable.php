@@ -65,7 +65,7 @@ class Stable extends Model implements Activatable, Retirable
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => StableStatus::Unactivated,
+        'status' => StableStatus::Unactivated->value,
     ];
 
     /**
