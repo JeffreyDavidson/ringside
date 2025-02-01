@@ -7,6 +7,7 @@ namespace App\Livewire\Referees\Tables;
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\Event;
 use App\Models\EventMatch;
+use App\Models\EventMatchCompetitor;
 use App\Models\Referee;
 use App\Models\Title;
 use Illuminate\Database\Eloquent\Builder;
@@ -66,7 +67,7 @@ class PreviousMatchesTable extends DataTableComponent
                 ->outputFormat('Y-m-d H:i'),
             ArrayColumn::make(__('event-matches.competitors'))
                 ->data(fn ($value, EventMatch $row) => ($row->competitors))
-                ->outputFormat(fn ($index, EventMatch $value) => '<a href="'.route('wrestlers.show', $value->competitor->id).'">'.$value->competitor->name.'</a>')
+                ->outputFormat(fn ($index, EventMatchCompetitor $value) => '<a href="'.route('wrestlers.show', $value->competitor->id).'">'.$value->competitor->name.'</a>')
                 ->separator('<br />'),
             ArrayColumn::make(__('event-matches.titles'))
                 ->data(fn ($value, EventMatch $row) => ($row->titles))

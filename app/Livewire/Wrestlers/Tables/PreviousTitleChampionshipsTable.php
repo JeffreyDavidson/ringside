@@ -42,7 +42,7 @@ class PreviousTitleChampionshipsTable extends DataTableComponent
     public function builder(): Builder
     {
         return TitleChampionship::query()
-            ->withWhereHas('wrestlers', function ($query) {
+            ->withWhereHas('wrestlers', function (Builder $query) {
                 $query->whereIn('wrestler_id', [$this->wrestler->id]);
             });
     }

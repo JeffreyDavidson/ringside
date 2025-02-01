@@ -7,6 +7,7 @@ namespace App\Livewire\Wrestlers\Tables;
 use App\Builders\TagTeamBuilder;
 use App\Livewire\Concerns\ShowTableTrait;
 use App\Models\TagTeam;
+use App\Models\TagTeamPartner;
 use App\Models\Wrestler;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn;
@@ -56,7 +57,7 @@ class PreviousTagTeamsTable extends DataTableComponent
                 ->title(fn (TagTeam $row) => $row->name)
                 ->location(fn ($row) => route('tag-teams.show', $row)),
             LinkColumn::make(__('tag-teams.partner'))
-                ->title(fn (TagTeam $row) => $row->partner->name)
+                ->title(fn (TagTeamPartner $row) => $row->partner->name)
                 ->location(fn (TagTeam $row) => route('wrestlers.show', $row)),
             DateColumn::make(__('tag-teams.date_joined'), 'date_joined')
                 ->outputFormat('Y-m-d H:i'),

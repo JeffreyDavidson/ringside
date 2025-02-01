@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
+/**
+ * @property StableActivation $firstActivation
+ */
 class Stable extends Model implements Activatable, Retirable
 {
     use Concerns\HasMembers;
