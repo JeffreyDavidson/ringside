@@ -2,22 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Events\Tables;
+namespace App\Livewire\EventMatches\Tables;
 
-use App\Livewire\Concerns\ShowTableTrait;
+use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Models\EventMatch;
 use App\Models\EventMatchCompetitor;
 use App\Models\Referee;
 use App\Models\Title;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ArrayColumn;
 
-class MatchesTable extends DataTableComponent
+class EventMatchesTable extends BaseTableWithActions
 {
-    use ShowTableTrait;
-
     protected string $databaseTableName = 'event_matches';
 
     protected string $routeBasePath = 'event-matches';

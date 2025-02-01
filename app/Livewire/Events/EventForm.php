@@ -16,7 +16,7 @@ class EventForm extends LivewireBaseForm
 {
     protected string $formModelType = Event::class;
 
-    public ?Event $formModel;
+    public Event $formModel;
 
     public string $name = '';
 
