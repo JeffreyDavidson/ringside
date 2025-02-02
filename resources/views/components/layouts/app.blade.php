@@ -19,12 +19,12 @@
 <body class="antialiased flex h-full text-base text-gray-700 bg-[#fefefe]">
     <!-- Page -->
     <!-- Main -->
-    <div class="flex grow">
+    <div x-data="{sidebarIsOpen: false}" class="flex grow">
         <!-- Sidebar -->
-        <x-sidebar />
+        <x-sidebar ::class="sidebarIsOpen ? 'w-72' : 'w-20 lg:transition'" />
         <!-- End of Sidebar -->
         <!-- Wrapper -->
-        <div class="lg:pt-[70px] lg:ps-[280px] flex grow flex-col">
+        <div class="flex grow flex-col"">
             <!-- Header -->
             <x-layouts.partials.header />
             <!-- End of Header -->
