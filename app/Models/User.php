@@ -48,7 +48,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => UserStatus::Unverified,
+        'status' => UserStatus::Unverified->value,
     ];
 
     /**

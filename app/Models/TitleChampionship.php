@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property-read \Illuminate\Support\Carbon $won_at
@@ -90,6 +91,7 @@ class TitleChampionship extends Model
      */
     public function lengthInDays(): int
     {
+        /** @var Carbon $datetime */
         $datetime = $this->lost_at ?? now();
 
         return intval($this->won_at->diffInDays($datetime));
