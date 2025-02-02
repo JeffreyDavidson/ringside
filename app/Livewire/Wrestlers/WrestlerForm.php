@@ -6,9 +6,11 @@ namespace App\Livewire\Wrestlers;
 
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Wrestler;
+use App\Rules\EmploymentStartDateCanBeChanged;
 use App\ValueObjects\Height;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Validate;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 
 class WrestlerForm extends LivewireBaseForm
 {
@@ -16,32 +18,55 @@ class WrestlerForm extends LivewireBaseForm
 
     public ?Wrestler $formModel;
 
-    #[Validate('required|string|min:5|max:255|unique:wrestlers,name', as: 'wrestlers.name')]
     public string $name = '';
 
-    #[Validate('required|string|max:255', as: 'wrestlers.hometown')]
     public string $hometown = '';
 
-    #[Validate('required|integer|max:7', as: 'wrestlers.feet')]
     public int|string $height_feet = '';
 
-    #[Validate('required|integer|max:11', as: 'wrestlers.inches')]
     public int|string $height_inches = '';
 
-    #[Validate('required|integer', as: 'wrestlers.weight')]
     public int|string $weight = '';
 
-    #[Validate('nullable|string|max:255|unique:wrestlers,signature_move', as: 'wrestlers.signature_move')]
     public ?string $signature_move = '';
 
-    #[Validate('nullable|date', as: 'employments.started_at')]
     public Carbon|string|null $start_date = '';
+
+    /**
+     * @return array<string, list<EmploymentStartDateCanBeChanged|Unique|string>>
+     */
+    protected function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255', Rule::unique('wrestlers', 'name')->ignore($this->formModel ?? '')],
+            'hometown' => ['required', 'string', 'max:255'],
+            'height_feet' => ['required', 'integer', 'max:7'],
+            'height_inches' => ['required', 'integer', 'max:11'],
+            'weight' => ['required', 'integer', 'digits:3'],
+            'signature_move' => ['nullable', 'string', 'max:255', Rule::unique('wrestlers', 'signature_move')->ignore($this->formModel ?? '')],
+            'start_date' => ['nullable', 'date', new EmploymentStartDateCanBeChanged($this->formModel ?? '')],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function validationAttributes(): array
+    {
+        return [
+            'height_feet' => 'feet',
+            'height_inches' => 'inches',
+            'signature_move' => 'signature move',
+            'start_date' => 'start date',
+        ];
+    }
 
     public function loadExtraData(): void
     {
-        $this->start_date = $this->formModel->firstEmployment?->started_at->toDateString();
+        $this->start_date = $this->formModel?->firstEmployment?->started_at->toDateString();
 
-        $height = $this->formModel->height;
+        /** @var Height $height */
+        $height = $this->formModel?->height;
 
         $feet = (int) floor($height->toInches() / 12);
         $inches = $height->toInches() % 12;

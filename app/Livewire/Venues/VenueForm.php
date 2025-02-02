@@ -6,7 +6,9 @@ namespace App\Livewire\Venues;
 
 use App\Livewire\Base\LivewireBaseForm;
 use App\Models\Venue;
-use Livewire\Attributes\Validate;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\Unique;
 
 class VenueForm extends LivewireBaseForm
 {
@@ -14,20 +16,42 @@ class VenueForm extends LivewireBaseForm
 
     public ?Venue $formModel;
 
-    #[Validate('required|string|min:5|max:255', as: 'venues.name')]
     public string $name = '';
 
-    #[Validate('required|string|max:255', as: 'venues.street_address')]
     public string $street_address = '';
 
-    #[Validate('required|string|max:255', as: 'venues.city')]
     public string $city = '';
 
-    #[Validate('required|string|max:255', as: 'venues.state')]
     public string $state = '';
 
-    #[Validate('required|integer|digits:5', as: 'venues.zipcode')]
     public int|string $zipcode = '';
+
+    /**
+     * Undocumented function
+     *
+     * @return array<string, list<Unique|Exists|string>>
+     */
+    protected function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255', Rule::unique('venues')->ignore($this->formModel ?? '')],
+            'street_address' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255', Rule::exists('App\Models\State', 'name')],
+            'zipcode' => ['required', 'integer', 'digits:5'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function validationAttributes(): array
+    {
+        return [
+            'street_address' => 'street address',
+            'zipcode' => 'zip code',
+        ];
+    }
 
     public function store(): bool
     {

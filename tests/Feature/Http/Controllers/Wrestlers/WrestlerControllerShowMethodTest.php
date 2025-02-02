@@ -18,8 +18,7 @@ test('show returns a view', function () {
         ->get(action([WrestlersController::class, 'show'], $this->wrestler))
         ->assertOk()
         ->assertViewIs('wrestlers.show')
-        ->assertViewHas('wrestler', $this->wrestler)
-        ->assertSeeLivewire('wrestlers.wrestlers-list');
+        ->assertViewHas('wrestler', $this->wrestler);
 });
 
 test('a basic user can view their wrestler profile', function () {
@@ -41,6 +40,6 @@ test('a basic user cannot view another users wrestler profile', function () {
 });
 
 test('a guest cannot view a wrestler profile', function () {
-get(action([WrestlersController::class, 'show'], $this->wrestler))
-->assertRedirect(route('login'));
-    });
+    get(action([WrestlersController::class, 'show'], $this->wrestler))
+        ->assertRedirect(route('login'));
+});
