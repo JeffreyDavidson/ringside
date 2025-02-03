@@ -50,10 +50,10 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withoutTrashed()
  *
- * @mixin \Eloquent
- *
  * @implements Activatable<TitleActivation>
  * @implements Retirable<TitleRetirement>
+ *
+ * @mixin \Eloquent
  */
 class Title extends Model implements Activatable, Retirable
 {
