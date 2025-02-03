@@ -51,6 +51,9 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withoutTrashed()
  *
  * @mixin \Eloquent
+ *
+ * @implements Activatable<TitleActivation>
+ * @implements Retirable<TitleRetirement>
  */
 class Title extends Model implements Activatable, Retirable
 {
@@ -98,7 +101,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<TitleActivation, $this>
+     * @return HasMany<TitleActivation, static>
      */
     public function activations(): HasMany
     {
@@ -106,7 +109,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleActivation, $this>
+     * @return HasOne<TitleActivation, static>
      */
     public function currentActivation(): HasOne
     {
@@ -116,7 +119,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleActivation, $this>
+     * @return HasOne<TitleActivation, static>
      */
     public function futureActivation(): HasOne
     {
@@ -127,7 +130,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<TitleActivation, $this>
+     * @return HasMany<TitleActivation, static>
      */
     public function previousActivations(): HasMany
     {
@@ -136,7 +139,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleActivation, $this>
+     * @return HasOne<TitleActivation, static>
      */
     public function previousActivation(): HasOne
     {
@@ -146,7 +149,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleActivation, $this>
+     * @return HasOne<TitleActivation, static>
      */
     public function firstActivation(): HasOne
     {
@@ -194,7 +197,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<TitleRetirement, $this>
+     * @return HasMany<TitleRetirement, static>
      */
     public function retirements(): HasMany
     {
@@ -202,7 +205,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleRetirement, $this>
+     * @return HasOne<TitleRetirement, static>
      */
     public function currentRetirement(): HasOne
     {
@@ -212,7 +215,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<TitleRetirement, $this>
+     * @return HasMany<TitleRetirement, static>
      */
     public function previousRetirements(): HasMany
     {
@@ -221,7 +224,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleRetirement, $this>
+     * @return HasOne<TitleRetirement, static>
      */
     public function previousRetirement(): HasOne
     {

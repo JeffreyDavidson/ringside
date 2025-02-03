@@ -77,6 +77,11 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withoutTrashed()
  *
+ * @implements Employable<ManagerEmployment>
+ * @implements Injurable<ManagerInjury>
+ * @implements Retirable<ManagerRetirement>
+ * @implements Suspendable<ManagerSuspension>
+ *
  * @mixin \Eloquent
  */
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
@@ -131,7 +136,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     /**
      * Get all the employments of the model.
      *
-     * @return HasMany<ManagerEmployment, $this>
+     * @return HasMany<ManagerEmployment, static>
      */
     public function employments(): HasMany
     {
@@ -139,7 +144,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerEmployment, $this>
+     * @return HasOne<ManagerEmployment, static>
      */
     public function currentEmployment(): HasOne
     {
@@ -149,7 +154,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerEmployment, $this>
+     * @return HasOne<ManagerEmployment, static>
      */
     public function futureEmployment(): HasOne
     {
@@ -160,7 +165,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerEmployment, $this>
+     * @return HasMany<ManagerEmployment, static>
      */
     public function previousEmployments(): HasMany
     {
@@ -169,7 +174,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerEmployment, $this>
+     * @return HasOne<ManagerEmployment, static>
      */
     public function previousEmployment(): HasOne
     {
@@ -179,7 +184,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerEmployment, $this>
+     * @return HasOne<ManagerEmployment, static>
      */
     public function firstEmployment(): HasOne
     {
@@ -232,7 +237,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerInjury, $this>
+     * @return HasMany<ManagerInjury, static>
      */
     public function injuries(): HasMany
     {
@@ -240,7 +245,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerInjury, $this>
+     * @return HasOne<ManagerInjury, static>
      */
     public function currentInjury(): HasOne
     {
@@ -250,7 +255,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerInjury, $this>
+     * @return HasMany<ManagerInjury, static>
      */
     public function previousInjuries(): HasMany
     {
@@ -259,7 +264,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerInjury, $this>
+     * @return HasOne<ManagerInjury, static>
      */
     public function previousInjury(): HasOne
     {
@@ -279,7 +284,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerSuspension, $this>
+     * @return HasMany<ManagerSuspension, static>
      */
     public function suspensions(): HasMany
     {
@@ -287,7 +292,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerSuspension, $this>
+     * @return HasOne<ManagerSuspension, static>
      */
     public function currentSuspension(): HasOne
     {
@@ -297,7 +302,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerSuspension, $this>
+     * @return HasMany<ManagerSuspension, static>
      */
     public function previousSuspensions(): HasMany
     {
@@ -306,7 +311,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerSuspension, $this>
+     * @return HasOne<ManagerSuspension, static>
      */
     public function previousSuspension(): HasOne
     {
@@ -326,7 +331,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerRetirement, $this>
+     * @return HasMany<ManagerRetirement, static>
      */
     public function retirements(): HasMany
     {
@@ -334,7 +339,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerRetirement, $this>
+     * @return HasOne<ManagerRetirement, static>
      */
     public function currentRetirement(): HasOne
     {
@@ -344,7 +349,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerRetirement, $this>
+     * @return HasMany<ManagerRetirement, static>
      */
     public function previousRetirements(): HasMany
     {
@@ -353,7 +358,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasOne<ManagerRetirement, $this>
+     * @return HasOne<ManagerRetirement, static>
      */
     public function previousRetirement(): HasOne
     {

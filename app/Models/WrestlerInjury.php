@@ -62,7 +62,7 @@ class WrestlerInjury extends Model
     }
 
     /**
-     * @return BelongsTo<Wrestler, $this>
+     * @return BelongsTo<Wrestler, static>
      */
     public function wrestler(): BelongsTo
     {

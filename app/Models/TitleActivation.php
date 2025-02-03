@@ -64,7 +64,7 @@ class TitleActivation extends Model
     /**
      * Get the title from the activation record.
      *
-     * @return BelongsTo<Title, $this>
+     * @return BelongsTo<Title, static>
      */
     public function title(): BelongsTo
     {

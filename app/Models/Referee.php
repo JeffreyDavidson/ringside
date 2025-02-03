@@ -65,6 +65,11 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee withoutTrashed()
  *
+ * @implements Employable<RefereeEmployment>
+ * @implements Injurable<RefereeInjury>
+ * @implements Retirable<RefereeRetirement>
+ * @implements Suspendable<RefereeSuspension>
+ *
  * @mixin \Eloquent
  */
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable
@@ -114,7 +119,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     /**
      * Get all the employments of the model.
      *
-     * @return HasMany<RefereeEmployment, $this>
+     * @return HasMany<RefereeEmployment, static>
      */
     public function employments(): HasMany
     {
@@ -122,7 +127,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeEmployment, $this>
+     * @return HasOne<RefereeEmployment, static>
      */
     public function currentEmployment(): HasOne
     {
@@ -132,7 +137,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeEmployment, $this>
+     * @return HasOne<RefereeEmployment, static>
      */
     public function futureEmployment(): HasOne
     {
@@ -143,7 +148,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeEmployment, $this>
+     * @return HasMany<RefereeEmployment, static>
      */
     public function previousEmployments(): HasMany
     {
@@ -152,7 +157,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeEmployment, $this>
+     * @return HasOne<RefereeEmployment, static>
      */
     public function previousEmployment(): HasOne
     {
@@ -162,7 +167,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeEmployment, $this>
+     * @return HasOne<RefereeEmployment, static>
      */
     public function firstEmployment(): HasOne
     {
@@ -249,7 +254,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeInjury, $this>
+     * @return HasMany<RefereeInjury, static>
      */
     public function injuries(): HasMany
     {
@@ -257,7 +262,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeInjury, $this>
+     * @return HasOne<RefereeInjury, static>
      */
     public function currentInjury(): HasOne
     {
@@ -267,7 +272,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeInjury, $this>
+     * @return HasMany<RefereeInjury, static>
      */
     public function previousInjuries(): HasMany
     {
@@ -276,7 +281,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeInjury, $this>
+     * @return HasOne<RefereeInjury, static>
      */
     public function previousInjury(): HasOne
     {
@@ -296,7 +301,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeSuspension, $this>
+     * @return HasMany<RefereeSuspension, static>
      */
     public function suspensions(): HasMany
     {
@@ -304,7 +309,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeSuspension, $this>
+     * @return HasOne<RefereeSuspension, static>
      */
     public function currentSuspension(): HasOne
     {
@@ -314,7 +319,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeSuspension, $this>
+     * @return HasMany<RefereeSuspension, static>
      */
     public function previousSuspensions(): HasMany
     {
@@ -323,7 +328,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeSuspension, $this>
+     * @return HasOne<RefereeSuspension, static>
      */
     public function previousSuspension(): HasOne
     {
@@ -343,7 +348,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeRetirement, $this>
+     * @return HasMany<RefereeRetirement, static>
      */
     public function retirements(): HasMany
     {
@@ -351,7 +356,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeRetirement, $this>
+     * @return HasOne<RefereeRetirement, static>
      */
     public function currentRetirement(): HasOne
     {
@@ -361,7 +366,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeRetirement, $this>
+     * @return HasMany<RefereeRetirement, static>
      */
     public function previousRetirements(): HasMany
     {
@@ -370,7 +375,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasOne<RefereeRetirement, $this>
+     * @return HasOne<RefereeRetirement, static>
      */
     public function previousRetirement(): HasOne
     {

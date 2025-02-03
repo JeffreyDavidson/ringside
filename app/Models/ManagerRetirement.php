@@ -62,7 +62,7 @@ class ManagerRetirement extends Model
     }
 
     /**
-     * @return BelongsTo<Manager, $this>
+     * @return BelongsTo<Manager, static>
      */
     public function manager(): BelongsTo
     {
