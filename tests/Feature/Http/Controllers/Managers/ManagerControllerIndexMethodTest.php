@@ -23,6 +23,6 @@ test('a basic user cannot view managers index page', function () {
 });
 
 test('a guest cannot view managers index page', function () {
-get(action([ManagersController::class, 'index']))
-->assertRedirect(route('login'));
-    });
+    get(action([ManagersController::class, 'index']))
+        ->assertRedirect(route('login'));
+});
