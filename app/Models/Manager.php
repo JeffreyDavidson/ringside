@@ -23,9 +23,61 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
+ * 
+ *
  * @property \App\Enums\ManagerStatus $status
  * @property Stable $currentStable
  * @property ManagerEmployment $firstEmployment
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $full_name
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read \App\Models\ManagerEmployment|null $currentEmployment
+ * @property-read \App\Models\ManagerInjury|null $currentInjury
+ * @property-read \App\Models\ManagerRetirement|null $currentRetirement
+ * @property-read \App\Models\ManagerSuspension|null $currentSuspension
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $currentTagTeams
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $currentWrestlers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerEmployment> $employments
+ * @property-read \App\Models\ManagerEmployment|null $futureEmployment
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerInjury> $injuries
+ * @property-read \App\Models\ManagerEmployment|null $previousEmployment
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerEmployment> $previousEmployments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerInjury> $previousInjuries
+ * @property-read \App\Models\ManagerInjury|null $previousInjury
+ * @property-read \App\Models\ManagerRetirement|null $previousRetirement
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerRetirement> $previousRetirements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Stable> $previousStables
+ * @property-read \App\Models\ManagerSuspension|null $previousSuspension
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerSuspension> $previousSuspensions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $previousTagTeams
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $previousWrestlers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerRetirement> $retirements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Stable> $stables
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagerSuspension> $suspensions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $tagTeams
+ * @property-read \App\Models\User|null $user
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $wrestlers
+ * @method static ManagerBuilder<static>|Manager available()
+ * @method static \Database\Factories\ManagerFactory factory($count = null, $state = [])
+ * @method static ManagerBuilder<static>|Manager futureEmployed()
+ * @method static ManagerBuilder<static>|Manager injured()
+ * @method static ManagerBuilder<static>|Manager newModelQuery()
+ * @method static ManagerBuilder<static>|Manager newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager onlyTrashed()
+ * @method static ManagerBuilder<static>|Manager query()
+ * @method static ManagerBuilder<static>|Manager released()
+ * @method static ManagerBuilder<static>|Manager retired()
+ * @method static ManagerBuilder<static>|Manager suspended()
+ * @method static ManagerBuilder<static>|Manager unemployed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withoutTrashed()
+ * @mixin \Eloquent
  */
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
 {

@@ -12,7 +12,18 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 
 /**
+ * 
+ *
  * @property-read \Illuminate\Support\Carbon $won_at
+ * @property-read \Illuminate\Database\Eloquent\Model $currentChampion
+ * @property-read \App\Models\EventMatch|null $eventMatch
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \App\Models\Title|null $title
+ * @method static \Database\Factories\TitleChampionshipFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TitleChampionship newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TitleChampionship newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TitleChampionship query()
+ * @mixin \Eloquent
  */
 class TitleChampionship extends Model
 {

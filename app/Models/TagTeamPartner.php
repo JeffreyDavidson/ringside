@@ -9,7 +9,21 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
 /**
+ * 
+ *
  * @property Carbon $left_at
+ * @property int $id
+ * @property int $tag_team_id
+ * @property int $wrestler_id
+ * @property Carbon|null $joined_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read \App\Models\TagTeam|null $tagTeam
+ * @property-read \App\Models\Wrestler|null $wrestler
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamPartner newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamPartner newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamPartner query()
+ * @mixin \Eloquent
  */
 class TagTeamPartner extends Pivot
 {

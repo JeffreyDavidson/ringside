@@ -17,7 +17,40 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
+ * 
+ *
  * @property TitleActivation $firstActivation
+ * @property int $id
+ * @property string $name
+ * @property TitleStatus $status
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleActivation> $activations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleChampionship> $championships
+ * @property-read \App\Models\TitleActivation|null $currentActivation
+ * @property-read \App\Models\TitleChampionship|null $currentChampionship
+ * @property-read \App\Models\TitleRetirement|null $currentRetirement
+ * @property-read \App\Models\TitleActivation|null $futureActivation
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \App\Models\TitleActivation|null $previousActivation
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleActivation> $previousActivations
+ * @property-read \App\Models\TitleRetirement|null $previousRetirement
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleRetirement> $previousRetirements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleRetirement> $retirements
+ * @method static TitleBuilder<static>|Title active()
+ * @method static TitleBuilder<static>|Title competable()
+ * @method static \Database\Factories\TitleFactory factory($count = null, $state = [])
+ * @method static TitleBuilder<static>|Title inactive()
+ * @method static TitleBuilder<static>|Title newModelQuery()
+ * @method static TitleBuilder<static>|Title newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Title onlyTrashed()
+ * @method static TitleBuilder<static>|Title query()
+ * @method static TitleBuilder<static>|Title retired()
+ * @method static TitleBuilder<static>|Title withFutureActivation()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withoutTrashed()
+ * @mixin \Eloquent
  */
 class Title extends Model implements Activatable, Retirable
 {

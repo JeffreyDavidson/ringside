@@ -20,7 +20,52 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
+ * 
+ *
  * @property RefereeEmployment $firstEmployment
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $full_name
+ * @property RefereeStatus $status
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read \App\Models\RefereeEmployment|null $currentEmployment
+ * @property-read \App\Models\RefereeInjury|null $currentInjury
+ * @property-read \App\Models\RefereeRetirement|null $currentRetirement
+ * @property-read \App\Models\RefereeSuspension|null $currentSuspension
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeEmployment> $employments
+ * @property-read \App\Models\RefereeEmployment|null $futureEmployment
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeInjury> $injuries
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventMatch> $matches
+ * @property-read \App\Models\RefereeEmployment|null $previousEmployment
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeEmployment> $previousEmployments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeInjury> $previousInjuries
+ * @property-read \App\Models\RefereeInjury|null $previousInjury
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventMatch> $previousMatches
+ * @property-read \App\Models\RefereeRetirement|null $previousRetirement
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeRetirement> $previousRetirements
+ * @property-read \App\Models\RefereeSuspension|null $previousSuspension
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeSuspension> $previousSuspensions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeRetirement> $retirements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeSuspension> $suspensions
+ * @method static RefereeBuilder<static>|Referee bookable()
+ * @method static \Database\Factories\RefereeFactory factory($count = null, $state = [])
+ * @method static RefereeBuilder<static>|Referee futureEmployed()
+ * @method static RefereeBuilder<static>|Referee injured()
+ * @method static RefereeBuilder<static>|Referee newModelQuery()
+ * @method static RefereeBuilder<static>|Referee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee onlyTrashed()
+ * @method static RefereeBuilder<static>|Referee query()
+ * @method static RefereeBuilder<static>|Referee released()
+ * @method static RefereeBuilder<static>|Referee retired()
+ * @method static RefereeBuilder<static>|Referee suspended()
+ * @method static RefereeBuilder<static>|Referee unemployed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee withoutTrashed()
+ * @mixin \Eloquent
  */
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable
 {
