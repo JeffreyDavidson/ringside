@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property int $id
  * @property int $tag_team_id
  * @property \Illuminate\Support\Carbon $started_at
@@ -19,10 +17,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\TagTeam|null $tagTeam
+ *
  * @method static \Database\Factories\TagTeamRetirementFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamRetirement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamRetirement newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamRetirement query()
+ *
  * @mixin \Eloquent
  */
 class TagTeamRetirement extends Model

@@ -20,8 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property RefereeEmployment $firstEmployment
  * @property int $id
  * @property string $first_name
@@ -51,6 +49,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeSuspension> $previousSuspensions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeRetirement> $retirements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefereeSuspension> $suspensions
+ *
  * @method static RefereeBuilder<static>|Referee bookable()
  * @method static \Database\Factories\RefereeFactory factory($count = null, $state = [])
  * @method static RefereeBuilder<static>|Referee futureEmployed()
@@ -65,6 +64,7 @@ use Illuminate\Support\Carbon;
  * @method static RefereeBuilder<static>|Referee unemployed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Referee withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Referee extends Model implements Employable, Injurable, Retirable, Suspendable

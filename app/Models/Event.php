@@ -14,8 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * 
- *
  * @property-read \Illuminate\Support\Carbon $date
  * @property int $id
  * @property string $name
@@ -28,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventMatch> $matches
  * @property-read \App\Models\Venue|null $venue
+ *
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static EventBuilder<static>|Event newModelQuery()
  * @method static EventBuilder<static>|Event newQuery()
@@ -38,6 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static EventBuilder<static>|Event unscheduled()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Event extends Model

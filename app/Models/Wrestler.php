@@ -27,8 +27,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property Stable $currentStable
  * @property WrestlerEmployment $firstEmployment
  * @property int $id
@@ -75,6 +73,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $tagTeams
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleChampionship> $titleChampionships
  * @property-read \App\Models\User|null $user
+ *
  * @method static WrestlerBuilder<static>|Wrestler bookable()
  * @method static WrestlerBuilder<static>|Wrestler employed()
  * @method static \Database\Factories\WrestlerFactory factory($count = null, $state = [])
@@ -90,6 +89,7 @@ use Illuminate\Support\Carbon;
  * @method static WrestlerBuilder<static>|Wrestler unemployed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wrestler withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wrestler withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable, Injurable, Manageable, Retirable, Suspendable, TagTeamMember

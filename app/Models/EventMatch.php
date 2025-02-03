@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * 
- *
  * @property int $id
  * @property int $event_id
  * @property int $match_type_id
@@ -31,10 +29,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $tagTeams
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Title> $titles
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $wrestlers
+ *
  * @method static \Database\Factories\EventMatchFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventMatch newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventMatch newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventMatch query()
+ *
  * @mixin \Eloquent
  */
 class EventMatch extends Model

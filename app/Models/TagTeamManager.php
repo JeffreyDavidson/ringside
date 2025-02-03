@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * 
- *
  * @property int $id
  * @property int $tag_team_id
  * @property int $manager_id
@@ -19,9 +17,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Manager $manager
  * @property-read \App\Models\TagTeam $tagTeam
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamManager newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamManager newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeamManager query()
+ *
  * @mixin \Eloquent
  */
 class TagTeamManager extends Pivot

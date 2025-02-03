@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property int $id
  * @property int $referee_id
  * @property \Illuminate\Support\Carbon $started_at
@@ -19,10 +17,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\Referee|null $referee
+ *
  * @method static \Database\Factories\RefereeSuspensionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RefereeSuspension newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RefereeSuspension newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RefereeSuspension query()
+ *
  * @mixin \Eloquent
  */
 class RefereeSuspension extends Model

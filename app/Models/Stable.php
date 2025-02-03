@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property StableActivation $firstActivation
  * @property int $id
  * @property int|null $user_id
@@ -48,6 +46,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $tagTeams
  * @property-read \App\Models\User|null $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $wrestlers
+ *
  * @method static StableBuilder<static>|Stable active()
  * @method static \Database\Factories\StableFactory factory($count = null, $state = [])
  * @method static StableBuilder<static>|Stable inactive()
@@ -60,6 +59,7 @@ use Illuminate\Support\Carbon;
  * @method static StableBuilder<static>|Stable withFutureActivation()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Stable withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Stable withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Stable extends Model implements Activatable, Retirable

@@ -24,8 +24,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property TagTeamStatus $status
  * @property TagTeamEmployment $firstEmployment
  * @property int $id
@@ -66,6 +64,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleChampionship> $titleChampionships
  * @property-read \App\Models\User|null $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $wrestlers
+ *
  * @method static TagTeamBuilder<static>|TagTeam bookable()
  * @method static \Database\Factories\TagTeamFactory factory($count = null, $state = [])
  * @method static TagTeamBuilder<static>|TagTeam futureEmployed()
@@ -80,6 +79,7 @@ use Illuminate\Support\Carbon;
  * @method static TagTeamBuilder<static>|TagTeam unemployed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeam withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeam withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable, Manageable, Retirable, Suspendable

@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * 
- *
  * @property int $id
  * @property int $wrestler_id
  * @property int $manager_id
@@ -19,9 +17,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Manager $manager
  * @property-read \App\Models\Wrestler $wrestler
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WrestlerManager newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WrestlerManager newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WrestlerManager query()
+ *
  * @mixin \Eloquent
  */
 class WrestlerManager extends Pivot

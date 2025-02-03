@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property-read \Illuminate\Support\Carbon $started_at
  * @property int $id
  * @property int $stable_id
@@ -19,10 +17,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\Stable|null $stable
+ *
  * @method static \Database\Factories\StableActivationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StableActivation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StableActivation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StableActivation query()
+ *
  * @mixin \Eloquent
  */
 class StableActivation extends Model

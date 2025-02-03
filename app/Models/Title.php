@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property TitleActivation $firstActivation
  * @property int $id
  * @property string $name
@@ -38,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\TitleRetirement|null $previousRetirement
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleRetirement> $previousRetirements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TitleRetirement> $retirements
+ *
  * @method static TitleBuilder<static>|Title active()
  * @method static TitleBuilder<static>|Title competable()
  * @method static \Database\Factories\TitleFactory factory($count = null, $state = [])
@@ -50,6 +49,7 @@ use Illuminate\Support\Carbon;
  * @method static TitleBuilder<static>|Title withFutureActivation()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Title extends Model implements Activatable, Retirable

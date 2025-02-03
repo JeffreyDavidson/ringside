@@ -23,8 +23,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property \App\Enums\ManagerStatus $status
  * @property Stable $currentStable
  * @property ManagerEmployment $firstEmployment
@@ -63,6 +61,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TagTeam> $tagTeams
  * @property-read \App\Models\User|null $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Wrestler> $wrestlers
+ *
  * @method static ManagerBuilder<static>|Manager available()
  * @method static \Database\Factories\ManagerFactory factory($count = null, $state = [])
  * @method static ManagerBuilder<static>|Manager futureEmployed()
@@ -77,6 +76,7 @@ use Illuminate\Support\Carbon;
  * @method static ManagerBuilder<static>|Manager unemployed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable
