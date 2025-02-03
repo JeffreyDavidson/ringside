@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property int $id
  * @property int $wrestler_id
  * @property \Illuminate\Support\Carbon $started_at
@@ -19,10 +17,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\Wrestler|null $wrestler
+ *
  * @method static \Database\Factories\WrestlerRetirementFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WrestlerRetirement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WrestlerRetirement newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WrestlerRetirement query()
+ *
  * @mixin \Eloquent
  */
 class WrestlerRetirement extends Model

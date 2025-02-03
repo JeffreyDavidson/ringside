@@ -15,8 +15,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * 
- *
  * @property Role $role
  * @property int $id
  * @property string $first_name
@@ -32,10 +30,12 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \App\Models\Wrestler|null $wrestler
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static UserBuilder<static>|User newModelQuery()
  * @method static UserBuilder<static>|User newQuery()
  * @method static UserBuilder<static>|User query()
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable
