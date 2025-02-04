@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum EmploymenetStatus: string
+enum EmploymentStatus: string
 {
     case Available = 'available';
     case Bookable = 'bookable';
