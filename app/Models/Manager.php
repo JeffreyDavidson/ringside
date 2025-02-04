@@ -76,11 +76,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Manager withoutTrashed()
  *
- * @implements Employable<ManagerEmployment>
- * @implements Injurable<ManagerInjury>
- * @implements Retirable<ManagerRetirement>
- * @implements Suspendable<ManagerSuspension>
- *
  * @mixin \Eloquent
  */
 class Manager extends Model implements CanBeAStableMember, Employable, Injurable, Retirable, Suspendable

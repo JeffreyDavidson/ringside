@@ -59,9 +59,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Stable withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Stable withoutTrashed()
  *
- * @implements Activatable<StableActivation>
- * @implements Retirable<StableRetirement>
- *
  * @mixin \Eloquent
  */
 class Stable extends Model implements Activatable, Retirable
