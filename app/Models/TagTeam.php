@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -80,17 +80,18 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeam withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TagTeam withoutTrashed()
  *
- * @implements Employable<TagTeamEmployment>
- * @implements Retirable<TagTeamRetirement>
- * @implements Suspendable<TagTeamSuspension>
- *
  * @mixin \Eloquent
  */
 class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable, Manageable, Retirable, Suspendable
 {
+    use Concerns\CanJoinStables;
     use Concerns\CanWinTitles;
+    use Concerns\HasManagers;
     use Concerns\HasMatches;
     use Concerns\HasWrestlers;
+    use Concerns\IsEmployable;
+    use Concerns\IsRetirable;
+    use Concerns\IsSuspendable;
     use Concerns\OwnedByUser;
     use HasBelongsToOne;
 
@@ -153,99 +154,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     }
 
     /**
-     * @return HasOne<TagTeamEmployment, static>
-     */
-    public function currentEmployment(): HasOne
-    {
-        return $this->employments()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasOne<TagTeamEmployment, static>
-     */
-    public function futureEmployment(): HasOne
-    {
-        return $this->employments()
-            ->whereNull('ended_at')
-            ->where('started_at', '>', now())
-            ->one();
-    }
-
-    /**
-     * @return HasMany<TagTeamEmployment, static>
-     */
-    public function previousEmployments(): HasMany
-    {
-        return $this->employments()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<TagTeamEmployment, static>
-     */
-    public function previousEmployment(): HasOne
-    {
-        return $this->previousEmployments()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    /**
-     * @return HasOne<TagTeamEmployment, static>
-     */
-    public function firstEmployment(): HasOne
-    {
-        return $this->employments()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
-    public function hasEmployments(): bool
-    {
-        return $this->employments()->count() > 0;
-    }
-
-    public function isCurrentlyEmployed(): bool
-    {
-        return $this->currentEmployment()->exists();
-    }
-
-    public function hasFutureEmployment(): bool
-    {
-        return $this->futureEmployment()->exists();
-    }
-
-    public function isNotInEmployment(): bool
-    {
-        return $this->isUnemployed() || $this->isReleased() || $this->isRetired();
-    }
-
-    public function isUnemployed(): bool
-    {
-        return $this->employments()->count() === 0;
-    }
-
-    public function isReleased(): bool
-    {
-        return $this->previousEmployment()->exists()
-            && $this->futureEmployment()->doesntExist()
-            && $this->currentEmployment()->doesntExist()
-            && $this->currentRetirement()->doesntExist();
-    }
-
-    public function employedOn(Carbon $employmentDate): bool
-    {
-        return $this->currentEmployment ? $this->currentEmployment->started_at->eq($employmentDate) : false;
-    }
-
-    public function employedBefore(Carbon $employmentDate): bool
-    {
-        return $this->currentEmployment ? $this->currentEmployment->started_at->lte($employmentDate) : false;
-    }
-
-    /**
      * @return HasMany<TagTeamRetirement, static>
      */
     public function retirements(): HasMany
@@ -254,89 +162,11 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     }
 
     /**
-     * @return HasOne<TagTeamRetirement, static>
-     */
-    public function currentRetirement(): HasOne
-    {
-        return $this->retirements()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasMany<TagTeamRetirement, static>
-     */
-    public function previousRetirements(): HasMany
-    {
-        return $this->retirements()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<TagTeamRetirement, static>
-     */
-    public function previousRetirement(): HasOne
-    {
-        return $this->previousRetirements()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    public function isRetired(): bool
-    {
-        return $this->currentRetirement()->exists();
-    }
-
-    public function hasRetirements(): bool
-    {
-        return $this->retirements()->count() > 0;
-    }
-
-    /**
      * @return HasMany<TagTeamSuspension, static>
      */
     public function suspensions(): HasMany
     {
         return $this->hasMany(TagTeamSuspension::class);
-    }
-
-    /**
-     * @return HasOne<TagTeamSuspension, static>
-     */
-    public function currentSuspension(): HasOne
-    {
-        return $this->suspensions()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasMany<TagTeamSuspension, static>
-     */
-    public function previousSuspensions(): HasMany
-    {
-        return $this->suspensions()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<TagTeamSuspension, static>
-     */
-    public function previousSuspension(): HasOne
-    {
-        return $this->suspensions()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    public function isSuspended(): bool
-    {
-        return $this->currentSuspension()->exists();
-    }
-
-    public function hasSuspensions(): bool
-    {
-        return $this->suspensions()->count() > 0;
     }
 
     /**
@@ -349,28 +179,6 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
         return $this->belongsToMany(Manager::class, 'tag_teams_managers')
             ->using(TagTeamManager::class)
             ->withPivot('hired_at', 'left_at');
-    }
-
-    /**
-     * Get all the current managers the model has.
-     *
-     * @return BelongsToMany<Manager, $this>
-     */
-    public function currentManagers(): BelongsToMany
-    {
-        return $this->managers()
-            ->wherePivotNull('left_at');
-    }
-
-    /**
-     * Get all the previous managers the model has had.
-     *
-     * @return BelongsToMany<Manager, $this>
-     */
-    public function previousManagers(): BelongsToMany
-    {
-        return $this->managers()
-            ->wherePivotNotNull('left_at');
     }
 
     /**
@@ -395,15 +203,13 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     }
 
     /**
-     * Get the previous stables the member has belonged to.
+     * Retrieve the event matches participated by the model.
      *
-     * @return BelongsToMany<Stable, $this>
+     * @return MorphToMany<EventMatch, $this>
      */
-    public function previousStables(): BelongsToMany
+    public function matches(): MorphToMany
     {
-        return $this->stables()
-            ->wherePivot('joined_at', '<', now())
-            ->wherePivotNotNull('left_at');
+        return $this->morphToMany(EventMatch::class, 'competitor', 'event_match_competitors');
     }
 
     /**
