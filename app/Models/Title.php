@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -50,14 +49,13 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Title withoutTrashed()
  *
- * @implements Activatable<TitleActivation>
- * @implements Retirable<TitleRetirement>
- *
  * @mixin \Eloquent
  */
 class Title extends Model implements Activatable, Retirable
 {
     use Concerns\HasChampionships;
+    use Concerns\IsActivatable;
+    use Concerns\IsRetirable;
 
     /** @use HasBuilder<TitleBuilder<static>> */
     use HasBuilder;
@@ -109,137 +107,10 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasOne<TitleActivation, static>
-     */
-    public function currentActivation(): HasOne
-    {
-        return $this->activations()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasOne<TitleActivation, static>
-     */
-    public function futureActivation(): HasOne
-    {
-        return $this->activations()
-            ->whereNull('ended_at')
-            ->where('started_at', '>', now())
-            ->one();
-    }
-
-    /**
-     * @return HasMany<TitleActivation, static>
-     */
-    public function previousActivations(): HasMany
-    {
-        return $this->activations()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<TitleActivation, static>
-     */
-    public function previousActivation(): HasOne
-    {
-        return $this->previousActivations()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    /**
-     * @return HasOne<TitleActivation, static>
-     */
-    public function firstActivation(): HasOne
-    {
-        return $this->activations()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
-    public function hasActivations(): bool
-    {
-        return $this->activations()->count() > 0;
-    }
-
-    public function isCurrentlyActivated(): bool
-    {
-        return $this->currentActivation()->exists();
-    }
-
-    public function hasFutureActivation(): bool
-    {
-        return $this->futureActivation()->exists();
-    }
-
-    public function isNotInActivation(): bool
-    {
-        return $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
-    }
-
-    public function isUnactivated(): bool
-    {
-        return $this->activations()->count() === 0;
-    }
-
-    public function isDeactivated(): bool
-    {
-        return $this->previousActivation()->exists()
-            && $this->futureActivation()->doesntExist()
-            && $this->currentActivation()->doesntExist()
-            && $this->currentRetirement()->doesntExist();
-    }
-
-    public function activatedOn(Carbon $activationDate): bool
-    {
-        return $this->currentActivation ? $this->currentActivation->started_at->eq($activationDate) : false;
-    }
-
-    /**
      * @return HasMany<TitleRetirement, static>
      */
     public function retirements(): HasMany
     {
         return $this->hasMany(TitleRetirement::class);
-    }
-
-    /**
-     * @return HasOne<TitleRetirement, static>
-     */
-    public function currentRetirement(): HasOne
-    {
-        return $this->retirements()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasMany<TitleRetirement, static>
-     */
-    public function previousRetirements(): HasMany
-    {
-        return $this->retirements()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<TitleRetirement, static>
-     */
-    public function previousRetirement(): HasOne
-    {
-        return $this->previousRetirements()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    public function isRetired(): bool
-    {
-        return $this->currentRetirement()->exists();
-    }
-
-    public function hasRetirements(): bool
-    {
-        return $this->retirements()->count() > 0;
     }
 }

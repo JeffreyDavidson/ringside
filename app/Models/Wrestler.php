@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -90,18 +90,18 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wrestler withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wrestler withoutTrashed()
  *
- * @implements Employable<WrestlerEmployment>
- * @implements Injurable<WrestlerInjury>
- * @implements Retirable<WrestlerRetirement>
- * @implements Suspendable<WrestlerSuspension>
- *
  * @mixin \Eloquent
  */
 class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable, Injurable, Manageable, Retirable, Suspendable, TagTeamMember
 {
+    use Concerns\CanJoinStables;
     use Concerns\CanJoinTagTeams;
     use Concerns\CanWinTitles;
+    use Concerns\HasManagers;
     use Concerns\HasMatches;
+    use Concerns\IsEmployable;
+    use Concerns\IsRetirable;
+    use Concerns\IsSuspendable;
     use Concerns\OwnedByUser;
     use HasBelongsToOne;
 
@@ -163,143 +163,11 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * @return HasOne<WrestlerEmployment, static>
-     */
-    public function currentEmployment(): HasOne
-    {
-        return $this->employments()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasOne<WrestlerEmployment, static>
-     */
-    public function futureEmployment(): HasOne
-    {
-        return $this->employments()
-            ->whereNull('ended_at')
-            ->where('started_at', '>', now())
-            ->one();
-    }
-
-    /**
-     * @return HasMany<WrestlerEmployment, static>
-     */
-    public function previousEmployments(): HasMany
-    {
-        return $this->employments()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<WrestlerEmployment, static>
-     */
-    public function previousEmployment(): HasOne
-    {
-        return $this->previousEmployments()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    /**
-     * @return HasOne<WrestlerEmployment, static>
-     */
-    public function firstEmployment(): HasOne
-    {
-        return $this->employments()
-            ->one()
-            ->ofMany('started_at', 'min');
-    }
-
-    public function hasEmployments(): bool
-    {
-        return $this->employments()->count() > 0;
-    }
-
-    public function isCurrentlyEmployed(): bool
-    {
-        return $this->currentEmployment()->exists();
-    }
-
-    public function hasFutureEmployment(): bool
-    {
-        return $this->futureEmployment()->exists();
-    }
-
-    public function isNotInEmployment(): bool
-    {
-        return $this->isUnemployed() || $this->isReleased() || $this->isRetired();
-    }
-
-    public function isUnemployed(): bool
-    {
-        return $this->employments()->count() === 0;
-    }
-
-    public function isReleased(): bool
-    {
-        return $this->previousEmployment()->exists()
-            && $this->futureEmployment()->doesntExist()
-            && $this->currentEmployment()->doesntExist()
-            && $this->currentRetirement()->doesntExist();
-    }
-
-    public function employedOn(Carbon $employmentDate): bool
-    {
-        return $this->currentEmployment ? $this->currentEmployment->started_at->eq($employmentDate) : false;
-    }
-
-    public function employedBefore(Carbon $employmentDate): bool
-    {
-        return $this->currentEmployment ? $this->currentEmployment->started_at->lte($employmentDate) : false;
-    }
-
-    /**
      * @return HasMany<WrestlerRetirement, static>
      */
     public function retirements(): HasMany
     {
         return $this->hasMany(WrestlerRetirement::class);
-    }
-
-    /**
-     * @return HasOne<WrestlerRetirement, static>
-     */
-    public function currentRetirement(): HasOne
-    {
-        return $this->retirements()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasMany<WrestlerRetirement, static>
-     */
-    public function previousRetirements(): HasMany
-    {
-        return $this->retirements()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<WrestlerRetirement, static>
-     */
-    public function previousRetirement(): HasOne
-    {
-        return $this->previousRetirements()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    public function isRetired(): bool
-    {
-        return $this->currentRetirement()->exists();
-    }
-
-    public function hasRetirements(): bool
-    {
-        return $this->retirements()->count() > 0;
     }
 
     /**
@@ -311,89 +179,11 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * @return HasOne<WrestlerInjury, static>
-     */
-    public function currentInjury(): HasOne
-    {
-        return $this->injuries()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasMany<WrestlerInjury, static>
-     */
-    public function previousInjuries(): HasMany
-    {
-        return $this->injuries()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<WrestlerInjury, static>
-     */
-    public function previousInjury(): HasOne
-    {
-        return $this->previousInjuries()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    public function isInjured(): bool
-    {
-        return $this->currentInjury()->exists();
-    }
-
-    public function hasInjuries(): bool
-    {
-        return $this->injuries()->count() > 0;
-    }
-
-    /**
      * @return HasMany<WrestlerSuspension, static>
      */
     public function suspensions(): HasMany
     {
         return $this->hasMany(WrestlerSuspension::class);
-    }
-
-    /**
-     * @return HasOne<WrestlerSuspension, static>
-     */
-    public function currentSuspension(): HasOne
-    {
-        return $this->suspensions()
-            ->whereNull('ended_at')
-            ->one();
-    }
-
-    /**
-     * @return HasMany<WrestlerSuspension, static>
-     */
-    public function previousSuspensions(): HasMany
-    {
-        return $this->suspensions()
-            ->whereNotNull('ended_at');
-    }
-
-    /**
-     * @return HasOne<WrestlerSuspension, static>
-     */
-    public function previousSuspension(): HasOne
-    {
-        return $this->suspensions()
-            ->one()
-            ->ofMany('ended_at', 'max');
-    }
-
-    public function isSuspended(): bool
-    {
-        return $this->currentSuspension()->exists();
-    }
-
-    public function hasSuspensions(): bool
-    {
-        return $this->suspensions()->count() > 0;
     }
 
     /**
@@ -406,28 +196,6 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
         return $this->belongsToMany(Manager::class, 'wrestlers_managers')
             ->using(WrestlerManager::class)
             ->withPivot('hired_at', 'left_at');
-    }
-
-    /**
-     * Get all the current managers the model has.
-     *
-     * @return BelongsToMany<Manager, $this>
-     */
-    public function currentManagers(): BelongsToMany
-    {
-        return $this->managers()
-            ->wherePivotNull('left_at');
-    }
-
-    /**
-     * Get all the previous managers the model has had.
-     *
-     * @return BelongsToMany<Manager, $this>
-     */
-    public function previousManagers(): BelongsToMany
-    {
-        return $this->managers()
-            ->wherePivotNotNull('left_at');
     }
 
     /**
@@ -452,22 +220,12 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * Get the previous stables the member has belonged to.
+     * Retrieve the event matches participated by the model.
      *
-     * @return BelongsToMany<Stable, $this>
+     * @return MorphToMany<EventMatch, $this>
      */
-    public function previousStables(): BelongsToMany
+    public function matches(): MorphToMany
     {
-        return $this->stables()
-            ->wherePivot('joined_at', '<', now())
-            ->wherePivotNotNull('left_at');
-    }
-
-    /**
-     * Determine if the model is currently a member of a stable.
-     */
-    public function isNotCurrentlyInStable(Stable $stable): bool
-    {
-        return $this->currentStable->isNot($stable);
+        return $this->morphToMany(EventMatch::class, 'competitor', 'event_match_competitors');
     }
 }
