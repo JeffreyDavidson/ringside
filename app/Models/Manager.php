@@ -7,7 +7,7 @@ namespace App\Models;
 use Ankurk91\Eloquent\HasBelongsToOne;
 use Ankurk91\Eloquent\Relations\BelongsToOne;
 use App\Builders\ManagerBuilder;
-use App\Enums\ManagerStatus;
+use App\Enums\EmploymentStatus;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * @property \App\Enums\ManagerStatus $status
+ * @property \App\Enums\EmploymentStatus $status
  * @property Stable $currentStable
  * @property ManagerEmployment $firstEmployment
  * @property int $id
@@ -115,7 +115,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => ManagerStatus::Unemployed->value,
+        'status' => EmploymentStatus::Unemployed->value,
     ];
 
     protected static string $builder = ManagerBuilder::class;
@@ -128,7 +128,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     protected function casts(): array
     {
         return [
-            'status' => ManagerStatus::class,
+            'status' => EmploymentStatus::class,
         ];
     }
 
@@ -171,7 +171,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
      */
     public function isAvailable(): bool
     {
-        return $this->status->label() === ManagerStatus::Available->label();
+        return $this->status->label() === EmploymentStatus::Available->label();
     }
 
     /**

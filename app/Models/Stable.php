@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Builders\StableBuilder;
-use App\Enums\StableStatus;
+use App\Enums\ActivationStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Retirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int|null $user_id
  * @property string $name
- * @property StableStatus $status
+ * @property ActivationStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -102,7 +102,7 @@ class Stable extends Model implements Activatable, Retirable
     protected function casts(): array
     {
         return [
-            'status' => StableStatus::class,
+            'status' => ActivationStatus::class,
         ];
     }
 
@@ -112,7 +112,7 @@ class Stable extends Model implements Activatable, Retirable
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => StableStatus::Unactivated->value,
+        'status' => ActivationStatus::Unactivated->value,
     ];
 
     /**

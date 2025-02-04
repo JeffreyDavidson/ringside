@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Builders\RefereeBuilder;
-use App\Enums\RefereeStatus;
+use App\Enums\EmploymentStatus;
 use App\Models\Contracts\Employable;
 use App\Models\Contracts\Injurable;
 use App\Models\Contracts\Retirable;
@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property string $first_name
  * @property string $last_name
  * @property string|null $full_name
- * @property RefereeStatus $status
+ * @property EmploymentStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -98,7 +98,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => RefereeStatus::Unemployed->value,
+        'status' => EmploymentStatus::Unemployed->value,
     ];
 
     protected static string $builder = RefereeBuilder::class;
@@ -111,7 +111,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     protected function casts(): array
     {
         return [
-            'status' => RefereeStatus::class,
+            'status' => EmploymentStatus::class,
         ];
     }
 

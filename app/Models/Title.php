@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Builders\TitleBuilder;
-use App\Enums\TitleStatus;
+use App\Enums\ActivationStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Retirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property TitleActivation $firstActivation
  * @property int $id
  * @property string $name
- * @property TitleStatus $status
+ * @property ActivationStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -81,7 +81,7 @@ class Title extends Model implements Activatable, Retirable
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => TitleStatus::Unactivated->value,
+        'status' => ActivationStatus::Unactivated->value,
     ];
 
     protected static string $builder = TitleBuilder::class;
@@ -94,7 +94,7 @@ class Title extends Model implements Activatable, Retirable
     protected function casts(): array
     {
         return [
-            'status' => TitleStatus::class,
+            'status' => ActivationStatus::class,
         ];
     }
 

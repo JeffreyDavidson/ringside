@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Stables\Tables;
 
 use App\Builders\StableBuilder;
-use App\Enums\StableStatus;
+use App\Enums\ActivationStatus;
 use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstActivationDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
@@ -61,7 +61,7 @@ class StablesTable extends BaseTableWithActions
     public function filters(): array
     {
         /** @var array<string, string> $statuses */
-        $statuses = collect(StableStatus::cases())->pluck('name', 'value')->toArray();
+        $statuses = collect(ActivationStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
             $this->getDefaultStatusFilter($statuses),

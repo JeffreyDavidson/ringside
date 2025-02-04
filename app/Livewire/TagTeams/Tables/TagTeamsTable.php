@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\TagTeams\Tables;
 
 use App\Builders\TagTeamBuilder;
-use App\Enums\TagTeamStatus;
+use App\Enums\EmploymentStatus;
 use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
@@ -64,7 +64,7 @@ class TagTeamsTable extends BaseTableWithActions
     public function filters(): array
     {
         /** @var array<string, string> $statuses */
-        $statuses = collect(TagTeamStatus::cases())->pluck('name', 'value')->toArray();
+        $statuses = collect(EmploymentStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
             $this->getDefaultStatusFilter($statuses),

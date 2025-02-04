@@ -8,7 +8,7 @@ use Ankurk91\Eloquent\HasBelongsToOne;
 use Ankurk91\Eloquent\Relations\BelongsToOne;
 use App\Builders\WrestlerBuilder;
 use App\Casts\HeightCast;
-use App\Enums\WrestlerStatus;
+use App\Enums\EmploymentStatus;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Employable;
@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @property int $weight
  * @property string $hometown
  * @property string|null $signature_move
- * @property WrestlerStatus $status
+ * @property EmploymentStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -134,7 +134,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => WrestlerStatus::Unemployed->value,
+        'status' => EmploymentStatus::Unemployed->value,
     ];
 
     protected static string $builder = WrestlerBuilder::class;
@@ -148,7 +148,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     {
         return [
             'height' => HeightCast::class,
-            'status' => WrestlerStatus::class,
+            'status' => EmploymentStatus::class,
         ];
     }
 

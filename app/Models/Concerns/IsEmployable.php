@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
-use App\Enums\WrestlerStatus;
+use App\Enums\EmploymentStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -69,12 +69,12 @@ trait IsEmployable
 
     public function isUnemployed(): bool
     {
-        return $this->status == WrestlerStatus::Unemployed->value;
+        return $this->status == EmploymentStatus::Unemployed->value;
     }
 
     public function isReleased(): bool
     {
-        return $this->status == WrestlerStatus::Released->value;
+        return $this->status == EmploymentStatus::Released->value;
     }
 
     public function employedOn(Carbon $employmentDate): bool

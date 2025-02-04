@@ -7,7 +7,7 @@ namespace App\Models;
 use Ankurk91\Eloquent\HasBelongsToOne;
 use Ankurk91\Eloquent\Relations\BelongsToOne;
 use App\Builders\TagTeamBuilder;
-use App\Enums\TagTeamStatus;
+use App\Enums\EmploymentStatus;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Employable;
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * @property TagTeamStatus $status
+ * @property EmploymentStatus $status
  * @property TagTeamEmployment $firstEmployment
  * @property int $id
  * @property int|null $user_id
@@ -126,7 +126,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
      * @var array<string, string>
      */
     protected $attributes = [
-        'status' => TagTeamStatus::Unemployed->value,
+        'status' => EmploymentStatus::Unemployed->value,
     ];
 
     protected static string $builder = TagTeamBuilder::class;
@@ -139,7 +139,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     protected function casts(): array
     {
         return [
-            'status' => TagTeamStatus::class,
+            'status' => EmploymentStatus::class,
         ];
     }
 
@@ -217,7 +217,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
      */
     public function isBookable(): bool
     {
-        return $this->status->value === TagTeamStatus::Bookable->value;
+        return $this->status->value === EmploymentStatus::Bookable->value;
     }
 
     /**

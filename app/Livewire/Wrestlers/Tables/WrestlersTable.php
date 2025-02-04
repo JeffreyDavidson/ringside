@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Wrestlers\Tables;
 
 use App\Builders\WrestlerBuilder;
-use App\Enums\WrestlerStatus;
+use App\Enums\EmploymentStatus;
 use App\Livewire\Base\Tables\BaseTableWithActions;
 use App\Livewire\Concerns\Columns\HasFirstEmploymentDateColumn;
 use App\Livewire\Concerns\Columns\HasStatusColumn;
@@ -66,7 +66,7 @@ class WrestlersTable extends BaseTableWithActions
     public function filters(): array
     {
         /** @var array<string, string> $statuses */
-        $statuses = collect(WrestlerStatus::cases())->pluck('name', 'value')->toArray();
+        $statuses = collect(EmploymentStatus::cases())->pluck('name', 'value')->toArray();
 
         return [
             $this->getDefaultStatusFilter($statuses),
