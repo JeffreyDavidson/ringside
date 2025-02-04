@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use App\Enums\WrestlerStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
@@ -67,15 +69,12 @@ trait IsEmployable
 
     public function isUnemployed(): bool
     {
-        return $this->employments()->count() === 0;
+        return $this->status == WrestlerStatus::Unemployed->value;
     }
 
     public function isReleased(): bool
     {
-        return $this->previousEmployment()->exists()
-            && $this->futureEmployment()->doesntExist()
-            && $this->currentEmployment()->doesntExist()
-            && $this->currentRetirement()->doesntExist();
+        return $this->status == WrestlerStatus::Released->value;
     }
 
     public function employedOn(Carbon $employmentDate): bool
@@ -86,5 +85,18 @@ trait IsEmployable
     public function employedBefore(Carbon $employmentDate): bool
     {
         return $this->currentEmployment ? $this->currentEmployment->started_at->lte($employmentDate) : false;
+    }
+
+    public function scopeCurrentlyEmployed(Builder $query): void
+    {
+        $query->whereNull('ended_at');
+    }
+
+    public function scopeWithFutureEmployed(Builder $query): void
+    {
+        $query->where(function ($query) { // futureEmployment
+            $query->whereNull('ended_at')
+                ->where('started_at', '>', now());
+        });
     }
 }
