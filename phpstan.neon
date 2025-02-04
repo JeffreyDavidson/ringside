@@ -5,6 +5,8 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         -
+            identifier: missingType.generics
+        -
             message: '#should return array\<int\|string, string\|null\> but returns array\<mixed\>.#'
             paths:
                 - app/Traits/Data/PresentsManagersList.php
