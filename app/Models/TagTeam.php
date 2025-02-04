@@ -146,7 +146,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     /**
      * Get all the employments of the model.
      *
-     * @return HasMany<TagTeamEmployment, static>
+     * @return HasMany<TagTeamEmployment, $this>
      */
     public function employments(): HasMany
     {
@@ -154,7 +154,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     }
 
     /**
-     * @return HasMany<TagTeamRetirement, static>
+     * @return HasMany<TagTeamRetirement, $this>
      */
     public function retirements(): HasMany
     {
@@ -162,7 +162,7 @@ class TagTeam extends Model implements Bookable, CanBeAStableMember, Employable,
     }
 
     /**
-     * @return HasMany<TagTeamSuspension, static>
+     * @return HasMany<TagTeamSuspension, $this>
      */
     public function suspensions(): HasMany
     {

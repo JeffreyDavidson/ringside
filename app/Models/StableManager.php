@@ -39,7 +39,7 @@ class StableManager extends Pivot
     ];
 
     /**
-     * @return BelongsTo<Manager, static>
+     * @return BelongsTo<Manager, $this>
      */
     public function manager(): BelongsTo
     {

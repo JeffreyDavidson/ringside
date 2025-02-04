@@ -62,7 +62,7 @@ class RefereeRetirement extends Model
     }
 
     /**
-     * @return BelongsTo<Referee, static>
+     * @return BelongsTo<Referee, $this>
      */
     public function referee(): BelongsTo
     {

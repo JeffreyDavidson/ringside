@@ -99,7 +99,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<TitleActivation, static>
+     * @return HasMany<TitleActivation, $this>
      */
     public function activations(): HasMany
     {
@@ -107,7 +107,7 @@ class Title extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<TitleRetirement, static>
+     * @return HasMany<TitleRetirement, $this>
      */
     public function retirements(): HasMany
     {

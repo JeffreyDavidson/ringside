@@ -155,7 +155,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     /**
      * Get all the employments of the model.
      *
-     * @return HasMany<WrestlerEmployment, static>
+     * @return HasMany<WrestlerEmployment, $this>
      */
     public function employments(): HasMany
     {
@@ -163,7 +163,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * @return HasMany<WrestlerRetirement, static>
+     * @return HasMany<WrestlerRetirement, $this>
      */
     public function retirements(): HasMany
     {
@@ -171,7 +171,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * @return HasMany<WrestlerInjury, static>
+     * @return HasMany<WrestlerInjury, $this>
      */
     public function injuries(): HasMany
     {
@@ -179,7 +179,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     }
 
     /**
-     * @return HasMany<WrestlerSuspension, static>
+     * @return HasMany<WrestlerSuspension, $this>
      */
     public function suspensions(): HasMany
     {

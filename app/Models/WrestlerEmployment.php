@@ -64,7 +64,7 @@ class WrestlerEmployment extends Model
     /**
      * Get the employed model.
      *
-     * @return BelongsTo<Wrestler, static>
+     * @return BelongsTo<Wrestler, $this>
      */
     public function wrestler(): BelongsTo
     {

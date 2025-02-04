@@ -119,7 +119,7 @@ class Stable extends Model implements Activatable, Retirable
     ];
 
     /**
-     * @return HasMany<StableActivation, static>
+     * @return HasMany<StableActivation, $this>
      */
     public function activations(): HasMany
     {
@@ -127,7 +127,7 @@ class Stable extends Model implements Activatable, Retirable
     }
 
     /**
-     * @return HasMany<StableRetirement, static>
+     * @return HasMany<StableRetirement, $this>
      */
     public function retirements(): HasMany
     {

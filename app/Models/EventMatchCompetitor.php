@@ -52,7 +52,7 @@ class EventMatchCompetitor extends MorphPivot
     /**
      * Retrieve the previous champion of the title championship.
      *
-     * @return MorphTo<Wrestler|TagTeam, $this>
+     * @return MorphTo<\App\Models\Wrestler|\App\Models\TagTeam, $this>
      */
     public function competitor(): MorphTo
     {

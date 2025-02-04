@@ -62,7 +62,7 @@ class ManagerInjury extends Model
     }
 
     /**
-     * @return BelongsTo<Manager, static>
+     * @return BelongsTo<Manager, $this>
      */
     public function manager(): BelongsTo
     {

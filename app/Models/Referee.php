@@ -118,7 +118,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     /**
      * Get all the employments of the model.
      *
-     * @return HasMany<RefereeEmployment, static>
+     * @return HasMany<RefereeEmployment, $this>
      */
     public function employments(): HasMany
     {
@@ -126,7 +126,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeInjury, static>
+     * @return HasMany<RefereeInjury, $this>
      */
     public function injuries(): HasMany
     {
@@ -134,7 +134,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeSuspension, static>
+     * @return HasMany<RefereeSuspension, $this>
      */
     public function suspensions(): HasMany
     {
@@ -142,7 +142,7 @@ class Referee extends Model implements Employable, Injurable, Retirable, Suspend
     }
 
     /**
-     * @return HasMany<RefereeRetirement, static>
+     * @return HasMany<RefereeRetirement, $this>
      */
     public function retirements(): HasMany
     {

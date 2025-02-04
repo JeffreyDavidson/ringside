@@ -140,7 +140,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     /**
      * Get all the employments of the model.
      *
-     * @return HasMany<ManagerEmployment, static>
+     * @return HasMany<ManagerEmployment, $this>
      */
     public function employments(): HasMany
     {
@@ -148,7 +148,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerInjury, static>
+     * @return HasMany<ManagerInjury, $this>
      */
     public function injuries(): HasMany
     {
@@ -156,7 +156,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerSuspension, static>
+     * @return HasMany<ManagerSuspension, $this>
      */
     public function suspensions(): HasMany
     {
@@ -164,7 +164,7 @@ class Manager extends Model implements CanBeAStableMember, Employable, Injurable
     }
 
     /**
-     * @return HasMany<ManagerRetirement, static>
+     * @return HasMany<ManagerRetirement, $this>
      */
     public function retirements(): HasMany
     {
