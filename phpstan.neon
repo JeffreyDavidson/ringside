@@ -7,6 +7,8 @@ parameters:
         -
             identifier: missingType.generics
         -
+            identifier: missingType.iterableValue
+        -
             message: '#should return array\<int\|string, string\|null\> but returns array\<mixed\>.#'
             paths:
                 - app/Traits/Data/PresentsManagersList.php

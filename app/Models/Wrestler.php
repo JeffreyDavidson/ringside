@@ -100,6 +100,7 @@ class Wrestler extends Model implements Bookable, CanBeAStableMember, Employable
     use Concerns\HasManagers;
     use Concerns\HasMatches;
     use Concerns\IsEmployable;
+    use Concerns\IsInjurable;
     use Concerns\IsRetirable;
     use Concerns\IsSuspendable;
     use Concerns\OwnedByUser;
